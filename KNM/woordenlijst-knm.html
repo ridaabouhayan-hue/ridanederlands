@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KNM Woordenlijst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0f1729;
+  --bg2: #182040;
+  --card: rgba(30,42,74,0.7);
+  --glass: rgba(255,255,255,0.04);
+  --t1: #f0f2f8;
+  --t2: #a0aac4;
+  --tm: #6b7a9e;
+  --blue: #4e8cff;
+  --blue-g: rgba(78,140,255,0.2);
+  --orange: #ff8a4e;
+  --orange-g: rgba(255,138,78,0.18);
+  --green: #34d399;
+  --green-g: rgba(52,211,153,0.18);
+  --purple: #a78bfa;
+  --purple-g: rgba(167,139,250,0.18);
+  --yellow: #fbbf24;
+  --yellow-g: rgba(251,191,36,0.15);
+  --b1: rgba(255,255,255,0.07);
+  --b2: rgba(255,255,255,0.12);
+  --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+  --sh: 0 4px 24px rgba(0,0,0,0.28);
+  --tr: 0.22s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--t1);
+  line-height:1.65;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(78,140,255,.06) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 20%,rgba(167,139,250,.05) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 85%,rgba(52,211,153,.04) 0%,transparent 55%);
+  z-index:-1;pointer-events:none;
+  animation:bgS 22s ease-in-out infinite alternate;
+}
+@keyframes bgS{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(-3%,-3%) rotate(3deg)}}
+
+/* ── Language Bar ── */
+.lang-bar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:10px 24px;
+  background:rgba(15,23,41,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--b1);
+}
+.lang-bar .lbl{font-size:.75rem;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
+.lang-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 16px;
+  font-size:.8rem;font-weight:600;
+  color:var(--t2);
+  background:var(--glass);
+  border:1px solid var(--b1);
+  border-radius:100px;cursor:pointer;
+  transition:var(--tr);user-select:none;font-family:'Inter',sans-serif;
+}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-g)}
+.lang-btn.active{color:var(--blue);border-color:var(--blue);background:var(--blue-g)}
+.lang-btn .flag{font-size:1rem}
+
+/* RTL hint badge */
+.rtl-badge{
+  font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  padding:2px 6px;border-radius:100px;
+  background:var(--orange);color:#fff;margin-left:2px;
+}
+
+/* ── Page ── */
+.page{max-width:1060px;margin:0 auto;padding:36px 20px 80px}
+
+.page-header{text-align:center;margin-bottom:44px}
+.page-header h1{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(1.9rem,5vw,3rem);font-weight:800;
+  background:linear-gradient(135deg,#fff 0%,var(--blue) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;margin-bottom:10px;
+}
+.page-header .sub{font-size:1rem;color:var(--t2)}
+
+/* ── Search bar ── */
+.search-wrap{display:flex;justify-content:center;margin-bottom:36px}
+.search-wrap input{
+  width:100%;max-width:480px;
+  padding:12px 20px;
+  background:var(--card);
+  border:1px solid var(--b2);
+  border-radius:100px;
+  color:var(--t1);
+  font-size:.95rem;font-family:'Inter',sans-serif;
+  outline:none;transition:var(--tr);
+}
+.search-wrap input::placeholder{color:var(--tm)}
+.search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-g)}
+
+/* ── Word grid ── */
+.word-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:18px;
+}
+
+/* ── Word card ── */
+.word-card{
+  background:var(--card);
+  border:1px solid var(--b1);
+  border-radius:var(--r-lg);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:var(--tr);
+  animation:fadeUp .35s ease both;
+}
+.word-card:hover{transform:translateY(-3px);border-color:rgba(78,140,255,.35);box-shadow:var(--sh),0 0 28px var(--blue-g)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* NL strip */
+.card-nl{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 20px 14px;
+  border-bottom:1px solid var(--b1);
+  background:rgba(78,140,255,.07);
+}
+.card-nl .nl-word{
+  font-family:'Outfit',sans-serif;
+  font-size:1.15rem;font-weight:800;
+  color:var(--t1);flex:1;
+}
+.card-nl .nl-flag{font-size:1.25rem}
+
+/* Translation strip */
+.card-trans{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:13px 20px 10px;
+  border-bottom:1px solid var(--b1);
+}
+.card-trans .trans-flag{font-size:1rem;margin-top:2px;flex-shrink:0}
+.card-trans .trans-text{
+  font-size:1rem;font-weight:600;
+  color:var(--blue);flex:1;
+  word-break:break-word;
+}
+.card-trans .trans-text.rtl{direction:rtl;text-align:right;font-size:1rem}
+
+/* Explanation strip */
+.card-uitleg{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 20px 16px;
+}
+.card-uitleg .uitleg-icon{font-size:.95rem;flex-shrink:0;margin-top:2px;opacity:.7}
+.card-uitleg .uitleg-text{
+  font-size:.88rem;color:var(--t2);
+  font-style:italic;flex:1;
+  word-break:break-word;
+}
+.card-uitleg .uitleg-text.rtl{direction:rtl;text-align:right}
+
+/* hidden */
+.word-card.hidden{display:none}
+
+/* ── Letter group header ── */
+.letter-group{
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:14px;
+  margin-top:8px;
+}
+.letter-group .letter-badge{
+  font-family:'Outfit',sans-serif;
+  font-size:1.6rem;font-weight:800;
+  color:var(--purple);
+  width:52px;height:52px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--purple-g);
+  border-radius:var(--r-md);flex-shrink:0;
+}
+.letter-group .letter-line{flex:1;height:1px;background:linear-gradient(90deg,var(--b2),transparent)}
+
+/* ── Count badge ── */
+.count-bar{text-align:center;margin-bottom:24px;color:var(--tm);font-size:.85rem}
+</style>
+</head>
+<body>
+
+<!-- Language Bar -->
+<nav class="lang-bar">
+  <a href="index.html" class="lang-btn" style="text-decoration:none; margin-right:8px;"><span class="flag">🏠</span> Overzicht</a>
+  <span class="lbl">🌍 Taal:</span>
+  <button class="lang-btn active" onclick="setLang('nl')" id="btn-nl"><span class="flag">🇳🇱</span> Nederlands</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en"><span class="flag">🇬🇧</span> Engels</button>
+  <button class="lang-btn" onclick="setLang('tr')" id="btn-tr"><span class="flag">🇹🇷</span> Turks</button>
+  <button class="lang-btn" onclick="setLang('th')" id="btn-th"><span class="flag">🇹🇭</span> Thais</button>
+  <button class="lang-btn" onclick="setLang('vi')" id="btn-vi"><span class="flag">🇻🇳</span> Vietnamees</button>
+  <button class="lang-btn" onclick="setLang('fa')" id="btn-fa"><span class="flag">🇮🇷</span> Farsi <span class="rtl-badge">RTL</span></button>
+  <button class="lang-btn" onclick="setLang('ar')" id="btn-ar"><span class="flag">🇸🇦</span> Arabisch <span class="rtl-badge">RTL</span></button>
+  <button class="lang-btn" onclick="setLang('pl')" id="btn-pl"><span class="flag">🇵🇱</span> Pools</button>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <h1>📚 KNM Woordenlijst</h1>
+    <p class="sub">Selecteer je taal bovenin • Alle begrippen met uitleg</p>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="🔍 Zoek een woord..." oninput="filterCards()" autocomplete="off"/>
+  </div>
+
+  <div class="count-bar" id="count-bar"></div>
+
+  <div class="word-grid" id="word-grid"></div>
+</div>
+
+<script>
+const WORDS = [
+  // A
+  {nl:"Afsluitdijk",
+   nlX:"32 km lange dam tussen Noord-Holland en Friesland.",
+   pl:"Afsluitdijk",                plX:"32-kilometrowa tama między Holandią P. a Fryzją.",
+   en:"Enclosure Dam",                     enX:"32 km dam between NH and Friesland.",
+   tr:"Afsluitdijk (Büyük Set)",           trX:"NH ve Friesland arasındaki 32 km'lik set.",
+   th:"เขื่อนอัฟสลอยต์ไดก์",               thX:"เขื่อนยาว 32 กม. ระหว่างนอร์ทฮอลแลนด์และฟรีสแลนด์",
+   vi:"Đê Afsluitdijk",                    viX:"Đê dài 32 km nối Bắc Holland và Friesland.",
+   fa:"سد آفلایتدایک",                     faX:"سد طولانی (۳۲ کیلومتر) بین هلند شمالی و فریزلند.",
+   ar:"سد أفسلاوتدايك",                    arX:"سد طويل (32 كم) بين شمال هولندا وفريزلاند."},
+  // B
+  {nl:"Bevolking",
+   nlX:"Alle mensen die in een land wonen.",
+   pl:"Populacja",                  plX:"Wszyscy ludzie mieszkający w danym kraju.",
+   en:"Population",                        enX:"All people living in a country.",
+   tr:"Nüfus",                             trX:"Bir ülkede yaşayan tüm insanlar.",
+   th:"ประชากร",                           thX:"ทุกคนที่อาศัยอยู่ในประเทศ",
+   vi:"Dân số",                            viX:"Tất cả những người sống trong một quốc gia.",
+   fa:"جمعیت",                             faX:"تمام مردمی که در یک کشور زندگی میکنند.",
+   ar:"السكان",                            arX:"جميع الناس الذين يعيشون في بلد ما."},
+  {nl:"Bevrijden",
+   nlX:"Iemand of iets vrijmaken.",
+   pl:"Wyzwolić",                   plX:"Uczynić kogoś lub coś wolnym.",
+   en:"To liberate / set free",            enX:"To make someone or something free.",
+   tr:"Özgürleştirmek",                    trX:"Birini veya bir şeyi özgür bırakmak.",
+   th:"ปลดปล่อย",                          thX:"ทำให้ใครบางคนหรือบางสิ่งเป็นอิสระ",
+   vi:"Giải phóng",                        viX:"Làm cho ai đó hoặc cái gì đó trở nên tự do.",
+   fa:"آزاد کردن",                         faX:"آزاد کردن کسی یا چیزی.",
+   ar:"تحرير",                             arX:"جعل شخص ما أو شيء ما حراً."},
+  {nl:"Bezetten",
+   nlX:"De macht overnemen in een ander land.",
+   pl:"Okupować",                   plX:"Przejęcie władzy w innym kraju.",
+   en:"To occupy",                         enX:"Taking power in another country.",
+   tr:"İşgal etmek",                       trX:"Başka bir ülkede yönetimi ele geçirmek.",
+   th:"ยึดครอง",                           thX:"การยึดอำนาจในประเทศอื่น",
+   vi:"Chiếm đóng",                        viX:"Nắm quyền ở một quốc gia khác.",
+   fa:"اشغال کردن",                        faX:"گرفتن قدرت در یک کشور دیگر.",
+   ar:"احتلال",                            arX:"السيطرة على السلطة في بلد آخر."},
+  // C
+  {nl:"Christelijk",
+   nlX:"Geloven in God, Jezus en de Bijbel.",
+   pl:"Chrześcijański",             plX:"Wiara w Boga, Jezusa i Biblię.",
+   en:"Christian",                         enX:"Believing in God, Jesus, and the Bible.",
+   tr:"Hristiyan",                         trX:"Tanrı'ya, İsa'ya ve İncil'ye inanmak.",
+   th:"คริสเตียน",                         thX:"ความเชื่อในพระเจ้า พระเยซู และพระคัมภีร์",
+   vi:"Thiên chúa giáo",                   viX:"Tin vào Chúa, Chúa Giê-su và Kinh thánh.",
+   fa:"مسیحی",                             faX:"ایمان به خدا، عیسی مسیح و انجیل.",
+   ar:"مسيحي",                             arX:"الإيمان بالله، يسوع المسيح والكتاب المقدس."},
+  {nl:"Concentratiekamp",
+   nlX:"Gevangenis en vernietigingskamp van de nazi's.",
+   pl:"Obóz koncentracyjny",        plX:"Nazistowskie więzienie i miejsce zagłady.",
+   en:"Concentration camp",               enX:"Nazi prison and killing site.",
+   tr:"Toplama kampı",                    trX:"Nazilerin insanları hapsettiği/öldürdüğü yer.",
+   th:"ค่ายกักกัน",                       thX:"สถานที่ที่นาซีกักขังและสังหารผู้คน",
+   vi:"Trại tập trung",                   viX:"Nơi phát xít Đức giam giữ và giết hại mọi người.",
+   fa:"اردوگاه کار اجباری",               faX:"مکانی که نازیها مردم را زندانی کرده و میکشتند.",
+   ar:"معسكر اعتقال",                     arX:"مكان احتجز فيه النازيون الناس وقتلوهم."},
+  // D
+  {nl:"Dagboek",
+   nlX:"Boek om gedachten en acties in op te schrijven.",
+   pl:"Pamiętnik / Dziennik",       plX:"Książka do zapisywania przemyśleń i działań.",
+   en:"Diary",                             enX:"Book for writing thoughts and actions.",
+   tr:"Günlük",                            trX:"Düşüncelerinizi yazdığınız kitap.",
+   th:"ไดอารี่",                           thX:"สมุดบันทึกสิ่งที่คุณทำและคิด",
+   vi:"Nhật ký",                           viX:"Cuốn sách ghi lại những gì bạn làm và nghĩ.",
+   fa:"دفترچه خاطرات",                    faX:"کتابی که در آن آنچه انجام میدهید و فکر میکنید مینویسید.",
+   ar:"مذكرات",                            arX:"كتاب تكتب فيه ما تفعله وما تفكر فيه."},
+  {nl:"Deltawerken",
+   nlX:"Grote dammen en waterkeringen in Zeeland en Zuid-Holland.",
+   pl:"Plan Delta",                 plX:"Tamy i bariery w Zelandii i Holandii Południowej.",
+   en:"Delta Works",                       enX:"Dams/barriers in Zeeland/Z-Holland.",
+   tr:"Delta Projesi",                     trX:"Zeeland/Z-Holland'daki büyük setler.",
+   th:"โครงการเดลต้าเวิร์กส์",            thX:"เขื่อนและประตูกั้นน้ำขนาดใหญ่ในเซลันด์",
+   vi:"Công trình Delta",                  viX:"Các con đê và đập lớn ở Zeeland/Nam Holland.",
+   fa:"پروژههای دلتا",                     faX:"سدها و موانع بزرگ در زیلاند/هلند جنوبی.",
+   ar:"أعمال الدلتا",                      arX:"السدود والحواجز الكبيرة في زيلاند/جنوب هولندا."},
+  {nl:"Democratie",
+   nlX:"Systeem waarbij mensen hun leiders kiezen.",
+   pl:"Demokracja",                 plX:"System, w którym ludzie wybierają swoich przywódców.",
+   en:"Democracy",                         enX:"People elect their leaders.",
+   tr:"Demokrasi",                         trX:"Halkın liderlerini seçtiği sistem.",
+   th:"ประชาธิปไตย",                       thX:"ระบบที่ประชาชนเลือกผู้นำ",
+   vi:"Dân chủ",                           viX:"Hệ thống mà người dân bầu ra những người lãnh đạo.",
+   fa:"دموکراسی",                          faX:"سیستمی که در آن مردم رهبران را انتخاب میکنند.",
+   ar:"الديمقراطية",                       arX:"نظام يختار فيه الشعب القادة."},
+  {nl:"Dichtbevolkt",
+   nlX:"Veel mensen in een kleine ruimte.",
+   pl:"Gęsto zaludniony",           plX:"Wiele osób na małej przestrzeni.",
+   en:"Densely populated",                 enX:"Many people in a small space.",
+   tr:"Yoğun nüfuslu",                    trX:"Az alanda çok insan olması.",
+   th:"ประชากรหนาแน่น",                   thX:"มีผู้คนจำนวนมากในพื้นที่น้อย",
+   vi:"Dân cư đông đúc",                  viX:"Nhiều người trong một không gian nhỏ.",
+   fa:"متراکم (جمعیت زیاد)",              faX:"افراد زیاد در فضای کم.",
+   ar:"مزدحم بالسكان",                    arX:"الكثير من الناس في مساحة صغيرة."},
+  {nl:"Dijk",
+   nlX:"Muur die het water tegenhoudt.",
+   pl:"Wał przeciwpowodziowy / Tama", plX:"Ściana zatrzymująca wodę.",
+   en:"Dike / Dam",                        enX:"Wall that holds back water.",
+   tr:"Set / Baraj",                       trX:"Suyu tutan duvar.",
+   th:"เขื่อน / คันกั้นน้ำ",              thX:"กำแพงกั้นน้ำ",
+   vi:"Đê",                                viX:"Bức tường ngăn nước.",
+   fa:"سد",                                faX:"دیواری که جلوی آب را میگیرد.",
+   ar:"سد",                                arX:"جدار يمنع الماء."},
+  {nl:"Duin",
+   nlX:"Zandheuvel langs de kust.",
+   pl:"Wydma",                      plX:"Piaszczyste wzgórze wzdłuż wybrzeża.",
+   en:"Dune",                              enX:"Sand hill along the coast.",
+   tr:"Kumul / Kum tepesi",               trX:"Sahil boyunca kum tepesi.",
+   th:"เนินทราย",                          thX:"ภูเขาบทรายตามชายฝั่ง",
+   vi:"Cồn cát",                           viX:"Đồi cát dọc theo bờ biển.",
+   fa:"تپه شنی",                           faX:"تپه شنی در کنار ساحل.",
+   ar:"كثيب رملي",                         arX:"تلة رملية على طول الساحل."},
+  // E
+  {nl:"Emancipatie",
+   nlX:"Gelijke rechten krijgen.",
+   pl:"Emancypacja",                plX:"Uzyskanie równych praw.",
+   en:"Emancipation",                      enX:"Getting equal rights.",
+   tr:"Özgürleşme / Hak eşitliği",        trX:"Eşit haklara sahip olmak.",
+   th:"การปลดปล่อย / สิทธิเท่าเทียม",    thX:"การได้รับสิทธิที่เท่าเทียมกัน",
+   vi:"Sự bình đẳng / giải phóng",        viX:"Có được các quyền bình đẳng.",
+   fa:"برابری حقوق / رهایی",              faX:"دستیابی به حقوق برابر.",
+   ar:"التحرر / نيل الحقوق",              arX:"الحصول على حقوق متساوية."},
+  {nl:"EU (Europese Unie)",
+   nlX:"Samenwerking tussen Europese landen.",
+   pl:"UE (Unia Europejska)",       plX:"Współpraca między krajami europejskimi.",
+   en:"EU (European Union)",               enX:"Cooperation between European countries.",
+   tr:"AB (Avrupa Birliği)",              trX:"Avrupa ülkeleri arasındaki işbirliği.",
+   th:"สหภาพยุโรป (อียู)",                thX:"ความร่วมมือของประเทศในยุโรป",
+   vi:"Liên minh Châu Âu (EU)",           viX:"Sự hợp tác giữa các quốc gia Châu Âu.",
+   fa:"اتحادیه اروپا",                    faX:"همکاری کشورهای اروپایی.",
+   ar:"الاتحاد الأوروبي",                 arX:"تعاون بين الدول الأوروبية."},
+  // G
+  {nl:"Gastarbeider",
+   nlX:"Mensen die in de jaren 60 en 70 kwamen werken.",
+   pl:"Gastarbeiter",               plX:"Osoby przybyłe do pracy w latach 60. i 70.",
+   en:"Migrant worker (60s-70s)",          enX:"People who came to work in 60s/70s.",
+   tr:"Misafir işçi",                     trX:"1960-70'lerde çalışmak için gelenler.",
+   th:"แรงงานรับเชิญ",                    thX:"คนที่มาทำงานในช่วงปี 1960-1970",
+   vi:"Người lao động nhập cư",           viX:"Những người đến làm việc vào năm 60-70.",
+   fa:"کارگر میهمان",                     faX:"افرادی که در دهههای ۶۰ و ۷۰ برای کار آمدند.",
+   ar:"عامل مغترب",                       arX:"أشخاص قدموا للعمل في الستينات والسبعينات."},
+  {nl:"Geallieerden",
+   nlX:"Landen die tegen Duitsland vochten in WOII.",
+   pl:"Alianci",                    plX:"Kraje walczące z Niemcami w II wojnie światowej.",
+   en:"Allies",                            enX:"Countries fighting Germany in WWII.",
+   tr:"Müttefikler",                      trX:"II. Dünya Savaşı'nda Almanya'ya karşı savaşanlar.",
+   th:"พันธมิตร",                          thX:"ประเทศที่ร่วมต่อสู้กับเยอรมนีในสงครามโลกครั้งที่ 2",
+   vi:"Đồng minh",                        viX:"Các nước cùng chiến đấu chống Đức ở Thế chiến II.",
+   fa:"متحدین",                            faX:"کشورهایی که در جنگ جهانی دوم با آلمان جنگیدند.",
+   ar:"الحلفاء",                           arX:"الدول التي حاربت ألمانيا في الحرب العالمية الثانية."},
+  {nl:"Gelijkheid",
+   nlX:"Iedereen is even belangrijk en heeft dezelfde rechten.",
+   pl:"Równość",                    plX:"Wszyscy są równie ważni i mają równe prawa.",
+   en:"Equality",                          enX:"Everyone is equally important.",
+   tr:"Eşitlik",                           trX:"Herkesin eşit derecede önemli olması.",
+   th:"ความเสมอภาค",                       thX:"ทุกคนมีความสำคัญเท่าเทียมกัน",
+   vi:"Sự bình đẳng",                     viX:"Mọi người đều quan trọng như nhau.",
+   fa:"برابری",                             faX:"همه به یک اندازه مهم هستند.",
+   ar:"المساواة",                           arX:"الجميع متساوون في الأهمية."},
+  {nl:"Godsdienst",
+   nlX:"Een geloof (bijv. Islam, Christendom).",
+   pl:"Religia",                    plX:"Wiara (np. islam, chrześcijaństwo).",
+   en:"Religion",                          enX:"A faith (Islam, Christianity, etc.).",
+   tr:"Din",                               trX:"İnanç (İslam, Hristiyanlık vb.).",
+   th:"ศาสนา",                             thX:"ความเชื่อ เช่น อิสลาม คริสต์",
+   vi:"Tôn giáo",                          viX:"Một đức tin (Hồi giáo, Thiên chúa giáo, v.v.).",
+   fa:"دین / مذهب",                        faX:"یک عقیده و ایمان (اسلام، مسیحیت و غیره).",
+   ar:"الدين",                              arX:"إيمان أو معتقد (الإسلام، المسيحية، إلخ)."},
+  {nl:"Gouden Eeuw",
+   nlX:"Periode van grote welvaart (1600-1700).",
+   pl:"Złoty Wiek",                 plX:"Okres wielkiego bogactwa (1600-1700).",
+   en:"Golden Age",                        enX:"1600-1700: period of great wealth.",
+   tr:"Altın Çağ",                         trX:"1600-1700 arası zenginlik dönemi.",
+   th:"ยุคทอง",                            thX:"ยุคปี 1600-1700 ที่เนเธอร์แลนด์รวยมาก",
+   vi:"Thế kỷ Vàng",                       viX:"Thời kỳ 1600-1700 khi Hà Lan rất giàu có.",
+   fa:"دوران طلایی",                       faX:"دوره ۱۶۰۰-۱۷۰۰ که هلند بسیار ثروتمند بود.",
+   ar:"العصر الذهبي",                      arX:"فترة ۱۶۰۰-۱۷۰۰ عندما كانت هولندا غنية جداً."},
+  {nl:"Gracht",
+   nlX:"Vaarweg of waterweg in de stad.",
+   pl:"Kanał",                      plX:"Droga wodna w mieście.",
+   en:"Canal",                             enX:"Waterway in the city.",
+   tr:"Kanal",                             trX:"Şehir içindeki su yolu.",
+   th:"คลอง",                              thX:"ทางน้ำในเมือง",
+   vi:"Con kênh",                          viX:"Đường thủy trong thành phố.",
+   fa:"کانال آب در شهر",                   faX:"آبراهی در داخل شهر.",
+   ar:"قناة مائية",                         arX:"مجرى مائي في المدينة."},
+  {nl:"Grondwet",
+   nlX:"De belangrijkste wet van een land.",
+   pl:"Konstytucja",                plX:"Najważniejsze prawo kraju.",
+   en:"Constitution",                      enX:"Most important law of a country.",
+   tr:"Anayasa",                           trX:"Bir ülkenin en önemli yasası.",
+   th:"รัฐธรรมนูญ",                        thX:"กฎหมายที่สำคัญที่สุดของประเทศ",
+   vi:"Hiến pháp",                         viX:"Luật quan trọng nhất của một quốc gia.",
+   fa:"قانون اساسی",                       faX:"مهمترین قانون یک کشور.",
+   ar:"الدستور",                            arX:"أهم قانون في البلاد."},
+  // H
+  {nl:"Handel",
+   nlX:"Kopen en verkopen van goederen.",
+   pl:"Handel",                     plX:"Kupowanie i sprzedawanie towarów.",
+   en:"Trade",                             enX:"Buying and selling goods.",
+   tr:"Ticaret",                           trX:"Mal alıp satmak.",
+   th:"การค้า",                            thX:"การซื้อและขายของ",
+   vi:"Thương mại / Buôn bán",            viX:"Việc mua và bán hàng hóa.",
+   fa:"تجارت / خرید و فروش",              faX:"خرید و فروش اجناس.",
+   ar:"التجارة",                            arX:"بيع وشراء الأشياء."},
+  {nl:"Hongerwinter",
+   nlX:"Laatste winter van WOII met veel honger in Nederland.",
+   pl:"Zima głodowa",               plX:"Ostatnia zima II wojny światowej z wielkim głodem.",
+   en:"Hunger winter",                     enX:"Last winter WWII with famine.",
+   tr:"Kıtlık kışı",                      trX:"II. Dünya Savaşı'nın sonundaki büyük kıtlık.",
+   th:"ฤดูหนาวที่อดอยาก",                 thX:"ฤดูหนาวสุดท้ายของสงครามโลกที่อดอยากมาก",
+   vi:"Mùa đông đói kém",                  viX:"Mùa đông cuối cùng của Thế chiến II với nạn đói.",
+   fa:"زمستان قحطی",                       faX:"آخرین زمستان جنگ جهانی دوم با قحطی بزرگ.",
+   ar:"شتاء الجوع",                         arX:"الشتاء الأخير من الحرب العالمية الثانية مع مجاعة."},
+  // J
+  {nl:"Jood / Joden",
+   nlX:"Persoon behorend tot het Joodse volk of geloof.",
+   pl:"Żyd / Żydzi",                plX:"Osoba wyznania żydowskiego / naród żydowski.",
+   en:"Jew / Jews",                        enX:"Person of Jewish faith/people.",
+   tr:"Yahudi / Yahudiler",               trX:"Yahudi inancına/halkına mensup kişi.",
+   th:"ยิว",                               thX:"คนที่เป็นชาวยิวหรือนับถือศาสนายิว",
+   vi:"Người Do Thái",                     viX:"Người thuộc dân tộc/tôn giáo Do Thái.",
+   fa:"یهودی / یهودیان",                  faX:"فردی که متعلق به قوم یا دین یهود است.",
+   ar:"يهودي / يهود",                      arX:"شخص ينتمي إلى الشعب أو الدين اليهودي."},
+  // K
+  {nl:"Katholiek",
+   nlX:"Christen die de Paus volgt.",
+   pl:"Katolik",                    plX:"Chrześcijanin podążający za papieżem.",
+   en:"Catholic",                          enX:"Christian following the Pope.",
+   tr:"Katolik",                           trX:"Papa'yı takip eden Hristiyan.",
+   th:"คาทอลิก",                           thX:"ชาวคริสต์ที่นับถือสันตะปาปา",
+   vi:"Công giáo",                         viX:"Người theo đạo Thiên chúa tin vào Giáo hoàng.",
+   fa:"کاتولیک",                           faX:"مسیحی پیرو پاپ.",
+   ar:"كاثوليكي",                          arX:"مسيحي يتبع البابا."},
+  {nl:"Kolonie",
+   nlX:"Gebied dat bestuurd wordt door een ander land overzee.",
+   pl:"Kolonia",                    plX:"Obszar kontrolowany przez inny kraj.",
+   en:"Colony",                            enX:"Area controlled by another country.",
+   tr:"Sömürge",                           trX:"Başka bir ülkenin kontrolündeki bölge.",
+   th:"อาณานิคม",                          thX:"ดินแดนที่อยู่ภายใต้การควบคุมของประเทศอื่น",
+   vi:"Thuộc địa",                         viX:"Vùng đất dưới sự kiểm soát của một quốc gia khác.",
+   fa:"مستعمره",                           faX:"منطقهای تحت کنترل کشوری دیگر.",
+   ar:"مستعمرة",                           arX:"منطقة تخضع لسيطرة دولة أخرى."},
+  // L
+  {nl:"Landbouw",
+   nlX:"Het werk van boeren met het verbouwen van gewassen.",
+   pl:"Rolnictwo",                  plX:"Praca rolników (uprawa roślin).",
+   en:"Agriculture / Farming",            enX:"Farming (growing crops).",
+   tr:"Tarım",                             trX:"Çiftçilerin tarlada çalışması.",
+   th:"เกษตรกรรม",                         thX:"งานของเกษตรกรในการปลูกพืช",
+   vi:"Nông nghiệp",                       viX:"Công việc của nông dân (trồng trọt).",
+   fa:"کشاورزی",                           faX:"کار کشاورزان روی زمین (کاشت گیاهان).",
+   ar:"الزراعة",                            arX:"عمل المزارعين في الأرض (زراعة المحاصيل)."},
+  // M
+  {nl:"Macht",
+   nlX:"In staat zijn om anderen te vertellen wat ze moeten doen.",
+   pl:"Władza",                     plX:"Zdolność mówienia innym, co mają robić.",
+   en:"Power",                             enX:"Ability to tell others what to do.",
+   tr:"Güç / Yetki",                      trX:"Başkalarına ne yapacağını söyleyebilmek.",
+   th:"อำนาจ",                             thX:"ความสามารถในการสั่งให้ผู้อื่นทำตาม",
+   vi:"Quyền lực",                         viX:"Khả năng bảo người khác phải làm gì.",
+   fa:"قدرت",                              faX:"توانایی گفتن به دیگران که چه کاری انجام دهند.",
+   ar:"السلطة",                             arX:"القدرة على إخبار الآخرين بما يجب عليهم فعله."},
+  {nl:"Minister",
+   nlX:"Lid van de regering.",
+   pl:"Minister",                   plX:"Członek rządu.",
+   en:"Minister",                          enX:"Member of the government.",
+   tr:"Bakan",                             trX:"Hükümet/kabine üyesi.",
+   th:"รัฐมนตรี",                          thX:"สมาชิกของรัฐบาล",
+   vi:"Bộ trưởng",                         viX:"Thành viên của chính phủ.",
+   fa:"وزیر",                              faX:"عضو دولت / کابینه.",
+   ar:"وزير",                              arX:"عضو في الحكومة / مجلس الوزراء."},
+  // O
+  {nl:"Onafhankelijk",
+   nlX:"Voor jezelf beslissen, niet onder controle van anderen.",
+   pl:"Niezależny",                 plX:"Decydowanie za siebie, brak szefa.",
+   en:"Independent",                       enX:"Deciding for yourself, no boss.",
+   tr:"Bağımsız",                          trX:"Kendi kararını verebilen, patronu olmayan.",
+   th:"อิสระ / เป็นเอกราช",              thX:"ตัดสินใจได้เอง ไม่มีหัวหน้าอื่น",
+   vi:"Độc lập",                           viX:"Có thể tự quyết định, không có chủ khác.",
+   fa:"مستقل",                             faX:"توانایی تصمیمگیری شخصی، بدون داشتن رئیس.",
+   ar:"مستقل",                             arX:"القدرة على اتخاذ القرار بنفسك، لا يوجد رئيس آخر."},
+  {nl:"Onderduiken",
+   nlX:"Zich in het geheim verstoppen in oorlogstijd.",
+   pl:"Ukrywać się",                plX:"Ukrywanie się w tajnym miejscu.",
+   en:"To go into hiding",                 enX:"Hiding in a secret place.",
+   tr:"Saklanmak (gizlice)",              trX:"Gizli een yerde saklanmak.",
+   th:"การหลบซ่อนตัว",                    thX:"การซ่อนตัวในสถานที่ลับ",
+   vi:"Ẩn náu (bí mật)",                  viX:"Trốn ở một nơi bí mật.",
+   fa:"مخفی شدن",                          faX:"پنهان شدن در یک مکان مخفی.",
+   ar:"الاختباء",                           arX:"الاختباء في مكان سري."},
+  {nl:"Opstand",
+   nlX:"Protest tegen de leiders.",
+   pl:"Powstanie / Bunt",           plX:"Protest przeciwko przywódcom.",
+   en:"Uprising / Rebellion",              enX:"Protest against leaders.",
+   tr:"Ayaklanma / İsyan",               trX:"Liderlere karşı protesto.",
+   th:"การประท้วง / ต่อต้าน",             thX:"การประท้วงต่อต้านผู้นำ",
+   vi:"Cuộc nổi dậy",                     viX:"Sự phản đối chống lại các nhà lãnh đạo.",
+   fa:"قیام / شورش",                       faX:"اعتراض علیه رهبران.",
+   ar:"انتفاضة / ثورة",                   arX:"احتجاج ضد القادة."},
+  {nl:"Organisatie",
+   nlX:"Een groep die samenwerkt om iets te regelen.",
+   pl:"Organizacja",                plX:"Grupa wspólnie organizująca rzeczy.",
+   en:"Organisation",                      enX:"Group arranging things together.",
+   tr:"Organizasyon / Kurum",             trX:"Birlikte bir şeyler düzenleyen grup.",
+   th:"องค์กร",                            thX:"กลุ่มที่ร่วมกันจัดการสิ่งต่างๆ",
+   vi:"Tổ chức",                           viX:"Nhóm cùng nhau sắp xếp mọi việc.",
+   fa:"سازمان",                             faX:"گروهی که با هم کارها را هماهنگ میکنند.",
+   ar:"منظمة",                              arX:"مجموعة تنظم الأشياء معاً."},
+  {nl:"Overstroming",
+   nlX:"Water dat het land bedekt.",
+   pl:"Powódź",                     plX:"Woda pokrywająca ląd.",
+   en:"Flood",                             enX:"Water covering the land.",
+   tr:"Sel",                               trX:"Suyun karayı kaplaması.",
+   th:"น้ำท่วม",                           thX:"น้ำที่ท่วมไหลผ่านแผ่นดิน",
+   vi:"Lũ lụt",                            viX:"Nước tràn vào đất liền.",
+   fa:"سیل",                               faX:"آبی که روی زمین را میگیرد.",
+   ar:"فيضان",                              arX:"المياه التي تغطي الأرض."},
+  // P
+  {nl:"Parlement",
+   nlX:"Groep die wetten maakt en de regering controleert.",
+   pl:"Parlament",                  plX:"Grupa tworząca prawa i kontrolująca rząd.",
+   en:"Parliament",                        enX:"Group making laws/checking gov.",
+   tr:"Parlamento",                        trX:"Yasaları yapan/hükümeti denetleyen grup.",
+   th:"รัฐสภา",                            thX:"กลุ่มที่ออกกฎหมายและตรวจสอบรัฐบาล",
+   vi:"Quốc hội",                          viX:"Nhóm lập pháp và kiểm soát chính phủ.",
+   fa:"پارلمان",                            faX:"گروه منتخب که قانون میسازد و دولت را کنترل میکند.",
+   ar:"البرلمان",                           arX:"مجموعة مختارة تضع القوانين وتراقب الحكومة."},
+  {nl:"Polder",
+   nlX:"Een stuk land dat is drooggemaakt.",
+   pl:"Polder",                     plX:"Osuszony ląd (wcześniej była to woda).",
+   en:"Polder",                            enX:"Reclaimed land (was water).",
+   tr:"Polder (Doldurulmuş arazi)",       trX:"Kurutulmuş toprak (eskiden suydu).",
+   th:"โพลดอร์ (ที่ดินถมทะเล)",           thX:"ที่ดินที่ทำให้แห้ง (เดิมเคยเป็นน้ำ)",
+   vi:"Vùng đất khai hoang",              viX:"Đất được làm khô (trước đây là nước).",
+   fa:"پُلدر (زمین خشک شده)",             faX:"زمین خشک شده (که قبلاً آب بوده است).",
+   ar:"أرض مستصلحة (بولدر)",              arX:"أرض تم تجفيفها (كانت ماءً في الأصل)."},
+  {nl:"Politiek",
+   nlX:"Hoe we beslissingen nemen over het land.",
+   pl:"Polityka",                   plX:"Sposób decydowania o kraju.",
+   en:"Politics",                          enX:"How we decide about the country.",
+   tr:"Politika",                          trX:"Ülke hakkında birlikte karar verme yolu.",
+   th:"การเมือง",                          thX:"วิธีที่เราตัดสินใจร่วมกันเกี่ยวกับประเทศ",
+   vi:"Chính trị",                         viX:"Cách chúng ta cùng nhau quyết định về đất nước.",
+   fa:"سیاست",                             faX:"روشی که با هم درباره کشور تصمیم میگیریم.",
+   ar:"السياسة",                            arX:"الطريقة التي نقرر بها معاً بشأن البلاد."},
+  {nl:"Protestant",
+   nlX:"Christen die de Paus niet volgt.",
+   pl:"Protestant",                 plX:"Chrześcijanin nie podążający za papieżem.",
+   en:"Protestant",                        enX:"Christian who doesn't follow the Pope.",
+   tr:"Protestan",                         trX:"Papa'yı takip etmeyen Hristiyan.",
+   th:"โปรเตสแตนต์",                      thX:"ชาวคริสต์ที่ไม่นับถือสันตะปาปา",
+   vi:"Đạo Tin lành",                     viX:"Người theo đạo Thiên chúa không theo Giáo hoàng.",
+   fa:"پروتستان",                          faX:"مسیحی که پیرو پاپ نیست.",
+   ar:"بروتستانتي",                        arX:"مسيحي لا يتبع البابا."},
+  // R
+  {nl:"Randstad",
+   nlX:"Stedelijk gebied (Amsterdam, Rotterdam, Den Haag, Utrecht).",
+   pl:"Randstad",                   plX:"Obszar miejski z Amsterdamem, Rotterdamem, Hagą i Utrechtem.",
+   en:"Randstad",                          enX:"Area with AMS, ROT, DH, UTR.",
+   tr:"Randstad Bölgesi",                 trX:"AMS, ROT, DH, UTR şehirlerinin olduğu bölge.",
+   th:"รันสตัด",                           thX:"พื้นที่ที่มีอัมสเตอร์ดัม รอตเตอร์ดัม เฮก อูเทรคต์",
+   vi:"Vùng Randstad",                    viX:"Khu vực gồm Amsterdam, Rotterdam, Den Haag, Utrecht.",
+   fa:"راندستاد (منطقه شهری)",             faX:"منطقهای شامل آمستردام، روتردام، لاهه و اوترخت.",
+   ar:"راندستاد",                          arX:"المنطقة التي تضم أمستردام، روتردام، لاهاي، وأوتريخت."},
+  {nl:"Recht / Rechten",
+   nlX:"Dingen die je volgens de wet mag.",
+   pl:"Prawo / Prawa",              plX:"Rzeczy, które możesz robić zgodnie z prawem.",
+   en:"Right / Rights",                   enX:"Things you may do by law.",
+   tr:"Hak / Haklar",                     trX:"Yasaya göre yapabileceğiniz şeyler.",
+   th:"สิทธิ",                             thX:"สิ่งที่คุณได้รับอนุญาตให้ทำตามกฎหมาย",
+   vi:"Quyền",                             viX:"Những điều bạn được phép làm theo pháp luật.",
+   fa:"حق / حقوق",                         faX:"چیزهایی که طبق قانون اجازه انجام آنها را دارید.",
+   ar:"حق / حقوق",                         arX:"الأشياء التي يسمح لك بفعلها بموجب القانون."},
+  {nl:"Republiek",
+   nlX:"Land zonder koning, mensen kiezen een leider.",
+   pl:"Republika",                  plX:"Kraj bez króla, ludzie wybierają przywódcę.",
+   en:"Republic",                          enX:"Country without king, people elect leader.",
+   tr:"Cumhuriyet",                        trX:"Kralı olmayan, halkın lideri seçtiği ülke.",
+   th:"สาธารณรัฐ",                         thX:"ประเทศที่ไม่มีกษัตริย์ ประชาชนเลือกผู้นำ",
+   vi:"Cộng hòa",                          viX:"Quốc gia không có vua, dân bầu người lãnh đạo.",
+   fa:"جمهوری",                             faX:"کشوری بدون پادشاه، مردم رهبر را انتخاب میکنند.",
+   ar:"جمهورية",                            arX:"بلد بدون ملك، يختار الشعب فيه الزعيم."},
+  // S
+  {nl:"Schip",
+   nlX:"Grote boot.",
+   pl:"Statek",                     plX:"Duża łódź.",
+   en:"Ship",                              enX:"Large boat.",
+   tr:"Gemi",                              trX:"Büyük tekne.",
+   th:"เรือ (ขนาดใหญ่)",                  thX:"เรือลำใหญ่",
+   vi:"Tàu thủy",                          viX:"Con tàu lớn.",
+   fa:"کشتی",                              faX:"قایق بزرگ.",
+   ar:"سفينة",                              arX:"قارب كبير."},
+  {nl:"Slachtoffer",
+   nlX:"Iemand die is gedood of gewond.",
+   pl:"Ofiara",                     plX:"Ktoś zabity lub ranny.",
+   en:"Victim",                            enX:"Someone killed or injured.",
+   tr:"Mağdur / Kurban",                  trX:"Öldürülen veya yaralanan kişi.",
+   th:"เหยื่อ",                            thX:"คนที่ถูกฆ่าหรือได้รับบาดเจ็บ",
+   vi:"Nạn nhân",                          viX:"Người bị giết hoặc bị thương.",
+   fa:"قربانی",                             faX:"کسی که کشته یا زخمی شده است.",
+   ar:"ضحية",                              arX:"شخص قُتل أو أُصيب."},
+  {nl:"Slaaf / Slavernij",
+   nlX:"Niet vrij zijn, werken zonder betaling.",
+   pl:"Niewolnik / Niewolnictwo",   plX:"Brak wolności, praca bez zapłaty.",
+   en:"Slave / Slavery",                  enX:"Not free, working without pay.",
+   tr:"Köle / Kölelik",                   trX:"Özgür olmayan, ücretsiz çalışan kişi.",
+   th:"ทาส / ระบบทาส",                    thX:"คนที่ไม่เป็นอิสระและต้องทำงานโดยไม่มีค่าจ้าง",
+   vi:"Nô lệ / Chế độ nô lệ",            viX:"Người không tự do và phải làm việc không công.",
+   fa:"برده / بردهداری",                  faX:"کسی که آزاد نیست و باید بدون مزد کار کند.",
+   ar:"عبد / عبودية",                     arX:"شخص غير حر ويجب أن يعمل بدون أجر."},
+  {nl:"Stemmen",
+   nlX:"Officieel kiezen in verkiezingen.",
+   pl:"Głosowanie",                 plX:"Oficjalne wybieranie w wyborach.",
+   en:"Voting",                            enX:"Officially choosing in elections.",
+   tr:"Oy kullanmak",                     trX:"Seçimlerde resmi olarak seçim yapmak.",
+   th:"การลงคะแนนเสียง",                 thX:"การเลือกอย่างเป็นทางการในการเลือกตั้ง",
+   vi:"Bầu cử / Bỏ phiếu",               viX:"Lựa chọn chính thức trong các cuộc bầu cử.",
+   fa:"رأی دادن",                          faX:"انتخاب رسمی در انتخابات.",
+   ar:"التصويت",                            arX:"الاختيار الرسمي في الانتخابات."},
+  // V
+  {nl:"Veeteelt",
+   nlX:"Het werk van boeren met dieren.",
+   pl:"Hodowla zwierząt",           plX:"Rolnictwo ze zwierzętami.",
+   en:"Livestock farming",                 enX:"Farming with animals.",
+   tr:"Hayvancılık",                       trX:"Çiftçilerin hayvanlarla çalışması.",
+   th:"การเลี้ยงสัตว์",                   thX:"งานของเกษตรกรที่ทำเกี่ยวกับสัตว์",
+   vi:"Chăn nuôi gia súc",                viX:"Công việc của nông dân với động vật.",
+   fa:"دامداری",                            faX:"کار کشاورزان با حیوانات.",
+   ar:"تربية الماشية",                     arX:"عمل المزارعين مع الحيوانات."},
+  {nl:"Vervoeren",
+   nlX:"Dingen verplaatsen van A naar B.",
+   pl:"Transportować",              plX:"Transportowanie rzeczy z punktu A do punktu B.",
+   en:"To transport",                      enX:"Moving things from A to B.",
+   tr:"Taşımak",                           trX:"Eşyaları A noktasından B noktasına götürmek.",
+   th:"ขนส่ง",                             thX:"การเคลื่อนย้ายสิ่งของจากจุด A ไปยังจุด B",
+   vi:"Vận chuyển",                        viX:"Di chuyển đồ đạc từ nơi A đến nơi B.",
+   fa:"حمل و نقل کردن",                   faX:"جابجایی وسایل از نقطه الف به ب.",
+   ar:"نقل",                               arX:"نقل الأشياء من مكان إلى آخر."},
+  {nl:"Vluchteling",
+   nlX:"Iemand die vlucht voor gevaar in het eigen land.",
+   pl:"Uchodźca",                   plX:"Osoba uciekająca przed niebezpieczeństwem we własnym kraju.",
+   en:"Refugee",                           enX:"Fleeing danger in own country.",
+   tr:"Mülteci",                           trX:"Kendi ülkesindeki tehlikeden kaçan kişi.",
+   th:"ผู้ลี้ภัย",                         thX:"คนที่หลบหนีจากอันตรายในประเทศของตนเอง",
+   vi:"Người tị nạn",                     viX:"Người chạy trốn khỏi nguy hiểm ở nước mình.",
+   fa:"پناهنده",                            faX:"کسی که از خطر در کشور خود فرار میکند.",
+   ar:"لاجئ",                              arX:"شخص يهرب من الخطر في بلده."},
+  {nl:"VN (Verenigde Naties)",
+   nlX:"Wereldwijde organisatie van landen.",
+   pl:"ONZ (Organizacja N. Zjednoczonych)", plX:"Światowa organizacja krajów.",
+   en:"UN (United Nations)",               enX:"Worldwide organization of countries.",
+   tr:"BM (Birleşmiş Milletler)",         trX:"Ülkelerin dünya çapındaki organizasyonu.",
+   th:"สหประชาชาติ (UN)",                  thX:"องค์กรระดับโลกของประเทศต่างๆ",
+   vi:"Liên Hợp Quốc (VN)",              viX:"Tổ chức thế giới của các quốc gia.",
+   fa:"سازمان ملل متحد",                  faX:"سازمان جهانی کشورها.",
+   ar:"الأمم المتحدة",                    arX:"منظمة عالمية للدول."},
+  {nl:"V.O.C.",
+   nlX:"Grote Nederlandse handelscompagnie (Gouden Eeuw).",
+   pl:"Holenderska Kompania Wschodnioindyjska", plX:"Duża firma handlowa z czasów Złotego Wieku.",
+   en:"Dutch East India Company",          enX:"Large trade company (Golden Age).",
+   tr:"V.O.C. (Ticaret Şirketi)",        trX:"Altın Çağ'daki büyük Hollanda ticaret şirketi.",
+   th:"บริษัท วีโอซี (V.O.C.)",          thX:"บริษัทการค้าขนาดใหญ่ของเนเธอร์แลนด์ในยุคทอง",
+   vi:"Công ty Đông Ấn Hà Lan",          viX:"Công ty thương mại lớn của Hà Lan thời kỳ Vàng.",
+   fa:"شرکت هند شرقی هلند",               faX:"شرکت تجاری بزرگ هلندی در دوران طلایی.",
+   ar:"شركة الهند الشرقية الهولندية",    arX:"شركة تجارية هولندية كبيرة في العصر الذهبي."},
+  // W
+  {nl:"Watersnoodramp",
+   nlX:"Grote overstroming in 1953.",
+   pl:"Wielka Powódź z 1953",       plX:"Potężna powódź w Holandii w 1953 roku.",
+   en:"North Sea Flood (1953)",            enX:"Large flood in 1953.",
+   tr:"Büyük Su Baskını (1953)",         trX:"1953'teki büyük sel felaketi.",
+   th:"มหาอุทกภัยปี 1953",               thX:"เหตุการณ์น้ำท่วมใหญ่ในปี 1953",
+   vi:"Thảm họa lũ lụt 1953",            viX:"Trận lũ lụt lớn năm 1953.",
+   fa:"فاجعه سیل ۱۹۵۳",                  faX:"سیل بزرگ در سال ۱۹۵۳.",
+   ar:"كارثة الفيضان (1953)",             arX:"فيضان كبير حدث عام 1953."},
+];
+
+// Flags per language
+const FLAGS = {en:'🇬🇧',tr:'🇹🇷',th:'🇹🇭',vi:'🇻🇳',fa:'🇮🇷',ar:'🇸🇦',nl:'🇳🇱',pl:'🇵🇱'};
+const RTL   = {fa:true,ar:true};
+
+let currentLang = 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + lang).classList.add('active');
+  buildGrid(document.getElementById('search').value.trim().toLowerCase());
+}
+
+function buildGrid(query) {
+  const grid = document.getElementById('word-grid');
+  grid.innerHTML = '';
+  let letter = '';
+  let shown  = 0;
+
+  WORDS.forEach((w, idx) => {
+    const nlLower = w.nl.toLowerCase();
+    const transLower = (w[currentLang] || '').toLowerCase();
+    if (query && !nlLower.includes(query) && !transLower.includes(query)) return;
+
+    // Letter group
+    const firstLetter = w.nl[0].toUpperCase();
+    if (firstLetter !== letter) {
+      letter = firstLetter;
+      const gh = document.createElement('div');
+      gh.className = 'letter-group';
+      gh.innerHTML = `<div class="letter-badge">${letter}</div><div class="letter-line"></div>`;
+      grid.appendChild(gh);
+    }
+
+    const isRtl = !!RTL[currentLang];
+    const trans  = w[currentLang]          || '';
+    const uitleg = w[currentLang + 'X']    || '';
+
+    const card = document.createElement('div');
+    card.className = 'word-card';
+    card.style.animationDelay = (shown * 0.04) + 's';
+
+    card.innerHTML = `
+      <div class="card-nl">
+        <span class="nl-flag">🇳🇱</span>
+        <span class="nl-word">${w.nl}</span>
+      </div>
+      <div class="card-trans">
+        <span class="trans-flag">${FLAGS[currentLang]}</span>
+        <span class="trans-text${isRtl ? ' rtl' : ''}">${trans}</span>
+      </div>
+      ${uitleg ? `<div class="card-uitleg">
+        <span class="uitleg-icon">💬</span>
+        <span class="uitleg-text${isRtl ? ' rtl' : ''}">${uitleg}</span>
+      </div>` : ''}
+    `;
+    grid.appendChild(card);
+    shown++;
+  });
+
+  document.getElementById('count-bar').textContent = shown + ' woorden';
+}
+
+function filterCards() {
+  buildGrid(document.getElementById('search').value.trim().toLowerCase());
+}
+
+// Init
+buildGrid('');
+</script>
+</body>
+</html>

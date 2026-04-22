@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1+ WhatsApp Chat Oefening</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 100vh;
+        }
+
+        /* STARTSCHERM */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 30px;
+            background: linear-gradient(135deg, #008069 0%, #065f46 100%);
+            color: white;
+            text-align: center;
+            height: 100%;
+        }
+
+        .start-screen h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .start-screen p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 300px;
+        }
+
+        .start-screen input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .start-screen button {
+            background: white;
+            color: #008069;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .start-screen button:active {
+            transform: scale(0.98);
+        }
+
+        /* CHAT CONTAINER */
+        .chat-container {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        /* HEADER */
+        .chat-header {
+            background: #008069;
+            color: white;
+            padding: 12px 16px;
+            padding-bottom: 8px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .header-top h2 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .scenario-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .header-bottom {
+            font-size: 12px;
+            opacity: 0.8;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 8px;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            transition: width 0.3s;
+        }
+
+        /* CHAT */
+        .chat-messages {
+            flex: 1;
+            padding: 12px 16px;
+            overflow-y: auto;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='dots' patternUnits='userSpaceOnUse' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%23d4cfc4' opacity='0.3'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23efeae2'/%3E%3Crect width='100' height='100' fill='url(%23dots)'/%3E%3C/svg%3E");
+            background-color: #efeae2;
+        }
+
+        .date-pill {
+            text-align: center;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .message-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .message-group.other {
+            align-items: flex-start;
+        }
+
+        .message-group.own {
+            align-items: flex-end;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 8px 12px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .message-group.other .message {
+            background: white;
+            color: #000;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-group.own .message {
+            background: #dcf8c6;
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            padding: 0 12px;
+        }
+
+        .message-name.name1 { color: #e74c3c; }
+        .message-name.name2 { color: #3498db; }
+        .message-name.name3 { color: #f39c12; }
+        .message-name.name4 { color: #9b59b6; }
+        .message-name.name5 { color: #1abc9c; }
+
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+            padding: 0 12px;
+            text-align: right;
+        }
+
+        /* TASK BOX */
+        .task-box {
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .task-description {
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .task-description li {
+            margin-left: 15px;
+            margin-bottom: 4px;
+        }
+
+        .focus-hint {
+            background: #fff9e6;
+            border-left: 3px solid #f39c12;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .focus-hint strong {
+            color: #e67e22;
+        }
+
+        /* INPUT */
+        .chat-input {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            align-items: flex-end;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .input-textarea {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            max-height: 100px;
+            outline: none;
+            background: #f0f2f5;
+            min-width: 0;
+        }
+
+        .input-textarea:focus {
+            border-color: #008069;
+            background: white;
+        }
+
+        .send-btn {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            background: #008069;
+            color: white;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            transition: all 0.2s;
+            margin-bottom: 1px;
+            margin-right: 2px;
+        }
+
+        .send-btn:active {
+            background: #006d5f;
+        }
+
+        /* SUCCESS SCREEN */
+        .success-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 20px;
+            background: linear-gradient(135deg, #008069 0%, #065f46 100%);
+            color: white;
+            text-align: center;
+            height: 100%;
+        }
+
+        .success-screen.active {
+            display: flex;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            animation: bounce 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .success-screen h2 {
+            font-size: 24px;
+        }
+
+        .success-screen p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .success-screen button {
+            background: white;
+            color: #008069;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .end-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 20px;
+            background: linear-gradient(135deg, #008069 0%, #065f46 100%);
+            color: white;
+            text-align: center;
+            height: 100%;
+        }
+
+        .end-screen.active {
+            display: flex;
+        }
+
+        .end-icon {
+            font-size: 80px;
+            animation: bounce 0.8s;
+        }
+
+        .end-screen h2 {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .end-screen p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 20px;
+            max-width: 300px;
+        }
+
+        .contact-info p {
+            margin: 4px 0;
+        }
+
+        /* SCENARIO PICKER */
+        .scenario-picker {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .scenario-picker.in-chat {
+            background: rgba(0,0,0,0.12);
+            border-top: 1px solid rgba(0,0,0,0.08);
+            padding: 8px 12px 10px;
+        }
+
+        .scenario-picker-label {
+            width: 100%;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.75;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .scenario-num-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scenario-num-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .scenario-num-btn.active {
+            background: white;
+            color: #008069;
+            border-color: white;
+        }
+
+        .in-chat .scenario-num-btn {
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        /* UTILITIES */
+        .hidden {
+            display: none !important;
+        }
+
+        /* SCROLLBAR */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- STARTSCHERM -->
+    <div class="container">
+        <div class="start-screen" id="startScreen">
+            <div>
+                <h1>💬 Chat Oefening</h1>
+                <p>A1+ Nederlands — Schrijf lang en duidelijk!</p>
+            </div>
+            <div style="width: 100%; max-width: 300px;">
+                <input 
+                    type="text" 
+                    id="nameInput" 
+                    placeholder="Je naam..." 
+                    autocomplete="off"
+                >
+            </div>
+            <button onclick="startExercise()">Start bij oefening 1</button>
+            <div class="scenario-picker" id="startPicker">
+                <div class="scenario-picker-label">Of kies direct een oefening:</div>
+            </div>
+        </div>
+
+        <!-- CHAT CONTAINER -->
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <div class="header-top">
+                    <h2 id="groupName">Vrienden</h2>
+                    <span class="scenario-badge" id="scenarioNumber">1/7</span>
+                </div>
+                <div class="header-bottom" id="membersList">5 leden</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="scenario-picker in-chat" id="chatPicker">
+                    <div class="scenario-picker-label">Ga naar oefening:</div>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="task-box" id="taskBox"></div>
+
+            <div class="chat-input">
+                <textarea 
+                    class="input-textarea" 
+                    id="answerInput" 
+                    placeholder="Jouw antwoord (schrijf minstens 5-7 zinnen)..."
+                    rows="1"
+                ></textarea>
+                <button class="send-btn" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+
+        <!-- SUCCESS SCREEN -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">✓</div>
+            <h2>Verstuurd naar Rida!</h2>
+            <p>Je bericht is onderweg... 📱</p>
+            <button onclick="nextScenario()">Volgend scenario →</button>
+        </div>
+
+        <!-- END SCREEN -->
+        <div class="end-screen" id="endScreen">
+            <div class="end-icon">🎉</div>
+            <h2>Gefeliciteerd!</h2>
+            <p>Je hebt alle 7 oefeningen afgerond! 👏</p>
+            <div class="contact-info">
+                <p><strong>Vragen? Contact met Rida:</strong></p>
+                <p>📱 +31 6 26211106</p>
+                <p>📧 r.abouhayan@hotmail.nl</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SCENARIO DATA - A1+ LEVEL
+        const scenarios = [
+            {
+                title: "Nieuw in de klas! 👋",
+                theme: "Introductie",
+                grammar: ["ZIJN", "HETEN", "VANDAAN KOMEN", "WERKWOORDEN"],
+                members: ["Noor", "Karim", "Lisa", "Hassan"],
+                messages: [
+                    { speaker: "Noor", text: "Hoi! Wie ben jij? Ik ben Noor." },
+                    { speaker: "Karim", text: "Welkom! Ben je nieuw in de klas?" },
+                    { speaker: "Lisa", text: "Ja, ze is pas hier. Wat is je voornaam?" },
+                    { speaker: "Hassan", text: "Ik ben Hassan. Ik kom uit Marokko en ik woon nu in Amsterdam." }
+                ],
+                task: `Beantwoord de vragen: 
+                <ul>
+                <li>Wie ben jij en hoe oud ben je? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik ben Ali en ik ben 25 jaar.)</i></li>
+                <li>Waar kom jij vandaan? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik kom uit Syrië.)</i></li>
+                <li>Waar woon jij nu? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik woon in Utrecht.)</i></li>
+                <li>Wat is jouw hobby? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik speel graag voetbal.)</i></li>
+                <li>Heb jij een vraag voor iemand in de groep? <br><i style="font-size: 0.9em; color: #666;">(bijv. Karim, waar woon jij?)</i></li>
+                </ul>`,
+                focus: "<strong>ZIJN:</strong> Ik ben... / <strong>HETEN:</strong> Ik heet... / <strong>VANDAAN KOMEN:</strong> Ik kom uit... en ik woon in..."
+            },
+            {
+                title: "Rooster en huiswerk 📚",
+                theme: "School",
+                grammar: ["WERKWOORDEN", "DAGEN", "HOEVEEL UREN", "VOEG WOORDEN"],
+                members: ["Daan", "Sofia", "Marcus", "Yara"],
+                messages: [
+                    { speaker: "Daan", text: "Hoi! Hoe was de les vandaag?" },
+                    { speaker: "Sofia", text: "Goed hoor! Maar veel huiswerk. Welke vakken heb jij?" },
+                    { speaker: "Marcus", text: "Ik heb Nederlands en Engels. En jij, Sofia?" },
+                    { speaker: "Sofia", text: "Ik heb Nederlands 3x per week. En jullie?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Welke dagen heb jij les? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik heb les op maandag en woensdag.)</i></li>
+                <li>Hoeveel uren per week leer jij Nederlands? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik leer 6 uur per week Nederlands.)</i></li>
+                <li>Wat vind jij moeilijk op school? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik vind schrijven moeilijk.)</i></li>
+                <li>Waarom leer jij Nederlands? <br><i style="font-size: 0.9em; color: #666;">(bijv. Omdat ik wil werken in Nederland.)</i></li>
+                <li>Hoeveel huiswerk heb jij per week? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik heb 2 uur huiswerk per week.)</i></li>
+                </ul>`,
+                focus: "<strong>HEBBEN:</strong> Ik heb les... / <strong>LEREN:</strong> Ik leer... omdat... / <strong>WILLEN:</strong> Ik wil..."
+            },
+            {
+                title: "Familie en thuissituatie 👨‍👩‍👧‍👦",
+                theme: "Familie",
+                grammar: ["HEBBEN", "VOORNAAMWOORDEN", "ADJECTIEVEN", "VERLEDEN TIJD (was/waren)"],
+                members: ["Amira", "Fatima", "Hassan", "Ravi"],
+                messages: [
+                    { speaker: "Amira", text: "Hoe is het thuis? Heb je veel broers of zussen?" },
+                    { speaker: "Fatima", text: "Ja, ik heb 2 broers en 1 zus." },
+                    { speaker: "Hassan", text: "Waar wonen je broers en zus? Bij jou thuis?" },
+                    { speaker: "Ravi", text: "En waar komen je ouders vandaan?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Hoeveel broers en zussen heb jij? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik heb één zus en geen broers.)</i></li>
+                <li>Hoe heten jouw ouders en waar werken zij? <br><i style="font-size: 0.9em; color: #666;">(bijv. Mijn vader heet Ahmed en hij werkt in een fabriek.)</i></li>
+                <li>Waar komt jouw familie vandaan? <br><i style="font-size: 0.9em; color: #666;">(bijv. Mijn familie komt uit Turkije.)</i></li>
+                <li>Wie woont er met jou in huis? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik woon samen met mijn vrouw en kinderen.)</i></li>
+                <li>Mis jij iemand van jouw familie? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ja, ik mis mijn broer in Syrië.)</i></li>
+                </ul>`,
+                focus: "<strong>HEBBEN:</strong> Ik heb... / <strong>ZIJN:</strong> Ze zijn... / <strong>VOORNAAMWOORDEN:</strong> hij, zij, ze / <strong>VERLEDEN TIJD:</strong> Ik was... (bijv. Ik was in mijn land)"
+            },
+            {
+                title: "Huis en buurt 🏠",
+                theme: "Wonen",
+                grammar: ["VOORZETSELS", "KLEUREN", "ER ZIJN", "BESCHRIJVEN"],
+                members: ["Yuki", "Ravi", "Elena", "Tom"],
+                messages: [
+                    { speaker: "Yuki", text: "Hoe is jouw huis? Is het groot of klein?" },
+                    { speaker: "Elena", text: "Mijn huis is niet groot. Het is een klein, wit huis." },
+                    { speaker: "Ravi", text: "Hoeveel kamers heb je?" },
+                    { speaker: "Tom", text: "Is jouw huis in het centrum of in een rustige buurt?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Is jouw huis groot of klein? Wat is de kleur? <br><i style="font-size: 0.9em; color: #666;">(bijv. Mijn huis is groot en de kleur is bruin.)</i></li>
+                <li>Hoeveel kamers heeft jouw huis? <br><i style="font-size: 0.9em; color: #666;">(bijv. Er zijn 3 slaapkamers en 1 woonkamer.)</i></li>
+                <li>Wat staat er in jouw slaapkamer? <br><i style="font-size: 0.9em; color: #666;">(bijv. Naast mijn bed staat een kleine kast.)</i></li>
+                <li>Wat is er dichtbij in jouw buurt? <br><i style="font-size: 0.9em; color: #666;">(bijv. In mijn buurt is een supermarkt en een park.)</i></li>
+                <li>Wat is jouw favoriete plek in huis en waarom? <br><i style="font-size: 0.9em; color: #666;">(bijv. De keuken, want ik kook graag.)</i></li>
+                </ul>`,
+                focus: "<strong>VOORZETSELS:</strong> in, op, naast, tegen, aan, onder, boven / <strong>ER ZIJN:</strong> Er zijn... kamers / <strong>BESCHRIJVEN:</strong> Het huis is... / <strong>WAAR:</strong> Waar staat...?"
+            },
+            {
+                title: "Eten en drinken 🍽️",
+                theme: "Eten",
+                grammar: ["GRAAG", "VINDEN", "VOEGWOORDEN (want/omdat)", "HOEVEEL"],
+                members: ["Tom", "Maya", "Fadi", "Layla"],
+                messages: [
+                    { speaker: "Tom", text: "Wat eet jij graag thuis?" },
+                    { speaker: "Maya", text: "Ik eet graag rijst met groenten en vlees." },
+                    { speaker: "Fadi", text: "Ik hou niet van vis. Ik vind het niet lekker." },
+                    { speaker: "Layla", text: "Ik ben vegetarisch. Wat drinken jullie graag?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Wat eet jij graag als avondeten? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik eet graag pasta met tomatensaus.)</i></li>
+                <li>Welk eten vind jij NIET lekker en waarom? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik vind kaas niet lekker, want het ruikt vies.)</i></li>
+                <li>Eet jij vlees, vis, of ben je vegetarisch? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik eet geen vlees, ik ben vegetariër.)</i></li>
+                <li>Wat drink jij het liefst op een dag? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik drink graag thee en water.)</i></li>
+                <li>Kook jij zelf of kookt iemand anders thuis? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik kook zelf voor mijn familie.)</i></li>
+                </ul>`,
+                focus: "<strong>GRAAG:</strong> Ik hou van... / Ik vind... (niet) lekker / <strong>WANT/OMDAT:</strong> Omdat het... / want het... / <strong>HOEVEEL:</strong> Hoeveel kopjes...? / <strong>GEZONDHEID:</strong> gezond, niet gezond"
+            },
+            {
+                title: "Kleding en winkel 👕",
+                theme: "Kleding",
+                grammar: ["DRAGEN", "KLEUREN", "MATEN", "ADJECTIEVEN"],
+                members: ["Zoe", "Jean", "Priya", "Sofia"],
+                messages: [
+                    { speaker: "Zoe", text: "Wat draag je vandaag? Beschrijf je kleren!" },
+                    { speaker: "Jean", text: "Ik heb een blauw shirt aan en een zwarte broek." },
+                    { speaker: "Priya", text: "Welke maat kleding heb je? Ik heb maat S." },
+                    { speaker: "Sofia", text: "Waar koop jij meestal jouw kleren? Online of in een winkel?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Wat draag jij vandaag? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik draag een blauwe spijkerbroek en een witte trui.)</i></li>
+                <li>Welke maat kleding en schoenen heb jij? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik heb maat M en schoenmaat 42.)</i></li>
+                <li>Welke kleuren kleding vind jij mooi? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik vind rood en zwart mooie kleuren.)</i></li>
+                <li>Waar koop jij jouw kleding het liefst? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik koop mijn kleding graag in de winkel in de stad.)</i></li>
+                <li>Is jouw kledingkast vol? Heb je veel kleren? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ja, ik heb heel veel kleren, mijn kast is vol.)</i></li>
+                </ul>`,
+                focus: "<strong>DRAGEN:</strong> Ik draag... / Ik heb... aan / <strong>KLEUREN:</strong> wit, blauw, zwart, rood, groen, etc. / <strong>MATEN:</strong> XS, S, M, L, XL / <strong>VOORKEUR:</strong> Ik vind... mooi/lelijk/niet mooi"
+            },
+            {
+                title: "Afspraak maken en weekend! 🎉",
+                theme: "Vrije tijd",
+                grammar: ["KUNNEN", "WILLEN", "WANNEER", "HOEVAAK", "TRANSPORTMIDDELEN"],
+                members: ["Lena", "Nico", "Vera", "Marcus"],
+                messages: [
+                    { speaker: "Lena", text: "Hoi! Zullen we afspreken dit weekend?" },
+                    { speaker: "Nico", text: "Ja leuk! Wat wil je doen en wanneer ben je vrij?" },
+                    { speaker: "Vera", text: "Ik ben zaterdag de hele dag vrij. Zullen we naar het zwembad?" },
+                    { speaker: "Marcus", text: "Leuk! Hoe gaan we daarheen? Met de fiets of de bus?" }
+                ],
+                task: `Beantwoord de vragen:
+                <ul>
+                <li>Wanneer ben jij dit weekend vrij? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik ben zondagmiddag vrij vanaf 13:00 uur.)</i></li>
+                <li>Wat wil jij graag doen dit weekend? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik wil graag naar het park gaan.)</i></li>
+                <li>Hoe ga jij daarheen? (fiets, bus, auto, lopen) <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik ga met de fiets, het is 10 minuten fietsen.)</i></li>
+                <li>Met wie ga jij afspreken? <br><i style="font-size: 0.9em; color: #666;">(bijv. Ik ga met mijn vriend en mijn zus.)</i></li>
+                <li>Wat gaan jullie eten of drinken? <br><i style="font-size: 0.9em; color: #666;">(bijv. We gaan koffie drinken en taart eten.)</i></li>
+                </ul>`,
+                focus: "<strong>KUNNEN:</strong> Ik kan... / <strong>WILLEN:</strong> Ik wil... / <strong>WANNEER:</strong> zaterdag, 10:00 uur / <strong>TRANSPORT:</strong> fiets, bus, auto, trein / <strong>HOEVAAK:</strong> elke week, 1x per week, soms"
+            }
+        ];
+
+        let currentScenario = 0;
+        let userName = "";
+
+        function buildPickers() {
+            ["startPicker", "chatPicker"].forEach(pickerId => {
+                const picker = document.getElementById(pickerId);
+                if (!picker) return;
+                // Remove old buttons (keep label)
+                picker.querySelectorAll(".scenario-num-btn").forEach(b => b.remove());
+                scenarios.forEach((sc, i) => {
+                    const btn = document.createElement("button");
+                    btn.className = "scenario-num-btn" + (i === currentScenario && pickerId === "chatPicker" ? " active" : "");
+                    btn.textContent = i + 1;
+                    btn.title = sc.title;
+                    btn.onclick = () => {
+                        const nameInput = document.getElementById("nameInput");
+                        if (!userName) {
+                            if (nameInput.value.trim() === "") {
+                                alert("Vul eerst je naam in!");
+                                nameInput.focus();
+                                return;
+                            }
+                            userName = nameInput.value.trim();
+                        }
+                        document.getElementById("startScreen").style.display = "none";
+                        document.getElementById("successScreen").classList.remove("active");
+                        loadScenario(i);
+                    };
+                    picker.appendChild(btn);
+                });
+            });
+        }
+
+        function startExercise() {
+            const nameInput = document.getElementById("nameInput");
+            if (nameInput.value.trim() === "") {
+                alert("Vul alstublieft je naam in!");
+                return;
+            }
+            userName = nameInput.value.trim();
+            document.getElementById("startScreen").style.display = "none";
+            loadScenario(0);
+        }
+
+        function loadScenario(index) {
+            if (index >= scenarios.length) {
+                showEndScreen();
+                return;
+            }
+
+            currentScenario = index;
+            const scenario = scenarios[index];
+
+            document.getElementById("chatContainer").classList.add("active");
+            document.getElementById("scenarioNumber").textContent = `${index + 1}/${scenarios.length}`;
+            document.getElementById("groupName").textContent = scenario.title;
+            document.getElementById("membersList").textContent = scenario.members.join(", ");
+            
+            const progress = ((index + 1) / scenarios.length) * 100;
+            document.getElementById("progressFill").style.width = progress + "%";
+
+            renderChat(scenario);
+            renderTask(scenario);
+            document.getElementById("answerInput").value = "";
+            document.getElementById("answerInput").focus();
+            buildPickers(); // update active button
+        }
+
+        function renderChat(scenario) {
+            const chatDiv = document.getElementById("chatMessages");
+            chatDiv.innerHTML = '<div class="date-pill">Vandaag</div>';
+
+            scenario.messages.forEach((msg, idx) => {
+                const group = document.createElement("div");
+                const colorClass = `name${(idx % 5) + 1}`;
+                
+                group.className = `message-group other`;
+                group.innerHTML = `
+                    <div class="message-name ${colorClass}">${msg.speaker}</div>
+                    <div class="message">${msg.text}</div>
+                    <div class="message-time">${String(10 + idx).padStart(2, '0')}:${String(15 + idx * 3).padStart(2, '0')}</div>
+                `;
+                chatDiv.appendChild(group);
+            });
+
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+
+        function renderTask(scenario) {
+            const taskDiv = document.getElementById("taskBox");
+            taskDiv.innerHTML = `
+                <div class="task-title">📝 Jouw taak:</div>
+                <div class="task-description">${scenario.task}</div>
+                <div class="focus-hint"><strong>Taalfocus:</strong> ${scenario.focus}</div>
+            `;
+        }
+
+        function sendMessage() {
+            const textarea = document.getElementById("answerInput");
+            const text = textarea.value.trim();
+
+            if (text === "") {
+                alert("Vul alstublieft je antwoord in!");
+                return;
+            }
+
+            if (text.split(' ').length < 5) {
+                alert("Schrijf alstublieft minstens 5 woorden (beter: 5-7 zinnen)! Je antwoord is te kort.");
+                return;
+            }
+
+            const scenario = scenarios[currentScenario];
+            const whatsappText = `📝 Chat-oefening — Scenario ${currentScenario + 1}/7: ${scenario.title}\n\n${text}\n\n— ${userName}`;
+            const whatsappUrl = `https://wa.me/31626211106?text=${encodeURIComponent(whatsappText)}`;
+
+            window.open(whatsappUrl, "_blank");
+
+            document.getElementById("chatContainer").classList.remove("active");
+            document.getElementById("successScreen").classList.add("active");
+        }
+
+        function nextScenario() {
+            document.getElementById("successScreen").classList.remove("active");
+            loadScenario(currentScenario + 1);
+        }
+
+        function showEndScreen() {
+            document.getElementById("chatContainer").classList.remove("active");
+            document.getElementById("endScreen").classList.add("active");
+        }
+
+        // Build pickers on load
+        buildPickers();
+
+        // Auto-resize textarea
+        document.getElementById("answerInput").addEventListener("input", function() {
+            this.style.height = "auto";
+            this.style.height = Math.min(this.scrollHeight, 100) + "px";
+        });
+
+        // Enter to send functionaliteit verwijderd, Enter is nu standaard een nieuwe regel.
+    </script>
+</body>
+</html>

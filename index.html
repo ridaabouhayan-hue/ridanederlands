@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nederlands Leren</title>
+    <meta name="description"
+        content="Leer Nederlands met interactieve oefeningen over de klok, spelling, werkwoorden en meer.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f0ede6;
+            --card-bg: #ffffff;
+            --text-dark: #1e1e2e;
+            --text-muted: #6b7280;
+            --accent: #6C5CE7;
+            --radius: 20px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 0 0 60px;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #6C5CE7 0%, #a29bfe 50%, #fd79a8 100%);
+            padding: 60px 24px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.07'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-flag {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .hero p {
+            margin-top: 12px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.88);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 40px;
+            padding: 8px 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        /* ── WAVE DIVIDER ── */
+        .wave {
+            display: block;
+            margin-top: -2px;
+            width: 100%;
+            height: 60px;
+        }
+
+        /* ── SECTION ── */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 48px 0 20px;
+        }
+
+        .section-label .pill {
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 40px;
+        }
+
+        .section-label h2 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-dark);
+        }
+
+        /* ── GRID ── */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── CARD ── */
+        .topic-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 28px 22px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.13);
+            border-color: var(--card-accent);
+        }
+
+        .topic-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--card-accent);
+        }
+
+        .card-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--card-accent);
+            background: color-mix(in srgb, var(--card-accent) 12%, white);
+            padding: 3px 10px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1.25;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .card-langs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .lang-chip {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .card-arrow {
+            margin-top: 10px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--card-accent);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.85;
+            transition: gap 0.2s;
+        }
+
+        .topic-card:hover .card-arrow {
+            gap: 8px;
+        }
+
+        /* ── WIDE CARD (spans 2 cols) ── */
+        .card-wide {
+            grid-column: span 2;
+        }
+
+        /* ── LANGUAGE SECTION ── */
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 14px;
+        }
+
+        .lang-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px 22px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .lang-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            border-color: #4ECDC4;
+        }
+
+        .lang-flag {
+            font-size: 2rem;
+        }
+
+        .lang-info strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .lang-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ── STATS BAR ── */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px 32px;
+            margin-top: 48px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+            .card-wide {
+                grid-column: span 1;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+            }
+
+            .hero {
+                padding: 40px 20px 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ HERO ══ -->
+    <div class="hero">
+        <span class="hero-flag">🇳🇱</span>
+        <h1>Nederlands Leren</h1>
+        <p>Interactieve lessen voor anderstaligen</p>
+        <div class="hero-badge">✨ Kies een onderwerp hieronder</div>
+    </div>
+
+    <svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#a29bfe" opacity="0.35" />
+        <path d="M0,60 C480,20 960,60 1440,30 L1440,0 L0,0 Z" fill="#f0ede6" />
+    </svg>
+
+    <div class="section">
+
+        <!-- ── STATS ── -->
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-icon">📚</div>
+                <div>
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Onderwerpen</div>
+                </div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">🌍</div>
+                <div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Talen beschikbaar</div>
+                </div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">🎯</div>
+                <div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Gratis & interactief</div>
+                </div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">🏆</div>
+                <div>
+                    <div class="stat-number">A1–B1</div>
+                    <div class="stat-label">Niveaus</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ ONDERWERPEN ══ -->
+        <div class="section-label">
+            <span class="pill">Lessen</span>
+            <h2>Kies een onderwerp</h2>
+        </div>
+
+        <div class="topics-grid">
+
+            <!-- DE KLOK -->
+            <a class="topic-card card-wide" href="de_klok.html" style="--card-accent:#4ECDC4">
+                <div class="card-tag">Niveau A1</div>
+                <div class="card-icon">🕐</div>
+                <div class="card-title">De Klok — Hoe laat is het?</div>
+                <div class="card-desc">
+                    Leer hoe je de tijd zegt in het Nederlands: over, voor, half, kwart over, kwart voor. Met klokken,
+                    oefeningen en uitleg.
+                </div>
+                <div class="card-arrow">Ga naar de les →</div>
+            </a>
+
+            <!-- SPELLING -->
+            <a class="topic-card" href="spellingregels.html" style="--card-accent:#6C5CE7">
+                <div class="card-tag">Niveau A2</div>
+                <div class="card-icon">✍️</div>
+                <div class="card-title">Spellingregels</div>
+                <div class="card-desc">
+                    De belangrijkste spellingregels van het Nederlands: lange en korte klinkers, verdubbeling, dt-regels
+                    en meer.
+                </div>
+                <div class="card-arrow">Ga naar de les →</div>
+            </a>
+
+            <!-- VERLEDEN TIJD -->
+            <a class="topic-card" href="index VERLEDEN TIJD.html" style="--card-accent:#FF6B6B">
+                <div class="card-tag">Niveau A2–B1</div>
+                <div class="card-icon">⏮️</div>
+                <div class="card-title">De Verleden Tijd</div>
+                <div class="card-desc">
+                    Hoe maak je zinnen in de verleden tijd? Regelmatige en onregelmatige werkwoorden, de perfectum en
+                    imperfectum.
+                </div>
+                <div class="card-arrow">Ga naar de les →</div>
+            </a>
+
+            <!-- MEDICIJN ETIKETTEN -->
+            <a class="topic-card" href="medicijn-etiketten-interactief.html" style="--card-accent:#FFD93D">
+                <div class="card-tag">Niveau B1 · Praktisch</div>
+                <div class="card-icon">💊</div>
+                <div class="card-title">Medicijnetiketten Lezen</div>
+                <div class="card-desc">
+                    Begrijp Nederlandse medicijnetiketten: dosering, instructies en waarschuwingen. Essentieel voor
+                    dagelijks leven.
+                </div>
+                <div class="card-arrow">Ga naar de les →</div>
+            </a>
+
+        </div>
+
+        <!-- ══ DE KLOK PER TAAL ══ -->
+        <div class="section-label">
+            <span class="pill" style="background:#4ECDC4">De Klok</span>
+            <h2>Uitleg in jouw taal</h2>
+        </div>
+
+        <div class="lang-grid">
+
+            <a class="lang-card" href="De_Klok_Portugees.html">
+                <div class="lang-flag">🇧🇷</div>
+                <div class="lang-info">
+                    <strong>Português</strong>
+                    <span>De klok in het Portugees</span>
+                </div>
+            </a>
+
+            <a class="lang-card" href="De_Klok_Engels.html">
+                <div class="lang-flag">🇬🇧</div>
+                <div class="lang-info">
+                    <strong>English</strong>
+                    <span>De klok in het Engels</span>
+                </div>
+            </a>
+
+            <a class="lang-card" href="De_Klok_Grieks.html">
+                <div class="lang-flag">🇬🇷</div>
+                <div class="lang-info">
+                    <strong>Ελληνικά</strong>
+                    <span>De klok in het Grieks</span>
+                </div>
+            </a>
+
+            <a class="lang-card" href="De_Klok_Hongaars.html">
+                <div class="lang-flag">🇭🇺</div>
+                <div class="lang-info">
+                    <strong>Magyar</strong>
+                    <span>De klok in het Hongaars</span>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- ── FOOTER ── -->
+        <div class="footer">
+            <p>🇳🇱 Nederlands Leren · Voor anderstaligen in Nederland</p>
+        </div>
+
+    </div><!-- /section -->
+
+</body>
+
+</html>

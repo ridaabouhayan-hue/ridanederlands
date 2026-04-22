@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voegwoorden - en, maar, want, of, dus</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: #f5f5f5; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px; text-align: center; }
+h1 { font-size: 2.5em; font-weight: 900; margin-bottom: 10px; }
+.subtitle { font-size: 1.2em; opacity: 0.9; }
+.container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+.section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+h2 { font-size: 1.8em; font-weight: 900; color: #667eea; margin-bottom: 20px; border-bottom: 4px solid #667eea; padding-bottom: 10px; }
+.lang-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+.lang-tab { padding: 10px 20px; border: 3px solid #e5e7eb; background: white; border-radius: 50px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+.lang-tab:hover { border-color: #667eea; }
+.lang-tab.active { background: #667eea; color: white; border-color: #667eea; }
+.voegwoorden-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 30px 0; }
+.voegwoord-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3); }
+.voegwoord-icon { font-size: 3em; margin-bottom: 15px; }
+.voegwoord-word { font-size: 2.5em; font-weight: 900; margin-bottom: 10px; }
+.explain-box { background: #f0f4ff; border-left: 5px solid #667eea; padding: 25px; margin: 25px 0; border-radius: 8px; }
+.explain-box h3 { font-size: 1.5em; font-weight: 800; color: #667eea; margin-bottom: 15px; }
+.explain-box p { line-height: 1.8; font-size: 1.2em; margin-bottom: 15px; }
+.explain-box strong { color: #667eea; font-size: 1.1em; }
+.example { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px 20px; margin: 12px 0; border-radius: 8px; }
+.example-text { font-size: 1.3em; font-weight: 700; color: #2c3e50; line-height: 1.6; }
+.highlight { color: #dc3545; font-weight: 900; text-decoration: underline; }
+.question { background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+.question-text { font-size: 1.2em; font-weight: 700; margin-bottom: 15px; color: #2c3e50; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option { padding: 12px 20px; background: white; border: 3px solid #e5e7eb; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 1.1em; }
+.option:hover { border-color: #667eea; transform: translateX(5px); }
+.option.correct { background: #d4edda; border-color: #28a745; }
+.option.wrong { background: #f8d7da; border-color: #dc3545; }
+.option.disabled { pointer-events: none; opacity: 0.6; }
+.drag-container { margin: 25px 0; }
+.drag-question { background: #f0f4ff; padding: 25px; border-radius: 12px; margin-bottom: 25px; }
+.drag-voegwoord { font-size: 2em; font-weight: 900; color: #667eea; text-align: center; margin-bottom: 20px; padding: 15px; background: white; border-radius: 10px; }
+.sentence-pool { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+.draggable-sentence { padding: 15px; background: white; border: 3px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+.draggable-sentence:hover { border-color: #667eea; transform: scale(1.02); }
+.draggable-sentence.selected { background: #d4edda; border-color: #28a745; }
+.draggable-sentence.disabled { opacity: 0.4; cursor: not-allowed; }
+.check-drag-btn { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1em; cursor: pointer; margin-top: 15px; }
+.check-drag-btn:hover { background: #5568d3; }
+.check-drag-btn:disabled { background: #ccc; cursor: not-allowed; }
+.feedback { margin-top: 10px; padding: 12px; border-radius: 8px; font-weight: 700; display: none; }
+.feedback.show { display: block; }
+.feedback.success { background: #d4edda; color: #155724; font-size: 1.1em; }
+.feedback.error { background: #f8d7da; color: #721c24; font-size: 1.1em; }
+.score-display { text-align: center; font-size: 1.8em; font-weight: 900; color: #667eea; padding: 20px; background: #f0f4ff; border-radius: 12px; margin-top: 30px; }
+.hint { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 8px; font-size: 1.1em; }
+@media (max-width: 600px) { h1 { font-size: 2em; } .voegwoorden-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🔗 <span id="headerTitle">VOEGWOORDEN</span></h1>
+<p class="subtitle">en • maar • want • of • dus</p>
+</div>
+<div class="container">
+<div class="section">
+<h2 id="langSectionTitle">🌍 Kies je taal</h2>
+<div class="lang-tabs">
+<button class="lang-tab active" onclick="setLanguage('nl')">🇳🇱 Nederlands</button>
+<button class="lang-tab" onclick="setLanguage('hu')">🇭🇺 Magyar</button>
+<button class="lang-tab" onclick="setLanguage('pt')">🇵🇹 Português</button>
+<button class="lang-tab" onclick="setLanguage('el')">🇬🇷 Ελληνικά</button>
+</div>
+</div>
+<div class="section">
+<h2 id="overviewTitle">📋 De 5 Belangrijkste Voegwoorden</h2>
+<div class="voegwoorden-grid">
+<div class="voegwoord-card"><div class="voegwoord-icon">➕</div><div class="voegwoord-word">en</div></div>
+<div class="voegwoord-card"><div class="voegwoord-icon">↔️</div><div class="voegwoord-word">maar</div></div>
+<div class="voegwoord-card"><div class="voegwoord-icon">❓</div><div class="voegwoord-word">want</div></div>
+<div class="voegwoord-card"><div class="voegwoord-icon">⚡</div><div class="voegwoord-word">of</div></div>
+<div class="voegwoord-card"><div class="voegwoord-icon">➡️</div><div class="voegwoord-word">dus</div></div>
+</div>
+</div>
+<div class="section" id="explanationSection"></div>
+<div class="section">
+<h2 id="mcTitle">✏️ Oefening 1: Meerkeuze (30 vragen)</h2>
+<p id="mcInstructions" style="margin-bottom: 20px; color: #666; font-size: 1.1em;">Kies het juiste voegwoord.</p>
+<div id="multipleChoice"></div>
+<div class="score-display" id="mcScore" style="display: none;">
+Score: <span id="mcScoreValue">0</span> / 30 ⭐
+</div>
+</div>
+<div class="section">
+<h2 id="dragTitle">🎯 Oefening 2: Combineer Zinnen (15 vragen)</h2>
+<p id="dragInstructions" style="margin-bottom: 20px; color: #666; font-size: 1.1em;">Klik op 2 zinnen die je kunt combineren.</p>
+<div id="dragDropContainer"></div>
+<div class="score-display" id="dragScore" style="display: none;">
+Score: <span id="dragScoreValue">0</span> / 15 ⭐
+</div>
+</div>
+</div>
+<script>
+let currentLang = 'nl';
+let mcScore = 0;
+let dragScoreVal = 0;
+
+const content = {
+  nl: {
+    headerTitle: 'VOEGWOORDEN',
+    langSectionTitle: '🌍 Kies je taal',
+    overviewTitle: '📋 De 5 Belangrijkste Voegwoorden',
+    explanationTitle: '💡 Wat betekenen de voegwoorden?',
+    mcTitle: '✏️ Oefening 1: Meerkeuze (30 vragen)',
+    mcInstructions: 'Kies het juiste voegwoord.',
+    dragTitle: '🎯 Oefening 2: Combineer Zinnen (15 vragen)',
+    dragInstructions: 'Klik op 2 zinnen die je kunt combineren met het voegwoord.',
+    explanations: [
+      {icon: '➕', word: 'EN', title: 'EN - twee dingen bij elkaar', text: 'Gebruik <strong>"en"</strong> als je twee dingen samen zet.', when: '<strong>Wanneer?</strong> Als je iets toevoegt. Iets EXTRA zegt.', examples: ['Ik eet brood <span class="highlight">en</span> kaas.', 'Ali werkt <span class="highlight">en</span> hij studeert.', 'Ik woon in Nederland <span class="highlight">en</span> ik leer Nederlands.']},
+      {icon: '↔️', word: 'MAAR', title: 'MAAR - iets tegenovergesteld', text: 'Gebruik <strong>"maar"</strong> als het tweede ding anders is. Het tegendeel.', when: '<strong>Wanneer?</strong> Als je iets zegt dat VERSCHILT van het eerste.', examples: ['Ik ben moe, <span class="highlight">maar</span> ik werk.', 'Het is koud, <span class="highlight">maar</span> de zon schijnt.', 'Hij wil komen, <span class="highlight">maar</span> hij heeft geen tijd.']},
+      {icon: '❓', word: 'WANT', title: 'WANT - een reden geven', text: 'Gebruik <strong>"want"</strong> als je een REDEN geeft. Waarom iets zo is.', when: '<strong>Wanneer?</strong> Als je uitlegt WAAROM.', examples: ['Ik blijf thuis, <span class="highlight">want</span> ik ben ziek.', 'Hij is blij, <span class="highlight">want</span> het is vrijdag.', 'Wij leren Nederlands, <span class="highlight">want</span> wij wonen in Nederland.']},
+      {icon: '⚡', word: 'OF', title: 'OF - een keuze maken', text: 'Gebruik <strong>"of"</strong> als je een KEUZE hebt. Dit OF dat.', when: '<strong>Wanneer?</strong> Als je tussen twee dingen moet kiezen.', examples: ['Wil je koffie <span class="highlight">of</span> thee?', 'Ga je naar huis <span class="highlight">of</span> naar school?', 'Werkt hij vandaag <span class="highlight">of</span> morgen?']},
+      {icon: '➡️', word: 'DUS', title: 'DUS - een gevolg, resultaat', text: 'Gebruik <strong>"dus"</strong> voor het RESULTAAT. Wat gebeurt er door het eerste?', when: '<strong>Wanneer?</strong> Als iets een GEVOLG is van iets anders.', examples: ['Het regent, <span class="highlight">dus</span> ik neem een paraplu.', 'Ik ben moe, <span class="highlight">dus</span> ik ga slapen.', 'Zij is ziek, <span class="highlight">dus</span> zij gaat naar de dokter.']}
+    ],
+    hint: '<strong>💡 Simpele tip:</strong><br><strong>EN</strong> = extra / meer<br><strong>MAAR</strong> = anders / tegendeel<br><strong>WANT</strong> = waarom? / reden<br><strong>OF</strong> = keuze / dit of dat<br><strong>DUS</strong> = resultaat / daarom'
+  },
+  hu: {
+    headerTitle: 'KÖTŐSZAVAK',
+    langSectionTitle: '🌍 Válaszd ki a nyelvedet',
+    overviewTitle: '📋 Az 5 Legfontosabb Kötőszó',
+    explanationTitle: '💡 Mit jelentenek a kötőszavak?',
+    mcTitle: '✏️ 1. Feladat: Feleletválasztós (30 kérdés)',
+    mcInstructions: 'Válaszd ki a helyes kötőszót.',
+    dragTitle: '🎯 2. Feladat: Kombináld a Mondatokat (15 kérdés)',
+    dragInstructions: 'Kattints 2 mondatra, amelyeket kombinálhatsz a kötőszóval.',
+    explanations: [
+      {icon: '➕', word: 'EN', title: 'EN - két dolog összekapcsolása', text: 'Használd az <strong>"en"</strong>-t, ha két dolgot összekötsz.', when: '<strong>Mikor?</strong> Amikor valamit HOZZÁADSZ. Valami EXTRA-t mondasz.', examples: ['Ik eet brood <span class="highlight">en</span> kaas. (Kenyeret eszem ÉS sajtot.)', 'Ali werkt <span class="highlight">en</span> hij studeert. (Ali dolgozik ÉS tanul.)', 'Ik woon in Nederland <span class="highlight">en</span> ik leer Nederlands. (Hollandiában lakom ÉS hollandul tanulok.)']},
+      {icon: '↔️', word: 'MAAR', title: 'MAAR - valami ellentétes', text: 'Használd a <strong>"maar"</strong>-t, ha a második dolog más. Az ellentéte.', when: '<strong>Mikor?</strong> Amikor valamit mondasz, ami KÜLÖNBÖZIK az elsőtől.', examples: ['Ik ben moe, <span class="highlight">maar</span> ik werk. (Fáradt vagyok, DE dolgozom.)', 'Het is koud, <span class="highlight">maar</span> de zon schijnt. (Hideg van, DE süt a nap.)', 'Hij wil komen, <span class="highlight">maar</span> hij heeft geen tijd. (Jönni akar, DE nincs ideje.)']},
+      {icon: '❓', word: 'WANT', title: 'WANT - okot adni', text: 'Használd a <strong>"want"</strong>-ot, ha OKOT adsz. Miért van valami így.', when: '<strong>Mikor?</strong> Amikor elmagyarázod a MIÉRT-et.', examples: ['Ik blijf thuis, <span class="highlight">want</span> ik ben ziek. (Otthon maradok, MERT beteg vagyok.)', 'Hij is blij, <span class="highlight">want</span> het is vrijdag. (Boldog, MERT péntek van.)', 'Wij leren Nederlands, <span class="highlight">want</span> wij wonen in Nederland. (Hollandul tanulunk, MERT Hollandiában lakunk.)']},
+      {icon: '⚡', word: 'OF', title: 'OF - választást tenni', text: 'Használd az <strong>"of"</strong>-ot, ha VÁLASZTÁSOD van. Ez VAGY az.', when: '<strong>Mikor?</strong> Amikor két dolog között kell választanod.', examples: ['Wil je koffie <span class="highlight">of</span> thee? (Kávét akarsz VAGY teát?)', 'Ga je naar huis <span class="highlight">of</span> naar school? (Hazamész VAGY iskolába?)', 'Werkt hij vandaag <span class="highlight">of</span> morgen? (Ma dolgozik VAGY holnap?)']},
+      {icon: '➡️', word: 'DUS', title: 'DUS - következmény, eredmény', text: 'Használd a <strong>"dus"</strong>-t az EREDMÉNYHEZ. Mi történik az első miatt?', when: '<strong>Mikor?</strong> Amikor valami KÖVETKEZMÉNYE valami másnak.', examples: ['Het regent, <span class="highlight">dus</span> ik neem een paraplu. (Esik, EZÉRT viszek esernyőt.)', 'Ik ben moe, <span class="highlight">dus</span> ik ga slapen. (Fáradt vagyok, EZÉRT aludni megyek.)', 'Zij is ziek, <span class="highlight">dus</span> zij gaat naar de dokter. (Beteg, EZÉRT orvoshoz megy.)']}
+    ],
+    hint: '<strong>💡 Egyszerű tipp:</strong><br><strong>EN</strong> = extra / több<br><strong>MAAR</strong> = más / ellentét<br><strong>WANT</strong> = miért? / ok<br><strong>OF</strong> = választás / ez vagy az<br><strong>DUS</strong> = eredmény / ezért'
+  },
+  pt: {
+    headerTitle: 'CONJUNÇÕES',
+    langSectionTitle: '🌍 Escolha o seu idioma',
+    overviewTitle: '📋 As 5 Conjunções Mais Importantes',
+    explanationTitle: '💡 O que significam as conjunções?',
+    mcTitle: '✏️ Exercício 1: Escolha Múltipla (30 perguntas)',
+    mcInstructions: 'Escolha a conjunção correta.',
+    dragTitle: '🎯 Exercício 2: Combine Frases (15 perguntas)',
+    dragInstructions: 'Clique em 2 frases que pode combinar com a conjunção.',
+    explanations: [
+      {icon: '➕', word: 'EN', title: 'EN - duas coisas juntas', text: 'Use <strong>"en"</strong> quando junta duas coisas.', when: '<strong>Quando?</strong> Quando adiciona algo. Algo EXTRA.', examples: ['Ik eet brood <span class="highlight">en</span> kaas. (Como pão E queijo.)', 'Ali werkt <span class="highlight">en</span> hij studeert. (Ali trabalha E estuda.)', 'Ik woon in Nederland <span class="highlight">en</span> ik leer Nederlands. (Moro na Holanda E aprendo holandês.)']},
+      {icon: '↔️', word: 'MAAR', title: 'MAAR - algo oposto', text: 'Use <strong>"maar"</strong> quando a segunda coisa é diferente. O contrário.', when: '<strong>Quando?</strong> Quando diz algo que é DIFERENTE do primeiro.', examples: ['Ik ben moe, <span class="highlight">maar</span> ik werk. (Estou cansado, MAS trabalho.)', 'Het is koud, <span class="highlight">maar</span> de zon schijnt. (Está frio, MAS o sol brilha.)', 'Hij wil komen, <span class="highlight">maar</span> hij heeft geen tijd. (Ele quer vir, MAS não tem tempo.)']},
+      {icon: '❓', word: 'WANT', title: 'WANT - dar uma razão', text: 'Use <strong>"want"</strong> quando dá uma RAZÃO. Porquê é assim.', when: '<strong>Quando?</strong> Quando explica o PORQUÊ.', examples: ['Ik blijf thuis, <span class="highlight">want</span> ik ben ziek. (Fico em casa, PORQUE estou doente.)', 'Hij is blij, <span class="highlight">want</span> het is vrijdag. (Ele está feliz, PORQUE é sexta-feira.)', 'Wij leren Nederlands, <span class="highlight">want</span> wij wonen in Nederland. (Aprendemos holandês, PORQUE moramos na Holanda.)']},
+      {icon: '⚡', word: 'OF', title: 'OF - fazer uma escolha', text: 'Use <strong>"of"</strong> quando tem uma ESCOLHA. Isto OU aquilo.', when: '<strong>Quando?</strong> Quando precisa escolher entre duas coisas.', examples: ['Wil je koffie <span class="highlight">of</span> thee? (Quer café OU chá?)', 'Ga je naar huis <span class="highlight">of</span> naar school? (Vai para casa OU para a escola?)', 'Werkt hij vandaag <span class="highlight">of</span> morgen? (Ele trabalha hoje OU amanhã?)']},
+      {icon: '➡️', word: 'DUS', title: 'DUS - uma consequência, resultado', text: 'Use <strong>"dus"</strong> para o RESULTADO. O que acontece por causa do primeiro?', when: '<strong>Quando?</strong> Quando algo é uma CONSEQUÊNCIA de outra coisa.', examples: ['Het regent, <span class="highlight">dus</span> ik neem een paraplu. (Está a chover, PORTANTO levo um guarda-chuva.)', 'Ik ben moe, <span class="highlight">dus</span> ik ga slapen. (Estou cansado, PORTANTO vou dormir.)', 'Zij is ziek, <span class="highlight">dus</span> zij gaat naar de dokter. (Ela está doente, PORTANTO vai ao médico.)']}
+    ],
+    hint: '<strong>💡 Dica simples:</strong><br><strong>EN</strong> = extra / mais<br><strong>MAAR</strong> = diferente / contrário<br><strong>WANT</strong> = porquê? / razão<br><strong>OF</strong> = escolha / isto ou aquilo<br><strong>DUS</strong> = resultado / portanto'
+  },
+  el: {
+    headerTitle: 'ΣΥΝΔΕΣΜΟΙ',
+    langSectionTitle: '🌍 Επιλέξτε τη γλώσσα σας',
+    overviewTitle: '📋 Οι 5 Πιο Σημαντικοί Σύνδεσμοι',
+    explanationTitle: '💡 Τι σημαίνουν οι σύνδεσμοι;',
+    mcTitle: '✏️ Άσκηση 1: Πολλαπλής Επιλογής (30 ερωτήσεις)',
+    mcInstructions: 'Επιλέξτε τον σωστό σύνδεσμο.',
+    dragTitle: '🎯 Άσκηση 2: Συνδυάστε Προτάσεις (15 ερωτήσεις)',
+    dragInstructions: 'Κάντε κλικ σε 2 προτάσεις που μπορείτε να συνδυάσετε με τον σύνδεσμο.',
+    explanations: [
+      {icon: '➕', word: 'EN', title: 'EN - δύο πράγματα μαζί', text: 'Χρησιμοποιήστε το <strong>"en"</strong> όταν συνδυάζετε δύο πράγματα.', when: '<strong>Πότε;</strong> Όταν προσθέτετε κάτι. Κάτι ΕΠΙΠΛΕΟΝ.', examples: ['Ik eet brood <span class="highlight">en</span> kaas. (Τρώω ψωμί ΚΑΙ τυρί.)', 'Ali werkt <span class="highlight">en</span> hij studeert. (Ο Ali δουλεύει ΚΑΙ σπουδάζει.)', 'Ik woon in Nederland <span class="highlight">en</span> ik leer Nederlands. (Μένω στην Ολλανδία ΚΑΙ μαθαίνω ολλανδικά.)']},
+      {icon: '↔️', word: 'MAAR', title: 'MAAR - κάτι αντίθετο', text: 'Χρησιμοποιήστε το <strong>"maar"</strong> όταν το δεύτερο πράγμα είναι διαφορετικό. Το αντίθετο.', when: '<strong>Πότε;</strong> Όταν λέτε κάτι που ΔΙΑΦΕΡΕΙ από το πρώτο.', examples: ['Ik ben moe, <span class="highlight">maar</span> ik werk. (Είμαι κουρασμένος, ΑΛΛΑ δουλεύω.)', 'Het is koud, <span class="highlight">maar</span> de zon schijnt. (Κάνει κρύο, ΑΛΛΑ λάμπει ο ήλιος.)', 'Hij wil komen, <span class="highlight">maar</span> hij heeft geen tijd. (Θέλει να έρθει, ΑΛΛΑ δεν έχει χρόνο.)']},
+      {icon: '❓', word: 'WANT', title: 'WANT - να δώσετε έναν λόγο', text: 'Χρησιμοποιήστε το <strong>"want"</strong> όταν δίνετε έναν ΛΟΓΟ. Γιατί είναι κάτι έτσι.', when: '<strong>Πότε;</strong> Όταν εξηγείτε το ΓΙΑΤΙ.', examples: ['Ik blijf thuis, <span class="highlight">want</span> ik ben ziek. (Μένω σπίτι, ΓΙΑΤΙ είμαι άρρωστος.)', 'Hij is blij, <span class="highlight">want</span> het is vrijdag. (Είναι χαρούμενος, ΓΙΑΤΙ είναι Παρασκευή.)', 'Wij leren Nederlands, <span class="highlight">want</span> wij wonen in Nederland. (Μαθαίνουμε ολλανδικά, ΓΙΑΤΙ μένουμε στην Ολλανδία.)']},
+      {icon: '⚡', word: 'OF', title: 'OF - να κάνετε μια επιλογή', text: 'Χρησιμοποιήστε το <strong>"of"</strong> όταν έχετε μια ΕΠΙΛΟΓΗ. Αυτό Ή εκείνο.', when: '<strong>Πότε;</strong> Όταν πρέπει να επιλέξετε μεταξύ δύο πραγμάτων.', examples: ['Wil je koffie <span class="highlight">of</span> thee? (Θέλεις καφέ Ή τσάι;)', 'Ga je naar huis <span class="highlight">of</span> naar school? (Πας σπίτι Ή στο σχολείο;)', 'Werkt hij vandaag <span class="highlight">of</span> morgen? (Δουλεύει σήμερα Ή αύριο;)']},
+      {icon: '➡️', word: 'DUS', title: 'DUS - μια συνέπεια, αποτέλεσμα', text: 'Χρησιμοποιήστε το <strong>"dus"</strong> για το ΑΠΟΤΕΛΕΣΜΑ. Τι συμβαίνει εξαιτίας του πρώτου;', when: '<strong>Πότε;</strong> Όταν κάτι είναι ΣΥΝΕΠΕΙΑ κάποιου άλλου.', examples: ['Het regent, <span class="highlight">dus</span> ik neem een paraplu. (Βρέχει, ΕΠΟΜΕΝΩΣ παίρνω ομπρέλα.)', 'Ik ben moe, <span class="highlight">dus</span> ik ga slapen. (Είμαι κουρασμένος, ΕΠΟΜΕΝΩΣ πάω για ύπνο.)', 'Zij is ziek, <span class="highlight">dus</span> zij gaat naar de dokter. (Είναι άρρωστη, ΕΠΟΜΕΝΩΣ πάει στο γιατρό.)']}
+    ],
+    hint: '<strong>💡 Απλή συμβουλή:</strong><br><strong>EN</strong> = επιπλέον / περισσότερο<br><strong>MAAR</strong> = διαφορετικό / αντίθετο<br><strong>WANT</strong> = γιατί; / λόγος<br><strong>OF</strong> = επιλογή / αυτό ή εκείνο<br><strong>DUS</strong> = αποτέλεσμα / επομένως'
+  }
+};
+
+const mcQuestionsData = [
+  {q:'Ik eet brood _____ kaas.',opts:['en','maar','want'],c:0,why:{0:'Juist! "EN" voegt twee dingen toe: brood + kaas.',1:'Fout. "MAAR" is voor tegenstelling. Hier is geen tegenstelling.',2:'Fout. "WANT" geeft een reden. Hier is geen reden.'}},
+  {q:'Het is koud, _____ de zon schijnt.',opts:['en','maar','dus'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is een tegenstelling: koud MAAR zon.',1:'Juist! "MAAR" toont een tegenstelling: koud, MAAR toch zon.',2:'Fout. "DUS" is voor resultaat. De zon is geen resultaat van kou.'}},
+  {q:'Ik blijf thuis, _____ ik ben ziek.',opts:['want','maar','of'],c:0,why:{0:'Juist! "WANT" geeft de reden: thuis blijven OMDAT ziek.',1:'Fout. "MAAR" is tegenstelling. Hier is een reden.',2:'Fout. "OF" is een keuze. Hier is een reden.'}},
+  {q:'Wil je koffie _____ thee?',opts:['en','of','dus'],c:1,why:{0:'Fout. "EN" voegt toe: koffie EN thee (beide). Hier is een keuze.',1:'Juist! "OF" maakt een keuze: koffie OF thee (één kiezen).',2:'Fout. "DUS" is resultaat. Hier is een keuze.'}},
+  {q:'Het regent, _____ ik neem een paraplu.',opts:['want','maar','dus'],c:2,why:{0:'Fout. "WANT" is reden. Hier is resultaat: regent, dus paraplu.',1:'Fout. "MAAR" is tegenstelling. Hier is resultaat.',2:'Juist! "DUS" toont resultaat: het regent, daarom paraplu.'}},
+  {q:'Ali werkt _____ hij studeert.',opts:['en','maar','of'],c:0,why:{0:'Juist! "EN" voegt toe: Ali doet beide dingen.',1:'Fout. "MAAR" is tegenstelling. Hier zijn twee activiteiten.',2:'Fout. "OF" is keuze. Ali doet beide, geen keuze.'}},
+  {q:'Ik ben moe, _____ ik werk.',opts:['en','maar','dus'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is tegenstelling: moe, toch werken.',1:'Juist! "MAAR" toont tegenstelling: moe, MAAR toch werken.',2:'Fout. "DUS" is resultaat. Werken is niet het resultaat van moe zijn.'}},
+  {q:'Hij is blij, _____ het is vrijdag.',opts:['want','maar','of'],c:0,why:{0:'Juist! "WANT" geeft reden: blij OMDAT vrijdag.',1:'Fout. "MAAR" is tegenstelling. Hier is een reden.',2:'Fout. "OF" is keuze. Hier is een reden.'}},
+  {q:'Ga je naar huis _____ naar school?',opts:['en','of','dus'],c:1,why:{0:'Fout. "EN" is beide. Hier is een keuze: huis OF school.',1:'Juist! "OF" maakt keuze: naar huis OF naar school.',2:'Fout. "DUS" is resultaat. Hier is een keuze.'}},
+  {q:'Ik ben moe, _____ ik ga slapen.',opts:['en','maar','dus'],c:2,why:{0:'Fout. "EN" voegt toe. Hier is resultaat: moe, dus slapen.',1:'Fout. "MAAR" is tegenstelling. Hier past "DUS" beter.',2:'Juist! "DUS" toont resultaat: moe, daarom slapen.'}},
+  {q:'Ik drink water _____ melk.',opts:['en','maar','want'],c:0,why:{0:'Juist! "EN" voegt toe: water + melk (beide drinken).',1:'Fout. "MAAR" is tegenstelling. Hier zijn twee dingen samen.',2:'Fout. "WANT" is reden. Hier zijn twee dingen.'}},
+  {q:'Hij wil komen, _____ hij heeft geen tijd.',opts:['en','maar','dus'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is tegenstelling: wil komen MAAR geen tijd.',1:'Juist! "MAAR" toont tegenstelling: wil komen, MAAR geen tijd.',2:'Fout. "DUS" is resultaat. Geen tijd is niet resultaat van willen komen.'}},
+  {q:'Wij leren Nederlands, _____ wij wonen in Nederland.',opts:['want','of','dus'],c:0,why:{0:'Juist! "WANT" geeft reden: leren Nederlands OMDAT wonen in NL.',1:'Fout. "OF" is keuze. Hier is een reden.',2:'Fout. "DUS" is resultaat. Hier is reden: leren omdat wonen.'}},
+  {q:'Werk je vandaag _____ morgen?',opts:['en','of','want'],c:1,why:{0:'Fout. "EN" is beide. Hier is keuze: vandaag OF morgen.',1:'Juist! "OF" maakt keuze: vandaag OF morgen werken.',2:'Fout. "WANT" is reden. Hier is een keuze.'}},
+  {q:'Zij is ziek, _____ zij gaat naar de dokter.',opts:['en','maar','dus'],c:2,why:{0:'Fout. "EN" voegt toe. Hier is resultaat: ziek, dus dokter.',1:'Fout. "MAAR" is tegenstelling. Dokter bezoeken past bij ziek zijn.',2:'Juist! "DUS" toont resultaat: ziek, daarom naar dokter.'}},
+  {q:'Ik woon in Eindhoven _____ ik werk in Veldhoven.',opts:['en','want','of'],c:0,why:{0:'Juist! "EN" voegt toe: twee feiten over wonen en werken.',1:'Fout. "WANT" is reden. Hier zijn gewoon twee feiten.',2:'Fout. "OF" is keuze. Hier doet hij beide dingen.'}},
+  {q:'Het is laat, _____ ik ben niet moe.',opts:['en','maar','dus'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is tegenstelling: laat MAAR niet moe.',1:'Juist! "MAAR" toont tegenstelling: laat, MAAR niet moe.',2:'Fout. "DUS" is resultaat. "Niet moe" is geen resultaat van "laat".'}},
+  {q:'Ik koop brood, _____ ik heb honger.',opts:['want','of','maar'],c:0,why:{0:'Juist! "WANT" geeft reden: brood kopen OMDAT honger.',1:'Fout. "OF" is keuze. Hier is een reden.',2:'Fout. "MAAR" is tegenstelling. Hier is een reden.'}},
+  {q:'Eet je thuis _____ op het werk?',opts:['en','of','dus'],c:1,why:{0:'Fout. "EN" is beide. Hier is keuze: thuis OF werk.',1:'Juist! "OF" maakt keuze: thuis OF op werk eten.',2:'Fout. "DUS" is resultaat. Hier is een keuze.'}},
+  {q:'De winkel is dicht, _____ ik kan niet kopen.',opts:['want','maar','dus'],c:2,why:{0:'Fout. "WANT" is reden. Hier is resultaat: dicht, dus niet kopen.',1:'Fout. "MAAR" is tegenstelling. Hier past "DUS".',2:'Juist! "DUS" toont resultaat: dicht, daarom niet kunnen kopen.'}},
+  {q:'Ik lees _____ ik schrijf.',opts:['en','maar','dus'],c:0,why:{0:'Juist! "EN" voegt toe: lezen + schrijven (beide doen).',1:'Fout. "MAAR" is tegenstelling. Hier zijn twee activiteiten.',2:'Fout. "DUS" is resultaat. Hier zijn twee activiteiten.'}},
+  {q:'Ik wil sporten, _____ ik ben te moe.',opts:['en','maar','want'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is tegenstelling: wil sporten MAAR moe.',1:'Juist! "MAAR" toont tegenstelling: wil sporten, MAAR te moe.',2:'Fout. "WANT" is reden. Hier is tegenstelling.'}},
+  {q:'We gaan wandelen, _____ het weer is mooi.',opts:['want','of','dus'],c:0,why:{0:'Juist! "WANT" geeft reden: wandelen OMDAT mooi weer.',1:'Fout. "OF" is keuze. Hier is een reden.',2:'Fout. "DUS" zou ook kunnen, maar "WANT" past beter: wandelen omdat mooi weer.'}},
+  {q:'Neem je de bus _____ de fiets?',opts:['en','of','maar'],c:1,why:{0:'Fout. "EN" is beide. Hier is keuze: bus OF fiets.',1:'Juist! "OF" maakt keuze: bus OF fiets nemen.',2:'Fout. "MAAR" is tegenstelling. Hier is een keuze.'}},
+  {q:'Het is warm, _____ ik open het raam.',opts:['want','maar','dus'],c:2,why:{0:'Fout. "WANT" is reden. Hier is resultaat: warm, dus raam open.',1:'Fout. "MAAR" is tegenstelling. Hier past "DUS".',2:'Juist! "DUS" toont resultaat: warm, daarom raam open.'}},
+  {q:'Ik kook _____ jij doet de afwas.',opts:['en','maar','of'],c:0,why:{0:'Juist! "EN" voegt toe: ik kook EN jij afwas (samenwerken).',1:'Fout. "MAAR" is tegenstelling. Hier is samenwerking.',2:'Fout. "OF" is keuze. Hier doen beiden iets.'}},
+  {q:'Het is druk, _____ we komen op tijd.',opts:['en','maar','dus'],c:1,why:{0:'Fout. "EN" voegt toe. Hier is tegenstelling: druk MAAR toch op tijd.',1:'Juist! "MAAR" toont tegenstelling: druk, MAAR toch op tijd.',2:'Fout. "DUS" is resultaat. Op tijd komen is niet resultaat van drukte.'}},
+  {q:'Ik blijf binnen, _____ het regent.',opts:['want','of','maar'],c:0,why:{0:'Juist! "WANT" geeft reden: binnen blijven OMDAT regen.',1:'Fout. "OF" is keuze. Hier is een reden.',2:'Fout. "MAAR" is tegenstelling. Hier is een reden.'}},
+  {q:'Spreek je Engels _____ Duits?',opts:['en','of','dus'],c:1,why:{0:'Fout. "EN" is beide. Hier vraagt het: Engels OF Duits.',1:'Juist! "OF" maakt keuze: Engels OF Duits spreken.',2:'Fout. "DUS" is resultaat. Hier is een vraag met keuze.'}},
+  {q:'Ik heb geen geld, _____ ik kan niets kopen.',opts:['want','maar','dus'],c:2,why:{0:'Fout. "WANT" is reden. Hier is resultaat: geen geld, dus niet kopen.',1:'Fout. "MAAR" is tegenstelling. Hier past "DUS".',2:'Juist! "DUS" toont resultaat: geen geld, daarom niet kopen.'}}
+];
+
+const dragQuestionsData = [
+  {v:'en',s:[{t:'Ik eet brood',can:1},{t:'Ik drink koffie',can:1},{t:'Het is koud',can:0},{t:'Ik ben ziek',can:0}]},
+  {v:'maar',s:[{t:'Ik ben moe',can:1},{t:'Ik werk',can:1},{t:'Ik eet brood',can:0},{t:'Ik drink thee',can:0}]},
+  {v:'want',s:[{t:'Ik blijf thuis',can:1},{t:'Ik ben ziek',can:1},{t:'Wil je koffie',can:0},{t:'Wil je thee',can:0}]},
+  {v:'of',s:[{t:'Ga je naar huis',can:1},{t:'Ga je naar school',can:1},{t:'Het regent',can:0},{t:'Ik neem een paraplu',can:0}]},
+  {v:'dus',s:[{t:'Het regent',can:1},{t:'Ik neem een paraplu',can:1},{t:'Hij is blij',can:0},{t:'Hij werkt',can:0}]},
+  {v:'en',s:[{t:'Ali werkt',can:1},{t:'Hij studeert',can:1},{t:'Ik ben moe',can:0},{t:'Ik ga slapen',can:0}]},
+  {v:'maar',s:[{t:'Het is laat',can:1},{t:'Ik ben niet moe',can:1},{t:'Ik leer Nederlands',can:0},{t:'Ik woon in Nederland',can:0}]},
+  {v:'want',s:[{t:'Hij is blij',can:1},{t:'Het is vrijdag',can:1},{t:'Eet je thuis',can:0},{t:'Eet je op het werk',can:0}]},
+  {v:'of',s:[{t:'Wil je koffie',can:1},{t:'Wil je thee',can:1},{t:'Zij is ziek',can:0},{t:'Zij gaat naar de dokter',can:0}]},
+  {v:'dus',s:[{t:'Ik ben moe',can:1},{t:'Ik ga slapen',can:1},{t:'Ik eet brood',can:0},{t:'Ik drink melk',can:0}]},
+  {v:'en',s:[{t:'Ik kook',can:1},{t:'Jij doet de afwas',can:1},{t:'Het is warm',can:0},{t:'Ik open het raam',can:0}]},
+  {v:'maar',s:[{t:'Ik wil sporten',can:1},{t:'Ik ben te moe',can:1},{t:'We gaan wandelen',can:0},{t:'Het weer is mooi',can:0}]},
+  {v:'want',s:[{t:'We gaan wandelen',can:1},{t:'Het weer is mooi',can:1},{t:'Neem je de bus',can:0},{t:'Neem je de fiets',can:0}]},
+  {v:'of',s:[{t:'Spreek je Engels',can:1},{t:'Spreek je Duits',can:1},{t:'Ik heb geen geld',can:0},{t:'Ik kan niets kopen',can:0}]},
+  {v:'dus',s:[{t:'Het is warm',can:1},{t:'Ik open het raam',can:1},{t:'Ik kook',can:0},{t:'Jij doet de afwas',can:0}]}
+];
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  updateContent();
+}
+
+function updateContent() {
+  const c = content[currentLang];
+  document.getElementById('headerTitle').textContent = c.headerTitle;
+  document.getElementById('langSectionTitle').textContent = c.langSectionTitle;
+  document.getElementById('overviewTitle').textContent = c.overviewTitle;
+  document.getElementById('mcTitle').textContent = c.mcTitle;
+  document.getElementById('mcInstructions').textContent = c.mcInstructions;
+  document.getElementById('dragTitle').textContent = c.dragTitle;
+  document.getElementById('dragInstructions').textContent = c.dragInstructions;
+  
+  let expHtml = '<h2>' + c.explanationTitle + '</h2>';
+  c.explanations.forEach(e => {
+    expHtml += '<div class="explain-box"><h3>' + e.icon + ' ' + e.title + '</h3><p>' + e.text + '</p><p>' + e.when + '</p>';
+    e.examples.forEach(ex => {
+      expHtml += '<div class="example"><div class="example-text">' + ex + '</div></div>';
+    });
+    expHtml += '</div>';
+  });
+  expHtml += '<div class="hint">' + c.hint + '</div>';
+  document.getElementById('explanationSection').innerHTML = expHtml;
+}
+
+function generateMC() {
+  const container = document.getElementById('multipleChoice');
+  container.innerHTML = '';
+  
+  mcQuestionsData.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    let html = '<div class="question-text">' + (i+1) + '. ' + q.q + '</div><div class="options">';
+    q.opts.forEach((opt, oi) => {
+      html += '<div class="option" onclick="checkMC(' + i + ',' + oi + ')">' + opt + '</div>';
+    });
+    html += '</div><div class="feedback" id="mcfb' + i + '"></div>';
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function checkMC(qi, oi) {
+  const q = mcQuestionsData[qi];
+  const qDiv = document.querySelectorAll('#multipleChoice .question')[qi];
+  const opts = qDiv.querySelectorAll('.option');
+  const fb = document.getElementById('mcfb' + qi);
+  
+  opts.forEach(o => o.classList.add('disabled'));
+  
+  if (oi === q.c) {
+    opts[oi].classList.add('correct');
+    opts[oi].textContent = '✓ ' + opts[oi].textContent;
+    fb.textContent = '✅ ' + q.why[oi];
+    fb.className = 'feedback success show';
+    mcScore++;
+  } else {
+    opts[oi].classList.add('wrong');
+    opts[oi].textContent = '✗ ' + opts[oi].textContent;
+    opts[q.c].classList.add('correct');
+    opts[q.c].textContent = '✓ ' + opts[q.c].textContent;
+    fb.textContent = '❌ ' + q.why[oi];
+    fb.className = 'feedback error show';
+  }
+  
+  const allDone = document.querySelectorAll('#multipleChoice .option.disabled').length === mcQuestionsData.length * 3;
+  if (allDone) {
+    document.getElementById('mcScoreValue').textContent = mcScore;
+    document.getElementById('mcScore').style.display = 'block';
+  }
+}
+
+function generateDrag() {
+  const container = document.getElementById('dragDropContainer');
+  container.innerHTML = '';
+  
+  dragQuestionsData.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'drag-question';
+    const shuffled = [...q.s].sort(() => Math.random() - 0.5);
+    
+    let html = '<div class="drag-voegwoord">Voegwoord: <span style="color: #dc3545;">' + q.v + '</span></div>';
+    html += '<p style="font-weight: 700; margin-bottom: 15px;">Klik op 2 zinnen die je kunt combineren:</p>';
+    html += '<div class="sentence-pool" id="pool' + qi + '">';
+    shuffled.forEach((s, si) => {
+      html += '<div class="draggable-sentence" onclick="selectSent(' + qi + ',' + si + ')" id="sent' + qi + '-' + si + '">' + s.t + '</div>';
+    });
+    html += '</div>';
+    html += '<button class="check-drag-btn" onclick="checkDrag(' + qi + ')" id="checkBtn' + qi + '" disabled>Controleer</button>';
+    html += '<div class="feedback" id="dragfb' + qi + '"></div>';
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function selectSent(qi, si) {
+  const sent = document.getElementById('sent' + qi + '-' + si);
+  if (sent.classList.contains('disabled')) return;
+  
+  const pool = document.getElementById('pool' + qi);
+  const selCount = pool.querySelectorAll('.selected').length;
+  
+  if (sent.classList.contains('selected')) {
+    sent.classList.remove('selected');
+  } else {
+    if (selCount < 2) sent.classList.add('selected');
+  }
+  
+  document.getElementById('checkBtn' + qi).disabled = pool.querySelectorAll('.selected').length !== 2;
+}
+
+function checkDrag(qi) {
+  const q = dragQuestionsData[qi];
+  const pool = document.getElementById('pool' + qi);
+  const selected = Array.from(pool.querySelectorAll('.selected'));
+  const fb = document.getElementById('dragfb' + qi);
+  
+  pool.querySelectorAll('.draggable-sentence').forEach(s => s.classList.add('disabled'));
+  document.getElementById('checkBtn' + qi).disabled = true;
+  
+  const selTexts = selected.map(s => s.textContent.trim());
+  const correctTexts = q.s.filter(z => z.can).map(z => z.t);
+  
+  const isCorrect = selTexts.every(t => correctTexts.includes(t));
+  
+  if (isCorrect) {
+    fb.textContent = '✅ Perfect! Deze zinnen kun je combineren met "' + q.v + '"!';
+    fb.className = 'feedback success show';
+    dragScoreVal++;
+  } else {
+    fb.textContent = '❌ Niet helemaal. De juiste zinnen zijn: "' + correctTexts.join('" en "') + '"';
+    fb.className = 'feedback error show';
+    
+    q.s.forEach((z, i) => {
+      const shuffledIndex = [...q.s].sort(() => Math.random() - 0.5).indexOf(z);
+      const sent = document.getElementById('sent' + qi + '-' + shuffledIndex);
+      if (sent && z.can) {
+        sent.style.background = '#d4edda';
+        sent.style.borderColor = '#28a745';
+      }
+    });
+  }
+  
+  const allDone = document.querySelectorAll('.check-drag-btn:disabled').length === dragQuestionsData.length;
+  if (allDone) {
+    document.getElementById('dragScoreValue').textContent = dragScoreVal;
+    document.getElementById('dragScore').style.display = 'block';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateContent();
+  generateMC();
+  generateDrag();
+});
+</script>
+</body>
+</html>

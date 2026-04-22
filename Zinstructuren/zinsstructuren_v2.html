@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nederlandse Zinsstructuren - Interactief Leren</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cat1: #FF6B35;
+            --cat1-light: #FFF0EB;
+            --cat2: #4ECDC4;
+            --cat2-light: #E8FAF8;
+            --cat3: #9B5DE5;
+            --cat3-light: #F3EAFC;
+            --cat4: #F7B801;
+            --cat4-light: #FEF9E6;
+            --dark: #1A1A2E;
+            --gray: #6B7280;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --success: #10B981;
+            --error: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .language-selector h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .language-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .lang-btn {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            background: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: var(--dark);
+            color: var(--white);
+            border-color: var(--dark);
+        }
+
+        .lang-flag {
+            font-size: 1.2rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tab.cat1 { background: var(--cat1-light); color: var(--cat1); }
+        .nav-tab.cat2 { background: var(--cat2-light); color: var(--cat2); }
+        .nav-tab.cat3 { background: var(--cat3-light); color: var(--cat3); }
+        .nav-tab.cat4 { background: var(--cat4-light); color: var(--cat4); }
+
+        .nav-tab.active.cat1, .nav-tab.cat1:hover { background: var(--cat1); color: white; transform: translateY(-2px); }
+        .nav-tab.active.cat2, .nav-tab.cat2:hover { background: var(--cat2); color: white; transform: translateY(-2px); }
+        .nav-tab.active.cat3, .nav-tab.cat3:hover { background: var(--cat3); color: white; transform: translateY(-2px); }
+        .nav-tab.active.cat4, .nav-tab.cat4:hover { background: var(--cat4); color: white; transform: translateY(-2px); }
+
+        /* Category Sections */
+        .category-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .category-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .cat1 .card-icon { background: var(--cat1-light); }
+        .cat2 .card-icon { background: var(--cat2-light); }
+        .cat3 .card-icon { background: var(--cat3-light); }
+        .cat4 .card-icon { background: var(--cat4-light); }
+
+        .card h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+        }
+
+        /* Introduction Box */
+        .intro-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .intro-box h2 {
+            font-family: 'Fraunces', serif;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .intro-box p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .intro-box ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .intro-box li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .intro-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #34D399;
+        }
+
+        .tip-box {
+            background: rgba(255,255,255,0.15);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            border-left: 4px solid #F7B801;
+        }
+
+        .tip-box strong {
+            color: #F7B801;
+        }
+
+        /* Formula Display */
+        .formula-box {
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            font-family: monospace;
+            font-size: 1.1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cat1 .formula-box { background: var(--cat1-light); border-left: 4px solid var(--cat1); }
+        .cat2 .formula-box { background: var(--cat2-light); border-left: 4px solid var(--cat2); }
+        .cat3 .formula-box { background: var(--cat3-light); border-left: 4px solid var(--cat3); }
+        .cat4 .formula-box { background: var(--cat4-light); border-left: 4px solid var(--cat4); }
+
+        .formula-part {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: var(--white);
+            font-weight: 600;
+        }
+
+        .formula-arrow {
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+
+        /* Explanation sections */
+        .explanation {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .explanation h4 {
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .explanation-translated {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #CBD5E1;
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        /* Example Sentences */
+        .example-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .example-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .example-sentence {
+            padding: 1rem 1.5rem;
+            background: var(--light);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-sentence .highlight {
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .cat1 .highlight { background: var(--cat1-light); color: var(--cat1); }
+        .cat2 .highlight { background: var(--cat2-light); color: var(--cat2); }
+        .cat3 .highlight { background: var(--cat3-light); color: var(--cat3); }
+        .cat4 .highlight { background: var(--cat4-light); color: var(--cat4); }
+
+        /* Exercise Section */
+        .exercise-card {
+            border: 2px dashed #E2E8F0;
+            background: linear-gradient(135deg, var(--white) 0%, var(--light) 100%);
+        }
+
+        .exercise-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .exercise-instruction {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-counter {
+            display: inline-block;
+            background: var(--dark);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Drag and Drop Area */
+        .sentence-builder {
+            margin-bottom: 2rem;
+        }
+
+        .sentence-prompt {
+            margin-bottom: 1rem;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 12px;
+        }
+
+        .drop-zone {
+            min-height: 70px;
+            border: 2px dashed #CBD5E1;
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--cat1);
+            background: var(--cat1-light);
+        }
+
+        .drop-zone.correct {
+            border-color: var(--success);
+            background: #D1FAE5;
+        }
+
+        .drop-zone.incorrect {
+            border-color: var(--error);
+            background: #FEE2E2;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 16px;
+        }
+
+        .draggable-word {
+            padding: 0.75rem 1.25rem;
+            background: var(--white);
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: grab;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            user-select: none;
+        }
+
+        .draggable-word:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .draggable-word.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .draggable-word.placed {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #2D2D44;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: #E2E8F0;
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .feedback.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .feedback.correct {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .feedback.incorrect {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .feedback-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34D399);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--dark) 0%, #2D2D44 100%);
+            border-radius: 16px;
+            color: var(--white);
+            margin-top: 2rem;
+        }
+
+        .score-number {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            opacity: 0.8;
+        }
+
+        /* Why Box */
+        .why-box {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+        }
+
+        .why-box h4 {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .why-box p {
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+
+            .nav-tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .formula-box {
+                font-size: 0.9rem;
+            }
+
+            .lang-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇳🇱 Nederlandse Zinsstructuren</h1>
+            <p class="subtitle">Leer en oefen met slepen en klikken</p>
+        </header>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <h3 id="lang-selector-title">Kies je taal voor uitleg / Choose your language</h3>
+            <div class="language-buttons">
+                <button class="lang-btn active" onclick="setLanguage('nl')">
+                    <span class="lang-flag">🇳🇱</span> Nederlands
+                </button>
+                <button class="lang-btn" onclick="setLanguage('en')">
+                    <span class="lang-flag">🇬🇧</span> English
+                </button>
+                <button class="lang-btn" onclick="setLanguage('tr')">
+                    <span class="lang-flag">🇹🇷</span> Türkçe
+                </button>
+                <button class="lang-btn" onclick="setLanguage('th')">
+                    <span class="lang-flag">🇹🇭</span> ไทย
+                </button>
+                <button class="lang-btn" onclick="setLanguage('vi')">
+                    <span class="lang-flag">🇻🇳</span> Tiếng Việt
+                </button>
+                <button class="lang-btn" onclick="setLanguage('fa')">
+                    <span class="lang-flag">🇮🇷</span> فارسی
+                </button>
+                <button class="lang-btn" onclick="setLanguage('dar')">
+                    <span class="lang-flag">🇦🇫</span> دری
+                </button>
+                <button class="lang-btn" onclick="setLanguage('ar')">
+                    <span class="lang-flag">🇸🇦</span> العربية
+                </button>
+            </div>
+        </div>
+
+        <!-- Introduction Box -->
+        <div class="intro-box">
+            <h2 id="intro-title">🎯 Waarom is dit belangrijk?</h2>
+            <p id="intro-text1">
+                In het Nederlands verandert de woordvolgorde afhankelijk van welk woord je gebruikt om zinnen te verbinden. 
+                Dit is anders dan in veel andere talen! Als je dit niet goed doet, klinkt je Nederlands niet natuurlijk.
+            </p>
+            <p id="intro-text2">
+                Er zijn <strong>4 verschillende structuren</strong> die je moet leren herkennen en gebruiken:
+            </p>
+            <ul>
+                <li id="intro-li1"><strong>Want/Maar/Dus</strong> → normale volgorde (makkelijk!)</li>
+                <li id="intro-li2"><strong>Omdat/Dat</strong> → werkwoord naar het EINDE</li>
+                <li id="intro-li3"><strong>Daarom/Gelukkig/Nu</strong> → werkwoord en onderwerp WISSELEN (inversie)</li>
+                <li id="intro-li4"><strong>Om...te</strong> → "te + werkwoord" aan het EINDE</li>
+            </ul>
+            <div class="tip-box">
+                <strong>💡 Tip:</strong> <span id="intro-tip">Vraag jezelf ALTIJD af: "Welk verbindingswoord gebruik ik?" en pas dan de juiste structuur toe. Oefenen, oefenen, oefenen!</span>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab cat1 active" onclick="showCategory(1)">
+                <span>📙</span> Want / Maar / Dus
+            </button>
+            <button class="nav-tab cat2" onclick="showCategory(2)">
+                <span>📗</span> Omdat / Dat
+            </button>
+            <button class="nav-tab cat3" onclick="showCategory(3)">
+                <span>📕</span> Daarom / Gelukkig / Nu
+            </button>
+            <button class="nav-tab cat4" onclick="showCategory(4)">
+                <span>📘</span> Om ... te
+            </button>
+        </nav>
+
+        <!-- CATEGORIE 1: WANT / MAAR / DUS -->
+        <section id="cat1" class="category-section cat1 active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📙</div>
+                    <h2>Want / Maar / Dus</h2>
+                </div>
+                
+                <div class="formula-box">
+                    <span class="formula-part">HOOFDZIN</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="background: var(--cat1); color: white;">want/maar/dus</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">ONDERWERP</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">WERKWOORD</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">REST</span>
+                </div>
+
+                <div class="explanation">
+                    <h4 id="cat1-rule-title">📌 De Regel</h4>
+                    <p id="cat1-rule">
+                        Na <strong>want</strong>, <strong>maar</strong> en <strong>dus</strong> verandert er NIETS aan de woordvolgorde. 
+                        De zin blijft normaal: eerst het onderwerp, dan het werkwoord, dan de rest.
+                        Dit zijn <strong>nevenschikkende voegwoorden</strong> - ze verbinden twee gelijke zinnen.
+                    </p>
+                    <div class="explanation-translated" id="cat1-rule-translated"></div>
+                </div>
+
+                <div class="why-box">
+                    <h4 id="cat1-why-title">⚠️ Waarom moet je hierop letten?</h4>
+                    <p id="cat1-why">
+                        Dit is de makkelijkste categorie, maar let op: veel studenten verwarren "want" met "omdat". 
+                        Bij "want" blijft alles normaal, bij "omdat" gaat het werkwoord naar het einde. 
+                        Kies het juiste woord en pas de juiste structuur toe!
+                    </p>
+                </div>
+
+                <div class="example-container" style="margin-top: 1.5rem;">
+                    <div class="example-label" id="examples-label">Voorbeelden</div>
+                    <div class="example-sentence">
+                        De kinderen mogen niet buiten spelen, <span class="highlight">want</span> <strong>het</strong> <strong>regent</strong> hard.
+                    </div>
+                    <div class="example-sentence">
+                        Ik heb honger, <span class="highlight">maar</span> <strong>ik</strong> <strong>heb</strong> geen tijd.
+                    </div>
+                    <div class="example-sentence">
+                        Mijn telefoon is kapot, <span class="highlight">dus</span> <strong>ik</strong> <strong>kan</strong> je niet bellen.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card exercise-card">
+                <div class="exercise-title">✏️ <span id="exercise-title-1">Oefening - Maak de zin af</span></div>
+                <div class="exercise-instruction" id="exercise-instr-1">Sleep de woorden in de juiste volgorde naar het vak. Klik op een woord om het te plaatsen of terug te zetten.</div>
+                
+                <div class="exercise-counter" id="counter-cat1">Zin 1 van 20</div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="progress-label-1">Voortgang</span>
+                        <span id="progress-cat1">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill-cat1" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="sentence-builder" id="exercise-cat1">
+                    <div class="sentence-prompt" id="prompt-cat1"></div>
+                    <div class="drop-zone" id="dropzone-cat1"></div>
+                    <div class="word-bank" id="wordbank-cat1"></div>
+                </div>
+
+                <div class="feedback" id="feedback-cat1">
+                    <span class="feedback-icon"></span>
+                    <span class="feedback-text"></span>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="checkAnswer(1)" id="btn-check-1">Controleer</button>
+                    <button class="btn btn-secondary" onclick="resetExercise(1)" id="btn-reset-1">Opnieuw</button>
+                    <button class="btn btn-secondary" onclick="prevExercise(1)">← Vorige</button>
+                    <button class="btn btn-secondary" onclick="nextExercise(1)" id="btn-next-1">Volgende →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIE 2: OMDAT / DAT -->
+        <section id="cat2" class="category-section cat2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📗</div>
+                    <h2>Omdat / Dat</h2>
+                </div>
+                
+                <div class="formula-box">
+                    <span class="formula-part">HOOFDZIN</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="background: var(--cat2); color: white;">omdat/dat</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">ONDERWERP</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">REST</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="border: 2px solid var(--cat2);">WERKWOORD</span>
+                </div>
+
+                <div class="explanation">
+                    <h4 id="cat2-rule-title">📌 De Regel</h4>
+                    <p id="cat2-rule">
+                        Na <strong>omdat</strong> en <strong>dat</strong> gaat het werkwoord naar het <strong>EINDE</strong> van de zin.
+                        Dit zijn <strong>onderschikkende voegwoorden</strong> - de tweede zin is afhankelijk van de eerste.
+                        Let op: als er twee werkwoorden zijn, gaan ze ALLEBEI naar het einde!
+                    </p>
+                    <div class="explanation-translated" id="cat2-rule-translated"></div>
+                </div>
+
+                <div class="why-box">
+                    <h4 id="cat2-why-title">⚠️ Waarom moet je hierop letten?</h4>
+                    <p id="cat2-why">
+                        Dit is de MOEILIJKSTE regel voor veel studenten! In jouw taal staat het werkwoord misschien altijd op dezelfde plek.
+                        In het Nederlands MOET het werkwoord naar het einde na "omdat" en "dat". 
+                        Vergeet dit niet - Nederlanders horen het meteen als je dit fout doet!
+                    </p>
+                </div>
+
+                <div class="example-container" style="margin-top: 1.5rem;">
+                    <div class="example-label">Voorbeelden</div>
+                    <div class="example-sentence">
+                        Nella heeft haast, <span class="highlight">omdat</span> <strong>zij</strong> naar haar werk <strong>moet</strong>.
+                    </div>
+                    <div class="example-sentence">
+                        Ahmed wil Nederlands leren, <span class="highlight">omdat</span> <strong>hij</strong> in Nederland <strong>woont</strong>.
+                    </div>
+                    <div class="example-sentence">
+                        Hij hoopt <span class="highlight">dat</span> <strong>hij</strong> het examen <strong>haalt</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card exercise-card">
+                <div class="exercise-title">✏️ <span id="exercise-title-2">Oefening - Maak de zin af</span></div>
+                <div class="exercise-instruction" id="exercise-instr-2">Sleep de woorden in de juiste volgorde. Let op: het werkwoord gaat naar het einde!</div>
+                
+                <div class="exercise-counter" id="counter-cat2">Zin 1 van 20</div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="progress-label-2">Voortgang</span>
+                        <span id="progress-cat2">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill-cat2" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="sentence-builder" id="exercise-cat2">
+                    <div class="sentence-prompt" id="prompt-cat2"></div>
+                    <div class="drop-zone" id="dropzone-cat2"></div>
+                    <div class="word-bank" id="wordbank-cat2"></div>
+                </div>
+
+                <div class="feedback" id="feedback-cat2">
+                    <span class="feedback-icon"></span>
+                    <span class="feedback-text"></span>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="checkAnswer(2)">Controleer</button>
+                    <button class="btn btn-secondary" onclick="resetExercise(2)">Opnieuw</button>
+                    <button class="btn btn-secondary" onclick="prevExercise(2)">← Vorige</button>
+                    <button class="btn btn-secondary" onclick="nextExercise(2)">Volgende →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIE 3: DAAROM / GELUKKIG / NU -->
+        <section id="cat3" class="category-section cat3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📕</div>
+                    <h2>Daarom / Gelukkig / Nu</h2>
+                </div>
+                
+                <div class="formula-box">
+                    <span class="formula-part">HOOFDZIN.</span>
+                    <span class="formula-part" style="background: var(--cat3); color: white;">Daarom/Gelukkig/Nu</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="border: 2px solid var(--cat3);">WERKWOORD</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">ONDERWERP</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">REST</span>
+                </div>
+
+                <div class="explanation">
+                    <h4 id="cat3-rule-title">📌 De Regel</h4>
+                    <p id="cat3-rule">
+                        Na woorden als <strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> komt er <strong>INVERSIE</strong>:
+                        het werkwoord en het onderwerp wisselen van plaats! Eerst het werkwoord, dan het onderwerp.
+                        Dit gebeurt omdat deze woorden op positie 1 staan, en het werkwoord ALTIJD op positie 2 moet staan in het Nederlands.
+                    </p>
+                    <div class="explanation-translated" id="cat3-rule-translated"></div>
+                </div>
+
+                <div class="why-box">
+                    <h4 id="cat3-why-title">⚠️ Waarom moet je hierop letten?</h4>
+                    <p id="cat3-why">
+                        INVERSIE bestaat niet in veel talen! In het Nederlands staat het werkwoord ALTIJD op positie 2.
+                        Als je begint met "daarom" of "gelukkig", dan is DAT positie 1. Het werkwoord moet dan direct erna komen (positie 2).
+                        Dus: "Daarom GA IK..." en NIET "Daarom ik ga..."
+                    </p>
+                </div>
+
+                <div class="example-container" style="margin-top: 1.5rem;">
+                    <div class="example-label">Voorbeelden</div>
+                    <div class="example-sentence">
+                        De bus komt niet. <span class="highlight">Daarom</span> <strong>neem</strong> <strong>ik</strong> de fiets.
+                    </div>
+                    <div class="example-sentence">
+                        Het regent vandaag. <span class="highlight">Gelukkig</span> <strong>heb</strong> <strong>ik</strong> een paraplu.
+                    </div>
+                    <div class="example-sentence">
+                        Karim heeft te veel uitgegeven. <span class="highlight">Nu</span> <strong>heeft</strong> <strong>hij</strong> geen geld meer.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card exercise-card">
+                <div class="exercise-title">✏️ <span id="exercise-title-3">Oefening - Maak de zin af</span></div>
+                <div class="exercise-instruction" id="exercise-instr-3">Sleep de woorden in de juiste volgorde. Let op de inversie: werkwoord vóór onderwerp!</div>
+                
+                <div class="exercise-counter" id="counter-cat3">Zin 1 van 20</div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="progress-label-3">Voortgang</span>
+                        <span id="progress-cat3">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill-cat3" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="sentence-builder" id="exercise-cat3">
+                    <div class="sentence-prompt" id="prompt-cat3"></div>
+                    <div class="drop-zone" id="dropzone-cat3"></div>
+                    <div class="word-bank" id="wordbank-cat3"></div>
+                </div>
+
+                <div class="feedback" id="feedback-cat3">
+                    <span class="feedback-icon"></span>
+                    <span class="feedback-text"></span>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="checkAnswer(3)">Controleer</button>
+                    <button class="btn btn-secondary" onclick="resetExercise(3)">Opnieuw</button>
+                    <button class="btn btn-secondary" onclick="prevExercise(3)">← Vorige</button>
+                    <button class="btn btn-secondary" onclick="nextExercise(3)">Volgende →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIE 4: OM ... TE -->
+        <section id="cat4" class="category-section cat4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📘</div>
+                    <h2>Om ... te + infinitief</h2>
+                </div>
+                
+                <div class="formula-box">
+                    <span class="formula-part">HOOFDZIN</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="background: var(--cat4); color: var(--dark);">om</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part">REST</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="background: var(--cat4); color: var(--dark);">te</span>
+                    <span class="formula-arrow">+</span>
+                    <span class="formula-part" style="border: 2px solid var(--cat4);">INFINITIEF</span>
+                </div>
+
+                <div class="explanation">
+                    <h4 id="cat4-rule-title">📌 De Regel</h4>
+                    <p id="cat4-rule">
+                        De constructie <strong>om ... te + infinitief</strong> gebruik je om een <strong>DOEL</strong> aan te geven.
+                        "Te" + het hele werkwoord (infinitief) staat aan het <strong>EINDE</strong> van de zin.
+                        Let op: de infinitief is de basisvorm van het werkwoord (werken, lopen, eten, etc.).
+                    </p>
+                    <div class="explanation-translated" id="cat4-rule-translated"></div>
+                </div>
+
+                <div class="why-box">
+                    <h4 id="cat4-why-title">⚠️ Waarom moet je hierop letten?</h4>
+                    <p id="cat4-why">
+                        Deze constructie is speciaal: je hebt "om" aan het begin en "te + werkwoord" aan het einde.
+                        Vergeet "te" niet! "Ik ga naar de winkel om boodschappen doen" is FOUT.
+                        Het moet zijn: "Ik ga naar de winkel om boodschappen TE DOEN."
+                    </p>
+                </div>
+
+                <div class="example-container" style="margin-top: 1.5rem;">
+                    <div class="example-label">Voorbeelden</div>
+                    <div class="example-sentence">
+                        Hij gaat naar de supermarkt <span class="highlight">om</span> boodschappen <span class="highlight">te</span> <strong>doen</strong>.
+                    </div>
+                    <div class="example-sentence">
+                        Ik drink koffie <span class="highlight">om</span> wakker <span class="highlight">te</span> <strong>worden</strong>.
+                    </div>
+                    <div class="example-sentence">
+                        Ze spaart geld <span class="highlight">om</span> een auto <span class="highlight">te</span> <strong>kopen</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card exercise-card">
+                <div class="exercise-title">✏️ <span id="exercise-title-4">Oefening - Maak de zin af</span></div>
+                <div class="exercise-instruction" id="exercise-instr-4">Sleep de woorden in de juiste volgorde. Let op: te + infinitief aan het einde!</div>
+                
+                <div class="exercise-counter" id="counter-cat4">Zin 1 van 20</div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="progress-label-4">Voortgang</span>
+                        <span id="progress-cat4">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill-cat4" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="sentence-builder" id="exercise-cat4">
+                    <div class="sentence-prompt" id="prompt-cat4"></div>
+                    <div class="drop-zone" id="dropzone-cat4"></div>
+                    <div class="word-bank" id="wordbank-cat4"></div>
+                </div>
+
+                <div class="feedback" id="feedback-cat4">
+                    <span class="feedback-icon"></span>
+                    <span class="feedback-text"></span>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="checkAnswer(4)">Controleer</button>
+                    <button class="btn btn-secondary" onclick="resetExercise(4)">Opnieuw</button>
+                    <button class="btn btn-secondary" onclick="prevExercise(4)">← Vorige</button>
+                    <button class="btn btn-secondary" onclick="nextExercise(4)">Volgende →</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="score-display">
+            <div class="score-number" id="total-score">0/80</div>
+            <div class="score-label" id="score-label">Totale Score</div>
+        </div>
+    </div>
+
+    <script>
+        // Current language
+        let currentLang = 'nl';
+
+        // Translations
+        const translations = {
+            nl: {
+                introTitle: "🎯 Waarom is dit belangrijk?",
+                introText1: "In het Nederlands verandert de woordvolgorde afhankelijk van welk woord je gebruikt om zinnen te verbinden. Dit is anders dan in veel andere talen! Als je dit niet goed doet, klinkt je Nederlands niet natuurlijk.",
+                introText2: "Er zijn <strong>4 verschillende structuren</strong> die je moet leren herkennen en gebruiken:",
+                introLi1: "<strong>Want/Maar/Dus</strong> → normale volgorde (makkelijk!)",
+                introLi2: "<strong>Omdat/Dat</strong> → werkwoord naar het EINDE",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> → werkwoord en onderwerp WISSELEN (inversie)",
+                introLi4: "<strong>Om...te</strong> → \"te + werkwoord\" aan het EINDE",
+                introTip: "Vraag jezelf ALTIJD af: \"Welk verbindingswoord gebruik ik?\" en pas dan de juiste structuur toe. Oefenen, oefenen, oefenen!",
+                cat1Rule: "Na <strong>want</strong>, <strong>maar</strong> en <strong>dus</strong> verandert er NIETS aan de woordvolgorde. De zin blijft normaal: eerst het onderwerp, dan het werkwoord, dan de rest. Dit zijn <strong>nevenschikkende voegwoorden</strong> - ze verbinden twee gelijke zinnen.",
+                cat1Why: "Dit is de makkelijkste categorie, maar let op: veel studenten verwarren \"want\" met \"omdat\". Bij \"want\" blijft alles normaal, bij \"omdat\" gaat het werkwoord naar het einde. Kies het juiste woord en pas de juiste structuur toe!",
+                cat2Rule: "Na <strong>omdat</strong> en <strong>dat</strong> gaat het werkwoord naar het <strong>EINDE</strong> van de zin. Dit zijn <strong>onderschikkende voegwoorden</strong> - de tweede zin is afhankelijk van de eerste. Let op: als er twee werkwoorden zijn, gaan ze ALLEBEI naar het einde!",
+                cat2Why: "Dit is de MOEILIJKSTE regel voor veel studenten! In jouw taal staat het werkwoord misschien altijd op dezelfde plek. In het Nederlands MOET het werkwoord naar het einde na \"omdat\" en \"dat\". Vergeet dit niet - Nederlanders horen het meteen als je dit fout doet!",
+                cat3Rule: "Na woorden als <strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> komt er <strong>INVERSIE</strong>: het werkwoord en het onderwerp wisselen van plaats! Eerst het werkwoord, dan het onderwerp. Dit gebeurt omdat deze woorden op positie 1 staan, en het werkwoord ALTIJD op positie 2 moet staan in het Nederlands.",
+                cat3Why: "INVERSIE bestaat niet in veel talen! In het Nederlands staat het werkwoord ALTIJD op positie 2. Als je begint met \"daarom\" of \"gelukkig\", dan is DAT positie 1. Het werkwoord moet dan direct erna komen (positie 2). Dus: \"Daarom GA IK...\" en NIET \"Daarom ik ga...\"",
+                cat4Rule: "De constructie <strong>om ... te + infinitief</strong> gebruik je om een <strong>DOEL</strong> aan te geven. \"Te\" + het hele werkwoord (infinitief) staat aan het <strong>EINDE</strong> van de zin. Let op: de infinitief is de basisvorm van het werkwoord (werken, lopen, eten, etc.).",
+                cat4Why: "Deze constructie is speciaal: je hebt \"om\" aan het begin en \"te + werkwoord\" aan het einde. Vergeet \"te\" niet! \"Ik ga naar de winkel om boodschappen doen\" is FOUT. Het moet zijn: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 De Regel",
+                whyTitle: "⚠️ Waarom moet je hierop letten?",
+                exerciseTitle: "Oefening - Maak de zin af",
+                progress: "Voortgang",
+                check: "Controleer",
+                reset: "Opnieuw",
+                next: "Volgende →",
+                correct: "Goed gedaan! De zin is correct.",
+                incorrect: "Niet helemaal goed. Probeer opnieuw! Juiste antwoord: ",
+                totalScore: "Totale Score"
+            },
+            en: {
+                introTitle: "🎯 Why is this important?",
+                introText1: "In Dutch, word order changes depending on which word you use to connect sentences. This is different from many other languages! If you don't do this correctly, your Dutch won't sound natural.",
+                introText2: "There are <strong>4 different structures</strong> you need to learn to recognize and use:",
+                introLi1: "<strong>Want/Maar/Dus</strong> → normal order (easy!)",
+                introLi2: "<strong>Omdat/Dat</strong> → verb goes to the END",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> → verb and subject SWITCH (inversion)",
+                introLi4: "<strong>Om...te</strong> → \"te + verb\" at the END",
+                introTip: "ALWAYS ask yourself: \"Which connecting word am I using?\" and then apply the correct structure. Practice, practice, practice!",
+                cat1Rule: "After <strong>want</strong>, <strong>maar</strong> and <strong>dus</strong>, NOTHING changes in the word order. The sentence stays normal: first the subject, then the verb, then the rest. These are <strong>coordinating conjunctions</strong> - they connect two equal sentences.",
+                cat1Why: "This is the easiest category, but watch out: many students confuse \"want\" with \"omdat\". With \"want\" everything stays normal, with \"omdat\" the verb goes to the end. Choose the right word and apply the correct structure!",
+                cat2Rule: "After <strong>omdat</strong> and <strong>dat</strong>, the verb goes to the <strong>END</strong> of the sentence. These are <strong>subordinating conjunctions</strong> - the second sentence depends on the first. Note: if there are two verbs, they BOTH go to the end!",
+                cat2Why: "This is the HARDEST rule for many students! In your language, the verb might always stay in the same place. In Dutch, the verb MUST go to the end after \"omdat\" and \"dat\". Don't forget this - Dutch people hear it immediately when you make this mistake!",
+                cat3Rule: "After words like <strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> there is <strong>INVERSION</strong>: the verb and subject switch places! First the verb, then the subject. This happens because these words are in position 1, and the verb must ALWAYS be in position 2 in Dutch.",
+                cat3Why: "INVERSION doesn't exist in many languages! In Dutch, the verb is ALWAYS in position 2. If you start with \"daarom\" or \"gelukkig\", then THAT is position 1. The verb must come directly after (position 2). So: \"Daarom GA IK...\" and NOT \"Daarom ik ga...\"",
+                cat4Rule: "The construction <strong>om ... te + infinitive</strong> is used to indicate a <strong>PURPOSE/GOAL</strong>. \"Te\" + the full verb (infinitive) goes at the <strong>END</strong> of the sentence. Note: the infinitive is the base form of the verb (werken, lopen, eten, etc.).",
+                cat4Why: "This construction is special: you have \"om\" at the beginning and \"te + verb\" at the end. Don't forget \"te\"! \"Ik ga naar de winkel om boodschappen doen\" is WRONG. It must be: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 The Rule",
+                whyTitle: "⚠️ Why should you pay attention to this?",
+                exerciseTitle: "Exercise - Complete the sentence",
+                progress: "Progress",
+                check: "Check",
+                reset: "Reset",
+                next: "Next →",
+                correct: "Well done! The sentence is correct.",
+                incorrect: "Not quite right. Try again! Correct answer: ",
+                totalScore: "Total Score"
+            },
+            tr: {
+                introTitle: "🎯 Bu neden önemli?",
+                introText1: "Hollandaca'da cümleleri bağlamak için kullandığınız kelimeye bağlı olarak kelime sırası değişir. Bu birçok dilden farklıdır! Bunu doğru yapmazsanız, Hollandacanız doğal gelmez.",
+                introText2: "Tanımayı ve kullanmayı öğrenmeniz gereken <strong>4 farklı yapı</strong> var:",
+                introLi1: "<strong>Want/Maar/Dus</strong> → normal sıra (kolay!)",
+                introLi2: "<strong>Omdat/Dat</strong> → fiil SONA gider",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> → fiil ve özne YER DEĞİŞTİRİR (devrik)",
+                introLi4: "<strong>Om...te</strong> → \"te + fiil\" SONDA",
+                introTip: "KENDİNİZE HER ZAMAN SORUN: \"Hangi bağlaç kullanıyorum?\" ve sonra doğru yapıyı uygulayın. Pratik, pratik, pratik!",
+                cat1Rule: "<strong>want</strong>, <strong>maar</strong> ve <strong>dus</strong>'tan sonra kelime sırasında HİÇBİR ŞEY değişmez. Cümle normal kalır: önce özne, sonra fiil, sonra geri kalanı. Bunlar <strong>sıralı bağlaçlardır</strong> - iki eşit cümleyi birleştirir.",
+                cat1Why: "Bu en kolay kategori, ama dikkat edin: birçok öğrenci \"want\" ile \"omdat\"ı karıştırır. \"Want\" ile her şey normal kalır, \"omdat\" ile fiil sona gider. Doğru kelimeyi seçin ve doğru yapıyı uygulayın!",
+                cat2Rule: "<strong>omdat</strong> ve <strong>dat</strong>'tan sonra fiil cümlenin <strong>SONUNA</strong> gider. Bunlar <strong>yan cümle bağlaçlarıdır</strong> - ikinci cümle birincisine bağlıdır. Not: iki fiil varsa, İKİSİ DE sona gider!",
+                cat2Why: "Bu birçok öğrenci için EN ZOR kuraldır! Sizin dilinizde fiil belki hep aynı yerde kalır. Hollandaca'da fiil \"omdat\" ve \"dat\"tan sonra MUTLAKA sona gitmeli. Bunu unutmayın - Hollandalılar bunu yanlış yaptığınızda hemen duyar!",
+                cat3Rule: "<strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> gibi kelimelerden sonra <strong>DEVRİK CÜMLE</strong> gelir: fiil ve özne yer değiştirir! Önce fiil, sonra özne. Bu, bu kelimelerin 1. pozisyonda olması ve Hollandaca'da fiilin HER ZAMAN 2. pozisyonda olması gerektiği için olur.",
+                cat3Why: "DEVRİK CÜMLE birçok dilde yok! Hollandaca'da fiil HER ZAMAN 2. pozisyondadır. \"Daarom\" veya \"gelukkig\" ile başlarsanız, O 1. pozisyondur. Fiil hemen sonra gelmeli (2. pozisyon). Yani: \"Daarom GA IK...\" ve \"Daarom ik ga...\" DEĞİL",
+                cat4Rule: "<strong>om ... te + mastar</strong> yapısı bir <strong>AMAÇ</strong> belirtmek için kullanılır. \"Te\" + tam fiil (mastar) cümlenin <strong>SONUNDA</strong> olur. Not: mastar fiilin temel şeklidir (werken, lopen, eten, vb.).",
+                cat4Why: "Bu yapı özeldir: başta \"om\" ve sonda \"te + fiil\" var. \"Te\"yi unutmayın! \"Ik ga naar de winkel om boodschappen doen\" YANLIŞ. Şöyle olmalı: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 Kural",
+                whyTitle: "⚠️ Buna neden dikkat etmelisiniz?",
+                exerciseTitle: "Alıştırma - Cümleyi tamamlayın",
+                progress: "İlerleme",
+                check: "Kontrol Et",
+                reset: "Sıfırla",
+                next: "Sonraki →",
+                correct: "Aferin! Cümle doğru.",
+                incorrect: "Tam doğru değil. Tekrar deneyin! Doğru cevap: ",
+                totalScore: "Toplam Puan"
+            },
+            th: {
+                introTitle: "🎯 ทำไมเรื่องนี้ถึงสำคัญ?",
+                introText1: "ในภาษาดัตช์ ลำดับคำจะเปลี่ยนไปขึ้นอยู่กับคำที่คุณใช้เชื่อมประโยค ซึ่งแตกต่างจากหลายภาษา! ถ้าคุณทำไม่ถูกต้อง ภาษาดัตช์ของคุณจะฟังดูไม่เป็นธรรมชาติ",
+                introText2: "มี<strong>โครงสร้าง 4 แบบ</strong>ที่คุณต้องเรียนรู้ที่จะจำแนกและใช้:",
+                introLi1: "<strong>Want/Maar/Dus</strong> → ลำดับปกติ (ง่าย!)",
+                introLi2: "<strong>Omdat/Dat</strong> → กริยาไปอยู่ท้ายประโยค",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> → กริยาและประธานสลับที่ (การกลับ)",
+                introLi4: "<strong>Om...te</strong> → \"te + กริยา\" อยู่ท้ายประโยค",
+                introTip: "ถามตัวเองเสมอว่า: \"ฉันใช้คำเชื่อมอะไร?\" แล้วใช้โครงสร้างที่ถูกต้อง ฝึก ฝึก ฝึก!",
+                cat1Rule: "หลังจาก <strong>want</strong>, <strong>maar</strong> และ <strong>dus</strong> ลำดับคำไม่เปลี่ยนแปลง ประโยคยังคงปกติ: ประธานก่อน แล้วกริยา แล้วส่วนที่เหลือ เหล่านี้คือ<strong>คำสันธานเชื่อมประโยค</strong> - เชื่อมสองประโยคที่เท่าเทียมกัน",
+                cat1Why: "นี่คือหมวดที่ง่ายที่สุด แต่ระวัง: นักเรียนหลายคนสับสน \"want\" กับ \"omdat\" กับ \"want\" ทุกอย่างยังคงปกติ กับ \"omdat\" กริยาไปอยู่ท้าย เลือกคำที่ถูกต้องและใช้โครงสร้างที่ถูกต้อง!",
+                cat2Rule: "หลังจาก <strong>omdat</strong> และ <strong>dat</strong> กริยาจะไปอยู่<strong>ท้าย</strong>ประโยค เหล่านี้คือ<strong>คำสันธานอนุประโยค</strong> - ประโยคที่สองขึ้นอยู่กับประโยคแรก หมายเหตุ: ถ้ามีกริยาสองตัว ทั้งสองไปอยู่ท้าย!",
+                cat2Why: "นี่คือกฎที่ยากที่สุดสำหรับนักเรียนหลายคน! ในภาษาของคุณ กริยาอาจอยู่ที่เดิมเสมอ ในภาษาดัตช์ กริยาต้องไปอยู่ท้ายหลัง \"omdat\" และ \"dat\" อย่าลืมเรื่องนี้ - คนดัตช์จะได้ยินทันทีเมื่อคุณทำผิด!",
+                cat3Rule: "หลังจากคำเช่น <strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> จะมี<strong>การกลับ</strong>: กริยาและประธานสลับที่! กริยาก่อน แล้วประธาน เกิดขึ้นเพราะคำเหล่านี้อยู่ตำแหน่ง 1 และกริยาต้องอยู่ตำแหน่ง 2 เสมอในภาษาดัตช์",
+                cat3Why: "การกลับไม่มีในหลายภาษา! ในภาษาดัตช์ กริยาอยู่ตำแหน่ง 2 เสมอ ถ้าคุณเริ่มด้วย \"daarom\" หรือ \"gelukkig\" นั่นคือตำแหน่ง 1 กริยาต้องมาทันทีหลังจากนั้น (ตำแหน่ง 2) ดังนั้น: \"Daarom GA IK...\" ไม่ใช่ \"Daarom ik ga...\"",
+                cat4Rule: "โครงสร้าง <strong>om ... te + infinitive</strong> ใช้เพื่อบอก<strong>จุดประสงค์</strong> \"Te\" + กริยาเต็ม (infinitive) อยู่<strong>ท้าย</strong>ประโยค หมายเหตุ: infinitive คือรูปพื้นฐานของกริยา (werken, lopen, eten ฯลฯ)",
+                cat4Why: "โครงสร้างนี้พิเศษ: มี \"om\" ที่ต้นและ \"te + กริยา\" ที่ท้าย อย่าลืม \"te\"! \"Ik ga naar de winkel om boodschappen doen\" ผิด ต้องเป็น: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 กฎ",
+                whyTitle: "⚠️ ทำไมคุณควรใส่ใจเรื่องนี้?",
+                exerciseTitle: "แบบฝึกหัด - ทำประโยคให้สมบูรณ์",
+                progress: "ความคืบหน้า",
+                check: "ตรวจสอบ",
+                reset: "รีเซ็ต",
+                next: "ถัดไป →",
+                correct: "เก่งมาก! ประโยคถูกต้อง",
+                incorrect: "ยังไม่ถูกต้อง ลองอีกครั้ง! คำตอบที่ถูก: ",
+                totalScore: "คะแนนรวม"
+            },
+            vi: {
+                introTitle: "🎯 Tại sao điều này quan trọng?",
+                introText1: "Trong tiếng Hà Lan, trật tự từ thay đổi tùy thuộc vào từ bạn sử dụng để nối câu. Điều này khác với nhiều ngôn ngữ khác! Nếu bạn không làm đúng, tiếng Hà Lan của bạn sẽ không tự nhiên.",
+                introText2: "Có <strong>4 cấu trúc khác nhau</strong> bạn cần học cách nhận biết và sử dụng:",
+                introLi1: "<strong>Want/Maar/Dus</strong> → trật tự bình thường (dễ!)",
+                introLi2: "<strong>Omdat/Dat</strong> → động từ đi đến CUỐI",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> → động từ và chủ ngữ ĐỔI CHỖ (đảo ngữ)",
+                introLi4: "<strong>Om...te</strong> → \"te + động từ\" ở CUỐI",
+                introTip: "LUÔN tự hỏi: \"Tôi đang dùng từ nối nào?\" rồi áp dụng cấu trúc đúng. Luyện tập, luyện tập, luyện tập!",
+                cat1Rule: "Sau <strong>want</strong>, <strong>maar</strong> và <strong>dus</strong>, KHÔNG có gì thay đổi trong trật tự từ. Câu vẫn bình thường: chủ ngữ trước, rồi động từ, rồi phần còn lại. Đây là <strong>liên từ đẳng lập</strong> - nối hai câu ngang hàng.",
+                cat1Why: "Đây là loại dễ nhất, nhưng cẩn thận: nhiều học sinh nhầm \"want\" với \"omdat\". Với \"want\" mọi thứ vẫn bình thường, với \"omdat\" động từ đi đến cuối. Chọn từ đúng và áp dụng cấu trúc đúng!",
+                cat2Rule: "Sau <strong>omdat</strong> và <strong>dat</strong>, động từ đi đến <strong>CUỐI</strong> câu. Đây là <strong>liên từ phụ thuộc</strong> - câu thứ hai phụ thuộc vào câu đầu. Lưu ý: nếu có hai động từ, CẢ HAI đều đi đến cuối!",
+                cat2Why: "Đây là quy tắc KHÓ NHẤT cho nhiều học sinh! Trong ngôn ngữ của bạn, động từ có thể luôn ở cùng một vị trí. Trong tiếng Hà Lan, động từ PHẢI đi đến cuối sau \"omdat\" và \"dat\". Đừng quên điều này - người Hà Lan nghe ngay khi bạn làm sai!",
+                cat3Rule: "Sau các từ như <strong>daarom</strong>, <strong>gelukkig</strong>, <strong>nu</strong>, <strong>helaas</strong>, <strong>toen</strong> có <strong>ĐẢO NGỮ</strong>: động từ và chủ ngữ đổi chỗ! Động từ trước, rồi chủ ngữ. Điều này xảy ra vì những từ này ở vị trí 1, và động từ LUÔN phải ở vị trí 2 trong tiếng Hà Lan.",
+                cat3Why: "ĐẢO NGỮ không có trong nhiều ngôn ngữ! Trong tiếng Hà Lan, động từ LUÔN ở vị trí 2. Nếu bạn bắt đầu với \"daarom\" hoặc \"gelukkig\", ĐÓ là vị trí 1. Động từ phải đến ngay sau (vị trí 2). Vậy: \"Daarom GA IK...\" và KHÔNG PHẢI \"Daarom ik ga...\"",
+                cat4Rule: "Cấu trúc <strong>om ... te + nguyên thể</strong> dùng để chỉ <strong>MỤC ĐÍCH</strong>. \"Te\" + động từ đầy đủ (nguyên thể) ở <strong>CUỐI</strong> câu. Lưu ý: nguyên thể là dạng cơ bản của động từ (werken, lopen, eten, v.v.).",
+                cat4Why: "Cấu trúc này đặc biệt: có \"om\" ở đầu và \"te + động từ\" ở cuối. Đừng quên \"te\"! \"Ik ga naar de winkel om boodschappen doen\" là SAI. Phải là: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 Quy tắc",
+                whyTitle: "⚠️ Tại sao bạn cần chú ý điều này?",
+                exerciseTitle: "Bài tập - Hoàn thành câu",
+                progress: "Tiến độ",
+                check: "Kiểm tra",
+                reset: "Làm lại",
+                next: "Tiếp theo →",
+                correct: "Tuyệt vời! Câu đúng rồi.",
+                incorrect: "Chưa đúng. Thử lại! Đáp án đúng: ",
+                totalScore: "Tổng điểm"
+            },
+            fa: {
+                introTitle: "🎯 چرا این مهم است؟",
+                introText1: "در زبان هلندی، ترتیب کلمات بسته به کلمه‌ای که برای اتصال جملات استفاده می‌کنید تغییر می‌کند. این با بسیاری از زبان‌ها متفاوت است! اگر این کار را درست انجام ندهید، هلندی شما طبیعی به نظر نمی‌رسد.",
+                introText2: "<strong>۴ ساختار مختلف</strong> وجود دارد که باید یاد بگیرید تشخیص دهید و استفاده کنید:",
+                introLi1: "<strong>Want/Maar/Dus</strong> ← ترتیب عادی (آسان!)",
+                introLi2: "<strong>Omdat/Dat</strong> ← فعل به انتها می‌رود",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> ← فعل و فاعل جا عوض می‌کنند (وارونگی)",
+                introLi4: "<strong>Om...te</strong> ← \"te + فعل\" در انتها",
+                introTip: "همیشه از خودتان بپرسید: «از کدام کلمه ربط استفاده می‌کنم؟» و سپس ساختار درست را به کار ببرید. تمرین، تمرین، تمرین!",
+                cat1Rule: "بعد از <strong>want</strong>، <strong>maar</strong> و <strong>dus</strong>، هیچ چیز در ترتیب کلمات تغییر نمی‌کند. جمله عادی می‌ماند: اول فاعل، بعد فعل، بعد بقیه. اینها <strong>حروف ربط هم‌پایه</strong> هستند - دو جمله برابر را به هم وصل می‌کنند.",
+                cat1Why: "این آسان‌ترین دسته است، اما مراقب باشید: بسیاری از دانش‌آموزان \"want\" را با \"omdat\" اشتباه می‌گیرند. با \"want\" همه چیز عادی می‌ماند، با \"omdat\" فعل به انتها می‌رود. کلمه درست را انتخاب کنید و ساختار درست را به کار ببرید!",
+                cat2Rule: "بعد از <strong>omdat</strong> و <strong>dat</strong>، فعل به <strong>انتهای</strong> جمله می‌رود. اینها <strong>حروف ربط وابسته</strong> هستند - جمله دوم به جمله اول وابسته است. توجه: اگر دو فعل وجود داشته باشد، هر دو به انتها می‌روند!",
+                cat2Why: "این سخت‌ترین قانون برای بسیاری از دانش‌آموزان است! در زبان شما، فعل شاید همیشه در همان جا بماند. در هلندی، فعل باید بعد از \"omdat\" و \"dat\" به انتها برود. این را فراموش نکنید - هلندی‌ها فوراً متوجه می‌شوند وقتی این اشتباه را می‌کنید!",
+                cat3Rule: "بعد از کلماتی مثل <strong>daarom</strong>، <strong>gelukkig</strong>، <strong>nu</strong>، <strong>helaas</strong>، <strong>toen</strong> <strong>وارونگی</strong> می‌آید: فعل و فاعل جا عوض می‌کنند! اول فعل، بعد فاعل. این اتفاق می‌افتد چون این کلمات در جایگاه ۱ هستند و فعل همیشه باید در جایگاه ۲ باشد در هلندی.",
+                cat3Why: "وارونگی در بسیاری از زبان‌ها وجود ندارد! در هلندی، فعل همیشه در جایگاه ۲ است. اگر با \"daarom\" یا \"gelukkig\" شروع کنید، آن جایگاه ۱ است. فعل باید بلافاصله بعد بیاید (جایگاه ۲). پس: \"Daarom GA IK...\" و نه \"Daarom ik ga...\"",
+                cat4Rule: "ساختار <strong>om ... te + مصدر</strong> برای نشان دادن <strong>هدف</strong> استفاده می‌شود. \"Te\" + فعل کامل (مصدر) در <strong>انتهای</strong> جمله می‌آید. توجه: مصدر شکل پایه فعل است (werken, lopen, eten و غیره).",
+                cat4Why: "این ساختار خاص است: \"om\" در ابتدا و \"te + فعل\" در انتها دارید. \"te\" را فراموش نکنید! \"Ik ga naar de winkel om boodschappen doen\" اشتباه است. باید باشد: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 قانون",
+                whyTitle: "⚠️ چرا باید به این توجه کنید؟",
+                exerciseTitle: "تمرین - جمله را کامل کنید",
+                progress: "پیشرفت",
+                check: "بررسی",
+                reset: "دوباره",
+                next: "بعدی ←",
+                correct: "آفرین! جمله درست است.",
+                incorrect: "کاملاً درست نیست. دوباره تلاش کنید! جواب درست: ",
+                totalScore: "امتیاز کل"
+            },
+            dar: {
+                introTitle: "🎯 چرا این مهم است؟",
+                introText1: "در زبان هالندی، ترتیب کلمات بسته به کلمه‌ای که برای وصل کردن جمله‌ها استفاده می‌کنید تغییر می‌کند. این با بسیاری از زبان‌ها فرق دارد! اگر این کار را درست انجام ندهید، هالندی شما طبیعی به نظر نمی‌رسد.",
+                introText2: "<strong>۴ ساختار مختلف</strong> است که باید یاد بگیرید بشناسید و استفاده کنید:",
+                introLi1: "<strong>Want/Maar/Dus</strong> ← ترتیب عادی (آسان!)",
+                introLi2: "<strong>Omdat/Dat</strong> ← فعل به آخر می‌رود",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> ← فعل و فاعل جای شان را عوض می‌کنند",
+                introLi4: "<strong>Om...te</strong> ← \"te + فعل\" در آخر",
+                introTip: "همیشه از خود بپرسید: «کدام کلمه ربط را استفاده می‌کنم؟» و بعد ساختار درست را به کار ببرید. تمرین، تمرین، تمرین!",
+                cat1Rule: "بعد از <strong>want</strong>، <strong>maar</strong> و <strong>dus</strong>، هیچ چیز در ترتیب کلمات تغییر نمی‌کند. جمله عادی می‌ماند: اول فاعل، بعد فعل، بعد باقی. اینها <strong>حروف ربط هم‌پایه</strong> هستند.",
+                cat1Why: "این آسان‌ترین دسته است، اما مواظب باشید: بسیاری از شاگردان \"want\" را با \"omdat\" اشتباه می‌گیرند. با \"want\" همه چیز عادی می‌ماند، با \"omdat\" فعل به آخر می‌رود.",
+                cat2Rule: "بعد از <strong>omdat</strong> و <strong>dat</strong>، فعل به <strong>آخر</strong> جمله می‌رود. اینها <strong>حروف ربط وابسته</strong> هستند. توجه: اگر دو فعل باشد، هر دو به آخر می‌روند!",
+                cat2Why: "این سخت‌ترین قاعده برای بسیاری از شاگردان است! در زبان شما، فعل شاید همیشه در همان جا بماند. در هالندی، فعل باید بعد از \"omdat\" و \"dat\" به آخر برود.",
+                cat3Rule: "بعد از کلماتی مثل <strong>daarom</strong>، <strong>gelukkig</strong>، <strong>nu</strong> <strong>جابجایی</strong> می‌آید: فعل و فاعل جای شان را عوض می‌کنند! اول فعل، بعد فاعل.",
+                cat3Why: "جابجایی در بسیاری از زبان‌ها نیست! در هالندی، فعل همیشه در جایگاه ۲ است. پس: \"Daarom GA IK...\" و نه \"Daarom ik ga...\"",
+                cat4Rule: "ساختار <strong>om ... te + مصدر</strong> برای نشان دادن <strong>هدف</strong> استفاده می‌شود. \"Te\" + فعل کامل در <strong>آخر</strong> جمله می‌آید.",
+                cat4Why: "این ساختار خاص است: \"om\" در اول و \"te + فعل\" در آخر. \"te\" را فراموش نکنید!",
+                ruleTitle: "📌 قاعده",
+                whyTitle: "⚠️ چرا باید به این توجه کنید؟",
+                exerciseTitle: "تمرین - جمله را تکمیل کنید",
+                progress: "پیشرفت",
+                check: "بررسی",
+                reset: "دوباره",
+                next: "بعدی ←",
+                correct: "آفرین! جمله درست است.",
+                incorrect: "کاملاً درست نیست. دوباره کوشش کنید! جواب درست: ",
+                totalScore: "نمره کل"
+            },
+            ar: {
+                introTitle: "🎯 لماذا هذا مهم؟",
+                introText1: "في اللغة الهولندية، يتغير ترتيب الكلمات حسب الكلمة التي تستخدمها لربط الجمل. هذا مختلف عن كثير من اللغات! إذا لم تفعل هذا بشكل صحيح، لن تبدو هولنديتك طبيعية.",
+                introText2: "هناك <strong>٤ هياكل مختلفة</strong> يجب أن تتعلم التعرف عليها واستخدامها:",
+                introLi1: "<strong>Want/Maar/Dus</strong> ← ترتيب عادي (سهل!)",
+                introLi2: "<strong>Omdat/Dat</strong> ← الفعل يذهب إلى النهاية",
+                introLi3: "<strong>Daarom/Gelukkig/Nu</strong> ← الفعل والفاعل يتبادلان (انعكاس)",
+                introLi4: "<strong>Om...te</strong> ← \"te + فعل\" في النهاية",
+                introTip: "اسأل نفسك دائماً: \"أي كلمة ربط أستخدم؟\" ثم طبق الهيكل الصحيح. تدرب، تدرب، تدرب!",
+                cat1Rule: "بعد <strong>want</strong> و<strong>maar</strong> و<strong>dus</strong>، لا شيء يتغير في ترتيب الكلمات. الجملة تبقى عادية: الفاعل أولاً، ثم الفعل، ثم الباقي. هذه <strong>أدوات ربط تنسيقية</strong> - تربط جملتين متساويتين.",
+                cat1Why: "هذه أسهل فئة، لكن انتبه: كثير من الطلاب يخلطون بين \"want\" و\"omdat\". مع \"want\" كل شيء يبقى عادياً، مع \"omdat\" الفعل يذهب للنهاية. اختر الكلمة الصحيحة وطبق الهيكل الصحيح!",
+                cat2Rule: "بعد <strong>omdat</strong> و<strong>dat</strong>، الفعل يذهب إلى <strong>نهاية</strong> الجملة. هذه <strong>أدوات ربط تبعية</strong> - الجملة الثانية تعتمد على الأولى. ملاحظة: إذا كان هناك فعلان، كلاهما يذهبان للنهاية!",
+                cat2Why: "هذه أصعب قاعدة لكثير من الطلاب! في لغتك، ربما الفعل يبقى دائماً في نفس المكان. في الهولندية، الفعل يجب أن يذهب للنهاية بعد \"omdat\" و\"dat\". لا تنس هذا - الهولنديون يسمعون فوراً عندما تخطئ!",
+                cat3Rule: "بعد كلمات مثل <strong>daarom</strong>، <strong>gelukkig</strong>، <strong>nu</strong>، <strong>helaas</strong>، <strong>toen</strong> يأتي <strong>انعكاس</strong>: الفعل والفاعل يتبادلان المكان! الفعل أولاً، ثم الفاعل. هذا يحدث لأن هذه الكلمات في الموضع ١، والفعل يجب دائماً أن يكون في الموضع ٢ في الهولندية.",
+                cat3Why: "الانعكاس غير موجود في كثير من اللغات! في الهولندية، الفعل دائماً في الموضع ٢. إذا بدأت بـ\"daarom\" أو \"gelukkig\"، ذلك هو الموضع ١. الفعل يجب أن يأتي مباشرة بعده (الموضع ٢). إذن: \"Daarom GA IK...\" وليس \"Daarom ik ga...\"",
+                cat4Rule: "التركيب <strong>om ... te + مصدر</strong> يُستخدم للإشارة إلى <strong>الهدف</strong>. \"Te\" + الفعل الكامل (المصدر) يأتي في <strong>نهاية</strong> الجملة. ملاحظة: المصدر هو الشكل الأساسي للفعل (werken, lopen, eten، إلخ).",
+                cat4Why: "هذا التركيب خاص: لديك \"om\" في البداية و\"te + فعل\" في النهاية. لا تنس \"te\"! \"Ik ga naar de winkel om boodschappen doen\" خطأ. يجب أن يكون: \"Ik ga naar de winkel om boodschappen TE DOEN.\"",
+                ruleTitle: "📌 القاعدة",
+                whyTitle: "⚠️ لماذا يجب أن تنتبه لهذا؟",
+                exerciseTitle: "تمرين - أكمل الجملة",
+                progress: "التقدم",
+                check: "تحقق",
+                reset: "إعادة",
+                next: "التالي ←",
+                correct: "أحسنت! الجملة صحيحة.",
+                incorrect: "ليس صحيحاً تماماً. حاول مرة أخرى! الإجابة الصحيحة: ",
+                totalScore: "النتيجة الإجمالية"
+            }
+        };
+
+        // 20 exercises per category
+        const exercises = {
+            1: [
+                { prompt: 'We gaan niet naar het strand, <span class="hl">want</span> ...', words: ['het', 'regent', 'hard'], answer: ['het', 'regent', 'hard'] },
+                { prompt: 'Ik wil pizza eten, <span class="hl">maar</span> ...', words: ['heb', 'ik', 'geld', 'geen'], answer: ['ik', 'heb', 'geen', 'geld'] },
+                { prompt: 'De trein is weg, <span class="hl">dus</span> ...', words: ['een', 'nemen', 'we', 'taxi'], answer: ['we', 'nemen', 'een', 'taxi'] },
+                { prompt: 'Hij is ziek, <span class="hl">dus</span> ...', words: ['blijft', 'hij', 'thuis', 'vandaag'], answer: ['hij', 'blijft', 'vandaag', 'thuis'] },
+                { prompt: 'Ik hou van koffie, <span class="hl">maar</span> ...', words: ['thee', 'drink', 'ik', 'liever'], answer: ['ik', 'drink', 'liever', 'thee'] },
+                { prompt: 'Ze komt niet, <span class="hl">want</span> ...', words: ['ze', 'is', 'moe', 'heel'], answer: ['ze', 'is', 'heel', 'moe'] },
+                { prompt: 'Het is koud, <span class="hl">dus</span> ...', words: ['ik', 'aan', 'doe', 'jas', 'mijn'], answer: ['ik', 'doe', 'mijn', 'jas', 'aan'] },
+                { prompt: 'De winkel is dicht, <span class="hl">maar</span> ...', words: ['morgen', 'is', 'open', 'hij'], answer: ['hij', 'is', 'morgen', 'open'] },
+                { prompt: 'Ik ben moe, <span class="hl">want</span> ...', words: ['ik', 'heb', 'gewerkt', 'hard'], answer: ['ik', 'heb', 'hard', 'gewerkt'] },
+                { prompt: 'We hebben honger, <span class="hl">dus</span> ...', words: ['gaan', 'we', 'eten'], answer: ['we', 'gaan', 'eten'] },
+                { prompt: 'Hij spreekt Nederlands, <span class="hl">maar</span> ...', words: ['ook', 'hij', 'Engels', 'spreekt'], answer: ['hij', 'spreekt', 'ook', 'Engels'] },
+                { prompt: 'De bus is vol, <span class="hl">dus</span> ...', words: ['wachten', 'we', 'de', 'op', 'volgende'], answer: ['we', 'wachten', 'op', 'de', 'volgende'] },
+                { prompt: 'Ik heb geen auto, <span class="hl">dus</span> ...', words: ['de', 'neem', 'ik', 'fiets'], answer: ['ik', 'neem', 'de', 'fiets'] },
+                { prompt: 'Ze is slim, <span class="hl">maar</span> ...', words: ['ze', 'studeert', 'nooit'], answer: ['ze', 'studeert', 'nooit'] },
+                { prompt: 'Het regent, <span class="hl">maar</span> ...', words: ['ik', 'geen', 'heb', 'paraplu'], answer: ['ik', 'heb', 'geen', 'paraplu'] },
+                { prompt: 'De les is moeilijk, <span class="hl">want</span> ...', words: ['veel', 'is', 'er', 'grammatica'], answer: ['er', 'is', 'veel', 'grammatica'] },
+                { prompt: 'Ik wil slapen, <span class="hl">maar</span> ...', words: ['moet', 'ik', 'werken', 'nog'], answer: ['ik', 'moet', 'nog', 'werken'] },
+                { prompt: 'Hij komt later, <span class="hl">want</span> ...', words: ['hij', 'heeft', 'file'], answer: ['hij', 'heeft', 'file'] },
+                { prompt: 'De film is goed, <span class="hl">maar</span> ...', words: ['te', 'is', 'hij', 'lang'], answer: ['hij', 'is', 'te', 'lang'] },
+                { prompt: 'We gaan naar huis, <span class="hl">want</span> ...', words: ['laat', 'is', 'het'], answer: ['het', 'is', 'laat'] }
+            ],
+            2: [
+                { prompt: 'Ik ben moe, <span class="hl">omdat</span> ...', words: ['heb', 'ik', 'geslapen', 'niet'], answer: ['ik', 'niet', 'heb', 'geslapen'] },
+                { prompt: 'Hij hoopt <span class="hl">dat</span> ...', words: ['krijgt', 'hij', 'baan', 'de'], answer: ['hij', 'de', 'baan', 'krijgt'] },
+                { prompt: 'Ze is blij, <span class="hl">omdat</span> ...', words: ['geslaagd', 'is', 'ze'], answer: ['ze', 'geslaagd', 'is'] },
+                { prompt: 'Ik weet <span class="hl">dat</span> ...', words: ['bent', 'jij', 'slim'], answer: ['jij', 'slim', 'bent'] },
+                { prompt: 'Hij blijft thuis, <span class="hl">omdat</span> ...', words: ['ziek', 'is', 'hij'], answer: ['hij', 'ziek', 'is'] },
+                { prompt: 'Ze denkt <span class="hl">dat</span> ...', words: ['makkelijk', 'is', 'het'], answer: ['het', 'makkelijk', 'is'] },
+                { prompt: 'Ik ben blij, <span class="hl">omdat</span> ...', words: ['weekend', 'is', 'het'], answer: ['het', 'weekend', 'is'] },
+                { prompt: 'Hij zegt <span class="hl">dat</span> ...', words: ['komt', 'hij', 'morgen'], answer: ['hij', 'morgen', 'komt'] },
+                { prompt: 'We leren Nederlands, <span class="hl">omdat</span> ...', words: ['in', 'wonen', 'Nederland', 'we'], answer: ['we', 'in', 'Nederland', 'wonen'] },
+                { prompt: 'Ik geloof <span class="hl">dat</span> ...', words: ['gaat', 'goed', 'het'], answer: ['het', 'goed', 'gaat'] },
+                { prompt: 'Ze huilt, <span class="hl">omdat</span> ...', words: ['verdrietig', 'ze', 'is'], answer: ['ze', 'verdrietig', 'is'] },
+                { prompt: 'Hij weet <span class="hl">dat</span> ...', words: ['moet', 'werken', 'hij', 'hard'], answer: ['hij', 'hard', 'moet', 'werken'] },
+                { prompt: 'Ik ga niet, <span class="hl">omdat</span> ...', words: ['geen', 'heb', 'ik', 'tijd'], answer: ['ik', 'geen', 'tijd', 'heb'] },
+                { prompt: 'Ze hoopt <span class="hl">dat</span> ...', words: ['regent', 'niet', 'het'], answer: ['het', 'niet', 'regent'] },
+                { prompt: 'Hij studeert hard, <span class="hl">omdat</span> ...', words: ['wil', 'hij', 'slagen'], answer: ['hij', 'wil', 'slagen'] },
+                { prompt: 'Ik denk <span class="hl">dat</span> ...', words: ['hebben', 'gelijk', 'ze'], answer: ['ze', 'gelijk', 'hebben'] },
+                { prompt: 'We blijven binnen, <span class="hl">omdat</span> ...', words: ['buiten', 'koud', 'is', 'het'], answer: ['het', 'buiten', 'koud', 'is'] },
+                { prompt: 'Hij voelt <span class="hl">dat</span> ...', words: ['verandert', 'iets'], answer: ['iets', 'verandert'] },
+                { prompt: 'Ze eet niet, <span class="hl">omdat</span> ...', words: ['honger', 'geen', 'heeft', 'ze'], answer: ['ze', 'geen', 'honger', 'heeft'] },
+                { prompt: 'Ik hoop <span class="hl">dat</span> ...', words: ['lukt', 'het'], answer: ['het', 'lukt'] }
+            ],
+            3: [
+                { prompt: 'Ik heb hoofdpijn. <span class="hl">Daarom</span> ...', words: ['ik', 'ga', 'huis', 'naar'], answer: ['ga', 'ik', 'naar', 'huis'] },
+                { prompt: 'Het is koud buiten. <span class="hl">Gelukkig</span> ...', words: ['ik', 'heb', 'warme', 'een', 'jas'], answer: ['heb', 'ik', 'een', 'warme', 'jas'] },
+                { prompt: 'De winkel is dicht. <span class="hl">Nu</span> ...', words: ['we', 'wachten', 'moeten'], answer: ['moeten', 'we', 'wachten'] },
+                { prompt: 'Het regent hard. <span class="hl">Daarom</span> ...', words: ['we', 'blijven', 'binnen'], answer: ['blijven', 'we', 'binnen'] },
+                { prompt: 'Ik ben ziek. <span class="hl">Helaas</span> ...', words: ['ik', 'kan', 'komen', 'niet'], answer: ['kan', 'ik', 'niet', 'komen'] },
+                { prompt: 'De bus is weg. <span class="hl">Nu</span> ...', words: ['ik', 'moet', 'lopen'], answer: ['moet', 'ik', 'lopen'] },
+                { prompt: 'Hij werkt hard. <span class="hl">Daarom</span> ...', words: ['hij', 'is', 'moe'], answer: ['is', 'hij', 'moe'] },
+                { prompt: 'Het examen was moeilijk. <span class="hl">Gelukkig</span> ...', words: ['ik', 'ben', 'geslaagd'], answer: ['ben', 'ik', 'geslaagd'] },
+                { prompt: 'Ze heeft geen geld. <span class="hl">Daarom</span> ...', words: ['koopt', 'ze', 'niets'], answer: ['koopt', 'ze', 'niets'] },
+                { prompt: 'De trein is vol. <span class="hl">Helaas</span> ...', words: ['we', 'moeten', 'staan'], answer: ['moeten', 'we', 'staan'] },
+                { prompt: 'Het is feest. <span class="hl">Daarom</span> ...', words: ['zijn', 'er', 'mensen', 'veel'], answer: ['zijn', 'er', 'veel', 'mensen'] },
+                { prompt: 'Ik heb vakantie. <span class="hl">Nu</span> ...', words: ['ik', 'kan', 'uitrusten'], answer: ['kan', 'ik', 'uitrusten'] },
+                { prompt: 'De zon schijnt. <span class="hl">Gelukkig</span> ...', words: ['we', 'kunnen', 'buiten', 'zitten'], answer: ['kunnen', 'we', 'buiten', 'zitten'] },
+                { prompt: 'Hij is laat. <span class="hl">Daarom</span> ...', words: ['hij', 'rent', 'hard'], answer: ['rent', 'hij', 'hard'] },
+                { prompt: 'De computer is kapot. <span class="hl">Nu</span> ...', words: ['ik', 'kan', 'werken', 'niet'], answer: ['kan', 'ik', 'niet', 'werken'] },
+                { prompt: 'Ze heeft gewonnen. <span class="hl">Daarom</span> ...', words: ['ze', 'is', 'blij'], answer: ['is', 'ze', 'blij'] },
+                { prompt: 'Het eten is klaar. <span class="hl">Nu</span> ...', words: ['we', 'kunnen', 'eten'], answer: ['kunnen', 'we', 'eten'] },
+                { prompt: 'Ik spreek geen Chinees. <span class="hl">Helaas</span> ...', words: ['ik', 'begrijp', 'haar', 'niet'], answer: ['begrijp', 'ik', 'haar', 'niet'] },
+                { prompt: 'De film begint. <span class="hl">Nu</span> ...', words: ['we', 'moeten', 'stil', 'zijn'], answer: ['moeten', 'we', 'stil', 'zijn'] },
+                { prompt: 'Hij heeft gestudeerd. <span class="hl">Daarom</span> ...', words: ['hij', 'kent', 'het', 'antwoord'], answer: ['kent', 'hij', 'het', 'antwoord'] }
+            ],
+            4: [
+                { prompt: 'Ik ga naar de bibliotheek <span class="hl">om</span> ...', words: ['te', 'boeken', 'lenen'], answer: ['boeken', 'te', 'lenen'] },
+                { prompt: 'Hij werkt hard <span class="hl">om</span> ...', words: ['verdienen', 'te', 'geld'], answer: ['geld', 'te', 'verdienen'] },
+                { prompt: 'Ze gaat naar de sportschool <span class="hl">om</span> ...', words: ['blijven', 'te', 'fit'], answer: ['fit', 'te', 'blijven'] },
+                { prompt: 'Ik drink koffie <span class="hl">om</span> ...', words: ['worden', 'te', 'wakker'], answer: ['wakker', 'te', 'worden'] },
+                { prompt: 'Hij spaart geld <span class="hl">om</span> ...', words: ['kopen', 'te', 'auto', 'een'], answer: ['een', 'auto', 'te', 'kopen'] },
+                { prompt: 'Ze belt haar moeder <span class="hl">om</span> ...', words: ['praten', 'te'], answer: ['te', 'praten'] },
+                { prompt: 'Ik ga naar de winkel <span class="hl">om</span> ...', words: ['doen', 'te', 'boodschappen'], answer: ['boodschappen', 'te', 'doen'] },
+                { prompt: 'Hij leert Nederlands <span class="hl">om</span> ...', words: ['vinden', 'te', 'werk'], answer: ['werk', 'te', 'vinden'] },
+                { prompt: 'Ze neemt de trein <span class="hl">om</span> ...', words: ['komen', 'te', 'sneller', 'aan'], answer: ['sneller', 'aan', 'te', 'komen'] },
+                { prompt: 'Ik ga vroeg slapen <span class="hl">om</span> ...', words: ['zijn', 'te', 'uitgerust'], answer: ['uitgerust', 'te', 'zijn'] },
+                { prompt: 'Hij gebruikt een app <span class="hl">om</span> ...', words: ['leren', 'te', 'woorden'], answer: ['woorden', 'te', 'leren'] },
+                { prompt: 'Ze gaat naar de dokter <span class="hl">om</span> ...', words: ['laten', 'te', 'zich', 'onderzoeken'], answer: ['zich', 'te', 'laten', 'onderzoeken'] },
+                { prompt: 'Ik neem een paraplu mee <span class="hl">om</span> ...', words: ['blijven', 'te', 'droog'], answer: ['droog', 'te', 'blijven'] },
+                { prompt: 'Hij belt zijn vriend <span class="hl">om</span> ...', words: ['maken', 'te', 'afspraak', 'een'], answer: ['een', 'afspraak', 'te', 'maken'] },
+                { prompt: 'Ze eet gezond <span class="hl">om</span> ...', words: ['worden', 'te', 'niet', 'ziek'], answer: ['niet', 'ziek', 'te', 'worden'] },
+                { prompt: 'Ik zet de wekker <span class="hl">om</span> ...', words: ['worden', 'te', 'op', 'tijd', 'wakker'], answer: ['op', 'tijd', 'wakker', 'te', 'worden'] },
+                { prompt: 'Hij doet de deur op slot <span class="hl">om</span> ...', words: ['zijn', 'te', 'veilig'], answer: ['veilig', 'te', 'zijn'] },
+                { prompt: 'Ze neemt pauze <span class="hl">om</span> ...', words: ['rusten', 'te', 'even'], answer: ['even', 'te', 'rusten'] },
+                { prompt: 'Ik kijk video\'s <span class="hl">om</span> ...', words: ['leren', 'te', 'Nederlands'], answer: ['Nederlands', 'te', 'leren'] },
+                { prompt: 'Hij zoekt een baan <span class="hl">om</span> ...', words: ['kunnen', 'te', 'leven', 'zelfstandig'], answer: ['zelfstandig', 'te', 'kunnen', 'leven'] }
+            ]
+        };
+
+        // State
+        let currentExercise = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        let completed = {};
+        
+        // Initialize completed arrays
+        for (let cat = 1; cat <= 4; cat++) {
+            completed[cat] = new Array(exercises[cat].length).fill(false);
+        }
+
+        // Set language
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.lang-btn').classList.add('active');
+            updateTranslations();
+        }
+
+        // Update translations
+        function updateTranslations() {
+            const t = translations[currentLang];
+            
+            // Intro section
+            document.getElementById('intro-title').innerHTML = t.introTitle;
+            document.getElementById('intro-text1').innerHTML = t.introText1;
+            document.getElementById('intro-text2').innerHTML = t.introText2;
+            document.getElementById('intro-li1').innerHTML = t.introLi1;
+            document.getElementById('intro-li2').innerHTML = t.introLi2;
+            document.getElementById('intro-li3').innerHTML = t.introLi3;
+            document.getElementById('intro-li4').innerHTML = t.introLi4;
+            document.getElementById('intro-tip').innerHTML = t.introTip;
+
+            // Category explanations
+            for (let i = 1; i <= 4; i++) {
+                const ruleTitle = document.getElementById(`cat${i}-rule-title`);
+                const rule = document.getElementById(`cat${i}-rule`);
+                const whyTitle = document.getElementById(`cat${i}-why-title`);
+                const why = document.getElementById(`cat${i}-why`);
+                const translated = document.getElementById(`cat${i}-rule-translated`);
+
+                if (ruleTitle) ruleTitle.innerHTML = t.ruleTitle;
+                if (whyTitle) whyTitle.innerHTML = t.whyTitle;
+                
+                if (currentLang !== 'nl' && translated) {
+                    translated.innerHTML = t[`cat${i}Rule`];
+                    translated.style.display = 'block';
+                } else if (translated) {
+                    translated.style.display = 'none';
+                }
+            }
+
+            // Score label
+            document.getElementById('score-label').textContent = t.totalScore;
+        }
+
+        // Show category
+        function showCategory(cat) {
+            document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById('cat' + cat).classList.add('active');
+            document.querySelectorAll('.nav-tab')[cat - 1].classList.add('active');
+            
+            loadExercise(cat);
+        }
+
+        // Load exercise
+        function loadExercise(cat) {
+            const ex = exercises[cat][currentExercise[cat]];
+            const prompt = document.getElementById('prompt-cat' + cat);
+            prompt.innerHTML = ex.prompt.replace('class="hl"', `style="color: var(--cat${cat}); font-weight: 700;"`);
+
+            const dropzone = document.getElementById('dropzone-cat' + cat);
+            const wordbank = document.getElementById('wordbank-cat' + cat);
+            const counter = document.getElementById('counter-cat' + cat);
+            
+            counter.textContent = `Zin ${currentExercise[cat] + 1} van ${exercises[cat].length}`;
+            
+            dropzone.innerHTML = '';
+            wordbank.innerHTML = '';
+
+            // Shuffle words
+            const shuffled = [...ex.words].sort(() => Math.random() - 0.5);
+            
+            shuffled.forEach(word => {
+                const wordEl = document.createElement('div');
+                wordEl.className = 'draggable-word';
+                wordEl.textContent = word;
+                wordEl.draggable = true;
+                wordEl.addEventListener('dragstart', handleDragStart);
+                wordEl.addEventListener('dragend', handleDragEnd);
+                wordEl.addEventListener('click', () => handleWordClick(wordEl, cat));
+                wordbank.appendChild(wordEl);
+            });
+
+            // Setup dropzone
+            dropzone.addEventListener('dragover', handleDragOver);
+            dropzone.addEventListener('dragleave', handleDragLeave);
+            dropzone.addEventListener('drop', (e) => handleDrop(e, cat));
+
+            // Reset feedback
+            const feedback = document.getElementById('feedback-cat' + cat);
+            feedback.classList.remove('show', 'correct', 'incorrect');
+            dropzone.classList.remove('correct', 'incorrect');
+
+            updateProgress(cat);
+        }
+
+        // Drag handlers
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e, cat) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            if (draggedElement) {
+                const dropzone = document.getElementById('dropzone-cat' + cat);
+                draggedElement.classList.add('placed');
+                dropzone.appendChild(draggedElement);
+                draggedElement = null;
+            }
+        }
+
+        // Click handler for mobile
+        function handleWordClick(wordEl, cat) {
+            const dropzone = document.getElementById('dropzone-cat' + cat);
+            const wordbank = document.getElementById('wordbank-cat' + cat);
+            
+            if (wordEl.parentElement === wordbank) {
+                wordEl.classList.add('placed');
+                dropzone.appendChild(wordEl);
+            } else {
+                wordEl.classList.remove('placed');
+                wordbank.appendChild(wordEl);
+            }
+        }
+
+        // Check answer
+        function checkAnswer(cat) {
+            const dropzone = document.getElementById('dropzone-cat' + cat);
+            const words = Array.from(dropzone.querySelectorAll('.draggable-word')).map(w => w.textContent);
+            const correct = exercises[cat][currentExercise[cat]].answer;
+            
+            const feedback = document.getElementById('feedback-cat' + cat);
+            const isCorrect = JSON.stringify(words) === JSON.stringify(correct);
+            const t = translations[currentLang];
+            
+            feedback.classList.remove('correct', 'incorrect');
+            dropzone.classList.remove('correct', 'incorrect');
+            
+            if (isCorrect) {
+                feedback.classList.add('show', 'correct');
+                feedback.querySelector('.feedback-icon').textContent = '✅';
+                feedback.querySelector('.feedback-text').textContent = t.correct;
+                dropzone.classList.add('correct');
+                
+                if (!completed[cat][currentExercise[cat]]) {
+                    completed[cat][currentExercise[cat]] = true;
+                    scores[cat]++;
+                    updateProgress(cat);
+                    updateTotalScore();
+                }
+            } else {
+                feedback.classList.add('show', 'incorrect');
+                feedback.querySelector('.feedback-icon').textContent = '❌';
+                feedback.querySelector('.feedback-text').textContent = t.incorrect + correct.join(' ');
+                dropzone.classList.add('incorrect');
+            }
+        }
+
+        // Reset exercise
+        function resetExercise(cat) {
+            loadExercise(cat);
+        }
+
+        // Previous exercise
+        function prevExercise(cat) {
+            if (currentExercise[cat] > 0) {
+                currentExercise[cat]--;
+                loadExercise(cat);
+            }
+        }
+
+        // Next exercise
+        function nextExercise(cat) {
+            if (currentExercise[cat] < exercises[cat].length - 1) {
+                currentExercise[cat]++;
+                loadExercise(cat);
+            }
+        }
+
+        // Update progress
+        function updateProgress(cat) {
+            const completedCount = completed[cat].filter(c => c).length;
+            const total = exercises[cat].length;
+            document.getElementById('progress-cat' + cat).textContent = completedCount + '/' + total;
+            document.getElementById('progress-fill-cat' + cat).style.width = (completedCount / total * 100) + '%';
+        }
+
+        // Update total score
+        function updateTotalScore() {
+            const total = Object.values(scores).reduce((a, b) => a + b, 0);
+            const max = Object.values(exercises).reduce((a, b) => a + b.length, 0);
+            document.getElementById('total-score').textContent = total + '/' + max;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            for (let cat = 1; cat <= 4; cat++) {
+                loadExercise(cat);
+            }
+            updateTranslations();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Werkwoorden Oefenen — A1</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #f5f0eb;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --muted: #6b6560;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --error: #dc2626;
+            --error-bg: #fee2e2;
+            --border: #e5e0db;
+            --highlight: #fef3c7;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #1e3a5f;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+        header p { opacity: 0.8; font-size: 0.95rem; }
+
+        /* ===== LANG SWITCH ===== */
+        .lang-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: #163050;
+        }
+        .lang-btn {
+            padding: 8px 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 24px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover { border-color: white; }
+        .lang-btn.active {
+            background: white;
+            color: #1e3a5f;
+            border-color: white;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            padding: 16px 20px 0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .tab-btn {
+            padding: 10px 24px;
+            border: none;
+            background: var(--border);
+            color: var(--muted);
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--card);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 0 0 16px 16px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        /* ===== UITLEG SECTION ===== */
+        .uitleg { display: none; }
+        .uitleg.active { display: block; }
+
+        .uitleg h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: #1e3a5f;
+        }
+        .uitleg h3 {
+            font-size: 1.05rem;
+            margin: 20px 0 10px;
+            color: #1e3a5f;
+        }
+        .uitleg p, .uitleg li {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .uitleg ul { padding-left: 20px; margin-bottom: 12px; }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.95rem;
+        }
+        .verb-table th {
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 16px;
+            text-align: left;
+            font-weight: 500;
+        }
+        .verb-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .verb-table tr:nth-child(even) td { background: #f8f6f3; }
+        .verb-table .stem { color: var(--accent); font-weight: 700; }
+
+        .rule-box {
+            background: var(--highlight);
+            border-left: 4px solid #f59e0b;
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+            font-size: 0.93rem;
+        }
+
+        /* ===== OEFENING SECTION ===== */
+        .oefening { display: none; }
+        .oefening.active { display: block; }
+
+        /* Score bar */
+        .score-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #f8f6f3;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .score-item {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .score-item .num { font-size: 1.2rem; font-weight: 700; }
+        .score-good .num { color: var(--success); }
+        .score-bad .num { color: var(--error); }
+        .score-pct .num { color: var(--accent); }
+        .progress-wrap {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+        .congrats {
+            display: none;
+            background: var(--success-bg);
+            color: var(--success);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        /* Question area */
+        .question-box {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .question-box .prompt {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .question-box .verb-hint {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16px;
+        }
+        .answer-input {
+            font-family: inherit;
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            width: 220px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .answer-input:focus { border-color: var(--accent); }
+        .answer-input.correct { border-color: var(--success); background: var(--success-bg); }
+        .answer-input.wrong { border-color: var(--error); background: var(--error-bg); }
+
+        .check-btn {
+            padding: 12px 28px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .check-btn:hover { background: #1d4ed8; }
+
+        .feedback {
+            margin-top: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            min-height: 28px;
+        }
+        .feedback.good { color: var(--success); }
+        .feedback.bad { color: var(--error); }
+
+        .reset-btn {
+            display: block;
+            margin: 24px auto 0;
+            padding: 10px 24px;
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--muted);
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .reset-btn:hover { border-color: var(--muted); color: var(--text); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 500px) {
+            header h1 { font-size: 1.4rem; }
+            .card { padding: 20px 16px; }
+            .question-box .prompt { font-size: 1.2rem; }
+            .input-row { flex-direction: column; }
+            .answer-input { width: 100%; }
+            .check-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Werkwoorden Oefenen</h1>
+    <p>Nederlandse werkwoorden — A1</p>
+</header>
+
+<div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+    <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn" onclick="setLang('cn')">🇨🇳 中文</button>
+</div>
+
+<div class="tabs">
+    <button class="tab-btn active" id="tab-uitleg" onclick="showTab('uitleg')">
+        <span class="tab-text" data-nl="Uitleg" data-en="Explanation" data-cn="说明">Uitleg</span>
+    </button>
+    <button class="tab-btn" id="tab-oefening" onclick="showTab('oefening')">
+        <span class="tab-text" data-nl="Oefenen" data-en="Practice" data-cn="练习">Oefenen</span>
+    </button>
+</div>
+
+<div class="container">
+    <div class="card">
+
+        <!-- ======================== UITLEG NL ======================== -->
+        <div class="uitleg active" id="uitleg-nl">
+            <h2>Hoe vervoeg je werkwoorden?</h2>
+
+            <h3>Stap 1 — Zoek de stam</h3>
+            <p>Neem het werkwoord en haal <strong>-en</strong> weg. Wat overblijft is de <strong>stam</strong>.</p>
+            <div class="rule-box">
+                <strong>werken</strong> → werk<strong>en</strong> → stam = <strong>werk</strong><br>
+                <strong>drinken</strong> → drink<strong>en</strong> → stam = <strong>drink</strong><br>
+                <strong>luisteren</strong> → luister<strong>en</strong> → stam = <strong>luister</strong>
+            </div>
+
+            <h3>Stap 2 — Voeg de juiste uitgang toe</h3>
+            <table class="verb-table">
+                <tr><th>Persoon</th><th>Regel</th><th>Voorbeeld (werken)</th></tr>
+                <tr><td><strong>ik</strong></td><td>stam</td><td><span class="stem">werk</span></td></tr>
+                <tr><td><strong>jij / je</strong></td><td>stam + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>hij / zij / het</strong></td><td>stam + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>u</strong></td><td>stam + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>wij / jullie / zij</strong></td><td>hele werkwoord</td><td><span class="stem">werken</span></td></tr>
+            </table>
+
+            <h3>Voorbeelden</h3>
+            <table class="verb-table">
+                <tr><th></th><th>werken</th><th>drinken</th><th>begrijpen</th></tr>
+                <tr><td><strong>ik</strong></td><td>werk</td><td>drink</td><td>begrijp</td></tr>
+                <tr><td><strong>jij</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>hij/zij/het</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>wij</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>jullie</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>zij (pl.)</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+            </table>
+
+            <div class="rule-box">
+                💡 <strong>Let op!</strong> Als <em>jij</em> achter het werkwoord staat (in een vraag), dan valt de <strong>-t</strong> weg:<br>
+                Jij werk<strong>t</strong> → Werk <strong>jij</strong>?
+            </div>
+        </div>
+
+        <!-- ======================== UITLEG EN ======================== -->
+        <div class="uitleg" id="uitleg-en">
+            <h2>How do you conjugate Dutch verbs?</h2>
+
+            <h3>Step 1 — Find the stem</h3>
+            <p>Take the verb and remove <strong>-en</strong>. What remains is the <strong>stem</strong>.</p>
+            <div class="rule-box">
+                <strong>werken</strong> (to work) → werk<strong>en</strong> → stem = <strong>werk</strong><br>
+                <strong>drinken</strong> (to drink) → drink<strong>en</strong> → stem = <strong>drink</strong><br>
+                <strong>luisteren</strong> (to listen) → luister<strong>en</strong> → stem = <strong>luister</strong>
+            </div>
+
+            <h3>Step 2 — Add the correct ending</h3>
+            <table class="verb-table">
+                <tr><th>Person</th><th>Rule</th><th>Example (werken)</th></tr>
+                <tr><td><strong>ik</strong> (I)</td><td>stem</td><td><span class="stem">werk</span></td></tr>
+                <tr><td><strong>jij / je</strong> (you)</td><td>stem + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>hij / zij / het</strong> (he/she/it)</td><td>stem + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>u</strong> (you formal)</td><td>stem + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>wij / jullie / zij</strong> (we/you/they)</td><td>full verb</td><td><span class="stem">werken</span></td></tr>
+            </table>
+
+            <h3>Examples</h3>
+            <table class="verb-table">
+                <tr><th></th><th>werken</th><th>drinken</th><th>begrijpen</th></tr>
+                <tr><td><strong>ik</strong></td><td>werk</td><td>drink</td><td>begrijp</td></tr>
+                <tr><td><strong>jij</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>hij/zij/het</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>wij</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>jullie</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>zij (pl.)</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+            </table>
+
+            <div class="rule-box">
+                💡 <strong>Note!</strong> When <em>jij</em> comes after the verb (in a question), the <strong>-t</strong> disappears:<br>
+                Jij werk<strong>t</strong> → Werk <strong>jij</strong>?
+            </div>
+        </div>
+
+        <!-- ======================== UITLEG CN ======================== -->
+        <div class="uitleg" id="uitleg-cn">
+            <h2>荷兰语动词怎么变位？</h2>
+
+            <h3>第一步 — 找词干</h3>
+            <p>把动词的 <strong>-en</strong> 去掉，剩下的就是<strong>词干</strong>。</p>
+            <div class="rule-box">
+                <strong>werken</strong>（工作）→ werk<strong>en</strong> → 词干 = <strong>werk</strong><br>
+                <strong>drinken</strong>（喝）→ drink<strong>en</strong> → 词干 = <strong>drink</strong><br>
+                <strong>luisteren</strong>（听）→ luister<strong>en</strong> → 词干 = <strong>luister</strong>
+            </div>
+
+            <h3>第二步 — 加正确的词尾</h3>
+            <table class="verb-table">
+                <tr><th>人称</th><th>规则</th><th>例子 (werken)</th></tr>
+                <tr><td><strong>ik</strong>（我）</td><td>词干</td><td><span class="stem">werk</span></td></tr>
+                <tr><td><strong>jij / je</strong>（你）</td><td>词干 + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>hij / zij / het</strong>（他/她/它）</td><td>词干 + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>u</strong>（您）</td><td>词干 + <strong>t</strong></td><td><span class="stem">werk</span><strong>t</strong></td></tr>
+                <tr><td><strong>wij / jullie / zij</strong>（我们/你们/他们）</td><td>完整动词</td><td><span class="stem">werken</span></td></tr>
+            </table>
+
+            <h3>更多例子</h3>
+            <table class="verb-table">
+                <tr><th></th><th>werken</th><th>drinken</th><th>begrijpen</th></tr>
+                <tr><td><strong>ik</strong></td><td>werk</td><td>drink</td><td>begrijp</td></tr>
+                <tr><td><strong>jij</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>hij/zij/het</strong></td><td>werkt</td><td>drinkt</td><td>begrijpt</td></tr>
+                <tr><td><strong>wij</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>jullie</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+                <tr><td><strong>zij</strong></td><td>werken</td><td>drinken</td><td>begrijpen</td></tr>
+            </table>
+
+            <div class="rule-box">
+                💡 <strong>注意！</strong>如果 <em>jij</em> 放在动词后面（问句），<strong>-t</strong> 要去掉：<br>
+                Jij werk<strong>t</strong> → Werk <strong>jij</strong>?
+            </div>
+        </div>
+
+        <!-- ======================== OEFENING ======================== -->
+        <div class="oefening" id="oefening-section">
+
+            <div class="score-bar">
+                <span class="score-item score-good">✅ <span class="num" id="score-good">0</span></span>
+                <span class="score-item score-bad">❌ <span class="num" id="score-bad">0</span></span>
+                <span class="score-item score-pct">📊 <span class="num" id="score-pct">0%</span></span>
+                <div class="progress-wrap">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="congrats" id="congrats"></div>
+
+            <div class="question-box">
+                <div class="prompt" id="question-prompt">jij ............</div>
+                <div class="verb-hint" id="verb-hint">(werken)</div>
+
+                <div class="input-row">
+                    <input type="text" class="answer-input" id="answer-input" placeholder="..." autocomplete="off" autofocus>
+                    <button class="check-btn" id="check-btn">✓</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <button class="reset-btn" onclick="resetScore()">
+                <span data-nl="Opnieuw beginnen" data-en="Start over" data-cn="重新开始">Opnieuw beginnen</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ======================== LANGUAGE ========================
+let currentLang = 'nl';
+
+function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Show correct uitleg
+    document.querySelectorAll('.uitleg').forEach(u => u.classList.remove('active'));
+    const activeTab = document.querySelector('.tab-btn.active').id;
+    if (activeTab === 'tab-uitleg') {
+        document.getElementById('uitleg-' + lang).classList.add('active');
+    }
+
+    // Update tab texts
+    document.querySelectorAll('.tab-text').forEach(el => {
+        el.textContent = el.dataset[lang];
+    });
+
+    // Update translatable elements
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        if (!el.classList.contains('tab-text')) {
+            el.textContent = el.dataset[lang];
+        }
+    });
+
+    // Update congrats
+    updateCongrats();
+}
+
+// ======================== TABS ========================
+function showTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    document.querySelectorAll('.uitleg').forEach(u => u.classList.remove('active'));
+    document.getElementById('oefening-section').classList.remove('active');
+    document.getElementById('oefening-section').style.display = 'none';
+
+    if (tab === 'uitleg') {
+        document.getElementById('uitleg-' + currentLang).classList.add('active');
+    } else {
+        document.getElementById('oefening-section').style.display = 'block';
+        document.getElementById('oefening-section').classList.add('active');
+        document.getElementById('answer-input').focus();
+    }
+}
+
+// ======================== VERBS ========================
+const verbs = [
+    // Uit de afbeelding (toets):
+    { infinitief: 'groeten', stam: 'groet' },
+    { infinitief: 'kijken', stam: 'kijk' },
+    { infinitief: 'helpen', stam: 'help' },
+    { infinitief: 'krijgen', stam: 'krijg' },
+    { infinitief: 'drinken', stam: 'drink' },
+    { infinitief: 'begrijpen', stam: 'begrijp' },
+    { infinitief: 'typen', stam: 'typ' },
+    { infinitief: 'luisteren', stam: 'luister' },
+    // Extra puur regelmatig:
+    { infinitief: 'werken', stam: 'werk' },
+    { infinitief: 'fietsen', stam: 'fiets' },
+    { infinitief: 'wachten', stam: 'wacht' },
+    { infinitief: 'zoeken', stam: 'zoek' },
+    { infinitief: 'tekenen', stam: 'teken' },
+    { infinitief: 'winkelen', stam: 'winkel' },
+    { infinitief: 'denken', stam: 'denk' },
+    { infinitief: 'oefenen', stam: 'oefen' },
+    { infinitief: 'ontmoeten', stam: 'ontmoet' },
+    { infinitief: 'antwoorden', stam: 'antwoord' },
+    { infinitief: 'starten', stam: 'start' },
+    { infinitief: 'printen', stam: 'print' },
+    { infinitief: 'douchen', stam: 'douch' },
+    { infinitief: 'poetsen', stam: 'poets' },
+    { infinitief: 'bouwen', stam: 'bouw' },
+];
+
+const subjects = [
+    { pronoun: 'ik', form: 'stam' },
+    { pronoun: 'jij', form: 'stam_t' },
+    { pronoun: 'hij', form: 'stam_t' },
+    { pronoun: 'zij', form: 'stam_t' },
+    { pronoun: 'het', form: 'stam_t' },
+    { pronoun: 'u', form: 'stam_t' },
+    { pronoun: 'wij', form: 'infinitief' },
+    { pronoun: 'jullie', form: 'infinitief' },
+    { pronoun: 'zij (meervoud)', form: 'infinitief' },
+];
+
+function getCorrectAnswer(verb, subject) {
+    if (subject.form === 'stam') return verb.stam;
+    if (subject.form === 'stam_t') return verb.stam + 't';
+    return verb.infinitief;
+}
+
+// ======================== SCORING ========================
+let good = 0, bad = 0;
+
+function updateScore() {
+    document.getElementById('score-good').textContent = good;
+    document.getElementById('score-bad').textContent = bad;
+    const total = good + bad;
+    const pct = total === 0 ? 0 : Math.round((good / total) * 100);
+    document.getElementById('score-pct').textContent = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    // Color progress bar
+    const fill = document.getElementById('progress-fill');
+    if (pct >= 90) fill.style.background = '#16a34a';
+    else if (pct >= 60) fill.style.background = '#2563eb';
+    else fill.style.background = '#f59e0b';
+
+    updateCongrats();
+}
+
+function updateCongrats() {
+    const total = good + bad;
+    const pct = total === 0 ? 0 : Math.round((good / total) * 100);
+    const el = document.getElementById('congrats');
+    if (pct >= 90 && total >= 5) {
+        const msgs = {
+            nl: '🎉 Geweldig! Je hebt 90% of meer — Heel goed gedaan!',
+            en: '🎉 Amazing! You scored 90% or more — Great job!',
+            cn: '🎉 太棒了！你的正确率达到90%以上 — 非常好！'
+        };
+        el.textContent = msgs[currentLang];
+        el.style.display = 'block';
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function resetScore() {
+    good = 0;
+    bad = 0;
+    updateScore();
+    nextQuestion();
+    document.getElementById('answer-input').focus();
+}
+
+// ======================== QUESTION ENGINE ========================
+let currentVerb, currentSubject, currentAnswer;
+
+function nextQuestion() {
+    currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+    currentSubject = subjects[Math.floor(Math.random() * subjects.length)];
+    currentAnswer = getCorrectAnswer(currentVerb, currentSubject);
+
+    document.getElementById('question-prompt').textContent = currentSubject.pronoun + ' ............';
+    document.getElementById('verb-hint').textContent = '(' + currentVerb.infinitief + ')';
+
+    const input = document.getElementById('answer-input');
+    input.value = '';
+    input.className = 'answer-input';
+    input.disabled = false;
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'feedback';
+
+    setTimeout(() => input.focus(), 50);
+}
+
+function checkAnswer() {
+    const input = document.getElementById('answer-input');
+    const answer = input.value.trim().toLowerCase();
+    const feedback = document.getElementById('feedback');
+
+    if (!answer) return;
+
+    if (answer === currentAnswer) {
+        good++;
+        input.className = 'answer-input correct';
+        const msgs = {
+            nl: '✅ Goed!',
+            en: '✅ Correct!',
+            cn: '✅ 正确！'
+        };
+        feedback.textContent = msgs[currentLang];
+        feedback.className = 'feedback good';
+    } else {
+        bad++;
+        input.className = 'answer-input wrong';
+        const msgs = {
+            nl: '❌ Het goede antwoord is: ',
+            en: '❌ The correct answer is: ',
+            cn: '❌ 正确答案是：'
+        };
+        feedback.textContent = msgs[currentLang] + currentAnswer;
+        feedback.className = 'feedback bad';
+    }
+
+    updateScore();
+    input.disabled = true;
+
+    setTimeout(() => nextQuestion(), 1500);
+}
+
+// ======================== EVENTS ========================
+document.getElementById('check-btn').addEventListener('click', checkAnswer);
+document.getElementById('answer-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkAnswer();
+});
+
+// ======================== INIT ========================
+document.getElementById('oefening-section').style.display = 'none';
+nextQuestion();
+</script>
+
+</body>
+</html>

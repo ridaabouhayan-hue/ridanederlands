@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nederlandse Zinsbouw — A1/A1+</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#faf9f6;--card:#fff;--accent:#e63946;--accent2:#457b9d;--accent3:#2a9d8f;
+  --text:#1d3557;--muted:#6c757d;--light:#f1faee;--border:#dee2e6;
+  --success:#2a9d8f;--error:#e63946;--warn:#e9c46a;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.container{max-width:900px;margin:0 auto;padding:20px}
+
+/* HEADER */
+.header{text-align:center;padding:40px 20px 30px;position:relative}
+.header h1{font-family:'Space Mono',monospace;font-size:clamp(1.5rem,4vw,2.4rem);color:var(--text);letter-spacing:-1px}
+.header h1 span{color:var(--accent)}
+.subtitle{color:var(--muted);margin-top:6px;font-size:0.95rem}
+
+/* LANG TOGGLE */
+.lang-btn{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:var(--accent);color:#fff;border:none;padding:10px 18px;
+  border-radius:30px;font-family:'Space Mono',monospace;font-size:0.85rem;
+  cursor:pointer;box-shadow:0 4px 15px rgba(230,57,70,0.3);transition:all .2s;
+}
+.lang-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(230,57,70,0.4)}
+
+/* SECTIONS */
+section{margin:30px 0}
+.section-title{
+  font-family:'Space Mono',monospace;font-size:1.3rem;color:var(--accent);
+  border-bottom:3px solid var(--accent);padding-bottom:8px;margin-bottom:20px;
+  display:inline-block;
+}
+
+/* CARDS */
+.card{
+  background:var(--card);border-radius:16px;padding:28px;margin:16px 0;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid var(--border);
+}
+
+/* FORMULA BOX */
+.formula-box{
+  background:linear-gradient(135deg,var(--text),#2a4a7f);color:#fff;
+  border-radius:16px;padding:30px;text-align:center;margin:20px 0;
+  box-shadow:0 8px 30px rgba(29,53,87,0.3);
+}
+.formula{font-family:'Space Mono',monospace;font-size:clamp(0.9rem,2.5vw,1.3rem);letter-spacing:1px;line-height:1.8}
+.formula .block{
+  display:inline-block;padding:6px 14px;border-radius:8px;margin:4px;
+  font-weight:700;
+}
+.block-subj{background:#e63946}
+.block-verb{background:#457b9d}
+.block-rest{background:#2a9d8f}
+.block-v2{background:#e9c46a;color:var(--text)}
+.formula-label{font-size:0.8rem;opacity:0.8;margin-top:4px;display:block}
+
+/* EXAMPLES */
+.example{
+  padding:14px 18px;border-left:4px solid var(--accent2);
+  background:#f8f9fa;border-radius:0 10px 10px 0;margin:10px 0;
+  font-size:1rem;
+}
+.example strong{color:var(--accent)}
+.example .transl{color:var(--muted);font-size:0.85rem;font-style:italic;display:block;margin-top:4px}
+
+/* LEVEL BADGE */
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.75rem;
+  font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;
+}
+.badge-a1{background:#dfe8f5;color:#457b9d}
+.badge-a1p{background:#d4edda;color:#2a9d8f}
+
+/* QUIZ */
+.quiz-q{margin:20px 0;padding:20px;background:var(--card);border-radius:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.quiz-q p{font-weight:700;margin-bottom:12px;font-size:1.02rem}
+.quiz-q label{
+  display:block;padding:12px 16px;margin:6px 0;border-radius:10px;
+  cursor:pointer;border:2px solid var(--border);transition:all .2s;
+  font-size:0.95rem;
+}
+.quiz-q label:hover{border-color:var(--accent2);background:#f0f4f8}
+.quiz-q label.correct{border-color:var(--success);background:#d4edda;font-weight:700}
+.quiz-q label.wrong{border-color:var(--error);background:#fde8e8}
+.quiz-q label input{display:none}
+.quiz-q .feedback{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:0.9rem;display:none}
+
+/* SCORE */
+.score-bar{
+  background:var(--card);border-radius:14px;padding:20px;text-align:center;
+  border:2px solid var(--accent);margin:20px 0;
+}
+.score-bar .num{font-family:'Space Mono',monospace;font-size:2rem;color:var(--accent)}
+
+/* DRAG DROP */
+.dd-exercise{margin:24px 0}
+.dd-exercise h4{margin-bottom:12px;font-size:1rem}
+.dd-wordbank{
+  display:flex;flex-wrap:wrap;gap:8px;padding:16px;min-height:50px;
+  background:#f0f4f8;border-radius:12px;margin-bottom:12px;
+  border:2px dashed var(--border);
+}
+.dd-dropzone{
+  display:flex;flex-wrap:wrap;gap:8px;padding:16px;min-height:56px;
+  background:#fff;border-radius:12px;
+  border:2px dashed var(--accent2);position:relative;
+}
+.dd-dropzone::before{
+  content:attr(data-placeholder);color:var(--muted);font-size:0.85rem;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;opacity:0.6;
+}
+.dd-dropzone:not(:empty)::before{display:none}
+.dd-word{
+  padding:8px 16px;background:var(--accent2);color:#fff;border-radius:8px;
+  cursor:grab;font-family:'Space Mono',monospace;font-size:0.9rem;
+  user-select:none;transition:all .15s;
+}
+.dd-word:active{cursor:grabbing;transform:scale(1.08)}
+.dd-word.in-zone{background:var(--accent3)}
+.dd-check-btn{
+  margin-top:10px;padding:10px 20px;background:var(--accent2);color:#fff;
+  border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:0.95rem;font-weight:600;transition:all .2s;
+}
+.dd-check-btn:hover{background:#3a6a88}
+.dd-feedback{margin-top:8px;font-size:0.9rem;font-weight:600;min-height:24px}
+.dd-feedback.ok{color:var(--success)}
+.dd-feedback.nok{color:var(--error)}
+
+/* SCHRIJF OEFENING */
+.schrijf-exercise{margin:24px 0}
+.schrijf-words{
+  display:flex;flex-wrap:wrap;gap:8px;padding:14px;
+  background:#fef3c7;border-radius:12px;margin-bottom:10px;
+  border:2px solid var(--warn);
+}
+.schrijf-word{
+  padding:6px 14px;background:#fff;border-radius:8px;
+  font-family:'Space Mono',monospace;font-size:0.9rem;
+  border:1px solid var(--warn);color:var(--text);
+}
+.schrijf-input{
+  width:100%;padding:14px;border:2px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:1rem;margin:8px 0;
+  transition:border-color .2s;
+}
+.schrijf-input:focus{outline:none;border-color:var(--accent2)}
+.schrijf-hint{font-size:0.85rem;color:var(--muted);font-style:italic}
+
+/* NAV TABS */
+.tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin:20px 0;
+  border-bottom:2px solid var(--border);padding-bottom:0;
+}
+.tab{
+  padding:10px 20px;border:none;background:transparent;
+  font-family:'Space Mono',monospace;font-size:0.85rem;
+  cursor:pointer;border-bottom:3px solid transparent;
+  color:var(--muted);transition:all .2s;border-radius:8px 8px 0 0;
+}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--card)}
+.tab:hover{color:var(--text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* RESET BTN */
+.reset-btn{
+  display:inline-block;margin:10px 0;padding:8px 16px;
+  background:var(--muted);color:#fff;border:none;border-radius:8px;
+  cursor:pointer;font-size:0.85rem;transition:all .2s;
+}
+.reset-btn:hover{background:var(--text)}
+
+/* PROGRESS */
+.progress-wrap{margin:20px 0;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent3);border-radius:4px;transition:width .5s}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .container{padding:12px}
+  .card{padding:18px}
+  .formula-box{padding:20px}
+  .formula .block{padding:4px 10px;font-size:0.8rem;margin:2px}
+  .lang-btn{top:10px;right:10px;padding:8px 14px;font-size:0.8rem}
+}
+</style>
+</head>
+<body>
+
+<button class="lang-btn" onclick="toggleLang()">🇵🇱 Polski</button>
+
+<div class="container">
+
+<div class="header">
+  <h1>Nederlandse <span>Zinsbouw</span></h1>
+  <p class="subtitle" data-nl="Leer hoe Nederlandse zinnen werken — stap voor stap" data-pl="Naucz się, jak działają holenderskie zdania — krok po kroku">Leer hoe Nederlandse zinnen werken — stap voor stap</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('tab-uitleg')">📖 <span data-nl="Uitleg" data-pl="Wyjaśnienie">Uitleg</span></button>
+  <button class="tab" onclick="showTab('tab-quiz')">✅ <span data-nl="Quiz (10x)" data-pl="Quiz (10x)">Quiz (10x)</span></button>
+  <button class="tab" onclick="showTab('tab-drag')">🧩 <span data-nl="Slepen" data-pl="Przeciąganie">Slepen</span></button>
+  <button class="tab" onclick="showTab('tab-schrijf')">✍️ <span data-nl="Schrijven" data-pl="Pisanie">Schrijven</span></button>
+</div>
+
+<!-- ============================== -->
+<!-- TAB 1: UITLEG                  -->
+<!-- ============================== -->
+<div id="tab-uitleg" class="tab-content active">
+
+<!-- INTRODUCTIE -->
+<section>
+<h2 class="section-title" data-nl="🌍 Introductie: Nederlands vs. Pools" data-pl="🌍 Wprowadzenie: Holenderski vs. Polski">🌍 Introductie: Nederlands vs. Pools</h2>
+
+<div class="card" style="background:linear-gradient(135deg,#f0f4f8,#e8f0fe);border-color:var(--accent2)">
+  <h3 data-nl="Waarom is zinsbouw belangrijk?" data-pl="Dlaczego szyk zdania jest ważny?">Waarom is zinsbouw belangrijk?</h3>
+  <br>
+  <p data-nl="In het Nederlands is de volgorde van de woorden in een zin heel belangrijk. Als je de woorden op de verkeerde plaats zet, begrijpen mensen je misschien niet goed. Dat is anders dan in het Pools!" data-pl="W języku holenderskim kolejność słów w zdaniu jest bardzo ważna. Jeśli postawisz słowa w złym miejscu, ludzie mogą cię nie zrozumieć. To jest inne niż w języku polskim!">In het Nederlands is de volgorde van de woorden in een zin heel belangrijk. Als je de woorden op de verkeerde plaats zet, begrijpen mensen je misschien niet goed. Dat is anders dan in het Pools!</p>
+  <br>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:#fff;padding:16px;border-radius:12px;border:2px solid var(--accent2)">
+      <h4 style="color:var(--accent2);margin-bottom:8px">🇳🇱 <span data-nl="Nederlands" data-pl="Holenderski">Nederlands</span></h4>
+      <p style="font-size:0.9rem" data-nl="De woordvolgorde is VAST. Het werkwoord staat altijd op positie 2. Je kunt de woorden niet zomaar verplaatsen." data-pl="Szyk zdania jest STAŁY. Czasownik zawsze stoi na pozycji 2. Nie możesz po prostu przestawiać słów.">De woordvolgorde is VAST. Het werkwoord staat altijd op positie 2. Je kunt de woorden niet zomaar verplaatsen.</p>
+      <div class="example" style="margin-top:10px;border-left-color:var(--accent2)">
+        <strong>Ik</strong> <u>werk</u> elke dag in de fabriek.
+      </div>
+    </div>
+    <div style="background:#fff;padding:16px;border-radius:12px;border:2px solid var(--accent)">
+      <h4 style="color:var(--accent);margin-bottom:8px">🇵🇱 <span data-nl="Pools" data-pl="Polski">Pools</span></h4>
+      <p style="font-size:0.9rem" data-nl="In het Pools is de volgorde VRIJ. Je kunt woorden vaak verplaatsen en de zin is nog steeds goed. Dat komt door de naamvallen (przypadki)." data-pl="W języku polskim szyk jest SWOBODNY. Możesz często przestawiać słowa, a zdanie nadal jest poprawne. To dzięki przypadkom.">In het Pools is de volgorde VRIJ. Je kunt woorden vaak verplaatsen en de zin is nog steeds goed. Dat komt door de naamvallen (przypadki).</p>
+      <div class="example" style="margin-top:10px;border-left-color:var(--accent)">
+        <strong>Pracuję</strong> codziennie w fabryce.<br>
+        <span style="color:var(--muted);font-size:0.85rem">= Codziennie pracuję w fabryce. ✓</span><br>
+        <span style="color:var(--muted);font-size:0.85rem">= W fabryce codziennie pracuję. ✓</span>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div style="background:#fff3cd;padding:14px 18px;border-radius:10px;border-left:4px solid var(--warn)">
+    <p style="font-weight:700;font-size:0.95rem" data-nl="⚠️ Let op! In het Pools kun je bijna alles verplaatsen. In het Nederlands NIET. Het werkwoord staat ALTIJD op positie 2. Dit is de grootste fout die Poolse studenten maken!" data-pl="⚠️ Uwaga! W języku polskim możesz przestawiać prawie wszystko. W holenderskim NIE. Czasownik ZAWSZE stoi na pozycji 2. To największy błąd, który popełniają polscy studenci!">⚠️ Let op! In het Pools kun je bijna alles verplaatsen. In het Nederlands NIET. Het werkwoord staat ALTIJD op positie 2. Dit is de grootste fout die Poolse studenten maken!</p>
+  </div>
+  <br>
+
+  <h4 data-nl="🔎 Vergelijk (Porównaj):" data-pl="🔎 Porównaj (Vergelijk):">🔎 Vergelijk (Porównaj):</h4>
+  <br>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
+    <tr style="background:var(--light)">
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)"></th>
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)">🇳🇱 Nederlands</th>
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)">🇵🇱 Polski</th>
+    </tr>
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-weight:700" data-nl="Normaal" data-pl="Normalnie">Normaal</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace">Ik <u>werk</u> in de fabriek.</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace">Pracuję w fabryce.</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-weight:700" data-nl="Omgedraaid" data-pl="Odwrócone">Omgedraaid</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;color:var(--error)">❌ In de fabriek ik werk.</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;color:var(--success)">✅ W fabryce pracuję.</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;font-weight:700" data-nl="Met tijd" data-pl="Z czasem">Met tijd</td>
+      <td style="padding:10px;font-family:'Space Mono',monospace">Ik <u>werk</u> elke dag in de fabriek.</td>
+      <td style="padding:10px;font-family:'Space Mono',monospace">Codziennie pracuję w fabryce.</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<!-- FORMULE -->
+<section>
+<h2 class="section-title" data-nl="🔑 De Formule" data-pl="🔑 Formuła">🔑 De Formule</h2>
+
+<div class="formula-box">
+  <div class="formula">
+    <span class="block block-subj">ONDERWERP</span>
+    <span>+</span>
+    <span class="block block-verb">WERKWOORD</span>
+    <span>+</span>
+    <span class="block block-rest">REST</span>
+    <span>+</span>
+    <span class="block block-v2">2e WERKWOORD</span>
+  </div>
+  <span class="formula-label" data-nl="REST = tijd / object / plaats (T.O.P. — deze volgorde is standaard, maar je mag soms wisselen!)" data-pl="REST = czas / obiekt / miejsce (T.O.P. — ta kolejność jest standardowa, ale czasem można zamieniać!)">REST = tijd / object / plaats (T.O.P. — deze volgorde is standaard, maar je mag soms wisselen!)</span>
+</div>
+
+<div class="card">
+  <h3 data-nl="Hoe werkt het?" data-pl="Jak to działa?">Hoe werkt het?</h3>
+  <br>
+  <p data-nl="In het Nederlands heeft elke zin een vaste volgorde. Het werkwoord staat ALTIJD op positie 2. Dit is de belangrijkste regel!" data-pl="W języku holenderskim każde zdanie ma stałą kolejność. Czasownik ZAWSZE stoi na pozycji 2. To najważniejsza zasada!">In het Nederlands heeft elke zin een vaste volgorde. Het werkwoord staat ALTIJD op positie 2. Dit is de belangrijkste regel!</p>
+  <br>
+
+  <div style="background:#e8f4f8;padding:14px 18px;border-radius:10px;border-left:4px solid var(--accent2);margin-bottom:14px">
+    <p style="font-weight:700;color:var(--accent2);margin-bottom:6px" data-nl="📌 Wat is T.O.P.?" data-pl="📌 Co to jest T.O.P.?">📌 Wat is T.O.P.?</p>
+    <p style="font-size:0.92rem" data-nl="Na het werkwoord komt de REST van de zin. De standaard volgorde is: Tijd – Object – Plaats (T.O.P.). Maar soms mag je de volgorde wisselen! Het belangrijkste is: het werkwoord blijft ALTIJD op positie 2." data-pl="Po czasowniku następuje RESZTA zdania. Standardowa kolejność to: Czas – Obiekt – Miejsce (T.O.P.). Ale czasem możesz zamieniać kolejność! Najważniejsze: czasownik ZAWSZE zostaje na pozycji 2.">Na het werkwoord komt de REST van de zin. De standaard volgorde is: Tijd – Object – Plaats (T.O.P.). Maar soms mag je de volgorde wisselen! Het belangrijkste is: het werkwoord blijft ALTIJD op positie 2.</p>
+    <br>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.88rem">
+      <div style="background:#fff;padding:10px;border-radius:8px">
+        <strong style="color:var(--success)">✅</strong> Ik werk <em>elke dag</em> <em>in de fabriek</em>.<br>
+        <span style="color:var(--muted);font-size:0.82rem">(T.O.P.: tijd + plaats)</span>
+      </div>
+      <div style="background:#fff;padding:10px;border-radius:8px">
+        <strong style="color:var(--success)">✅</strong> Ik werk <em>in de fabriek</em> <em>elke dag</em>.<br>
+        <span style="color:var(--muted);font-size:0.82rem" data-nl="(ook goed! plaats + tijd)" data-pl="(też dobrze! miejsce + czas)">(ook goed! plaats + tijd)</span>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:0.9rem;color:var(--muted)" data-nl="💡 Tip voor Poolse studenten: In het Pools is de woordvolgorde vrij dankzij naamvallen. In het Nederlands heb je geen naamvallen — daarom is de woordvolgorde zo belangrijk!" data-pl="💡 Wskazówka dla polskich studentów: W polskim szyk zdania jest swobodny dzięki przypadkom. W holenderskim nie ma przypadków — dlatego szyk zdania jest tak ważny!">💡 Tip voor Poolse studenten: In het Pools is de woordvolgorde vrij dankzij naamvallen. In het Nederlands heb je geen naamvallen — daarom is de woordvolgorde zo belangrijk!</p>
+
+  <br>
+  <table style="width:100%;border-collapse:collapse;font-size:0.92rem">
+    <tr style="background:var(--light)">
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)">Positie</th>
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)">Wat?</th>
+      <th style="padding:10px;text-align:left;border-bottom:2px solid var(--border)" data-nl="Voorbeeld" data-pl="Przykład">Voorbeeld</th>
+    </tr>
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid var(--border)"><span class="block block-subj" style="font-size:0.8rem">1</span></td>
+      <td style="padding:10px;border-bottom:1px solid var(--border)" data-nl="Onderwerp (wie?)" data-pl="Podmiot (kto?)">Onderwerp (wie?)</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace">Ik, zij, wij, de man</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid var(--border)"><span class="block block-verb" style="font-size:0.8rem">2</span></td>
+      <td style="padding:10px;border-bottom:1px solid var(--border)" data-nl="Werkwoord (doe-woord)" data-pl="Czasownik (co robi?)">Werkwoord (doe-woord)</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace">werk, is, heeft, wil</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;border-bottom:1px solid var(--border)"><span class="block block-rest" style="font-size:0.8rem">3+</span></td>
+      <td style="padding:10px;border-bottom:1px solid var(--border)" data-nl="Rest — T.O.P.: Tijd, Object, Plaats (je mag soms wisselen!)" data-pl="Reszta — T.O.P.: Czas, Obiekt, Miejsce (czasem możesz zamieniać!)">Rest — T.O.P.: Tijd, Object, Plaats (je mag soms wisselen!)</td>
+      <td style="padding:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace">elke dag, op kantoor</td>
+    </tr>
+    <tr>
+      <td style="padding:10px"><span class="block block-v2" style="font-size:0.8rem">einde</span></td>
+      <td style="padding:10px" data-nl="2e werkwoord (als nodig)" data-pl="2. czasownik (jeśli potrzebny)">2e werkwoord (als nodig)</td>
+      <td style="padding:10px;font-family:'Space Mono',monospace">werken, leren, maken</td>
+    </tr>
+  </table>
+</div>
+</section>
+
+<section>
+<h2 class="section-title" data-nl="📗 Voorbeelden A1" data-pl="📗 Przykłady A1">📗 Voorbeelden A1</h2>
+<span class="badge badge-a1">A1</span>
+
+<div class="example">
+  <strong>Ik</strong> <u>werk</u> in de fabriek.
+  <span class="transl" data-nl="(Ik = onderwerp, werk = werkwoord, in de fabriek = plaats)" data-pl="(Ik = podmiot, werk = czasownik, in de fabriek = miejsce)">(Ik = onderwerp, werk = werkwoord, in de fabriek = plaats)</span>
+</div>
+<div class="example">
+  <strong>Zij</strong> <u>spreekt</u> drie talen.
+  <span class="transl" data-nl="(Zij = onderwerp, spreekt = werkwoord, drie talen = object)" data-pl="(Zij = podmiot, spreekt = czasownik, drie talen = obiekt)">(Zij = onderwerp, spreekt = werkwoord, drie talen = object)</span>
+</div>
+<div class="example">
+  <strong>Wij</strong> <u>hebben</u> pauze om 12 uur.
+  <span class="transl" data-nl="(Wij = onderwerp, hebben = werkwoord, pauze = object, om 12 uur = tijd)" data-pl="(Wij = podmiot, hebben = czasownik, pauze = obiekt, om 12 uur = czas)">(Wij = onderwerp, hebben = werkwoord, pauze = object, om 12 uur = tijd)</span>
+</div>
+<div class="example">
+  <strong>De machine</strong> <u>is</u> kapot.
+  <span class="transl" data-nl="(De machine = onderwerp, is = werkwoord, kapot = rest)" data-pl="(De machine = podmiot, is = czasownik, kapot = reszta)">(De machine = onderwerp, is = werkwoord, kapot = rest)</span>
+</div>
+</section>
+
+<section>
+<h2 class="section-title" data-nl="📘 Voorbeelden A1+ (met 2e werkwoord)" data-pl="📘 Przykłady A1+ (z 2. czasownikiem)">📘 Voorbeelden A1+ (met 2e werkwoord)</h2>
+<span class="badge badge-a1p">A1+</span>
+
+<div class="card" style="background:#f0faf8;border-color:var(--accent3)">
+  <p data-nl="⚡ Als je 2 werkwoorden hebt (willen, moeten, kunnen, gaan + ander werkwoord), staat het 2e werkwoord ACHTERAAN." data-pl="⚡ Jeśli masz 2 czasowniki (willen, moeten, kunnen, gaan + inny czasownik), drugi czasownik idzie na KONIEC.">⚡ Als je 2 werkwoorden hebt (willen, moeten, kunnen, gaan + ander werkwoord), staat het 2e werkwoord ACHTERAAN.</p>
+</div>
+
+<div class="example">
+  <strong>Ik</strong> <u>wil</u> goed Nederlands <em style="color:var(--warn);font-weight:700">leren</em>.
+  <span class="transl" data-nl="(wil = werkwoord 1 op positie 2, leren = werkwoord 2 op het einde)" data-pl="(wil = czasownik 1 na pozycji 2, leren = czasownik 2 na końcu)">(wil = werkwoord 1 op positie 2, leren = werkwoord 2 op het einde)</span>
+</div>
+<div class="example">
+  <strong>Zij</strong> <u>moet</u> elke dag op de machine <em style="color:var(--warn);font-weight:700">werken</em>.
+  <span class="transl" data-nl="(moet = werkwoord 1, werken = werkwoord 2 achteraan)" data-pl="(moet = czasownik 1, werken = czasownik 2 na końcu)">(moet = werkwoord 1, werken = werkwoord 2 achteraan)</span>
+</div>
+<div class="example">
+  <strong>Wij</strong> <u>kunnen</u> morgen de bestelling <em style="color:var(--warn);font-weight:700">versturen</em>.
+  <span class="transl" data-nl="(kunnen = werkwoord 1, versturen = werkwoord 2 achteraan)" data-pl="(kunnen = czasownik 1, versturen = czasownik 2 na końcu)">(kunnen = werkwoord 1, versturen = werkwoord 2 achteraan)</span>
+</div>
+<div class="example">
+  <strong>Hij</strong> <u>gaat</u> volgend jaar supervisor <em style="color:var(--warn);font-weight:700">worden</em>.
+  <span class="transl" data-nl="(gaat = werkwoord 1, worden = werkwoord 2 achteraan)" data-pl="(gaat = czasownik 1, worden = czasownik 2 na końcu)">(gaat = werkwoord 1, worden = werkwoord 2 achteraan)</span>
+</div>
+</section>
+</div>
+
+<!-- ============================== -->
+<!-- TAB 2: QUIZ                    -->
+<!-- ============================== -->
+<div id="tab-quiz" class="tab-content">
+<section>
+<h2 class="section-title" data-nl="✅ Welke zin is goed?" data-pl="✅ Które zdanie jest poprawne?">✅ Welke zin is goed?</h2>
+<p style="margin-bottom:10px" data-nl="Kies het goede antwoord. Je kunt maar 1 keer klikken!" data-pl="Wybierz poprawną odpowiedź. Możesz kliknąć tylko raz!">Kies het goede antwoord. Je kunt maar 1 keer klikken!</p>
+
+<div class="progress-wrap"><div class="progress-fill" id="quizProgress" style="width:0%"></div></div>
+<div id="quizArea"></div>
+<div class="score-bar" id="scoreBar" style="display:none">
+  <p data-nl="Je score:" data-pl="Twój wynik:">Je score:</p>
+  <div class="num" id="scoreNum">0/10</div>
+  <button class="reset-btn" onclick="resetQuiz()" data-nl="Opnieuw" data-pl="Jeszcze raz">Opnieuw</button>
+</div>
+</section>
+</div>
+
+<!-- ============================== -->
+<!-- TAB 3: DRAG & DROP             -->
+<!-- ============================== -->
+<div id="tab-drag" class="tab-content">
+<section>
+<h2 class="section-title" data-nl="🧩 Sleep de woorden in de juiste volgorde" data-pl="🧩 Przeciągnij słowa w odpowiedniej kolejności">🧩 Sleep de woorden in de juiste volgorde</h2>
+<p style="margin-bottom:10px" data-nl="Sleep de woorden naar het groene vak. De volgorde moet kloppen!" data-pl="Przeciągnij słowa do zielonego pola. Kolejność musi być poprawna!">Sleep de woorden naar het groene vak. De volgorde moet kloppen!</p>
+<div id="dragArea"></div>
+<button class="reset-btn" onclick="buildDragExercises()" data-nl="Nieuwe oefeningen" data-pl="Nowe ćwiczenia">Nieuwe oefeningen</button>
+</section>
+</div>
+
+<!-- ============================== -->
+<!-- TAB 4: SCHRIJVEN               -->
+<!-- ============================== -->
+<div id="tab-schrijf" class="tab-content">
+<section>
+<h2 class="section-title" data-nl="✍️ Schrijf de zin" data-pl="✍️ Napisz zdanie">✍️ Schrijf de zin</h2>
+<p style="margin-bottom:10px" data-nl="Gebruik de woorden hierboven (gehusseld!) en schrijf de goede zin." data-pl="Użyj powyższych słów (pomieszanych!) i napisz poprawne zdanie.">Gebruik de woorden hierboven (gehusseld!) en schrijf de goede zin.</p>
+<div id="schrijfArea"></div>
+<button class="reset-btn" onclick="buildSchrijfExercises()" data-nl="Nieuwe oefeningen" data-pl="Nowe ćwiczenia">Nieuwe oefeningen</button>
+</section>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ==============================
+// LANGUAGE TOGGLE
+// ==============================
+let lang = 'nl';
+function toggleLang(){
+  lang = lang==='nl'?'pl':'nl';
+  document.querySelector('.lang-btn').textContent = lang==='nl'?'🇵🇱 Polski':'🇳🇱 Nederlands';
+  document.querySelectorAll('[data-nl]').forEach(el=>{
+    el.textContent = el.getAttribute('data-'+lang);
+  });
+}
+
+// ==============================
+// TAB NAVIGATION
+// ==============================
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ==============================
+// QUIZ DATA
+// ==============================
+const quizData = [
+  {q:{nl:"Kies de goede zin:",pl:"Wybierz poprawne zdanie:"},
+   opts:["Ik werk elke dag in het magazijn.","Ik elke dag werk in het magazijn.","In het magazijn ik werk elke dag."],
+   correct:0,
+   explain:{nl:"Onderwerp (Ik) + werkwoord (werk) + rest (T.O.P.). 'Ik werk in het magazijn elke dag' is ook goed!",pl:"Podmiot (Ik) + czasownik (werk) + reszta (T.O.P.). 'Ik werk in het magazijn elke dag' też jest poprawne!"}},
+  {q:{nl:"Welke zin klopt?",pl:"Które zdanie jest poprawne?"},
+   opts:["Zij heeft twee kinderen.","Zij twee kinderen heeft.","Twee kinderen zij heeft."],
+   correct:0,
+   explain:{nl:"Onderwerp (Zij) + werkwoord (heeft) + object.",pl:"Podmiot (Zij) + czasownik (heeft) + obiekt."}},
+  {q:{nl:"Kies de goede zin:",pl:"Wybierz poprawne zdanie:"},
+   opts:["Wil ik Nederlands leren.","Nederlands ik wil leren.","Ik wil Nederlands leren."],
+   correct:2,
+   explain:{nl:"Onderwerp + werkwoord 1 (wil) + rest + werkwoord 2 (leren) achteraan! In het Pools zeg je 'Chcę uczyć się niderlandzkiego' — de volgorde is vrij. In het Nederlands NIET!",pl:"Podmiot + czasownik 1 (wil) + reszta + czasownik 2 (leren) na końcu! Po polsku mówisz 'Chcę uczyć się niderlandzkiego' — szyk jest swobodny. Po holendersku NIE!"}},
+  {q:{nl:"Welke zin klopt?",pl:"Które zdanie jest poprawne?"},
+   opts:["De voorman controleert de machine.","De voorman de machine controleert.","Controleert de voorman de machine."],
+   correct:0,
+   explain:{nl:"Onderwerp (de voorman) + werkwoord (controleert) + object (de machine).",pl:"Podmiot (de voorman) + czasownik (controleert) + obiekt (de machine). Po polsku: 'Brygadzista kontroluje maszynę' — tu szyk jest taki sam!"}},
+  {q:{nl:"Kies de goede zin:",pl:"Wybierz poprawne zdanie:"},
+   opts:["Moet zij elke dag werken vroeg.","Zij moet elke dag vroeg werken.","Zij elke dag moet vroeg werken."],
+   correct:1,
+   explain:{nl:"Werkwoord 1 (moet) op positie 2. Werkwoord 2 (werken) achteraan. De volgorde 'elke dag vroeg' of 'vroeg elke dag' mag allebei.",pl:"Czasownik 1 (moet) na pozycji 2. Czasownik 2 (werken) na końcu. Kolejność 'elke dag vroeg' lub 'vroeg elke dag' — obie są poprawne."}},
+  {q:{nl:"Welke zin klopt?",pl:"Które zdanie jest poprawne?"},
+   opts:["Wij pauze hebben om 12 uur.","Wij hebben pauze om 12 uur.","Hebben wij om 12 uur pauze."],
+   correct:1,
+   explain:{nl:"Onderwerp (Wij) + werkwoord (hebben) + rest. 'Wij hebben om 12 uur pauze' is ook goed — je mag T.O.P. soms wisselen!",pl:"Podmiot (Wij) + czasownik (hebben) + reszta. 'Wij hebben om 12 uur pauze' też jest poprawne — T.O.P. można czasem zamieniać!"}},
+  {q:{nl:"Kies de goede zin:",pl:"Wybierz poprawne zdanie:"},
+   opts:["Hij kan goed Nederlands spreken.","Hij goed Nederlands kan spreken.","Hij spreken kan goed Nederlands."],
+   correct:0,
+   explain:{nl:"Werkwoord 1 (kan) op positie 2. Werkwoord 2 (spreken) achteraan.",pl:"Czasownik 1 (kan) na pozycji 2. Czasownik 2 (spreken) na końcu."}},
+  {q:{nl:"Welke zin klopt?",pl:"Które zdanie jest poprawne?"},
+   opts:["De levering komt morgen.","Morgen de levering komt.","Komt morgen de levering."],
+   correct:0,
+   explain:{nl:"Onderwerp (De levering) + werkwoord (komt) + tijd (morgen).",pl:"Podmiot (De levering) + czasownik (komt) + czas (morgen)."}},
+  {q:{nl:"Kies de goede zin:",pl:"Wybierz poprawne zdanie:"},
+   opts:["Ik stuur het pakket naar de klant.","Ik het pakket stuur naar de klant.","Stuur ik het pakket naar de klant."],
+   correct:0,
+   explain:{nl:"Onderwerp (Ik) + werkwoord (stuur) + object + plaats.",pl:"Podmiot (Ik) + czasownik (stuur) + obiekt + miejsce."}},
+  {q:{nl:"Welke zin klopt?",pl:"Które zdanie jest poprawne?"},
+   opts:["Zij wil de bestelling vandaag versturen.","Zij wil versturen de bestelling vandaag.","Zij de bestelling vandaag wil versturen."],
+   correct:0,
+   explain:{nl:"Werkwoord 1 (wil) op positie 2. Werkwoord 2 (versturen) helemaal achteraan! 'Zij wil vandaag de bestelling versturen' is ook goed.",pl:"Czasownik 1 (wil) na pozycji 2. Czasownik 2 (versturen) na samym końcu! 'Zij wil vandaag de bestelling versturen' też jest poprawne."}}
+];
+
+let quizScore=0, quizAnswered=0;
+
+function buildQuiz(){
+  const area=document.getElementById('quizArea');
+  area.innerHTML='';
+  quizScore=0; quizAnswered=0;
+  document.getElementById('scoreBar').style.display='none';
+  document.getElementById('quizProgress').style.width='0%';
+
+  quizData.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='quiz-q';
+    div.innerHTML=`<p>${i+1}. <span data-nl="${item.q.nl}" data-pl="${item.q.pl}">${item.q[lang]}</span></p>`;
+    item.opts.forEach((opt,j)=>{
+      const lbl=document.createElement('label');
+      lbl.innerHTML=`<input type="radio" name="q${i}" value="${j}"> ${opt}`;
+      lbl.onclick=()=>checkQuizAnswer(i,j,div);
+      div.appendChild(lbl);
+    });
+    const fb=document.createElement('div');
+    fb.className='feedback';
+    fb.id='fb'+i;
+    div.appendChild(fb);
+    area.appendChild(div);
+  });
+}
+
+function checkQuizAnswer(qi,chosen,div){
+  if(div.dataset.done) return;
+  div.dataset.done='1';
+  quizAnswered++;
+  const labels=div.querySelectorAll('label');
+  const fb=div.querySelector('.feedback');
+  const correct=quizData[qi].correct;
+
+  labels.forEach((l,j)=>{
+    if(j===correct) l.classList.add('correct');
+    if(j===chosen && j!==correct) l.classList.add('wrong');
+  });
+
+  if(chosen===correct){
+    quizScore++;
+    fb.style.display='block';
+    fb.style.background='#d4edda';
+    fb.style.color='var(--success)';
+    fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!')+' '+quizData[qi].explain[lang];
+  } else {
+    fb.style.display='block';
+    fb.style.background='#fde8e8';
+    fb.style.color='var(--error)';
+    fb.textContent='✗ '+(lang==='nl'?'Fout. ':'Źle. ')+quizData[qi].explain[lang];
+  }
+
+  document.getElementById('quizProgress').style.width=(quizAnswered/10*100)+'%';
+  if(quizAnswered===10){
+    const bar=document.getElementById('scoreBar');
+    bar.style.display='block';
+    document.getElementById('scoreNum').textContent=quizScore+'/10';
+  }
+}
+
+function resetQuiz(){buildQuiz()}
+
+// ==============================
+// DRAG & DROP
+// ==============================
+const dragSentences=[
+  {words:["Ik","werk","elke dag","in de fabriek"],answer:["Ik werk elke dag in de fabriek","Ik werk in de fabriek elke dag"]},
+  {words:["Zij","spreekt","drie","talen"],answer:["Zij spreekt drie talen"]},
+  {words:["Wij","hebben","pauze","om 12 uur"],answer:["Wij hebben pauze om 12 uur","Wij hebben om 12 uur pauze"]},
+  {words:["Hij","wil","supervisor","worden"],answer:["Hij wil supervisor worden"]},
+  {words:["Ik","moet","morgen","vroeg","werken"],answer:["Ik moet morgen vroeg werken","Ik moet vroeg morgen werken"]},
+  {words:["De levering","komt","vandaag"],answer:["De levering komt vandaag"]},
+  {words:["Zij","kan","goed","Nederlands","spreken"],answer:["Zij kan goed Nederlands spreken"]},
+  {words:["De voorman","controleert","de machine"],answer:["De voorman controleert de machine"]},
+  {words:["Wij","kunnen","de bestelling","versturen"],answer:["Wij kunnen de bestelling versturen"]},
+  {words:["Hij","gaat","volgend jaar","de supervisor","opvolgen"],answer:["Hij gaat volgend jaar de supervisor opvolgen","Hij gaat de supervisor volgend jaar opvolgen"]},
+];
+
+let currentDragWord=null;
+
+function buildDragExercises(){
+  const area=document.getElementById('dragArea');
+  area.innerHTML='';
+  const pick=shuffle([...dragSentences]).slice(0,6);
+  pick.forEach((item,i)=>{
+    const ex=document.createElement('div');
+    ex.className='dd-exercise';
+    ex.innerHTML=`<h4>${i+1}.</h4>`;
+
+    const bank=document.createElement('div');
+    bank.className='dd-wordbank';
+    bank.dataset.idx=i;
+
+    const shuffled=shuffle([...item.words]);
+    shuffled.forEach(w=>{
+      const chip=document.createElement('div');
+      chip.className='dd-word';
+      chip.textContent=w;
+      chip.draggable=true;
+      chip.addEventListener('dragstart',e=>{currentDragWord=chip;e.dataTransfer.effectAllowed='move'});
+      chip.addEventListener('touchstart',handleTouchStart,{passive:false});
+      chip.addEventListener('click',()=>clickWord(chip,bank,zone));
+      bank.appendChild(chip);
+    });
+
+    const zone=document.createElement('div');
+    zone.className='dd-dropzone';
+    zone.setAttribute('data-placeholder',lang==='nl'?'⬇ Sleep hier':'⬇ Przeciągnij tutaj');
+    zone.addEventListener('dragover',e=>{e.preventDefault()});
+    zone.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(currentDragWord){zone.appendChild(currentDragWord);currentDragWord.classList.add('in-zone');currentDragWord=null}
+    });
+
+    const btn=document.createElement('button');
+    btn.className='dd-check-btn';
+    btn.textContent=lang==='nl'?'Controleer':'Sprawdź';
+    btn.onclick=()=>checkDrag(zone,item.answer,fb);  // item.answer is now an array
+
+    const fb=document.createElement('div');
+    fb.className='dd-feedback';
+
+    ex.appendChild(bank);
+    ex.appendChild(zone);
+    ex.appendChild(btn);
+    ex.appendChild(fb);
+    area.appendChild(ex);
+  });
+}
+
+function clickWord(chip,bank,zone){
+  if(chip.classList.contains('in-zone')){
+    bank.appendChild(chip);
+    chip.classList.remove('in-zone');
+  } else {
+    zone.appendChild(chip);
+    chip.classList.add('in-zone');
+  }
+}
+
+function checkDrag(zone,answers,fb){
+  const attempt=Array.from(zone.children).map(c=>c.textContent).join(' ');
+  const ansArr=Array.isArray(answers)?answers:[answers];
+  if(ansArr.includes(attempt)){
+    fb.className='dd-feedback ok';
+    fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');
+  } else {
+    fb.className='dd-feedback nok';
+    const altText=ansArr.length>1?(lang==='nl'?' (of: '+ansArr.slice(1).join(' / ')+')':' (lub: '+ansArr.slice(1).join(' / ')+')'):'';  
+    fb.textContent='✗ '+(lang==='nl'?'Probeer opnieuw. Antwoord: ':'Spróbuj ponownie. Odpowiedź: ')+ansArr[0]+altText;
+  }
+}
+
+// Touch support for mobile drag
+let touchClone=null, touchOrigin=null;
+function handleTouchStart(e){
+  // Use click-based approach on touch for simplicity
+}
+
+// ==============================
+// SCHRIJF OEFENINGEN
+// ==============================
+const schrijfData=[
+  {words:["werkt","Hij","het magazijn","in"],answer:["Hij werkt in het magazijn"]},
+  {words:["heb","Ik","twee kinderen"],answer:["Ik heb twee kinderen"]},
+  {words:["wil","Zij","Nederlands","leren"],answer:["Zij wil Nederlands leren"]},
+  {words:["is","De machine","kapot"],answer:["De machine is kapot"]},
+  {words:["moet","Hij","de collega's","aansturen"],answer:["Hij moet de collega's aansturen"]},
+  {words:["heeft","Zij","een nieuwe bestelling"],answer:["Zij heeft een nieuwe bestelling"]},
+  {words:["kunnen","Wij","morgen","beginnen"],answer:["Wij kunnen morgen beginnen"]},
+  {words:["stuur","Ik","het pakket","naar de klant"],answer:["Ik stuur het pakket naar de klant","Ik stuur naar de klant het pakket"]},
+  {words:["gaat","Hij","de supervisor","opvolgen"],answer:["Hij gaat de supervisor opvolgen"]},
+  {words:["spreekt","Zij","drie talen","op het werk"],answer:["Zij spreekt drie talen op het werk","Zij spreekt op het werk drie talen"]},
+];
+
+function buildSchrijfExercises(){
+  const area=document.getElementById('schrijfArea');
+  area.innerHTML='';
+  const pick=shuffle([...schrijfData]).slice(0,6);
+  pick.forEach((item,i)=>{
+    const ex=document.createElement('div');
+    ex.className='schrijf-exercise';
+    ex.innerHTML=`<h4>${i+1}.</h4>`;
+
+    const wordBox=document.createElement('div');
+    wordBox.className='schrijf-words';
+    shuffle([...item.words]).forEach(w=>{
+      const sp=document.createElement('span');
+      sp.className='schrijf-word';
+      sp.textContent=w;
+      wordBox.appendChild(sp);
+    });
+
+    const input=document.createElement('input');
+    input.className='schrijf-input';
+    input.placeholder=lang==='nl'?'Schrijf de zin hier...':'Napisz zdanie tutaj...';
+
+    const btn=document.createElement('button');
+    btn.className='dd-check-btn';
+    btn.textContent=lang==='nl'?'Controleer':'Sprawdź';
+
+    const fb=document.createElement('div');
+    fb.className='dd-feedback';
+
+    btn.onclick=()=>{
+      const val=input.value.trim().replace(/\.$/,'').trim();
+      const ansArr=Array.isArray(item.answer)?item.answer:[item.answer];
+      const isCorrect=ansArr.some(a=>val.toLowerCase()===a.replace(/\.$/,'').trim().toLowerCase());
+      if(isCorrect){
+        fb.className='dd-feedback ok';
+        fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');
+        input.style.borderColor='var(--success)';
+      } else {
+        fb.className='dd-feedback nok';
+        const altText=ansArr.length>1?(lang==='nl'?' (of: '+ansArr.slice(1).join(' / ')+')':' (lub: '+ansArr.slice(1).join(' / ')+')'):'';  
+        fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+ansArr[0]+altText+'.';
+        input.style.borderColor='var(--error)';
+      }
+    };
+
+    const hint=document.createElement('div');
+    hint.className='schrijf-hint';
+    hint.setAttribute('data-nl','💡 Denk aan: Onderwerp + Werkwoord + Rest (+ 2e werkwoord)');
+    hint.setAttribute('data-pl','💡 Pamiętaj: Podmiot + Czasownik + Reszta (+ 2. czasownik)');
+    hint.textContent=lang==='nl'?'💡 Denk aan: Onderwerp + Werkwoord + Rest (+ 2e werkwoord)':'💡 Pamiętaj: Podmiot + Czasownik + Reszta (+ 2. czasownik)';
+
+    ex.appendChild(wordBox);
+    ex.appendChild(hint);
+    ex.appendChild(input);
+    ex.appendChild(btn);
+    ex.appendChild(fb);
+    area.appendChild(ex);
+  });
+}
+
+// ==============================
+// UTILS
+// ==============================
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+  return arr;
+}
+
+// INIT
+buildQuiz();
+buildDragExercises();
+buildSchrijfExercises();
+</script>
+</body>
+</html>

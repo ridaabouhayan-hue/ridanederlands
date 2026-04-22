@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.8 In de klas — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.7}
+        .instructie-lang{display:block;margin-top:2px}
+        .klas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:1rem 0}
+        .klas-item{background:rgba(255,255,255,.04);border:1px solid rgba(99,102,241,.18);border-radius:9px;padding:10px 8px;text-align:center;font-size:.85rem}
+        .klas-item .emoji{font-size:1.5rem;display:block;margin-bottom:4px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:130px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .verbind-container{display:flex;gap:16px}.verbind-col{flex:1;display:flex;flex-direction:column;gap:7px}
+        .verbind-item{padding:9px 13px;border:2px solid rgba(99,102,241,.3);border-radius:10px;cursor:pointer;font-size:.85rem;transition:all .2s;user-select:none}
+        .verbind-item:hover{border-color:#6366f1;background:rgba(99,102,241,.08)}
+        .verbind-item.selected{border-color:#6366f1;background:rgba(99,102,241,.15)}
+        .verbind-item.matched-ok{border-color:#10b981;background:rgba(16,185,129,.12);pointer-events:none}
+        .verbind-item.matched-err{border-color:#ef4444;background:rgba(239,68,68,.12)}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.8</span></div>
+            <h1>🏫 In de klas</h1>
+            <p class="subtitle" data-translate="subtitle">Leer woorden voor dingen in de klas.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 2.8</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 NL</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3>Kies het juiste voorwerp.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Lees de omschrijving en kies het goede klaslokaalwoord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Read the description and choose the correct classroom word.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Açıklamayı okuyun ve doğru sınıf eşyasını seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 阅读描述，选择正确的课堂物品词。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Verbinden</span>
+                <h3>Verbind het woord met de omschrijving.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op het woord (links) dan op de omschrijving (rechts).</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click the word (left) then its description (right).</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Kelimeye (sol) tıklayın, ardından açıklamasına (sağ) tıklayın.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击左边的词，再点击右边的描述。</span>
+                </p>
+                <div class="verbind-container">
+                    <div class="verbind-col" id="vb-links"></div>
+                    <div class="verbind-col" id="vb-rechts"></div>
+                </div>
+                <span id="vb-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="buildVerbind()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Vul in</span>
+                <h3>Vul het juiste klaslokaalwoord in.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Kies uit: bord, boek, pen, stoel, tafel, deur, raam, notebook, rugzak, etui</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Choose from classroom words.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Sınıf kelimelerinden seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 从课堂词汇中选择。</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Is de omschrijving juist?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış mı? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3>Beschrijf jouw klas.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen over jouw klas. Laat ze zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences about your classroom. Show them to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Sınıfınız hakkında cümleler yazın. Öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 写关于你班级的句子。给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+<script>
+const VOCAB=[
+    {nl:'het bord',en:'blackboard/whiteboard',tr:'tahta/yazı tahtası',zh:'黑板',ex:'De docent schrijft op het bord.'},
+    {nl:'het boek',en:'book',tr:'kitap',zh:'书',ex:'Ik lees in mijn boek.'},
+    {nl:'de pen',en:'pen',tr:'kalem',zh:'钢笔',ex:'Ik schrijf met een pen.'},
+    {nl:'het potlood',en:'pencil',tr:'kurşun kalem',zh:'铅笔',ex:'Ik schrijf met een potlood.'},
+    {nl:'de stoel',en:'chair',tr:'sandalye',zh:'椅子',ex:'Ik zit op een stoel.'},
+    {nl:'de tafel',en:'table/desk',tr:'masa',zh:'桌子',ex:'Het boek ligt op de tafel.'},
+    {nl:'de deur',en:'door',tr:'kapı',zh:'门',ex:'De deur is open.'},
+    {nl:'het raam',en:'window',tr:'pencere',zh:'窗户',ex:'Het raam is groot.'},
+    {nl:'de rugzak',en:'backpack',tr:'sırt çantası',zh:'书包/背包',ex:'Mijn rugzak is zwaar.'},
+    {nl:'het etui',en:'pencil case',tr:'kalem kutusu',zh:'笔袋',ex:'Mijn pen ligt in het etui.'},
+    {nl:'de map',en:'folder',tr:'dosya/klasör',zh:'文件夹',ex:'De cursist heeft een map.'},
+    {nl:'de cursist',en:'student (course)',tr:'kursiyer',zh:'学员',ex:'Er zijn vijftien cursisten.'},
+];
+const UI={nl:{subtitle:'Leer woorden voor dingen in de klas.',vocabTitle:'Woorden van paragraaf 2.8',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn words for things in the classroom.',vocabTitle:'Words 2.8',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Sınıftaki eşyalar için kelimeleri öğrenin.',vocabTitle:'2.8 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习课堂物品词汇。',vocabTitle:'第2.8段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
+const UITLEG={
+    nl:`<div class="uitleg-box"><h3>Voorwerpen in de klas</h3>
+<div class="klas-grid">
+<div class="klas-item"><span class="emoji">📋</span>het bord</div>
+<div class="klas-item"><span class="emoji">📚</span>het boek</div>
+<div class="klas-item"><span class="emoji">🖊️</span>de pen</div>
+<div class="klas-item"><span class="emoji">✏️</span>het potlood</div>
+<div class="klas-item"><span class="emoji">🪑</span>de stoel</div>
+<div class="klas-item"><span class="emoji">🪵</span>de tafel</div>
+<div class="klas-item"><span class="emoji">🚪</span>de deur</div>
+<div class="klas-item"><span class="emoji">🪟</span>het raam</div>
+<div class="klas-item"><span class="emoji">🎒</span>de rugzak</div>
+<div class="klas-item"><span class="emoji">🖊️</span>het etui</div>
+<div class="klas-item"><span class="emoji">📁</span>de map</div>
+</div></div>
+<div class="tip-blok"><strong>het & de:</strong> "het" bij: boek, bord, potlood, raam, etui. "de" bij: pen, stoel, tafel, deur, rugzak, map.</div>`,
+    en:`<div class="uitleg-box"><h3>Classroom objects</h3>
+<div class="klas-grid">
+<div class="klas-item"><span class="emoji">📋</span>het bord<br><small>board</small></div>
+<div class="klas-item"><span class="emoji">📚</span>het boek<br><small>book</small></div>
+<div class="klas-item"><span class="emoji">🖊️</span>de pen<br><small>pen</small></div>
+<div class="klas-item"><span class="emoji">✏️</span>het potlood<br><small>pencil</small></div>
+<div class="klas-item"><span class="emoji">🪑</span>de stoel<br><small>chair</small></div>
+<div class="klas-item"><span class="emoji">🪵</span>de tafel<br><small>desk</small></div>
+<div class="klas-item"><span class="emoji">🚪</span>de deur<br><small>door</small></div>
+<div class="klas-item"><span class="emoji">🪟</span>het raam<br><small>window</small></div>
+<div class="klas-item"><span class="emoji">🎒</span>de rugzak<br><small>backpack</small></div>
+<div class="klas-item"><span class="emoji">📁</span>de map<br><small>folder</small></div>
+</div></div>`,
+    tr:`<div class="uitleg-box"><h3>Sınıf Eşyaları</h3>
+<div class="klas-grid">
+<div class="klas-item"><span class="emoji">📋</span>het bord<br><small>tahta</small></div>
+<div class="klas-item"><span class="emoji">📚</span>het boek<br><small>kitap</small></div>
+<div class="klas-item"><span class="emoji">🖊️</span>de pen<br><small>kalem</small></div>
+<div class="klas-item"><span class="emoji">✏️</span>het potlood<br><small>kurşun kalem</small></div>
+<div class="klas-item"><span class="emoji">🪑</span>de stoel<br><small>sandalye</small></div>
+<div class="klas-item"><span class="emoji">🪵</span>de tafel<br><small>masa</small></div>
+<div class="klas-item"><span class="emoji">🚪</span>de deur<br><small>kapı</small></div>
+<div class="klas-item"><span class="emoji">🪟</span>het raam<br><small>pencere</small></div>
+<div class="klas-item"><span class="emoji">🎒</span>de rugzak<br><small>sırt çantası</small></div>
+<div class="klas-item"><span class="emoji">📁</span>de map<br><small>dosya</small></div>
+</div></div>`,
+    zh:`<div class="uitleg-box"><h3>课堂物品</h3>
+<div class="klas-grid">
+<div class="klas-item"><span class="emoji">📋</span>het bord<br><small>黑板</small></div>
+<div class="klas-item"><span class="emoji">📚</span>het boek<br><small>书</small></div>
+<div class="klas-item"><span class="emoji">🖊️</span>de pen<br><small>钢笔</small></div>
+<div class="klas-item"><span class="emoji">✏️</span>het potlood<br><small>铅笔</small></div>
+<div class="klas-item"><span class="emoji">🪑</span>de stoel<br><small>椅子</small></div>
+<div class="klas-item"><span class="emoji">🪵</span>de tafel<br><small>桌子</small></div>
+<div class="klas-item"><span class="emoji">🚪</span>de deur<br><small>门</small></div>
+<div class="klas-item"><span class="emoji">🪟</span>het raam<br><small>窗户</small></div>
+<div class="klas-item"><span class="emoji">🎒</span>de rugzak<br><small>书包</small></div>
+<div class="klas-item"><span class="emoji">📁</span>de map<br><small>文件夹</small></div>
+</div></div>
+<div class="tip-blok"><strong>注意：</strong>"het"搭配：boek, bord, potlood, raam, etui。"de"搭配：pen, stoel, tafel, deur, rugzak, map。</div>`
+};
+let currentLang='nl';
+function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
+const mc1Data=[
+    {v:'Hierop schrijft de docent de woorden.',a:'het bord',o:['het boek','het bord','de tafel']},
+    {v:'Je leest hierin. Het heeft pagina\'s.',a:'het boek',o:['het boek','de pen','het bord']},
+    {v:'Hiermee schrijf je. Het heeft inkt.',a:'de pen',o:['de pen','het potlood','de stoel']},
+    {v:'Hiermee schrijf je. Je kunt het uitwissen.',a:'het potlood',o:['de pen','het potlood','het etui']},
+    {v:'Je zit hierop.',a:'de stoel',o:['de tafel','de stoel','de deur']},
+    {v:'Je boek en pen liggen hierop.',a:'de tafel',o:['de stoel','de tafel','het raam']},
+    {v:'Je gaat erdoor naar buiten of naar binnen.',a:'de deur',o:['het raam','de deur','de rugzak']},
+    {v:'Hierdoor zie je buiten. Het is van glas.',a:'het raam',o:['de deur','het raam','de tafel']},
+    {v:'Je draagt dit op je rug. Je boeken zitten erin.',a:'de rugzak',o:['de map','de rugzak','het etui']},
+    {v:'Je pen en potlood zitten hierin.',a:'het etui',o:['de rugzak','het etui','de map']},
+    {v:'Hierin bewaar je papieren en opdrachten.',a:'de map',o:['het etui','het boek','de map']},
+    {v:'Hij leert Nederlands op de school.',a:'de cursist',o:['de docent','de cursist','het boek']},
+];
+const vbData=[
+    {woord:'het bord',def:'de docent schrijft hierop'},
+    {woord:'het boek',def:'je leest hierin'},
+    {woord:'de pen',def:'hiermee schrijf je (met inkt)'},
+    {woord:'het potlood',def:'hiermee schrijf je (uitwisbaar)'},
+    {woord:'de stoel',def:'je zit hierop'},
+    {woord:'de tafel',def:'je boek ligt hierop'},
+    {woord:'de deur',def:'je gaat erdoor in/uit'},
+    {woord:'het raam',def:'van glas — je ziet erdoorheen'},
+    {woord:'de rugzak',def:'je draagt dit op je rug'},
+    {woord:'het etui',def:'je pen en potlood zitten hierin'},
+];
+const _mc={};
+function checkMCq(btn,keuze,ant,sid,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')))return;groep.forEach(b=>b.disabled=true);if(!_mc[sid])_mc[sid]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[sid].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[sid].done++;if(_mc[sid].done===total){const sc=document.getElementById(sid);sc.style.display='inline-block';const s=_mc[sid].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=8?'score-midden':'score-slecht');}}
+function buildMC1(){const ul=document.getElementById('mc1');ul.innerHTML='';mc1Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function resetMC(listId,scoreId,buildFn){delete _mc[scoreId];document.getElementById(scoreId).style.display='none';document.getElementById(listId).innerHTML='';buildFn();}
+let vbSel=null,vbType=null,vbDone=0;
+function buildVerbind(){const L=document.getElementById('vb-links'),R=document.getElementById('vb-rechts');L.innerHTML='';R.innerHTML='';vbSel=null;vbType=null;vbDone=0;document.getElementById('vb-score').style.display='none';const sh=[...vbData].sort(()=>Math.random()-.5);vbData.forEach((item,i)=>{const d=document.createElement('div');d.className='verbind-item';d.dataset.id=i;d.dataset.side='links';d.textContent=item.woord;d.onclick=()=>selVb(d);L.appendChild(d);});sh.forEach(item=>{const orig=vbData.findIndex(v=>v.woord===item.woord);const d=document.createElement('div');d.className='verbind-item';d.dataset.id=orig;d.dataset.side='rechts';d.textContent=item.def;d.style.fontSize='.8rem';d.onclick=()=>selVb(d);R.appendChild(d);});}
+function selVb(el){if(vbSel===null){vbSel=el;el.classList.add('selected');vbType=el.dataset.side;}else{if(el.dataset.side===vbType){vbSel.classList.remove('selected');vbSel=el;el.classList.add('selected');return;}vbSel.classList.remove('selected');if(vbSel.dataset.id===el.dataset.id){vbSel.classList.add('matched-ok');el.classList.add('matched-ok');vbDone++;if(vbDone===vbData.length){const sc=document.getElementById('vb-score');sc.style.display='inline-block';sc.textContent=`${vbDone}/${vbData.length} ✅`;sc.className='score-badge score-goed';}}else{vbSel.classList.add('matched-err');el.classList.add('matched-err');setTimeout(()=>{vbSel.classList.remove('matched-err');el.classList.remove('matched-err');},700);}vbSel=null;vbType=null;}}
+const invulData=[
+    {zin:'De docent schrijft op het ___.',ant:'bord'},
+    {zin:'Ik lees in mijn ___.',ant:'boek'},
+    {zin:'Ik schrijf met een ___. Het heeft inkt.',ant:'pen'},
+    {zin:'Ik schrijf met een ___. Je kunt het uitwissen.',ant:'potlood'},
+    {zin:'Ik zit op een ___.',ant:'stoel'},
+    {zin:'Het boek ligt op de ___.',ant:'tafel'},
+    {zin:'De ___ is open. We gaan naar buiten.',ant:'deur'},
+    {zin:'Het ___ is groot. Ik zie de boom buiten.',ant:'raam'},
+    {zin:'Mijn boeken zitten in mijn ___.',ant:'rugzak'},
+    {zin:'Mijn pen en potlood zitten in mijn ___.',ant:'etui'},
+    {zin:'Mijn opdrachten zitten in mijn ___.',ant:'map'},
+    {zin:'Hij leert Nederlands. Hij is een ___.',ant:'cursist'},
+];
+function buildInvul(){const ul=document.getElementById('invul1');ul.innerHTML='';invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="…" autocomplete="off">${p[1]||''}</li>`;});}
+function checkInvul(){let g=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');}
+function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+const wnData=[
+    {s:'De docent schrijft op het bord.',ant:'Goed'},{s:'Je leest in een stoel.',ant:'Fout'},
+    {s:'Een pen heeft inkt. Een potlood heeft geen inkt.',ant:'Goed'},{s:'Je zit op een tafel.',ant:'Fout'},
+    {s:'Een rugzak draag je op je rug.',ant:'Goed'},{s:'In een etui bewaar je je boeken.',ant:'Fout'},
+    {s:'In een map bewaar je papieren en opdrachten.',ant:'Goed'},{s:'Een raam is van glas.',ant:'Goed'},
+    {s:'Je gaat door het raam naar buiten.',ant:'Fout'},{s:'Een cursist leert Nederlands op school.',ant:'Goed'},
+    {s:'Het bord staat naast de docent.',ant:'Goed'},{s:'Een potlood kun je uitwissen.',ant:'Goed'},
+];
+function buildWN(){const ul=document.getElementById('wn1');ul.innerHTML='';wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button></div></li>`);}
+function checkWN(btn,keuze,ant){const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');if([...groep].some(b=>b.classList.contains('correct')))return;if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}}
+function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+const schrijfVragen=[
+    {nl:'Schrijf drie dingen die in jouw klas zijn.',en:'Write three things that are in your classroom.',tr:'Sınıfınızda olan üç şeyi yazın.',zh:'写出你班级里的三样东西。'},
+    {nl:'Maak een zin: "De ___ ligt/staat/hangt ___."',en:'Make a sentence: "De ___ ligt/staat/hangt ___."',tr:'"De ___ ligt/staat/hangt ___." ile bir cümle kurun.',zh:'造句："De ___ ligt/staat/hangt ___。"'},
+    {nl:'Schrijf: wat zit er in jouw rugzak?',en:'Write: what is in your backpack?',tr:'Yazın: çantanızda ne var?',zh:'写：你的书包里有什么？'},
+    {nl:'Beschrijf jouw klas in drie zinnen.',en:'Describe your classroom in three sentences.',tr:'Sınıfınızı üç cümle ile anlatın.',zh:'用三个句子描述你的班级。'},
+    {nl:'Schrijf "de" of "het" bij: bord, pen, stoel, raam, rugzak, potlood.',en:'Write "de" or "het" for: bord, pen, stoel, raam, rugzak, potlood.',tr:'"De" veya "het" yazın: bord, pen, stoel, raam, rugzak, potlood.',zh:'给以下词写"de"或"het"：bord, pen, stoel, raam, rugzak, potlood。'},
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{const txt=v[currentLang]||v.nl;ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw8-${i}" placeholder="Schrijf hier..."></textarea></li>`;});}
+function saveSchrijf(){document.getElementById('schrijf-fb').style.display='inline';setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);}
+function resetSchrijf(){buildSchrijf();}
+document.addEventListener('DOMContentLoaded',()=>{buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')==='nl'?'block':'none';});buildMC1();buildVerbind();buildInvul();buildWN();buildSchrijf();});
+</script>
+</body>
+</html>

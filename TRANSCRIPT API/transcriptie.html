@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Transcriptie Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: #f0f4ff; color: #1a1a2e; min-height: 100vh; padding: 20px; }
+  
+  .container { max-width: 700px; margin: 0 auto; }
+  
+  .header {
+    background: linear-gradient(135deg, #4361ee, #7209b7);
+    color: white; text-align: center; padding: 30px 20px;
+    border-radius: 18px; margin-bottom: 20px;
+  }
+  .header h1 { font-size: 1.8em; font-weight: 900; margin-bottom: 6px; }
+  .header p { opacity: 0.85; font-size: 0.9em; }
+  
+  .card {
+    background: white; border-radius: 18px; padding: 24px;
+    box-shadow: 0 4px 20px rgba(67,97,238,0.10); margin-bottom: 16px;
+  }
+  
+  .card h2 { font-size: 1.1em; font-weight: 900; color: #4361ee; margin-bottom: 12px; }
+  
+  .input-group { margin-bottom: 16px; }
+  .input-group label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.9em; }
+  .input-group input[type="text"],
+  .input-group input[type="password"] {
+    width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb;
+    border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.95em;
+  }
+  .input-group input:focus { outline: none; border-color: #4361ee; }
+  
+  .file-upload {
+    border: 3px dashed #4361ee; border-radius: 14px;
+    padding: 30px 20px; text-align: center; cursor: pointer;
+    transition: all 0.2s; background: #f0f4ff;
+  }
+  .file-upload:hover { background: #e8f0fe; }
+  .file-upload.has-file { border-color: #28a745; background: #d4edda; }
+  .file-upload input[type="file"] { display: none; }
+  .file-name { margin-top: 8px; font-weight: 700; color: #28a745; }
+  
+  .btn {
+    width: 100%; padding: 14px; border: none; border-radius: 12px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1em;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #4361ee, #7209b7);
+    color: white;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(67,97,238,0.3); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
+  .status {
+    text-align: center; padding: 12px; border-radius: 10px;
+    font-weight: 700; margin-top: 16px; display: none;
+  }
+  .status.loading { display: block; background: #fff3cd; color: #856404; }
+  .status.success { display: block; background: #d4edda; color: #155724; }
+  .status.error { display: block; background: #f8d7da; color: #721c24; }
+  
+  .result { margin-top: 16px; display: none; }
+  .result.show { display: block; }
+  .result textarea {
+    width: 100%; min-height: 200px; padding: 12px; border: 2px solid #e5e7eb;
+    border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 0.9em;
+    line-height: 1.6;
+  }
+  
+  .info-box {
+    background: #e8f4fd; border-left: 4px solid #4361ee;
+    padding: 12px 16px; border-radius: 8px; font-size: 0.88em;
+    line-height: 1.6; margin-top: 12px;
+  }
+  
+  .lang-select { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .lang-select label { display: flex; align-items: center; gap: 4px; font-size: 0.85em; }
+  .lang-select input[type="checkbox"] { width: auto; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🎬 Video Transcriptie</h1>
+    <p>Upload je video en krijg automatisch het transcript</p>
+  </div>
+  
+  <div class="card">
+    <h2>1️⃣ API Keys</h2>
+    <div class="input-group">
+      <label>AssemblyAI API key (voor transcriptie)</label>
+      <input type="password" id="apiKey" placeholder="Plak je AssemblyAI key hier">
+    </div>
+    <div class="info-box">
+      💡 <strong>AssemblyAI:</strong> Ga naar <a href="https://www.assemblyai.com/dashboard/signup" target="_blank">assemblyai.com</a> → gratis account → <strong>$50 gratis credits</strong>
+    </div>
+    
+    <div class="input-group" style="margin-top: 16px;">
+      <label>Anthropic API key (voor vertalingen via Claude)</label>
+      <input type="password" id="anthropicKey" placeholder="Plak je Anthropic key hier">
+    </div>
+    <div class="info-box">
+      💡 <strong>Anthropic:</strong> Ga naar <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → maak account → API Keys → <strong>$5 gratis credits</strong>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h2>2️⃣ Upload video</h2>
+    <div class="file-upload" id="fileUpload" onclick="document.getElementById('fileInput').click()">
+      <div style="font-size: 2em; margin-bottom: 8px;">📹</div>
+      <div style="font-weight: 700;">Klik om video te kiezen</div>
+      <div style="font-size: 0.8em; color: #6b7280; margin-top: 4px;">mp4, mov, avi, m4a, mp3, wav</div>
+      <div class="file-name" id="fileName"></div>
+    </div>
+    <input type="file" id="fileInput" accept="video/*,audio/*">
+  </div>
+  
+  <div class="card">
+    <h2>3️⃣ Vertalingen (optioneel)</h2>
+    <p style="font-size: 0.88em; color: #6b7280; margin-bottom: 8px;">Selecteer talen voor automatische vertaling (hoogste kwaliteit via Claude AI):</p>
+    <div class="lang-select">
+      <label><input type="checkbox" value="en"> 🇬🇧 Engels</label>
+      <label><input type="checkbox" value="tr"> 🇹🇷 Turks</label>
+      <label><input type="checkbox" value="ar"> 🇸🇦 Arabisch</label>
+      <label><input type="checkbox" value="fa"> 🇮🇷 Farsi</label>
+      <label><input type="checkbox" value="pt"> 🇵🇹 Portugees</label>
+      <label><input type="checkbox" value="hu"> 🇭🇺 Hongaars</label>
+      <label><input type="checkbox" value="el"> 🇬🇷 Grieks</label>
+      <label><input type="checkbox" value="pl"> 🇵🇱 Pools</label>
+      <label><input type="checkbox" value="zh"> 🇨🇳 Chinees</label>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" id="transcribeBtn" disabled>Transcribeer nu</button>
+  
+  <div class="status" id="status"></div>
+  
+  <div class="result" id="result">
+    <div class="card">
+      <h2>📝 Nederlands Transcript</h2>
+      <textarea id="transcript" readonly></textarea>
+      <button class="btn btn-primary" onclick="copyText('transcript')" style="margin-top: 10px; background: #28a745;">Kopieer transcript</button>
+    </div>
+    
+    <div id="translationsContainer"></div>
+  </div>
+</div>
+
+<script>
+let selectedFile = null;
+
+const fileInput = document.getElementById('fileInput');
+const fileUpload = document.getElementById('fileUpload');
+const fileName = document.getElementById('fileName');
+const apiKeyInput = document.getElementById('apiKey');
+const anthropicKeyInput = document.getElementById('anthropicKey');
+const transcribeBtn = document.getElementById('transcribeBtn');
+const statusDiv = document.getElementById('status');
+const resultDiv = document.getElementById('result');
+const transcriptArea = document.getElementById('transcript');
+const translationsContainer = document.getElementById('translationsContainer');
+
+fileInput.addEventListener('change', (e) => {
+  selectedFile = e.target.files[0];
+  if (selectedFile) {
+    fileName.textContent = selectedFile.name;
+    fileUpload.classList.add('has-file');
+    checkReady();
+  }
+});
+
+apiKeyInput.addEventListener('input', checkReady);
+anthropicKeyInput.addEventListener('input', checkReady);
+
+function checkReady() {
+  // Only AssemblyAI key is required, Anthropic is optional (for translations)
+  transcribeBtn.disabled = !(selectedFile && apiKeyInput.value.trim());
+}
+
+transcribeBtn.addEventListener('click', async () => {
+  const apiKey = apiKeyInput.value.trim();
+  if (!apiKey || !selectedFile) return;
+  
+  transcribeBtn.disabled = true;
+  resultDiv.classList.remove('show');
+  showStatus('loading', 'Bestand uploaden...');
+  
+  try {
+    // Step 1: Upload file to AssemblyAI
+    const uploadResponse = await fetch('https://api.assemblyai.com/v2/upload', {
+      method: 'POST',
+      headers: {
+        'authorization': apiKey
+      },
+      body: selectedFile
+    });
+    
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      console.error('Upload error:', errorText);
+      throw new Error(`Upload mislukt (${uploadResponse.status}): ${errorText}`);
+    }
+    
+    const uploadData = await uploadResponse.json();
+    const upload_url = uploadData.upload_url;
+    console.log('Upload succesvol:', upload_url);
+    
+    if (!upload_url) {
+      throw new Error('Geen upload URL ontvangen. Check je API key.');
+    }
+    
+    // Step 2: Request transcription (auto-detect language)
+    showStatus('loading', 'Transcriptie starten...');
+    
+    const transcriptResponse = await fetch('https://api.assemblyai.com/v2/transcript', {
+      method: 'POST',
+      headers: {
+        'authorization': apiKey,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        audio_url: upload_url,
+        speech_models: ['universal-2']
+      })
+    });
+    
+    let transcriptData = await transcriptResponse.json();
+    console.log('Transcript response:', transcriptData);
+    
+    if (!transcriptResponse.ok || transcriptData.error) {
+      throw new Error(`API fout: ${transcriptData.error || JSON.stringify(transcriptData)}`);
+    }
+    
+    const transcriptId = transcriptData.id;
+    
+    // Step 3: Poll for completion
+    showStatus('loading', 'Transcriptie bezig... Dit kan 1-2 minuten duren.');
+    
+    while (true) {
+      const pollingResponse = await fetch(`https://api.assemblyai.com/v2/transcript/${transcriptId}`, {
+        headers: { 'authorization': apiKey }
+      });
+      
+      transcriptData = await pollingResponse.json();
+      
+      if (transcriptData.status === 'completed') {
+        break;
+      } else if (transcriptData.status === 'error') {
+        throw new Error('Transcriptie mislukt: ' + transcriptData.error);
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+    
+    const transcriptText = transcriptData.text;
+    transcriptArea.value = transcriptText;
+    
+    // Step 4: Translations (using Anthropic Claude API)
+    const selectedLangs = Array.from(document.querySelectorAll('.lang-select input:checked')).map(cb => cb.value);
+    translationsContainer.innerHTML = '';
+    
+    if (selectedLangs.length > 0) {
+      const anthropicKey = anthropicKeyInput.value.trim();
+      
+      if (!anthropicKey) {
+        showStatus('success', '✅ Transcriptie klaar! Voeg Anthropic API key toe voor vertalingen.');
+        resultDiv.classList.add('show');
+        return;
+      }
+      
+      showStatus('loading', `Vertalen naar ${selectedLangs.length} talen met Claude AI...`);
+      
+      const langNames = {
+        en: 'English', tr: 'Türkçe', ar: 'العربية', fa: 'فارسی',
+        pt: 'Português', hu: 'Magyar', el: 'Ελληνικά', pl: 'Polski', zh: '中文'
+      };
+      
+      const langFullNames = {
+        en: 'English', tr: 'Turkish', ar: 'Arabic', fa: 'Farsi (Persian)',
+        pt: 'Portuguese', hu: 'Hungarian', el: 'Greek', pl: 'Polish', zh: 'Chinese (Simplified)'
+      };
+      
+      for (const lang of selectedLangs) {
+        try {
+          const translationResponse = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'x-api-key': anthropicKey,
+              'anthropic-version': '2023-06-01',
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'claude-3-5-haiku-20241022',
+              max_tokens: 4096,
+              messages: [{
+                role: 'user',
+                content: `Translate the following Dutch text to ${langFullNames[lang]}. Provide only the translation, no explanations or additional text.\n\nDutch text:\n${transcriptText}`
+              }]
+            })
+          });
+          
+          if (translationResponse.ok) {
+            const data = await translationResponse.json();
+            const translation = data.content[0].text;
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <h2>🌍 ${langNames[lang]}</h2>
+              <textarea readonly style="width:100%;min-height:150px;padding:12px;border:2px solid #e5e7eb;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.9em;line-height:1.6;">${translation}</textarea>
+              <button class="btn btn-primary" onclick="copyText('trans_${lang}')" style="margin-top: 10px; background: #17a2b8;">Kopieer ${langNames[lang]}</button>
+            `;
+            card.querySelector('textarea').id = `trans_${lang}`;
+            translationsContainer.appendChild(card);
+          } else {
+            console.log(`Vertaling naar ${lang} mislukt`);
+          }
+        } catch (err) {
+          console.log(`Vertaling naar ${lang} mislukt:`, err);
+        }
+      }
+    }
+    
+    showStatus('success', '✅ Klaar! Scroll naar beneden voor je transcript.');
+    resultDiv.classList.add('show');
+    
+  } catch (error) {
+    showStatus('error', `❌ Fout: ${error.message}`);
+  } finally {
+    transcribeBtn.disabled = false;
+  }
+});
+
+function showStatus(type, message) {
+  statusDiv.className = `status ${type}`;
+  statusDiv.textContent = message;
+}
+
+function copyText(id) {
+  const textarea = document.getElementById(id);
+  textarea.select();
+  document.execCommand('copy');
+  alert('Gekopieerd! ✅');
+}
+</script>
+
+</body>
+</html>

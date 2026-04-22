@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spellingregels Nederlands - NT2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fira+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #2563eb;
+            --blue-light: #dbeafe;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+            --green: #16a34a;
+            --green-light: #dcfce7;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fira Sans', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fef3f2 50%, #f0fdf4 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .lang-btn {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--gray-200);
+            background: white;
+            border-radius: 0.75rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--blue);
+            background: var(--blue-light);
+        }
+
+        .lang-btn.active {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .lang-btn .flag {
+            font-size: 1.2rem;
+        }
+
+        /* Content sections */
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Rule Cards */
+        .rule-card {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            opacity: 0.05;
+            transform: translate(30%, -30%);
+        }
+
+        .rule-card.blue { border-left-color: var(--blue); }
+        .rule-card.blue::before { background: var(--blue); }
+        .rule-card.blue .rule-number { background: var(--blue); }
+
+        .rule-card.red { border-left-color: var(--red); }
+        .rule-card.red::before { background: var(--red); }
+        .rule-card.red .rule-number { background: var(--red); }
+
+        .rule-card.green { border-left-color: var(--green); }
+        .rule-card.green::before { background: var(--green); }
+        .rule-card.green .rule-number { background: var(--green); }
+
+        .rule-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rule-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .rule-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .rule-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Pattern Box */
+        .pattern-box {
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            margin: 1rem 0;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pattern-box.blue { background: var(--blue-light); color: var(--blue); }
+        .pattern-box.red { background: var(--red-light); color: var(--red); }
+        .pattern-box.green { background: var(--green-light); color: var(--green); }
+
+        .pattern-box .vowel {
+            color: var(--red);
+            font-size: 1.2rem;
+        }
+
+        .pattern-box .consonant {
+            color: var(--blue);
+        }
+
+        /* Example */
+        .example {
+            background: var(--gray-50);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .example strong {
+            color: var(--gray-800);
+        }
+
+        .word-breakdown {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.05em;
+        }
+
+        .word-breakdown .v { color: var(--red); font-weight: 700; }
+        .word-breakdown .c { color: var(--blue); font-weight: 700; }
+
+        /* Table */
+        .examples-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .examples-table th {
+            background: var(--gray-100);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .examples-table td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .examples-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .examples-table .answer {
+            font-weight: 600;
+        }
+
+        .rule-card.blue .answer { color: var(--blue); }
+        .rule-card.red .answer { color: var(--red); }
+        .rule-card.green .answer { color: var(--green); }
+
+        /* Exercises Section */
+        .exercises-section {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .exercises-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--purple);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .exercises-intro {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--gray-50);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .exercise-item:hover {
+            background: var(--purple-light);
+        }
+
+        .exercise-num {
+            width: 28px;
+            height: 28px;
+            background: var(--purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .exercise-word {
+            font-weight: 500;
+        }
+
+        .exercise-input {
+            flex: 1;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.4rem;
+            padding: 0.4rem 0.6rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            max-width: 100px;
+        }
+
+        .exercise-input:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .exercise-input.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+        }
+
+        .exercise-input.incorrect {
+            border-color: var(--red);
+            background: var(--red-light);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--purple);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-800);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Score display */
+        .score-display {
+            padding: 1rem;
+            background: var(--purple-light);
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            color: var(--purple);
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* RTL support for Arabic */
+        [dir="rtl"] .rule-card {
+            border-left: none;
+            border-right: 5px solid;
+        }
+
+        [dir="rtl"] .rule-card.blue { border-right-color: var(--blue); }
+        [dir="rtl"] .rule-card.red { border-right-color: var(--red); }
+        [dir="rtl"] .rule-card.green { border-right-color: var(--green); }
+
+        [dir="rtl"] .examples-table th,
+        [dir="rtl"] .examples-table td {
+            text-align: right;
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .language-selector { display: none; }
+            .btn-group { display: none; }
+            .exercise-input { border: 1px solid #ccc; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .rule-card { padding: 1.25rem; }
+            .lang-btn { padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+            .exercise-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Spellingregels Nederlands</h1>
+            <p class="subtitle">Lange en korte klanken - De Sandwich Methode</p>
+        </header>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <button class="lang-btn active" data-lang="nl">
+                <span class="flag">🇳🇱</span> Nederlands
+            </button>
+            <button class="lang-btn" data-lang="en">
+                <span class="flag">🇬🇧</span> English
+            </button>
+            <button class="lang-btn" data-lang="tr">
+                <span class="flag">🇹🇷</span> Türkçe
+            </button>
+            <button class="lang-btn" data-lang="ar">
+                <span class="flag">🇸🇦</span> العربية
+            </button>
+            <button class="lang-btn" data-lang="om">
+                <span class="flag">🇪🇹</span> Afaan Oromoo
+            </button>
+        </div>
+
+        <!-- DUTCH CONTENT -->
+        <div class="content active" id="content-nl">
+            <div class="rule-card blue">
+                <div class="rule-header">
+                    <div class="rule-number">1</div>
+                    <div>
+                        <div class="rule-title">De Klinker-Dief</div>
+                        <div class="rule-subtitle">Lange klank (aa, ee, oo, uu)</div>
+                    </div>
+                </div>
+                <p>Hoor je een <strong>lange klank</strong>? Kijk naar het patroon:</p>
+                <div class="pattern-box blue">
+                    <span class="vowel">KLINKER</span> — <span class="consonant">1 Medeklinker</span> — <span class="vowel">KLINKER</span>
+                </div>
+                <div class="example">
+                    <strong>Voorbeeld:</strong> 
+                    <span class="word-breakdown">l<span class="v">o</span><span class="c">p</span><span class="v">e</span>n</span> → 
+                    <span class="v">o</span> - <span class="c">p</span> - <span class="v">e</span>
+                </div>
+                <p><strong>De regel:</strong> Zie je 1 medeklinker tussen 2 klinkers? Dan <strong>stelen</strong> we 1 klinker weg!</p>
+                <table class="examples-table">
+                    <tr><th>Meervoud / Wij-vorm</th><th>Enkelvoud / Ik-vorm</th></tr>
+                    <tr><td>lopen (o-p-e)</td><td class="answer">ik loop</td></tr>
+                    <tr><td>bomen (o-m-e)</td><td class="answer">één boom</td></tr>
+                    <tr><td>muren (u-r-e)</td><td class="answer">één muur</td></tr>
+                    <tr><td>praten (a-t-e)</td><td class="answer">ik praat</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card red">
+                <div class="rule-header">
+                    <div class="rule-number">2</div>
+                    <div>
+                        <div class="rule-title">De Dubbel-Zetter</div>
+                        <div class="rule-subtitle">Korte klank (a, e, i, o, u)</div>
+                    </div>
+                </div>
+                <p>Hoor je een <strong>korte klank</strong>? Dan moeten er ALTIJD 2 medeklinkers staan!</p>
+                <div class="pattern-box red">
+                    <span class="vowel">KLINKER</span> — <span class="consonant">2 Dezelfde Medeklinkers</span> — <span class="vowel">KLINKER</span>
+                </div>
+                <div class="example">
+                    <strong>Voorbeeld:</strong> 
+                    <span class="word-breakdown">k<span class="v">i</span><span class="c">pp</span><span class="v">e</span>n</span> → 
+                    <span class="v">i</span> - <span class="c">pp</span> - <span class="v">e</span>
+                </div>
+                <p><strong>De regel:</strong> Hoor je een korte klank met maar 1 medeklinker? Dan moet je er eentje <strong>BIJ</strong> zetten!</p>
+                <table class="examples-table">
+                    <tr><th>Meervoud / Wij-vorm</th><th>Enkelvoud / Ik-vorm</th></tr>
+                    <tr><td>liggen (i-gg-e)</td><td class="answer">ik lig</td></tr>
+                    <tr><td>zitten (i-tt-e)</td><td class="answer">ik zit</td></tr>
+                    <tr><td>bedden (e-dd-e)</td><td class="answer">één bed</td></tr>
+                    <tr><td>kippen (i-pp-e)</td><td class="answer">één kip</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card green">
+                <div class="rule-header">
+                    <div class="rule-number">3</div>
+                    <div>
+                        <div class="rule-title">Doe Niets</div>
+                        <div class="rule-subtitle">Twee verschillende medeklinkers</div>
+                    </div>
+                </div>
+                <p>Zie je twee <strong>verschillende</strong> medeklinkers na de klinker?</p>
+                <div class="pattern-box green">
+                    <span class="vowel">KLINKER</span> — <span class="consonant">Medeklinker 1 + Medeklinker 2</span> — <span class="vowel">KLINKER</span>
+                </div>
+                <div class="example">
+                    <strong>Voorbeeld:</strong> 
+                    <span class="word-breakdown">dr<span class="v">i</span><span class="c">nk</span><span class="v">e</span>n</span> → 
+                    <span class="v">i</span> - <span class="c">n + k</span> - <span class="v">e</span>
+                </div>
+                <p><strong>De regel:</strong> Doe niets speciaals. Schrijf wat je hoort!</p>
+                <table class="examples-table">
+                    <tr><th>Meervoud / Wij-vorm</th><th>Enkelvoud / Ik-vorm</th></tr>
+                    <tr><td>drinken (n + k)</td><td class="answer">ik drink</td></tr>
+                    <tr><td>werken (r + k)</td><td class="answer">ik werk</td></tr>
+                    <tr><td>handen (n + d)</td><td class="answer">één hand</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ENGLISH CONTENT -->
+        <div class="content" id="content-en">
+            <div class="rule-card blue">
+                <div class="rule-header">
+                    <div class="rule-number">1</div>
+                    <div>
+                        <div class="rule-title">The Vowel Thief</div>
+                        <div class="rule-subtitle">Long sound (aa, ee, oo, uu)</div>
+                    </div>
+                </div>
+                <p>Do you hear a <strong>long sound</strong>? Look at the pattern:</p>
+                <div class="pattern-box blue">
+                    <span class="vowel">VOWEL</span> — <span class="consonant">1 Consonant</span> — <span class="vowel">VOWEL</span>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong> 
+                    <span class="word-breakdown">l<span class="v">o</span><span class="c">p</span><span class="v">e</span>n</span> (to walk) → 
+                    <span class="v">o</span> - <span class="c">p</span> - <span class="v">e</span>
+                </div>
+                <p><strong>The rule:</strong> Do you see 1 consonant between 2 vowels? Then we <strong>steal</strong> 1 vowel away!</p>
+                <table class="examples-table">
+                    <tr><th>Plural / We-form</th><th>Singular / I-form</th></tr>
+                    <tr><td>lopen (o-p-e) = to walk</td><td class="answer">ik loop (I walk)</td></tr>
+                    <tr><td>bomen (o-m-e) = trees</td><td class="answer">één boom (one tree)</td></tr>
+                    <tr><td>muren (u-r-e) = walls</td><td class="answer">één muur (one wall)</td></tr>
+                    <tr><td>praten (a-t-e) = to talk</td><td class="answer">ik praat (I talk)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card red">
+                <div class="rule-header">
+                    <div class="rule-number">2</div>
+                    <div>
+                        <div class="rule-title">The Double Writer</div>
+                        <div class="rule-subtitle">Short sound (a, e, i, o, u)</div>
+                    </div>
+                </div>
+                <p>Do you hear a <strong>short sound</strong>? Then there must ALWAYS be 2 consonants!</p>
+                <div class="pattern-box red">
+                    <span class="vowel">VOWEL</span> — <span class="consonant">2 Same Consonants</span> — <span class="vowel">VOWEL</span>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong> 
+                    <span class="word-breakdown">k<span class="v">i</span><span class="c">pp</span><span class="v">e</span>n</span> (chickens) → 
+                    <span class="v">i</span> - <span class="c">pp</span> - <span class="v">e</span>
+                </div>
+                <p><strong>The rule:</strong> Do you hear a short sound with only 1 consonant? Then you must <strong>ADD</strong> one!</p>
+                <table class="examples-table">
+                    <tr><th>Plural / We-form</th><th>Singular / I-form</th></tr>
+                    <tr><td>liggen (i-gg-e) = to lie</td><td class="answer">ik lig (I lie)</td></tr>
+                    <tr><td>zitten (i-tt-e) = to sit</td><td class="answer">ik zit (I sit)</td></tr>
+                    <tr><td>bedden (e-dd-e) = beds</td><td class="answer">één bed (one bed)</td></tr>
+                    <tr><td>kippen (i-pp-e) = chickens</td><td class="answer">één kip (one chicken)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card green">
+                <div class="rule-header">
+                    <div class="rule-number">3</div>
+                    <div>
+                        <div class="rule-title">Do Nothing</div>
+                        <div class="rule-subtitle">Two different consonants</div>
+                    </div>
+                </div>
+                <p>Do you see two <strong>different</strong> consonants after the vowel?</p>
+                <div class="pattern-box green">
+                    <span class="vowel">VOWEL</span> — <span class="consonant">Consonant 1 + Consonant 2</span> — <span class="vowel">VOWEL</span>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong> 
+                    <span class="word-breakdown">dr<span class="v">i</span><span class="c">nk</span><span class="v">e</span>n</span> (to drink) → 
+                    <span class="v">i</span> - <span class="c">n + k</span> - <span class="v">e</span>
+                </div>
+                <p><strong>The rule:</strong> Do nothing special. Just write what you hear!</p>
+                <table class="examples-table">
+                    <tr><th>Plural / We-form</th><th>Singular / I-form</th></tr>
+                    <tr><td>drinken (n + k) = to drink</td><td class="answer">ik drink (I drink)</td></tr>
+                    <tr><td>werken (r + k) = to work</td><td class="answer">ik werk (I work)</td></tr>
+                    <tr><td>handen (n + d) = hands</td><td class="answer">één hand (one hand)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TURKISH CONTENT -->
+        <div class="content" id="content-tr">
+            <div class="rule-card blue">
+                <div class="rule-header">
+                    <div class="rule-number">1</div>
+                    <div>
+                        <div class="rule-title">Ünlü Hırsızı</div>
+                        <div class="rule-subtitle">Uzun ses (aa, ee, oo, uu)</div>
+                    </div>
+                </div>
+                <p><strong>Uzun bir ses</strong> mi duyuyorsun? Kalıba bak:</p>
+                <div class="pattern-box blue">
+                    <span class="vowel">ÜNLÜ</span> — <span class="consonant">1 Ünsüz</span> — <span class="vowel">ÜNLÜ</span>
+                </div>
+                <div class="example">
+                    <strong>Örnek:</strong> 
+                    <span class="word-breakdown">l<span class="v">o</span><span class="c">p</span><span class="v">e</span>n</span> (yürümek) → 
+                    <span class="v">o</span> - <span class="c">p</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Kural:</strong> 2 ünlü arasında 1 ünsüz mü görüyorsun? O zaman 1 ünlüyü <strong>çalıyoruz</strong>!</p>
+                <table class="examples-table">
+                    <tr><th>Çoğul / Biz formu</th><th>Tekil / Ben formu</th></tr>
+                    <tr><td>lopen (o-p-e) = yürümek</td><td class="answer">ik loop (yürüyorum)</td></tr>
+                    <tr><td>bomen (o-m-e) = ağaçlar</td><td class="answer">één boom (bir ağaç)</td></tr>
+                    <tr><td>muren (u-r-e) = duvarlar</td><td class="answer">één muur (bir duvar)</td></tr>
+                    <tr><td>praten (a-t-e) = konuşmak</td><td class="answer">ik praat (konuşuyorum)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card red">
+                <div class="rule-header">
+                    <div class="rule-number">2</div>
+                    <div>
+                        <div class="rule-title">Çift Yazıcı</div>
+                        <div class="rule-subtitle">Kısa ses (a, e, i, o, u)</div>
+                    </div>
+                </div>
+                <p><strong>Kısa bir ses</strong> mi duyuyorsun? O zaman HER ZAMAN 2 ünsüz olmalı!</p>
+                <div class="pattern-box red">
+                    <span class="vowel">ÜNLÜ</span> — <span class="consonant">2 Aynı Ünsüz</span> — <span class="vowel">ÜNLÜ</span>
+                </div>
+                <div class="example">
+                    <strong>Örnek:</strong> 
+                    <span class="word-breakdown">k<span class="v">i</span><span class="c">pp</span><span class="v">e</span>n</span> (tavuklar) → 
+                    <span class="v">i</span> - <span class="c">pp</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Kural:</strong> Kısa ses duyuyor ama sadece 1 ünsüz mü görüyorsun? O zaman bir tane <strong>EKLE</strong>!</p>
+                <table class="examples-table">
+                    <tr><th>Çoğul / Biz formu</th><th>Tekil / Ben formu</th></tr>
+                    <tr><td>liggen (i-gg-e) = yatmak</td><td class="answer">ik lig (yatıyorum)</td></tr>
+                    <tr><td>zitten (i-tt-e) = oturmak</td><td class="answer">ik zit (oturuyorum)</td></tr>
+                    <tr><td>bedden (e-dd-e) = yataklar</td><td class="answer">één bed (bir yatak)</td></tr>
+                    <tr><td>kippen (i-pp-e) = tavuklar</td><td class="answer">één kip (bir tavuk)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card green">
+                <div class="rule-header">
+                    <div class="rule-number">3</div>
+                    <div>
+                        <div class="rule-title">Hiçbir Şey Yapma</div>
+                        <div class="rule-subtitle">İki farklı ünsüz</div>
+                    </div>
+                </div>
+                <p>Ünlüden sonra iki <strong>farklı</strong> ünsüz mü görüyorsun?</p>
+                <div class="pattern-box green">
+                    <span class="vowel">ÜNLÜ</span> — <span class="consonant">Ünsüz 1 + Ünsüz 2</span> — <span class="vowel">ÜNLÜ</span>
+                </div>
+                <div class="example">
+                    <strong>Örnek:</strong> 
+                    <span class="word-breakdown">dr<span class="v">i</span><span class="c">nk</span><span class="v">e</span>n</span> (içmek) → 
+                    <span class="v">i</span> - <span class="c">n + k</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Kural:</strong> Özel bir şey yapma. Duyduğunu yaz!</p>
+                <table class="examples-table">
+                    <tr><th>Çoğul / Biz formu</th><th>Tekil / Ben formu</th></tr>
+                    <tr><td>drinken (n + k) = içmek</td><td class="answer">ik drink (içiyorum)</td></tr>
+                    <tr><td>werken (r + k) = çalışmak</td><td class="answer">ik werk (çalışıyorum)</td></tr>
+                    <tr><td>handen (n + d) = eller</td><td class="answer">één hand (bir el)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ARABIC CONTENT -->
+        <div class="content" id="content-ar" dir="rtl">
+            <div class="rule-card blue">
+                <div class="rule-header">
+                    <div class="rule-number">1</div>
+                    <div>
+                        <div class="rule-title">سارق الحروف المتحركة</div>
+                        <div class="rule-subtitle">الصوت الطويل (aa, ee, oo, uu)</div>
+                    </div>
+                </div>
+                <p>هل تسمع <strong>صوتًا طويلًا</strong>؟ انظر إلى النمط:</p>
+                <div class="pattern-box blue">
+                    <span class="vowel">حرف متحرك</span> — <span class="consonant">حرف ساكن واحد</span> — <span class="vowel">حرف متحرك</span>
+                </div>
+                <div class="example">
+                    <strong>مثال:</strong> 
+                    <span class="word-breakdown" dir="ltr">l<span class="v">o</span><span class="c">p</span><span class="v">e</span>n</span> (يمشي) → 
+                    <span class="v">o</span> - <span class="c">p</span> - <span class="v">e</span>
+                </div>
+                <p><strong>القاعدة:</strong> هل ترى حرفًا ساكنًا واحدًا بين حرفين متحركين؟ إذن <strong>نسرق</strong> حرفًا متحركًا واحدًا!</p>
+                <table class="examples-table">
+                    <tr><th>الجمع / صيغة نحن</th><th>المفرد / صيغة أنا</th></tr>
+                    <tr><td>lopen = يمشي</td><td class="answer">ik loop (أمشي)</td></tr>
+                    <tr><td>bomen = أشجار</td><td class="answer">één boom (شجرة واحدة)</td></tr>
+                    <tr><td>muren = جدران</td><td class="answer">één muur (جدار واحد)</td></tr>
+                    <tr><td>praten = يتكلم</td><td class="answer">ik praat (أتكلم)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card red">
+                <div class="rule-header">
+                    <div class="rule-number">2</div>
+                    <div>
+                        <div class="rule-title">المُضاعِف</div>
+                        <div class="rule-subtitle">الصوت القصير (a, e, i, o, u)</div>
+                    </div>
+                </div>
+                <p>هل تسمع <strong>صوتًا قصيرًا</strong>؟ إذن يجب أن يكون هناك دائمًا حرفان ساكنان!</p>
+                <div class="pattern-box red">
+                    <span class="vowel">حرف متحرك</span> — <span class="consonant">حرفان ساكنان متشابهان</span> — <span class="vowel">حرف متحرك</span>
+                </div>
+                <div class="example">
+                    <strong>مثال:</strong> 
+                    <span class="word-breakdown" dir="ltr">k<span class="v">i</span><span class="c">pp</span><span class="v">e</span>n</span> (دجاجات) → 
+                    <span class="v">i</span> - <span class="c">pp</span> - <span class="v">e</span>
+                </div>
+                <p><strong>القاعدة:</strong> هل تسمع صوتًا قصيرًا مع حرف ساكن واحد فقط؟ إذن يجب أن <strong>تُضيف</strong> واحدًا!</p>
+                <table class="examples-table">
+                    <tr><th>الجمع / صيغة نحن</th><th>المفرد / صيغة أنا</th></tr>
+                    <tr><td>liggen = يستلقي</td><td class="answer">ik lig (أستلقي)</td></tr>
+                    <tr><td>zitten = يجلس</td><td class="answer">ik zit (أجلس)</td></tr>
+                    <tr><td>bedden = أسرّة</td><td class="answer">één bed (سرير واحد)</td></tr>
+                    <tr><td>kippen = دجاجات</td><td class="answer">één kip (دجاجة واحدة)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card green">
+                <div class="rule-header">
+                    <div class="rule-number">3</div>
+                    <div>
+                        <div class="rule-title">لا تفعل شيئًا</div>
+                        <div class="rule-subtitle">حرفان ساكنان مختلفان</div>
+                    </div>
+                </div>
+                <p>هل ترى حرفين ساكنين <strong>مختلفين</strong> بعد الحرف المتحرك؟</p>
+                <div class="pattern-box green">
+                    <span class="vowel">حرف متحرك</span> — <span class="consonant">ساكن 1 + ساكن 2</span> — <span class="vowel">حرف متحرك</span>
+                </div>
+                <div class="example">
+                    <strong>مثال:</strong> 
+                    <span class="word-breakdown" dir="ltr">dr<span class="v">i</span><span class="c">nk</span><span class="v">e</span>n</span> (يشرب) → 
+                    <span class="v">i</span> - <span class="c">n + k</span> - <span class="v">e</span>
+                </div>
+                <p><strong>القاعدة:</strong> لا تفعل شيئًا خاصًا. اكتب ما تسمعه!</p>
+                <table class="examples-table">
+                    <tr><th>الجمع / صيغة نحن</th><th>المفرد / صيغة أنا</th></tr>
+                    <tr><td>drinken = يشرب</td><td class="answer">ik drink (أشرب)</td></tr>
+                    <tr><td>werken = يعمل</td><td class="answer">ik werk (أعمل)</td></tr>
+                    <tr><td>handen = أيدي</td><td class="answer">één hand (يد واحدة)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- OROMO CONTENT -->
+        <div class="content" id="content-om">
+            <div class="rule-card blue">
+                <div class="rule-header">
+                    <div class="rule-number">1</div>
+                    <div>
+                        <div class="rule-title">Hattuun Dubbachiisaa</div>
+                        <div class="rule-subtitle">Sagalee dheeraa (aa, ee, oo, uu)</div>
+                    </div>
+                </div>
+                <p><strong>Sagalee dheeraa</strong> dhageessaa? Akkaataa kana ilaali:</p>
+                <div class="pattern-box blue">
+                    <span class="vowel">DUBBACHIISA</span> — <span class="consonant">Dubbifama 1</span> — <span class="vowel">DUBBACHIISA</span>
+                </div>
+                <div class="example">
+                    <strong>Fakkeenya:</strong> 
+                    <span class="word-breakdown">l<span class="v">o</span><span class="c">p</span><span class="v">e</span>n</span> (deemuu) → 
+                    <span class="v">o</span> - <span class="c">p</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Seerri:</strong> Dubbachiisa 2 gidduu dubbifama 1 argitaa? Yoo ta'e dubbachiisa 1 <strong>hatna</strong>!</p>
+                <table class="examples-table">
+                    <tr><th>Baay'ee / Bifa nuyi</th><th>Tokko / Bifa ani</th></tr>
+                    <tr><td>lopen = deemuu</td><td class="answer">ik loop (ani deema)</td></tr>
+                    <tr><td>bomen = mukkeewwan</td><td class="answer">één boom (muka tokko)</td></tr>
+                    <tr><td>muren = dallawwan</td><td class="answer">één muur (dallaa tokko)</td></tr>
+                    <tr><td>praten = dubbachuu</td><td class="answer">ik praat (ani dubbadha)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card red">
+                <div class="rule-header">
+                    <div class="rule-number">2</div>
+                    <div>
+                        <div class="rule-title">Dachaa Barreessaa</div>
+                        <div class="rule-subtitle">Sagalee gabaabaa (a, e, i, o, u)</div>
+                    </div>
+                </div>
+                <p><strong>Sagalee gabaabaa</strong> dhageessaa? Yoo ta'e yeroo hunda dubbifama 2 ta'uu qaba!</p>
+                <div class="pattern-box red">
+                    <span class="vowel">DUBBACHIISA</span> — <span class="consonant">Dubbifama 2 Wal-fakkaataa</span> — <span class="vowel">DUBBACHIISA</span>
+                </div>
+                <div class="example">
+                    <strong>Fakkeenya:</strong> 
+                    <span class="word-breakdown">k<span class="v">i</span><span class="c">pp</span><span class="v">e</span>n</span> (lukkuwwan) → 
+                    <span class="v">i</span> - <span class="c">pp</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Seerri:</strong> Sagalee gabaabaa dhageessee dubbifama 1 qofa argitaa? Yoo ta'e tokko <strong>itti dabali</strong>!</p>
+                <table class="examples-table">
+                    <tr><th>Baay'ee / Bifa nuyi</th><th>Tokko / Bifa ani</th></tr>
+                    <tr><td>liggen = ciisuu</td><td class="answer">ik lig (ani ciisa)</td></tr>
+                    <tr><td>zitten = taa'uu</td><td class="answer">ik zit (ani taa'a)</td></tr>
+                    <tr><td>bedden = sireelee</td><td class="answer">één bed (siree tokko)</td></tr>
+                    <tr><td>kippen = lukkuwwan</td><td class="answer">één kip (lukkuu tokko)</td></tr>
+                </table>
+            </div>
+
+            <div class="rule-card green">
+                <div class="rule-header">
+                    <div class="rule-number">3</div>
+                    <div>
+                        <div class="rule-title">Homaa Hin Godhin</div>
+                        <div class="rule-subtitle">Dubbifama adda addaa lama</div>
+                    </div>
+                </div>
+                <p>Dubbachiisa booda dubbifama <strong>adda addaa</strong> lama argitaa?</p>
+                <div class="pattern-box green">
+                    <span class="vowel">DUBBACHIISA</span> — <span class="consonant">Dubbifama 1 + Dubbifama 2</span> — <span class="vowel">DUBBACHIISA</span>
+                </div>
+                <div class="example">
+                    <strong>Fakkeenya:</strong> 
+                    <span class="word-breakdown">dr<span class="v">i</span><span class="c">nk</span><span class="v">e</span>n</span> (dhuguu) → 
+                    <span class="v">i</span> - <span class="c">n + k</span> - <span class="v">e</span>
+                </div>
+                <p><strong>Seerri:</strong> Homaa addaa hin godhin. Waan dhageessu barreessi!</p>
+                <table class="examples-table">
+                    <tr><th>Baay'ee / Bifa nuyi</th><th>Tokko / Bifa ani</th></tr>
+                    <tr><td>drinken = dhuguu</td><td class="answer">ik drink (ani dhuga)</td></tr>
+                    <tr><td>werken = hojjechuu</td><td class="answer">ik werk (ani hojjedha)</td></tr>
+                    <tr><td>handen = harkawwan</td><td class="answer">één hand (harka tokko)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- EXERCISES SECTION (Same for all languages) -->
+        <div class="exercises-section">
+            <h2 class="exercises-title">✏️ <span data-translate="exercises-title">Oefeningen</span></h2>
+            <p class="exercises-intro" data-translate="exercises-intro">Vul het goede woord in. Kijk goed: wordt de klank lang of kort?</p>
+            
+            <div class="exercise-grid">
+                <div class="exercise-item">
+                    <span class="exercise-num">1</span>
+                    <span class="exercise-word">Lopen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="loop">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">2</span>
+                    <span class="exercise-word">Pakken → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="pak">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">3</span>
+                    <span class="exercise-word">Zwemmen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="zwem">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">4</span>
+                    <span class="exercise-word">Slapen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="slaap">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">5</span>
+                    <span class="exercise-word">Werken → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="werk">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">6</span>
+                    <span class="exercise-word">Bomen → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="boom">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">7</span>
+                    <span class="exercise-word">Mannen → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="man">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">8</span>
+                    <span class="exercise-word">Dromen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="droom">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">9</span>
+                    <span class="exercise-word">Vragen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="vraag">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">10</span>
+                    <span class="exercise-word">Zeggen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="zeg">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">11</span>
+                    <span class="exercise-word">Horen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="hoor">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">12</span>
+                    <span class="exercise-word">Vissen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="vis">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">13</span>
+                    <span class="exercise-word">Potten → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="pot">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">14</span>
+                    <span class="exercise-word">Muren → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="muur">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">15</span>
+                    <span class="exercise-word">Helpen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="help">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">16</span>
+                    <span class="exercise-word">Koken → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="kook">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">17</span>
+                    <span class="exercise-word">Rennen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="ren">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">18</span>
+                    <span class="exercise-word">Bossen → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="bos">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">19</span>
+                    <span class="exercise-word">Praten → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="praat">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">20</span>
+                    <span class="exercise-word">Wassen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="was">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">21</span>
+                    <span class="exercise-word">Dansen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="dans">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">22</span>
+                    <span class="exercise-word">Sturen → Ik</span>
+                    <input type="text" class="exercise-input" data-answer="stuur">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">23</span>
+                    <span class="exercise-word">Ballen → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="bal">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">24</span>
+                    <span class="exercise-word">Benen → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="been">
+                </div>
+                <div class="exercise-item">
+                    <span class="exercise-num">25</span>
+                    <span class="exercise-word">Zakken → Eén</span>
+                    <input type="text" class="exercise-input" data-answer="zak">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="checkBtn" data-translate="check-btn">Controleer</button>
+                <button class="btn btn-secondary" id="showBtn" data-translate="show-btn">Toon antwoorden</button>
+                <button class="btn btn-secondary" id="resetBtn" data-translate="reset-btn">Opnieuw</button>
+            </div>
+
+            <div class="score-display" id="scoreDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        // Translations for UI elements
+        const translations = {
+            nl: {
+                'exercises-title': 'Oefeningen',
+                'exercises-intro': 'Vul het goede woord in. Kijk goed: wordt de klank lang of kort?',
+                'check-btn': 'Controleer',
+                'show-btn': 'Toon antwoorden',
+                'reset-btn': 'Opnieuw',
+                'score-text': 'Je score: {score} van {total} goed!',
+                'perfect': '🎉 Perfect! Uitstekend gedaan!',
+                'good': '👏 Goed bezig! Nog even oefenen!',
+                'practice': '💪 Blijf oefenen! Je kunt het!'
+            },
+            en: {
+                'exercises-title': 'Exercises',
+                'exercises-intro': 'Fill in the correct word. Look carefully: is the sound long or short?',
+                'check-btn': 'Check',
+                'show-btn': 'Show answers',
+                'reset-btn': 'Reset',
+                'score-text': 'Your score: {score} out of {total} correct!',
+                'perfect': '🎉 Perfect! Excellent work!',
+                'good': '👏 Good job! Keep practicing!',
+                'practice': '💪 Keep practicing! You can do it!'
+            },
+            tr: {
+                'exercises-title': 'Alıştırmalar',
+                'exercises-intro': 'Doğru kelimeyi yaz. Dikkatli bak: ses uzun mu kısa mı?',
+                'check-btn': 'Kontrol et',
+                'show-btn': 'Cevapları göster',
+                'reset-btn': 'Sıfırla',
+                'score-text': 'Puanın: {total} üzerinden {score} doğru!',
+                'perfect': '🎉 Mükemmel! Harika iş!',
+                'good': '👏 İyi gidiyorsun! Pratik yapmaya devam!',
+                'practice': '💪 Pratik yapmaya devam! Yapabilirsin!'
+            },
+            ar: {
+                'exercises-title': 'تمارين',
+                'exercises-intro': 'املأ الكلمة الصحيحة. انظر بعناية: هل الصوت طويل أم قصير؟',
+                'check-btn': 'تحقق',
+                'show-btn': 'أظهر الإجابات',
+                'reset-btn': 'إعادة',
+                'score-text': 'نتيجتك: {score} من {total} صحيح!',
+                'perfect': '🎉 ممتاز! عمل رائع!',
+                'good': '👏 أحسنت! استمر في التدريب!',
+                'practice': '💪 استمر في التدريب! يمكنك فعلها!'
+            },
+            om: {
+                'exercises-title': 'Shaakallii',
+                'exercises-intro': 'Jecha sirrii guuti. Sirriitti ilaali: sagaleen dheeraadha moo gabaabaa?',
+                'check-btn': 'Mirkaneessi',
+                'show-btn': 'Deebii agarsiisi',
+                'reset-btn': 'Irra deebi\'i',
+                'score-text': 'Qabxii kee: {total} keessaa {score} sirrii!',
+                'perfect': '🎉 Mudaa hin qabu! Hojii gaarii!',
+                'good': '👏 Gaarii! Shaakala itti fufi!',
+                'practice': '💪 Shaakala itti fufi! Ni dandeessa!'
+            }
+        };
+
+        let currentLang = 'nl';
+
+        // Language switching
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                currentLang = btn.dataset.lang;
+                
+                // Show correct content
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                document.getElementById(`content-${currentLang}`).classList.add('active');
+                
+                // Update UI translations
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate;
+                    if (translations[currentLang][key]) {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+        });
+
+        // Exercise checking
+        const inputs = document.querySelectorAll('.exercise-input');
+        const checkBtn = document.getElementById('checkBtn');
+        const showBtn = document.getElementById('showBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+
+        checkBtn.addEventListener('click', () => {
+            let correct = 0;
+            inputs.forEach(input => {
+                const answer = input.dataset.answer.toLowerCase();
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                input.classList.remove('correct', 'incorrect');
+                if (userAnswer === answer) {
+                    input.classList.add('correct');
+                    correct++;
+                } else if (userAnswer !== '') {
+                    input.classList.add('incorrect');
+                }
+            });
+
+            const total = inputs.length;
+            const t = translations[currentLang];
+            let message = t['score-text'].replace('{score}', correct).replace('{total}', total);
+            
+            if (correct === total) {
+                message += ' ' + t['perfect'];
+            } else if (correct >= total * 0.7) {
+                message += ' ' + t['good'];
+            } else {
+                message += ' ' + t['practice'];
+            }
+
+            scoreDisplay.textContent = message;
+            scoreDisplay.classList.add('show');
+        });
+
+        showBtn.addEventListener('click', () => {
+            inputs.forEach(input => {
+                input.value = input.dataset.answer;
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+            });
+            scoreDisplay.classList.remove('show');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            scoreDisplay.classList.remove('show');
+        });
+
+        // Check on Enter key
+        inputs.forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

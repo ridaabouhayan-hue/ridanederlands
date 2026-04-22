@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.9 Een opdracht maken — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .opdrachtstap{display:flex;gap:12px;align-items:flex-start;margin:.6rem 0;font-size:.92rem}
+        .stap-nr{background:#6366f1;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.7}
+        .instructie-lang{display:block;margin-top:2px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:150px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .verbind-container{display:flex;gap:16px}.verbind-col{flex:1;display:flex;flex-direction:column;gap:7px}
+        .verbind-item{padding:9px 13px;border:2px solid rgba(99,102,241,.3);border-radius:10px;cursor:pointer;font-size:.85rem;transition:all .2s;user-select:none}
+        .verbind-item:hover{border-color:#6366f1;background:rgba(99,102,241,.08)}
+        .verbind-item.selected{border-color:#6366f1;background:rgba(99,102,241,.15)}
+        .verbind-item.matched-ok{border-color:#10b981;background:rgba(16,185,129,.12);pointer-events:none}
+        .verbind-item.matched-err{border-color:#ef4444;background:rgba(239,68,68,.12)}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.9</span></div>
+            <h1>📝 Een opdracht maken</h1>
+            <p class="subtitle" data-translate="subtitle">Leer begrijpen wat een opdracht is en die uitvoeren.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 2.9</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 NL</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3>Kies het juiste woord of de juiste zin.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Lees de omschrijving en kies het goede antwoord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Read the description and choose the correct answer.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Açıklamayı okuyun ve doğru cevabı seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 阅读描述，选择正确的答案。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Verbinden</span>
+                <h3>Verbind het instructiewoord met de actie.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op het woord links en dan de actie rechts.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click the word on the left then the action on the right.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Soldaki kelimeye tıklayın, ardından sağdaki eyleme tıklayın.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击左边的指令词，再点击右边的动作。</span>
+                </p>
+                <div class="verbind-container">
+                    <div class="verbind-col" id="vb-links"></div>
+                    <div class="verbind-col" id="vb-rechts"></div>
+                </div>
+                <span id="vb-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="buildVerbind()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Vul in</span>
+                <h3>Vul het juiste instructiewoord in.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Kies uit: lees, schrijf, luister, kijk, maak, kies, zoek, zet, teken, verbind</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Fill in the correct instruction word.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Doğru talimat kelimesini doldurun.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 填入正确的指令词。</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Is de zin juist?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış mı? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3>Schrijf over opdrachten in de klas.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen over opdrachten. Laat ze zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences about assignments. Show them to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Ödevler hakkında cümleler yazın. Öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 写关于作业的句子。给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+<script>
+const VOCAB=[
+    {nl:'de opdracht',en:'assignment/task',tr:'görev/ödev',zh:'作业/任务',ex:'De docent geeft een opdracht.'},
+    {nl:'lezen',en:'read',tr:'oku',zh:'阅读',ex:'Lees de tekst.'},
+    {nl:'schrijven',en:'write',tr:'yaz',zh:'写',ex:'Schrijf je naam.'},
+    {nl:'luisteren',en:'listen',tr:'dinle',zh:'听',ex:'Luister naar het gesprek.'},
+    {nl:'kijken',en:'look/watch',tr:'bak',zh:'看',ex:'Kijk naar het bord.'},
+    {nl:'kiezen',en:'choose',tr:'seç',zh:'选择',ex:'Kies het goede antwoord.'},
+    {nl:'zoeken',en:'find/look for',tr:'ara/bul',zh:'寻找',ex:'Zoek het woord in je woordenboek.'},
+    {nl:'verbinden',en:'connect/match',tr:'bağla/eşleştir',zh:'连接/匹配',ex:'Verbind het woord met de betekenis.'},
+    {nl:'invullen',en:'fill in',tr:'doldur',zh:'填写',ex:'Vul het woord in.'},
+    {nl:'het antwoord',en:'answer',tr:'cevap',zh:'答案',ex:'Wat is het antwoord?'},
+    {nl:'de vraag',en:'question',tr:'soru',zh:'问题',ex:'Lees de vraag goed.'},
+    {nl:'klaar',en:'finished / ready',tr:'hazır / bitti',zh:'完成了/准备好了',ex:'Ik ben klaar met de opdracht.'},
+];
+const UI={nl:{subtitle:'Leer begrijpen wat een opdracht is.',vocabTitle:'Woorden van paragraaf 2.9',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to understand and do assignments.',vocabTitle:'Words 2.9',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Ödevleri anlamayı ve yapmayı öğrenin.',vocabTitle:'2.9 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学会理解和完成作业。',vocabTitle:'第2.9段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
+const UITLEG={
+    nl:`<div class="uitleg-box"><h3>Instructiewoorden voor opdrachten</h3>
+<p>In de klas krijg je opdrachten. De docent gebruikt deze woorden:</p>
+<div class="opdrachtstap"><div class="stap-nr">📖</div><div><strong>Lees</strong> de tekst — gebruik je ogen en lees de woorden.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">✍️</div><div><strong>Schrijf</strong> het antwoord — gebruik een pen en schrijf.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">👂</div><div><strong>Luister</strong> naar het gesprek — gebruik je oren.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">👁️</div><div><strong>Kijk</strong> naar het bord — kijk met je ogen.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">✅</div><div><strong>Kies</strong> het goede antwoord — selecteer het juiste.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">🔍</div><div><strong>Zoek</strong> het woord — zoek in je boek of woordenboek.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">🔗</div><div><strong>Verbind</strong> het woord met de betekenis — teken een lijn.</div></div>
+<div class="opdrachtstap"><div class="stap-nr">📝</div><div><strong>Vul in</strong> het woord — schrijf het woord op de juiste plek.</div></div>
+</div>
+<div class="tip-blok"><strong>Klaar?</strong> Zeg "Ik ben klaar!" als je klaar bent met de opdracht.</div>`,
+    en:`<div class="uitleg-box"><h3>Instruction words for assignments</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>Lees</strong> — Read</li><li><strong>Schrijf</strong> — Write</li><li><strong>Luister</strong> — Listen</li>
+<li><strong>Kijk</strong> — Look</li><li><strong>Kies</strong> — Choose</li><li><strong>Zoek</strong> — Find/Search</li>
+<li><strong>Verbind</strong> — Connect/Match</li><li><strong>Vul in</strong> — Fill in</li>
+</ul></div>`,
+    tr:`<div class="uitleg-box"><h3>Görev için Talimat Kelimeleri</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>Lees</strong> — Oku</li><li><strong>Schrijf</strong> — Yaz</li><li><strong>Luister</strong> — Dinle</li>
+<li><strong>Kijk</strong> — Bak</li><li><strong>Kies</strong> — Seç</li><li><strong>Zoek</strong> — Ara</li>
+<li><strong>Verbind</strong> — Bağla</li><li><strong>Vul in</strong> — Doldur</li>
+</ul></div>`,
+    zh:`<div class="uitleg-box"><h3>作业指令词</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>Lees</strong> — 读（阅读）</li><li><strong>Schrijf</strong> — 写</li><li><strong>Luister</strong> — 听</li>
+<li><strong>Kijk</strong> — 看</li><li><strong>Kies</strong> — 选择</li><li><strong>Zoek</strong> — 寻找</li>
+<li><strong>Verbind</strong> — 连接/匹配</li><li><strong>Vul in</strong> — 填写</li>
+</ul></div>
+<div class="tip-blok"><strong>完成了？</strong>说"Ik ben klaar!"（我完成了！）</div>`
+};
+let currentLang='nl';
+function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
+const mc1Data=[
+    {v:'"___ de tekst." — Je moet de woorden lezen.',a:'Lees',o:['Schrijf','Lees','Luister']},
+    {v:'"___ je naam." — Je moet iets noteren.',a:'Schrijf',o:['Lees','Schrijf','Kijk']},
+    {v:'"___ naar het gesprek." — Je gebruikt je oren.',a:'Luister',o:['Luister','Kijk','Lees']},
+    {v:'"___ naar het bord." — Je kijkt met je ogen.',a:'Kijk',o:['Luister','Schrijf','Kijk']},
+    {v:'"___ het goede antwoord." — Je selecteert een optie.',a:'Kies',o:['Kies','Zoek','Verbind']},
+    {v:'"___ het woord in je woordenboek." — Je zoekt iets.',a:'Zoek',o:['Invullen','Zoek','Kijk']},
+    {v:'"___ het woord met de betekenis." — Je trekt een lijn.',a:'Verbind',o:['Verbind','Schrijf','Kies']},
+    {v:'"___ het woord in." — Je schrijft het op de juiste plek.',a:'Vul',o:['Lees','Vul','Kijk']},
+    {v:'Je bent klaar met de opdracht. Wat zeg je?',a:'Ik ben klaar!',o:['Ik begrijp het niet.','Ik ben klaar!','Wat betekent dat?']},
+    {v:'De docent geeft je een ___.',a:'opdracht',o:['stoel','opdracht','pen']},
+    {v:'De docent vraagt een vraag. What ben jij dus aan het lezen?',a:'de vraag',o:['het antwoord','de vraag','de opdracht']},
+    {v:'Je hebt de opdracht af. Jij bent ___.',a:'klaar',o:['moeilijk','klaar','snel']},
+];
+const vbData=[
+    {woord:'Lees',def:'gebruik je ogen voor tekst'},
+    {woord:'Schrijf',def:'gebruik een pen of potlood'},
+    {woord:'Luister',def:'gebruik je oren'},
+    {woord:'Kijk',def:'richt je ogen op iets'},
+    {woord:'Kies',def:'selecteer het juiste antwoord'},
+    {woord:'Zoek',def:'zoek iets in een boek/lijst'},
+    {woord:'Verbind',def:'trek een lijn tussen twee dingen'},
+    {woord:'Vul in',def:'schrijf een woord op de juiste plek'},
+];
+const _mc={};
+function checkMCq(btn,keuze,ant,sid,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')))return;groep.forEach(b=>b.disabled=true);if(!_mc[sid])_mc[sid]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[sid].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[sid].done++;if(_mc[sid].done===total){const sc=document.getElementById(sid);sc.style.display='inline-block';const s=_mc[sid].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=8?'score-midden':'score-slecht');}}
+function buildMC1(){const ul=document.getElementById('mc1');ul.innerHTML='';mc1Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function resetMC(listId,scoreId,buildFn){delete _mc[scoreId];document.getElementById(scoreId).style.display='none';document.getElementById(listId).innerHTML='';buildFn();}
+let vbSel=null,vbType=null,vbDone=0;
+function buildVerbind(){const L=document.getElementById('vb-links'),R=document.getElementById('vb-rechts');L.innerHTML='';R.innerHTML='';vbSel=null;vbType=null;vbDone=0;document.getElementById('vb-score').style.display='none';const sh=[...vbData].sort(()=>Math.random()-.5);vbData.forEach((item,i)=>{const d=document.createElement('div');d.className='verbind-item';d.dataset.id=i;d.dataset.side='links';d.textContent=item.woord;d.onclick=()=>selVb(d);L.appendChild(d);});sh.forEach(item=>{const orig=vbData.findIndex(v=>v.woord===item.woord);const d=document.createElement('div');d.className='verbind-item';d.dataset.id=orig;d.dataset.side='rechts';d.textContent=item.def;d.style.fontSize='.8rem';d.onclick=()=>selVb(d);R.appendChild(d);});}
+function selVb(el){if(vbSel===null){vbSel=el;el.classList.add('selected');vbType=el.dataset.side;}else{if(el.dataset.side===vbType){vbSel.classList.remove('selected');vbSel=el;el.classList.add('selected');return;}vbSel.classList.remove('selected');if(vbSel.dataset.id===el.dataset.id){vbSel.classList.add('matched-ok');el.classList.add('matched-ok');vbDone++;if(vbDone===vbData.length){const sc=document.getElementById('vb-score');sc.style.display='inline-block';sc.textContent=`${vbDone}/${vbData.length} ✅`;sc.className='score-badge score-goed';}}else{vbSel.classList.add('matched-err');el.classList.add('matched-err');setTimeout(()=>{vbSel.classList.remove('matched-err');el.classList.remove('matched-err');},700);}vbSel=null;vbType=null;}}
+const invulData=[
+    {zin:'___ de tekst op pagina vijf.',ant:'lees'},
+    {zin:'___ je naam op het papier.',ant:'schrijf'},
+    {zin:'___ naar het gesprek op de computer.',ant:'luister'},
+    {zin:'___ naar het bord.',ant:'kijk'},
+    {zin:'___ het goede antwoord (a, b of c).',ant:'kies'},
+    {zin:'___ het woord "school" in het woordenboek.',ant:'zoek'},
+    {zin:'___ het woord met de juiste betekenis.',ant:'verbind'},
+    {zin:'___ het ontbrekende woord ___.',ant:'vul'},
+    {zin:'Wat is het ___? → Het antwoord is "tien".',ant:'antwoord'},
+    {zin:'De docent stelt een ___. Jij geeft het antwoord.',ant:'vraag'},
+    {zin:'Jij bent ___ met je opdracht.',ant:'klaar'},
+    {zin:'De docent geeft een ___. Jij moet het maken.',ant:'opdracht'},
+];
+function buildInvul(){const ul=document.getElementById('invul1');ul.innerHTML='';invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="…" autocomplete="off">${p[1]||''}</li>`;});}
+function checkInvul(){let g=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');}
+function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+const wnData=[
+    {s:'"Lees" betekent: schrijf woorden op.',ant:'Fout'},{s:'"Schrijf" doe je met een pen of potlood.',ant:'Goed'},
+    {s:'"Luister" doe je met je ogen.',ant:'Fout'},{s:'"Kijk" doe je met je ogen.',ant:'Goed'},
+    {s:'"Kies" betekent: selecteer het juiste antwoord.',ant:'Goed'},{s:'"Zoek" betekent: niets doen.',ant:'Fout'},
+    {s:'"Verbind" betekent: teken een lijn tussen twee dingen.',ant:'Goed'},{s:'"Vul in" betekent: schrijf op de juiste plek.',ant:'Goed'},
+    {s:'Als je klaar bent met de opdracht, zeg je: "Ik ben klaar!"',ant:'Goed'},
+    {s:'De docent geeft een vraag. Jij geeft het antwoord.',ant:'Goed'},
+    {s:'"Lees" en "luister" zijn hetzelfde.',ant:'Fout'},
+    {s:'Een opdracht maak je met de docent samen.',ant:'Fout'},
+];
+function buildWN(){const ul=document.getElementById('wn1');ul.innerHTML='';wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button></div></li>`);}
+function checkWN(btn,keuze,ant){const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');if([...groep].some(b=>b.classList.contains('correct')))return;if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}}
+function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+const schrijfVragen=[
+    {nl:'Schrijf een volledige opdracht voor een cursist (gebruik een instructiewoord).',en:'Write a full instruction for a student (use an instruction word).',tr:'Bir kursiyer için tam bir talimat yazın (talimat kelimesi kullanın).',zh:'为学员写一条完整的指令（使用指令词）。'},
+    {nl:'Wat doe jij als je een moeilijke opdracht krijgt?',en:'What do you do when you get a difficult assignment?',tr:'Zor bir ödev aldığınızda ne yaparsınız?',zh:'当你收到难的作业时你会怎么做？'},
+    {nl:'Schrijf twee zinnen met "klaar".',en:'Write two sentences with "klaar" (finished).',tr:'"Klaar" ile iki cümle yazın.',zh:'用"klaar"写两个句子。'},
+    {nl:'Schrijf: wat is het verschil tussen "lezen" en "luisteren"?',en:'What is the difference between "lezen" and "luisteren"?',tr:'"Lezen" ve "luisteren" arasındaki fark nedir?',zh:'"lezen"和"luisteren"有什么区别？'},
+    {nl:'Schrijf drie instructiewoorden en gebruik ze elk in een zin.',en:'Write three instruction words and use each in a sentence.',tr:'Üç talimat kelimesi yazın ve her birini bir cümle içinde kullanın.',zh:'写三个指令词，并各造一个句子。'},
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{const txt=v[currentLang]||v.nl;ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw9-${i}" placeholder="Schrijf hier..."></textarea></li>`;});}
+function saveSchrijf(){document.getElementById('schrijf-fb').style.display='inline';setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);}
+function resetSchrijf(){buildSchrijf();}
+document.addEventListener('DOMContentLoaded',()=>{buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')==='nl'?'block':'none';});buildMC1();buildVerbind();buildInvul();buildWN();buildSchrijf();});
+</script>
+</body>
+</html>

@@ -1,0 +1,1212 @@
+
+// ── CONFIG ──────────────────────────────────────────────────────────
+const TEACHER_WA = '31626211106';
+const TOTAL = 13;
+
+// ── DATA ────────────────────────────────────────────────────────────
+const wordsData = [
+{nl:'de kleur', en:'the colour', ar:'اللون', emoji:'🎨'},
+{nl:'de bril', en:'the glasses', ar:'النظارات', emoji:'👓'},
+{nl:'oud', en:'old', ar:'قديم', emoji:'⏳'},
+{nl:'nieuw', en:'new', ar:'جديد', emoji:'✨'},
+{nl:'rood', en:'red', ar:'أحمر', emoji:'🔴'},
+{nl:'paars', en:'purple', ar:'أرجواني', emoji:'🟣'},
+{nl:'geel', en:'yellow', ar:'أصفر', emoji:'🟡'},
+{nl:'blauw', en:'blue', ar:'أزرق', emoji:'🔵'},
+{nl:'oranje', en:'orange', ar:'برتقالي', emoji:'🟠'},
+{nl:'groen', en:'green', ar:'أخضر', emoji:'🟢'},
+{nl:'roze', en:'pink', ar:'وردي', emoji:'🌸'},
+{nl:'Ik wil graag …', en:'I would like …', ar:'أريد أن …', emoji:'😊'},
+{nl:'Welke kleur wilt u?', en:'What colour would you like?', ar:'ما اللون الذي تريده؟', emoji:'🎨'},
+{nl:'Wat vindt u hiervan?', en:'What do you think of this?', ar:'ما رأيك في هذا؟', emoji:'🤔'}
+];
+
+const repeatPhrases = [
+{nl:'Mijn bril is oud. Ik wil graag een nieuwe bril.', emoji:'👓'},
+{nl:'Welke kleur wilt u?', emoji:'🎨'},
+{nl:'Ik vind rood niet mooi.', emoji:'🔴'},
+{nl:'Paars is mooi.', emoji:'🟣'},
+{nl:'Heeft u een gele bril?', emoji:'🟡'},
+{nl:'Ik heb wel een blauwe bril.', emoji:'🔵'},
+{nl:'Dat is een mooie bril.', emoji:'😊'}
+];
+
+const sortExercisesBase = [
+{words:['bril','een','wil','Ik','graag','nieuwe','.'], answer:'Ik wil graag een nieuwe bril .'},
+{words:['kleur','Welke','u','wilt','?'], answer:'Welke kleur wilt u ?'},
+{words:['niet','rood','vind','Ik','mooi','.'], answer:'Ik vind rood niet mooi .'},
+{words:['gele','Heeft','bril','u','een','?'], answer:'Heeft u een gele bril ?'},
+{words:['blauwe','heb','bril','Ik','een','wel','.'], answer:'Ik heb wel een blauwe bril .'}
+];
+
+const convSetsBase = [
+  {label:'Gesprek 1', lines:[
+    {speaker:'Medewerker', text:'Kan ik u helpen?'},
+    {speaker:'Klant', text:'Ja. Mijn bril is oud. Ik wil graag een nieuwe bril.'},
+    {speaker:'Medewerker', text:'Dat kan. Welke kleur wilt u?'},
+    {speaker:'Klant', text:'Paars. Paars is mooi.'},
+    {speaker:'Medewerker', text:'Alstublieft. Wat vindt u hiervan?'},
+    {speaker:'Klant', text:'Nee, ik vind paars niet mooi.'},
+    {speaker:'Medewerker', text:'Ik heb wel een blauwe bril.'},
+    {speaker:'Klant', text:'Ja, dat is een mooie bril!'},
+  ]},
+  {label:'Gesprek 2', lines:[
+    {speaker:'Medewerker', text:'Goedemiddag. Kan ik u helpen?'},
+    {speaker:'Klant', text:'Ja. Ik zoek een rode trui.'},
+    {speaker:'Medewerker', text:'Een rode trui. Welke maat?'},
+    {speaker:'Klant', text:'Klein.'},
+    {speaker:'Medewerker', text:'Alstublieft.'},
+    {speaker:'Klant', text:'Hmm, ik vind rood niet mooi.'},
+    {speaker:'Medewerker', text:'Ik heb ook een groene trui.'},
+    {speaker:'Klant', text:'Groen is mooi! Dank u.'},
+  ]},
+  {label:'Gesprek 3', lines:[
+    {speaker:'Medewerker', text:'Kan ik u helpen?'},
+    {speaker:'Klant', text:'Ja. Ik zoek een blauwe jas.'},
+    {speaker:'Medewerker', text:'Klein of groot?'},
+    {speaker:'Klant', text:'Klein.'},
+    {speaker:'Medewerker', text:'Sorry, ik heb geen kleine blauwe jas.'},
+    {speaker:'Klant', text:'Heeft u een groene jas?'},
+    {speaker:'Medewerker', text:'Ja hoor. Alstublieft.'},
+    {speaker:'Klant', text:'Mooi! Dank u.'},
+  ]},
+  {label:'Gesprek 4', lines:[
+    {speaker:'Klant', text:'Ik wil graag een nieuwe bril.'},
+    {speaker:'Medewerker', text:'Welke kleur wilt u?'},
+    {speaker:'Klant', text:'Geel.'},
+    {speaker:'Medewerker', text:'Geel? Nee, ik heb geen gele bril.'},
+    {speaker:'Klant', text:'En oranje?'},
+    {speaker:'Medewerker', text:'Oranje ook niet.'},
+    {speaker:'Klant', text:'En roze?'},
+    {speaker:'Medewerker', text:'Ja, een roze bril. Alstublieft.'},
+  ]},
+  {label:'Gesprek 5', lines:[
+    {speaker:'Medewerker', text:'Goedemiddag. Kan ik u helpen?'},
+    {speaker:'Klant', text:'Ja. Mijn broek is oud. Ik wil een nieuwe broek.'},
+    {speaker:'Medewerker', text:'Welke kleur?'},
+    {speaker:'Klant', text:'Blauw.'},
+    {speaker:'Medewerker', text:'Een blauwe broek. Klein of groot?'},
+    {speaker:'Klant', text:'Groot.'},
+    {speaker:'Medewerker', text:'Alstublieft.'},
+    {speaker:'Klant', text:'Mooi. Dank u.'},
+  ]}
+];
+
+const q5aBase = [
+{prompt:'Mijn bril is oud. Ik wil graag …', options:[
+  {text:'een nieuwe bril.', correct:true},
+  {text:'bril nieuwe een.', correct:false},
+  {text:'nieuwe een bril.', correct:false},
+]},
+{prompt:'Welke kleur wilt u?', options:[
+  {text:'Ik wil blauw.', correct:false},
+  {text:'Blauw wil ik.', correct:false},
+  {text:'Paars. Paars is mooi.', correct:true},
+]},
+{prompt:'Ik vind rood …', options:[
+  {text:'niet mooi.', correct:true},
+  {text:'mooi niet.', correct:false},
+  {text:'mooi is niet.', correct:false},
+]},
+{prompt:'Welke zin klopt?', options:[
+  {text:'Ik heb wel een blauwe bril.', correct:true},
+  {text:'Een blauwe heb ik wel bril.', correct:false},
+  {text:'Bril ik heb een blauwe.', correct:false},
+]}
+];
+
+const q5bBase = [
+{prompt:'Welke kleur wilt u?', options:[
+  {text:'Ik woon in Utrecht.', correct:false},
+  {text:'Paars. Paars is mooi.', correct:true},
+  {text:'Ik ben moe.', correct:false},
+], feedback:'Bij "Welke kleur?" zeg je de kleur die je wilt.'},
+{prompt:'Wat vindt u hiervan?', options:[
+  {text:'Tot ziens!', correct:false},
+  {text:'Nee, ik vind rood niet mooi.', correct:true},
+  {text:'Kan ik u helpen?', correct:false},
+], feedback:'Bij "Wat vindt u hiervan?" zeg je of je het mooi vindt of niet.'},
+{prompt:'Mijn bril is oud.', options:[
+  {text:'Jammer.', correct:false},
+  {text:'Ik wil graag een nieuwe bril.', correct:true},
+  {text:'Bedankt. Tot ziens.', correct:false},
+], feedback:'Als iets oud is, zeg je: "Ik wil graag een nieuw(e) …"'},
+{prompt:'Ik heb geen gele bril.', options:[
+  {text:'Bedankt.', correct:false},
+  {text:'Goed.', correct:false},
+  {text:'En heeft u een blauwe bril?', correct:true},
+], feedback:'Als ze het niet hebben, vraag je naar een andere kleur.'},
+{prompt:'Alstublieft. Een paarse bril.', options:[
+  {text:'Nee, ik vind paars niet mooi.', correct:true},
+  {text:'Tot ziens.', correct:false},
+  {text:'Ik kijk even.', correct:false},
+], feedback:'Na het krijgen van iets zeg je wat je ervan vindt.'}
+];
+
+const convFillSets = [
+  {label:'Gesprek 1', lines:[
+    {speaker:'Medewerker', fixed:'Kan ik u helpen?'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg dat je een nieuwe bril wil', hint_en:'Say you want a new pair of glasses', hint_ar:'قل أنك تريد نظارة جديدة', example:'Ja. Ik wil graag een nieuwe bril.'},
+    {speaker:'Medewerker', fixed:'Welke kleur wilt u?'},
+    {speaker:'Jij', input:true, hint_nl:'Noem een kleur', hint_en:'Name a colour', hint_ar:'سمِّ لوناً', example:'Paars. Paars is mooi.'},
+    {speaker:'Medewerker', fixed:'Alstublieft. Wat vindt u hiervan?'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg of je het mooi vindt', hint_en:'Say if you like it', hint_ar:'قل ما إذا كان يعجبك', example:'Nee, ik vind paars niet mooi.'},
+    {speaker:'Medewerker', fixed:'Ik heb wel een blauwe bril.'},
+    {speaker:'Jij', input:true, hint_nl:'Reageer positief', hint_en:'Respond positively', hint_ar:'تفاعل بإيجابية', example:'Ja, dat is een mooie bril!'},
+  ]},
+  {label:'Gesprek 2', lines:[
+    {speaker:'Medewerker', fixed:'Goedemiddag. Kan ik u helpen?'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg wat je zoekt', hint_en:'Say what you are looking for', hint_ar:'قل ما تبحث عنه', example:'Ja. Ik zoek een rode trui.'},
+    {speaker:'Medewerker', fixed:'Welke maat?'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg de maat', hint_en:'Say the size', hint_ar:'قل المقاس', example:'Klein.'},
+    {speaker:'Medewerker', fixed:'Alstublieft.'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg wat je van de kleur vindt', hint_en:'Say what you think of the colour', hint_ar:'قل رأيك في اللون', example:'Hmm, ik vind rood niet mooi.'},
+    {speaker:'Medewerker', fixed:'Ik heb ook een groene trui.'},
+    {speaker:'Jij', input:true, hint_nl:'Reageer en sluit af', hint_en:'Respond and close', hint_ar:'تفاعل وأنهِ المحادثة', example:'Groen is mooi! Dank u.'},
+  ]},
+  {label:'Gesprek 3', lines:[
+    {speaker:'Medewerker', fixed:'Kan ik u helpen?'},
+    {speaker:'Jij', input:true, hint_nl:'Zeg welke kleur jas je zoekt', hint_en:'Say which colour jacket you want', hint_ar:'قل لون المعطف الذي تبحث عنه', example:'Ja. Ik zoek een blauwe jas.'},
+    {speaker:'Medewerker', fixed:'Sorry, ik heb geen kleine blauwe jas.'},
+    {speaker:'Jij', input:true, hint_nl:'Vraag naar een andere kleur', hint_en:'Ask for a different colour', hint_ar:'اسأل عن لون آخر', example:'Heeft u een groene jas?'},
+    {speaker:'Medewerker', fixed:'Ja hoor. Alstublieft.'},
+    {speaker:'Jij', input:true, hint_nl:'Reageer blij', hint_en:'Respond happily', hint_ar:'تفاعل بسعادة', example:'Mooi! Dank u.'},
+  ]}
+];
+
+// ── STATE ────────────────────────────────────────────────────────────
+let currentScreen = 1;
+let lang = 'nl';
+let sortIdx = 0, sortExercises = [], sortSlots = [], sortChipBtns = [];
+let convIdx = 0, convSets = [], convSelected = null;
+let q5aIdx = 0, q5a = [];
+let q5bIdx = 0, q5b = [];
+let convFillIdx = 0;
+let drillMode = 'mc_nl2en'; // modes: mc_nl2en | mc_en2nl | write_en2nl
+let drillQueue = [], drillCurrent = 0, drillCorrect = 0;
+
+// ── UTILS ────────────────────────────────────────────────────────────
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function deepShuffle(arr){ return shuffle(arr).map(q=>({...q,options:shuffle(q.options)})); }
+
+// ── LANGUAGE ────────────────────────────────────────────────────────
+const T = {
+  ar:{
+    progress:'التقدم',
+    s1num:'الخطوة 1 من 13 · تعلم الكلمات',s1title:'انظر واقرأ الكلمات',s1desc:'اضغط على 🔊 لسماع الكلمة. ثم قلها بنفسك!',
+    s2num:'الخطوة 2 من 13 · التكرار',s2title:'كرر بصوت عالٍ! 🗣️',s2desc:'اضغط على 🔊 وقل الجملة بصوت عالٍ. بقدر ما تريد!',
+    s2info:'💡 كرر كل جملة 3 مرات على الأقل. كلما كان أكثر، كان أفضل!',
+    s3b_num:'الخطوة 3 من 13 · انسخ الجمل',s3b_title:'انسخ الجملة ✏️',s3b_desc:'اكتب كل جملة بالضبط. انتبه إلى الأحرف الكبيرة والنقطة أو علامة الاستفهام!',
+    s3num:'الخطوة 4 من 13 · تدريب الكلمات',s3title:'هل تعرف الكلمات؟ 🧠',s3desc:'تدرب على الكلمات. لا أخطاء! إذا أخطأت، ابدأ من جديد.',
+    s4num:'الخطوة 5 من 13 · بناء الجمل',s4title:'ابنِ الجملة! 🧩',s4desc:'اضغط على الكلمات بالترتيب الصحيح.',
+    s5num:'الخطوة 6 من 13 · ترتيب المحادثة',s5title:'ضع المحادثة في الترتيب الصحيح 💬',s5desc:'اضغط على جملة → ثم اضغط على المكان الصحيح.',
+    s6num:'الخطوة 7 من 13 · اختر الجملة الصحيحة',s6title:'أي جملة صحيحة؟ ✅',s6desc:'اختر الجملة ذات ترتيب الكلمات الصحيح.',
+    s7num:'الخطوة 8 من 13 · اختر الإجابة الصحيحة',s7title:'ما هي الإجابة الصحيحة؟ 🤔',s7desc:'شخص يسأل سؤالاً. اختر الإجابة الصحيحة.',
+    s8num:'الخطوة 9 من 13 · اكتب عن نفسك',s8title:'اكتب عن نفسك ✍️',s8desc:'أكمل الجمل بمعلوماتك الخاصة.',
+    fill1label:'قطعة الملابس:',fill2label:'لونك المفضل:',fill3label:'مقاسك:',
+    fill1hint:'💡 Ik zoek een trui.',fill2hint:'💡 Ik wil graag rood.',fill3hint:'💡 Ik heb maat 40.',
+    ftlabel:'تحدث عن شراء الملابس',
+    fthint:'📝 اكتب: ما الذي تبحث عنه، وما هو اللون والمقاس؟ واسأل الشخص الآخر: ما الذي تبحث عنه؟',
+    waFill:'📲 أرسل جملي إلى المعلم',
+    waFree:'🎤 أرسل نص + رسالة صوتية',
+    waConv:'📲 أرسل هذه المحادثة إلى المعلم',
+    s9num:'الخطوة 10 من 13 · املأ المحادثة',s9title:'أكمل المحادثة 📝',s9desc:'املأ ما تقوله. استخدم التلميح إذا احتجت إلى مساعدة.',
+    s10num:'الخطوة 11 من 13 · تدرب مع زميل',s10title:'تدربا معاً! 👥',s10desc:'اجلس بجانب زميل. ستتدربان على محادثة معاً.',
+    s11num:'الخطوة 12 من 13 · سجل وأرسل',s11title:'سجل المحادثة! 🎤',s11desc:'افعل هذا مع زميلك. أرسل التسجيل إلى المعلم.',
+    s12num:'الخطوة 13 من 13 · محادثة حرة',s12title:'تحدث أمام الفصل! 🌟',s12desc:'الآن افعلها بنفسك، بدون مساعدة. أنت تستطيع فعلها!',
+    sgTitle:'خطوة بخطوة',
+    sg1:'أخبر ما هو القديم: \"Mijn … is oud.\"',sg2:'قل ما تريده: \"Ik wil graag een nieuwe …\"',sg3:'اختر لوناً عندما يُطلب منك',sg4:'تفاعل مع العرض',sg5:'أنهِ المحادثة: \"Dank u. Tot ziens.\"',
+    congratsTitle:'أحسنت!',congratsSub:'لقد أكملت جميع الخطوات!',
+    learnedTitle:'📚 الكلمات التي تعلمتها',restart:'↺ تدرب مرة أخرى',
+    convOrderTitle:'ضع في الترتيب الصحيح',beginLabel:'ابدأ 🟢',endLabel:'نهاية 🔴',
+    questionLabel:'سؤال:',
+    convFillTitle:'املأ ما تقوله',
+    waMsg:'مرحباً أستاذ! هذه جملي:\n',
+    waFreeMsg:'مرحباً أستاذ! هذا نصي:\n',
+    waVoiceTip:'\n\n🎤 سأرسل أيضاً رسالة صوتية!',
+    drillCorrectMsg:'✅ صحيح! أحسنت!',drillWrongMsg:'❌ خطأ! ابدأ من جديد.',
+    drillDoneMsg:'🎉 جميع الكلمات صحيحة! جرب وضعاً آخر.',
+    drillScore:'صحيح:',drillReset:'↺ حاول مرة أخرى (ترتيب جديد)',
+    checkBtn:'✓ تحقق',resetBtn:'↺ ابدأ من جديد',
+    prevSentence:'السابق',nextSentence:'التالي',
+  },
+  nl:{
+    progress:'Voortgang',
+    s1num:'Stap 1 van 13 · Woorden leren',s1title:'Kijk en lees de woorden',s1desc:'<strong>Leerdoel 5.1 ⭐: De cursist kan een gesprek voeren in een winkel over kleding — vragen stellen, reageren op de medewerker, en het gesprek afsluiten.</strong><br>Druk op 🔊 om het woord te horen. Zeg het daarna zelf na!',
+    s2num:'Stap 2 van 13 · Herhalen',s2title:'Zeg het na! 🗣️',s2desc:'Druk op 🔊 en zeg de zin hardop na. Zo vaak als je wilt!',
+    s2info:'💡 Herhaal elke zin minimaal 3 keer. Hoe vaker, hoe beter!',
+    s3b_num:'Stap 3 van 13 · Schrijf de zinnen over',s3b_title:'Schrijf de zin over ✏️',s3b_desc:'Schrijf elke zin precies over. Let op: hoofdletter aan het begin en punt of vraagteken aan het einde!',
+    s3num:'Stap 4 van 13 · Woordentraining',s3title:'Ken jij de woorden? 🧠',s3desc:'Oefen de woorden. Maak geen fouten! Als je een fout maakt, begin je opnieuw.',
+    s4num:'Stap 5 van 13 · Zinnen maken',s4title:'Maak de zin! 🧩',s4desc:'Tik de woorden in de juiste volgorde.',
+    s5num:'Stap 6 van 13 · Gespreksvolgorde',s5title:'Zet het gesprek in de goede volgorde 💬',s5desc:'Tik een zin aan → tik dan op de juiste plek.',
+    s6num:'Stap 7 van 13 · Goede zin kiezen',s6title:'Welke zin is goed? ✅',s6desc:'Kies de zin met de goede woordvolgorde.',
+    s7num:'Stap 8 van 13 · Juist antwoord kiezen',s7title:'Wat is het goede antwoord? 🤔',s7desc:'Iemand stelt een vraag. Kies het juiste antwoord.',
+    s8num:'Stap 9 van 13 · Schrijf over jezelf',s8title:'Schrijf over jezelf ✍️',s8desc:'Maak de zinnen af met jouw eigen informatie.',
+    fill1label:'Kledingstuk:',fill2label:'Jouw kleur:',fill3label:'Jouw maat:',
+    fill1hint:'💡 Ik zoek een trui.',fill2hint:'💡 Ik wil graag rood.',fill3hint:'💡 Ik heb maat 40.',
+    ftlabel:'Vertel over kleding kopen',
+    fthint:'📝 Schrijf: wat zoek je, welke kleur en welke maat? En vraag aan de ander: wat zoek jij?',
+    waFill:'📲 Stuur mijn zinnen naar de docent',
+    waFree:'🎤 Stuur tekst + voice memo',
+    waConv:'📲 Stuur dit gesprek naar de docent',
+    s9num:'Stap 10 van 13 · Gesprek invullen',s9title:'Maak het gesprek compleet 📝',s9desc:'Vul in wat jij zegt. Gebruik de hint als je hulp nodig hebt.',
+    s10num:'Stap 11 van 13 · Praten met een klasgenoot',s10title:'Oefen samen! 👥',s10desc:'Ga naast een klasgenoot zitten. Jullie gaan samen een gesprek oefenen.',
+    s11num:'Stap 12 van 13 · Opnemen en sturen',s11title:'Neem het gesprek op! 🎤',s11desc:'Doe dit samen met jouw klasgenoot. Stuur de opname naar de docent.',
+    s12num:'Stap 13 van 13 · Vrij gesprek',s12title:'Praat voor de klas! 🌟',s12desc:'Nu doe jij het zelf, zonder hulp. Je kunt dit!',
+    sgTitle:'Stappenplan',sg1:'Vertel wat oud is: \"Mijn … is oud.\"',sg2:'Zeg wat je wil: \"Ik wil graag een nieuwe …\"',sg3:'Kies een kleur als de medewerker vraagt',sg4:'Reageer op het aanbod',sg5:'Sluit af: \"Dank u. Tot ziens.\"',
+    congratsTitle:'Goed gedaan!',congratsSub:'Je hebt alle stappen van thema 5.1 gedaan!',
+    learnedTitle:'📚 Woorden die je hebt geleerd',restart:'↺ Opnieuw oefenen',
+    convOrderTitle:'Zet in de goede volgorde',beginLabel:'BEGIN 🟢',endLabel:'EINDE 🔴',
+    questionLabel:'Vraag:',
+    convFillTitle:'Vul in wat jij zegt',
+    waMsg:'Hallo docent! Dit zijn mijn zinnen van thema 5.1:\n',
+    waFreeMsg:'Hallo docent! Dit is mijn tekst van thema 5.1:\n',
+    waVoiceTip:'\n\n🎤 Ik stuur nu ook een voice memo!',
+    drillCorrectMsg:'✅ Goed zo!',drillWrongMsg:'❌ Fout! Opnieuw van het begin.',
+    drillDoneMsg:'🎉 Alle woorden goed! Probeer nu een andere modus.',
+    drillScore:'Correct:',drillReset:'↺ Opnieuw (nieuwe volgorde)',
+    checkBtn:'✓ Controleer',resetBtn:'↺ Opnieuw beginnen',
+    prevSentence:'Vorige zin',nextSentence:'Volgende zin',
+  },
+  en:{
+    progress:'Progress',
+    s1num:'Step 1 of 13 · Learn words',s1title:'Look and read the words',s1desc:'Press 🔊 to hear the word. Then say it yourself!',
+    s2num:'Step 2 of 13 · Repeat',s2title:'Repeat out loud! 🗣️',s2desc:'Press 🔊 and say the sentence out loud. As many times as you like!',
+    s2info:'💡 Repeat each sentence at least 3 times. The more, the better!',
+    s3b_num:'Step 3 of 13 · Copy the sentences',s3b_title:'Copy the sentence ✏️',s3b_desc:'Write each sentence exactly. Pay attention to capital letters and the dot or question mark!',
+    s3num:'Step 4 of 13 · Word training',s3title:'Do you know the words? 🧠',s3desc:'Practise the words. No mistakes! If you make a mistake, start again.',
+    s4num:'Step 5 of 13 · Build sentences',s4title:'Build the sentence! 🧩',s4desc:'Tap the words in the correct order.',
+    s5num:'Step 6 of 13 · Conversation order',s5title:'Put the conversation in the right order 💬',s5desc:'Tap a sentence → then tap the correct spot.',
+    s6num:'Step 7 of 13 · Choose correct sentence',s6title:'Which sentence is correct? ✅',s6desc:'Choose the sentence with the correct word order.',
+    s7num:'Step 8 of 13 · Choose correct answer',s7title:'What is the correct answer? 🤔',s7desc:'Someone asks a question. Choose the right answer.',
+    s8num:'Step 9 of 13 · Write about yourself',s8title:'Write about yourself ✍️',s8desc:'Complete the sentences with your own information.',
+    fill1label:'Clothing item:',fill2label:'Your colour:',fill3label:'Your size:',
+    fill1hint:'💡 Ik zoek een trui.',fill2hint:'💡 Ik wil graag rood.',fill3hint:'💡 Ik heb maat 40.',
+    ftlabel:'Tell about buying clothes',
+    fthint:'📝 Write: what are you looking for, what colour and what size? And ask the other person: what are you looking for?',
+    waFill:'📲 Send my sentences to the teacher',
+    waFree:'🎤 Send text + voice memo',
+    waConv:'📲 Send this conversation to the teacher',
+    s9num:'Step 10 of 13 · Fill in the conversation',s9title:'Complete the conversation 📝',s9desc:'Fill in what you say. Use the hint if you need help.',
+    s10num:'Step 11 of 13 · Talk with a classmate',s10title:'Practise together! 👥',s10desc:'Sit next to a classmate. You will practise a conversation together.',
+    s11num:'Step 12 of 13 · Record and send',s11title:'Record the conversation! 🎤',s11desc:'Do this together with your classmate. Send the recording to the teacher.',
+    s12num:'Step 13 of 13 · Free conversation',s12title:'Talk in front of the class! 🌟',s12desc:'Now you do it yourself, without help. You can do this!',
+    sgTitle:'Step-by-step',sg1:'Tell what is old: \"Mijn … is oud.\"',sg2:'Say what you want: \"Ik wil graag een nieuwe …\"',sg3:'Choose a colour when asked',sg4:'React to the offer',sg5:'Close: \"Dank u. Tot ziens.\"',
+    congratsTitle:'Well done!',congratsSub:'You completed all steps of theme 1.1!',
+    learnedTitle:'📚 Words you have learned',restart:'↺ Practise again',
+    convOrderTitle:'Put in the correct order',beginLabel:'START 🟢',endLabel:'END 🔴',
+    questionLabel:'Question:',
+    convFillTitle:'Fill in what you say',
+    waMsg:'Hello teacher! These are my sentences from theme 1.1:\n',
+    waFreeMsg:'Hello teacher! This is my free text from theme 1.1:\n',
+    waVoiceTip:'\n\n🎤 I will also send a voice memo!',
+    drillCorrectMsg:'✅ Correct! Well done!',drillWrongMsg:'❌ Wrong! Start again.',
+    drillDoneMsg:'🎉 All words correct! Try another mode.',
+    drillScore:'Correct:',drillReset:'↺ Try again (new order)',
+    checkBtn:'✓ Check',resetBtn:'↺ Start over',
+    prevSentence:'Previous',nextSentence:'Next',
+  }
+};
+
+function t(k){ return T[lang][k] || T['en'][k] || k; }
+
+function setLang(l){
+  lang = l;
+  document.getElementById('btn-nl').classList.toggle('active-lang', l==='nl');
+  document.getElementById('btn-en').classList.toggle('active-lang', l==='en');
+  document.getElementById('btn-ar').classList.toggle('active-lang', l==='ar');
+  document.body.setAttribute('dir', l==='ar' ? 'rtl' : 'ltr');
+  rebuildAll();
+}
+
+// ── NAV ─────────────────────────────────────────────────────────────
+function goTo(n){
+  document.getElementById('screen-'+currentScreen).classList.remove('active');
+  currentScreen=n;
+  document.getElementById('screen-'+n).classList.add('active');
+  updateProgress();
+  window.scrollTo(0,0);
+}
+
+function updateProgress(){
+  const pct=Math.round(((currentScreen-1)/(TOTAL-1))*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+  document.getElementById('step-label').textContent=currentScreen;
+  buildDots();
+}
+
+function buildDots(){
+  const c=document.getElementById('step-dots');
+  c.innerHTML='';
+  for(let i=1;i<=TOTAL;i++){
+    const d=document.createElement('div');
+    d.className='step-dot'+(i<currentScreen?' done':i===currentScreen?' active':'');
+    c.appendChild(d);
+  }
+}
+
+// ── SPEECH ──────────────────────────────────────────────────────────
+function speak(text,btn){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='nl-NL'; u.rate=0.82; u.pitch=1;
+  if(btn){ btn.classList.add('playing'); u.onend=()=>btn.classList.remove('playing'); u.onerror=()=>btn.classList.remove('playing'); }
+  window.speechSynthesis.speak(u);
+}
+
+function audioBtn(text){
+  return `<button class="audio-btn" onclick="speak('${text.replace(/'/g,"\\'")}',this)">🔊</button>`;
+}
+
+// ── S1: WORDS ───────────────────────────────────────────────────────
+function buildWordGrid(){
+  const c=document.getElementById('word-grid'); c.innerHTML='';
+  wordsData.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='word-card';
+    card.innerHTML=`
+      <div class="word-main-row">
+        <div class="word-emoji">${w.emoji}</div>
+        <div>
+          <div class="word-nl">${w.nl}</div>
+          ${lang==='en'?`<div class="word-en">${w.en}</div>`:''}
+          ${lang==='ar'?`<div class="word-en" style="font-family:Arial;direction:rtl;text-align:right;">${w.ar||''}</div>`:''}
+        </div>
+      </div>
+      ${audioBtn(w.nl)}`;
+    c.appendChild(card);
+  });
+}
+
+// ── S2: REPEAT ──────────────────────────────────────────────────────
+function buildRepeatGrid(){
+  const c=document.getElementById('repeat-grid'); c.innerHTML='';
+  repeatPhrases.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='word-card';
+    card.innerHTML=`<div class="word-main-row"><div class="word-emoji">${p.emoji}</div><div class="word-nl">${p.nl}</div></div>${audioBtn(p.nl)}`;
+    c.appendChild(card);
+  });
+}
+
+
+// ── COPY DRILL ───────────────────────────────────────────────────────
+const copyPhrases = [
+'Mijn bril is oud. Ik wil graag een nieuwe bril.',
+'Welke kleur wilt u?',
+'Ik vind rood niet mooi.',
+'Paars is mooi.',
+'Heeft u een gele bril?',
+'Ik heb wel een blauwe bril.',
+'Dat is een mooie bril.'
+];
+
+let copyIdx = 0;
+
+function initCopyDrill(){
+  copyIdx = 0;
+  renderCopyDrill();
+}
+
+function renderCopyDrill(){
+  const c = document.getElementById('copy-drill-container');
+  if(!c) return;
+  c.innerHTML = '';
+  
+  if(copyIdx >= copyPhrases.length){
+    const done = document.createElement('div');
+    done.className = 'drill-card';
+    done.innerHTML = '<div style="font-size:3rem;margin-bottom:10px;">🎉</div><div style="font-size:1.2rem;font-weight:900;color:var(--green);">'+(lang==='nl'?'Alle zinnen overschreven! Goed gedaan!':'All sentences copied! Well done!')+'</div>';
+    c.appendChild(done);
+    const rb = document.createElement('button');
+    rb.className = 'btn-reset'; rb.style = 'margin-top:10px;';
+    rb.textContent = t('resetBtn');
+    rb.onclick = initCopyDrill;
+    c.appendChild(rb);
+    return;
+  }
+  
+  const phrase = copyPhrases[copyIdx];
+  
+  // progress bar
+  const pb = document.createElement('div'); pb.className = 'drill-progress-bar';
+  const pf = document.createElement('div'); pf.className = 'drill-progress-fill';
+  pf.style.width = ((copyIdx / copyPhrases.length) * 100) + '%';
+  pb.appendChild(pf); c.appendChild(pb);
+  
+  const score = document.createElement('div'); score.className = 'drill-score';
+  score.textContent = (copyIdx + 1) + ' / ' + copyPhrases.length;
+  c.appendChild(score);
+  
+  const card = document.createElement('div'); card.className = 'drill-card';
+  const isEN = lang === 'en';
+  
+  card.innerHTML = '<div style="font-size:0.82rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">'+(lang==='en'?'Copy this sentence exactly:':(lang==='ar'?'انسخ هذه الجملة بالضبط:':'Schrijf deze zin precies over:'))+'</div>'
+    + '<div style="font-size:1.4rem;font-weight:900;margin-bottom:6px;color:var(--blue);">'+phrase+'</div>'
+    + audioBtn(phrase)
+    + '<div style="height:12px;"></div>';
+  
+  const inp = document.createElement('input');
+  inp.className = 'drill-write-input';
+  inp.type = 'text';
+  inp.placeholder = lang==='en' ? 'Type exactly what you see above...' : (lang==='ar'?'اكتب بالضبط ما تراه أعلاه...':'Schrijf exact hetzelfde over...');
+  inp.id = 'copy-inp';
+  card.appendChild(inp);
+  
+  const hint = document.createElement('div');
+  hint.className = 'fill-hint';
+  hint.style = 'margin-top:6px;';
+  hint.textContent = lang==='en' ? '💡 Capital letter at start. End with . or ?' : (lang==='ar'?'💡 ابدأ بحرف كبير. وانهِ بـ . أو ؟':'💡 Begin met een hoofdletter. Eindig met . of ?');
+  card.appendChild(hint);
+  
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn-check';
+  checkBtn.textContent = t('checkBtn');
+  checkBtn.onclick = () => {
+    const val = inp.value.trim();
+    const ok = val === phrase;
+    const fb = document.getElementById('copy-fb');
+    fb.className = 'feedback-box show' + (ok ? '' : ' wrong-fb');
+    if(ok){
+      fb.textContent = t('drillCorrectMsg');
+      speak(phrase);
+      inp.disabled = true;
+      checkBtn.style.display = 'none';
+      const nxt=document.createElement('button');
+      nxt.className='btn-main'; nxt.style='margin-top:10px;width:100%;';
+      nxt.textContent=typeof t('nextSentence')==='string'?t('nextSentence').replace('→','').trim()+' →':'Volgende →';
+      nxt.onclick=()=>{ copyIdx++; renderCopyDrill(); };
+      card.appendChild(nxt);
+    } else {
+      // Specific feedback
+      let msg = '';
+      if(val.toLowerCase() === phrase.toLowerCase() && val !== phrase){
+        msg = lang==='en' ? '❌ Almost! Check capital letters and punctuation.' : (lang==='ar'?'❌ تقريباً! تحقق من الأحرف الكبيرة وعلامات الترقيم.':'❌ Bijna! Let op hoofdletters en leestekens.');
+      } else {
+        msg = (lang==='en' ? '❌ Not the same. Try again: ' : (lang==='ar'?'❌ ليست نفسها. حاول مرة أخرى: ':'❌ Niet hetzelfde. Probeer opnieuw: ')) + phrase;
+      }
+      fb.textContent = msg;
+      inp.focus(); inp.select();
+    }
+  };
+  card.appendChild(checkBtn);
+  
+  const fb = document.createElement('div'); fb.className = 'feedback-box'; fb.id = 'copy-fb';
+  card.appendChild(fb);
+  c.appendChild(card);
+  
+  const rb = document.createElement('button'); rb.className = 'btn-reset';
+  rb.textContent = t('resetBtn');
+  rb.onclick = initCopyDrill;
+  c.appendChild(rb);
+  
+  inp.addEventListener('keydown', e => { if(e.key === 'Enter') checkBtn.click(); });
+  setTimeout(() => inp.focus(), 100);
+}
+
+// ── S3: DRILL ───────────────────────────────────────────────────────
+function initDrill(){
+  drillQueue=shuffle(wordsData.map((w,i)=>i));
+  drillCurrent=0; drillCorrect=0;
+  renderDrill();
+}
+
+function renderDrill(){
+  const c=document.getElementById('drill-container'); c.innerHTML='';
+
+  // NL-mode note: in NL mode there are no English translations visible
+  // So we show a note explaining to use their own language mentally
+  if(lang==='nl'){
+    const nlNote=document.createElement('div');
+    nlNote.className='info-box';
+    nlNote.innerHTML='💡 <strong>Tip:</strong> Kun jij de betekenis in jouw eigen taal bedenken? Tik daarna op het goede antwoord in het Nederlands.';
+    c.appendChild(nlNote);
+  }
+  // mode tabs — only 3 modes: MC meaning, MC NL, Write in NL
+  const modes=[
+    {key:'mc_nl2en',   label:lang==='nl'?'Wat betekent dit?':lang==='ar'?'ماذا يعني هذا؟':'What does it mean?'},
+    {key:'mc_en2nl',   label:lang==='nl'?'Hoe zeg je dit in NL?':lang==='ar'?'كيف تقول هذا بالهولندية؟':'How to say in Dutch?'},
+    {key:'write_en2nl',label:lang==='nl'?'Schrijf in het NL ✏️':lang==='ar'?'اكتب بالهولندية ✏️':'Write in Dutch ✏️'},
+  ];
+  const tabs=document.createElement('div');
+  tabs.className='drill-mode-tabs';
+  modes.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='drill-mode-tab'+(drillMode===m.key?' active-tab':'');
+    b.textContent=m.label;
+    b.onclick=()=>{ drillMode=m.key; initDrill(); };
+    tabs.appendChild(b);
+  });
+  c.appendChild(tabs);
+
+  if(drillCurrent>=drillQueue.length){
+    // done
+    const done=document.createElement('div');
+    done.className='drill-card';
+    done.innerHTML=`<div style="font-size:3rem;margin-bottom:10px;">🎉</div><div style="font-size:1.2rem;font-weight:900;color:var(--green);">${t('drillDoneMsg')}</div>`;
+    c.appendChild(done);
+    const rb=document.createElement('button');
+    rb.className='btn-reset'; rb.style='margin-top:10px;';
+    rb.textContent=t('drillReset');
+    rb.onclick=initDrill;
+    c.appendChild(rb);
+    return;
+  }
+
+  // progress
+  const pb=document.createElement('div');
+  pb.className='drill-progress-bar';
+  const pf=document.createElement('div');
+  pf.className='drill-progress-fill';
+  pf.style.width=((drillCurrent/wordsData.length)*100)+'%';
+  pb.appendChild(pf);
+  c.appendChild(pb);
+
+  const score=document.createElement('div');
+  score.className='drill-score';
+  score.textContent=`${t('drillScore')} ${drillCorrect} / ${wordsData.length}`;
+  c.appendChild(score);
+
+  const wordIdx=drillQueue[drillCurrent];
+  const word=wordsData[wordIdx];
+
+  const card=document.createElement('div');
+  card.className='drill-card';
+
+  if(drillMode==='mc_nl2en'||drillMode==='mc_en2nl'){
+    const isNL2EN=drillMode==='mc_nl2en';
+    const question=isNL2EN?word.nl:(lang==='ar'?word.ar:word.en);
+    const correctAnswer=isNL2EN?(lang==='ar'?word.ar:word.en):word.nl;
+    const distractors=shuffle(wordsData.filter((_,i)=>i!==wordIdx)).slice(0,2).map(w=>isNL2EN?(lang==='ar'?w.ar:w.en):w.nl);
+    const opts=shuffle([correctAnswer,...distractors]);
+
+    const subNL2EN=lang==='nl'?'Wat betekent dit?':lang==='ar'?'ماذا يعني هذا؟':'What does this mean?';
+    const subEN2NL=lang==='nl'?'Hoe zeg je dit in het Nederlands?':lang==='ar'?'كيف تقول هذا بالهولندية؟':'How do you say this in Dutch?';
+    card.innerHTML=`
+      <div style="font-size:2rem;margin-bottom:8px;">${word.emoji}</div>
+      <div class="drill-question">${question}</div>
+      <div class="drill-question-sub">${isNL2EN?subNL2EN:subEN2NL}</div>
+      ${audioBtn(word.nl)}
+      <div style="margin-top:14px;"></div>
+    `;
+    const optsDiv=document.createElement('div');
+    optsDiv.className='drill-options';
+    opts.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.className='drill-opt';
+      btn.textContent=opt;
+      btn.onclick=()=>answerDrill(btn,opt===correctAnswer,word.nl);
+      optsDiv.appendChild(btn);
+    });
+    card.appendChild(optsDiv);
+
+  } else {
+    // write mode: always EN → NL (write in Dutch)
+    const question=lang==='ar'?word.ar:word.en;
+    const correctAnswer=word.nl.toLowerCase().trim();
+    const subLabel=lang==='nl'?'Schrijf dit in het Nederlands:':lang==='ar'?'اكتب هذا بالهولندية:':'Write this in Dutch:';
+    card.innerHTML=`
+      <div style="font-size:2rem;margin-bottom:8px;">${word.emoji}</div>
+      <div class="drill-question">${question}</div>
+      <div class="drill-question-sub">${subLabel}</div>
+      <div style="margin-top:14px;"></div>
+    `;
+    const inp=document.createElement('input');
+    inp.className='drill-write-input';
+    inp.type='text';
+    inp.placeholder=lang==='nl'?'Schrijf hier in het Nederlands...':lang==='ar'?'اكتب بالهولندية هنا...':'Write in Dutch here...';
+    inp.id='drill-write-inp';
+    card.appendChild(inp);
+    const submitBtn=document.createElement('button');
+    submitBtn.className='btn-check';
+    submitBtn.textContent=t('checkBtn');
+    submitBtn.onclick=()=>{
+      const val=inp.value.toLowerCase().trim();
+      const ok=val===correctAnswer||val===correctAnswer.replace(/^de |^het /,'');
+      answerDrill(submitBtn,ok,word.nl,val,word.nl);
+    };
+    card.appendChild(submitBtn);
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submitBtn.click(); });
+  }
+
+  const fb=document.createElement('div');
+  fb.className='feedback-box'; fb.id='drill-fb';
+  card.appendChild(fb);
+  c.appendChild(card);
+
+  const rb=document.createElement('button');
+  rb.className='btn-reset';
+  rb.textContent=t('drillReset');
+  rb.onclick=initDrill;
+  c.appendChild(rb);
+}
+
+function answerDrill(el,correct,speakText,written,correctWritten){
+  const fb=document.getElementById('drill-fb');
+  const card=fb.parentElement;
+  if(correct){
+    drillCorrect++;
+    drillCurrent++;
+    fb.className='feedback-box show';
+    fb.textContent=t('drillCorrectMsg');
+    speak(speakText);
+    document.querySelectorAll('.drill-opt,.btn-check').forEach(b=>b.onclick=null);
+    if(el.classList.contains('btn-check')) el.style.display='none';
+    const nxt=document.createElement('button');
+    nxt.className='btn-main'; nxt.style='margin-top:10px;width:100%;';
+    nxt.textContent=typeof t('nextSentence')==='string'?t('nextSentence').replace('→','').trim()+' →':'Volgende →';
+    nxt.onclick=renderDrill;
+    card.appendChild(nxt);
+  } else {
+    fb.className='feedback-box show wrong-fb';
+    fb.textContent=t('drillWrongMsg')+(correctWritten?` ✔ ${correctWritten}`:'');
+    if(el.classList.contains('drill-opt')) el.classList.add('wrong');
+    document.querySelectorAll('.drill-opt').forEach(b=>{
+      if(b.textContent===(correctWritten||'___')) b.classList.add('correct');
+    });
+    document.querySelectorAll('.drill-opt,.btn-check').forEach(b=>b.onclick=null);
+    if(el.classList.contains('btn-check')) el.style.display='none';
+    const nxt=document.createElement('button');
+    nxt.className='btn-main'; nxt.style='margin-top:10px;width:100%;background-color:var(--red);color:white;';
+    nxt.textContent=t('resetBtn');
+    nxt.onclick=()=>{ drillQueue=shuffle(wordsData.map((_,i)=>i)); drillCurrent=0; drillCorrect=0; renderDrill(); };
+    card.appendChild(nxt);
+  }
+}
+
+// ── S4: SORT ────────────────────────────────────────────────────────
+function initSort(){
+  sortExercises=sortExercisesBase.map(e=>({...e}));
+  sortIdx=0; buildSort();
+}
+
+function buildSort(){
+  sortSlots=[]; sortChipBtns=[];
+  const ex=sortExercises[sortIdx];
+  const shuffledWords=shuffle(ex.words);
+  const c=document.getElementById('sort-container'); c.innerHTML='';
+  const hdr=document.createElement('div');
+  hdr.className='sort-header';
+  hdr.innerHTML=`<div class="sort-header-meta">${lang==='nl'?'Zin':'Sentence'} ${sortIdx+1} / ${sortExercises.length}</div>
+    <div style="font-size:0.88rem;color:#555;font-weight:700;">${lang==='nl'?'Maak een goede zin:':'Make a correct sentence:'}</div>`;
+  c.appendChild(hdr);
+  const speakRow=document.createElement('div');
+  speakRow.style='display:flex;align-items:center;gap:8px;margin-bottom:10px;';
+  speakRow.innerHTML=`<span style="font-size:0.78rem;font-weight:700;color:var(--muted);">${lang==='nl'?'Hoor de zin:':'Hear it:'}</span>${audioBtn(ex.answer.replace(/\s\./g,'.'))}`;
+  c.appendChild(speakRow);
+  const chipsDiv=document.createElement('div');
+  chipsDiv.className='word-chips';
+  shuffledWords.forEach(w=>{
+    const btn=document.createElement('button');
+    btn.className='chip'; btn.textContent=w;
+    btn.onclick=()=>tapSortChip(btn,w);
+    chipsDiv.appendChild(btn);
+    sortChipBtns.push(btn);
+  });
+  c.appendChild(chipsDiv);
+  const slotsDiv=document.createElement('div');
+  slotsDiv.className='answer-slots';
+  ex.words.forEach((_,i)=>{
+    const slot=document.createElement('div');
+    slot.className='slot';
+    slot.innerHTML=`<span class="slot-num">${i+1}</span><span class="slot-text"></span>`;
+    slot.onclick=()=>removeSortSlot(slot);
+    slotsDiv.appendChild(slot);
+    sortSlots.push(slot);
+  });
+  c.appendChild(slotsDiv);
+  const fb=document.createElement('div'); fb.className='feedback-box'; fb.id='sort-fb'; c.appendChild(fb);
+  const chk=document.createElement('button'); chk.className='btn-check'; chk.textContent=t('checkBtn'); chk.onclick=checkSort; c.appendChild(chk);
+  const snav=document.createElement('div'); snav.className='sort-nav';
+  snav.innerHTML=`<button class="sort-nav-btn" onclick="prevSort()" ${sortIdx===0?'disabled':''}>← ${t('prevSentence').replace('←','').trim()}</button>
+    <button class="sort-nav-btn primary" onclick="nextSort()" ${sortIdx===sortExercises.length-1?'disabled':''}>${t('nextSentence').replace('→','').trim()} →</button>`;
+  c.appendChild(snav);
+  const rb=document.createElement('button'); rb.className='btn-reset'; rb.textContent=t('resetBtn'); rb.onclick=initSort; c.appendChild(rb);
+}
+
+function tapSortChip(btn,w){
+  if(btn.classList.contains('used')) return;
+  const empty=sortSlots.find(s=>!s.classList.contains('filled'));
+  if(!empty) return;
+  empty.querySelector('.slot-text').textContent=w;
+  empty.classList.add('filled');
+  btn.classList.add('used');
+}
+function removeSortSlot(slot){
+  if(!slot.classList.contains('filled')) return;
+  const w=slot.querySelector('.slot-text').textContent;
+  slot.querySelector('.slot-text').textContent='';
+  slot.classList.remove('filled','correct-slot','wrong-slot');
+  const chip=sortChipBtns.find(b=>b.textContent===w&&b.classList.contains('used'));
+  if(chip) chip.classList.remove('used');
+}
+function checkSort(){
+  const ex=sortExercises[sortIdx];
+  const ans=sortSlots.map(s=>s.querySelector('.slot-text').textContent).join(' ').trim();
+  const ok=ans===ex.answer;
+  sortSlots.forEach(s=>{ s.classList.remove('correct-slot','wrong-slot'); if(s.classList.contains('filled')) s.classList.add(ok?'correct-slot':'wrong-slot'); });
+  const fb=document.getElementById('sort-fb');
+  fb.className='feedback-box show'+(ok?'':' wrong-fb');
+  fb.textContent=ok?t('drillCorrectMsg'):`${t('drillWrongMsg')} → ${ex.answer.replace(/\s\./g,'.')}`;
+  if(ok) speak(ex.answer.replace(/\s\./g,'.'));
+}
+function nextSort(){ if(sortIdx<sortExercises.length-1){sortIdx++;buildSort();} }
+function prevSort(){ if(sortIdx>0){sortIdx--;buildSort();} }
+
+// ── S5: CONV ORDER ──────────────────────────────────────────────────
+function initConv(){
+  convSets=shuffle(convSetsBase.map(s=>({...s,lines:[...s.lines]})));
+  convIdx=0; buildConv();
+}
+
+function buildConv(){
+  convSelected=null;
+  const set=convSets[convIdx];
+  const shuffledLines=shuffle(set.lines);
+  const c=document.getElementById('conv-order-container'); c.innerHTML='';
+  const lbl=document.createElement('div'); lbl.className='conv-set-label'; lbl.textContent=set.label; c.appendChild(lbl);
+  const info=document.createElement('div'); info.className='info-box';
+  info.textContent=lang==='nl'?'👆 Tik een zin aan. Tik dan op de juiste plek hieronder.':'👆 Tap a sentence. Then tap the correct spot below.';
+  c.appendChild(info);
+  const src=document.createElement('div'); src.className='conv-source'; src.id='conv-src';
+  shuffledLines.forEach(line=>{
+    const btn=document.createElement('button');
+    btn.className='conv-chip';
+    btn.dataset.text=line.text; btn.dataset.speaker=line.speaker;
+    const isSpeakerB=line.speaker!=='Docent'&&line.speaker!==set.lines[0].speaker;
+    btn.innerHTML=`<span class="conv-speaker${isSpeakerB?' sp-b':''}">${line.speaker}</span><span>${line.text}</span>`;
+    btn.onclick=()=>selectConvChip(btn);
+    src.appendChild(btn);
+  });
+  c.appendChild(src);
+  const oa=document.createElement('div'); oa.className='order-area';
+  const oaT=document.createElement('div'); oaT.className='order-area-title'; oaT.textContent=t('convOrderTitle'); oa.appendChild(oaT);
+  const sw=document.createElement('div'); sw.id='conv-slots';
+  set.lines.forEach((line,i)=>{
+    const slot=document.createElement('div'); slot.className='order-slot'; slot.dataset.pos=i;
+    const label=i===0?t('beginLabel'):i===set.lines.length-1?t('endLabel'):(i+1)+'';
+    slot.innerHTML=`<span class="order-slot-num">${label}</span><span class="order-slot-content" style="flex:1;"></span>`;
+    slot.onclick=()=>placeConvLine(slot,i,set.lines[i]);
+    sw.appendChild(slot);
+  });
+  oa.appendChild(sw); c.appendChild(oa);
+  const chk=document.createElement('button'); chk.className='btn-check'; chk.textContent=t('checkBtn'); chk.onclick=checkConv; c.appendChild(chk);
+  const fb=document.createElement('div'); fb.className='feedback-box'; fb.id='conv-fb'; c.appendChild(fb);
+  const cnav=document.createElement('div'); cnav.className='conv-set-nav';
+  cnav.innerHTML=`<button class="conv-set-btn" onclick="prevConv()" ${convIdx===0?'disabled':''}>← ${lang==='nl'?'Vorig gesprek':'Prev'}</button>
+    <button class="conv-set-btn primary" onclick="nextConv()" ${convIdx===convSets.length-1?'disabled':''}>${lang==='nl'?'Volgend gesprek →':'Next →'}</button>`;
+  c.appendChild(cnav);
+  const rb=document.createElement('button'); rb.className='btn-reset'; rb.textContent=t('resetBtn'); rb.onclick=initConv; c.appendChild(rb);
+}
+
+function selectConvChip(btn){
+  if(btn.classList.contains('placed')) return;
+  document.querySelectorAll('#conv-src .conv-chip.selected').forEach(b=>b.classList.remove('selected'));
+  if(convSelected===btn){convSelected=null;return;}
+  btn.classList.add('selected'); convSelected=btn;
+}
+function placeConvLine(slot){
+  if(!convSelected) return;
+  if(slot.dataset.placedSpeaker){
+    document.querySelectorAll('#conv-src .conv-chip').forEach(b=>{
+      if(b.dataset.speaker===slot.dataset.placedSpeaker&&b.dataset.text===slot.dataset.placedText&&b.classList.contains('placed')) b.classList.remove('placed');
+    });
+  }
+  const speaker=convSelected.dataset.speaker; const text=convSelected.dataset.text;
+  const isSpeakerB=speaker!=='Docent'&&speaker!==convSets[convIdx].lines[0].speaker;
+  slot.querySelector('.order-slot-content').innerHTML=`<span class="conv-speaker${isSpeakerB?' sp-b':''}" style="font-size:0.68rem;font-weight:900;text-transform:uppercase;margin-right:6px;">${speaker}</span>${text}`;
+  slot.classList.add('has-content'); slot.classList.remove('correct-conv');
+  slot.dataset.placedSpeaker=speaker; slot.dataset.placedText=text;
+  convSelected.classList.remove('selected'); convSelected.classList.add('placed');
+  convSelected=null;
+}
+function checkConv(){
+  const set=convSets[convIdx];
+  const slots=document.querySelectorAll('#conv-slots .order-slot');
+  let correct=0;
+  slots.forEach((slot,i)=>{ if(slot.dataset.placedSpeaker===set.lines[i].speaker&&slot.dataset.placedText===set.lines[i].text){slot.classList.add('correct-conv');correct++;} });
+  const fb=document.getElementById('conv-fb');
+  fb.className='feedback-box show'+(correct===set.lines.length?'':' wrong-fb');
+  fb.textContent=correct===set.lines.length?t('drillCorrectMsg'):(lang==='nl'?`${correct} van ${set.lines.length} goed.`:`${correct} of ${set.lines.length} correct.`);
+}
+function nextConv(){ if(convIdx<convSets.length-1){convIdx++;buildConv();} }
+function prevConv(){ if(convIdx>0){convIdx--;buildConv();} }
+
+// ── S6: Q5A ─────────────────────────────────────────────────────────
+function initQ5a(){ q5a=deepShuffle(q5aBase); q5aIdx=0; renderQ5a(); }
+function renderQ5a(){
+  const q=q5a[q5aIdx]; const c=document.getElementById('q5a-container');
+  c.innerHTML=`<div class="question-card"><div class="question-label">${t('questionLabel')}</div><div class="question-text">${q.prompt}</div></div>
+    <div class="options" id="q5a-opts">${q.options.map((o,oi)=>`<button class="option-btn" data-correct="${o.correct}" data-idx="${oi}" onclick="answerQ5a(this)">${o.text}</button>`).join('')}</div>
+    <div class="feedback-box" id="q5a-fb"></div>
+    <div class="q-nav"><button class="q-nav-btn" onclick="prevQ5a()" ${q5aIdx===0?'disabled':''}>← ${lang==='nl'?'Vorige':'Prev'}</button>
+      <button class="q-nav-btn primary" onclick="nextQ5a()" ${q5aIdx===q5a.length-1?'disabled':''}>${lang==='nl'?'Volgende →':'Next →'}</button></div>
+    <div class="q-counter">${q5aIdx+1} / ${q5a.length}</div>
+    <button class="btn-reset" onclick="initQ5a()">${t('resetBtn')}</button>`;
+}
+function answerQ5a(btn){
+  // prevent double-answer: check if any button already has correct/wrong class
+  if(document.querySelector('#q5a-opts .option-btn.correct, #q5a-opts .option-btn.wrong')) return;
+  const correct = btn.dataset.correct === 'true';
+  document.querySelectorAll('#q5a-opts .option-btn').forEach(b=>{ b.onclick=null; b.style.cursor='default'; });
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct){ document.querySelectorAll('#q5a-opts .option-btn').forEach(b=>{ if(b.dataset.correct==='true') b.classList.add('correct'); }); }
+  const fb=document.getElementById('q5a-fb'); fb.className='feedback-box show'+(correct?'':' wrong-fb'); fb.textContent=correct?t('drillCorrectMsg'):t('drillWrongMsg');
+}
+function nextQ5a(){ if(q5aIdx<q5a.length-1){q5aIdx++;renderQ5a();} }
+function prevQ5a(){ if(q5aIdx>0){q5aIdx--;renderQ5a();} }
+
+// ── S7: Q5B ─────────────────────────────────────────────────────────
+function initQ5b(){ q5b=deepShuffle(q5bBase); q5bIdx=0; renderQ5b(); }
+function renderQ5b(){
+  const q=q5b[q5bIdx]; const c=document.getElementById('q5b-container');
+  c.innerHTML=`<div class="question-card"><div class="question-label">${t('questionLabel')}</div><div class="question-text">${q.prompt}</div></div>
+    <div class="options" id="q5b-opts">${q.options.map((o,oi)=>`<button class="option-btn" data-correct="${o.correct}" data-idx="${oi}" onclick="answerQ5b(this)">${o.text}</button>`).join('')}</div>
+    <div class="feedback-box" id="q5b-fb"></div>
+    <div class="q-nav"><button class="q-nav-btn" onclick="prevQ5b()" ${q5bIdx===0?'disabled':''}>← ${lang==='nl'?'Vorige':'Prev'}</button>
+      <button class="q-nav-btn primary" onclick="nextQ5b()" ${q5bIdx===q5b.length-1?'disabled':''}>${lang==='nl'?'Volgende →':'Next →'}</button></div>
+    <div class="q-counter">${q5bIdx+1} / ${q5b.length}</div>
+    <button class="btn-reset" onclick="initQ5b()">${t('resetBtn')}</button>`;
+}
+function answerQ5b(btn){
+  if(document.querySelector('#q5b-opts .option-btn.correct, #q5b-opts .option-btn.wrong')) return;
+  const correct = btn.dataset.correct === 'true';
+  const qIdx = q5bIdx;
+  document.querySelectorAll('#q5b-opts .option-btn').forEach(b=>{ b.onclick=null; b.style.cursor='default'; });
+  btn.classList.add(correct?'correct':'wrong');
+  document.querySelectorAll('#q5b-opts .option-btn').forEach(b=>{ if(b.dataset.correct==='true') b.classList.add('correct'); });
+  const fb=document.getElementById('q5b-fb'); fb.className='feedback-box show'+(correct?'':' wrong-fb');
+  fb.textContent=(correct?t('drillCorrectMsg'):t('drillWrongMsg'))+' — '+q5b[qIdx].feedback;
+}
+function nextQ5b(){ if(q5bIdx<q5b.length-1){q5bIdx++;renderQ5b();} }
+function prevQ5b(){ if(q5bIdx>0){q5bIdx--;renderQ5b();} }
+
+// ── S8: WHATSAPP ────────────────────────────────────────────────────
+function sendConvFillWA(){
+  const set=convFillSets[convFillIdx];
+  let lines=[];
+  set.lines.forEach((line,li)=>{
+    if(line.input){
+      const val=document.getElementById(`cf-${convFillIdx}-${li}`)?.value||'...';
+      lines.push(`Jij: ${val}`);
+    } else {
+      lines.push(`${line.speaker}: ${line.fixed}`);
+    }
+  });
+  const msg=(lang==='nl'?'Hallo docent! Dit is mijn gesprek van thema 5.1 ('+set.label+'):\n':'Hello teacher! This is my conversation from theme 1.1 ('+set.label+'):\n')+lines.join('\n');
+  window.open(`https://wa.me/${TEACHER_WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function sendFillWA(){
+  const f1=document.getElementById('fill1').value||'...';
+  const f2=document.getElementById('fill2').value||'...';
+  const f3=document.getElementById('fill3').value||'...';
+  const msg=t('waMsg')+`1. Ik ben ${f1}\n2. Ik kom uit ${f2}\n3. ${f3}\n\nThema 5.1 ⭐⭐`;
+  window.open(`https://wa.me/${TEACHER_WA}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function sendFreeTextWA(){
+  const ft=document.getElementById('free-text').value||'...';
+  const msg=t('waFreeMsg')+ft+t('waVoiceTip');
+  window.open(`https://wa.me/${TEACHER_WA}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ── S9: CONV FILL ───────────────────────────────────────────────────
+function buildConvFill(){
+  convFillIdx=0; renderConvFill();
+}
+function renderConvFill(){
+  const set=convFillSets[convFillIdx];
+  const c=document.getElementById('conv-fill-container'); c.innerHTML='';
+
+  const wrap=document.createElement('div'); wrap.className='conv-fill-wrap';
+  const title=document.createElement('div'); title.className='conv-fill-title';
+  title.textContent=`${t('convFillTitle')} — ${set.label}`;
+  wrap.appendChild(title);
+
+  set.lines.forEach((line,li)=>{
+    const isJij=line.speaker==='Jij';
+    const lineDiv=document.createElement('div'); lineDiv.className='conv-line';
+    const sp=document.createElement('div');
+    sp.className=`conv-line-speaker ${isJij?'sp-a':'sp-b'}`;
+    sp.textContent=line.speaker;
+    lineDiv.appendChild(sp);
+    const contentDiv=document.createElement('div'); contentDiv.style='flex:1;';
+    if(line.input){
+      const hint = lang==='ar' ? line.hint_ar : lang==='en' ? line.hint_en : line.hint_nl;
+      const inp=document.createElement('input');
+      inp.className='conv-fill-input';
+      inp.type='text';
+      inp.id=`cf-${convFillIdx}-${li}`;
+      inp.placeholder=hint+'...';
+      contentDiv.appendChild(inp);
+      // show hint below in current language only
+      const hintDiv=document.createElement('div');
+      hintDiv.className='conv-hint';
+      hintDiv.textContent='💡 '+(lang==='ar' ? line.hint_ar : lang==='en'?line.hint_en:line.hint_nl);
+      contentDiv.appendChild(hintDiv);
+            const toggleBtn = document.createElement('button');
+      toggleBtn.style = 'background:none;border:none;font-size:0.78rem;font-weight:800;color:var(--blue);cursor:pointer;padding:4px 0;font-family:Nunito,sans-serif;';
+      toggleBtn.textContent = lang === 'en' ? '💡 Show example answer' : (lang === 'ar' ? '💡 إظهار مثال الإجابة' : '💡 Toon voorbeeldantwoord');
+      const exDiv = document.createElement('div');
+      exDiv.style = 'color:var(--green);font-size:0.82rem;font-weight:800;margin-top:3px;display:none;';
+      exDiv.textContent = '✏️ ' + line.example;
+      toggleBtn.onclick = () => {
+        exDiv.style.display = exDiv.style.display === 'none' ? 'block' : 'none';
+        let lblShow = lang === 'en' ? '💡 Show example answer' : (lang === 'ar' ? '💡 إظهار مثال الإجابة' : '💡 Toon voorbeeldantwoord');
+        let lblHide = lang === 'en' ? '🙈 Hide' : (lang === 'ar' ? '🙈 إخفاء' : '🙈 Verberg');
+        toggleBtn.textContent = exDiv.style.display === 'none' ? lblShow : lblHide;
+      };
+      contentDiv.appendChild(toggleBtn);
+      contentDiv.appendChild(exDiv);
+    } else {
+      const fixedRow=document.createElement('div');
+      fixedRow.className='conv-line-fixed-row';
+      fixedRow.innerHTML=`<div class="conv-line-fixed">${line.fixed}</div>${audioBtn(line.fixed)}`;
+      contentDiv.appendChild(fixedRow);
+    }
+    lineDiv.appendChild(contentDiv);
+    wrap.appendChild(lineDiv);
+  });
+  c.appendChild(wrap);
+
+  // nav BELOW the conversation
+  const nav=document.createElement('div'); nav.className='conv-fill-nav';
+  const prevBtn=document.createElement('button');
+  prevBtn.className='conv-fill-nav-btn';
+  prevBtn.disabled=convFillIdx===0;
+  prevBtn.textContent=lang==='nl'?'← Vorig gesprek':'← Prev';
+  prevBtn.onclick=()=>{ if(convFillIdx>0){convFillIdx--;renderConvFill();} };
+  nav.appendChild(prevBtn);
+  const counter=document.createElement('div');
+  counter.className='conv-set-counter';
+  counter.style='padding-top:10px;min-width:60px;text-align:center;font-size:0.78rem;font-weight:800;color:var(--muted);';
+  counter.textContent=`${convFillIdx+1} / ${convFillSets.length}`;
+  nav.appendChild(counter);
+  const nextBtn=document.createElement('button');
+  nextBtn.className='conv-fill-nav-btn primary';
+  nextBtn.disabled=convFillIdx===convFillSets.length-1;
+  nextBtn.textContent=lang==='nl'?'Volgend gesprek →':'Next →';
+  nextBtn.onclick=()=>{ if(convFillIdx<convFillSets.length-1){convFillIdx++;renderConvFill();} };
+  nav.appendChild(nextBtn);
+  c.appendChild(nav);
+}
+
+// ── S10: PAIR WORK ──────────────────────────────────────────────────
+function buildPairWork(){
+  const c=document.getElementById('pair-work-container'); c.innerHTML='';
+  const isEN=lang==='en';
+
+  const steps=[
+    {
+      icon:'👫',
+      title_nl:'Stap 1 — Ga naast een klasgenoot zitten',
+      title_en:'Step 1 — Sit next to a classmate',
+      desc_nl:'Zoek een klasgenoot. Ga naast diegene zitten. Jullie gaan samen een gesprek oefenen in het Nederlands.',
+      desc_en:'Find a classmate. Sit next to that person. Together you will practise a conversation in Dutch.',
+    },
+    {
+      icon:'🃏',
+      title_nl:'Stap 2 — Kies: ben jij persoon A of persoon B?',
+      title_en:'Step 2 — Choose: are you person A or person B?',
+      desc_nl:'Besluit wie persoon A is en wie persoon B is. Persoon A begint het gesprek.',
+      desc_en:'Decide who is person A and who is person B. Person A starts the conversation.',
+    },
+  ];
+
+  steps.forEach((s,i)=>{
+    const box=document.createElement('div'); box.className='pair-step';
+    box.innerHTML=`<div class="pair-step-num">${isEN?'Step':'Stap'} ${i+1}</div>
+      <div class="pair-step-icon">${s.icon}</div>
+      <div class="pair-step-title">${isEN?s.title_en:s.title_nl}</div>
+      <div class="pair-step-desc">${isEN?s.desc_en:s.desc_nl}</div>`;
+    c.appendChild(box);
+  });
+
+  const rolesLabel=document.createElement('div');
+  rolesLabel.style='font-size:0.78rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:10px 0 8px;';
+  rolesLabel.textContent=isEN?'Who says what?':'Wie zegt wat?';
+  c.appendChild(rolesLabel);
+
+  const roleRow=document.createElement('div'); roleRow.className='pair-role-row';
+  const roleA=document.createElement('div'); roleA.className='pair-role-card role-a';
+  const aTasks=isEN
+    ?['1️⃣ Say hello: "Hallo!"','2️⃣ Say your name: "Ik ben …"','3️⃣ Say your country: "Ik kom uit …"','4️⃣ Say thank you: "Bedankt! Dag!"']
+    :['1️⃣ Zeg hallo: "Hallo!"','2️⃣ Zeg jouw naam: "Ik ben …"','3️⃣ Zeg jouw land: "Ik kom uit …"','4️⃣ Zeg bedankt: "Bedankt! Dag!"'];
+  roleA.innerHTML=`<div class="pair-role-label">${isEN?'Person A — Customer':'Persoon A — Klant'}</div>
+    <div class="pair-role-icon">🙋</div>
+    ${aTasks.map(t=>`<div class="pair-task">${t}</div>`).join('')}`;
+  const roleB=document.createElement('div'); roleB.className='pair-role-card role-b';
+  const bTasks=isEN
+    ?['1️⃣ Say hello + welcome: "Hallo! Welkom!"','2️⃣ Ask: "Wie ben jij?"','3️⃣ Ask: "Waar kom jij vandaan?"','4️⃣ Say: "Ga zitten!"']
+    :['1️⃣ Zeg hallo + welkom: "Hallo! Welkom!"','2️⃣ Vraag: "Wie ben jij?"','3️⃣ Vraag: "Waar kom jij vandaan?"','4️⃣ Zeg: "Ga zitten!"'];
+  roleB.innerHTML=`<div class="pair-role-label">${isEN?'Person B — Store employee':'Persoon B — Winkelmedewerker'}</div>
+    <div class="pair-role-icon">👩‍🏫</div>
+    ${bTasks.map(t=>`<div class="pair-task">${t}</div>`).join('')}`;
+  roleRow.appendChild(roleA); roleRow.appendChild(roleB); c.appendChild(roleRow);
+
+  const switchBox=document.createElement('div'); switchBox.className='info-box';
+  switchBox.innerHTML=isEN
+    ?'🔄 <strong>Then switch!</strong> A becomes B, B becomes A. Do the conversation again!'
+    :'🔄 <strong>Daarna wisselen!</strong> A wordt B, B wordt A. Doe het gesprek nog een keer!';
+  c.appendChild(switchBox);
+}
+
+// ── S11: VOICE MEMO ─────────────────────────────────────────────────
+function buildVoiceMemo(){
+  const c=document.getElementById('voice-memo-container'); c.innerHTML='';
+  const isEN=lang==='en';
+
+  const stepsData=[
+    {
+      emoji:'🗣️',
+      title_nl:'Oefen het gesprek eerst samen',
+      title_en:'Practise the conversation together first',
+      title_ar:'تدربا على المحادثة معاً أولاً',
+      desc_nl:'Spreek het gesprek samen door. Probeer zo natuurlijk mogelijk te klinken — niet voorlezen, maar echt praten! Oefen 1 of 2 keer voordat je opneemt.',
+      desc_en:'Speak the conversation together. Try to sound as natural as possible — don\'t read it, really talk! Practise 1 or 2 times before recording.',
+      desc_ar:'تحدثا المحادثة معاً. حاول أن تبدو طبيعياً قدر الإمكان — لا تقرأ، بل تحدث حقاً! تدرب مرة أو مرتين قبل التسجيل.',
+      example_nl:'💡 A zegt: "Hallo!" → B: "Hallo! Welkom!" → A: "Ik ben [naam]..." enzovoort.',
+      example_en:'💡 A says: "Hallo!" → B: "Hallo! Welkom!" → A: "Ik ben [naam]..." and so on.',
+      example_ar:'💡 أ يقول: "Hallo!" → ب: "Hallo! Welkom!" → أ: "Ik ben [naam]..." وهكذا.',
+    },
+    {
+      emoji:'🤳',
+      title_nl:'Open WhatsApp',
+      title_en:'Open WhatsApp',
+      title_ar:'افتح واتساب',
+      desc_nl:'Open WhatsApp op jouw telefoon. Ga naar het gesprek met de docent.',
+      desc_en:'Open WhatsApp on your phone. Go to the conversation with the teacher.',
+      desc_ar:'افتح واتساب على هاتفك. اذهب إلى المحادثة مع المعلم.',
+      example: null,
+    },
+    {
+      emoji:'🎙️',
+      title_nl:'Houd de microfoon knop ingedrukt',
+      title_en:'Hold down the microphone button',
+      title_ar:'اضغط مع الاستمرار على زر الميكروفون',
+      desc_nl:'In WhatsApp: houd de 🎙️ knop ingedrukt. Voer het gesprek samen. Laat los als je klaar bent.',
+      desc_en:'In WhatsApp: hold down the 🎙️ button. Do the conversation together. Release when finished.',
+      desc_ar:'في واتساب: اضغط مع الاستمرار على زر 🎙️. أجرِ المحادثة معاً. أفلت الزر عند الانتهاء.',
+      example_nl:'Jij zegt: "Ik zoek een trui." — Je partner reageert als winkelmedewerker.',
+      example_en:'You say: "Ik zoek een trui." — Your partner responds as store employee.',
+      example_ar:'أنت تقول: "Ik zoek een trui." — ويرد شريكك كموظف متجر.',
+    },
+    {
+      emoji:'📤',
+      title_nl:'Stuur de opname',
+      title_en:'Send the recording',
+      title_ar:'أرسل التسجيل',
+      desc_nl:'Laat de knop los en druk op "Stuur". De docent ontvangt de opname.',
+      desc_en:'Release the button and press "Send". The teacher will receive the recording.',
+      desc_ar:'أفلت الزر واضغط على "إرسال". سيتلقى المعلم التسجيل.',
+      example: null,
+    },
+  ];
+
+  const wrap=document.createElement('div'); wrap.className='voice-steps';
+  stepsData.forEach((s,i)=>{
+    const box=document.createElement('div'); box.className='voice-step';
+    const example=lang==='ar'?(s.example_ar||s.example):lang==='en'?(s.example_en||s.example):(s.example_nl||s.example);
+    box.innerHTML=`<div class="voice-step-emoji">${s.emoji}</div>
+      <div class="voice-step-content">
+        <div class="voice-step-title">${i+1}. ${lang==='ar'?s.title_ar:lang==='en'?s.title_en:s.title_nl}</div>
+        <div class="voice-step-desc">${lang==='ar'?s.desc_ar:lang==='en'?s.desc_en:s.desc_nl}</div>
+        ${example?`<div class="voice-step-example">${example}</div>`:''}
+      </div>`;
+    wrap.appendChild(box);
+  });
+  c.appendChild(wrap);
+
+  const waBtn=document.createElement('button');
+  waBtn.className='wa-btn';
+  waBtn.innerHTML=`📲 ${lang==='ar'?'افتح واتساب — أرسل تسجيلاً صوتياً للمعلم':lang==='en'?'Open WhatsApp — send voice memo to teacher':'Open WhatsApp — stuur voice memo naar docent'}`;
+  waBtn.onclick=()=>{
+    const msg=lang==='ar'?'مرحباً أستاذ! سأرسل تسجيلي الصوتي للموضوع 5.1 ** 🎤':lang==='en'?'Hello teacher! I will now send my voice memo for theme 5.1 ** 🎤':'Hallo docent! Ik stuur nu mijn voice memo van thema 5.1 ** 🎤';
+    window.open(`https://wa.me/${TEACHER_WA}?text=${encodeURIComponent(msg)}`,'_blank');
+  };
+  c.appendChild(waBtn);
+}
+
+// ── LEARNED WORDS ───────────────────────────────────────────────────
+function buildLearnedWords(){
+  const c=document.getElementById('learned-words-list');
+  c.innerHTML=wordsData.map(w=>`<div class="learned-word"><span>${w.emoji} ${w.nl}</span>${lang==='en'?`<span class="learned-word-en">${w.en}</span>`:''}</div>`).join('');
+}
+
+// ── TEXTS ───────────────────────────────────────────────────────────
+const textMap={
+  's1-num':'s1num','s1-title':'s1title','s1-desc':'s1desc',
+  's2-num':'s2num','s2-title':'s2title','s2-desc':'s2desc','s2-info':'s2info',
+  's3b-num':'s3b_num','s3b-title':'s3b_title','s3b-desc':'s3b_desc',
+  's3-num':'s3num','s3-title':'s3title','s3-desc':'s3desc',
+  's4-num':'s4num','s4-title':'s4title','s4-desc':'s4desc',
+  's5-num':'s5num','s5-title':'s5title','s5-desc':'s5desc',
+  's6-num':'s6num','s6-title':'s6title','s6-desc':'s6desc',
+  's7-num':'s7num','s7-title':'s7title','s7-desc':'s7desc',
+  's8-num':'s8num','s8-title':'s8title','s8-desc':'s8desc',
+  's9-num':'s9num','s9-title':'s9title','s9-desc':'s9desc',
+  's10-num':'s10num','s10-title':'s10title','s10-desc':'s10desc',
+  's11-num':'s11num','s11-title':'s11title','s11-desc':'s11desc',
+  's12-num':'s12num','s12-title':'s12title','s12-desc':'s12desc',
+  'sg-title':'sgTitle','sg1':'sg1','sg2':'sg2','sg3':'sg3','sg4':'sg4','sg5':'sg5',
+  'congrats-title':'congratsTitle','congrats-sub':'congratsSub','learned-title':'learnedTitle',
+  'btn-restart':'restart',
+  's1-next':'s1num','s2-next':'s2num','s3-next':'s3num','s4-next':'s4num',
+  's5-next':'s5num','s6-next':'s6num','s7-next':'s7num','s8-next':'s8num',
+  's9-next':'s9num','s10-next':'s10num','s11-next':'s11num',
+  'fill1-label':'fill1label','fill2-label':'fill2label','fill3-label':'fill3label',
+  'fill1-hint':'fill1hint','fill2-hint':'fill2hint','fill3-hint':'fill3hint',
+  'ftlabel':'ftlabel','fthint':'fthint',
+  'wa-fill-text':'waFill','wa-free-text':'waFree','wa-conv-text':'waConv',
+  'progress-label-text':'progress',
+};
+
+const nextLabels={
+  's1-next':'Volgende stap →','s3b-next':'Volgende stap →','s2-next':'Volgende →','s3-next':'Volgende stap →',
+  's4-next':'Volgende stap →','s5-next':'Volgende stap →','s6-next':'Volgende stap →',
+  's7-next':'Volgende stap →','s8-next':'Volgende stap →','s9-next':'Volgende stap →',
+  's10-next':'Volgende stap →','s11-next':'Volgende stap →',
+};
+const nextLabelsEN={
+  's1-next':'Next step →','s3b-next':'Next step →','s2-next':'Next →','s3-next':'Next step →',
+  's4-next':'Next step →','s5-next':'Next step →','s6-next':'Next step →',
+  's7-next':'Next step →','s8-next':'Next step →','s9-next':'Next step →',
+  's10-next':'Next step →','s11-next':'Next step →',
+};
+
+function updateTexts(){
+  const labels=lang==='nl'?nextLabels:nextLabelsEN;
+  for(const [id,key] of Object.entries(textMap)){
+    const el=document.getElementById(id);
+    if(!el) continue;
+    if(labels[id]){ el.textContent=labels[id]; continue; }
+    el.textContent=T[lang][key]||'';
+  }
+}
+
+// ── REBUILD ─────────────────────────────────────────────────────────
+function rebuildAll(){
+  buildWordGrid(); buildRepeatGrid(); renderDrill();
+  buildSort(); buildConv();
+  renderQ5a(); renderQ5b();
+  buildConvFill(); buildPairWork(); buildVoiceMemo();
+  buildLearnedWords(); updateTexts(); updateProgress();
+}
+// NOTE: rebuildAll calls buildSort() which resets sortSlots[] correctly.
+// renderQ5a/renderQ5b only re-render HTML, not reset the answered array.
+
+// ── RESTART ─────────────────────────────────────────────────────────
+function restartAll(){
+  initCopyDrill(); initCopyDrill(); initDrill(); initSort(); initConv(); initQ5a(); initQ5b();
+  buildConvFill(); buildPairWork(); buildVoiceMemo();
+  buildWordGrid(); buildRepeatGrid();
+  buildLearnedWords(); updateTexts();
+  goTo(1);
+}
+
+// ── INIT ────────────────────────────────────────────────────────────
+initCopyDrill(); initDrill(); initSort(); initConv(); initQ5a(); initQ5b();
+buildWordGrid(); buildRepeatGrid();
+buildConvFill(); buildPairWork(); buildVoiceMemo();
+buildLearnedWords(); updateTexts(); buildDots();

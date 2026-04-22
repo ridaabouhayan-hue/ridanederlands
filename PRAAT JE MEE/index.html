@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praat je mee — Oefeningen</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --main: #E8523A;
+  --accent: #F4A614;
+  --green: #27AE60;
+  --blue: #2980B9;
+  --light: #FFF8F5;
+  --text: #1a1a2e;
+  --muted: #888;
+  --radius: 16px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+
+/* HEADER */
+.header {
+  background: var(--main);
+  color: white;
+  padding: 24px 20px 20px;
+  text-align: center;
+}
+.header-logo { font-size: 2rem; margin-bottom: 6px; }
+.header-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 4px; }
+.header-sub { font-size: 0.9rem; opacity: 0.85; font-weight: 600; }
+
+/* LEVEL LEGEND */
+.legend {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: white;
+  border-bottom: 1px solid #f0e8e4;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.level-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-1 { background: #74B9FF; }
+.dot-2 { background: #A29BFE; }
+.dot-3 { background: #E17055; }
+
+/* MAIN CONTENT */
+.content { padding: 16px; max-width: 700px; margin: 0 auto; }
+
+/* THEME BLOCK */
+.theme-block {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.theme-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+.theme-header:hover { background: #fdf5f3; }
+.theme-header.open { background: var(--main); color: white; }
+.theme-emoji { font-size: 1.6rem; flex-shrink: 0; }
+.theme-info { flex: 1; }
+.theme-num { font-size: 0.7rem; font-weight: 900; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.theme-name { font-size: 1.1rem; font-weight: 900; }
+.theme-chevron { font-size: 1rem; transition: transform 0.3s; flex-shrink: 0; }
+.theme-header.open .theme-chevron { transform: rotate(180deg); }
+
+/* PARAGRAPHS */
+.theme-body { display: none; padding: 12px; border-top: 1px solid #f0e8e4; }
+.theme-body.open { display: block; }
+.para-row {
+  margin-bottom: 10px;
+}
+.para-label {
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  padding: 0 2px;
+}
+.level-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.level-card {
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 2px solid transparent;
+  position: relative;
+}
+.level-card:active { transform: scale(0.96); }
+.level-card.lv1 { background: #EBF5FB; border-color: #74B9FF; }
+.level-card.lv2 { background: #F3EFFD; border-color: #A29BFE; }
+.level-card.lv3 { background: #FEF0EB; border-color: #E17055; }
+.level-card.available .level-stars { font-size: 1rem; }
+.level-card.locked { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.level-card.locked::after {
+  content: '🔒';
+  position: absolute;
+  top: 6px; right: 8px;
+  font-size: 0.7rem;
+}
+.level-stars { font-size: 1.1rem; margin-bottom: 2px; }
+.level-name { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+.level-card.available .level-name { color: var(--text); }
+.new-badge {
+  background: var(--green);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* PROGRESS INDICATOR */
+.theme-progress {
+  height: 4px;
+  background: #f0e8e4;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.theme-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 10px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">🗣️</div>
+  <div class="header-title">Praat je mee</div>
+  <div class="header-sub">Klik op een thema → kies jouw niveau ⭐</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="level-dot dot-1"></div> ⭐ Beginner</div>
+  <div class="legend-item"><div class="level-dot dot-2"></div> ⭐⭐ Gevorderd</div>
+  <div class="legend-item"><div class="level-dot dot-3"></div> ⭐⭐⭐ A1</div>
+</div>
+
+<div class="content" id="themes-container">
+  <!-- generated by JS -->
+</div>
+
+<div class="footer">Praat je mee — TaalCompleet · Oefeningen door jouw docent</div>
+
+<script>
+const themes = [
+  {
+    num: 1, name: 'Kennismaken', emoji: '👋',
+    paragraphs: [
+      { id: '1.1', available: [true, false, false] },
+      { id: '1.2', available: [false, false, false] },
+      { id: '1.3', available: [false, false, false] },
+      { id: '1.4', available: [false, false, false] },
+      { id: '1.5', available: [false, false, false] },
+      { id: '1.6', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 2, name: 'School', emoji: '🏫',
+    paragraphs: [
+      { id: '2.1', available: [false, false, false] },
+      { id: '2.2', available: [false, false, false] },
+      { id: '2.3', available: [false, false, false] },
+      { id: '2.4', available: [false, false, false] },
+      { id: '2.5', available: [false, false, false] },
+      { id: '2.6', available: [false, false, false] },
+      { id: '2.7', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 3, name: 'Eten en drinken', emoji: '🍽️',
+    paragraphs: [
+      { id: '3.1', available: [false, false, false] },
+      { id: '3.2', available: [false, false, false] },
+      { id: '3.3', available: [false, false, false] },
+      { id: '3.4', available: [false, false, false] },
+      { id: '3.5', available: [false, false, false] },
+      { id: '3.6', available: [false, false, false] },
+      { id: '3.7', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 4, name: 'Gezondheid', emoji: '🏥',
+    paragraphs: [
+      { id: '4.1', available: [false, false, false] },
+      { id: '4.2', available: [false, false, false] },
+      { id: '4.3', available: [false, false, false] },
+      { id: '4.4', available: [false, false, false] },
+      { id: '4.5', available: [false, false, false] },
+      { id: '4.6', available: [false, false, false] },
+      { id: '4.7', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 5, name: 'Kleding', emoji: '👕',
+    paragraphs: [
+      { id: '5.1', available: [false, false, false] },
+      { id: '5.2', available: [false, false, false] },
+      { id: '5.3', available: [false, false, false] },
+      { id: '5.4', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 6, name: 'Wonen', emoji: '🏠',
+    paragraphs: [
+      { id: '6.1', available: [false, false, false] },
+      { id: '6.2', available: [false, false, false] },
+      { id: '6.3', available: [false, false, false] },
+      { id: '6.4', available: [false, false, false] },
+      { id: '6.5', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 7, name: 'Vrije tijd', emoji: '⚽',
+    paragraphs: [
+      { id: '7.1', available: [false, false, false] },
+      { id: '7.2', available: [false, false, false] },
+      { id: '7.3', available: [false, false, false] },
+      { id: '7.4', available: [false, false, false] },
+      { id: '7.5', available: [false, false, false] },
+      { id: '7.6', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 8, name: 'Reizen', emoji: '🚌',
+    paragraphs: [
+      { id: '8.1', available: [false, true, false] },
+      { id: '8.2', available: [false, false, false] },
+      { id: '8.3', available: [false, false, false] },
+      { id: '8.4', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 9, name: 'Werk', emoji: '💼',
+    paragraphs: [
+      { id: '9.1', available: [false, false, false] },
+      { id: '9.2', available: [false, false, false] },
+      { id: '9.3', available: [false, false, false] },
+      { id: '9.4', available: [false, false, false] },
+      { id: '9.5', available: [false, false, false] },
+      { id: '9.6', available: [false, false, false] },
+    ]
+  },
+  {
+    num: 10, name: 'Kinderen', emoji: '👶',
+    paragraphs: [
+      { id: '10.1', available: [false, false, false] },
+      { id: '10.2', available: [false, false, false] },
+      { id: '10.3', available: [false, false, false] },
+      { id: '10.4', available: [false, false, false] },
+      { id: '10.5', available: [false, false, false] },
+    ]
+  },
+];
+
+// URL builder — adjust base path to match your Netlify setup
+function getUrl(paraId, level) {
+  const clean = paraId.replace('.', '-');
+  return level === 1 ? `thema-${clean}.html` : `thema-${clean}-${level}ster.html`;
+}
+
+// Count available per theme for progress
+function countAvailable(theme) {
+  let total = 0, avail = 0;
+  theme.paragraphs.forEach(p => {
+    p.available.forEach(a => {
+      total++;
+      if (a) avail++;
+    });
+  });
+  return { total, avail };
+}
+
+function buildThemes() {
+  const container = document.getElementById('themes-container');
+  themes.forEach(theme => {
+    const { total, avail } = countAvailable(theme);
+    const pct = Math.round((avail / total) * 100);
+
+    const block = document.createElement('div');
+    block.className = 'theme-block';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'theme-header';
+    header.innerHTML = `
+      <div class="theme-emoji">${theme.emoji}</div>
+      <div class="theme-info">
+        <div class="theme-num">Thema ${theme.num}</div>
+        <div class="theme-name">${theme.name}</div>
+        <div class="theme-progress"><div class="theme-progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="theme-chevron">▼</div>
+    `;
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'theme-body';
+
+    theme.paragraphs.forEach(para => {
+      const row = document.createElement('div');
+      row.className = 'para-row';
+
+      row.innerHTML = `<div class="para-label">Paragraaf ${para.id}</div>`;
+
+      const cards = document.createElement('div');
+      cards.className = 'level-cards';
+
+      const levels = [
+        { stars: '⭐', label: '1 ster', cls: 'lv1', idx: 0 },
+        { stars: '⭐⭐', label: '2 sterren', cls: 'lv2', idx: 1 },
+        { stars: '⭐⭐⭐', label: '3 sterren', cls: 'lv3', idx: 2 },
+      ];
+
+      levels.forEach(lv => {
+        const isAvailable = para.available[lv.idx];
+        const card = document.createElement(isAvailable ? 'a' : 'div');
+        card.className = `level-card ${lv.cls} ${isAvailable ? 'available' : 'locked'}`;
+
+        if (isAvailable) {
+          card.href = getUrl(para.id, lv.idx + 1);
+          const isNew = para.id === '1.1' && lv.idx === 0;
+          card.innerHTML = `
+            <div class="level-stars">${lv.stars}</div>
+            <div class="level-name">${para.id} ${lv.label}</div>
+            ${isNew ? '<div class="new-badge">Nieuw</div>' : ''}
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="level-stars">${lv.stars}</div>
+            <div class="level-name">${lv.label}</div>
+          `;
+        }
+
+        cards.appendChild(card);
+      });
+
+      row.appendChild(cards);
+      body.appendChild(row);
+    });
+
+    // Toggle
+    header.onclick = () => {
+      const isOpen = header.classList.contains('open');
+      // Close all others
+      document.querySelectorAll('.theme-header.open').forEach(h => {
+        h.classList.remove('open');
+        h.nextElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        header.classList.add('open');
+        body.classList.add('open');
+      }
+    };
+
+    // Auto-open first theme
+    if (theme.num === 1) {
+      header.classList.add('open');
+      body.classList.add('open');
+    }
+
+    block.appendChild(header);
+    block.appendChild(body);
+    container.appendChild(block);
+  });
+}
+
+buildThemes();
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.10 De maanden van het jaar — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .maand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:1rem 0}
+        .maand-card{background:rgba(255,255,255,.04);border:1px solid rgba(99,102,241,.18);border-radius:9px;padding:10px;text-align:center}
+        .maand-card .nr{font-size:1.2rem;font-weight:700;color:#6366f1}.maand-card .nm{font-size:.88rem;margin-top:3px}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.7}
+        .instructie-lang{display:block;margin-top:2px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:130px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.10</span></div>
+            <h1>📆 De maanden van het jaar</h1>
+            <p class="subtitle" data-translate="subtitle">Leer de twaalf maanden noemen en de datum zeggen.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">De twaalf maanden</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Maand</th><th id="th-lang">🇳🇱 NL</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3>Kies de juiste maand.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Lees de omschrijving en kies de juiste maand.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Read the description and choose the correct month.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Açıklamayı okuyun ve doğru ayı seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 阅读描述，选择正确的月份。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Vul in</span>
+                <h3>Schrijf de naam van de maand.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Bijv.: De eerste maand van het jaar is ___.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Fill in the name of the month.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Ayın adını yazın.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 填写月份名称。</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Datum schrijven</span>
+                <h3>Kies het goede antwoord voor de datum.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Lees de datum en kies het juiste antwoord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Read the date and choose the correct answer.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Tarihi okuyun ve doğru cevabı seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 阅读日期，选择正确的答案。</span>
+                </p>
+                <ul class="mc-list" id="mc2"></ul>
+                <span id="mc2-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc2','mc2-score',buildMC2)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Is de zin juist?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış mı? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3>Gebruik de maanden in zinnen.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen met maanden en data. Laat ze zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences with months and dates. Show them to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Aylar ve tarihlerle cümleler yazın. Öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 用月份和日期写句子。给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+<script>
+const MAANDEN=[
+    {n:1,nl:'januari',en:'January',tr:'Ocak',zh:'一月',ex:'In januari is het koud.'},
+    {n:2,nl:'februari',en:'February',tr:'Şubat',zh:'二月',ex:'Februari heeft 28 of 29 dagen.'},
+    {n:3,nl:'maart',en:'March',tr:'Mart',zh:'三月',ex:'In maart begint de lente.'},
+    {n:4,nl:'april',en:'April',tr:'Nisan',zh:'四月',ex:'Koningsdag is op 27 april.'},
+    {n:5,nl:'mei',en:'May',tr:'Mayıs',zh:'五月',ex:'In mei zijn er veel bloemen.'},
+    {n:6,nl:'juni',en:'June',tr:'Haziran',zh:'六月',ex:'In juni begint de zomer.'},
+    {n:7,nl:'juli',en:'July',tr:'Temmuz',zh:'七月',ex:'In juli is het warm.'},
+    {n:8,nl:'augustus',en:'August',tr:'Ağustos',zh:'八月',ex:'In augustus gaan veel mensen op vakantie.'},
+    {n:9,nl:'september',en:'September',tr:'Eylül',zh:'九月',ex:'In september begint het schooljaar.'},
+    {n:10,nl:'oktober',en:'October',tr:'Ekim',zh:'十月',ex:'In oktober worden de bladeren geel.'},
+    {n:11,nl:'november',en:'November',tr:'Kasım',zh:'十一月',ex:'In november regent het veel.'},
+    {n:12,nl:'december',en:'December',tr:'Aralık',zh:'十二月',ex:'In december is het Kerst.'},
+];
+const UI={nl:{subtitle:'Leer de twaalf maanden noemen.',vocabTitle:'De twaalf maanden',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to name the twelve months.',vocabTitle:'The twelve months',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'On iki ayı öğrenin.',vocabTitle:'On iki ay',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习命名十二个月份。',vocabTitle:'十二个月',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
+const UITLEG={
+    nl:`<div class="uitleg-box"><h3>De twaalf maanden</h3>
+<div class="maand-grid">${MAANDEN.map(m=>`<div class="maand-card"><div class="nr">${m.n}</div><div class="nm">${m.nl}</div></div>`).join('')}</div>
+<p style="font-size:.92rem;margin-top:.8rem"><strong>Datum:</strong> "De les is op <strong>3 september</strong>." / "Vandaag is het <strong>tien mei</strong>."</p>
+<p style="font-size:.92rem"><strong>Jaar:</strong> 2026 = tweeduizend-zesentwintig.</p></div>
+<div class="tip-blok"><strong>Let op:</strong> Maanden schrijf je ook met een kleine letter in het Nederlands: januari (niet Januari).</div>`,
+    en:`<div class="uitleg-box"><h3>The twelve months</h3>
+<div class="maand-grid">${MAANDEN.map(m=>`<div class="maand-card"><div class="nr">${m.n}</div><div class="nm">${m.nl}<br><small style="color:#aaa">${m.en}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem">Date example: "De les is op 3 september." (The class is on September 3rd.)</p></div>
+<div class="tip-blok"><strong>Note:</strong> Months are written with lowercase letters in Dutch: januari (not Januari).</div>`,
+    tr:`<div class="uitleg-box"><h3>On İki Ay</h3>
+<div class="maand-grid">${MAANDEN.map(m=>`<div class="maand-card"><div class="nr">${m.n}</div><div class="nm">${m.nl}<br><small style="color:#aaa">${m.tr}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem">Tarih örneği: "De les is op 3 september." (Ders 3 Eylül'de.)</p></div>
+<div class="tip-blok"><strong>Dikkat:</strong> Hollandacada aylar küçük harfle yazılır: januari (Januari değil).</div>`,
+    zh:`<div class="uitleg-box"><h3>十二个月</h3>
+<div class="maand-grid">${MAANDEN.map(m=>`<div class="maand-card"><div class="nr">${m.n}</div><div class="nm">${m.nl}<br><small style="color:#aaa">${m.zh}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem">日期例子："De les is op 3 september."（课在9月3日。）</p></div>
+<div class="tip-blok"><strong>注意：</strong>荷兰语中月份名称用小写：januari（不是Januari）。</div>`
+};
+let currentLang='nl';
+function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';MAANDEN.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.n}</td><td class="trans-word">${r.nl}${lang!=='nl'?' ('+r[lang]+')':''}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
+const mc1Data=[
+    {v:'De eerste maand van het jaar.',a:'januari',o:['januari','december','februari']},
+    {v:'De twaalfde maand. Kerst is in deze maand.',a:'december',o:['november','december','januari']},
+    {v:'De derde maand. De lente begint.',a:'maart',o:['februari','maart','april']},
+    {v:'De zesde maand. De zomer begint.',a:'juni',o:['mei','juni','juli']},
+    {v:'De negende maand. Het schooljaar begint.',a:'september',o:['augustus','september','oktober']},
+    {v:'De maand na oktober.',a:'november',o:['september','november','december']},
+    {v:'De tweede maand van het jaar.',a:'februari',o:['januari','februari','maart']},
+    {v:'Koningsdag is op 27 april. Welke maand is dat?',a:'april',o:['maart','april','mei']},
+    {v:'De zevende maand. Het is warm.',a:'juli',o:['juni','juli','augustus']},
+    {v:'De achtste maand. Vakantietijd.',a:'augustus',o:['juli','augustus','september']},
+    {v:'Welke maand heeft soms 29 dagen (schrikkeljaar)?',a:'februari',o:['januari','februari','maart']},
+    {v:'De tiende maand. De bladeren worden geel.',a:'oktober',o:['september','oktober','november']},
+];
+const mc2Data=[
+    {v:'"De les is op 3-9." Welke maand is 9?',a:'september',o:['augustus','september','oktober']},
+    {v:'"Vandaag is het 1-1." Welke maand is dat?',a:'januari',o:['januari','juni','december']},
+    {v:'Mijn verjaardag is op 15 december. Hoeveel maanden zijn er voor december?',a:'elf',o:['tien','elf','twaalf']},
+    {v:'Het is april. Welke maand komt erna?',a:'mei',o:['maart','mei','juni']},
+    {v:'"De school begint in september." Dat is maand nummer:',a:'negen',o:['acht','negen','tien']},
+    {v:'Hoeveel maanden heeft een jaar?',a:'twaalf',o:['tien','twaalf','vijftien']},
+    {v:'Het is juni. Welk seizoen is het?',a:'zomer',o:['lente','zomer','herfst']},
+    {v:'"Kerst is in december." Dat is maand nummer:',a:'twaalf',o:['elf','twaalf','tien']},
+];
+const _mc={};
+function checkMCq(btn,keuze,ant,sid,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')))return;groep.forEach(b=>b.disabled=true);if(!_mc[sid])_mc[sid]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[sid].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[sid].done++;if(_mc[sid].done===total){const sc=document.getElementById(sid);sc.style.display='inline-block';const s=_mc[sid].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=8?'score-midden':'score-slecht');}}
+function buildMC1(){const ul=document.getElementById('mc1');ul.innerHTML='';mc1Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function buildMC2(){const ul=document.getElementById('mc2');ul.innerHTML='';mc2Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc2-score',${mc2Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function resetMC(listId,scoreId,buildFn){delete _mc[scoreId];document.getElementById(scoreId).style.display='none';document.getElementById(listId).innerHTML='';buildFn();}
+const invulData=[
+    {zin:'De eerste maand is ___.',ant:'januari'},{zin:'De tweede maand is ___.',ant:'februari'},
+    {zin:'De derde maand is ___.',ant:'maart'},{zin:'De vierde maand is ___.',ant:'april'},
+    {zin:'De vijfde maand is ___.',ant:'mei'},{zin:'De zesde maand is ___.',ant:'juni'},
+    {zin:'De zevende maand is ___.',ant:'juli'},{zin:'De achtste maand is ___.',ant:'augustus'},
+    {zin:'De negende maand is ___.',ant:'september'},{zin:'De tiende maand is ___.',ant:'oktober'},
+    {zin:'De elfde maand is ___.',ant:'november'},{zin:'De twaalfde maand is ___.',ant:'december'},
+];
+function buildInvul(){const ul=document.getElementById('invul1');ul.innerHTML='';invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="maand…" autocomplete="off">${p[1]||''}</li>`;});}
+function checkInvul(){let g=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');}
+function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+const wnData=[
+    {s:'Een jaar heeft twaalf maanden.',ant:'Goed'},{s:'Januari is de eerste maand.',ant:'Goed'},
+    {s:'December is de eerste maand van het jaar.',ant:'Fout'},{s:'Februari heeft soms 29 dagen.',ant:'Goed'},
+    {s:'September is de tiende maand.',ant:'Fout'},{s:'Oktober is de tiende maand.',ant:'Goed'},
+    {s:'In juni begint de zomer.',ant:'Goed'},{s:'Maanden schrijf je met een grote letter: Januari.',ant:'Fout'},
+    {s:'De maand na november is december.',ant:'Goed'},{s:'Juli is de zevende maand.',ant:'Goed'},
+    {s:'Er zijn maar tien maanden in een jaar.',ant:'Fout'},{s:'In september begint het schooljaar.',ant:'Goed'},
+];
+function buildWN(){const ul=document.getElementById('wn1');ul.innerHTML='';wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button></div></li>`);}
+function checkWN(btn,keuze,ant){const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');if([...groep].some(b=>b.classList.contains('correct')))return;if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}}
+function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+const schrijfVragen=[
+    {nl:'In welke maand ben jij geboren? Schrijf een zin.',en:'In which month were you born? Write a sentence.',tr:'Hangi ayda doğdunuz? Bir cümle yazın.',zh:'你出生在哪个月？写一个句子。'},
+    {nl:'Schrijf de twaalf maanden op volgorde.',en:'Write the twelve months in order.',tr:'On iki ayı sırayla yazın.',zh:'按顺序写出十二个月。'},
+    {nl:'Schrijf de datum van vandaag (dag + maand + jaar).',en:'Write today\'s date (day + month + year).',tr:'Bugünün tarihini yazın (gün + ay + yıl).',zh:'写出今天的日期（日+月+年）。'},
+    {nl:'In welke maand begint het schooljaar in Nederland?',en:'In which month does the school year start in the Netherlands?',tr:'Hollanda\'da okul yılı hangi ayda başlar?',zh:'在荷兰，学年从哪个月开始？'},
+    {nl:'Schrijf twee zinnen over een maand die jij leuk vindt en waarom.',en:'Write two sentences about a month you like and why.',tr:'Sevdiğiniz bir ay hakkında iki cümle yazın.',zh:'写两句关于你喜欢的月份及原因。'},
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{const txt=v[currentLang]||v.nl;ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw10-${i}" placeholder="Schrijf hier..."></textarea></li>`;});}
+function saveSchrijf(){document.getElementById('schrijf-fb').style.display='inline';setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);}
+function resetSchrijf(){buildSchrijf();}
+document.addEventListener('DOMContentLoaded',()=>{buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')==='nl'?'block':'none';});buildMC1();buildMC2();buildInvul();buildWN();buildSchrijf();});
+</script>
+</body>
+</html>

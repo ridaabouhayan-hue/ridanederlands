@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.7 Wat zegt u? — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .zin-kaart{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:12px 16px;margin:.6rem 0;font-size:.92rem}
+        .zin-kaart strong{color:#6366f1}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.7}
+        .instructie-lang{display:block;margin-top:2px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:200px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .verbind-container{display:flex;gap:16px}.verbind-col{flex:1;display:flex;flex-direction:column;gap:7px}
+        .verbind-item{padding:9px 13px;border:2px solid rgba(99,102,241,.3);border-radius:10px;cursor:pointer;font-size:.85rem;transition:all .2s;user-select:none}
+        .verbind-item:hover{border-color:#6366f1;background:rgba(99,102,241,.08)}
+        .verbind-item.selected{border-color:#6366f1;background:rgba(99,102,241,.15)}
+        .verbind-item.matched-ok{border-color:#10b981;background:rgba(16,185,129,.12);pointer-events:none}
+        .verbind-item.matched-err{border-color:#ef4444;background:rgba(239,68,68,.12)}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.7</span></div>
+            <h1>🗣️ Wat zegt u?</h1>
+            <p class="subtitle" data-translate="subtitle">Leer vragen om herhaling of uitleg in de klas.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 2.7</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 NL</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3>Kies de juiste zin voor de situatie.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Wat zeg je in deze situatie? Kies het goede antwoord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 What do you say in this situation? Choose the correct answer.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Bu durumda ne söylersiniz? Doğru cevabı seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 在这种情况下你会说什么？选择正确的答案。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Verbinden: situatie ↔ zin</span>
+                <h3>Verbind de situatie met de juiste zin.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op de situatie (links) dan op de zin (rechts).</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click the situation (left) then the sentence (right).</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Duruma (sol) tıklayın, ardından cümleye (sağ) tıklayın.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击左边的情景，再点击右边对应的句子。</span>
+                </p>
+                <div class="verbind-container">
+                    <div class="verbind-col" id="vb-links"></div>
+                    <div class="verbind-col" id="vb-rechts"></div>
+                </div>
+                <span id="vb-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="buildVerbind()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Vul in</span>
+                <h3>Vul het juiste woord of zin in.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Kies uit: sorry, begrijpen, moeilijk, makkelijk, snel, veel, Wat betekent dat?</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Fill in the correct word.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Doğru kelimeyi doldurun.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 填入正确的词。</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Is de zin juist?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış mı? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3>Schrijf zinnen die je in de klas kunt zeggen.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen die je in de klas gebruikt. Laat ze zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences you use in class. Show them to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Sınıfta kullandığınız cümleler yazın. Öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 写你在课堂上使用的句子。给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+<script>
+const VOCAB=[
+    {nl:'begrijpen',en:'to understand',tr:'anlamak',zh:'理解',ex:'Ik begrijp het niet.'},
+    {nl:'Wat betekent dat?',en:'What does that mean?',tr:'Bu ne anlama geliyor?',zh:'那是什么意思？',ex:'Wat betekent dat woord?'},
+    {nl:'Wat is dat?',en:'What is that?',tr:'Bu nedir?',zh:'那是什么？',ex:'Wat is dat op het bord?'},
+    {nl:'Wat zegt u?',en:'What did you say? (polite)',tr:'Ne dediniz? (kibar)',zh:'您说什么？（礼貌）',ex:'Wat zegt u? Ik hoor u niet goed.'},
+    {nl:'Wat zeg je?',en:'What do you say? (informal)',tr:'Ne diyorsun? (samimi)',zh:'你说什么？（非正式）',ex:'Wat zeg je? Kun jij het herhalen?'},
+    {nl:'Hoe schrijf je dat?',en:'How do you write that?',tr:'Bunu nasıl yazarsın?',zh:'那怎么写？',ex:'Hoe schrijf je "school"?'},
+    {nl:'moeilijk',en:'difficult',tr:'zor',zh:'难',ex:'Dit woord is moeilijk.'},
+    {nl:'snel',en:'fast/quick',tr:'hızlı',zh:'快',ex:'De docent spreekt snel.'},
+    {nl:'sorry',en:'sorry',tr:'özür dilerim',zh:'对不起',ex:'Sorry, ik begrijp het niet.'},
+    {nl:'veel',en:'many/much',tr:'çok',zh:'很多',ex:'Er zijn veel woorden.'},
+    {nl:'de mensen',en:'people',tr:'insanlar',zh:'人们',ex:'Veel mensen leren Nederlands.'},
+];
+const UI={nl:{subtitle:'Leer vragen om herhaling of uitleg in de klas.',vocabTitle:'Woorden van paragraaf 2.7',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to ask for repetition or explanation in class.',vocabTitle:'Words 2.7',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Sınıfta tekrar veya açıklama istemeyi öğrenin.',vocabTitle:'2.7 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习在课堂上请求重复或解释的表达。',vocabTitle:'第2.7段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
+const UITLEG={
+    nl:`<div class="uitleg-box"><h3>Klassikale uitdrukkingen</h3>
+<p>Als je iets niet begrijpt, gebruik je deze zinnen in de klas:</p>
+<div class="zin-kaart"><strong>Wat zegt u?</strong> — Je gebruikt dit als je de docent niet goed hoort. (beleefd — u)</div>
+<div class="zin-kaart"><strong>Wat zeg je?</strong> — Je gebruikt dit als je een cursist niet goed hoort. (informeel — je)</div>
+<div class="zin-kaart"><strong>Wat betekent dat?</strong> — Je vraagt wat een woord betekent.</div>
+<div class="zin-kaart"><strong>Hoe schrijf je dat?</strong> — Je vraagt hoe je een woord schrijft.</div>
+<div class="zin-kaart"><strong>Sorry.</strong> — Je verontschuldigt je.</div></div>
+<div class="tip-blok"><strong>Let op:</strong> "u" = beleefd (voor de docent) | "je" = informeel (voor cursisten)</div>`,
+    en:`<div class="uitleg-box"><h3>Classroom expressions</h3>
+<div class="zin-kaart"><strong>Wat zegt u?</strong> — What did you say? (polite, for the teacher)</div>
+<div class="zin-kaart"><strong>Wat zeg je?</strong> — What did you say? (informal, for classmates)</div>
+<div class="zin-kaart"><strong>Wat betekent dat?</strong> — What does that mean?</div>
+<div class="zin-kaart"><strong>Hoe schrijf je dat?</strong> — How do you write that?</div>
+<div class="zin-kaart"><strong>Sorry.</strong> — Sorry / Excuse me.</div></div>`,
+    tr:`<div class="uitleg-box"><h3>Sınıf İfadeleri</h3>
+<div class="zin-kaart"><strong>Wat zegt u?</strong> — Ne dediniz? (öğretmene kibar)</div>
+<div class="zin-kaart"><strong>Wat zeg je?</strong> — Ne diyorsun? (samimi)</div>
+<div class="zin-kaart"><strong>Wat betekent dat?</strong> — Bu ne anlama geliyor?</div>
+<div class="zin-kaart"><strong>Hoe schrijf je dat?</strong> — Bunu nasıl yazarsın?</div>
+<div class="zin-kaart"><strong>Sorry.</strong> — Özür dilerim.</div></div>`,
+    zh:`<div class="uitleg-box"><h3>课堂用语</h3>
+<div class="zin-kaart"><strong>Wat zegt u?</strong> — 您说什么？（对老师，礼貌）</div>
+<div class="zin-kaart"><strong>Wat zeg je?</strong> — 你说什么？（对同学，非正式）</div>
+<div class="zin-kaart"><strong>Wat betekent dat?</strong> — 那是什么意思？</div>
+<div class="zin-kaart"><strong>Hoe schrijf je dat?</strong> — 那怎么写？</div>
+<div class="zin-kaart"><strong>Sorry.</strong> — 对不起 / 抱歉。</div></div>
+<div class="tip-blok"><strong>注意：</strong>"u"用于礼貌场合（对老师），"je"用于非正式场合（对同学）。</div>`
+};
+let currentLang='nl';
+function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
+const mc1Data=[
+    {v:'De docent spreekt. Je hoort het niet goed. Wat zeg je?',a:'Wat zegt u?',o:['Wat zegt u?','Sorry, ik ben ziek.','Goedemorgen!']},
+    {v:'Er staat een nieuw woord op het bord. Je weet de betekenis niet. Wat vraag je?',a:'Wat betekent dat?',o:['Hoeveel?','Wat betekent dat?','Wanneer?']},
+    {v:'Je schrijft een woord fout. Je vraagt de docent om hulp. Wat zeg je?',a:'Hoe schrijf je dat?',o:['Hoe schrijf je dat?','Wat is dat?','Ik begrijp het.']},
+    {v:'Je spreekt met een cursist. Hij spreekt te snel. Wat zeg je?',a:'Wat zeg je?',o:['Wat zegt u?','Wat zeg je?','Begrijp je?']},
+    {v:'Je hebt een fout gemaakt. Wat zeg je?',a:'Sorry.',o:['Sorry.','Welkom!','Goed!']},
+    {v:'Er staat iets op het bord. Je weet niet wat het is. Wat vraag je?',a:'Wat is dat?',o:['Wanneer?','Wat is dat?','Hoeveel?']},
+    {v:'De tekst is erg ___. Er zijn veel moeilijke woorden.',a:'moeilijk',o:['moeilijk','makkelijk','snel']},
+    {v:'De docent spreekt te ___. Praat u alstublieft langzamer.',a:'snel',o:['moeilijk','snel','veel']},
+    {v:'Er zijn ___ cursisten in de klas. Meer dan dertig.',a:'veel',o:['weinig','snel','veel']},
+    {v:'Ik ___ de uitleg niet. Kunt u het herhalen?',a:'begrijp',o:['begrijp','lees','schrijf']},
+    {v:'De opdracht is ___. Ik kan het makkelijk doen.',a:'makkelijk',o:['moeilijk','makkelijk','snel']},
+    {v:'De cursist praat te ___. Ik hoor hem niet goed.',a:'snel',o:['moeilijk','snel','veel']},
+];
+const vbData=[
+    {woord:'Je hoort de docent niet goed.',def:'Wat zegt u?'},
+    {woord:'Je weet de betekenis van een woord niet.',def:'Wat betekent dat?'},
+    {woord:'Je weet niet hoe je een woord schrijft.',def:'Hoe schrijf je dat?'},
+    {woord:'Je hebt een fout gemaakt.',def:'Sorry.'},
+    {woord:'Je ziet iets op het bord en weet niet wat het is.',def:'Wat is dat?'},
+    {woord:'Je spreekt met een cursist, niet met de docent.',def:'Wat zeg je?'},
+];
+const _mc={};
+function checkMCq(btn,keuze,ant,sid,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')))return;groep.forEach(b=>b.disabled=true);if(!_mc[sid])_mc[sid]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[sid].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[sid].done++;if(_mc[sid].done===total){const sc=document.getElementById(sid);sc.style.display='inline-block';const s=_mc[sid].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=8?'score-midden':'score-slecht');}}
+function buildMC1(){const ul=document.getElementById('mc1');ul.innerHTML='';mc1Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function resetMC(listId,scoreId,buildFn){delete _mc[scoreId];document.getElementById(scoreId).style.display='none';document.getElementById(listId).innerHTML='';buildFn();}
+let vbSel=null,vbType=null,vbDone=0;
+function buildVerbind(){const L=document.getElementById('vb-links'),R=document.getElementById('vb-rechts');L.innerHTML='';R.innerHTML='';vbSel=null;vbType=null;vbDone=0;document.getElementById('vb-score').style.display='none';const sh=[...vbData].sort(()=>Math.random()-.5);vbData.forEach((item,i)=>{const d=document.createElement('div');d.className='verbind-item';d.dataset.id=i;d.dataset.side='links';d.textContent=item.woord;d.onclick=()=>selVb(d);L.appendChild(d);});sh.forEach(item=>{const orig=vbData.findIndex(v=>v.woord===item.woord);const d=document.createElement('div');d.className='verbind-item';d.dataset.id=orig;d.dataset.side='rechts';d.textContent=item.def;d.onclick=()=>selVb(d);R.appendChild(d);});}
+function selVb(el){if(vbSel===null){vbSel=el;el.classList.add('selected');vbType=el.dataset.side;}else{if(el.dataset.side===vbType){vbSel.classList.remove('selected');vbSel=el;el.classList.add('selected');return;}vbSel.classList.remove('selected');if(vbSel.dataset.id===el.dataset.id){vbSel.classList.add('matched-ok');el.classList.add('matched-ok');vbDone++;if(vbDone===vbData.length){const sc=document.getElementById('vb-score');sc.style.display='inline-block';sc.textContent=`${vbDone}/${vbData.length} ✅`;sc.className='score-badge score-goed';}}else{vbSel.classList.add('matched-err');el.classList.add('matched-err');setTimeout(()=>{vbSel.classList.remove('matched-err');el.classList.remove('matched-err');},700);}vbSel=null;vbType=null;}}
+const invulData=[
+    {zin:'Ik ___ de uitleg niet. Kunt u het herhalen?',ant:'begrijp'},
+    {zin:'Dit woord is ___. Ik weet de betekenis niet.',ant:'moeilijk'},
+    {zin:'De docent spreekt te ___. Ik hoor het niet goed.',ant:'snel'},
+    {zin:'Er zijn ___ nieuwe woorden vandaag. Meer dan tien.',ant:'veel'},
+    {zin:'___ ik heb het verkeerd begrepen.',ant:'sorry'},
+    {zin:'___ dat woord? Ik ken het niet.',ant:'Wat betekent dat?'},
+    {zin:'De oefening is ___. Ik doe het snel.',ant:'makkelijk'},
+    {zin:'___ ik snap het nu.',ant:'sorry'},
+    {zin:'Spreek je alsjeblieft niet zo ___.',ant:'snel'},
+    {zin:'Ik ___ jou niet. Wat zeg je?',ant:'begrijp'},
+    {zin:'Dit is ___ voor mij. Kunt u helpen?',ant:'moeilijk'},
+    {zin:'Er zijn ___ cursisten vandaag — twintig!',ant:'veel'},
+];
+function buildInvul(){const ul=document.getElementById('invul1');ul.innerHTML='';invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="…" autocomplete="off">${p[1]||''}</li>`;});}
+function checkInvul(){let g=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');}
+function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+const wnData=[
+    {s:'"Wat zegt u?" gebruik je als je met een cursist praat.',ant:'Fout'},
+    {s:'"Wat zegt u?" gebruik je als je de docent niet hoort.',ant:'Goed'},
+    {s:'"Sorry" zeg je als je een fout maakt.',ant:'Goed'},
+    {s:'"Moeilijk" en "makkelijk" zijn tegenstellingen.',ant:'Goed'},
+    {s:'"Snel" betekent langzaam.',ant:'Fout'},
+    {s:'"Wat betekent dat?" vraag je als je een woord niet kent.',ant:'Goed'},
+    {s:'"Wat zeg je?" gebruik je voor de docent (beleefd).',ant:'Fout'},
+    {s:'"Begrijpen" betekent: iets snappen.',ant:'Goed'},
+    {s:'"Hoe schrijf je dat?" vraag je als je iets niet hoort.',ant:'Fout'},
+    {s:'"Veel" betekent: een groot aantal.',ant:'Goed'},
+    {s:'"Moeilijk" betekent: niet eenvoudig.',ant:'Goed'},
+    {s:'"U" gebruik je in een formele of beleefde situatie.',ant:'Goed'},
+];
+function buildWN(){const ul=document.getElementById('wn1');ul.innerHTML='';wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button></div></li>`);}
+function checkWN(btn,keuze,ant){const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');if([...groep].some(b=>b.classList.contains('correct')))return;if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}}
+function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+const schrijfVragen=[
+    {nl:'Schrijf de zin die je zegt als je de docent niet begrijpt.',en:'Write the sentence you say when you don\'t understand the teacher.',tr:'Öğretmeni anlamadığınızda söylediğiniz cümleyi yazın.',zh:'写出你听不懂老师说话时说的句子。'},
+    {nl:'Schrijf de zin die je zegt als je de betekenis van een woord niet weet.',en:'Write the sentence you say when you don\'t know a word\'s meaning.',tr:'Bir kelimenin anlamını bilmediğinizde söylediğiniz cümleyi yazın.',zh:'写出你不知道某个词的意思时说的句子。'},
+    {nl:'Schrijf een kort gesprekje in de klas (2-3 zinnen).',en:'Write a short classroom conversation (2-3 sentences).',tr:'Kısa bir sınıf diyalogu yazın (2-3 cümle).',zh:'写一段简短的课堂对话（2-3句）。'},
+    {nl:'Schrijf: welke Nederlandse woorden vind jij moeilijk?',en:'Write: which Dutch words do you find difficult?',tr:'Yazın: hangi Hollandaca kelimeler zor geliyor?',zh:'写：你觉得哪些荷兰语单词难？'},
+    {nl:'Schrijf een zin met "sorry" en een zin met "begrijpen".',en:'Write a sentence with "sorry" and one with "begrijpen".',tr:'"Sorry" ve "begrijpen" ile birer cümle yazın.',zh:'用"sorry"写一个句子，用"begrijpen"写一个句子。'},
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{const txt=v[currentLang]||v.nl;ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw7-${i}" placeholder="Schrijf hier..."></textarea></li>`;});}
+function saveSchrijf(){document.getElementById('schrijf-fb').style.display='inline';setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);}
+function resetSchrijf(){buildSchrijf();}
+document.addEventListener('DOMContentLoaded',()=>{buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')==='nl'?'block':'none';});buildMC1();buildVerbind();buildInvul();buildWN();buildSchrijf();});
+</script>
+</body>
+</html>

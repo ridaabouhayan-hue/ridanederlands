@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — 2.1 Naar school. Woordenlijst, uitleg en oefeningen.">
+    <title>2.1 Naar school — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:1.2rem 0;font-size:.93rem}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.6}
+        .instructie-lang{display:block;margin-top:2px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:150px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .verbind-container{display:flex;gap:16px}.verbind-col{flex:1;display:flex;flex-direction:column;gap:7px}
+        .verbind-item{padding:9px 13px;border:2px solid rgba(99,102,241,.3);border-radius:10px;cursor:pointer;font-size:.87rem;transition:all .2s;user-select:none}
+        .verbind-item:hover{border-color:#6366f1;background:rgba(99,102,241,.08)}
+        .verbind-item.selected{border-color:#6366f1;background:rgba(99,102,241,.15)}
+        .verbind-item.matched-ok{border-color:#10b981;background:rgba(16,185,129,.12);pointer-events:none}
+        .verbind-item.matched-err{border-color:#ef4444;background:rgba(239,68,68,.12)}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.1</span></div>
+            <h1>🚶 Naar school</h1>
+            <p class="subtitle" data-translate="subtitle">Leer vertellen dat je naar school gaat.</p>
+        </header>
+
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 2.1</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="content-section animate-in">
+            <div id="uitleg-content"></div>
+        </section>
+
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+
+            <!-- OPD 1 -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr" data-translate="opd1nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3 data-translate="opd1h">Kies het juiste woord.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Lees de zin en kies het goede woord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Read the sentence and choose the correct word.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Cümleyi okuyun ve doğru kelimeyi seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 阅读句子，选择正确的词。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+
+            <!-- OPD 2 -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Verbinden</span>
+                <h3 data-translate="opd2h">Verbind het woord met de betekenis.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op een woord (links) en dan op de betekenis (rechts).</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click a word (left) then its meaning (right).</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Bir kelimeye (sol) tıklayın, ardından anlamına (sağ) tıklayın.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击左边的词，再点击右边对应的意思。</span>
+                </p>
+                <div class="verbind-container">
+                    <div class="verbind-col" id="vb-links"></div>
+                    <div class="verbind-col" id="vb-rechts"></div>
+                </div>
+                <span id="vb-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="buildVerbind()">🔄</button>
+            </div>
+
+            <!-- OPD 3 -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Vul in</span>
+                <h3 data-translate="opd3h">Vul het goede woord in.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Kies uit: <strong>school, docent, cursist, pauze, samen, welkom, gaan, lopen, binnen, buiten</strong></span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Choose from: school, teacher, student, break, together, welcome, to go, to walk, inside, outside</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Şunlardan seçin: okul, öğretmen, öğrenci, mola, birlikte, hoş geldiniz, gitmek, yürümek, içeri, dışarı</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 从以下词中选择：school、docent、cursist、pauze、samen、welkom、gaan、lopen、binnen、buiten</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+
+            <!-- OPD 4 -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3 data-translate="opd4h">Is de zin juist?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <span id="wn1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+
+            <!-- OPD 5 -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3 data-translate="opd5h">Schrijf zinnen over jouw school.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen. Laat je tekst zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences. Show your text to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Cümleler yazın. Metninizi öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 写句子。把你写的内容给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+const VOCAB = [
+    {nl:'de school',      en:'school',       tr:'okul',         zh:'学校',      ex:'Ik ga naar school.'},
+    {nl:'de docent',      en:'teacher',      tr:'öğretmen',     zh:'老师',      ex:'De docent spreekt Nederlands.'},
+    {nl:'de cursist',     en:'student/pupil',tr:'öğrenci',      zh:'学员',      ex:'De cursist leert Nederlands.'},
+    {nl:'de pauze',       en:'break/pause',  tr:'mola',         zh:'休息',      ex:'In de pauze eten we.'},
+    {nl:'samen',          en:'together',     tr:'birlikte',     zh:'一起',      ex:'We leren samen.'},
+    {nl:'welkom',         en:'welcome',      tr:'hoş geldiniz', zh:'欢迎',      ex:'Welkom op school!'},
+    {nl:'gaan',           en:'to go',        tr:'gitmek',       zh:'去',        ex:'Ik ga naar school.'},
+    {nl:'lopen',          en:'to walk',      tr:'yürümek',      zh:'走路',      ex:'Ik loop naar school.'},
+    {nl:'binnen',         en:'inside',       tr:'içeri',        zh:'里面',      ex:'De cursisten zitten binnen.'},
+    {nl:'buiten',         en:'outside',      tr:'dışarı',       zh:'外面',      ex:'In de pauze ga ik buiten.'},
+    {nl:'naar',           en:'to/towards',   tr:'...\'ya/-e doğru',zh:'去/向',  ex:'Ik ga naar de school.'},
+    {nl:'zeggen',         en:'to say',       tr:'söylemek',     zh:'说',        ex:'De docent zegt: "Welkom!"'},
+];
+
+const UI = {
+    nl:{subtitle:'Leer vertellen dat je naar school gaat.',vocabTitle:'Woorden van paragraaf 2.1',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},
+    en:{subtitle:'Learn to say that you go to school.',vocabTitle:'Words of paragraph 2.1',thExample:'Example sentence',thLang:'🇬🇧 EN',oefTitle:'Exercises'},
+    tr:{subtitle:'Okula gittiğinizi söylemeyi öğrenin.',vocabTitle:'2.1 paragrafının kelimeleri',thExample:'Örnek cümle',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},
+    zh:{subtitle:'学习表达"我去上学"的荷兰语表达。',vocabTitle:'第2.1段的词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'},
+};
+
+const UITLEG = {
+    nl:`<div class="uitleg-box"><h3>Naar school gaan</h3>
+<p>In paragraaf 2.1 leer je over de school en hoe je zegt dat je naar school gaat.</p>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>de school</strong> — de plek waar je Nederlands leert</li>
+<li><strong>de docent</strong> — de persoon die les geeft</li>
+<li><strong>de cursist</strong> — de persoon die de les volgt (jij!)</li>
+<li><strong>gaan naar</strong> — richting aangeven: <em>Ik ga naar school.</em></li>
+<li><strong>lopen</strong> — te voet gaan: <em>Ik loop naar school.</em></li>
+</ul></div>
+<div class="voorbeeld-blok"><strong>Voorbeeldzinnen:</strong>
+<ul style="margin:.4rem 0 0;padding-left:1.3em;font-size:.92rem;line-height:2.2">
+<li>Ik ga naar <strong>school</strong>.</li>
+<li>De <strong>docent</strong> zegt: "Welkom!"</li>
+<li>In de <strong>pauze</strong> ga ik <strong>buiten</strong>.</li>
+<li>Wij leren <strong>samen</strong> Nederlands.</li>
+</ul></div>
+<div class="tip-blok"><strong>Let op:</strong> "gaan naar" + plaats: <em>Ik ga naar school.</em> / <em>Ik ga naar huis.</em></div>`,
+    en:`<div class="uitleg-box"><h3>Going to school</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>de school</strong> → school | <strong>de docent</strong> → teacher | <strong>de cursist</strong> → student</li>
+<li><strong>gaan naar</strong> → to go to: <em>Ik ga naar school.</em> (I go to school.)</li>
+<li><strong>lopen</strong> → to walk: <em>Ik loop naar school.</em> (I walk to school.)</li>
+<li><strong>binnen</strong> → inside | <strong>buiten</strong> → outside</li>
+</ul></div>`,
+    tr:`<div class="uitleg-box"><h3>Okula Gitmek</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>de school</strong> → okul | <strong>de docent</strong> → öğretmen | <strong>de cursist</strong> → öğrenci</li>
+<li><strong>gaan naar</strong> → ...\'e gitmek: <em>Ik ga naar school.</em></li>
+<li><strong>lopen</strong> → yürümek: <em>Ik loop naar school.</em></li>
+<li><strong>binnen</strong> → içeri | <strong>buiten</strong> → dışarı | <strong>pauze</strong> → mola</li>
+</ul></div>`,
+    zh:`<div class="uitleg-box"><h3>去学校（Naar school）</h3>
+<ul style="line-height:2.2;font-size:.93rem">
+<li><strong>de school</strong> → 学校 | <strong>de docent</strong> → 老师 | <strong>de cursist</strong> → 学员</li>
+<li><strong>gaan naar + 地点</strong>：表示"去某地"：<em>Ik ga naar school.</em>（我去学校。）</li>
+<li><strong>lopen</strong> → 走路：<em>Ik loop naar school.</em>（我走路去学校。）</li>
+<li><strong>binnen</strong> → 里面 | <strong>buiten</strong> → 外面 | <strong>pauze</strong> → 休息</li>
+</ul>
+<table style="width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0">
+<thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">荷兰语</th><th style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">中文</th></tr></thead>
+<tbody>
+<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">Ik ga naar school.</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">我去学校。</td></tr>
+<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">Welkom!</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">欢迎！</td></tr>
+<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">In de pauze ga ik buiten.</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">休息时间我去外面。</td></tr>
+</tbody></table></div>`
+};
+
+let currentLang = 'nl';
+
+function buildTable(lang){
+    const tb = document.getElementById('vocab-body'); tb.innerHTML = '';
+    VOCAB.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;
+        tb.appendChild(tr);
+    });
+    document.getElementById('th-lang').textContent = UI[lang].thLang;
+}
+
+function setLang(l){
+    currentLang = l;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    event.target.closest('.lang-btn').classList.add('active');
+    document.querySelectorAll('[data-translate]').forEach(el => {
+        const k = el.getAttribute('data-translate');
+        if(UI[l] && UI[l][k]) el.textContent = UI[l][k];
+    });
+    buildTable(l);
+    document.getElementById('uitleg-content').innerHTML = UITLEG[l] || UITLEG.nl;
+    // show/hide instructie talen
+    document.querySelectorAll('.instructie-lang').forEach(s => {
+        s.style.display = s.getAttribute('data-lang') === l ? 'block' : 'none';
+    });
+}
+
+// ── OPDRACHT 1: MEERKEUZE ───────────────────────────────────────────────────
+const mc1Data = [
+    {v:'De ___ geeft les in de klas.',a:'docent',o:['cursist','docent','pauze']},
+    {v:'Ik leer Nederlands. Ik ben een ___.',a:'cursist',o:['docent','school','cursist']},
+    {v:'Ik ga ___ school.',a:'naar',o:['in','naar','op']},
+    {v:'In de ___ gaan we even rust nemen.',a:'pauze',o:['school','welkom','pauze']},
+    {v:'"___" zeg je als iemand voor het eerst binnenkomt.',a:'welkom',o:['samen','welkom','lopen']},
+    {v:'We leren ___ — niet alleen.',a:'samen',o:['buiten','binnen','samen']},
+    {v:'De kinderen spelen ___. Ze zijn niet binnen.',a:'buiten',o:['buiten','binnen','naar']},
+    {v:'Het is koud. Kom ___!',a:'binnen',o:['naar','buiten','binnen']},
+    {v:'Ik ___ elke dag naar school. (te voet)',a:'loop',o:['zeg','ga','loop']},
+    {v:'De docent ___ "Goedemorgen!" tegen de cursisten.',a:'zegt',o:['loopt','gaat','zegt']},
+    {v:'De cursisten zitten in de ___.',a:'school',o:['pauze','school','docent']},
+    {v:'Ik ___ naar het lokaal. (met de bus of fiets)',a:'ga',o:['ga','loop','zeg']},
+];
+
+const _mcDone = {};
+function checkMCq(btn, keuze, ant, sid, total){
+    const groep = btn.closest('.mc-opties').querySelectorAll('.mc-btn');
+    if([...groep].some(b => b.classList.contains('correct'))) return;
+    groep.forEach(b => b.disabled = true);
+    if(!_mcDone[sid]) _mcDone[sid] = {done:0,score:0};
+    if(keuze === ant){ btn.classList.add('correct'); _mcDone[sid].score++; }
+    else { btn.classList.add('fout'); groep.forEach(b => { if(b.textContent === ant) b.classList.add('correct'); }); }
+    _mcDone[sid].done++;
+    if(_mcDone[sid].done === total){
+        const sc = document.getElementById(sid); sc.style.display = 'inline-block';
+        const s = _mcDone[sid].score;
+        sc.textContent = `${s}/${total}`; sc.className = 'score-badge ' + (s===total?'score-goed':s>=8?'score-midden':'score-slecht');
+    }
+}
+function buildMC1(){
+    const ul = document.getElementById('mc1'); ul.innerHTML = '';
+    mc1Data.forEach((item,i) => {
+        const li = document.createElement('li');
+        const opts = item.o.map(o => `<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');
+        li.innerHTML = `<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;
+        ul.appendChild(li);
+    });
+}
+function resetMC(listId, scoreId, buildFn){ delete _mcDone[scoreId]; document.getElementById(scoreId).style.display='none'; document.getElementById(listId).innerHTML=''; buildFn(); }
+
+// ── OPDRACHT 2: VERBINDEN ───────────────────────────────────────────────────
+const vbData = [
+    {woord:'de school',  def:'Hier leer je Nederlands.'},
+    {woord:'de docent',  def:'De persoon die les geeft.'},
+    {woord:'de cursist', def:'De persoon die de les volgt.'},
+    {woord:'de pauze',   def:'Even stoppen met werken.'},
+    {woord:'welkom',     def:'Je zegt dit als iemand binnenkomt.'},
+    {woord:'samen',      def:'Met andere mensen — niet alleen.'},
+    {woord:'binnen',     def:'Niet buiten, maar in het gebouw.'},
+    {woord:'buiten',     def:'Niet binnen — in de buitenlucht.'},
+    {woord:'gaan',       def:'Zich verplaatsen naar een plek.'},
+    {woord:'lopen',      def:'Te voet gaan.'},
+];
+let vbSel=null,vbType=null,vbDone=0;
+function buildVerbind(){
+    const L = document.getElementById('vb-links'), R = document.getElementById('vb-rechts');
+    L.innerHTML = ''; R.innerHTML = ''; vbSel=null; vbType=null; vbDone=0;
+    document.getElementById('vb-score').style.display='none';
+    const sh = [...vbData].sort(()=>Math.random()-.5);
+    vbData.forEach((item,i)=>{
+        const d=document.createElement('div'); d.className='verbind-item'; d.dataset.id=i; d.dataset.side='links';
+        d.textContent=item.woord; d.onclick=()=>selVb(d); L.appendChild(d);
+    });
+    sh.forEach(item=>{
+        const orig=vbData.findIndex(v=>v.woord===item.woord);
+        const d=document.createElement('div'); d.className='verbind-item'; d.dataset.id=orig; d.dataset.side='rechts';
+        d.textContent=item.def; d.style.fontSize='.8rem'; d.onclick=()=>selVb(d); R.appendChild(d);
+    });
+}
+function selVb(el){
+    if(vbSel===null){ vbSel=el; el.classList.add('selected'); vbType=el.dataset.side; }
+    else {
+        if(el.dataset.side===vbType){ vbSel.classList.remove('selected'); vbSel=el; el.classList.add('selected'); return; }
+        vbSel.classList.remove('selected');
+        if(vbSel.dataset.id===el.dataset.id){
+            vbSel.classList.add('matched-ok'); el.classList.add('matched-ok'); vbDone++;
+            if(vbDone===vbData.length){ const sc=document.getElementById('vb-score'); sc.style.display='inline-block'; sc.textContent=`${vbDone}/${vbData.length} ✅`; sc.className='score-badge score-goed'; }
+        } else {
+            vbSel.classList.add('matched-err'); el.classList.add('matched-err');
+            setTimeout(()=>{ vbSel.classList.remove('matched-err'); el.classList.remove('matched-err'); },700);
+        }
+        vbSel=null; vbType=null;
+    }
+}
+
+// ── OPDRACHT 3: INVULLEN ────────────────────────────────────────────────────
+const invulData = [
+    {zin:'Ik ga elke dag naar ___ om Nederlands te leren.',ant:'school'},
+    {zin:'De ___ geeft uitleg aan de cursisten.',ant:'docent'},
+    {zin:'Een ___ leert Nederlands in de klas.',ant:'cursist'},
+    {zin:'In de ___ drinken we koffie of thee.',ant:'pauze'},
+    {zin:'We leren ___ — we helpen elkaar.',ant:'samen'},
+    {zin:'"___!" zegt de docent als een nieuwe cursist binnenkomt.',ant:'welkom'},
+    {zin:'De cursisten zitten ___ in de klas.',ant:'binnen'},
+    {zin:'In de pauze gaan de cursisten ___ voor frisse lucht.',ant:'buiten'},
+    {zin:'Ik ___ elke ochtend naar school. (te voet)',ant:'loop'},
+    {zin:'Ik ___ met de bus naar school.',ant:'ga'},
+    {zin:'De docent ___ "Goedemorgen!" als de les begint.',ant:'zegt'},
+    {zin:'Ik ga ___ de school. (richting)',ant:'naar'},
+];
+function buildInvul(){
+    const ul=document.getElementById('invul1'); ul.innerHTML='';
+    invulData.forEach((item,i)=>{
+        const p=item.zin.split('___');
+        ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="…" autocomplete="off">${p[1]||''}</li>`;
+    });
+}
+function checkInvul(){
+    let g=0;
+    invulData.forEach((item,i)=>{
+        const inp=document.getElementById('inv'+i); inp.classList.remove('correct','fout');
+        if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){ inp.classList.add('correct'); g++; }
+        else inp.classList.add('fout');
+    });
+    const sc=document.getElementById('invul-score'); sc.style.display='inline-block';
+    sc.textContent=`${g}/${invulData.length}`; sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');
+}
+function resetInvul(){ document.getElementById('invul1').innerHTML=''; document.getElementById('invul-score').style.display='none'; buildInvul(); }
+
+// ── OPDRACHT 4: GOED/FOUT ───────────────────────────────────────────────────
+const wnData = [
+    {s:'De docent geeft les.',ant:'Goed'},
+    {s:'Een cursist geeft les.',ant:'Fout'},
+    {s:'"Welkom" zeg je als iemand voor het eerst binnenkomt.',ant:'Goed'},
+    {s:'In de pauze werken de cursisten hard.',ant:'Fout'},
+    {s:'"Samen" betekent: met andere mensen.',ant:'Goed'},
+    {s:'"Buiten" betekent: in het gebouw.',ant:'Fout'},
+    {s:'"Lopen" is te voet gaan.',ant:'Goed'},
+    {s:'"Gaan naar" geeft een richting aan.',ant:'Goed'},
+    {s:'"Binnen" betekent: buiten in de lucht.',ant:'Fout'},
+    {s:'Je leert Nederlands in de school.',ant:'Goed'},
+    {s:'De cursist geeft les aan de docent.',ant:'Fout'},
+    {s:'"Naar" geeft een richting aan — bijv. naar school.',ant:'Goed'},
+];
+function buildWN(){
+    const ul=document.getElementById('wn1'); ul.innerHTML='';
+    wnData.forEach((item,i)=>ul.innerHTML+=`<li>
+        <span class="wn-stelling">${i+1}. ${item.s}</span>
+        <div class="wn-btngroup">
+            <button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button>
+            <button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button>
+        </div></li>`);
+}
+function checkWN(btn,keuze,ant){
+    const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');
+    if([...groep].some(b=>b.classList.contains('correct'))) return;
+    if(keuze===ant){ groep.forEach(b=>b.disabled=true); btn.classList.add('correct'); }
+    else { btn.classList.add('fout'); btn.textContent='✗ Fout! Probeer opnieuw...'; setTimeout(()=>{ groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');}); groep[0].textContent='✓ Goed'; groep[1].textContent='✗ Fout'; },1300); }
+}
+function resetWN(){ document.getElementById('wn1').innerHTML=''; buildWN(); }
+
+// ── OPDRACHT 5: SCHRIJVEN ──────────────────────────────────────────────────
+const schrijfVragen = [
+    {nl:'Schrijf: Ga jij elke dag naar school?',en:'Write: Do you go to school every day?',tr:'Yazın: Her gün okula gidiyor musunuz?',zh:'写：你每天去学校吗？'},
+    {nl:'Schrijf: Loop jij naar school of ga je met de bus?',en:'Write: Do you walk or take the bus?',tr:'Yazın: Yürüyerek mi okula gidiyorsunuz, otobüsle mi?',zh:'写：你走路还是坐车去学校？'},
+    {nl:'Schrijf: Wie is jouw docent?',en:'Write: Who is your teacher?',tr:'Yazın: Öğretmeniniz kimdir?',zh:'写：你的老师是谁？'},
+    {nl:'Schrijf een zin met het woord "samen".',en:'Write a sentence with the word "samen" (together).',tr:'"Samen" (birlikte) kelimesiyle bir cümle yazın.',zh:'用"samen"（一起）造一个句子。'},
+    {nl:'Schrijf: wat doe jij in de pauze?',en:'Write: what do you do during the break?',tr:'Yazın: Molada ne yapıyorsunuz?',zh:'写：你在休息时间做什么？'},
+];
+function buildSchrijf(){
+    const ul=document.getElementById('schrijf1'); ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';
+    schrijfVragen.forEach((v,i)=>{
+        const txt=v[currentLang]||v.nl;
+        ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw1-${i}" placeholder="Schrijf hier..."></textarea></li>`;
+    });
+}
+function saveSchrijf(){ document.getElementById('schrijf-fb').style.display='inline'; setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500); }
+function resetSchrijf(){ buildSchrijf(); }
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+    buildTable('nl');
+    document.getElementById('uitleg-content').innerHTML = UITLEG.nl;
+    document.querySelectorAll('.instructie-lang').forEach(s => { s.style.display = s.getAttribute('data-lang')==='nl'?'block':'none'; });
+    buildMC1(); buildVerbind(); buildInvul(); buildWN(); buildSchrijf();
+});
+</script>
+</body>
+</html>

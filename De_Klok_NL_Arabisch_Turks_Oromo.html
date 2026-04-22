@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🕐 De Klok - NL / EN / PS / ZH / AR / TR / OR</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Nunito',sans-serif;background:#f8f6f1;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
+  h1{font-size:2.1rem;font-weight:900;color:#2d3436;margin-bottom:6px}
+  .subtitle{font-size:1rem;color:#636e72;margin-bottom:20px;font-weight:600}
+
+  .lang-tabs{display:flex;gap:0;margin-bottom:28px;background:#e0ddd5;border-radius:14px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,0.06);flex-wrap:wrap;justify-content:center}
+  .lang-tab{padding:9px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;color:#636e72;border-radius:11px;cursor:pointer;transition:all .25s}
+  .lang-tab:hover{color:#2d3436}
+  .lang-tab.active{background:white;color:#2d3436;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+  .lang-tab .flag{font-size:1.1rem;margin-right:5px}
+
+  .clock-container{position:relative;width:720px;max-width:95vw}
+  svg.main-clock{width:100%;height:100%;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.08))}
+
+  .label-row{display:flex;justify-content:center;gap:20px;margin-top:24px;flex-wrap:wrap}
+  .label-item{display:flex;align-items:center;gap:7px;font-weight:700;font-size:0.85rem;color:#2d3436}
+  .label-swatch{width:16px;height:16px;border-radius:4px}
+
+  .time-list{margin-top:28px;background:white;border-radius:16px;padding:24px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.06);max-width:720px;width:100%}
+  .time-list h2{font-size:1.1rem;font-weight:800;margin-bottom:16px;color:#2d3436}
+  .time-group{margin-bottom:10px}
+  .group-header{display:inline-block;color:white;font-weight:800;font-size:0.75rem;letter-spacing:.5px;padding:3px 11px;border-radius:20px;margin-bottom:5px}
+  .group-entries{display:flex;flex-wrap:wrap;gap:3px 18px;padding-left:4px}
+  .time-entry{font-size:0.88rem;padding:3px 0;display:flex;align-items:center;gap:7px}
+  .time-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+  .edu-block{background:white;border-radius:16px;padding:24px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:24px;max-width:720px;width:100%}
+  .edu-block h2{font-size:1.15rem;font-weight:900;color:#2d3436;margin-bottom:12px}
+  .edu-block p{font-size:0.92rem;color:#444;line-height:1.6;margin-bottom:12px}
+  .tip-box{display:flex;gap:12px;background:#fff3e0;border-left:4px solid #FF6B6B;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:0.88rem;line-height:1.6}
+  .tip-icon{font-size:1.2rem;flex-shrink:0}
+  .rtl{direction:rtl;text-align:right}
+  .rtl .tip-box{border-left:none;border-right:4px solid #FF6B6B}
+
+  /* ANALOG EXAMPLES */
+  .clock-examples{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
+  .example-card{display:flex;align-items:center;gap:14px;background:#f8f6f1;border-radius:12px;padding:14px 16px}
+  .mini-clock-wrap{width:90px;height:90px;flex-shrink:0}
+  .mini-clock{width:100%;height:100%}
+  .example-info{flex:1}
+  .digital-small{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:700;background:#1a1a2e;color:#00ff88;padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:5px;letter-spacing:2px}
+  .example-answer{font-size:0.92rem;font-weight:700;color:#2d3436;display:flex;align-items:center;gap:6px;margin-bottom:2px}
+  .quad-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+  .example-note{font-size:0.78rem;color:#888;font-weight:600}
+
+  /* EXERCISES */
+  .exercises-section{max-width:720px;width:100%;margin-top:36px}
+  .exercises-header{background:linear-gradient(135deg,#2d3436,#434a4d);color:white;padding:18px 24px;border-radius:16px 16px 0 0;text-align:center}
+  .exercises-header h2{font-size:1.2rem;font-weight:900;margin-bottom:3px}
+  .exercises-header p{font-size:0.85rem;opacity:.8;font-weight:600}
+  .exercise-grid{display:flex;flex-direction:column}
+  .exercise-item{background:white;padding:16px 24px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:16px}
+  .exercise-item:last-child{border-bottom:none;border-radius:0 0 16px 16px}
+  .exercise-num{background:#2d3436;color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:900;flex-shrink:0}
+  .digital-display{font-family:'Courier New',monospace;font-size:1.5rem;font-weight:700;background:#1a1a2e;color:#00ff88;padding:5px 14px;border-radius:8px;letter-spacing:3px;flex-shrink:0;min-width:85px;text-align:center}
+  .exercise-options{display:flex;flex-direction:column;gap:5px;flex:1}
+  .option-btn{display:flex;align-items:center;gap:9px;padding:7px 12px;border:2px solid #e0ddd5;border-radius:10px;background:#fafaf8;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.88rem;color:#2d3436;cursor:pointer;transition:all .2s;text-align:left}
+  .option-btn:hover{border-color:#b2bec3;background:#f0eeea}
+  .option-letter{background:#e0ddd5;color:#636e72;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;flex-shrink:0}
+  .option-btn.correct{border-color:#00b894;background:#e8f8f5}
+  .option-btn.correct .option-letter{background:#00b894;color:white}
+  .option-btn.wrong{border-color:#FF6B6B;background:#fff0f0}
+  .option-btn.wrong .option-letter{background:#FF6B6B;color:white}
+  .option-btn.disabled{pointer-events:none;opacity:.6}
+
+  /* ANALOG EXERCISE */
+  .analog-exercise-item{background:white;padding:16px 24px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:16px}
+  .analog-exercise-item:last-child{border-bottom:none;border-radius:0 0 16px 16px}
+
+  .score-bar{background:white;border-radius:16px;padding:18px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:20px;max-width:720px;width:100%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .score-info{font-weight:800;font-size:1.05rem;color:#2d3436}
+  .score-info span{color:#00b894}
+  .score-progress{flex:1;min-width:180px;height:11px;background:#e0ddd5;border-radius:6px;overflow:hidden}
+  .score-fill{height:100%;background:linear-gradient(90deg,#00b894,#4ECDC4);border-radius:6px;transition:width .5s}
+  .reset-btn{padding:7px 18px;border:2px solid #e0ddd5;border-radius:10px;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;color:#636e72;cursor:pointer;transition:all .2s}
+  .reset-btn:hover{border-color:#FF6B6B;color:#FF6B6B}
+
+  @media print{body{background:white}.lang-tabs,.reset-btn{display:none}.option-btn{border:1px solid #ccc}}
+  @media(max-width:600px){.exercise-item,.analog-exercise-item{flex-direction:column;align-items:stretch;gap:10px}.digital-display{align-self:center}.label-row{gap:10px}h1{font-size:1.5rem}.clock-examples{grid-template-columns:1fr}.lang-tab{padding:7px 12px;font-size:0.8rem}}
+</style>
+</head>
+<body>
+
+<h1 id="page-title">🕐 Hoe laat is het?</h1>
+<p class="subtitle" id="page-subtitle">De klok lezen in het Nederlands</p>
+
+<div class="lang-tabs">
+  <button class="lang-tab active" onclick="switchLang('nl',this)"><span class="flag">🇳🇱</span> Nederlands</button>
+  <button class="lang-tab" onclick="switchLang('en',this)"><span class="flag">🇬🇧</span> English</button>
+  <button class="lang-tab" onclick="switchLang('ps',this)"><span class="flag">🇦🇫</span> پښتو</button>
+  <button class="lang-tab" onclick="switchLang('zh',this)"><span class="flag">🇨🇳</span> 中文</button>
+  <button class="lang-tab" onclick="switchLang('ar',this)"><span class="flag">🇸🇦</span> العربية</button>
+  <button class="lang-tab" onclick="switchLang('tr',this)"><span class="flag">🇹🇷</span> Türkçe</button>
+  <button class="lang-tab" onclick="switchLang('om',this)"><span class="flag">🇪🇹</span> Afaan Oromo</button>
+</div>
+
+<!-- ===== MAIN CLOCK ===== -->
+<div class="clock-container">
+<svg viewBox="-210 -40 980 680" xmlns="http://www.w3.org/2000/svg" class="main-clock">
+  <defs>
+    <clipPath id="topRight"><path d="M280,280 L280,30 A250,250 0 0,1 530,280 Z"/></clipPath>
+    <clipPath id="bottomRight"><path d="M280,280 L530,280 A250,250 0 0,1 280,530 Z"/></clipPath>
+    <clipPath id="bottomLeft"><path d="M280,280 L280,530 A250,250 0 0,1 30,280 Z"/></clipPath>
+    <clipPath id="topLeft"><path d="M280,280 L30,280 A250,250 0 0,1 280,30 Z"/></clipPath>
+  </defs>
+  <circle cx="280" cy="280" r="252" fill="white" stroke="#e0ddd5" stroke-width="2"/>
+  <circle cx="280" cy="280" r="250" fill="#4ECDC4" clip-path="url(#topRight)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#FF6B6B" clip-path="url(#bottomRight)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#FFD93D" clip-path="url(#bottomLeft)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#6C5CE7" clip-path="url(#topLeft)" opacity="0.85"/>
+  <line x1="280" y1="30" x2="280" y2="530" stroke="white" stroke-width="3"/>
+  <line x1="30" y1="280" x2="530" y2="280" stroke="white" stroke-width="3"/>
+
+  <rect x="130" y="62" width="300" height="32" rx="16" fill="white" opacity="0.9"/>
+  <text id="label-top" x="280" y="84" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="14" fill="#2d3436">▲ Het huidige uur</text>
+  <rect x="100" y="468" width="360" height="32" rx="16" fill="white" opacity="0.9"/>
+  <text id="label-bottom" x="280" y="490" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="14" fill="#2d3436">▼ HALF + volgende uur</text>
+
+  <!-- Quadrant labels -->
+  <rect x="295" y="130" width="200" height="82" rx="14" fill="white" opacity="0.93"/>
+  <text id="q-over-title" x="395" y="158" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="22" fill="#4ECDC4">OVER</text>
+  <text id="q-over-sub1" x="395" y="178" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">5 over, 10 over,</text>
+  <text id="q-over-sub2" x="395" y="193" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">kwart over</text>
+
+  <rect x="285" y="308" width="210" height="82" rx="14" fill="white" opacity="0.93"/>
+  <text id="q-vh-title" x="390" y="336" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="19" fill="#FF6B6B">VOOR HALF</text>
+  <text id="q-vh-sub1" x="390" y="356" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">10 voor half,</text>
+  <text id="q-vh-sub2" x="390" y="371" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">5 voor half</text>
+
+  <rect x="65" y="308" width="210" height="82" rx="14" fill="white" opacity="0.93"/>
+  <text id="q-oh-title" x="170" y="336" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="19" fill="#c7a000">OVER HALF</text>
+  <text id="q-oh-sub1" x="170" y="356" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">5 over half,</text>
+  <text id="q-oh-sub2" x="170" y="371" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">10 over half</text>
+
+  <rect x="65" y="130" width="200" height="82" rx="14" fill="white" opacity="0.93"/>
+  <text id="q-voor-title" x="165" y="158" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="22" fill="#6C5CE7">VOOR</text>
+  <text id="q-voor-sub1" x="165" y="178" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">kwart voor,</text>
+  <text id="q-voor-sub2" x="165" y="193" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="11" fill="#636e72">10 voor, 5 voor</text>
+
+  <!-- Clock numbers -->
+  <text x="280" y="56" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">12</text>
+  <text x="404" y="112" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">1</text>
+  <text x="478" y="195" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">2</text>
+  <text x="516" y="288" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">3</text>
+  <text x="478" y="380" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">4</text>
+  <text x="404" y="458" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">5</text>
+  <text x="280" y="520" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">6</text>
+  <text x="156" y="458" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">7</text>
+  <text x="82" y="380" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">8</text>
+  <text x="44" y="288" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">9</text>
+  <text x="82" y="195" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">10</text>
+  <text x="156" y="112" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">11</text>
+
+  <g stroke="white" stroke-width="2" opacity="0.5">
+    <line x1="280" y1="35" x2="280" y2="50"/><line x1="525" y1="280" x2="510" y2="280"/>
+    <line x1="280" y1="525" x2="280" y2="510"/><line x1="35" y1="280" x2="50" y2="280"/>
+  </g>
+  <circle cx="280" cy="280" r="8" fill="white" stroke="#2d3436" stroke-width="2"/>
+
+  <!-- Outer labels -->
+  <text id="ol-12" x="280" y="-18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="13" fill="#2d3436">... uur</text>
+  <text id="ol-1" x="445" y="18" text-anchor="start" font-family="Nunito" font-weight="800" font-size="13" fill="#3DBDB5">5 over ...</text>
+  <text id="ol-2" x="550" y="132" text-anchor="start" font-family="Nunito" font-weight="800" font-size="13" fill="#3DBDB5">10 over ...</text>
+  <text id="ol-3" x="550" y="285" text-anchor="start" font-family="Nunito" font-weight="800" font-size="13" fill="#3DBDB5">kwart over ...</text>
+  <text id="ol-4" x="550" y="440" text-anchor="start" font-family="Nunito" font-weight="800" font-size="13" fill="#E85555">10 voor half ...</text>
+  <text id="ol-5" x="445" y="555" text-anchor="start" font-family="Nunito" font-weight="800" font-size="13" fill="#E85555">5 voor half ...</text>
+  <text id="ol-6" x="280" y="600" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="13" fill="#2d3436">half ...</text>
+  <text id="ol-7" x="115" y="555" text-anchor="end" font-family="Nunito" font-weight="800" font-size="13" fill="#C99A00">5 over half ...</text>
+  <text id="ol-8" x="10" y="440" text-anchor="end" font-family="Nunito" font-weight="800" font-size="13" fill="#C99A00">10 over half ...</text>
+  <text id="ol-9" x="-30" y="285" text-anchor="end" font-family="Nunito" font-weight="800" font-size="13" fill="#5B4BD6">kwart voor ...</text>
+  <text id="ol-10" x="10" y="132" text-anchor="end" font-family="Nunito" font-weight="800" font-size="13" fill="#5B4BD6">10 voor ...</text>
+  <text id="ol-11" x="115" y="18" text-anchor="end" font-family="Nunito" font-weight="800" font-size="13" fill="#5B4BD6">5 voor ...</text>
+</svg>
+</div>
+
+<div class="label-row">
+  <div class="label-item"><div class="label-swatch" style="background:#4ECDC4"></div><span id="leg-over">OVER</span></div>
+  <div class="label-item"><div class="label-swatch" style="background:#FF6B6B"></div><span id="leg-vh">VOOR HALF</span></div>
+  <div class="label-item"><div class="label-swatch" style="background:#FFD93D"></div><span id="leg-oh">OVER HALF</span></div>
+  <div class="label-item"><div class="label-swatch" style="background:#6C5CE7"></div><span id="leg-voor">VOOR</span></div>
+</div>
+
+<!-- TIME EXAMPLES -->
+<div class="time-list">
+  <h2 id="example-title">Voorbeeld: van 6 uur tot 7 uur</h2>
+  <div class="time-group"><div class="group-header" style="background:#2d3436">UUR</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#2d3436"></div>6 <b>uur</b> (= 6:00)</div></div></div>
+  <div class="time-group"><div class="group-header" style="background:#4ECDC4">OVER</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>5 <b>over</b> 6 (= 6:05)</div><div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>10 <b>over</b> 6 (= 6:10)</div><div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>kwart <b>over</b> 6 (= 6:15)</div></div></div>
+  <div class="time-group"><div class="group-header" style="background:#FF6B6B">VOOR HALF</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#FF6B6B"></div>10 <b>voor half</b> 7 (= 6:20)</div><div class="time-entry"><div class="time-dot" style="background:#FF6B6B"></div>5 <b>voor half</b> 7 (= 6:25)</div></div></div>
+  <div class="time-group"><div class="group-header" style="background:#2d3436">HALF</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#2d3436"></div><b>half</b> 7 (= 6:30)</div></div></div>
+  <div class="time-group"><div class="group-header" style="background:#FFD93D;color:#2d3436">OVER HALF</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#FFD93D"></div>5 <b>over half</b> 7 (= 6:35)</div><div class="time-entry"><div class="time-dot" style="background:#FFD93D"></div>10 <b>over half</b> 7 (= 6:40)</div></div></div>
+  <div class="time-group"><div class="group-header" style="background:#6C5CE7">VOOR</div><div class="group-entries"><div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>kwart <b>voor</b> 7 (= 6:45)</div><div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>10 <b>voor</b> 7 (= 6:50)</div><div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>5 <b>voor</b> 7 (= 6:55)</div></div></div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="edu-block" id="explanation-block"></div>
+
+<!-- 10 ANALOG EXAMPLES -->
+<div class="edu-block">
+  <h2 id="analog-examples-title">🕐 10 voorbeelden met analoge klok</h2>
+  <div class="clock-examples" id="analog-examples"></div>
+</div>
+
+<!-- ===== EXERCISES SECTION A: DIGITAL MC ===== -->
+<div class="exercises-section">
+  <div class="exercises-header">
+    <h2 id="ex-title">✏️ Opdracht A — Digitale klok (meerkeuze)</h2>
+    <p id="ex-subtitle">Je ziet de digitale klok. Wat zeg je in het Nederlands?</p>
+  </div>
+  <div class="exercise-grid" id="exercise-grid"></div>
+</div>
+
+<!-- ===== EXERCISES SECTION B: ANALOG MC ===== -->
+<div class="exercises-section" style="margin-top:24px">
+  <div class="exercises-header" style="background:linear-gradient(135deg,#6C5CE7,#a29bfe)">
+    <h2 id="ex-b-title">✏️ Opdracht B — Analoge klok (meerkeuze)</h2>
+    <p id="ex-b-subtitle">Je ziet de klok met wijzers. Wat zeg je in het Nederlands?</p>
+  </div>
+  <div class="exercise-grid" id="exercise-grid-b"></div>
+</div>
+
+<!-- SCORE -->
+<div class="score-bar">
+  <div class="score-info">Score: <span id="score-num">0</span> / <span id="score-total">30</span></div>
+  <div class="score-progress"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+  <button class="reset-btn" onclick="resetAll()">🔄 Opnieuw</button>
+</div>
+
+<script>
+// ===== MINI CLOCK SVG GENERATOR =====
+function miniClock(h, m) {
+  const hAngle = ((h % 12) + m / 60) * 30 - 90;
+  const mAngle = m * 6 - 90;
+  const hRad = hAngle * Math.PI / 180;
+  const mRad = mAngle * Math.PI / 180;
+  const hx = 60 + 28 * Math.cos(hRad), hy = 60 + 28 * Math.sin(hRad);
+  const mx = 60 + 40 * Math.cos(mRad), my = 60 + 40 * Math.sin(mRad);
+  return `<svg viewBox="0 0 120 120" class="mini-clock">
+    <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+    <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+    <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+    <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+    <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+    <line x1="60" y1="60" x2="${hx}" y2="${hy}" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+    <line x1="60" y1="60" x2="${mx}" y2="${my}" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+  </svg>`;
+}
+
+// ===== 10 ANALOG EXAMPLES =====
+const analogExamples = [
+  {h:3,m:0,digital:'15:00',answer:'drie uur',color:'#2d3436',note:'Heel uur'},
+  {h:8,m:5,digital:'08:05',answer:'vijf over acht',color:'#4ECDC4',note:'OVER'},
+  {h:2,m:10,digital:'14:10',answer:'tien over twee',color:'#4ECDC4',note:'OVER'},
+  {h:10,m:15,digital:'10:15',answer:'kwart over tien',color:'#4ECDC4',note:'OVER'},
+  {h:4,m:20,digital:'16:20',answer:'tien voor half vijf',color:'#FF6B6B',note:'VOOR HALF'},
+  {h:1,m:25,digital:'13:25',answer:'vijf voor half twee',color:'#FF6B6B',note:'VOOR HALF'},
+  {h:9,m:30,digital:'09:30',answer:'half tien',color:'#2d3436',note:'HALF'},
+  {h:7,m:35,digital:'19:35',answer:'vijf over half acht',color:'#FFD93D',note:'OVER HALF'},
+  {h:11,m:45,digital:'11:45',answer:'kwart voor twaalf',color:'#6C5CE7',note:'VOOR'},
+  {h:5,m:50,digital:'17:50',answer:'tien voor zes',color:'#6C5CE7',note:'VOOR'},
+];
+
+function renderAnalogExamples() {
+  const c = document.getElementById('analog-examples');
+  c.innerHTML = analogExamples.map(ex => `
+    <div class="example-card">
+      <div class="mini-clock-wrap">${miniClock(ex.h, ex.m)}</div>
+      <div class="example-info">
+        <div class="digital-small">${ex.digital}</div>
+        <div class="example-answer"><span class="quad-dot" style="background:${ex.color}"></span><b>${ex.answer}</b></div>
+        <div class="example-note">${ex.note}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== 15 DIGITAL MC EXERCISES =====
+const exercisesA = [
+  {time:'08:00',correct:1,options:['half acht','acht uur','kwart over acht']},
+  {time:'14:05',correct:0,options:['vijf over twee','vijf voor twee','vijf over drie']},
+  {time:'09:10',correct:2,options:['tien voor negen','tien over tien','tien over negen']},
+  {time:'10:15',correct:1,options:['kwart voor tien','kwart over tien','kwart over elf']},
+  {time:'16:20',correct:2,options:['tien over vier','tien voor half vier','tien voor half vijf']},
+  {time:'13:25',correct:0,options:['vijf voor half twee','vijf over half twee','vijf voor half één']},
+  {time:'06:30',correct:1,options:['half zes','half zeven','zes uur']},
+  {time:'19:35',correct:1,options:['vijf voor half acht','vijf over half acht','vijf over half zeven']},
+  {time:'15:40',correct:1,options:['tien over half drie','tien over half vier','tien voor half vier']},
+  {time:'07:45',correct:1,options:['kwart over zeven','kwart voor acht','kwart voor zeven']},
+  {time:'20:50',correct:1,options:['tien voor acht','tien voor negen','tien over negen']},
+  {time:'11:55',correct:1,options:['vijf voor elf','vijf voor twaalf','vijf over twaalf']},
+  {time:'22:00',correct:0,options:['tien uur','twee uur','twaalf uur']},
+  {time:'17:25',correct:1,options:['vijf voor half vijf','vijf voor half zes','vijf over half zes']},
+  {time:'03:15',correct:2,options:['kwart voor drie','kwart over vier','kwart over drie']},
+];
+
+// ===== 15 ANALOG MC EXERCISES =====
+const exercisesB = [
+  {h:2,m:0,correct:2,options:['twaalf uur','half twee','twee uur']},
+  {h:5,m:10,correct:0,options:['tien over vijf','tien voor vijf','vijf over tien']},
+  {h:8,m:15,correct:1,options:['kwart voor acht','kwart over acht','kwart over negen']},
+  {h:12,m:20,correct:0,options:['tien voor half één','tien voor half twaalf','tien over twaalf']},
+  {h:3,m:25,correct:2,options:['vijf over half drie','vijf voor half drie','vijf voor half vier']},
+  {h:7,m:30,correct:1,options:['half zeven','half acht','zeven uur']},
+  {h:10,m:35,correct:0,options:['vijf over half elf','vijf voor half elf','vijf over half tien']},
+  {h:1,m:40,correct:1,options:['tien voor half twee','tien over half twee','tien over half één']},
+  {h:6,m:45,correct:2,options:['kwart over zes','kwart voor zes','kwart voor zeven']},
+  {h:11,m:50,correct:0,options:['tien voor twaalf','tien over elf','tien voor elf']},
+  {h:4,m:55,correct:1,options:['vijf over vier','vijf voor vijf','vijf voor vier']},
+  {h:9,m:5,correct:2,options:['vijf voor negen','vijf over tien','vijf over negen']},
+  {h:12,m:30,correct:0,options:['half één','half twaalf','twaalf uur']},
+  {h:3,m:45,correct:1,options:['kwart over drie','kwart voor vier','kwart voor drie']},
+  {h:8,m:20,correct:2,options:['tien over acht','tien voor half acht','tien voor half negen']},
+];
+
+let score = 0;
+let answeredA = new Set();
+let answeredB = new Set();
+const totalQ = exercisesA.length + exercisesB.length;
+
+function renderDigitalExercises() {
+  const grid = document.getElementById('exercise-grid');
+  grid.innerHTML = exercisesA.map((ex, i) => {
+    const letters = ['a','b','c'];
+    const opts = ex.options.map((opt, j) => `
+      <button class="option-btn" onclick="checkA(${i},${j})" id="optA-${i}-${j}">
+        <span class="option-letter">${letters[j]}</span>${opt}
+      </button>`).join('');
+    return `<div class="exercise-item">
+      <div class="exercise-num">${i+1}</div>
+      <div class="digital-display">${ex.time}</div>
+      <div class="exercise-options">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAnalogExercises() {
+  const grid = document.getElementById('exercise-grid-b');
+  grid.innerHTML = exercisesB.map((ex, i) => {
+    const letters = ['a','b','c'];
+    const opts = ex.options.map((opt, j) => `
+      <button class="option-btn" onclick="checkB(${i},${j})" id="optB-${i}-${j}">
+        <span class="option-letter">${letters[j]}</span>${opt}
+      </button>`).join('');
+    return `<div class="analog-exercise-item">
+      <div class="exercise-num">${i+1}</div>
+      <div class="mini-clock-wrap">${miniClock(ex.h, ex.m)}</div>
+      <div class="exercise-options">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+function checkA(i, j) {
+  if (answeredA.has(i)) return;
+  answeredA.add(i);
+  const ex = exercisesA[i];
+  ex.options.forEach((_, k) => {
+    const btn = document.getElementById(`optA-${i}-${k}`);
+    if (k === ex.correct) btn.classList.add('correct');
+    else if (k === j) btn.classList.add('wrong');
+    btn.classList.add('disabled');
+  });
+  if (j === ex.correct) score++;
+  updateScore();
+}
+
+function checkB(i, j) {
+  if (answeredB.has(i)) return;
+  answeredB.add(i);
+  const ex = exercisesB[i];
+  ex.options.forEach((_, k) => {
+    const btn = document.getElementById(`optB-${i}-${k}`);
+    if (k === ex.correct) btn.classList.add('correct');
+    else if (k === j) btn.classList.add('wrong');
+    btn.classList.add('disabled');
+  });
+  if (j === ex.correct) score++;
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-fill').style.width = (score / totalQ * 100) + '%';
+}
+
+function resetAll() {
+  score = 0; answeredA.clear(); answeredB.clear();
+  updateScore();
+  renderDigitalExercises();
+  renderAnalogExercises();
+}
+
+// ===== LANGUAGE DATA =====
+const L = {
+  nl: {
+    title:'🕐 Hoe laat is het?', sub:'De klok lezen in het Nederlands',
+    top:'▲ Het huidige uur', bottom:'▼ HALF + volgende uur',
+    qOT:'OVER', qOS1:'5 over, 10 over,', qOS2:'kwart over',
+    qVT:'VOOR HALF', qVS1:'10 voor half,', qVS2:'5 voor half',
+    qHT:'OVER HALF', qHS1:'5 over half,', qHS2:'10 over half',
+    qFT:'VOOR', qFS1:'kwart voor,', qFS2:'10 voor, 5 voor',
+    o12:'... uur',o1:'5 over ...',o2:'10 over ...',o3:'kwart over ...',
+    o4:'10 voor half ...',o5:'5 voor half ...',o6:'half ...',
+    o7:'5 over half ...',o8:'10 over half ...',o9:'kwart voor ...',
+    o10:'10 voor ...',o11:'5 voor ...',
+    lO:'OVER',lV:'VOOR HALF',lH:'OVER HALF',lF:'VOOR',
+    exT:'Voorbeeld: van 6 uur tot 7 uur',
+    anaT:'🕐 10 voorbeelden met analoge klok',
+    eAT:'✏️ Opdracht A — Digitale klok (meerkeuze)',eAS:'Je ziet de digitale klok. Wat zeg je in het Nederlands?',
+    eBT:'✏️ Opdracht B — Analoge klok (meerkeuze)',eBS:'Je ziet de klok met wijzers. Wat zeg je in het Nederlands?',
+    expl:`<h2>📖 Hoe werkt de klok in het Nederlands?</h2>
+      <p>In het Nederlands lezen we de klok anders dan in veel andere talen. We gebruiken <b>het volgende uur</b> als referentiepunt zodra de grote wijzer de 3 passeert (kwart over). Dat betekent dat we bij 6:25 zeggen: <em>"vijf voor <b>half zeven</b>"</em> — we kijken vooruit naar 7!</p>
+      <p>We gebruiken altijd <b>stappen van vijf minuten</b>: 5 over, 10 over, kwart over, 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>Let op:</b> "Half zeven" = 6:30, <b>niet</b> 7:30! In het Nederlands: "half zeven" = we zijn <em>halverwege</em> naar zeven.</div></div>`
+  },
+  en: {
+    title:'🕐 What time is it?', sub:'Reading the clock in Dutch',
+    top:'▲ The current hour', bottom:'▼ HALF + next hour',
+    qOT:'OVER', qOS1:'over = past', qOS2:'(5, 10, kwart over)',
+    qVT:'VOOR HALF', qVS1:'voor half = to half', qVS2:'(10, 5 voor half)',
+    qHT:'OVER HALF', qHS1:'over half = past half', qHS2:'(5, 10 over half)',
+    qFT:'VOOR', qFS1:'voor = to', qFS2:'(kwart, 10, 5 voor)',
+    o12:'... uur (o\'clock)',o1:'5 over (past)',o2:'10 over (past)',o3:'kwart over (quarter past)',
+    o4:'10 voor half (10 to half)',o5:'5 voor half (5 to half)',o6:'half (half)',
+    o7:'5 over half (5 past half)',o8:'10 over half (10 past half)',o9:'kwart voor (quarter to)',
+    o10:'10 voor (to)',o11:'5 voor (to)',
+    lO:'OVER (past)',lV:'VOOR HALF (to half)',lH:'OVER HALF (past half)',lF:'VOOR (to)',
+    exT:'Example: from 6 o\'clock to 7 o\'clock',
+    anaT:'🕐 10 examples using an analog clock',
+    eAT:'✏️ Exercise A — Digital clock (multiple choice)',eAS:'You see the digital clock. What do you say in Dutch?',
+    eBT:'✏️ Exercise B — Analog clock (multiple choice)',eBS:'You see the analog clock. What do you say in Dutch?',
+    expl:`<h2>📖 How does the clock work in Dutch?</h2>
+      <p>In Dutch, we read the clock differently. Once the minute hand passes the 15-minute mark (kwart over), we use <b>the next hour</b> as our reference point. At 6:25 we say: <em>"vijf voor <b>half zeven</b>"</em> — we look ahead to 7!</p>
+      <p><b>Important rules:</b></p>
+      <p>• <b>over</b> = past &nbsp; • <b>voor</b> = to &nbsp; • <b>half</b> = half (to the next hour) &nbsp; • <b>kwart</b> = quarter</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>Attention!</b> "Half zeven" = 6:30, <b>not</b> 7:30! "half zeven" means we are <em>halfway</em> to seven.</div></div>`
+  },
+  ps: {
+    title:'🕐 څو بجې دي؟', sub:'په هالنډي ژبه کې د ساعت لوستل',
+    top:'▲ اوسنی ساعت', bottom:'▼ HALF + راتلونکی ساعت',
+    qOT:'OVER', qOS1:'over = تېر', qOS2:'(5, 10, kwart over)',
+    qVT:'VOOR HALF', qVS1:'voor half = تر نیمې مخکې', qVS2:'(10, 5 voor half)',
+    qHT:'OVER HALF', qHS1:'over half = له نیمې تېر', qHS2:'(5, 10 over half)',
+    qFT:'VOOR', qFS1:'voor = پاتې', qFS2:'(kwart, 10, 5 voor)',
+    o12:'... uur (بجې)',o1:'5 over (تېر)',o2:'10 over (تېر)',o3:'kwart over (پاو تېر)',
+    o4:'10 voor half (تر نیمې 10 مخکې)',o5:'5 voor half (تر نیمې 5 مخکې)',o6:'half (نیمه)',
+    o7:'5 over half (له نیمې 5 تېر)',o8:'10 over half (له نیمې 10 تېر)',o9:'kwart voor (پاو پاتې)',
+    o10:'10 voor (پاتې)',o11:'5 voor (پاتې)',
+    lO:'OVER (تېر)',lV:'VOOR HALF (تر نیمې مخکې)',lH:'OVER HALF (له نیمې تېر)',lF:'VOOR (پاتې)',
+    exT:'بېلګه: د ۶ بجو څخه تر ۷ بجو پورې',
+    anaT:'🕐 د ستن لرونکي ساعت سره 10 بېلګې',
+    eAT:'✏️ د الف تمرین — ډیجیټل ساعت (انتخابي)',eAS:'تاسو ډیجیټل ساعت ګورئ. په هالنډي ژبه کې څه وایئ؟',
+    eBT:'✏️ د ب تمرین — ستن لرونکی ساعت (انتخابي)',eBS:'تاسو د ساعت ستنې ګورئ. په هالنډي ژبه کې څه وایئ؟',
+    expl:`<h2>📖 ساعت په هالنډي ژبه کې څنګه کار کوي؟</h2>
+      <div class="rtl">
+      <p>په هالنډي ژبه کې، موږ ساعت په بل ډول لولو. کله چې ۱۵ دقیقې تېرې شي، موږ <b>راتلونکی ساعت</b> د مرجع په توګه کاروو. په 6:25 کې موږ وایو: <em>"vijf voor <b>half zeven</b>"</em> يعني موږ 7 ته ګورو!</p>
+      <p><b>مهم اصول:</b></p>
+      <p>• <b>over</b> = تېر &nbsp; • <b>voor</b> = پاتې &nbsp; • <b>half</b> = نیمه &nbsp; • <b>kwart</b> = پاو</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>پاملرنه!</b> "Half zeven" = ۶:۳۰، نه ۷:۳۰! "half zeven" مانا دا ده چې 7 بجو ته نیمه لاره ده.</div></div>
+      </div>`
+  },
+  zh: {
+    title:'🕐 现在几点了？', sub:'用荷兰语读时间',
+    top:'▲ 当前小时', bottom:'▼ HALF + 下个小时',
+    qOT:'OVER', qOS1:'over = 过', qOS2:'(5, 10, kwart over)',
+    qVT:'VOOR HALF', qVS1:'voor half = 差...到半', qVS2:'(10, 5 voor half)',
+    qHT:'OVER HALF', qHS1:'over half = 过半...', qHS2:'(5, 10 over half)',
+    qFT:'VOOR', qFS1:'voor = 差', qFS2:'(kwart, 10, 5 voor)',
+    o12:'... uur (点)',o1:'5 over (过5分)',o2:'10 over (过10分)',o3:'kwart over (一刻/15分)',
+    o4:'10 voor half (差10分到半)',o5:'5 voor half (差5分到半)',o6:'half (半)',
+    o7:'5 over half (过5分多半)',o8:'10 over half (过10分多半)',o9:'kwart voor (差一刻)',
+    o10:'10 voor (差10分)',o11:'5 voor (差5分)',
+    lO:'OVER (过)',lV:'VOOR HALF (差...到半)',lH:'OVER HALF (过...半)',lF:'VOOR (差)',
+    exT:'例子：从 6点 到 7点',
+    anaT:'🕐 10个时钟的例子',
+    eAT:'✏️ 练习 A — 数字时钟 (选择题)',eAS:'你看到了数字时钟。用荷兰语怎么说？',
+    eBT:'✏️ 练习 B — 模拟时钟 (选择题)',eBS:'你看到了带指针的时钟。用荷兰语怎么说？',
+    expl:`<h2>📖 荷兰语的时钟是怎么工作的？</h2>
+      <p>在荷兰语中，我们读时间的方式有所不同。当分针过了15分钟 (kwart over) 之后，我们就使用<b>下一个小时</b>作为参考点。在 6:25 我们会说：<em>"vijf voor <b>half zeven</b>"（差五分半道七点）</em> — 我们已经开始看向7点了！</p>
+      <p><b>重要规则：</b></p>
+      <p>• <b>over</b> = 过 &nbsp; • <b>voor</b> = 差 / 提前 &nbsp; • <b>half</b> = 半 (指通向下一个小时的一半) &nbsp; • <b>kwart</b> = 一刻 (15分)</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>注意！</b> "Half zeven" = 6:30，<b>不是</b> 7:30！"half zeven" 意味着我们到7点才走了一半。</div></div>`
+  },
+  ar: {
+    title:'🕐 كم الساعة؟', sub:'قراءة الساعة باللغة الهولندية',
+    top:'▲ Het huidige uur', bottom:'▼ HALF + volgende uur',
+    qOT:'OVER', qOS1:'over = بعد', qOS2:'(5, 10, kwart over)',
+    qVT:'VOOR HALF', qVS1:'voor half = قبل النصف', qVS2:'(10, 5 voor half)',
+    qHT:'OVER HALF', qHS1:'over half = بعد النصف', qHS2:'(5, 10 over half)',
+    qFT:'VOOR', qFS1:'voor = قبل', qFS2:'(kwart, 10, 5 voor)',
+    o12:'... uur (الساعة)',o1:'5 over (بعد)',o2:'10 over (بعد)',o3:'kwart over (ربع بعد)',
+    o4:'10 voor half (قبل النصف)',o5:'5 voor half (قبل النصف)',o6:'half (النصف)',
+    o7:'5 over half (بعد النصف)',o8:'10 over half (بعد النصف)',o9:'kwart voor (ربع قبل)',
+    o10:'10 voor (قبل)',o11:'5 voor (قبل)',
+    lO:'OVER (بعد)',lV:'VOOR HALF (قبل النصف)',lH:'OVER HALF (بعد النصف)',lF:'VOOR (قبل)',
+    exT:'مثال: من الساعة ٦ إلى الساعة ٧',
+    anaT:'🕐 ١٠ أمثلة مع الساعة التناظرية',
+    eAT:'✏️ تمرين أ — الساعة الرقمية (اختيار)',eAS:'أنت ترى الساعة الرقمية. ماذا تقول بالهولندية؟',
+    eBT:'✏️ تمرين ب — الساعة التناظرية (اختيار)',eBS:'أنت ترى الساعة مع العقارب. ماذا تقول بالهولندية؟',
+    expl:`<h2>📖 كيف تعمل الساعة بالهولندية؟</h2>
+      <div class="rtl">
+      <p>في اللغة الهولندية، نقرأ الساعة بطريقة مختلفة. نستخدم <b>الساعة التالية</b> كنقطة مرجعية بعد ربع ساعة. عند الساعة ٦:٢٥ نقول: <em>"vijf voor <b>half zeven</b>"</em></p>
+      <p><b>القاعدة المهمة:</b></p>
+      <p>• <b>over</b> = بعد &nbsp; • <b>voor</b> = قبل &nbsp; • <b>half</b> = النصف &nbsp; • <b>kwart</b> = ربع</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>انتبه!</b> "Half zeven" = ٦:٣٠ وليس ٧:٣٠! "half zeven" = نحن في منتصف الطريق إلى السابعة.</div></div>
+      </div>`
+  },
+  tr: {
+    title:'🕐 Saat kaç?', sub:'Hollandaca\'da saati okumak',
+    top:'▲ Şu anki saat', bottom:'▼ HALF + sonraki saat',
+    qOT:'OVER', qOS1:'geçe = over', qOS2:'(5, 10, kwart over)',
+    qVT:'VOOR HALF', qVS1:'yarıma kala = voor half', qVS2:'(10, 5 voor half)',
+    qHT:'OVER HALF', qHS1:'yarımı geçe = over half', qHS2:'(5, 10 over half)',
+    qFT:'VOOR', qFS1:'kala = voor', qFS2:'(kwart, 10, 5 voor)',
+    o12:'... uur (saat)',o1:'5 over (geçe)',o2:'10 over (geçe)',o3:'kwart over (çeyrek geçe)',
+    o4:'10 voor half (yarıma 10 kala)',o5:'5 voor half (yarıma 5 kala)',o6:'half (yarım/buçuk)',
+    o7:'5 over half (yarımı 5 geçe)',o8:'10 over half (yarımı 10 geçe)',o9:'kwart voor (çeyrek kala)',
+    o10:'10 voor (10 kala)',o11:'5 voor (5 kala)',
+    lO:'OVER (geçe)',lV:'VOOR HALF (yarıma kala)',lH:'OVER HALF (yarımı geçe)',lF:'VOOR (kala)',
+    exT:'Örnek: saat 6\'dan 7\'ye',
+    anaT:'🕐 Analog saatle 10 örnek',
+    eAT:'✏️ Alıştırma A — Dijital saat (çoktan seçmeli)',eAS:'Dijital saati görüyorsun. Hollandaca ne dersin?',
+    eBT:'✏️ Alıştırma B — Analog saat (çoktan seçmeli)',eBS:'Saati ibreleriyle görüyorsun. Hollandaca ne dersin?',
+    expl:`<h2>📖 Hollandaca'da saat nasıl çalışır?</h2>
+      <p>Hollandaca'da saati farklı okuruz. Büyük ibre 3'ü (kwart over) geçtikten sonra <b>sonraki saati</b> referans alırız. Yani 6:25'te şöyle deriz: <em>"vijf voor <b>half zeven</b>"</em> — 7'ye bakıyoruz!</p>
+      <p><b>Önemli kurallar:</b></p>
+      <p>• <b>over</b> = geçe &nbsp; • <b>voor</b> = kala &nbsp; • <b>half</b> = yarım/buçuk &nbsp; • <b>kwart</b> = çeyrek</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>Dikkat!</b> "Half zeven" = 6:30, 7:30 <b>değil</b>! Hollandaca'da "half zeven" = yediye <em>yarım kaldı</em> demektir.</div></div>`
+  },
+  om: {
+    title:'🕐 Sa\'aatiin meeqa?', sub:'Sa\'aatii dubbisuu afaan Holandiin',
+    top:'▲ Sa\'aatii ammaa', bottom:'▼ WALAKKAA + sa\'aatii itti aanu',
+    qOT:'OVER', qOS1:'booda = over', qOS2:'(5, 10, kurmaana booda)',
+    qVT:'VOOR HALF', qVS1:'wal. dura = voor half', qVS2:'(10, 5 wal. dura)',
+    qHT:'OVER HALF', qHS1:'wal. booda = over half', qHS2:'(5, 10 wal. booda)',
+    qFT:'VOOR', qFS1:'dura = voor', qFS2:'(kurmaana, 10, 5 dura)',
+    o12:'... uur (sa\'aatii)',o1:'5 over (booda)',o2:'10 over (booda)',o3:'kwart over (kurm. booda)',
+    o4:'10 voor half (wal. dura)',o5:'5 voor half (wal. dura)',o6:'half (walakkaa)',
+    o7:'5 over half (wal. booda)',o8:'10 over half (wal. booda)',o9:'kwart voor (kurm. dura)',
+    o10:'10 voor (dura)',o11:'5 voor (dura)',
+    lO:'OVER (booda)',lV:'VOOR HALF (wal. dura)',lH:'OVER HALF (wal. booda)',lF:'VOOR (dura)',
+    exT:'Fakkeenya: sa\'aatii 6 hanga 7',
+    anaT:'🕐 Fakkeenyota 10 sa\'aatii analoogii',
+    eAT:'✏️ Shaakala A — Sa\'aatii dijitaalaa',eAS:'Sa\'aatii dijitaalaa argita. Afaan Holandiin maal jetta?',
+    eBT:'✏️ Shaakala B — Sa\'aatii analoogii',eBS:'Sa\'aatii ibree argita. Afaan Holandiin maal jetta?',
+    expl:`<h2>📖 Sa'aatiin afaan Holandiin akkamitti hojjeta?</h2>
+      <p>Afaan Holandiin keessatti, sa'aatii akkaataa adda ta'een dubbifna. Erga daqiiqaan 15 (kwart over) darbe booda, <b>sa'aatii itti aanu</b> fayyadamna. Sa'aatii 6:25 irratti: <em>"vijf voor <b>half zeven</b>"</em> — gara 7tti ilaalla!</p>
+      <p>• <b>over</b> = booda &nbsp; • <b>voor</b> = dura &nbsp; • <b>half</b> = walakkaa &nbsp; • <b>kwart</b> = kurmaana</p>
+      <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>Of eeggadhu!</b> "Half zeven" = 6:30, <b>miti</b> 7:30! "half zeven" = gara 7tti walakkaa irra jirra.</div></div>`
+  }
+};
+
+function switchLang(lang, btn) {
+  const d = L[lang];
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  document.getElementById('page-title').textContent = d.title;
+  document.getElementById('page-subtitle').textContent = d.sub;
+  document.getElementById('label-top').textContent = d.top;
+  document.getElementById('label-bottom').textContent = d.bottom;
+
+  document.getElementById('q-over-title').textContent = d.qOT;
+  document.getElementById('q-over-sub1').textContent = d.qOS1;
+  document.getElementById('q-over-sub2').textContent = d.qOS2;
+  document.getElementById('q-vh-title').textContent = d.qVT;
+  document.getElementById('q-vh-sub1').textContent = d.qVS1;
+  document.getElementById('q-vh-sub2').textContent = d.qVS2;
+  document.getElementById('q-oh-title').textContent = d.qHT;
+  document.getElementById('q-oh-sub1').textContent = d.qHS1;
+  document.getElementById('q-oh-sub2').textContent = d.qHS2;
+  document.getElementById('q-voor-title').textContent = d.qFT;
+  document.getElementById('q-voor-sub1').textContent = d.qFS1;
+  document.getElementById('q-voor-sub2').textContent = d.qFS2;
+
+  document.getElementById('ol-12').textContent = d.o12;
+  document.getElementById('ol-1').textContent = d.o1;
+  document.getElementById('ol-2').textContent = d.o2;
+  document.getElementById('ol-3').textContent = d.o3;
+  document.getElementById('ol-4').textContent = d.o4;
+  document.getElementById('ol-5').textContent = d.o5;
+  document.getElementById('ol-6').textContent = d.o6;
+  document.getElementById('ol-7').textContent = d.o7;
+  document.getElementById('ol-8').textContent = d.o8;
+  document.getElementById('ol-9').textContent = d.o9;
+  document.getElementById('ol-10').textContent = d.o10;
+  document.getElementById('ol-11').textContent = d.o11;
+
+  document.getElementById('leg-over').textContent = d.lO;
+  document.getElementById('leg-vh').textContent = d.lV;
+  document.getElementById('leg-oh').textContent = d.lH;
+  document.getElementById('leg-voor').textContent = d.lF;
+
+  document.getElementById('example-title').textContent = d.exT;
+  document.getElementById('analog-examples-title').textContent = d.anaT;
+  document.getElementById('ex-title').textContent = d.eAT;
+  document.getElementById('ex-subtitle').textContent = d.eAS;
+  document.getElementById('ex-b-title').textContent = d.eBT;
+  document.getElementById('ex-b-subtitle').textContent = d.eBS;
+  document.getElementById('explanation-block').innerHTML = d.expl;
+}
+
+// ===== INIT =====
+renderAnalogExamples();
+renderDigitalExercises();
+renderAnalogExercises();
+document.getElementById('score-total').textContent = totalQ;
+switchLang('nl', document.querySelector('.lang-tab'));
+</script>
+
+</body>
+</html>

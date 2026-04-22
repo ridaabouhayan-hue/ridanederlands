@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chat-oefening A2 — NT2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #0b141a;
+    color: #111b21;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  #app {
+    width: 100%;
+    max-width: 520px;
+    background: #efeae2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.3);
+  }
+
+  /* ========== START SCREEN ========== */
+  .start-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 24px;
+    background: linear-gradient(160deg, #008069 0%, #00a884 100%);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+  }
+  .start-screen .logo {
+    font-size: 72px;
+    margin-bottom: 16px;
+  }
+  .start-screen h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .start-screen .subtitle {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+  .start-screen .name-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 320px;
+    color: #111b21;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .start-screen label {
+    display: block;
+    font-size: 13px;
+    color: #667781;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+  .start-screen input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e9edef;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .start-screen input:focus { border-color: #00a884; }
+  .start-btn {
+    width: 100%;
+    padding: 13px;
+    background: #00a884;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .start-btn:disabled { background: #b8d9cf; cursor: not-allowed; }
+  .start-screen .info {
+    margin-top: 28px;
+    font-size: 12px;
+    opacity: 0.85;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  /* ========== CHAT SCREEN ========== */
+  .chat-screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .chat-screen.active { display: flex; }
+
+  /* Header */
+  .wa-header {
+    background: #008069;
+    color: white;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .back-arrow {
+    font-size: 22px;
+    opacity: 0.9;
+    padding-right: 2px;
+  }
+  .group-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dfe5e7;
+    color: #008069;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .group-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .group-name {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .group-members {
+    font-size: 12px;
+    opacity: 0.85;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .scenario-pill {
+    background: rgba(255,255,255,0.18);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #00a884;
+    transition: width 0.4s ease;
+  }
+
+  /* Chat body */
+  .chat-body {
+    flex: 1;
+    background-color: #efeae2;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='%23d9d2c6' fill-opacity='0.35'><circle cx='10' cy='10' r='1.2'/><circle cx='30' cy='20' r='1'/><circle cx='50' cy='12' r='1.2'/><circle cx='20' cy='40' r='1'/><circle cx='45' cy='45' r='1.2'/><circle cx='5' cy='50' r='1'/></g></svg>");
+    padding: 14px 10px 8px;
+    overflow-y: auto;
+  }
+  .date-pill {
+    display: block;
+    margin: 0 auto 12px;
+    background: rgba(255,255,255,0.92);
+    color: #54656f;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    width: fit-content;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.05);
+  }
+
+  /* Messages */
+  .msg {
+    max-width: 78%;
+    margin-bottom: 3px;
+    background: white;
+    padding: 6px 9px 4px;
+    border-radius: 7.5px;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.1);
+    font-size: 14.5px;
+    line-height: 1.35;
+    color: #111b21;
+    position: relative;
+    word-wrap: break-word;
+  }
+  .msg.first-of-group {
+    margin-top: 8px;
+  }
+  .msg.first-of-group::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid white;
+    border-left: 8px solid transparent;
+  }
+  .msg .sender-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+  }
+  .msg .msg-text {
+    padding-right: 48px;
+  }
+  .msg .msg-time {
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+    font-size: 10.5px;
+    color: #667781;
+  }
+
+  /* Task box */
+  .task-box {
+    background: #fff8e1;
+    border-top: 1px solid #e9dfb7;
+    padding: 14px 16px;
+    flex-shrink: 0;
+  }
+  .task-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a67c00;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+  }
+  .task-text {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #3e2f00;
+    margin-bottom: 10px;
+  }
+  .focus-hint {
+    background: #fff3b0;
+    padding: 8px 11px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #4a3800;
+    line-height: 1.45;
+  }
+  .focus-hint strong { font-weight: 600; }
+
+  /* Input bar */
+  .input-bar {
+    background: #f0f2f5;
+    padding: 8px 10px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+    border-top: 1px solid #e1e4e6;
+  }
+  .input-bar textarea {
+    flex: 1;
+    background: white;
+    border: none;
+    border-radius: 22px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 42px;
+    max-height: 120px;
+    line-height: 1.4;
+    color: #111b21;
+  }
+  .input-bar textarea::placeholder { color: #8696a0; }
+  .send-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #00a884;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.1s, background 0.2s;
+  }
+  .send-btn:active { transform: scale(0.92); }
+  .send-btn:disabled { background: #b8d9cf; cursor: not-allowed; }
+  .send-btn svg { width: 22px; height: 22px; }
+
+  /* ========== SENT SCREEN ========== */
+  .sent-screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px;
+    text-align: center;
+    background: #efeae2;
+    min-height: 100vh;
+  }
+  .sent-screen.active { display: flex; }
+  .check-circle {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #00a884;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 54px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(0,168,132,0.35);
+    animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+  .sent-screen h2 {
+    font-size: 22px;
+    color: #111b21;
+    margin-bottom: 8px;
+  }
+  .sent-screen .sent-sub {
+    color: #54656f;
+    font-size: 14px;
+    margin-bottom: 36px;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+  .next-btn {
+    background: #00a884;
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 26px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0,168,132,0.3);
+  }
+  .edit-link {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    color: #667781;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* ========== DONE SCREEN ========== */
+  .done-screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px;
+    text-align: center;
+    background: linear-gradient(160deg, #008069 0%, #00a884 100%);
+    color: white;
+    min-height: 100vh;
+  }
+  .done-screen.active { display: flex; }
+  .party-emoji {
+    font-size: 84px;
+    margin-bottom: 20px;
+    animation: bounce 1s ease infinite alternate;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+  }
+  .done-screen h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .done-screen p {
+    font-size: 15px;
+    opacity: 0.95;
+    max-width: 320px;
+    line-height: 1.55;
+    margin-bottom: 32px;
+  }
+  .done-screen .restart-btn {
+    background: white;
+    color: #008069;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  @media (min-width: 521px) {
+    body { align-items: center; padding: 20px 0; }
+    #app { min-height: calc(100vh - 40px); border-radius: 12px; overflow: hidden; }
+    .start-screen, .sent-screen, .done-screen { min-height: calc(100vh - 40px); }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START SCREEN -->
+  <div id="startScreen" class="start-screen">
+    <div class="logo">💬</div>
+    <h1>Chat-oefening A2</h1>
+    <p class="subtitle">Oefen met echte WhatsApp-gesprekken in het Nederlands</p>
+    <div class="name-box">
+      <label for="nameInput">Wat is je naam?</label>
+      <input type="text" id="nameInput" placeholder="Bijv. Fatima" autocomplete="off" maxlength="40">
+      <button class="start-btn" id="startBtn" disabled>Start →</button>
+    </div>
+    <p class="info">Je krijgt 7 chats. Lees, beantwoord, en stuur je antwoord naar je docent.</p>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div id="chatScreen" class="chat-screen">
+    <div class="wa-header">
+      <div class="back-arrow">‹</div>
+      <div class="group-avatar" id="groupAvatar">V</div>
+      <div class="group-info">
+        <div class="group-name" id="groupName">Vrienden</div>
+        <div class="group-members" id="groupMembers">Lisa, Noor, Karim, Daan</div>
+      </div>
+      <div class="scenario-pill" id="scenarioPill">1/7</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 14%;"></div></div>
+    <div class="chat-body" id="chatBody">
+      <div class="date-pill">Vandaag</div>
+      <div id="messagesContainer"></div>
+    </div>
+    <div class="task-box">
+      <div class="task-label">📝 JOUW OPDRACHT</div>
+      <div class="task-text" id="taskText"></div>
+      <div class="focus-hint" id="focusHint"></div>
+    </div>
+    <div class="input-bar">
+      <textarea id="answerInput" placeholder="Typ je bericht..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" disabled aria-label="Verzenden">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- SENT SCREEN -->
+  <div id="sentScreen" class="sent-screen">
+    <div class="check-circle">✓</div>
+    <h2>Verstuurd naar Rida</h2>
+    <p class="sent-sub" id="sentSub">Je antwoord is verstuurd via WhatsApp.</p>
+    <button class="next-btn" id="nextBtn">Volgend scenario →</button>
+    <button class="edit-link" id="editLink">opnieuw bewerken</button>
+  </div>
+
+  <!-- DONE SCREEN -->
+  <div id="doneScreen" class="done-screen">
+    <div class="party-emoji">🎉</div>
+    <h2>Super gedaan!</h2>
+    <p>Je hebt alle 7 chats afgerond. Rida heeft al je antwoorden ontvangen. Goed bezig!</p>
+    <button class="restart-btn" id="restartBtn">Opnieuw beginnen</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============================================================
+  // CONFIG — vervang deze waarden als je wilt
+  // ============================================================
+  const TEACHER_PHONE = '31626211106'; // zonder +
+  const TEACHER_NAME = 'Rida';
+
+  // 👉 OPTIONEEL: Google Apps Script Web App URL voor stiekeme logging.
+  //    Laat leeg ('') als je alleen WhatsApp wilt gebruiken.
+  //    Zie onderaan dit bestand voor uitleg hoe je dit opzet.
+  const GOOGLE_SHEETS_URL = '';
+
+  // ============================================================
+  // SCENARIO'S
+  // ============================================================
+  const SCENARIOS = [
+    {
+      title: "Zomervakantie plannen",
+      groupName: "Vrienden",
+      groupAvatar: "V",
+      members: "Lisa, Noor, Karim, Daan",
+      messages: [
+        { sender: "Lisa",  time: "14:23", text: "Hé allemaal! 😊 Ik heb een idee. Gaan we samen op vakantie deze zomer?" },
+        { sender: "Noor",  time: "14:24", text: "Oh leuk! Waar denk je aan?" },
+        { sender: "Karim", time: "14:24", text: "Ja super idee!! 🙌" },
+        { sender: "Lisa",  time: "14:25", text: "Misschien Spanje? Of Griekenland?" },
+        { sender: "Daan",  time: "14:26", text: "Ff kijken.. Spanje is warm en niet te duur denk ik" },
+        { sender: "Noor",  time: "14:26", text: "Ik wil graag naar de zee 🏖️" },
+        { sender: "Karim", time: "14:27", text: "Mee eens. En lekker eten 😋" },
+        { sender: "Lisa",  time: "14:28", text: "Oke dus zee + zon. Spanje of Griekenland? En wanneer?" },
+        { sender: "Lisa",  time: "14:28", text: "@jij, wat wil jij? Welk land, welke maand, en waarom?" }
+      ],
+      task: "Kies Spanje OF Griekenland. Leg uit <strong>waarom</strong> je die keuze maakt, zeg in <strong>welke maand</strong> je wil gaan, en stel een <strong>vraag terug</strong> aan de groep.",
+      focus: "💡 Gebruik: <strong>ik wil … omdat …</strong>, <strong>ik denk dat …</strong>, maanden (juni, juli, augustus)"
+    },
+    {
+      title: "Verjaardag van mama",
+      groupName: "Familie",
+      groupAvatar: "F",
+      members: "Emma, Mark, papa",
+      messages: [
+        { sender: "Emma",  time: "19:10", text: "Jongens, mama is over 2 weken jarig! 🎂" },
+        { sender: "Mark",  time: "19:11", text: "Oh ja!! Wat gaan we doen?" },
+        { sender: "papa",  time: "19:12", text: "Ik dacht aan een etentje. Thuis of in een restaurant?" },
+        { sender: "Emma",  time: "19:13", text: "Thuis is gezelliger denk ik" },
+        { sender: "Mark",  time: "19:13", text: "Maar dan moet iemand koken 😅" },
+        { sender: "Emma",  time: "19:14", text: "Haha ja klopt. En een cadeau? Samen 1 groot cadeau?" },
+        { sender: "papa",  time: "19:15", text: "Samen. Anders wordt het te veel." },
+        { sender: "Mark",  time: "19:16", text: "Oké. Wat vindt mama leuk? Een boek? Sieraad? Uitje?" },
+        { sender: "Emma",  time: "19:17", text: "@jij, jij kent mama goed. Wat is jouw idee?" }
+      ],
+      task: "Stel een <strong>cadeau</strong> voor en leg uit <strong>waarom</strong> mama dat leuk vindt. Zeg ook of je liever <strong>thuis of in een restaurant</strong> wil eten, en noem een <strong>datum</strong>.",
+      focus: "💡 Gebruik: <strong>ik stel … voor</strong>, <strong>want / omdat</strong>, <strong>liever … dan …</strong>"
+    },
+    {
+      title: "Wat eten we vanavond?",
+      groupName: "Huisgenoten",
+      groupAvatar: "H",
+      members: "Sofie, Daan, Noor",
+      messages: [
+        { sender: "Sofie", time: "17:45", text: "Oh ik heb zo'n honger 😩" },
+        { sender: "Daan",  time: "17:45", text: "Same! Wat gaan we eten?" },
+        { sender: "Noor",  time: "17:46", text: "Thuis of uit?" },
+        { sender: "Sofie", time: "17:47", text: "De koelkast is bijna leeg ehh" },
+        { sender: "Daan",  time: "17:48", text: "Pizza bestellen? Of naar dat Thaise restaurant op de hoek?" },
+        { sender: "Noor",  time: "17:49", text: "Ik at gisteren al pizza..." },
+        { sender: "Daan",  time: "17:50", text: "Oké Thais dan?" },
+        { sender: "Sofie", time: "17:51", text: "Is niet goedkoop he. Maar wel lekker 😋" },
+        { sender: "Noor",  time: "17:52", text: "@jij, wat wil jij? Thuis koken, pizza of Thais?" }
+      ],
+      task: "Kies tussen <strong>thuis koken, pizza of Thais</strong>. Leg uit <strong>waarom</strong>, zeg <strong>wat</strong> je wil eten, en stel een <strong>vraag</strong> aan de anderen.",
+      focus: "💡 Gebruik: <strong>ik heb zin in …</strong>, <strong>ik vind … lekker</strong>, <strong>want</strong>, <strong>niet te duur</strong>"
+    },
+    {
+      title: "Zoon is ziek",
+      groupName: "Thuis",
+      groupAvatar: "T",
+      members: "partner, oma",
+      messages: [
+        { sender: "partner", time: "08:15", text: "Liefde, Tim is niet lekker. Koorts 38.9 😟" },
+        { sender: "oma",     time: "08:17", text: "Och lieverd. Al naar de dokter geweest?" },
+        { sender: "partner", time: "08:18", text: "Nog niet. Hij is moe en verkouden." },
+        { sender: "partner", time: "08:19", text: "Ik moet straks werken, wat doen we?" },
+        { sender: "oma",     time: "08:20", text: "Ik kan komen oppassen hoor. Maar niet heel lang vandaag." },
+        { sender: "partner", time: "08:21", text: "Oh dat zou super zijn mam 🙏" },
+        { sender: "oma",     time: "08:22", text: "Hoe laat moet jij weg?" },
+        { sender: "partner", time: "08:23", text: "9 uur. En ik ben om 15 uur terug." },
+        { sender: "partner", time: "08:24", text: "@jij, wat denk jij? Werken of thuisblijven? En wie haalt Tim uit bed?" }
+      ],
+      task: "Geef je <strong>mening</strong>: werken of thuisblijven? Leg uit <strong>waarom</strong>. Maak een <strong>plan</strong> (wie doet wat, hoe laat) en stel een <strong>vraag</strong> aan oma.",
+      focus: "💡 Gebruik: <strong>ik vind dat …</strong>, <strong>moeten / kunnen</strong>, tijden (<strong>om 9 uur</strong>, <strong>om 3 uur</strong>)"
+    },
+    {
+      title: "Huiswerk van de cursus",
+      groupName: "Klasgenoten",
+      groupAvatar: "K",
+      members: "Karim, Fatima, Ahmed",
+      messages: [
+        { sender: "Karim",  time: "21:12", text: "Hé allemaal! Ik was vandaag ziek. Wat was het huiswerk? 🙏" },
+        { sender: "Fatima", time: "21:15", text: "Hoi Karim! Beterschap. We moeten thema 4 afmaken." },
+        { sender: "Ahmed",  time: "21:16", text: "Ja en de schrijfopdracht van bladzijde 67." },
+        { sender: "Karim",  time: "21:17", text: "Oh oké. Welke opdracht precies?" },
+        { sender: "Fatima", time: "21:18", text: "Een brief schrijven naar de gemeente. Niet lang, 10 zinnen." },
+        { sender: "Karim",  time: "21:19", text: "Aah duidelijk. En de luisteroefening?" },
+        { sender: "Ahmed",  time: "21:20", text: "Ja die ook. Oefening 3 en 4." },
+        { sender: "Fatima", time: "21:22", text: "@jij, heb jij de les gevolgd? Weet jij nog iets wat wij vergeten zijn?" }
+      ],
+      task: "Reageer op de chat. Zeg of je nog <strong>iets weet</strong> wat ze vergeten zijn, deel een <strong>tip</strong> over de schrijfopdracht, en wens Karim <strong>beterschap</strong>.",
+      focus: "💡 Gebruik: <strong>ik denk dat …</strong>, <strong>we hebben … gedaan</strong>, <strong>moeten / kunnen</strong>"
+    },
+    {
+      title: "BBQ zaterdag",
+      groupName: "Vrienden",
+      groupAvatar: "V",
+      members: "Lisa, Mark, Emma",
+      messages: [
+        { sender: "Lisa", time: "20:01", text: "Jongens, BBQ zaterdag bij mij! 🔥" },
+        { sender: "Mark", time: "20:02", text: "Yesss eindelijk!!" },
+        { sender: "Emma", time: "20:02", text: "Wat super! Wat moeten we meenemen?" },
+        { sender: "Lisa", time: "20:03", text: "Ik regel vlees en brood." },
+        { sender: "Mark", time: "20:04", text: "Oké ik kan salade maken." },
+        { sender: "Emma", time: "20:05", text: "En drinken dan? Bier, cola, iets anders?" },
+        { sender: "Mark", time: "20:06", text: "Ik neem bier mee." },
+        { sender: "Lisa", time: "20:07", text: "Top! En chips? En iets zoets?" },
+        { sender: "Lisa", time: "20:08", text: "@jij, wat kun jij kopen? Kies minstens 2 dingen en zeg hoe laat je komt." }
+      ],
+      task: "Zeg wat jij gaat <strong>kopen</strong> (2 dingen of meer). Leg uit <strong>waarom</strong> (bv. lekker, goedkoop). Zeg <strong>hoe laat</strong> je komt en vraag of je iemand moet <strong>ophalen</strong>.",
+      focus: "💡 Gebruik: <strong>ik neem … mee</strong>, <strong>ik ga … kopen</strong>, tijden, <strong>zal ik …?</strong>"
+    },
+    {
+      title: "Film kijken zondag",
+      groupName: "Vrienden",
+      groupAvatar: "V",
+      members: "Noor, Sofie, Karim",
+      messages: [
+        { sender: "Noor",  time: "16:30", text: "Zin in een film zondagavond? 🎬" },
+        { sender: "Sofie", time: "16:31", text: "Ja tof! Bij wie?" },
+        { sender: "Noor",  time: "16:32", text: "Bij mij kan. Ik heb Netflix." },
+        { sender: "Karim", time: "16:33", text: "Oh leuk! Welke film?" },
+        { sender: "Sofie", time: "16:34", text: "Iets grappigs 😂 ik ben moe van de week." },
+        { sender: "Karim", time: "16:35", text: "Ik hou meer van actie of iets spannends." },
+        { sender: "Noor",  time: "16:36", text: "Hmmm we moeten kiezen…" },
+        { sender: "Sofie", time: "16:37", text: "En hoe laat? Ik werk tot 7." },
+        { sender: "Noor",  time: "16:38", text: "@jij, wat wil jij kijken? Grappig of actie? En hoe laat kan jij komen?" }
+      ],
+      task: "Kies een soort film (<strong>grappig, actie of iets anders</strong>). Leg uit <strong>waarom</strong>. Stel een <strong>tijd</strong> voor en vraag of er iets te <strong>eten</strong> is.",
+      focus: "💡 Gebruik: <strong>ik hou van …</strong>, <strong>ik vind … leuk</strong>, <strong>zullen we om … ?</strong>"
+    }
+  ];
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let studentName = '';
+  let currentIdx = 0;
+  const answers = new Array(SCENARIOS.length).fill('');
+
+  // Kleurenpalet voor sender-namen (WhatsApp-achtig)
+  const NAME_COLORS = [
+    '#e54c5c', '#3c8de7', '#f09300', '#6b4cd6',
+    '#008b94', '#d63384', '#c96e00', '#0a7d62'
+  ];
+
+  // ============================================================
+  // DOM REFS
+  // ============================================================
+  const startScreen = document.getElementById('startScreen');
+  const chatScreen = document.getElementById('chatScreen');
+  const sentScreen = document.getElementById('sentScreen');
+  const doneScreen = document.getElementById('doneScreen');
+
+  const nameInput = document.getElementById('nameInput');
+  const startBtn = document.getElementById('startBtn');
+
+  const groupName = document.getElementById('groupName');
+  const groupMembers = document.getElementById('groupMembers');
+  const groupAvatar = document.getElementById('groupAvatar');
+  const scenarioPill = document.getElementById('scenarioPill');
+  const progressFill = document.getElementById('progressFill');
+  const messagesContainer = document.getElementById('messagesContainer');
+  const taskText = document.getElementById('taskText');
+  const focusHint = document.getElementById('focusHint');
+  const answerInput = document.getElementById('answerInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatBody = document.getElementById('chatBody');
+
+  const sentSub = document.getElementById('sentSub');
+  const nextBtn = document.getElementById('nextBtn');
+  const editLink = document.getElementById('editLink');
+  const restartBtn = document.getElementById('restartBtn');
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function getSenderColor(name, scenarioMessages) {
+    const uniqueSenders = [...new Set(scenarioMessages.map(m => m.sender))];
+    const idx = uniqueSenders.indexOf(name);
+    return NAME_COLORS[idx % NAME_COLORS.length];
+  }
+
+  function renderScenario(idx) {
+    const s = SCENARIOS[idx];
+    groupName.textContent = s.groupName;
+    groupMembers.textContent = studentName + ', ' + s.members;
+    groupAvatar.textContent = s.groupAvatar;
+    scenarioPill.textContent = (idx + 1) + '/' + SCENARIOS.length;
+    progressFill.style.width = ((idx + 1) / SCENARIOS.length * 100) + '%';
+
+    // Render messages
+    messagesContainer.innerHTML = '';
+    let prevSender = null;
+    s.messages.forEach(m => {
+      const isFirstOfGroup = m.sender !== prevSender;
+      const bubble = document.createElement('div');
+      bubble.className = 'msg' + (isFirstOfGroup ? ' first-of-group' : '');
+
+      if (isFirstOfGroup) {
+        const nameEl = document.createElement('span');
+        nameEl.className = 'sender-name';
+        nameEl.style.color = getSenderColor(m.sender, s.messages);
+        nameEl.textContent = m.sender;
+        bubble.appendChild(nameEl);
+      }
+
+      const textEl = document.createElement('div');
+      textEl.className = 'msg-text';
+      textEl.textContent = m.text;
+      bubble.appendChild(textEl);
+
+      const timeEl = document.createElement('span');
+      timeEl.className = 'msg-time';
+      timeEl.textContent = m.time;
+      bubble.appendChild(timeEl);
+
+      messagesContainer.appendChild(bubble);
+      prevSender = m.sender;
+    });
+
+    taskText.innerHTML = s.task;
+    focusHint.innerHTML = s.focus;
+
+    // Restore previous answer if any
+    answerInput.value = answers[idx] || '';
+    updateSendBtn();
+
+    // Update send button label for last scenario
+    if (idx === SCENARIOS.length - 1) {
+      // visually nothing changes for send button itself
+    }
+
+    // Scroll chat to bottom
+    setTimeout(() => {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }, 50);
+  }
+
+  function updateSendBtn() {
+    const val = answerInput.value.trim();
+    sendBtn.disabled = val.length < 3;
+  }
+
+  function autoResizeTextarea() {
+    answerInput.style.height = 'auto';
+    answerInput.style.height = Math.min(answerInput.scrollHeight, 120) + 'px';
+  }
+
+  function logToGoogleSheet(scenarioIdx, answer) {
+    if (!GOOGLE_SHEETS_URL) return; // silent skip if not configured
+    const payload = {
+      name: studentName,
+      scenario_number: scenarioIdx + 1,
+      scenario_title: SCENARIOS[scenarioIdx].title,
+      answer: answer,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      fetch(GOOGLE_SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
+  function sendViaWhatsApp(scenarioIdx, answer) {
+    const s = SCENARIOS[scenarioIdx];
+    const msg = '📝 Chat-oefening — Scenario ' + (scenarioIdx + 1) + '/' + SCENARIOS.length + ': ' + s.title +
+                '\n\n' + answer +
+                '\n\n— ' + studentName;
+    const url = 'https://wa.me/' + TEACHER_PHONE + '?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  }
+
+  function showScreen(name) {
+    startScreen.classList.remove('active');
+    chatScreen.classList.remove('active');
+    sentScreen.classList.remove('active');
+    doneScreen.classList.remove('active');
+
+    startScreen.style.display = 'none';
+    chatScreen.style.display = 'none';
+    sentScreen.style.display = 'none';
+    doneScreen.style.display = 'none';
+
+    if (name === 'start')  { startScreen.style.display = 'flex'; }
+    if (name === 'chat')   { chatScreen.classList.add('active'); chatScreen.style.display = 'flex'; }
+    if (name === 'sent')   { sentScreen.classList.add('active'); sentScreen.style.display = 'flex'; }
+    if (name === 'done')   { doneScreen.classList.add('active'); doneScreen.style.display = 'flex'; }
+  }
+
+  // ============================================================
+  // EVENT LISTENERS
+  // ============================================================
+  nameInput.addEventListener('input', () => {
+    startBtn.disabled = nameInput.value.trim().length < 2;
+  });
+
+  nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !startBtn.disabled) {
+      startBtn.click();
+    }
+  });
+
+  startBtn.addEventListener('click', () => {
+    studentName = nameInput.value.trim();
+    if (studentName.length < 2) return;
+    currentIdx = 0;
+    showScreen('chat');
+    renderScenario(currentIdx);
+  });
+
+  answerInput.addEventListener('input', () => {
+    answers[currentIdx] = answerInput.value;
+    updateSendBtn();
+    autoResizeTextarea();
+  });
+
+  sendBtn.addEventListener('click', () => {
+    const answer = answerInput.value.trim();
+    if (answer.length < 3) return;
+    answers[currentIdx] = answer;
+
+    // 1. Log stiekem naar Google Sheet (als URL is ingesteld)
+    logToGoogleSheet(currentIdx, answer);
+
+    // 2. Open WhatsApp
+    sendViaWhatsApp(currentIdx, answer);
+
+    // 3. Toon bevestigingsscherm
+    const isLast = currentIdx === SCENARIOS.length - 1;
+    nextBtn.textContent = isLast ? 'Afronden →' : 'Volgend scenario →';
+    sentSub.textContent = 'Druk in WhatsApp op verzenden om je bericht echt te versturen naar ' + TEACHER_NAME + '.';
+    showScreen('sent');
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentIdx === SCENARIOS.length - 1) {
+      showScreen('done');
+    } else {
+      currentIdx++;
+      showScreen('chat');
+      renderScenario(currentIdx);
+      answerInput.focus();
+    }
+  });
+
+  editLink.addEventListener('click', () => {
+    showScreen('chat');
+    renderScenario(currentIdx);
+    setTimeout(() => answerInput.focus(), 100);
+  });
+
+  restartBtn.addEventListener('click', () => {
+    studentName = '';
+    currentIdx = 0;
+    for (let i = 0; i < answers.length; i++) answers[i] = '';
+    nameInput.value = '';
+    startBtn.disabled = true;
+    showScreen('start');
+  });
+
+  // Init
+  showScreen('start');
+})();
+</script>
+
+<!--
+==================================================================
+  OPTIONEEL: STIEKEME LOGGING NAAR GOOGLE SHEET
+==================================================================
+  Als je wilt dat ELKE student-antwoord ook automatisch in een
+  Google Sheet wordt opgeslagen (naast WhatsApp), doe dit:
+
+  STAP 1 — Maak een nieuwe Google Sheet
+     Ga naar sheets.google.com en maak een leeg spreadsheet.
+     Zet in rij 1 de kolomkoppen:
+     A1: Timestamp  | B1: Naam  | C1: Scenario#  | D1: Titel  | E1: Antwoord
+
+  STAP 2 — Open Apps Script
+     In je Sheet: menu "Extensies" → "Apps Script"
+
+  STAP 3 — Plak deze code (vervang alles wat er staat):
+
+     function doPost(e) {
+       const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+       const data = JSON.parse(e.postData.contents);
+       sheet.appendRow([
+         new Date(data.timestamp),
+         data.name,
+         data.scenario_number,
+         data.scenario_title,
+         data.answer
+       ]);
+       return ContentService.createTextOutput(JSON.stringify({status: 'ok'}))
+         .setMimeType(ContentService.MimeType.JSON);
+     }
+
+  STAP 4 — Deploy als Web App
+     Rechtsboven: "Implementeren" → "Nieuwe implementatie"
+     - Type: "Web-app"
+     - Uitvoeren als: ikzelf (jij)
+     - Wie heeft toegang: "Iedereen"  (ja, echt iedereen)
+     Klik "Implementeren" en geef toestemming als gevraagd.
+
+  STAP 5 — Kopieer de URL
+     Je krijgt een URL zoals:
+     https://script.google.com/macros/s/AKfycbxxxxxxxx.../exec
+
+  STAP 6 — Plak hem in dit bestand
+     Zoek bovenin de regel:   const GOOGLE_SHEETS_URL = '';
+     Vervang door:             const GOOGLE_SHEETS_URL = 'JOUW_URL_HIER';
+     Sla het bestand op.
+
+  KLAAR. Elke keer dat een student op verzenden drukt, komt het
+  antwoord automatisch in je Sheet. De student ziet hier NIETS
+  van — hun WhatsApp-venster opent normaal.
+
+  💡 Tip: sorteer de Sheet op kolom B (Naam) om per student te kijken.
+==================================================================
+-->
+
+</body>
+</html>

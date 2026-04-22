@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Relógio - Aprender neerlandês</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f8f6f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2d3436;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: #636e72;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  .clock-container {
+    position: relative;
+    width: 720px;
+    max-width: 95vw;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 20px rgba(0,0,0,0.08));
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .label-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2d3436;
+  }
+
+  .label-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+  }
+
+  .time-list {
+    margin-top: 30px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    max-width: 720px;
+    width: 100%;
+  }
+
+  .time-list h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: #2d3436;
+  }
+
+  .time-group {
+    margin-bottom: 12px;
+  }
+
+  .group-header {
+    display: inline-block;
+    color: white;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+
+  .group-entries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding-left: 4px;
+  }
+
+  .time-entry {
+    font-size: 0.92rem;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .time-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @media print {
+    body { background: white; }
+    svg { filter: none; }
+  }
+
+  /* === EDUCATIONAL SECTION === */
+  .edu-section {
+    max-width: 720px;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .edu-block {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+
+  .edu-block h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #2d3436;
+    margin-bottom: 14px;
+  }
+
+  .edu-block p {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  /* Tip boxes */
+  .tip-box {
+    display: flex;
+    gap: 12px;
+    background: #e8f8f5;
+    border-left: 4px solid #4ECDC4;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .tip-orange { background: #fff3e0; border-left-color: #FF6B6B; }
+  .tip-blue { background: #eee8ff; border-left-color: #6C5CE7; }
+  .tip-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  /* Example clock cards */
+  .clock-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .example-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #f8f6f1;
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .mini-clock-wrap {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+
+  .mini-clock {
+    width: 100%;
+    height: 100%;
+  }
+
+  .example-info {
+    flex: 1;
+  }
+
+  .digital-display {
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2d3436;
+    background: #1a1a2e;
+    color: #00ff88;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  .example-answer {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2d3436;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .quad-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .example-note {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 600;
+  }
+
+  /* Dagdelen */
+  .dagdeel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .dagdeel-card {
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .dagdeel-icon { font-size: 1.8rem; margin-bottom: 4px; }
+  .dagdeel-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 2px; }
+  .dagdeel-time { font-size: 0.85rem; font-weight: 600; opacity: 0.7; margin-bottom: 8px; }
+  .dagdeel-ex { font-size: 0.85rem; font-style: italic; }
+
+  /* Compare table */
+  .compare-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+
+  .compare-col {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f8f6f1;
+  }
+
+  .compare-header {
+    padding: 10px 16px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: white;
+    text-align: center;
+  }
+
+  .compare-body {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .compare-body p { margin-bottom: 10px; }
+
+  .compare-example {
+    background: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 0.88rem;
+  }
+
+  /* Conversion grid */
+  .conversion-grid {
+    background: #f8f6f1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  .conversion-header {
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    color: #2d3436;
+  }
+
+  .conversion-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 3px 0;
+    font-size: 0.88rem;
+  }
+
+  .conv-24 {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    color: #6C5CE7;
+    width: 50px;
+  }
+
+  .conv-arrow { color: #aaa; }
+
+  .conv-12 { font-weight: 600; color: #2d3436; }
+
+  /* Exercises */
+  .exercise-card {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 18px 16px;
+  }
+
+  .exercise-number {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    background: #2d3436;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .exercise-answer-line {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #888;
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 4px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .digital-exercise {
+    font-size: 1.8rem;
+    margin-bottom: 0;
+  }
+
+  /* Answers */
+  .answers-block details {
+    cursor: pointer;
+  }
+
+  .answers-block summary {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #6C5CE7;
+    padding: 8px 0;
+    list-style: none;
+  }
+
+  .answers-block summary::before {
+    content: "▶ ";
+  }
+
+  .answers-block details[open] summary::before {
+    content: "▼ ";
+  }
+
+  .answers-content {
+    padding: 12px 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .answers-content ol {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  .answers-content li {
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .dagdeel-grid, .compare-table, .clock-examples {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Que horas são? 🕐</h1>
+<p class="subtitle">Ler as horas em neerlandês</p>
+
+<div class="clock-container">
+<svg viewBox="-170 -40 900 680" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="topRight">
+      <path d="M280,280 L280,30 A250,250 0 0,1 530,280 Z"/>
+    </clipPath>
+    <clipPath id="bottomRight">
+      <path d="M280,280 L530,280 A250,250 0 0,1 280,530 Z"/>
+    </clipPath>
+    <clipPath id="bottomLeft">
+      <path d="M280,280 L280,530 A250,250 0 0,1 30,280 Z"/>
+    </clipPath>
+    <clipPath id="topLeft">
+      <path d="M280,280 L30,280 A250,250 0 0,1 280,30 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="280" cy="280" r="252" fill="white" stroke="#e0ddd5" stroke-width="2"/>
+
+  <!-- Quadrant fills -->
+  <circle cx="280" cy="280" r="250" fill="#4ECDC4" clip-path="url(#topRight)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#FF6B6B" clip-path="url(#bottomRight)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#FFD93D" clip-path="url(#bottomLeft)" opacity="0.85"/>
+  <circle cx="280" cy="280" r="250" fill="#6C5CE7" clip-path="url(#topLeft)" opacity="0.85"/>
+
+  <!-- Divider lines -->
+  <line x1="280" y1="30" x2="280" y2="530" stroke="white" stroke-width="3"/>
+  <line x1="30" y1="280" x2="530" y2="280" stroke="white" stroke-width="3"/>
+
+  <!-- Top half / bottom half labels -->
+  <rect x="186" y="62" width="188" height="32" rx="16" fill="white" opacity="0.9"/>
+  <text x="280" y="84" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="16" fill="#2d3436">▲ A hora atual</text>
+
+  <rect x="175" y="468" width="210" height="32" rx="16" fill="white" opacity="0.9"/>
+  <text x="280" y="490" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="16" fill="#2d3436">▼ HALF + próxima hora</text>
+
+  <!-- Quadrant labels -->
+  <!-- Top Right: OVER -->
+  <rect x="310" y="140" width="160" height="68" rx="14" fill="white" opacity="0.93"/>
+  <text x="390" y="168" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="24" fill="#4ECDC4">OVER</text>
+  <text x="390" y="188" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">5 over, 10 over,</text>
+  <text x="390" y="203" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">kwart over</text>
+
+  <!-- Bottom Right: VOOR HALF -->
+  <rect x="300" y="305" width="170" height="68" rx="14" fill="white" opacity="0.93"/>
+  <text x="385" y="333" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="22" fill="#FF6B6B">VOOR HALF</text>
+  <text x="385" y="353" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">10 voor half,</text>
+  <text x="385" y="368" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">5 voor half</text>
+
+  <!-- Bottom Left: OVER HALF -->
+  <rect x="90" y="305" width="170" height="68" rx="14" fill="white" opacity="0.93"/>
+  <text x="175" y="333" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="22" fill="#c7a000">OVER HALF</text>
+  <text x="175" y="353" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">5 over half,</text>
+  <text x="175" y="368" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">10 over half</text>
+
+  <!-- Top Left: VOOR -->
+  <rect x="100" y="140" width="160" height="68" rx="14" fill="white" opacity="0.93"/>
+  <text x="180" y="168" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="24" fill="#6C5CE7">VOOR</text>
+  <text x="180" y="188" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">kwart voor,</text>
+  <text x="180" y="203" text-anchor="middle" font-family="Nunito" font-weight="600" font-size="13" fill="#636e72">10 voor, 5 voor</text>
+
+  <!-- Clock numbers -->
+  <text x="280" y="56" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">12</text>
+  <text x="404" y="112" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">1</text>
+  <text x="478" y="195" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">2</text>
+  <text x="516" y="288" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">3</text>
+  <text x="478" y="380" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">4</text>
+  <text x="404" y="458" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">5</text>
+  <text x="280" y="520" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">6</text>
+  <text x="156" y="458" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">7</text>
+  <text x="82" y="380" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">8</text>
+  <text x="44" y="288" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="28" fill="white">9</text>
+  <text x="82" y="195" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">10</text>
+  <text x="156" y="112" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="22" fill="white">11</text>
+
+  <!-- Minute markers around the edge -->
+  <!-- 5-minute tick marks -->
+  <g stroke="white" stroke-width="2" opacity="0.5">
+    <line x1="280" y1="35" x2="280" y2="50"/>
+    <line x1="525" y1="280" x2="510" y2="280"/>
+    <line x1="280" y1="525" x2="280" y2="510"/>
+    <line x1="35" y1="280" x2="50" y2="280"/>
+  </g>
+
+  <!-- Center dot -->
+  <circle cx="280" cy="280" r="8" fill="white" stroke="#2d3436" stroke-width="2"/>
+
+  <!-- Direction arrows along the rim -->
+  <!-- Right side arrow (clockwise from 12 to 3) -->
+  <path d="M 490,160 L 500,175 L 480,172" fill="white" opacity="0.8"/>
+  <!-- Bottom right arrow -->
+  <path d="M 445,420 L 435,435 L 450,430" fill="white" opacity="0.8"/>
+  <!-- Bottom left arrow -->
+  <path d="M 115,420 L 125,435 L 110,430" fill="white" opacity="0.8"/>
+  <!-- Left side arrow -->
+  <path d="M 70,160 L 60,175 L 80,172" fill="white" opacity="0.8"/>
+
+  <!-- Outer labels: time expressions per number -->
+  <!-- 12 = uur -->
+  <text x="280" y="-18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="15" fill="#2d3436">... uur</text>
+
+  <!-- 1 = 5 over -->
+  <text x="445" y="18" text-anchor="start" font-family="Nunito" font-weight="800" font-size="15" fill="#3DBDB5">5 over ...</text>
+
+  <!-- 2 = 10 over -->
+  <text x="555" y="132" text-anchor="start" font-family="Nunito" font-weight="800" font-size="15" fill="#3DBDB5">10 over ...</text>
+
+  <!-- 3 = kwart over -->
+  <text x="595" y="285" text-anchor="start" font-family="Nunito" font-weight="800" font-size="15" fill="#3DBDB5">kwart over ...</text>
+
+  <!-- 4 = 10 voor half -->
+  <text x="555" y="440" text-anchor="start" font-family="Nunito" font-weight="800" font-size="15" fill="#E85555">10 voor half ...</text>
+
+  <!-- 5 = 5 voor half -->
+  <text x="445" y="555" text-anchor="start" font-family="Nunito" font-weight="800" font-size="15" fill="#E85555">5 voor half ...</text>
+
+  <!-- 6 = half -->
+  <text x="280" y="600" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="15" fill="#2d3436">half ...</text>
+
+  <!-- 7 = 5 over half -->
+  <text x="115" y="555" text-anchor="end" font-family="Nunito" font-weight="800" font-size="15" fill="#C99A00">5 over half ...</text>
+
+  <!-- 8 = 10 over half -->
+  <text x="5" y="440" text-anchor="end" font-family="Nunito" font-weight="800" font-size="15" fill="#C99A00">10 over half ...</text>
+
+  <!-- 9 = kwart voor -->
+  <text x="-35" y="285" text-anchor="end" font-family="Nunito" font-weight="800" font-size="15" fill="#5B4BD6">kwart voor ...</text>
+
+  <!-- 10 = 10 voor -->
+  <text x="5" y="132" text-anchor="end" font-family="Nunito" font-weight="800" font-size="15" fill="#5B4BD6">10 voor ...</text>
+
+  <!-- 11 = 5 voor -->
+  <text x="115" y="18" text-anchor="end" font-family="Nunito" font-weight="800" font-size="15" fill="#5B4BD6">5 voor ...</text>
+</svg>
+</div>
+
+<div class="label-row">
+  <div class="label-item"><div class="label-swatch" style="background:#4ECDC4"></div>OVER</div>
+  <div class="label-item"><div class="label-swatch" style="background:#FF6B6B"></div>VOOR HALF</div>
+  <div class="label-item"><div class="label-swatch" style="background:#FFD93D"></div>OVER HALF</div>
+  <div class="label-item"><div class="label-swatch" style="background:#6C5CE7"></div>VOOR</div>
+</div>
+
+<div class="time-list">
+  <h2>Exemplo: de 6 uur até 7 uur</h2>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#2d3436">UUR</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#2d3436"></div>6 <b>uur</b> (= 6:00)</div>
+    </div>
+  </div>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#4ECDC4">OVER</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>5 <b>over</b> 6 (= 6:05)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>10 <b>over</b> 6 (= 6:10)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#4ECDC4"></div>kwart <b>over</b> 6 (= 6:15)</div>
+    </div>
+  </div>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#FF6B6B">VOOR HALF</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#FF6B6B"></div>10 <b>voor half</b> 7 (= 6:20)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#FF6B6B"></div>5 <b>voor half</b> 7 (= 6:25)</div>
+    </div>
+  </div>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#2d3436">HALF</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#2d3436"></div><b>half</b> 7 (= 6:30)</div>
+    </div>
+  </div>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#FFD93D; color:#2d3436">OVER HALF</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#FFD93D"></div>5 <b>over half</b> 7 (= 6:35)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#FFD93D"></div>10 <b>over half</b> 7 (= 6:40)</div>
+    </div>
+  </div>
+
+  <div class="time-group">
+    <div class="group-header" style="background:#6C5CE7">VOOR</div>
+    <div class="group-entries">
+      <div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>kwart <b>voor</b> 7 (= 6:45)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>10 <b>voor</b> 7 (= 6:50)</div>
+      <div class="time-entry"><div class="time-dot" style="background:#6C5CE7"></div>5 <b>voor</b> 7 (= 6:55)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- EDUCATIONAL SECTION -->
+<!-- ============================================ -->
+
+<div class="edu-section">
+
+  <!-- UITLEG -->
+  <div class="edu-block">
+    <h2>📖 Como funciona o relógio em neerlandês?</h2>
+    <p>Em neerlandês, lemos as horas de forma diferente de muitas outras línguas. Usamos <b>a próxima hora</b> como ponto de referência assim que o ponteiro grande passa o 3 (kwart over). Isso significa que às 6:25 dizemos: <em>"vijf voor <b>half zeven</b>"</em> — olhamos para a frente, para o 7!</p>
+
+    <p>Usamos sempre <b>intervalos de cinco minutos</b>: 5, 10, kwart (= 15 minutos), 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>
+
+    <div class="tip-box tip-orange">
+      <div class="tip-icon">⚠️</div>
+      <div>
+        <b>Atenção:</b> "Half zeven" = 6:30, <b>não</b> 7:30! Isto é confuso para muitos estudantes. Em neerlandês, "half zeven" = estamos a <em>meio</em> caminho das sete.
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 VOORBEELD KLOKKEN -->
+  <div class="edu-block">
+    <h2>🕐 Exemplos — 10 relógios com explicação</h2>
+    <p>Abaixo vês 10 relógios. Em cada relógio está o tempo analógico, o tempo digital e a cor do quadrante.</p>
+
+    <div class="clock-examples">
+
+      <!-- Voorbeeld 1: 3:00 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <!-- hour hand pointing to 3 -->
+            <line x1="60" y1="60" x2="90" y2="60" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <!-- minute hand pointing to 12 -->
+            <line x1="60" y1="60" x2="60" y2="18" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">15:00</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#2d3436"></span> <b>drie uur</b></div>
+          <div class="example-note">Hora cheia → "... uur"</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 2: 8:05 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="28" y2="76" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="73" y2="20" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">08:05</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#4ECDC4"></span> <b>vijf over acht</b></div>
+          <div class="example-note">Quadrante: OVER</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 3: 2:10 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="85" y2="38" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="85" y2="25" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">14:10</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#4ECDC4"></span> <b>tien over twee</b></div>
+          <div class="example-note">Kwadrant: OVER</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 4: 10:15 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="32" y2="40" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="100" y2="60" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">10:15</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#4ECDC4"></span> <b>kwart over tien</b></div>
+          <div class="example-note">Quadrante: OVER (kwart = 15 min)</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 5: 4:20 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="88" y2="80" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="90" y2="90" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">16:20</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#FF6B6B"></span> <b>tien voor half vijf</b></div>
+          <div class="example-note">Quadrante: VOOR HALF (→ half 5)</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 6: 1:25 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="73" y2="36" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="83" y2="97" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">13:25</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#FF6B6B"></span> <b>vijf voor half twee</b></div>
+          <div class="example-note">Quadrante: VOOR HALF (→ half 2)</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 7: 9:30 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="25" y2="55" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="60" y2="105" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">09:30</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#2d3436"></span> <b>half tien</b></div>
+          <div class="example-note">Half → próxima hora (10)!</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 8: 7:35 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="30" y2="80" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="37" y2="97" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">19:35</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#FFD93D"></span> <b>vijf over half acht</b></div>
+          <div class="example-note">Quadrante: OVER HALF (→ half 8)</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 9: 11:45 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="48" y2="30" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="20" y2="60" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">11:45</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#6C5CE7"></span> <b>kwart voor twaalf</b></div>
+          <div class="example-note">Quadrante: VOOR (→ 12)</div>
+        </div>
+      </div>
+
+      <!-- Voorbeeld 10: 5:50 -->
+      <div class="example-card">
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="86" y2="100" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="32" y2="25" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="example-info">
+          <div class="digital-display">17:50</div>
+          <div class="example-answer"><span class="quad-dot" style="background:#6C5CE7"></span> <b>tien voor zes</b></div>
+          <div class="example-note">Quadrante: VOOR (→ 6)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DAGDELEN -->
+  <div class="edu-block">
+    <h2>🌅 Partes do dia: 's morgens, 's middags, 's avonds, 's nachts</h2>
+    <p>Em neerlandês usamos partes do dia para indicar <b>qual parte do dia</b> queremos dizer. O <b>'s</b> vem da antiga palavra neerlandesa <em>"des"</em> (= do/da).</p>
+
+    <div class="dagdeel-grid">
+      <div class="dagdeel-card" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e);">
+        <div class="dagdeel-icon">🌅</div>
+        <div class="dagdeel-title">'s morgens</div>
+        <div class="dagdeel-time">06:00 – 12:00</div>
+        <div class="dagdeel-ex">Het is acht uur <b>'s morgens</b></div>
+      </div>
+      <div class="dagdeel-card" style="background: linear-gradient(135deg, #55efc4, #00b894);">
+        <div class="dagdeel-icon">☀️</div>
+        <div class="dagdeel-title">'s middags</div>
+        <div class="dagdeel-time">12:00 – 18:00</div>
+        <div class="dagdeel-ex">Het is drie uur <b>'s middags</b></div>
+      </div>
+      <div class="dagdeel-card" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">
+        <div class="dagdeel-icon">🌆</div>
+        <div class="dagdeel-title">'s avonds</div>
+        <div class="dagdeel-time">18:00 – 00:00</div>
+        <div class="dagdeel-ex">Het is acht uur <b>'s avonds</b></div>
+      </div>
+      <div class="dagdeel-card" style="background: linear-gradient(135deg, #636e72, #2d3436); color: white;">
+        <div class="dagdeel-icon">🌙</div>
+        <div class="dagdeel-title">'s nachts</div>
+        <div class="dagdeel-time">00:00 – 06:00</div>
+        <div class="dagdeel-ex">Het is twee uur <b>'s nachts</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 UUR vs 24 UUR -->
+  <div class="edu-block">
+    <h2>🔢 12 horas ou 24 horas? Quando usar qual?</h2>
+
+    <p>Nos Países Baixos usamos <b>dois sistemas</b>:</p>
+
+    <div class="compare-table">
+      <div class="compare-col">
+        <div class="compare-header" style="background:#4ECDC4">🗣️ Falar (12 horas)</div>
+        <div class="compare-body">
+          <p>Na vida quotidiana <b>falamos</b> quase sempre no <b>sistema de 12 horas</b> + parte do dia:</p>
+          <div class="compare-example">"Het is <b>acht uur 's avonds</b>" (= são 8 da noite)</div>
+          <div class="compare-example">"Ik kom om <b>half drie</b>" (= venho às 2:30)</div>
+          <div class="compare-example">"De film begint om <b>kwart over acht</b>" (= o filme começa às 8:15)</div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-header" style="background:#6C5CE7; color:white">📝 Escrever (24 horas)</div>
+        <div class="compare-body">
+          <p>No papel, ecrãs e horários usamos o <b>sistema de 24 horas</b>:</p>
+          <div class="compare-example">De trein vertrekt om <b>20:15</b></div>
+          <div class="compare-example">Afspraak: <b>14:30</b></div>
+          <div class="compare-example">Open van <b>09:00</b> tot <b>17:00</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box tip-blue">
+      <div class="tip-icon">🎯</div>
+      <div>
+        <b>Quando é que falamos em 24 horas?</b><br>
+        Às vezes, em situações <b>formais</b>, os neerlandeses dizem a hora no formato 24h em voz alta. Soa profissional e preciso:<br><br>
+        <em>"De vergadering is om <b>veertien uur dertig</b>" (= a reunião é às...)</em> (= 14:30)<br>
+        <em>"Het nieuws begint om <b>twintig uur</b>" (= as notícias começam às...)</em> (= 20:00)<br>
+        <em>"Aankomst: <b>eenentwintig uur vijftien</b>" (= chegada:...)</em> (= 21:15)<br><br>
+        Neste estilo formal dizes <b>o número + "uur" + os minutos</b>. <b>Não</b> usas "over", "voor" ou "half".
+      </div>
+    </div>
+
+    <div class="conversion-grid">
+      <div class="conversion-header">Tabela de conversão: 24 horas → 12 horas</div>
+      <div class="conversion-row"><span class="conv-24">13:00</span> <span class="conv-arrow">→</span> <span class="conv-12">1 uur 's middags</span></div>
+      <div class="conversion-row"><span class="conv-24">14:00</span> <span class="conv-arrow">→</span> <span class="conv-12">2 uur 's middags</span></div>
+      <div class="conversion-row"><span class="conv-24">15:00</span> <span class="conv-arrow">→</span> <span class="conv-12">3 uur 's middags</span></div>
+      <div class="conversion-row"><span class="conv-24">16:00</span> <span class="conv-arrow">→</span> <span class="conv-12">4 uur 's middags</span></div>
+      <div class="conversion-row"><span class="conv-24">17:00</span> <span class="conv-arrow">→</span> <span class="conv-12">5 uur 's middags</span></div>
+      <div class="conversion-row"><span class="conv-24">18:00</span> <span class="conv-arrow">→</span> <span class="conv-12">6 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">19:00</span> <span class="conv-arrow">→</span> <span class="conv-12">7 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">20:00</span> <span class="conv-arrow">→</span> <span class="conv-12">8 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">21:00</span> <span class="conv-arrow">→</span> <span class="conv-12">9 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">22:00</span> <span class="conv-arrow">→</span> <span class="conv-12">10 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">23:00</span> <span class="conv-arrow">→</span> <span class="conv-12">11 uur 's avonds</span></div>
+      <div class="conversion-row"><span class="conv-24">00:00</span> <span class="conv-arrow">→</span> <span class="conv-12">12 uur 's nachts / middernacht (= meia-noite)</span></div>
+    </div>
+  </div>
+
+  <!-- OEFENINGEN: ANALOGE KLOKKEN -->
+  <div class="edu-block">
+    <h2>✏️ Exercício A — Que horas são? (analógico)</h2>
+    <p>Escreve a hora por extenso. Usa "over", "voor", "half", etc.</p>
+
+    <div class="clock-examples exercise-mode">
+
+      <!-- Oefening 1: 7:10 -->
+      <div class="example-card exercise-card">
+        <div class="exercise-number">1</div>
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="30" y2="80" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="85" y2="25" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <!-- Oefening 2: 12:25 -->
+      <div class="example-card exercise-card">
+        <div class="exercise-number">2</div>
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="57" y2="28" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="83" y2="97" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <!-- Oefening 3: 6:30 -->
+      <div class="example-card exercise-card">
+        <div class="exercise-number">3</div>
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="48" y2="96" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="60" y2="105" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <!-- Oefening 4: 3:40 -->
+      <div class="example-card exercise-card">
+        <div class="exercise-number">4</div>
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="90" y2="65" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="25" y2="90" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <!-- Oefening 5: 9:55 -->
+      <div class="example-card exercise-card">
+        <div class="exercise-number">5</div>
+        <div class="mini-clock-wrap">
+          <svg viewBox="0 0 120 120" class="mini-clock">
+            <circle cx="60" cy="60" r="56" fill="white" stroke="#ddd" stroke-width="2"/>
+            <text x="60" y="18" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">12</text>
+            <text x="108" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">3</text>
+            <text x="60" y="110" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">6</text>
+            <text x="12" y="64" text-anchor="middle" font-family="Nunito" font-weight="800" font-size="10" fill="#888">9</text>
+            <line x1="60" y1="60" x2="24" y2="54" stroke="#2d3436" stroke-width="4" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="47" y2="20" stroke="#2d3436" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="3" fill="#2d3436"/>
+          </svg>
+        </div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OEFENINGEN: DIGITALE KLOKKEN -->
+  <div class="edu-block">
+    <h2>✏️ Exercício B — Que horas são? (digital)</h2>
+    <p>Escreve a hora digital por extenso. Atenção: é notação de 24 horas!</p>
+
+    <div class="clock-examples exercise-mode">
+
+      <div class="example-card exercise-card">
+        <div class="exercise-number">1</div>
+        <div class="digital-display digital-exercise">14:15</div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <div class="example-card exercise-card">
+        <div class="exercise-number">2</div>
+        <div class="digital-display digital-exercise">20:30</div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <div class="example-card exercise-card">
+        <div class="exercise-number">3</div>
+        <div class="digital-display digital-exercise">07:45</div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <div class="example-card exercise-card">
+        <div class="exercise-number">4</div>
+        <div class="digital-display digital-exercise">16:35</div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+      <div class="example-card exercise-card">
+        <div class="exercise-number">5</div>
+        <div class="digital-display digital-exercise">23:50</div>
+        <div class="exercise-answer-line">Het is _______________________</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANTWOORDEN -->
+  <div class="edu-block answers-block">
+    <h2>🔑 Respostas</h2>
+    <details>
+      <summary>Clica aqui para ver as respostas</summary>
+      <div class="answers-content">
+        <p><b>Exercício A — Analógico:</b></p>
+        <ol>
+          <li>Het is <b>tien over zeven</b> (7:10)</li>
+          <li>Het is <b>vijf voor half één</b> (12:25)</li>
+          <li>Het is <b>half zeven</b> (6:30)</li>
+          <li>Het is <b>tien over half vier</b> (3:40)</li>
+          <li>Het is <b>vijf voor tien</b> (9:55)</li>
+        </ol>
+        <p><b>Exercício B — Digital:</b></p>
+        <ol>
+          <li>Het is <b>kwart over twee</b> ('s middags)</li>
+          <li>Het is <b>half negen</b> ('s avonds)</li>
+          <li>Het is <b>kwart voor acht</b> ('s morgens)</li>
+          <li>Het is <b>vijf over half vijf</b> ('s middags)</li>
+          <li>Het is <b>tien voor twaalf</b> ('s nachts)</li>
+        </ol>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+</body>
+</html>

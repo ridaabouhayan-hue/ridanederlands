@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoofdletters & Punten</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAFAF7;
+            --text-color: #2D2D2D;
+            
+            --mint-bg: #E0F0F0;
+            --mint-border: #7AB8C4;
+            --mint-dark: #4A93A3;
+            
+            --coral-bg: #FFE8E0;
+            --coral-border: #E8937A;
+            --coral-dark: #C9664A;
+            
+            --lavender-bg: #EDE0F5;
+            --lavender-border: #A07CC4;
+            --lavender-dark: #7A52A3;
+            
+            --correct-bg: #D4EDDA;
+            --correct-text: #2D6A4F;
+            
+            --wrong-bg: #F8D7DA;
+            --wrong-text: #C0392B;
+
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-color);
+        }
+
+        h1 { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 30px; }
+        h2 { font-size: 24px; font-weight: 700; margin-bottom: 15px; }
+
+        section {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .lang-btn {
+            background: var(--white);
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover { border-color: #aaa; }
+        .lang-btn.active { background: var(--text-color); color: var(--white); border-color: var(--text-color); }
+
+        /* Uitleg Kaarten */
+        .regel-kaart {
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .regel-hoofdletters { background-color: var(--mint-bg); border: 2px solid var(--mint-border); }
+        .regel-punten { background-color: var(--coral-bg); border: 2px solid var(--coral-border); }
+        
+        .regel-lijst {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        .regel-lijst li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .regel-lijst li::before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: inherit;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 1;
+            top: -2px;
+        }
+
+        .voorbeeld-sectie {
+            background-color: var(--lavender-bg);
+            border: 2px solid var(--lavender-border);
+        }
+        .voorbeeld-fout {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            word-break: break-all;
+            margin-bottom: 10px;
+            color: #666;
+            text-decoration: line-through;
+        }
+        .voorbeeld-pijl {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--lavender-dark);
+            margin: 5px 0;
+        }
+        .voorbeeld-goed {
+            background: var(--correct-bg);
+            color: var(--correct-text);
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* Opdrachten */
+        .opdracht-container {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 2px solid #eee;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .opdracht-container.correct {
+            border-color: var(--correct-text);
+            background-color: #f2fcf5;
+        }
+        .opdracht-container.wrong {
+            border-color: var(--wrong-text);
+            background-color: #fdf3f4;
+        }
+
+        .oorspronkelijke-zin {
+            font-family: monospace;
+            font-size: 16px;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            word-break: break-all;
+            color: #555;
+        }
+
+        .invoer-vak {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-family: inherit;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .invoer-vak:focus { border-color: var(--mint-dark); }
+
+        .knoppen-rij {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        .btn:active { transform: scale(0.97); }
+        
+        .btn-controleer { background: var(--mint-dark); color: white; }
+        .btn-controleer:hover { opacity: 0.9; }
+        
+        .btn-antwoord { background: #eee; color: #555; }
+        .btn-antwoord:hover { background: #ddd; }
+
+        .feedback-bericht {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+        }
+        .feedback-bericht.show { display: block; }
+        
+        .feedback-correct { background: var(--correct-bg); color: var(--correct-text); }
+        .feedback-wrong { background: var(--wrong-bg); color: var(--wrong-text); }
+        .feedback-info { background: var(--lavender-bg); color: var(--lavender-dark); }
+
+        /* Progress bar */
+        .progress-wrapper {
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            padding: 10px 0;
+            z-index: 100;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .progress-bar-bg {
+            background: #eee;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .voortgang-tekst {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .knoppen-rij { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-wrapper">
+    <div class="container" style="padding-bottom: 0;">
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('nl')">🇳🇱 NL</button>
+            <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+            <button class="lang-btn" onclick="setLang('tr')">🇹🇷 TR</button>
+            <button class="lang-btn" onclick="setLang('zh')">🇨🇳 ZH</button>
+        </div>
+        <div class="voortgang-tekst">
+            <span id="t-progress">Voortgang</span>
+            <span id="score-text">0/7</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1 id="t-title">Hoofdletters & Punten</h1>
+
+    <!-- REGELS -->
+    <section>
+        <h2 id="t-rules-title">📌 DE REGELS</h2>
+        
+        <div class="regel-kaart regel-hoofdletters">
+            <h3 id="t-cap-title" style="color: var(--mint-dark); margin-top: 0;">1. HOOFDLETTERS</h3>
+            <ul class="regel-lijst" style="color: var(--mint-dark);">
+                <li id="t-cap-1">Een Nederlandse zin begint altijd met een HOOFDLETTER.</li>
+                <li id="t-cap-2">Namen krijgen een hoofdletter: Fatima, David, Ahmed.</li>
+                <li id="t-cap-3">Steden en landen krijgen een hoofdletter: Eindhoven, Nederland, Marokko.</li>
+            </ul>
+        </div>
+
+        <div class="regel-kaart regel-punten">
+            <h3 id="t-per-title" style="color: var(--coral-dark); margin-top: 0;">2. PUNTEN (.)</h3>
+            <ul class="regel-lijst" style="color: var(--coral-dark);">
+                <li id="t-per-1">Als een zin klaar is, zet je een PUNT (.)</li>
+                <li id="t-per-2">Na de punt begint een nieuwe zin → weer met een HOOFDLETTER!</li>
+                <li id="t-per-3">Tussen woorden zet je een spatie (geen woorden aan elkaar plakken).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- VOORBEELD -->
+    <section class="voorbeeld-sectie">
+        <h2 id="t-ex-title" style="color: var(--lavender-dark);">✅ VOORBEELD</h2>
+        <div class="voorbeeld-fout">
+            halloikbendavidikkomuiteindhovenikwooninnederlandikheb3kindereneenmeisjeeneenjongen
+        </div>
+        <div class="voorbeeld-pijl">⬇</div>
+        <div class="voorbeeld-goed">
+            Hallo, ik ben David. Ik kom uit Eindhoven. Ik woon in Nederland. Ik heb 3 kinderen, een meisje en een jongen.
+        </div>
+    </section>
+
+    <!-- OPDRACHTEN -->
+    <section>
+        <h2 id="t-task-title">📝 JOUW OPDRACHT:</h2>
+        <p id="t-task-desc" style="font-weight: 600; margin-bottom: 25px;">Schrijf de zinnen goed. Gebruik hoofdletters, spaties en punten!</p>
+        
+        <div id="exercises-container">
+            <!-- JavaScript will render exercises here -->
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <h2 id="t-success">💪 Je kunt het! Veel succes!</h2>
+        </div>
+    </section>
+</div>
+
+<script>
+    // --- TRANSLATIONS ---
+    const i18n = {
+        nl: {
+            title: "Hoofdletters & Punten",
+            rulesTitle: "📌 DE REGELS",
+            capTitle: "1. HOOFDLETTERS",
+            cap1: "Een Nederlandse zin begint altijd met een HOOFDLETTER.",
+            cap2: "Namen krijgen een hoofdletter: Fatima, David, Ahmed.",
+            cap3: "Steden en landen krijgen een hoofdletter: Eindhoven, Nederland, Marokko.",
+            perTitle: "2. PUNTEN (.)",
+            per1: "Als een zin klaar is, zet je een PUNT (.)",
+            per2: "Na de punt begint een nieuwe zin → weer met een HOOFDLETTER!",
+            per3: "Tussen woorden zet je een spatie (geen woorden aan elkaar plakken).",
+            exTitle: "✅ VOORBEELD",
+            taskTitle: "📝 JOUW OPDRACHT:",
+            taskDesc: "Schrijf de zinnen goed. Gebruik hoofdletters, spaties en punten!",
+            progress: "Voortgang",
+            checkBtn: "Controleer",
+            showBtn: "Toon antwoord",
+            correctMsg: "Heel goed! 🎉",
+            wrongMsg: "Let op de hoofdletters en punten. Probeer het opnieuw!",
+            ansMsg: "Het juiste antwoord is:",
+            success: "💪 Je kunt het! Veel succes!"
+        },
+        en: {
+            title: "Capital Letters & Periods",
+            rulesTitle: "📌 THE RULES",
+            capTitle: "1. CAPITAL LETTERS",
+            cap1: "A Dutch sentence always starts with a CAPITAL LETTER.",
+            cap2: "Names get a capital letter: Fatima, David, Ahmed.",
+            cap3: "Cities and countries get a capital letter: Eindhoven, Nederland, Marokko.",
+            perTitle: "2. PERIODS (.)",
+            per1: "When a sentence is finished, you put a PERIOD (.)",
+            per2: "After the period, a new sentence starts → again with a CAPITAL LETTER!",
+            per3: "Put a space between words (do not stick words together).",
+            exTitle: "✅ EXAMPLE",
+            taskTitle: "📝 YOUR TASK:",
+            taskDesc: "Write the sentences correctly. Use capital letters, spaces, and periods!",
+            progress: "Progress",
+            checkBtn: "Check",
+            showBtn: "Show answer",
+            correctMsg: "Very good! 🎉",
+            wrongMsg: "Check your capitals and periods. Try again!",
+            ansMsg: "The correct answer is:",
+            success: "💪 You can do it! Good luck!"
+        },
+        tr: {
+            title: "Büyük Harfler ve Noktalar",
+            rulesTitle: "📌 KURALLAR",
+            capTitle: "1. BÜYÜK HARFLER",
+            cap1: "Hollandaca bir cümle her zaman BÜYÜK HARFLE başlar.",
+            cap2: "İsimler büyük harfle başlar: Fatima, David, Ahmed.",
+            cap3: "Şehirler ve ülkeler büyük harfle başlar: Eindhoven, Nederland, Marokko.",
+            perTitle: "2. NOKTALAR (.)",
+            per1: "Bir cümle bittiğinde NOKTA (.) koyarsınız.",
+            per2: "Noktadan sonra yeni bir cümle başlar → tekrar BÜYÜK HARFLE!",
+            per3: "Kelimeler arasına boşluk bırakın (kelimeleri birbirine yapıştırmayın).",
+            exTitle: "✅ ÖRNEK",
+            taskTitle: "📝 GÖREVİNİZ:",
+            taskDesc: "Cümleleri doğru yazın. Büyük harfleri, boşlukları ve noktaları kullanın!",
+            progress: "İlerleme",
+            checkBtn: "Kontrol et",
+            showBtn: "Cevabı göster",
+            correctMsg: "Çok iyi! 🎉",
+            wrongMsg: "Büyük harflere ve noktalara dikkat edin. Tekrar deneyin!",
+            ansMsg: "Doğru cevap:",
+            success: "💪 Yapabilirsin! Başarılar!"
+        },
+        zh: {
+            title: "大写字母与句号",
+            rulesTitle: "📌 规则",
+            capTitle: "1. 大写字母",
+            cap1: "荷兰语的句子总是以大写字母开头。",
+            cap2: "名字需要大写：Fatima, David, Ahmed。",
+            cap3: "城市和国家需要大写：Eindhoven, Nederland, Marokko。",
+            perTitle: "2. 句号 (.)",
+            per1: "当句子结束时，你要加上一个句号 (.)",
+            per2: "句号之后开始一个新句子 → 再次使用大写字母！",
+            per3: "单词之间要留空格（不要把单词连在一起）。",
+            exTitle: "✅ 示例",
+            taskTitle: "📝 你的任务：",
+            taskDesc: "正确地写出这些句子。使用大写字母、空格和句号！",
+            progress: "进度",
+            checkBtn: "检查",
+            showBtn: "显示答案",
+            correctMsg: "非常好！🎉",
+            wrongMsg: "注意大写字母和句号。再试一次！",
+            ansMsg: "正确答案是：",
+            success: "💪 你能行！祝你好运！"
+        }
+    };
+
+    let currentLang = 'nl';
+
+    // --- DATA ---
+    const exercises = [
+        {
+            glued: "mijnnaamisfatimaikkomuitmarokkoikwoonineindhovenikben35jaar",
+            correct: "Mijn naam is Fatima. Ik kom uit Marokko. Ik woon in Eindhoven. Ik ben 35 jaar."
+        },
+        {
+            glued: "ikhebles3dagenperweekopmaandagdinsdagenwoensdagikleernederlands",
+            correct: "Ik heb les 3 dagen per week. Op maandag, dinsdag en woensdag. Ik leer Nederlands."
+        },
+        {
+            glued: "ikheb2broersen3zussenmijnvaderheetahmedmijnmoederheetkhadija",
+            correct: "Ik heb 2 broers en 3 zussen. Mijn vader heet Ahmed. Mijn moeder heet Khadija."
+        },
+        {
+            glued: "mijnhuisiskleinenwitikheb4kamersenikwooninhelmond",
+            correct: "Mijn huis is klein en wit. Ik heb 4 kamers en ik woon in Helmond."
+        },
+        {
+            glued: "voorhetontbijteetikbroodmetkaasikdrinkgraagtheeikhouvanpizza",
+            correct: "Voor het ontbijt eet ik brood met kaas. Ik drink graag thee. Ik hou van pizza."
+        },
+        {
+            glued: "ikdraageenwittejaseneenzwartebroekikkoopmijnklereninalberthijn",
+            correct: "Ik draag een witte jas en een zwarte broek. Ik koop mijn kleren in Albert Heijn."
+        },
+        {
+            glued: "inhetweekendgaikgraagnaarhetparkikwandelmetmijnfamilieingeldrop",
+            correct: "In het weekend ga ik graag naar het park. Ik wandel met mijn familie in Geldrop."
+        }
+    ];
+
+    let scores = new Array(exercises.length).fill(false);
+
+    // --- INITIALIZATION ---
+    function init() {
+        const container = document.getElementById('exercises-container');
+        
+        exercises.forEach((ex, index) => {
+            const num = index + 1;
+            const block = document.createElement('div');
+            block.className = 'opdracht-container';
+            block.id = `card-${index}`;
+            
+            block.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 8px;">Zin ${num}</div>
+                <div class="oorspronkelijke-zin">${ex.glued}</div>
+                <textarea class="invoer-vak" id="input-${index}" rows="2" placeholder="Typ hier de goede zinnen..."></textarea>
+                <div class="knoppen-rij">
+                    <button class="btn btn-controleer" onclick="checkAnswer(${index})" id="btn-check-${index}">${i18n.nl.checkBtn}</button>
+                    <button class="btn btn-antwoord" onclick="showAnswer(${index})" id="btn-show-${index}">${i18n.nl.showBtn}</button>
+                </div>
+                <div class="feedback-bericht" id="feedback-${index}"></div>
+            `;
+            container.appendChild(block);
+        });
+    }
+
+    // --- LOGIC ---
+    function cleanString(str) {
+        // Remove extra spaces and make lowercase for relaxed comparison if needed
+        // but for this exercise we specifically test capitals and punctuation.
+        // So we only trim spaces at start/end and multiple internal spaces.
+        return str.trim().replace(/\s+/g, ' ');
+    }
+
+    function checkAnswer(index) {
+        const inputEl = document.getElementById(`input-${index}`);
+        const userText = cleanString(inputEl.value);
+        const correctText = exercises[index].correct;
+        const feedbackEl = document.getElementById(`feedback-${index}`);
+        const cardEl = document.getElementById(`card-${index}`);
+
+        if (userText === "") return;
+
+        // Lenient check for commas or missing spaces after dots
+        let userNormalized = userText.replace(/\s*,/g, ',').replace(/\.\s*/g, '. ');
+        let correctNormalized = correctText.replace(/\s*,/g, ',').replace(/\.\s*/g, '. ');
+
+        // Check if matching exactly (with normal spaces)
+        if (cleanString(userNormalized) === cleanString(correctNormalized)) {
+            feedbackEl.className = 'feedback-bericht show feedback-correct';
+            feedbackEl.innerText = i18n[currentLang].correctMsg;
+            cardEl.className = 'opdracht-container correct';
+            
+            if (!scores[index]) {
+                scores[index] = true;
+                updateProgress();
+            }
+        } else {
+            feedbackEl.className = 'feedback-bericht show feedback-wrong';
+            feedbackEl.innerText = i18n[currentLang].wrongMsg;
+            cardEl.className = 'opdracht-container wrong';
+        }
+    }
+
+    function showAnswer(index) {
+        const feedbackEl = document.getElementById(`feedback-${index}`);
+        feedbackEl.className = 'feedback-bericht show feedback-info';
+        feedbackEl.innerHTML = `${i18n[currentLang].ansMsg}<br><strong>${exercises[index].correct}</strong>`;
+        
+        // If they view the answer, they shouldn't get a point easily, but we'll leave progress alone or mark it correct
+        const cardEl = document.getElementById(`card-${index}`);
+        cardEl.className = 'opdracht-container';
+    }
+
+    function updateProgress() {
+        const completed = scores.filter(v => v).length;
+        const total = exercises.length;
+        document.getElementById('score-text').innerText = `${completed}/${total}`;
+        
+        const perc = (completed / total) * 100;
+        document.getElementById('progress-fill').style.width = `${perc}%`;
+    }
+
+    // --- TRANSLATION LOGIC ---
+    function setLang(lang) {
+        currentLang = lang;
+        
+        // Update buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Update text
+        document.getElementById('t-title').innerText = i18n[lang].title;
+        document.getElementById('t-rules-title').innerText = i18n[lang].rulesTitle;
+        
+        document.getElementById('t-cap-title').innerText = i18n[lang].capTitle;
+        document.getElementById('t-cap-1').innerText = i18n[lang].cap1;
+        document.getElementById('t-cap-2').innerText = i18n[lang].cap2;
+        document.getElementById('t-cap-3').innerText = i18n[lang].cap3;
+        
+        document.getElementById('t-per-title').innerText = i18n[lang].perTitle;
+        document.getElementById('t-per-1').innerText = i18n[lang].per1;
+        document.getElementById('t-per-2').innerText = i18n[lang].per2;
+        document.getElementById('t-per-3').innerText = i18n[lang].per3;
+        
+        document.getElementById('t-ex-title').innerText = i18n[lang].exTitle;
+        document.getElementById('t-task-title').innerText = i18n[lang].taskTitle;
+        document.getElementById('t-task-desc').innerText = i18n[lang].taskDesc;
+        document.getElementById('t-progress').innerText = i18n[lang].progress;
+        document.getElementById('t-success').innerText = i18n[lang].success;
+
+        // Update exercise buttons
+        exercises.forEach((ex, i) => {
+            document.getElementById(`btn-check-${i}`).innerText = i18n[lang].checkBtn;
+            document.getElementById(`btn-show-${i}`).innerText = i18n[lang].showBtn;
+            
+            // If feedback is showing, we technically should translate it, 
+            // but it will update on the next click. 
+            // We can clear it for simplicity or update the text based on classes.
+            const fb = document.getElementById(`feedback-${i}`);
+            if (fb.classList.contains('show')) {
+                if (fb.classList.contains('feedback-correct')) fb.innerText = i18n[lang].correctMsg;
+                else if (fb.classList.contains('feedback-wrong')) fb.innerText = i18n[lang].wrongMsg;
+                else if (fb.classList.contains('feedback-info')) fb.innerHTML = `${i18n[lang].ansMsg}<br><strong>${ex.correct}</strong>`;
+            }
+        });
+    }
+
+    // Run on start
+    init();
+
+</script>
+
+</body>
+</html>

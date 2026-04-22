@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kunnen en Mogen - Oefenen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAFAF7;
+            --text-color: #2D2D2D;
+            
+            --mogen-bg: #FFE8E0;
+            --mogen-border: #E8937A;
+            --mogen-dark: #C9664A;
+            
+            --kunnen-bg: #E0F0F0;
+            --kunnen-border: #7AB8C4;
+            --kunnen-dark: #4A93A3;
+            
+            --mix-bg: #EDE0F5;
+            --mix-border: #A07CC4;
+            --mix-dark: #7A52A3;
+            
+            --correct-bg: #D4EDDA;
+            --correct-text: #2D6A4F;
+            
+            --wrong-bg: #F8D7DA;
+            --wrong-text: #C0392B;
+
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-color);
+        }
+
+        h1 { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 40px; }
+        h2 { font-size: 28px; font-weight: 700; }
+        h3 { font-size: 22px; font-weight: 600; }
+
+        section {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Uitleg Secties */
+        .uitleg-mogen { border: 2px solid var(--mogen-border); }
+        .uitleg-kunnen { border: 2px solid var(--kunnen-border); }
+        
+        .tabel-kaart {
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .tabel-mogen { background-color: var(--mogen-bg); border: 1px solid var(--mogen-border); }
+        .tabel-kunnen { background-color: var(--kunnen-bg); border: 1px solid var(--kunnen-border); }
+
+        .vervoeging-row {
+            display: flex;
+            padding: 8px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .vervoeging-row:last-child { border-bottom: none; }
+        .vervoeging-row:nth-child(even) { background-color: rgba(255,255,255,0.4); }
+        .pronoun { flex: 1; font-weight: 600; }
+        .verb { flex: 1; font-weight: 700; font-size: 20px; }
+
+        .voorbeeld-kaart {
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .emoji-icon { font-size: 24px; }
+        .voorbeeld-text { flex: 1; }
+        .toelichting { font-size: 16px; color: #666; font-style: italic; margin-top: 4px; display: block; }
+        
+        .verb-mogen { color: var(--mogen-dark); font-weight: 700; }
+        .verb-kunnen { color: var(--kunnen-dark); font-weight: 700; }
+
+        /* Verschil Sectie */
+        .verschil-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .verschil-kolom {
+            flex: 1;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .kolom-mogen { background-color: var(--mogen-bg); border: 1px solid var(--mogen-border); }
+        .kolom-kunnen { background-color: var(--kunnen-bg); border: 1px solid var(--kunnen-border); }
+        
+        .contrast-rij {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .contrast-item {
+            flex: 1;
+            background: var(--white);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .vs-icon {
+            font-weight: bold;
+            color: #888;
+        }
+
+        /* Opdrachten */
+        .opdracht-sectie { padding: 24px; border-radius: 16px; margin-bottom: 40px; }
+        .opdracht-mogen { background-color: rgba(255, 232, 224, 0.3); border: 2px solid var(--mogen-border); }
+        .opdracht-kunnen { background-color: rgba(224, 240, 240, 0.3); border: 2px solid var(--kunnen-border); }
+        .opdracht-mix { background-color: rgba(237, 224, 245, 0.3); border: 2px solid var(--mix-border); }
+        
+        .score-tracker {
+            background: var(--white);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .zin-kaart {
+            background-color: var(--white);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            transition: background-color 0.3s;
+        }
+        .zin-tekst { margin-bottom: 12px; font-size: 18px; }
+        .gap {
+            display: inline-block;
+            width: 80px;
+            border-bottom: 2px dashed #ccc;
+            margin: 0 8px;
+        }
+        
+        .opties {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-optie {
+            background-color: var(--bg-color);
+            border: 2px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-optie:hover {
+            border-color: #aaa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn-optie:disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .zin-kaart.correct { background-color: var(--correct-bg); }
+        .zin-kaart.correct .btn-optie.selected { background-color: var(--correct-text); color: white; border-color: var(--correct-text); }
+        
+        .zin-kaart.wrong { background-color: var(--wrong-bg); }
+        .zin-kaart.wrong .btn-optie.selected { background-color: var(--wrong-text); color: white; border-color: var(--wrong-text); }
+        
+        .feedback-text {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        .zin-kaart.wrong .feedback-text {
+            display: block;
+            color: var(--correct-text);
+        }
+
+        /* Eindscore */
+        .eindscore-kaart {
+            text-align: center;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: none;
+            margin-top: 40px;
+        }
+        .eindscore-emoji { font-size: 60px; margin-bottom: 10px; }
+        .eindscore-tekst { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        
+        .btn-reset {
+            background-color: var(--text-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-reset:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sticky progress */
+        .progress-container {
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            padding: 10px 0;
+            z-index: 100;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .progress-bar-bg {
+            background: #eee;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease, background-color 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .verschil-container, .contrast-rij {
+                flex-direction: column;
+            }
+            .vs-icon { transform: rotate(90deg); margin: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-container">
+    <div class="container" style="padding-bottom: 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold;">
+            <span>Voortgang</span>
+            <span id="overall-progress-text">0/24</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="overall-progress-bar"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Kunnen en Mogen</h1>
+
+    <!-- DEEL 1: UITLEG -->
+    <section class="uitleg-mogen">
+        <h2 style="color: var(--mogen-dark);">1. Mogen</h2>
+        <p><strong>Mogen = je hebt toestemming.</strong> Iemand zegt ja of nee (een persoon, een regel, de wet).</p>
+        
+        <div class="tabel-kaart tabel-mogen">
+            <div class="vervoeging-row"><div class="pronoun">ik</div><div class="verb">mag</div></div>
+            <div class="vervoeging-row"><div class="pronoun">jij</div><div class="verb">mag</div></div>
+            <div class="vervoeging-row"><div class="pronoun">u</div><div class="verb">mag</div></div>
+            <div class="vervoeging-row"><div class="pronoun">hij/zij</div><div class="verb">mag</div></div>
+            <div class="vervoeging-row"><div class="pronoun">wij</div><div class="verb">mogen</div></div>
+            <div class="vervoeging-row"><div class="pronoun">jullie</div><div class="verb">mogen</div></div>
+            <div class="vervoeging-row"><div class="pronoun">zij</div><div class="verb">mogen</div></div>
+        </div>
+
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">🚆</div>
+            <div class="voorbeeld-text">
+                "<span class="verb-mogen">Mag</span> ik hier zitten?"
+                <span class="toelichting">je vraagt toestemming</span>
+            </div>
+        </div>
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">🏥</div>
+            <div class="voorbeeld-text">
+                "Je <span class="verb-mogen">mag</span> niet roken in het ziekenhuis."
+                <span class="toelichting">het is een regel</span>
+            </div>
+        </div>
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">👩‍👧‍👦</div>
+            <div class="voorbeeld-text">
+                "De kinderen <span class="verb-mogen">mogen</span> buiten spelen."
+                <span class="toelichting">de moeder zegt ja</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="uitleg-kunnen">
+        <h2 style="color: var(--kunnen-dark);">2. Kunnen</h2>
+        <p><strong>Kunnen = het is mogelijk, of je hebt het geleerd.</strong> (ability / possibility)</p>
+        
+        <div class="tabel-kaart tabel-kunnen">
+            <div class="vervoeging-row"><div class="pronoun">ik</div><div class="verb">kan</div></div>
+            <div class="vervoeging-row"><div class="pronoun">jij</div><div class="verb">kan / kunt</div></div>
+            <div class="vervoeging-row"><div class="pronoun">u</div><div class="verb">kunt</div></div>
+            <div class="vervoeging-row"><div class="pronoun">hij/zij</div><div class="verb">kan</div></div>
+            <div class="vervoeging-row"><div class="pronoun">wij</div><div class="verb">kunnen</div></div>
+            <div class="vervoeging-row"><div class="pronoun">jullie</div><div class="verb">kunnen</div></div>
+            <div class="vervoeging-row"><div class="pronoun">zij</div><div class="verb">kunnen</div></div>
+        </div>
+
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">🏊</div>
+            <div class="voorbeeld-text">
+                "Ik <span class="verb-kunnen">kan</span> goed zwemmen."
+                <span class="toelichting">ik heb het geleerd</span>
+            </div>
+        </div>
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">🤝</div>
+            <div class="voorbeeld-text">
+                "<span class="verb-kunnen">Kun</span> je mij helpen?"
+                <span class="toelichting">is het mogelijk?</span>
+            </div>
+        </div>
+        <div class="voorbeeld-kaart">
+            <div class="emoji-icon">📅</div>
+            <div class="voorbeeld-text">
+                "Wij <span class="verb-kunnen">kunnen</span> morgen komen."
+                <span class="toelichting">het past in de agenda</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>3. Het verschil</h2>
+        <div class="verschil-container">
+            <div class="verschil-kolom kolom-mogen">
+                <h3 style="color: var(--mogen-dark); text-align: center;">MOGEN</h3>
+                <p style="text-align: center;">Toestemming (ja/nee)</p>
+            </div>
+            <div class="verschil-kolom kolom-kunnen">
+                <h3 style="color: var(--kunnen-dark); text-align: center;">KUNNEN</h3>
+                <p style="text-align: center;">Mogelijk / geleerd</p>
+            </div>
+        </div>
+
+        <div class="contrast-rij">
+            <div class="contrast-item" style="border: 2px solid var(--mogen-border);">
+                🚫 Je <span class="verb-mogen">MAG</span> hier niet parkeren.<br>
+                <span class="toelichting">verboden</span>
+            </div>
+            <div class="vs-icon">↔</div>
+            <div class="contrast-item" style="border: 2px solid var(--kunnen-border);">
+                🅿️ Je <span class="verb-kunnen">KAN</span> hier niet parkeren.<br>
+                <span class="toelichting">geen plek</span>
+            </div>
+        </div>
+
+        <div class="contrast-rij">
+            <div class="contrast-item" style="border: 2px solid var(--mogen-border);">
+                🍪 <span class="verb-mogen">Mag</span> ik een koekje?<br>
+                <span class="toelichting">toestemming vragen</span>
+            </div>
+            <div class="vs-icon">↔</div>
+            <div class="contrast-item" style="border: 2px solid var(--kunnen-border);">
+                🍪 <span class="verb-kunnen">Kan</span> ik een koekje pakken?<br>
+                <span class="toelichting">het staat hoog, lukt het?</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEEL 2: OPDRACHTEN -->
+    <h1>Opdrachten</h1>
+    <p style="text-align: center; margin-bottom: 40px;">Kies het juiste woord. Klik op het antwoord.</p>
+
+    <!-- Blok A -->
+    <section class="opdracht-sectie opdracht-mogen" id="blok-a">
+        <h2 style="color: var(--mogen-dark);">Blok A: Mogen</h2>
+        <div class="score-tracker" id="score-a">Blok A: 0/8 correct</div>
+        <div id="questions-a"></div>
+    </section>
+
+    <!-- Blok B -->
+    <section class="opdracht-sectie opdracht-kunnen" id="blok-b">
+        <h2 style="color: var(--kunnen-dark);">Blok B: Kunnen</h2>
+        <div class="score-tracker" id="score-b">Blok B: 0/8 correct</div>
+        <div id="questions-b"></div>
+    </section>
+
+    <!-- Blok C -->
+    <section class="opdracht-sectie opdracht-mix" id="blok-c">
+        <h2 style="color: var(--mix-dark);">Blok C: Mix (Kunnen of Mogen?)</h2>
+        <div class="score-tracker" id="score-c">Blok C: 0/8 correct</div>
+        <div id="questions-c"></div>
+    </section>
+
+    <!-- Eindscore Kaart -->
+    <div class="eindscore-kaart" id="eindscore-kaart">
+        <div class="eindscore-emoji" id="eindscore-emoji">🎉</div>
+        <div class="eindscore-tekst" id="eindscore-tekst">Je score: 0/24</div>
+        <p id="eindscore-bericht" style="font-size: 18px; margin-bottom: 20px;"></p>
+        <button class="btn-reset" onclick="resetAll()">Opnieuw proberen</button>
+    </div>
+
+</div>
+
+<script>
+    // Data voor de opdrachten
+    const questionsA = [
+        { text: "[gap] ik hier zitten?", answer: "Mag", options: ["Mag", "Mogen"] },
+        { text: "De kinderen [gap] niet op straat spelen.", answer: "mogen", options: ["mag", "mogen"] },
+        { text: "Jij [gap] nu naar huis.", answer: "mag", options: ["mag", "mogen"] },
+        { text: "[gap] wij de televisie aanzetten?", answer: "Mogen", options: ["Mag", "Mogen"] },
+        { text: "U [gap] hier niet roken.", answer: "mag", options: ["mag", "mogen"] },
+        { text: "Zij [gap] van de dokter geen koffie drinken.", answer: "mag", options: ["mag", "mogen"] },
+        { text: "Jullie [gap] in de pauze naar buiten.", answer: "mogen", options: ["mag", "mogen"] },
+        { text: "Hij [gap] van zijn moeder geen snoep eten.", answer: "mag", options: ["mag", "mogen"] }
+    ];
+
+    const questionsB = [
+        { text: "Ik [gap] goed koken.", answer: "kan", options: ["kan", "kunt", "kunnen"] },
+        { text: "[gap] jij mij helpen?", answer: "Kun", options: ["Kan", "Kun", "Kunnen"], altAnswer: "Kan" },
+        { text: "Wij [gap] morgen niet komen.", answer: "kunnen", options: ["kan", "kunt", "kunnen"] },
+        { text: "Zij [gap] drie talen spreken.", answer: "kan", options: ["kan", "kunt", "kunnen"] },
+        { text: "[gap] jullie de tekst lezen?", answer: "Kunnen", options: ["Kan", "Kun", "Kunnen"] },
+        { text: "Hij [gap] niet zwemmen.", answer: "kan", options: ["kan", "kunt", "kunnen"] },
+        { text: "U [gap] hier de bus nemen.", answer: "kunt", options: ["kan", "kunt", "kunnen"] },
+        { text: "De cursisten [gap] de opdracht maken.", answer: "kunnen", options: ["kan", "kunt", "kunnen"] }
+    ];
+
+    const questionsC = [
+        { text: "[gap] ik een vraag stellen?", answer: "Mag", options: ["Mag", "Kan", "Mogen", "Kunnen"] },
+        { text: "Zij [gap] heel goed tekenen.", answer: "kan", options: ["mag", "kan", "mogen", "kunnen"] },
+        { text: "Je [gap] hier niet fietsen.", answer: "mag", options: ["mag", "kan", "kunt", "mogen"] },
+        { text: "Wij [gap] vandaag niet komen, wij zijn ziek.", answer: "kunnen", options: ["mogen", "kunnen", "mag", "kan"] },
+        { text: "[gap] de kinderen buiten spelen?", answer: "Mogen", options: ["Mag", "Kan", "Mogen", "Kunnen"] },
+        { text: "Hij [gap] geen Nederlands spreken.", answer: "kan", options: ["mag", "kan", "mogen", "kunnen"] },
+        { text: "[gap] ik uw pen gebruiken?", answer: "Mag", options: ["Mag", "Kan", "Mogen", "Kunnen"] },
+        { text: "Jullie [gap] na de les naar huis.", answer: "mogen", options: ["mag", "kan", "mogen", "kunnen"] }
+    ];
+
+    // State
+    let scores = { a: 0, b: 0, c: 0 };
+    let answered = { a: 0, b: 0, c: 0 };
+    const totals = { a: questionsA.length, b: questionsB.length, c: questionsC.length };
+    const totalQuestions = totals.a + totals.b + totals.c;
+
+    function renderQuestions(questions, containerId, blockId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'zin-kaart';
+            card.id = `q-${blockId}-${index}`;
+            
+            // Vervang [gap] met de pill of stippellijn
+            const parts = q.text.split('[gap]');
+            const sentenceHtml = `<div class="zin-tekst">${parts[0]}<span class="gap" id="gap-${blockId}-${index}"></span>${parts[1]}</div>`;
+            
+            let optionsHtml = '<div class="opties">';
+            q.options.forEach(opt => {
+                optionsHtml += `<button class="btn-optie" onclick="checkAnswer('${blockId}', ${index}, '${opt}', '${q.answer}', this, '${q.altAnswer || ''}')">${opt}</button>`;
+            });
+            optionsHtml += '</div>';
+            
+            optionsHtml += `<div class="feedback-text" id="feedback-${blockId}-${index}">✓ Het juiste antwoord is: ${q.answer}</div>`;
+
+            card.innerHTML = sentenceHtml + optionsHtml;
+            container.appendChild(card);
+        });
+    }
+
+    function checkAnswer(blockId, qIndex, selected, correct, btn, altCorrect) {
+        const card = document.getElementById(`q-${blockId}-${qIndex}`);
+        if (card.classList.contains('answered')) return; // Al beantwoord
+        
+        card.classList.add('answered');
+        answered[blockId]++;
+        
+        const gap = document.getElementById(`gap-${blockId}-${qIndex}`);
+        gap.innerText = selected;
+        gap.style.borderBottom = 'none';
+        gap.style.fontWeight = 'bold';
+        
+        // Disable alle buttons in deze kaart
+        const buttons = card.querySelectorAll('.btn-optie');
+        buttons.forEach(b => b.disabled = true);
+        
+        btn.classList.add('selected');
+
+        const isCorrect = selected === correct || selected === altCorrect;
+
+        if (isCorrect) {
+            card.classList.add('correct');
+            scores[blockId]++;
+        } else {
+            card.classList.add('wrong');
+        }
+
+        updateScore(blockId);
+        checkAllFinished();
+    }
+
+    function updateScore(blockId) {
+        const scoreEl = document.getElementById(`score-${blockId}`);
+        const score = scores[blockId];
+        const total = totals[blockId];
+        const perc = score / total;
+        
+        let emoji = '✅';
+        let color = '#4CAF50'; // Groen
+        if (perc < 0.5) { emoji = '❌'; color = '#F44336'; } // Rood
+        else if (perc < 0.75) { emoji = '⚠️'; color = '#FF9800'; } // Oranje
+        
+        scoreEl.innerHTML = `Blok ${blockId.toUpperCase()}: ${score}/${total} correct ${emoji}`;
+        scoreEl.style.color = color;
+
+        // Update main progress bar
+        const totalAnswered = answered.a + answered.b + answered.c;
+        const totalScore = scores.a + scores.b + scores.c;
+        
+        document.getElementById('overall-progress-text').innerText = `${totalAnswered}/${totalQuestions}`;
+        
+        const progressFill = document.getElementById('overall-progress-bar');
+        const progressPerc = (totalAnswered / totalQuestions) * 100;
+        progressFill.style.width = `${progressPerc}%`;
+
+        // Kleur van progressbar aanpassen aan gemiddelde score tot nu toe
+        if (totalAnswered > 0) {
+            const currentScorePerc = totalScore / totalAnswered;
+            if (currentScorePerc < 0.5) progressFill.style.backgroundColor = '#F44336';
+            else if (currentScorePerc < 0.75) progressFill.style.backgroundColor = '#FF9800';
+            else progressFill.style.backgroundColor = '#4CAF50';
+        }
+    }
+
+    function checkAllFinished() {
+        if (answered.a === totals.a && answered.b === totals.b && answered.c === totals.c) {
+            showFinalScore();
+        }
+    }
+
+    function showFinalScore() {
+        const eindKaart = document.getElementById('eindscore-kaart');
+        const emojiEl = document.getElementById('eindscore-emoji');
+        const tekstEl = document.getElementById('eindscore-tekst');
+        const berichtEl = document.getElementById('eindscore-bericht');
+        
+        const totalScore = scores.a + scores.b + scores.c;
+        const perc = totalScore / totalQuestions;
+        
+        eindKaart.style.display = 'block';
+        tekstEl.innerText = `Je score: ${totalScore}/${totalQuestions}`;
+        
+        if (perc >= 0.9) {
+            emojiEl.innerText = '🎉🌟';
+            berichtEl.innerText = 'Fantastisch! Je begrijpt kunnen en mogen heel goed!';
+        } else if (perc >= 0.7) {
+            emojiEl.innerText = '😊👍';
+            berichtEl.innerText = 'Goed gedaan! Oefen nog een beetje.';
+        } else {
+            emojiEl.innerText = '💪📚';
+            berichtEl.innerText = 'Blijf oefenen! Je kunt het!';
+        }
+
+        // Scroll naar score
+        setTimeout(() => {
+            eindKaart.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+    }
+
+    function resetAll() {
+        scores = { a: 0, b: 0, c: 0 };
+        answered = { a: 0, b: 0, c: 0 };
+        
+        document.getElementById('overall-progress-text').innerText = `0/${totalQuestions}`;
+        document.getElementById('overall-progress-bar').style.width = '0%';
+        document.getElementById('overall-progress-bar').style.backgroundColor = '#4CAF50';
+        
+        document.getElementById('score-a').innerHTML = `Blok A: 0/8 correct`;
+        document.getElementById('score-a').style.color = 'inherit';
+        document.getElementById('score-b').innerHTML = `Blok B: 0/8 correct`;
+        document.getElementById('score-b').style.color = 'inherit';
+        document.getElementById('score-c').innerHTML = `Blok C: 0/8 correct`;
+        document.getElementById('score-c').style.color = 'inherit';
+
+        document.getElementById('eindscore-kaart').style.display = 'none';
+
+        init();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function init() {
+        renderQuestions(questionsA, 'questions-a', 'a');
+        renderQuestions(questionsB, 'questions-b', 'b');
+        renderQuestions(questionsC, 'questions-c', 'c');
+    }
+
+    // Start
+    init();
+
+</script>
+
+</body>
+</html>

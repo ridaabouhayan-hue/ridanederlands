@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.6 Twintig, dertig, veertig — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}.uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}.tip-blok strong{color:#ca8a04}
+        .num-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:1rem 0}
+        .num-card{background:rgba(255,255,255,.04);border:1px solid rgba(99,102,241,.18);border-radius:9px;padding:10px;text-align:center}
+        .num-card .num{font-size:1.4rem;font-weight:700;color:#6366f1}.num-card .word{font-size:.88rem;margin-top:3px}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.85rem;margin-bottom:.8rem;line-height:1.7}
+        .instructie-lang{display:block;margin-top:2px}
+        .mc-list{list-style:none;padding:0}.mc-list li{margin:12px 0}
+        .mc-vraag{font-weight:600;margin-bottom:5px;font-size:.93rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.88rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        .invul-list{list-style:none;padding:0}.invul-list li{margin:9px 0;font-size:.93rem;line-height:1.9}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 9px;font-size:.93rem;background:transparent;color:inherit;width:140px;outline:none}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .wn-list{list-style:none;padding:0}.wn-list li{display:flex;align-items:flex-start;gap:10px;margin:9px 0;font-size:.9rem}
+        .wn-stelling{flex:1}.wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:.83rem;background:transparent;color:inherit;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        .schrijf-list{list-style:none;padding:0}.schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:52px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:7px 11px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}.score-midden{background:rgba(234,179,8,.15);color:#ca8a04}.score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+    </style>
+</head>
+<body>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema2.html" class="back-link">← Terug naar Thema 2</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema2.html">Thema 2</a><span>›</span><span>2.6</span></div>
+            <h1>🔢 Twintig, dertig, veertig</h1>
+            <p class="subtitle" data-translate="subtitle">Leer de getallen 20 tot 100 begrijpen en zeggen.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Getallen 20–100</h2>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Getal</th><th id="th-lang">🇳🇱 Woord</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2 data-translate="oefTitle">Oefeningen</h2>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Getal → Woord</span>
+                <h3>Kies het juiste woord bij het getal.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Zie je het getal? Kies het juiste woord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 See the number? Choose the correct word.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Rakamı görüyor musunuz? Doğru kelimeyi seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 看到数字了吗？选择正确的词。</span>
+                </p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc1','mc1-score',buildMC1)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Rekenen met woorden</span>
+                <h3>Kies het juiste antwoord.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Bereken de som en kies het goede woord als antwoord.</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Calculate and choose the correct word as answer.</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Hesaplayın ve cevap olarak doğru kelimeyi seçin.</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 计算后选择正确的荷兰语单词作为答案。</span>
+                </p>
+                <ul class="mc-list" id="mc2"></ul>
+                <span id="mc2-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc2','mc2-score',buildMC2)">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Schrijf het woord</span>
+                <h3>Schrijf het getal als woord.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Bijv.: 30 → schrijf "dertig"</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 E.g.: 30 → write "dertig"</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Örn.: 30 → "dertig" yazın</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 例如：30 → 写出 "dertig"</span>
+                </p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">✓ Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Klopt het getal bij het woord?</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Click ✓ Correct or ✗ Wrong. Wrong? Try again!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 ✓ Doğru veya ✗ Yanlış'a tıklayın. Yanlış mı? Tekrar deneyin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 点击 ✓ 正确 或 ✗ 错误。答错了？再试一次！</span>
+                </p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄</button>
+            </div>
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Schrijfopdracht</span>
+                <h3>Gebruik grote getallen in zinnen.</h3>
+                <p class="instructie">
+                    <span class="instructie-lang" data-lang="nl">🇳🇱 Schrijf zinnen met getallen. Laat ze zien aan de docent!</span>
+                    <span class="instructie-lang" data-lang="en">🇬🇧 Write sentences with numbers. Show them to the teacher!</span>
+                    <span class="instructie-lang" data-lang="tr">🇹🇷 Sayılarla cümleler yazın. Öğretmene gösterin!</span>
+                    <span class="instructie-lang" data-lang="zh">🇨🇳 用数字写句子。给老师看！</span>
+                </p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💾 Opslaan</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄</button>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+<script>
+const GETALLEN=[
+    {n:20,nl:'twintig',en:'twenty',tr:'yirmi',zh:'二十',ex:'Er zijn twintig cursisten.'},
+    {n:30,nl:'dertig',en:'thirty',tr:'otuz',zh:'三十',ex:'Dertig minuten pauze.'},
+    {n:40,nl:'veertig',en:'forty',tr:'kırk',zh:'四十',ex:'Veertig woorden leren.'},
+    {n:50,nl:'vijftig',en:'fifty',tr:'elli',zh:'五十',ex:'Vijftig pagina\'s lezen.'},
+    {n:60,nl:'zestig',en:'sixty',tr:'altmış',zh:'六十',ex:'Zestig seconden in een minuut.'},
+    {n:70,nl:'zeventig',en:'seventy',tr:'yetmiş',zh:'七十',ex:'Zeventig euro betalen.'},
+    {n:80,nl:'tachtig',en:'eighty',tr:'seksen',zh:'八十',ex:'Tachtig procent goed.'},
+    {n:90,nl:'negentig',en:'ninety',tr:'doksan',zh:'九十',ex:'Negentig minuten les.'},
+    {n:100,nl:'honderd',en:'hundred',tr:'yüz',zh:'一百',ex:'Honderd woorden leren.'},
+];
+const UI={nl:{subtitle:'Leer de getallen 20 tot 100.',vocabTitle:'Getallen 20–100',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn numbers 20 to 100.',vocabTitle:'Numbers 20–100',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'20\'den 100\'e sayıları öğrenin.',vocabTitle:'20–100 Sayılar',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习荷兰语数字20到100。',vocabTitle:'数字 20–100',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
+const UITLEG={
+    nl:`<div class="uitleg-box"><h3>Tientallen 20–100</h3>
+<div class="num-grid">${GETALLEN.map(g=>`<div class="num-card"><div class="num">${g.n}</div><div class="word">${g.nl}</div></div>`).join('')}</div>
+<p style="font-size:.92rem;margin-top:.8rem"><strong>Tussengetal patroon:</strong> eenheid + en + tiental<br>
+21 = een-en-twintig | 35 = vijf-en-dertig | 48 = acht-en-veertig | 99 = negen-en-negentig</p></div>
+<div class="tip-blok"><strong>Let op:</strong> In Nederlandse getallen staan de eenheden vóór de tientallen: 21 = EEN-en-twintig (niet twintig-en-een).</div>`,
+    en:`<div class="uitleg-box"><h3>Tens 20–100</h3>
+<div class="num-grid">${GETALLEN.map(g=>`<div class="num-card"><div class="num">${g.n}</div><div class="word">${g.nl}<br><small style="color:#aaa">${g.en}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem;margin-top:.8rem">21 = een-en-twintig | 35 = vijf-en-dertig | 48 = acht-en-veertig</p></div>
+<div class="tip-blok"><strong>Note:</strong> Units come BEFORE tens: 21 = een-en-twintig (not twintig-en-een).</div>`,
+    tr:`<div class="uitleg-box"><h3>Onlar 20–100</h3>
+<div class="num-grid">${GETALLEN.map(g=>`<div class="num-card"><div class="num">${g.n}</div><div class="word">${g.nl}<br><small style="color:#aaa">${g.tr}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem;margin-top:.8rem">21 = een-en-twintig | 35 = vijf-en-dertig</p></div>
+<div class="tip-blok"><strong>Dikkat:</strong> Hollandacada birler, onlardan önce gelir: 21 = een-en-twintig.</div>`,
+    zh:`<div class="uitleg-box"><h3>数字20–100（十位数）</h3>
+<div class="num-grid">${GETALLEN.map(g=>`<div class="num-card"><div class="num">${g.n}</div><div class="word">${g.nl}<br><small style="color:#aaa">${g.zh}</small></div></div>`).join('')}</div>
+<p style="font-size:.9rem;margin-top:.8rem">21–99构成规律：个位数 + en + 十位数<br>21 = een-en-twintig | 35 = vijf-en-dertig | 48 = acht-en-veertig</p></div>
+<div class="tip-blok"><strong>注意：</strong>荷兰语中个位数放在十位数前面：21 = een-en-twintig（不是twintig-en-een）。</div>`
+};
+let currentLang='nl';
+function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';GETALLEN.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.n}</td><td class="trans-word">${r.nl}${lang!=='nl'?' ('+r[lang]+')':''}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
+const mc1Data=[
+    {v:'30',a:'dertig',o:['twintig','dertig','veertig']},{v:'50',a:'vijftig',o:['veertig','vijftig','zestig']},
+    {v:'80',a:'tachtig',o:['zeventig','tachtig','negentig']},{v:'100',a:'honderd',o:['negentig','honderd','tachtig']},
+    {v:'70',a:'zeventig',o:['zestig','zeventig','tachtig']},{v:'40',a:'veertig',o:['dertig','veertig','vijftig']},
+    {v:'60',a:'zestig',o:['vijftig','zestig','zeventig']},{v:'90',a:'negentig',o:['tachtig','negentig','honderd']},
+    {v:'20',a:'twintig',o:['twintig','dertig','veertig']},{v:'35',a:'vijfendertig',o:['vijfendertig','vijfentwintig','vijfenveertig']},
+    {v:'21',a:'eenentwintig',o:['eenentwintig','tweeentwintig','twintig']},{v:'48',a:'achtenveeertig',o:['zevenenveertig','achtenveeertig','negenenveertig']},
+];
+const mc2Data=[
+    {v:'20 + 10 =',a:'dertig',o:['twintig','dertig','veertig']},
+    {v:'50 + 10 =',a:'zestig',o:['vijftig','zestig','zeventig']},
+    {v:'80 + 20 =',a:'honderd',o:['negentig','honderd','tachtig']},
+    {v:'40 + 30 =',a:'zeventig',o:['zestig','zeventig','tachtig']},
+    {v:'10 + 10 =',a:'twintig',o:['twintig','dertig','tien']},
+    {v:'60 + 30 =',a:'negentig',o:['tachtig','negentig','honderd']},
+    {v:'20 + 20 =',a:'veertig',o:['dertig','veertig','vijftig']},
+    {v:'50 + 30 =',a:'tachtig',o:['zeventig','tachtig','negentig']},
+];
+const _mc={};
+function checkMCq(btn,keuze,ant,sid,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')))return;groep.forEach(b=>b.disabled=true);if(!_mc[sid])_mc[sid]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[sid].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[sid].done++;if(_mc[sid].done===total){const sc=document.getElementById(sid);sc.style.display='inline-block';const s=_mc[sid].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=6?'score-midden':'score-slecht');}}
+function buildMC1(){const ul=document.getElementById('mc1');ul.innerHTML='';mc1Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc1-score',${mc1Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v} →</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function buildMC2(){const ul=document.getElementById('mc2');ul.innerHTML='';mc2Data.forEach((item,i)=>{const li=document.createElement('li');const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,${JSON.stringify(o)},${JSON.stringify(item.a)},'mc2-score',${mc2Data.length})">${o}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function resetMC(listId,scoreId,buildFn){delete _mc[scoreId];document.getElementById(scoreId).style.display='none';document.getElementById(listId).innerHTML='';buildFn();}
+const invulData=[
+    {zin:'20 = ___',ant:'twintig'},{zin:'30 = ___',ant:'dertig'},{zin:'40 = ___',ant:'veertig'},
+    {zin:'50 = ___',ant:'vijftig'},{zin:'60 = ___',ant:'zestig'},{zin:'70 = ___',ant:'zeventig'},
+    {zin:'80 = ___',ant:'tachtig'},{zin:'90 = ___',ant:'negentig'},{zin:'100 = ___',ant:'honderd'},
+    {zin:'Er zijn ___ (60) seconden in een minuut.',ant:'zestig'},
+    {zin:'Er zijn ___ (30) dagen in juni.',ant:'dertig'},
+    {zin:'Ik ben ___ (40) jaar oud.',ant:'veertig'},
+];
+function buildInvul(){const ul=document.getElementById('invul1');ul.innerHTML='';invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="woord…" autocomplete="off">${p[1]||''}</li>`;});}
+function checkInvul(){let g=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=8?'score-midden':'score-slecht');}
+function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+const wnData=[
+    {s:'twintig = 20',ant:'Goed'},{s:'dertig = 30',ant:'Goed'},{s:'veertig = 50',ant:'Fout'},
+    {s:'vijftig = 50',ant:'Goed'},{s:'zestig = 70',ant:'Fout'},{s:'zeventig = 70',ant:'Goed'},
+    {s:'tachtig = 80',ant:'Goed'},{s:'negentig = 90',ant:'Goed'},{s:'honderd = 100',ant:'Goed'},
+    {s:'20 + 20 = veertig',ant:'Goed'},{s:'30 + 30 = zestig',ant:'Goed'},{s:'50 + 40 = tachtig',ant:'Fout'},
+];
+function buildWN(){const ul=document.getElementById('wn1');ul.innerHTML='';wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}')">✗ Fout</button></div></li>`);}
+function checkWN(btn,keuze,ant){const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');if([...groep].some(b=>b.classList.contains('correct')))return;if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}}
+function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+const schrijfVragen=[
+    {nl:'Hoe oud bent jij? Schrijf een zin met een getal van 20-100.',en:'How old are you? Write a sentence with a number 20-100.',tr:'Kaç yaşındasınız? 20-100 arası bir sayıyla cümle yazın.',zh:'你多大了？用20到100之间的数字写句子。'},
+    {nl:'Hoeveel cursisten zitten er in de klas? Schrijf het getal als woord.',en:'How many students? Write the number as a word.',tr:'Sınıfta kaç öğrenci var? Sayıyı kelime olarak yazın.',zh:'班里有多少学员？用文字写出数字。'},
+    {nl:'Tel van 20 tot 100 (per 10) en schrijf de woorden.',en:'Count from 20 to 100 (by 10s) and write the words.',tr:'20\'den 100\'e kadar (10\'ar 10\'ar) sayın.',zh:'从20数到100（每次加10），写出荷兰语单词。'},
+    {nl:'Schrijf: hoeveel euro kost jouw boek?',en:'Write: how much does your book cost?',tr:'Yazın: kitabınız kaç euro?',zh:'写：你的书多少欧元？'},
+    {nl:'Schrijf twee sommen met tientallen en de antwoorden als woord.',en:'Write two sums with tens, answers as words.',tr:'Onlarla iki işlem yazın ve cevabı kelime olarak verin.',zh:'用十位数写两道加法题，用文字写出答案。'},
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:10px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{const txt=v[currentLang]||v.nl;ul.innerHTML+=`<li><label>${i+1}. ${txt}</label><textarea id="sw6-${i}" placeholder="Schrijf hier..."></textarea></li>`;});}
+function saveSchrijf(){document.getElementById('schrijf-fb').style.display='inline';setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);}
+function resetSchrijf(){buildSchrijf();}
+document.addEventListener('DOMContentLoaded',()=>{buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')==='nl'?'block':'none';});buildMC1();buildMC2();buildInvul();buildWN();buildSchrijf();});
+</script>
+</body>
+</html>

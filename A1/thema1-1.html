@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 1.1: Hallo, mijn naam is. Woordenlijst, uitleg en oefeningen.">
+    <title>1.1 Hallo, mijn naam is — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:18px 22px;margin:1.2rem 0}
+        .uitleg-box h3{color:#6366f1;margin-top:0}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:11px 15px;margin:.8rem 0;font-size:.88rem}
+        .tip-blok strong{color:#ca8a04}
+        .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:12px 16px;margin:1rem 0;font-size:.91rem}
+        .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(99,102,241,.12);color:#6366f1;border:2px solid rgba(99,102,241,.35);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .2s}
+        .reset-btn:hover{background:rgba(99,102,241,.22)}
+        .opdracht-card{background:var(--card-bg,#1e1e2e);border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:2rem 0}
+        .opdracht-nr{display:inline-block;background:#6366f1;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+        .opdracht-card h3{margin-top:0;font-size:1.05rem}
+        .instructie{color:var(--text-muted,#aaa);font-size:.88rem;margin-bottom:1rem}
+        /* MC */
+        .mc-list{list-style:none;padding:0}
+        .mc-list li{margin:10px 0}
+        .mc-vraag{font-weight:600;margin-bottom:4px;font-size:.92rem}
+        .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+        .mc-btn{border:2px solid rgba(99,102,241,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.87rem;background:transparent;color:inherit;transition:all .2s}
+        .mc-btn:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+        .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+        /* DRAG */
+        .drag-exercise{background:rgba(255,255,255,.03);border:1px solid rgba(99,102,241,.15);border-radius:12px;padding:16px;margin:12px 0}
+        .word-bank{display:flex;flex-wrap:wrap;gap:7px;min-height:40px;padding:8px;background:rgba(99,102,241,.05);border-radius:8px;margin:6px 0}
+        .word-tile{border:2px solid rgba(99,102,241,.4);border-radius:7px;padding:5px 12px;cursor:pointer;font-size:.88rem;background:rgba(255,255,255,.04);color:inherit;transition:all .2s;user-select:none}
+        .word-tile:hover{border-color:#6366f1;background:rgba(99,102,241,.1)}
+        .word-tile.correct-pos{border-color:#10b981;background:rgba(16,185,129,.1)}
+        .word-tile.wrong-pos{border-color:#ef4444;background:rgba(239,68,68,.1)}
+        .word-tile.all-correct{border-color:#10b981;background:rgba(16,185,129,.18);color:#10b981;font-weight:700;pointer-events:none}
+        .drop-zone{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:8px;border:2px dashed rgba(99,102,241,.3);border-radius:8px;margin-top:6px}
+        .drag-result{margin-top:8px;font-size:.88rem;font-weight:600}
+        .drag-result.success{color:#10b981}
+        .drag-result.partial{color:#ca8a04}
+        .zone-lbl{font-size:.8rem;color:var(--text-muted,#999);margin-top:8px}
+        /* FILL IN */
+        .invul-list{list-style:none;padding:0}
+        .invul-list li{margin:8px 0;font-size:.92rem;line-height:2}
+        .invul-list input{border:2px solid rgba(99,102,241,.4);border-radius:6px;padding:2px 8px;font-size:.92rem;background:transparent;color:inherit;width:130px;outline:none;transition:border-color .2s}
+        .invul-list input:focus{border-color:#6366f1}
+        .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.08)}
+        .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.08)}
+        /* WN */
+        .wn-list{list-style:none;padding:0}
+        .wn-list li{display:flex;align-items:flex-start;gap:10px;margin:8px 0;font-size:.9rem}
+        .wn-stelling{flex:1}
+        .wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+        .wn-btn{border:2px solid rgba(99,102,241,.35);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.82rem;background:transparent;color:inherit;transition:all .2s;white-space:nowrap}
+        .wn-btn.correct{border-color:#10b981;background:rgba(16,185,129,.15);color:#10b981;font-weight:700}
+        .wn-btn.fout{border-color:#ef4444;background:rgba(239,68,68,.15);color:#ef4444}
+        /* SCHRIJF */
+        .schrijf-list{list-style:none;padding:0}
+        .schrijf-list li{margin:10px 0}
+        .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px}
+        .schrijf-list textarea{width:100%;min-height:50px;border:2px solid rgba(99,102,241,.35);border-radius:8px;padding:6px 10px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box}
+        .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}
+        .score-midden{background:rgba(234,179,8,.15);color:#ca8a04}
+        .score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+        .hint-text{font-size:.82rem;color:#6366f1;font-style:italic;margin-bottom:4px}
+    </style>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+    <main class="page-container">
+        <a href="thema1.html" class="back-link">← Terug naar Thema 1</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema1.html">Thema 1</a><span>›</span><span>1.1</span></div>
+            <h1>👋 Hallo, mijn naam is Julia</h1>
+            <p class="subtitle" data-translate="subtitle">Leer de basiswoorden voor jezelf voorstellen.</p>
+        </header>
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 1.1</h2>
+            <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th><th>🔊</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+        <section class="content-section animate-in">
+            <div id="uitleg-content"></div>
+        </section>
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2>Oefeningen</h2>
+
+            <!-- OPDRACHT 1: MC -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 1 — Meerkeuze</span>
+                <h3>Kies het juiste antwoord.</h3>
+                <p class="instructie">Klik op het goede woord.</p>
+                <ul class="mc-list" id="mc1"></ul>
+                <span id="mc1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC1()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 2: DRAG & DROP -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 2 — Zin bouwen (klik de woorden in volgorde)</span>
+                <h3>Maak de zin door op de woorden te klikken.</h3>
+                <p class="instructie">Klik op een woord om het naar je zin te verplaatsen. Klik nogmaals om het terug te zetten.</p>
+                <div id="drag-container"></div>
+            </div>
+
+            <!-- OPDRACHT 3: FILL IN -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 3 — Vul in</span>
+                <h3>Maak de zin compleet.</h3>
+                <p class="instructie">Kies uit: <strong>heet, woon, kom, ben, naam, jaar</strong></p>
+                <ul class="invul-list" id="invul1"></ul>
+                <button class="check-btn" onclick="checkInvul()">Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 4: GOED / FOUT -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 4 — Goed of fout?</span>
+                <h3>Is de zin correct?</h3>
+                <p class="instructie">Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!</p>
+                <ul class="wn-list" id="wn1"></ul>
+                <button class="reset-btn" onclick="resetWN()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 5: SCHRIJVEN -->
+            <div class="opdracht-card">
+                <span class="opdracht-nr">OPDRACHT 5 — Stel jezelf voor</span>
+                <h3>Schrijf over jezelf.</h3>
+                <p class="instructie">Schrijf zinnen. Laat zien aan de docent!</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center;">
+                    <button class="check-btn" onclick="saveSchrijf('1.1')">💾 Opslaan</button>
+                    <button class="whatsapp-btn" onclick="deelViaWhatsApp('schrijf1','1.1')">📱 Stuur naar docent</button>
+                    <button class="reset-btn" onclick="resetSchrijf()">🔄 Opnieuw</button>
+                    <span id="schrijf-fb" style="color:#10b981;font-weight:600;display:none">✓ Opgeslagen!</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Verbetering 3A: Les Voltooid -->
+    <div class="voltooiing-sectie">
+        <button class="voltooi-btn" id="voltooi-btn" onclick="markeerVoltooid('1.1')">✅ Ik ben klaar met deze les!</button>
+        <p class="voltooi-hint">Klik als je alle oefeningen hebt gedaan.</p>
+    </div>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+    <script>
+    const VOCAB=[
+        {nl:'getrouwd',en:'married',tr:'evli',ar:'متزوج',ps:'واده شوی',zh:'已婚',ex:'Ik ben getrouwd.'},
+        {nl:'hallo',en:'hello',tr:'merhaba',ar:'مرحبا',ps:'سلام',zh:'你好',ex:'Hallo, hoe gaat het?'},
+        {nl:'het jaar, de jaren',en:'year',tr:'yıl',ar:'سنة',ps:'کال',zh:'年',ex:'Ik ben 25 jaar oud.'},
+        {nl:'het kind, de kinderen',en:'child',tr:'çocuk',ar:'طفل',ps:'ماشوم',zh:'孩子',ex:'Het kind speelt buiten.'},
+        {nl:'komen uit',en:'come from',tr:'gelmek',ar:'يأتي من',ps:'راتلل له',zh:'来自',ex:'Ik kom uit Afghanistan.'},
+        {nl:'de man, de mannen',en:'man',tr:'adam',ar:'رجل',ps:'سړی',zh:'男人',ex:'De man heet Ahmed.'},
+        {nl:'de naam, de namen',en:'name',tr:'isim',ar:'اسم',ps:'نوم',zh:'名字',ex:'Mijn naam is Fatima.'},
+        {nl:'Nederland',en:'Netherlands',tr:'Hollanda',ar:'هولندا',ps:'هالنډ',zh:'荷兰',ex:'Ik woon in Nederland.'},
+        {nl:'de vrouw, de vrouwen',en:'woman',tr:'kadın',ar:'امرأة',ps:'ښځه',zh:'女人',ex:'De vrouw is mijn moeder.'},
+        {nl:'wonen',en:'to live',tr:'oturmak',ar:'يسكن',ps:'اوسېدل',zh:'居住',ex:'Ik woon in Utrecht.'},
+    ];
+    const UI={
+        nl:{subtitle:'Leer de basiswoorden voor jezelf voorstellen.',vocabTitle:'Woorden van paragraaf 1.1',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands'},
+        en:{subtitle:'Learn the basic words for introducing yourself.',vocabTitle:'Words of paragraph 1.1',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English'},
+        tr:{subtitle:'Kendinizi tanıtmak için temel kelimeleri öğrenin.',vocabTitle:"Paragraf 1.1'in kelimeleri",vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe'},
+        ar:{subtitle:'تعلم الكلمات الأساسية لتعريف نفسك.',vocabTitle:'كلمات الفقرة 1.1',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية'},
+        ps:{subtitle:'د ځان د معرفي کولو لپاره اساسي کلمې زده کړئ.',vocabTitle:'د پراګراف 1.1 کلمې',vocabIntro:'د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو'},
+        zh:{subtitle:'学习用荷兰语介绍自己的基本词汇。',vocabTitle:'第1.1段的词汇',vocabIntro:'点击上方语言查看翻译。',thExample:'例句',thLang:'🇨🇳 中文'},
+    };
+    const UITLEG={
+        nl:`<div class="uitleg-box"><h3>Jezelf voorstellen</h3><p>In paragraaf 1.1 leer je hoe je jezelf voorstelt in het Nederlands. Gebruik deze zinnen:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn <strong>naam</strong> is ... / Ik <strong>heet</strong> ...</li><li>Ik <strong>kom</strong> uit ... (land)</li><li>Ik <strong>woon</strong> in ... (stad/land)</li><li>Ik <strong>ben</strong> ... jaar oud.</li><li>Ik <strong>ben</strong> getrouwd / niet getrouwd.</li><li>Ik heb ... <strong>kinderen</strong>.</li></ul></div><div class="voorbeeld-blok">Hallo! Mijn naam is Julia. Ik kom uit Syrië. Ik woon in Utrecht. Ik ben 28 jaar oud. Ik ben getrouwd en ik heb twee kinderen.</div><div class="tip-blok"><strong>Let op:</strong> "Ik heet Julia" = "Mijn naam is Julia" — allebei correct!</div>`,
+        en:`<div class="uitleg-box"><h3>Introducing yourself</h3><p>In paragraph 1.1 you learn how to introduce yourself in Dutch:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → My name is ...</li><li>Ik kom uit ... → I come from ...</li><li>Ik woon in ... → I live in ...</li><li>Ik ben ... jaar oud → I am ... years old</li></ul></div><div class="tip-blok"><strong>Note:</strong> "Ik heet Julia" = "Mijn naam is Julia" — both are correct!</div>`,
+        tr:`<div class="uitleg-box"><h3>Kendinizi tanıtmak</h3><p>Paragraf 1.1'de Hollandaca'da kendinizi nasıl tanıtacağınızı öğrenirsiniz:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → Benim adım ...</li><li>Ik kom uit ... → Ben ...'dan geliyorum.</li><li>Ik woon in ... → Ben ...'de yaşıyorum.</li><li>Ik ben ... jaar oud → Ben ... yaşındayım.</li></ul></div>`,
+        ar:`<div class="uitleg-box" dir="rtl"><h3>تعريف النفس</h3><p>في الفقرة 1.1 تتعلم كيف تعرّف نفسك بالهولندية:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → اسمي ...</li><li>Ik kom uit ... → أنا من ...</li><li>Ik woon in ... → أسكن في ...</li><li>Ik ben ... jaar oud → عمري ... سنة</li></ul></div>`,
+        ps:`<div class="uitleg-box" dir="rtl"><h3>د ځان معرفي کول</h3><p>د ۱.۱ پراګراف کې زده کوئ چې د هالنډي ژبې کې ځان معرفي کړئ:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → زما نوم ... دی</li><li>Ik kom uit ... → زه له ... راغلی یم</li><li>Ik woon in ... → زه ... کې اوسیږم</li><li>Ik ben ... jaar oud → زه د ... کلونو یم</li></ul></div>`,
+        zh:`<div class="uitleg-box"><h3>自我介绍</h3><p>在第1.1段，你将学习如何用荷兰语介绍自己。请使用以下句子：</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → 我的名字是 ...</li><li>Ik kom uit ... → 我来自 ...（国家）</li><li>Ik woon in ... → 我住在 ...（城市/国家）</li><li>Ik ben ... jaar oud → 我 ... 岁。</li><li>Ik ben getrouwd / niet getrouwd → 我已婚 / 未婚。</li><li>Ik heb ... kinderen → 我有 ... 个孩子。</li></ul></div><div class="voorbeeld-blok">🇨🇳 例子：你好！我的名字是Julia。我来自叙利亚。我住在乌得勒支。我28岁。我已婚，有两个孩子。</div><div class="tip-blok"><strong>注意：</strong> "Ik heet Julia" = "Mijn naam is Julia" — 两种说法都正确！</div>`
+    };
+    // Verbetering 1: Speech synthesis
+    function speakWord(word) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'nl-NL';
+        utterance.rate = 0.85;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+    }
+    function buildTable(lang){
+        const tbody=document.getElementById('vocab-body');tbody.innerHTML='';
+        VOCAB.forEach(row=>{
+            const spokenWord=row.nl.split(',')[0].replace(/^(de |het |een )/i,'').trim();
+            const tr=document.createElement('tr');
+            tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td><td><button class="speak-btn" onclick="speakWord('${spokenWord.replace(/'/g,"\\'")}')">🔊</button></td>`;
+            tbody.appendChild(tr);
+        });
+        document.getElementById('th-lang').textContent=UI[lang].thLang;
+    }
+    function setLang(l){
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        event.target.closest('.lang-btn').classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
+        buildTable(l);if(UITLEG[l])document.getElementById('uitleg-content').innerHTML=UITLEG[l];
+    }
+
+    // ===== OPDRACHT 1: MEERKEUZE =====
+    const mc1Data=[
+        {v:'Hoe zeg je "name" in het Nederlands?',a:'naam',o:['naam','jaar','man'],
+         uitleg:'"Naam" = name. "Mijn naam is Ahmed." Let op: "jaar" = year, "man" = man.'},
+        {v:'"Ik kom uit Afghanistan." Wat betekent "kom uit"?',a:'come from',o:['lived in','come from','goes to'],
+         uitleg:'"Kom uit" = come from. Je gebruikt het voor je geboorteland: "Ik kom uit Syrië." Vergelijk: "wonen" = where you live now.'},
+        {v:'Welk woord gebruik je voor je woonplaats?',a:'woon',o:['heet','woon','kom'],
+         uitleg:'Je gebruikt "wonen" voor de plek waar je woont. "Ik woon in Utrecht." Vergelijk: "ik heet" = naam, "ik kom uit" = land van herkomst.'},
+        {v:'"Ik heet Maria." Dat betekent:',a:'Mijn naam is Maria.',o:['Ik woon in Maria.','Mijn naam is Maria.','Ik kom uit Maria.'],
+         uitleg:'"Ik heet" = My name is. Beide zinnen zijn correct: "Ik heet Maria" = "Mijn naam is Maria".'},
+        {v:'Welk woord betekent "married"?',a:'getrouwd',o:['getrouwd','gezin','gewoond'],
+         uitleg:'"Getrouwd" = married. "Ik ben getrouwd." Let op: "gezin" = family/household, "gewoond" = lived (verleden tijd).'},
+        {v:'"Ik ben 30 jaar oud." Welk woord past hier?',a:'jaar',o:['dag','naam','jaar'],
+         uitleg:'"Jaar" = year. Voor leeftijd gebruik je altijd "jaar oud": "Ik ben 25 jaar oud." Niet "dag" (dag=dag) of "naam" (naam=name).'},
+        {v:'Wat is het meervoud van "kind"?',a:'kinderen',o:['kinds','kinderen','kinden'],
+         uitleg:'Het meervoud van "kind" is "kinderen". Dit is een onregelmatig meervoud — onthoud het goed!'},
+        {v:'"Nederland" is ...',a:'een land',o:['een stad','een land','een naam'],
+         uitleg:'Nederland is een land in Europa. Amsterdam is een stad in Nederland. Let op het verschil: land vs. stad.'},
+        {v:'Hoe begin je een kennismaking?',a:'Hallo,',o:['Tot ziens,','Goedenacht,','Hallo,'],
+         uitleg:'"Hallo" is een begroeting. Je gebruikt het bij het begin van een gesprek. "Tot ziens" = bij afscheid. "Goedenacht" = voor het slapengaan.'},
+        {v:'"De vrouw heet Fatima." Wie is Fatima?',a:'een vrouw',o:['een man','een vrouw','een kind'],
+         uitleg:'"De vrouw" = the woman. "De man" = the man. "Het kind" = the child. Let op het lidwoord: de vrouw, de man, het kind.'},
+    ];
+    function buildMC1(){
+        const ul=document.getElementById('mc1');ul.innerHTML='';
+        mc1Data.forEach((item,i)=>{
+            const li=document.createElement('li');
+            const uitlegEsc=(item.uitleg||'').replace(/'/g,"\\'");
+            const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,'${o.replace(/'/g,"\\'")}','${item.a.replace(/'/g,"\\'")}','mc1-score',${mc1Data.length},'${uitlegEsc}')">${o}</button>`).join('');
+            li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;
+            ul.appendChild(li);
+        });
+    }
+    const _mc_state={};
+    function checkMCq(btn,keuze,ant,scoreId,total,uitlegTekst){
+        const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');
+        if([...groep].some(b=>b.classList.contains('correct')))return;
+        groep.forEach(b=>b.disabled=true);
+        const key=scoreId;if(!_mc_state[key])_mc_state[key]={done:0,score:0};
+        if(keuze===ant){
+            btn.classList.add('correct');
+            _mc_state[key].score++;
+        } else {
+            btn.classList.add('fout');
+            groep.forEach(b=>{if(b.textContent.trim()===ant.trim())b.classList.add('correct');});
+            if(uitlegTekst){
+                const bestaand=btn.closest('li').querySelector('.mc-uitleg');
+                if(!bestaand){
+                    const uitlegEl=document.createElement('div');
+                    uitlegEl.className='mc-uitleg';
+                    uitlegEl.innerHTML='💡 '+uitlegTekst;
+                    btn.closest('li').appendChild(uitlegEl);
+                }
+            }
+        }
+        _mc_state[key].done++;
+        if(_mc_state[key].done===total){
+            const sc=document.getElementById(scoreId);
+            sc.style.display='inline-block';
+            const s=_mc_state[key].score;
+            sc.textContent=`${s}/${total}`;
+            sc.className='score-badge '+(s===total?'score-goed':s>=7?'score-midden':'score-slecht');
+        }
+    }
+    function resetMC1(){delete _mc_state['mc1-score'];document.getElementById('mc1-score').style.display='none';buildMC1();}
+
+    // ===== OPDRACHT 2: DRAG & DROP =====
+    const dragData=[
+        {id:'d1',words:['Mijn','naam','is','Julia','.'],hint:'Hoe heet ze?'},
+        {id:'d2',words:['Ik','kom','uit','Nederland','.'],hint:'Waar komen ze vandaan?'},
+        {id:'d3',words:['Ik','woon','in','Utrecht','.'],hint:'Waar woont hij?'},
+        {id:'d4',words:['Ik','ben','getrouwd','.'],hint:'Relatiestatus'},
+        {id:'d5',words:['Ik','heb','twee','kinderen','.'],hint:'Kinderen'},
+    ];
+    function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+    function buildDrag(){
+        const c=document.getElementById('drag-container');c.innerHTML='';
+        dragData.forEach((s,i)=>{
+            const words=shuffle(s.words.filter(w=>w!=='.'));
+            const div=document.createElement('div');div.className='drag-exercise';div.id=s.id;
+            div.innerHTML=`<div style="font-size:.82rem;color:#6366f1;font-weight:600;margin-bottom:4px">Zin ${i+1}</div><div class="hint-text">💡 ${s.hint}</div><div class="zone-lbl">📦 Woorden:</div><div class="word-bank" id="${s.id}-bank">${words.map(w=>`<div class="word-tile" data-word="${w}" onclick="moveTile(this,'${s.id}')">${w}</div>`).join('')}</div><div class="zone-lbl">📝 Jouw zin:</div><div class="drop-zone" id="${s.id}-zone"></div><div class="drag-result" id="${s.id}-res"></div><button class="reset-btn" style="margin-top:6px" onclick="resetDragItem('${s.id}')">🔄</button>`;
+            c.appendChild(div);
+        });
+    }
+    function moveTile(tile,eid){
+        const bank=document.getElementById(eid+'-bank'),zone=document.getElementById(eid+'-zone');
+        if(tile.parentElement===bank)zone.appendChild(tile);else bank.appendChild(tile);
+        tile.classList.remove('correct-pos','wrong-pos','all-correct');checkDragItem(eid);
+    }
+    function checkDragItem(eid){
+        const s=dragData.find(d=>d.id===eid);const zone=document.getElementById(eid+'-zone');const res=document.getElementById(eid+'-res');
+        const tiles=zone.querySelectorAll('.word-tile');const cw=s.words.filter(w=>w!=='.');
+        if(!tiles.length){res.textContent='';res.className='drag-result';return;}
+        let ok=true,count=0;
+        tiles.forEach((t,i)=>{
+            if(i<cw.length&&t.getAttribute('data-word')===cw[i]){t.classList.add('correct-pos');t.classList.remove('wrong-pos');count++;}
+            else{t.classList.add('wrong-pos');t.classList.remove('correct-pos');ok=false;}
+        });
+        if(tiles.length!==cw.length)ok=false;
+        if(ok){res.textContent='🎉 Goed! '+s.words.join(' ');res.className='drag-result success';tiles.forEach(t=>{t.classList.remove('correct-pos','wrong-pos');t.classList.add('all-correct');t.style.pointerEvents='none';});}
+        else{res.textContent=count+'/'+cw.length+' woorden goed. Probeer verder!';res.className='drag-result partial';}
+    }
+    function resetDragItem(eid){
+        const s=dragData.find(d=>d.id===eid);const bank=document.getElementById(eid+'-bank');const zone=document.getElementById(eid+'-zone');const res=document.getElementById(eid+'-res');
+        const words=shuffle(s.words.filter(w=>w!=='.'));bank.innerHTML='';zone.innerHTML='';res.textContent='';res.className='drag-result';
+        words.forEach(w=>{const t=document.createElement('div');t.className='word-tile';t.setAttribute('data-word',w);t.setAttribute('onclick',`moveTile(this,'${eid}')`);t.textContent=w;bank.appendChild(t);});
+    }
+
+    // ===== OPDRACHT 3: FILL IN =====
+    const invulData=[
+        {zin:'Mijn ___ is Ahmed.',ant:'naam'},
+        {zin:'Ik ___ uit Syrië.',ant:'kom'},
+        {zin:'Ik ___ in Amsterdam.',ant:'woon'},
+        {zin:'Ik ___ student.',ant:'ben'},
+        {zin:'Ik ___ Ahmed.',ant:'heet'},
+        {zin:'Ik ben 30 ___ oud.',ant:'jaar'},
+        {zin:'Ik heb drie ___.',ant:'kinderen'},
+        {zin:'Ik ___ getrouwd.',ant:'ben'},
+        {zin:'De ___ is mijn moeder.',ant:'vrouw'},
+        {zin:'De ___ heet Ahmed.',ant:'man'},
+    ];
+    function buildInvul(){
+        const ul=document.getElementById('invul1');ul.innerHTML='';
+        invulData.forEach((item,i)=>{const p=item.zin.split('___');ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv${i}" placeholder="…" autocomplete="off">${p[1]||''}</li>`;});
+    }
+    function checkInvul(){
+        let g=0;
+        invulData.forEach((item,i)=>{const inp=document.getElementById('inv'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant){inp.classList.add('correct');g++;}else inp.classList.add('fout');});
+        const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=7?'score-midden':'score-slecht');
+    }
+    function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
+
+    // ===== OPDRACHT 4: GOED / FOUT =====
+    const wnData=[
+        {s:'"Ik heet Ahmed" betekent: Mijn naam is Ahmed.',a:'Goed'},
+        {s:'"Ik woon uit Syrië." is correct.',a:'Fout'},
+        {s:'"Ik kom in Nederland." is correct.',a:'Fout'},
+        {s:'"Ik ben getrouwd" betekent: ik heb een man of vrouw.',a:'Goed'},
+        {s:'Het meervoud van "kind" is "kinderen".',a:'Goed'},
+        {s:'"Nederland" is een stad.',a:'Fout'},
+        {s:'"De naam" = the name.',a:'Goed'},
+        {s:'"Ik woon in Utrecht." is een correcte zin.',a:'Goed'},
+        {s:'"Ik ben 25 jaar oud." — "jaar" betekent "day".',a:'Fout'},
+        {s:'"Hallo" is een begroeting.',a:'Goed'},
+    ];
+    function buildWN(){
+        const ul=document.getElementById('wn1');ul.innerHTML='';
+        wnData.forEach((item,i)=>ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.a}')">✓ Goed</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.a}')">✗ Fout</button></div></li>`);
+    }
+    function checkWN(btn,keuze,ant){
+        const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');
+        if([...groep].some(b=>b.classList.contains('correct')))return;
+        if(keuze===ant){groep.forEach(b=>b.disabled=true);btn.classList.add('correct');}
+        else{btn.classList.add('fout');btn.textContent='✗ Fout! Probeer opnieuw...';setTimeout(()=>{groep.forEach(b=>{b.disabled=false;b.classList.remove('fout');});groep[0].textContent='✓ Goed';groep[1].textContent='✗ Fout';},1300);}
+    }
+    function resetWN(){document.getElementById('wn1').innerHTML='';buildWN();}
+
+    // ===== OPDRACHT 5: SCHRIJVEN =====
+    const schrijfVragen=['Schrijf: "Mijn naam is ..."','Schrijf: "Ik kom uit ..."','Schrijf: "Ik woon in ..."','Schrijf: "Ik ben ... jaar oud."','Schrijf: "Ik ben getrouwd / niet getrouwd. Ik heb ... kinderen."'];
+    function buildSchrijf(){
+        const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:12px"><div class="tip-blok"><strong>🤚 Laat je tekst zien aan de docent!</strong></div></li>';
+        schrijfVragen.forEach((v,i)=>ul.innerHTML+=`<li><label>${i+1}. ${v}</label><textarea id="s1-${i}" placeholder="Schrijf hier…"></textarea></li>`);
+    }
+    // Verbetering 5: Opslaan + WhatsApp
+    function saveSchrijf(paraId){
+        const antwoorden=[];
+        let i=0;
+        while(document.getElementById(`s1-${i}`)){antwoorden.push(document.getElementById(`s1-${i}`).value);i++;}
+        localStorage.setItem('nt2_schrijf_'+paraId,JSON.stringify(antwoorden));
+        const fb=document.getElementById('schrijf-fb');
+        fb.style.display='inline';
+        setTimeout(()=>fb.style.display='none',2500);
+    }
+    function laadSchrijf(paraId){
+        const opgeslagen=JSON.parse(localStorage.getItem('nt2_schrijf_'+paraId)||'[]');
+        opgeslagen.forEach((tekst,i)=>{const el=document.getElementById(`s1-${i}`);if(el)el.value=tekst;});
+    }
+    function deelViaWhatsApp(lijstId,paraId){
+        const vragen=[];
+        let i=0;
+        while(document.getElementById(`s1-${i}`)){
+            const label=document.querySelector(`#${lijstId} li:nth-child(${i+2}) label`);
+            const tekst=document.getElementById(`s1-${i}`).value.trim();
+            if(tekst)vragen.push((label?label.textContent+'\n':'')+tekst);
+            i++;
+        }
+        if(!vragen.length){alert('Schrijf eerst je zinnen in de vakjes hierboven!');return;}
+        const bericht=`NT2 Les ${paraId} — Schrijfopdracht:\n\n`+vragen.join('\n\n');
+        const tel='31626211106';
+        const url=`https://wa.me/${tel}?text=${encodeURIComponent(bericht)}`;
+        window.open(url,'_blank');
+    }
+    function resetSchrijf(){document.getElementById('schrijf1').innerHTML='';buildSchrijf();}
+    // Verbetering 3A: Voltooiing
+    function markeerVoltooid(paraId){
+        const voltooid=JSON.parse(localStorage.getItem('nt2_voltooid')||'[]');
+        if(!voltooid.includes(paraId)){voltooid.push(paraId);localStorage.setItem('nt2_voltooid',JSON.stringify(voltooid));}
+        const btn=document.getElementById('voltooi-btn');
+        btn.textContent='🎉 Les voltooid! Goed gedaan!';
+        btn.style.background='linear-gradient(135deg,#10b981,#059669)';
+        btn.disabled=true;
+    }
+    function checkVoltooiStatus(paraId){
+        const voltooid=JSON.parse(localStorage.getItem('nt2_voltooid')||'[]');
+        if(voltooid.includes(paraId)){
+            const btn=document.getElementById('voltooi-btn');
+            if(btn){btn.textContent='🎉 Les voltooid! Goed gedaan!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';btn.disabled=true;}
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+        buildTable('nl');document.getElementById('uitleg-content').innerHTML=UITLEG.nl;
+        buildMC1();buildDrag();buildInvul();buildWN();buildSchrijf();
+        laadSchrijf('1.1');
+        checkVoltooiStatus('1.1');
+    });
+    </script>
+</body>
+</html>

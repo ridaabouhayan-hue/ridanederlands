@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicijn Etiketten Lezen - NT2 Oefening</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .exercise-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Elk etiket + vragen blok */
+        .exercise-block {
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .exercise-number {
+            background: #1e40af;
+            color: white;
+            padding: 0.6rem 1rem;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* ========== ETIKET STYLING ========== */
+        .medicine-label {
+            background: #ffffff;
+            border: 1.5px solid #c8d4e0;
+            margin: 1rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .pharmacy-header {
+            background: #00695c;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pharmacy-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pharmacy-cross {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #00695c;
+        }
+
+        .pharmacy-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+        }
+
+        .pharmacy-contact {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            opacity: 0.9;
+            text-align: right;
+            line-height: 1.3;
+        }
+
+        .patient-section {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px dashed #d0d8e0;
+            background: #fafbfc;
+        }
+
+        .patient-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .patient-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1a202c;
+        }
+
+        .patient-dob {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: #4a5568;
+        }
+
+        .patient-address {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: #718096;
+            margin-top: 0.1rem;
+        }
+
+        .medicine-section {
+            padding: 0.75rem;
+        }
+
+        .medicine-name-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.15rem;
+        }
+
+        .medicine-name {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .medicine-count {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: #4a5568;
+            background: #edf2f7;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        .medicine-strength {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: #2d3748;
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dosage-box {
+            background: #f0f7f5;
+            border: 2px solid #00897b;
+            border-radius: 4px;
+            padding: 0.5rem 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dosage-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #00695c;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.15rem;
+        }
+
+        .dosage-text {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #004d40;
+            line-height: 1.3;
+        }
+
+        .timing-row {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .time-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+        }
+
+        .time-badge.ochtend { background: #fff8e1; color: #f57f17; border: 1px solid #ffcc80; }
+        .time-badge.middag { background: #fff3e0; color: #e65100; border: 1px solid #ffab91; }
+        .time-badge.avond { background: #e8eaf6; color: #3949ab; border: 1px solid #9fa8da; }
+        .time-badge.nacht { background: #263238; color: #eceff1; border: 1px solid #455a64; }
+        .time-badge.maaltijd { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .time-badge.nuchter { background: #fce4ec; color: #c2185b; border: 1px solid #f48fb1; }
+
+        .warning-row {
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            border-left: 3px solid #e53e3e;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .warning-text {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #c53030;
+        }
+
+        .label-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0.5rem 0.75rem;
+            background: #f7fafc;
+            border-top: 1px dashed #d0d8e0;
+        }
+
+        .dates-column {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: #4a5568;
+            line-height: 1.4;
+        }
+
+        .date-label { color: #718096; }
+
+        .barcode {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.15rem;
+        }
+
+        .barcode-lines {
+            display: flex;
+            gap: 1px;
+            height: 22px;
+        }
+
+        .barcode-lines span {
+            width: 2px;
+            background: #1a202c;
+        }
+
+        .barcode-lines span:nth-child(odd) { width: 1px; }
+        .barcode-lines span:nth-child(3n) { width: 3px; }
+        .barcode-lines span:nth-child(5n) { background: transparent; width: 2px; }
+
+        .barcode-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: #718096;
+        }
+
+        /* ========== VRAGEN STYLING ========== */
+        .questions-section {
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .questions-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .question-item {
+            margin-bottom: 1rem;
+        }
+
+        .question-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: #1e40af;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        .question-input {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .question-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .question-input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Feedback styling */
+        .question-input.correct {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .question-input.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .feedback {
+            margin-top: 0.4rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .feedback.incorrect {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .feedback-icon {
+            font-weight: 700;
+            margin-right: 0.3rem;
+        }
+
+        /* Buttons */
+        .button-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.65rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-check {
+            background: #1e40af;
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: #1e3a8a;
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-reset:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-show {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-show:hover {
+            background: #d97706;
+        }
+
+        /* Score display */
+        .score-display {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-display.perfect {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .score-display.good {
+            background: #fffbeb;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .score-display.practice {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        /* Print */
+        @media print {
+            body { background: white; padding: 0.5rem; }
+            .exercise-block { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            .question-input { border: 1px solid #999; }
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1 class="page-title">🏥 Medicijn Etiketten Lezen</h1>
+        <p class="page-subtitle">Lees het etiket en beantwoord de vragen</p>
+    </div>
+
+    <div class="exercise-container">
+
+        <!-- ========== OEFENING 1 ========== -->
+        <div class="exercise-block" data-exercise="1">
+            <div class="exercise-number">Oefening 1</div>
+            
+            <div class="medicine-label">
+                <div class="pharmacy-header">
+                    <div class="pharmacy-logo">
+                        <div class="pharmacy-cross">+</div>
+                        <div class="pharmacy-name">APOTHEEK DE GAPER</div>
+                    </div>
+                    <div class="pharmacy-contact">Tel: 013-456 7890<br>Tilburg</div>
+                </div>
+                <div class="patient-section">
+                    <div class="patient-row">
+                        <div class="patient-name">Mw. A. de Vries</div>
+                        <div class="patient-dob">Geb: 12-03-1985</div>
+                    </div>
+                    <div class="patient-address">Spoorlaan 42, 5041 KL Tilburg</div>
+                </div>
+                <div class="medicine-section">
+                    <div class="medicine-name-row">
+                        <div class="medicine-name">Paracetamol</div>
+                        <div class="medicine-count">30 st</div>
+                    </div>
+                    <div class="medicine-strength">500 mg, tabletten</div>
+                    <div class="dosage-box">
+                        <div class="dosage-label">Gebruik</div>
+                        <div class="dosage-text">2 tabletten per keer, maximaal 4× per dag</div>
+                    </div>
+                    <div class="timing-row">
+                        <span class="time-badge ochtend">☀ ochtend</span>
+                        <span class="time-badge middag">◐ middag</span>
+                        <span class="time-badge avond">☽ avond</span>
+                        <span class="time-badge maaltijd">🍽 bij maaltijd</span>
+                    </div>
+                    <div class="warning-row">
+                        <div class="warning-text">⚠ Niet meer dan 8 tabletten per dag innemen</div>
+                    </div>
+                </div>
+                <div class="label-footer">
+                    <div class="dates-column">
+                        <span><span class="date-label">Afleverdatum:</span> 15-02-2026</span><br>
+                        <span><span class="date-label">Geldig tot:</span> 15-02-2028</span>
+                    </div>
+                    <div class="barcode">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-number">8714423 004125</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-title">📝 Beantwoord de vragen</div>
+                
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">1</span>Voor wie is dit medicijn?</label>
+                    <input type="text" class="question-input" data-answer="mw. a. de vries|a. de vries|de vries|mevrouw de vries|mevrouw a. de vries" placeholder="Schrijf de naam...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">2</span>Wat is de geboortedatum?</label>
+                    <input type="text" class="question-input" data-answer="12-03-1985|12/03/1985|12 maart 1985|12-3-1985" placeholder="Schrijf de datum...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">3</span>Hoe heet het medicijn?</label>
+                    <input type="text" class="question-input" data-answer="paracetamol" placeholder="Schrijf de naam van het medicijn...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">4</span>Hoeveel tabletten per keer?</label>
+                    <input type="text" class="question-input" data-answer="2|twee|2 tabletten|twee tabletten" placeholder="Schrijf het aantal...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">5</span>Hoeveel tabletten mag je maximaal per dag nemen?</label>
+                    <input type="text" class="question-input" data-answer="8|acht|8 tabletten|acht tabletten|maximaal 8" placeholder="Schrijf het aantal...">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-check" onclick="checkAnswers(1)">✓ Controleer</button>
+                    <button class="btn btn-show" onclick="showAnswers(1)">👁 Toon antwoorden</button>
+                    <button class="btn btn-reset" onclick="resetExercise(1)">↺ Opnieuw</button>
+                </div>
+                <div class="score-display" id="score-1"></div>
+            </div>
+        </div>
+
+        <!-- ========== OEFENING 2 ========== -->
+        <div class="exercise-block" data-exercise="2">
+            <div class="exercise-number">Oefening 2</div>
+            
+            <div class="medicine-label">
+                <div class="pharmacy-header">
+                    <div class="pharmacy-logo">
+                        <div class="pharmacy-cross">+</div>
+                        <div class="pharmacy-name">APOTHEEK CENTRUM</div>
+                    </div>
+                    <div class="pharmacy-contact">Tel: 040-234 5678<br>Eindhoven</div>
+                </div>
+                <div class="patient-section">
+                    <div class="patient-row">
+                        <div class="patient-name">Dhr. M. Yılmaz</div>
+                        <div class="patient-dob">Geb: 28-07-1978</div>
+                    </div>
+                    <div class="patient-address">Vestdijk 118, 5611 CZ Eindhoven</div>
+                </div>
+                <div class="medicine-section">
+                    <div class="medicine-name-row">
+                        <div class="medicine-name">Omeprazol</div>
+                        <div class="medicine-count">28 st</div>
+                    </div>
+                    <div class="medicine-strength">20 mg, maagsapresistente capsules</div>
+                    <div class="dosage-box">
+                        <div class="dosage-label">Gebruik</div>
+                        <div class="dosage-text">1 capsule per dag, 's ochtends</div>
+                    </div>
+                    <div class="timing-row">
+                        <span class="time-badge ochtend">☀ ochtend</span>
+                        <span class="time-badge nuchter">⏱ 30 min vóór eten</span>
+                    </div>
+                    <div class="warning-row">
+                        <div class="warning-text">⚠ Capsule heel doorslikken, niet kauwen</div>
+                    </div>
+                </div>
+                <div class="label-footer">
+                    <div class="dates-column">
+                        <span><span class="date-label">Afleverdatum:</span> 10-02-2026</span><br>
+                        <span><span class="date-label">Geldig tot:</span> 10-02-2027</span>
+                    </div>
+                    <div class="barcode">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-number">8714423 003871</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-title">📝 Beantwoord de vragen</div>
+                
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">1</span>In welke stad woont de patiënt?</label>
+                    <input type="text" class="question-input" data-answer="eindhoven" placeholder="Schrijf de stad...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">2</span>Wanneer moet hij het medicijn innemen?</label>
+                    <input type="text" class="question-input" data-answer="'s ochtends|ochtends|in de ochtend|s ochtends|sochtends" placeholder="'s Ochtends, 's middags of 's avonds?">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">3</span>Moet hij eten vóór of na het medicijn?</label>
+                    <input type="text" class="question-input" data-answer="na|na het medicijn|eten na het medicijn|na de capsule" data-hint="Hij moet het medicijn 30 minuten VÓÓR het eten nemen, dus hij eet NA het medicijn." placeholder="Schrijf het antwoord...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">4</span>Hoeveel capsules zitten er in de verpakking?</label>
+                    <input type="text" class="question-input" data-answer="28|achtentwintig|28 stuks|28 capsules" placeholder="Schrijf het aantal...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">5</span>Mag je de capsule kauwen?</label>
+                    <input type="text" class="question-input" data-answer="nee|nee, niet kauwen|niet kauwen" data-hint="Op het etiket staat: 'Capsule heel doorslikken, niet kauwen'." placeholder="Ja of nee?">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-check" onclick="checkAnswers(2)">✓ Controleer</button>
+                    <button class="btn btn-show" onclick="showAnswers(2)">👁 Toon antwoorden</button>
+                    <button class="btn btn-reset" onclick="resetExercise(2)">↺ Opnieuw</button>
+                </div>
+                <div class="score-display" id="score-2"></div>
+            </div>
+        </div>
+
+        <!-- ========== OEFENING 3 ========== -->
+        <div class="exercise-block" data-exercise="3">
+            <div class="exercise-number">Oefening 3</div>
+            
+            <div class="medicine-label">
+                <div class="pharmacy-header">
+                    <div class="pharmacy-logo">
+                        <div class="pharmacy-cross">+</div>
+                        <div class="pharmacy-name">APOTHEEK ZORGPLEIN</div>
+                    </div>
+                    <div class="pharmacy-contact">Tel: 077-321 9876<br>Venlo</div>
+                </div>
+                <div class="patient-section">
+                    <div class="patient-row">
+                        <div class="patient-name">Mw. F. Jansen-Ahmed</div>
+                        <div class="patient-dob">Geb: 05-11-1992</div>
+                    </div>
+                    <div class="patient-address">Markt 7, 5911 HH Venlo</div>
+                </div>
+                <div class="medicine-section">
+                    <div class="medicine-name-row">
+                        <div class="medicine-name">Amoxicilline</div>
+                        <div class="medicine-count">21 st</div>
+                    </div>
+                    <div class="medicine-strength">500 mg, capsules</div>
+                    <div class="dosage-box">
+                        <div class="dosage-label">Gebruik</div>
+                        <div class="dosage-text">3× per dag 1 capsule (om de 8 uur)</div>
+                    </div>
+                    <div class="timing-row">
+                        <span class="time-badge ochtend">☀ 08:00</span>
+                        <span class="time-badge middag">◐ 16:00</span>
+                        <span class="time-badge nacht">☾ 00:00</span>
+                    </div>
+                    <div class="warning-row">
+                        <div class="warning-text">⚠ Kuur afmaken! Ook als u zich beter voelt.</div>
+                    </div>
+                </div>
+                <div class="label-footer">
+                    <div class="dates-column">
+                        <span><span class="date-label">Afleverdatum:</span> 20-02-2026</span><br>
+                        <span><span class="date-label">Geldig tot:</span> 20-02-2027</span>
+                    </div>
+                    <div class="barcode">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-number">8714423 004569</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-title">📝 Beantwoord de vragen</div>
+                
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">1</span>Hoe vaak per dag moet ze het medicijn nemen?</label>
+                    <input type="text" class="question-input" data-answer="3|drie|3x|3 keer|drie keer|3x per dag|drie keer per dag" placeholder="Schrijf het aantal keer...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">2</span>Om hoe laat moet ze de eerste capsule nemen?</label>
+                    <input type="text" class="question-input" data-answer="08:00|8:00|8 uur|acht uur|om 8 uur|om 08:00" placeholder="Schrijf de tijd...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">3</span>Wat is het telefoonnummer van de apotheek?</label>
+                    <input type="text" class="question-input" data-answer="077-321 9876|077-3219876|0773219876|077 321 9876" placeholder="Schrijf het nummer...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">4</span>Mag ze stoppen als ze zich beter voelt?</label>
+                    <input type="text" class="question-input" data-answer="nee|nee, kuur afmaken|nee, ze moet de kuur afmaken" data-hint="Op het etiket staat: 'Kuur afmaken! Ook als u zich beter voelt.'" placeholder="Ja of nee? Waarom?">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">5</span>Hoeveel dagen duurt de kuur? (21 capsules ÷ 3 per dag)</label>
+                    <input type="text" class="question-input" data-answer="7|zeven|7 dagen|zeven dagen|een week" data-hint="21 capsules gedeeld door 3 per dag = 7 dagen" placeholder="Schrijf het aantal dagen...">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-check" onclick="checkAnswers(3)">✓ Controleer</button>
+                    <button class="btn btn-show" onclick="showAnswers(3)">👁 Toon antwoorden</button>
+                    <button class="btn btn-reset" onclick="resetExercise(3)">↺ Opnieuw</button>
+                </div>
+                <div class="score-display" id="score-3"></div>
+            </div>
+        </div>
+
+        <!-- ========== OEFENING 4 ========== -->
+        <div class="exercise-block" data-exercise="4">
+            <div class="exercise-number">Oefening 4</div>
+            
+            <div class="medicine-label">
+                <div class="pharmacy-header">
+                    <div class="pharmacy-logo">
+                        <div class="pharmacy-cross">+</div>
+                        <div class="pharmacy-name">APOTHEEK NIEUWSTRAAT</div>
+                    </div>
+                    <div class="pharmacy-contact">Tel: 024-789 0123<br>Nijmegen</div>
+                </div>
+                <div class="patient-section">
+                    <div class="patient-row">
+                        <div class="patient-name">Dhr. K. van den Berg</div>
+                        <div class="patient-dob">Geb: 19-04-1965</div>
+                    </div>
+                    <div class="patient-address">Molenweg 88, 6541 AB Nijmegen</div>
+                </div>
+                <div class="medicine-section">
+                    <div class="medicine-name-row">
+                        <div class="medicine-name">Ibuprofen</div>
+                        <div class="medicine-count">20 st</div>
+                    </div>
+                    <div class="medicine-strength">400 mg, filmomhulde tabletten</div>
+                    <div class="dosage-box">
+                        <div class="dosage-label">Gebruik</div>
+                        <div class="dosage-text">1 tablet, maximaal 3× per dag</div>
+                    </div>
+                    <div class="timing-row">
+                        <span class="time-badge maaltijd">🍽 tijdens of na de maaltijd</span>
+                    </div>
+                    <div class="warning-row">
+                        <div class="warning-text">⚠ Niet gebruiken bij maagklachten. Met water innemen.</div>
+                    </div>
+                </div>
+                <div class="label-footer">
+                    <div class="dates-column">
+                        <span><span class="date-label">Afleverdatum:</span> 18-02-2026</span><br>
+                        <span><span class="date-label">Geldig tot:</span> 18-02-2028</span>
+                    </div>
+                    <div class="barcode">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-number">8714423 005782</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-title">📝 Beantwoord de vragen</div>
+                
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">1</span>Hoe oud is de patiënt? (geboren 19-04-1965, nu is het 2026)</label>
+                    <input type="text" class="question-input" data-answer="60|61|zestig|eenenzestig|60 jaar|61 jaar" data-hint="2026 - 1965 = 60 of 61 jaar (afhankelijk van de datum)" placeholder="Schrijf de leeftijd...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">2</span>Moet hij de tablet vóór, tijdens of na het eten nemen?</label>
+                    <input type="text" class="question-input" data-answer="tijdens of na|tijdens of na het eten|tijdens of na de maaltijd|na het eten|tijdens het eten" placeholder="Schrijf het antwoord...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">3</span>Hoeveel mg is één tablet?</label>
+                    <input type="text" class="question-input" data-answer="400|400 mg|vierhonderd|vierhonderd mg" placeholder="Schrijf het aantal mg...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">4</span>Mag iemand met maagklachten dit medicijn gebruiken?</label>
+                    <input type="text" class="question-input" data-answer="nee|nee, niet gebruiken bij maagklachten" data-hint="Op het etiket staat: 'Niet gebruiken bij maagklachten'." placeholder="Ja of nee?">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">5</span>Tot wanneer is het medicijn geldig?</label>
+                    <input type="text" class="question-input" data-answer="18-02-2028|18/02/2028|18 februari 2028|februari 2028" placeholder="Schrijf de datum...">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-check" onclick="checkAnswers(4)">✓ Controleer</button>
+                    <button class="btn btn-show" onclick="showAnswers(4)">👁 Toon antwoorden</button>
+                    <button class="btn btn-reset" onclick="resetExercise(4)">↺ Opnieuw</button>
+                </div>
+                <div class="score-display" id="score-4"></div>
+            </div>
+        </div>
+
+        <!-- ========== OEFENING 5 ========== -->
+        <div class="exercise-block" data-exercise="5">
+            <div class="exercise-number">Oefening 5</div>
+            
+            <div class="medicine-label">
+                <div class="pharmacy-header">
+                    <div class="pharmacy-logo">
+                        <div class="pharmacy-cross">+</div>
+                        <div class="pharmacy-name">APOTHEEK GEZONDPLEIN</div>
+                    </div>
+                    <div class="pharmacy-contact">Tel: 010-567 8901<br>Rotterdam</div>
+                </div>
+                <div class="patient-section">
+                    <div class="patient-row">
+                        <div class="patient-name">Mw. S. Öztürk</div>
+                        <div class="patient-dob">Geb: 03-09-1970</div>
+                    </div>
+                    <div class="patient-address">Coolsingel 200, 3011 AD Rotterdam</div>
+                </div>
+                <div class="medicine-section">
+                    <div class="medicine-name-row">
+                        <div class="medicine-name">Metformine</div>
+                        <div class="medicine-count">90 st</div>
+                    </div>
+                    <div class="medicine-strength">500 mg, tabletten</div>
+                    <div class="dosage-box">
+                        <div class="dosage-label">Gebruik</div>
+                        <div class="dosage-text">2× per dag 1 tablet ('s ochtends en 's avonds)</div>
+                    </div>
+                    <div class="timing-row">
+                        <span class="time-badge ochtend">☀ ochtend</span>
+                        <span class="time-badge avond">☽ avond</span>
+                        <span class="time-badge maaltijd">🍽 bij de maaltijd</span>
+                    </div>
+                    <div class="warning-row">
+                        <div class="warning-text">⚠ Geen alcohol drinken. Bij misselijkheid: contact opnemen met arts.</div>
+                    </div>
+                </div>
+                <div class="label-footer">
+                    <div class="dates-column">
+                        <span><span class="date-label">Afleverdatum:</span> 01-02-2026</span><br>
+                        <span><span class="date-label">Geldig tot:</span> 01-02-2028</span>
+                    </div>
+                    <div class="barcode">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-number">8714423 006234</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <div class="questions-title">📝 Beantwoord de vragen</div>
+                
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">1</span>In welke straat woont de patiënt?</label>
+                    <input type="text" class="question-input" data-answer="coolsingel|de coolsingel" placeholder="Schrijf de straatnaam...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">2</span>Hoeveel tabletten neemt ze per dag?</label>
+                    <input type="text" class="question-input" data-answer="2|twee|2 tabletten|twee tabletten|2 per dag" placeholder="Schrijf het aantal...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">3</span>Mag ze wijn drinken bij het eten?</label>
+                    <input type="text" class="question-input" data-answer="nee|nee, geen alcohol" data-hint="Op het etiket staat: 'Geen alcohol drinken'. Wijn bevat alcohol!" placeholder="Ja of nee? Waarom?">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">4</span>Voor hoeveel dagen heeft ze tabletten? (90 tabletten ÷ 2 per dag)</label>
+                    <input type="text" class="question-input" data-answer="45|vijfenveertig|45 dagen|vijfenveertig dagen" data-hint="90 tabletten gedeeld door 2 per dag = 45 dagen" placeholder="Schrijf het aantal dagen...">
+                    <div class="feedback"></div>
+                </div>
+                <div class="question-item">
+                    <label class="question-label"><span class="question-number">5</span>Wat moet ze doen als ze misselijk wordt?</label>
+                    <input type="text" class="question-input" data-answer="contact opnemen met arts|de arts bellen|naar de arts|arts bellen|contact opnemen met de arts|dokter bellen" data-hint="Op het etiket staat: 'Bij misselijkheid: contact opnemen met arts.'" placeholder="Schrijf het antwoord...">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-check" onclick="checkAnswers(5)">✓ Controleer</button>
+                    <button class="btn btn-show" onclick="showAnswers(5)">👁 Toon antwoorden</button>
+                    <button class="btn btn-reset" onclick="resetExercise(5)">↺ Opnieuw</button>
+                </div>
+                <div class="score-display" id="score-5"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Correcte antwoorden voor weergave
+        const correctAnswers = {
+            1: [
+                'Mw. A. de Vries',
+                '12-03-1985',
+                'Paracetamol',
+                '2 tabletten',
+                '8 tabletten'
+            ],
+            2: [
+                'Eindhoven',
+                "'s Ochtends",
+                'Na (het medicijn moet 30 min VÓÓR het eten, dus je eet NA het medicijn)',
+                '28 stuks',
+                'Nee (capsule heel doorslikken, niet kauwen)'
+            ],
+            3: [
+                '3 keer per dag',
+                '08:00',
+                '077-321 9876',
+                'Nee (kuur afmaken, ook als je je beter voelt)',
+                '7 dagen (21 ÷ 3 = 7)'
+            ],
+            4: [
+                '60 of 61 jaar (2026 - 1965)',
+                'Tijdens of na het eten',
+                '400 mg',
+                'Nee (niet gebruiken bij maagklachten)',
+                '18-02-2028'
+            ],
+            5: [
+                'Coolsingel',
+                '2 tabletten',
+                'Nee (geen alcohol, wijn bevat alcohol)',
+                '45 dagen (90 ÷ 2 = 45)',
+                'Contact opnemen met de arts'
+            ]
+        };
+
+        function checkAnswers(exerciseNum) {
+            const block = document.querySelector(`[data-exercise="${exerciseNum}"]`);
+            const inputs = block.querySelectorAll('.question-input');
+            let correct = 0;
+            
+            inputs.forEach((input, index) => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const acceptedAnswers = input.dataset.answer.toLowerCase().split('|');
+                const feedback = input.nextElementSibling;
+                const hint = input.dataset.hint || '';
+                const correctAnswer = correctAnswers[exerciseNum][index];
+                
+                // Reset classes
+                input.classList.remove('correct', 'incorrect');
+                feedback.classList.remove('correct', 'incorrect', 'show');
+                
+                if (userAnswer === '') {
+                    input.classList.add('incorrect');
+                    feedback.className = 'feedback incorrect show';
+                    feedback.innerHTML = `<span class="feedback-icon">✗</span> Je hebt geen antwoord gegeven. <strong>Juiste antwoord: ${correctAnswer}</strong>`;
+                } else if (acceptedAnswers.some(ans => userAnswer.includes(ans) || ans.includes(userAnswer))) {
+                    input.classList.add('correct');
+                    feedback.className = 'feedback correct show';
+                    feedback.innerHTML = `<span class="feedback-icon">✓</span> Goed! ${correctAnswer}`;
+                    correct++;
+                } else {
+                    input.classList.add('incorrect');
+                    feedback.className = 'feedback incorrect show';
+                    let message = `<span class="feedback-icon">✗</span> Helaas, dat is niet goed. <strong>Juiste antwoord: ${correctAnswer}</strong>`;
+                    if (hint) {
+                        message += `<br><em>💡 Tip: ${hint}</em>`;
+                    }
+                    feedback.innerHTML = message;
+                }
+            });
+            
+            // Toon score
+            const scoreDisplay = document.getElementById(`score-${exerciseNum}`);
+            scoreDisplay.classList.add('show');
+            
+            if (correct === 5) {
+                scoreDisplay.className = 'score-display show perfect';
+                scoreDisplay.innerHTML = `🎉 Perfect! ${correct}/5 goed!`;
+            } else if (correct >= 3) {
+                scoreDisplay.className = 'score-display show good';
+                scoreDisplay.innerHTML = `👍 Goed bezig! ${correct}/5 goed!`;
+            } else {
+                scoreDisplay.className = 'score-display show practice';
+                scoreDisplay.innerHTML = `💪 Blijf oefenen! ${correct}/5 goed.`;
+            }
+        }
+
+        function showAnswers(exerciseNum) {
+            const block = document.querySelector(`[data-exercise="${exerciseNum}"]`);
+            const inputs = block.querySelectorAll('.question-input');
+            
+            inputs.forEach((input, index) => {
+                const correctAnswer = correctAnswers[exerciseNum][index];
+                input.value = correctAnswer;
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+                
+                const feedback = input.nextElementSibling;
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `<span class="feedback-icon">✓</span> ${correctAnswer}`;
+            });
+            
+            const scoreDisplay = document.getElementById(`score-${exerciseNum}`);
+            scoreDisplay.classList.remove('show');
+        }
+
+        function resetExercise(exerciseNum) {
+            const block = document.querySelector(`[data-exercise="${exerciseNum}"]`);
+            const inputs = block.querySelectorAll('.question-input');
+            
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+                const feedback = input.nextElementSibling;
+                feedback.classList.remove('correct', 'incorrect', 'show');
+            });
+            
+            const scoreDisplay = document.getElementById(`score-${exerciseNum}`);
+            scoreDisplay.classList.remove('show');
+        }
+
+        // Enter key to check answers
+        document.querySelectorAll('.question-input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const exerciseNum = input.closest('[data-exercise]').dataset.exercise;
+                    checkAnswers(parseInt(exerciseNum));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
