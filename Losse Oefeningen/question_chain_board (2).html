@@ -356,7 +356,12 @@ function upd(){
   if(!S.q){o.innerHTML='<span style="color:var(--muted);font-size:.55em;font-weight:400">'+t.clickHint+'</span>';return}
   if(S.q==='closed')o.innerHTML='<span class="vb">WERKWOORD</span> + je / hij / wij … + <span class="rest">rest</span> <span class="vb">?</span> <span style="color:#27ae60">↗</span>';
   if(S.q==='open'&&!S.w)o.innerHTML='<span class="qw">???</span> + werkwoord + onderwerp + rest <span class="qw">?</span> ↘ <span style="color:var(--muted);font-size:.5em">'+t.pickHint+'</span>';
-  if(S.q==='open'&&S.w){const c=S.w.charAt(0).toUpperCase()+S.w.slice(1);o.innerHTML='<span class="qw">'+c+'</span> + <span class="vb">werkwoord</span> + je / hij … + <span class="rest">rest</span> <span class="qw">?</span> <span style="color:var(--open)">↘</span>'}
+  if(S.q==='open'&&S.w){
+    const c=S.w.charAt(0).toUpperCase()+S.w.slice(1);
+    const needsNoun=['welke','hoeveel'].includes(S.w);
+    const nounPart=needsNoun?'<span class="rest"> ……</span>':'';
+    o.innerHTML='<span class="qw">'+c+'</span>'+nounPart+' + <span class="vb">werkwoord</span> + je / hij … + <span class="rest">rest</span> <span class="qw">?</span> <span style="color:var(--open)">↘</span>'
+  }
 }
 function reset(){
   S={t:null,q:null,w:null};
