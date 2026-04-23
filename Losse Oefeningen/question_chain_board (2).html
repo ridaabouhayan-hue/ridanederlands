@@ -52,10 +52,10 @@
   /* MAIN */
   .main{
     flex:1;display:grid;
-    grid-template-columns:1fr 220px;
+    grid-template-columns:1fr 180px;
     grid-template-rows:auto auto auto;
-    gap:8px 10px;
-    padding:10px 16px 10px;
+    gap:6px 8px;
+    padding:8px 12px 8px;
     min-height:0;
   }
 
@@ -86,15 +86,15 @@
     grid-column:1/2;display:flex;gap:8px;
   }
   .qb{
-    flex:1;padding:14px 16px;border-radius:12px;border:2px solid var(--border);
+    flex:1;padding:10px 12px;border-radius:12px;border:2px solid var(--border);
     background:var(--surface);cursor:pointer;transition:.2s;text-align:center;
   }
-  .qb .i{font-size:1.6em;opacity:.7;transition:.2s;display:block;margin-bottom:4px}
-  .qb .t{font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;display:block;transition:.2s}
-  .qb .s{color:var(--muted);font-size:.85em;font-weight:700;display:block;transition:.2s}
+  .qb .i{font-size:1.3em;opacity:.7;transition:.2s;display:block;margin-bottom:3px}
+  .qb .t{font-family:'Fraunces',serif;font-size:1.2em;font-weight:800;display:block;transition:.2s}
+  .qb .s{color:var(--muted);font-size:.78em;font-weight:700;display:block;transition:.2s}
   .qb .tp{
-    display:inline-block;margin-top:6px;padding:5px 10px;background:rgba(0,0,0,.25);
-    border-radius:6px;font-size:.85em;font-weight:700;color:var(--muted);transition:.2s;
+    display:inline-block;margin-top:5px;padding:4px 8px;background:rgba(0,0,0,.25);
+    border-radius:6px;font-size:.75em;font-weight:700;color:var(--muted);transition:.2s;
   }
   .qb:hover{transform:translateY(-2px)}
   .qb.cl{border-color:var(--closed)}.qb.cl .t{color:var(--closed)}
@@ -208,13 +208,13 @@
       <span class="i">✋</span>
       <span class="t" id="t-closed">Closed question</span>
       <span class="s" id="s-closed">Ja / Nee</span>
-      <span class="tp"><span style="color:var(--closed)">VERB</span> + subject + rest <span style="color:var(--closed)">?</span> ↗</span>
+      <span class="tp" id="tp-closed"><span style="color:var(--closed)">WERKWOORD</span> + onderwerp + rest <span style="color:var(--closed)">?</span> ↗</span>
     </div>
     <div class="qb op" id="bOp" onclick="type('open')">
       <span class="i">💬</span>
       <span class="t" id="t-open">Open question</span>
       <span class="s" id="s-open">Who / What / Where …</span>
-      <span class="tp"><span style="color:var(--open)">Q-WORD</span> + verb + subject + rest <span style="color:var(--open)">?</span> ↘</span>
+      <span class="tp" id="tp-open"><span style="color:var(--open)">Q-WOORD</span> + werkwoord + onderwerp + rest <span style="color:var(--open)">?</span> ↘</span>
     </div>
   </div>
 
@@ -265,6 +265,8 @@ const T={
     structure:'Your question structure',
     clickHint:'Click above ↑',
     pickHint:'← pick a word',
+    tpClosed:'<span style="color:var(--closed)">WERKWOORD</span> + onderwerp + rest <span style="color:var(--closed)">?</span> ↗',
+    tpOpen:'<span style="color:var(--open)">Q-WOORD</span> + werkwoord + onderwerp + rest <span style="color:var(--open)">?</span> ↘',
     words:{wie:'who',wat:'what',waar:'where',wanneer:'when',waarom:'why',hoe:'how','hoe laat':'what time',hoeveel:'how many',welke:'which'}
   },
   tr:{
@@ -281,9 +283,11 @@ const T={
     closed:'Kapalı soru', closedS:'Evet / Hayır',
     open:'Açık soru', openS:'Kim / Ne / Nerede …',
     pick:'Bir kelime seç',
-    structure:'Soru yapın',
+    structure:'Soru yapınız',
     clickHint:'Yukarıya tıkla ↑',
     pickHint:'← bir kelime seç',
+    tpClosed:'<span style="color:var(--closed)">FİİL</span> + özne + geri kalan <span style="color:var(--closed)">?</span> ↗',
+    tpOpen:'<span style="color:var(--open)">SORU KELİMESİ</span> + fiil + özne + geri kalan <span style="color:var(--open)">?</span> ↘',
     words:{wie:'kim',wat:'ne',waar:'nerede',wanneer:'ne zaman',waarom:'neden',hoe:'nasıl','hoe laat':'saat kaçta',hoeveel:'kaç tane',welke:'hangi'}
   }
 };
@@ -314,6 +318,8 @@ function setLang(l){
   document.getElementById('s-open').textContent=t.openS;
   document.getElementById('lbl-pick').textContent=t.pick;
   document.getElementById('lbl-structure').textContent=t.structure;
+  document.getElementById('tp-closed').innerHTML=t.tpClosed;
+  document.getElementById('tp-open').innerHTML=t.tpOpen;
   // update q-word translations
   const wmap={wie:'wie',wat:'wat',waar:'waar',wanneer:'wanneer',waarom:'waarom',hoe:'hoe','hoe laat':'hoelaat',hoeveel:'hoeveel',welke:'welke'};
   for(const[nl,id] of Object.entries(wmap)){
