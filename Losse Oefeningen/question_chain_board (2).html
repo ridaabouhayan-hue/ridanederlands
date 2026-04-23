@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question Chain · Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1629;--surface:#1a2240;--surface2:#222d4a;--border:#2d3a5c;
+    --ink:#e8ecf4;--muted:#7889ab;
+    --closed:#e74c3c;--closed-gl:rgba(231,76,60,.4);
+    --open:#2e86ab;--open-gl:rgba(46,134,171,.4);
+    --qw:#f39c12;--qw-gl:rgba(243,156,18,.35);
+    --same:#27ae60;--same-gl:rgba(39,174,96,.35);
+    --diff:#9b59b6;--diff-gl:rgba(155,89,182,.35);
+    --accent:#ff6b35;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);
+    height:100vh;overflow:hidden;display:flex;flex-direction:column;
+  }
+
+  /* TOP */
+  .top{
+    display:flex;align-items:center;gap:12px;
+    padding:8px 20px;border-bottom:1px solid var(--border);flex-shrink:0;
+  }
+  .top h1{font-family:'Fraunces',serif;font-size:1.1em;font-weight:800;flex:1}
+  .top button{
+    background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+    padding:5px 12px;border-radius:6px;font-family:inherit;font-weight:700;
+    font-size:.75em;cursor:pointer;transition:.2s;
+  }
+  .top button:hover{color:var(--ink);border-color:var(--accent)}
+
+  /* RULES OVERLAY */
+  .ov{display:none;position:fixed;inset:0;background:rgba(15,22,41,.92);z-index:100;justify-content:center;align-items:center;padding:20px}
+  .ov.show{display:flex}
+  .rb{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;max-width:640px;width:100%;position:relative}
+  .rb h3{font-family:'Fraunces',serif;color:var(--accent);margin-bottom:12px}
+  .rb ol{padding-left:18px;font-size:.9em}.rb ol li{margin:4px 0}.rb ol li b{color:var(--accent)}
+  .rb .cx{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--muted);font-size:1.3em;cursor:pointer}
+  .rb .ex{background:var(--surface2);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:.85em;line-height:1.8}
+  .sp{display:inline-block;width:18px;height:18px;border-radius:50%;color:#fff;text-align:center;line-height:18px;font-size:.65em;font-weight:900;vertical-align:middle;margin-right:2px}
+  .sp-a{background:#9b59b6}.sp-b{background:#16a085}.sp-c{background:#e67e22}
+  .rb .q{color:var(--open);font-weight:700}
+
+  /* MAIN */
+  .main{
+    flex:1;display:grid;
+    grid-template-columns:1fr 220px;
+    grid-template-rows:auto auto auto;
+    gap:8px 10px;
+    padding:10px 16px 10px;
+    min-height:0;
+  }
+
+  .lbl{font-weight:900;color:var(--muted);font-size:.65em;letter-spacing:.1em;text-transform:uppercase}
+
+  /* ROW 1: TOPIC (full) */
+  .r1{
+    grid-column:1/3;display:flex;gap:8px;align-items:center;
+  }
+  .tb{
+    flex:1;padding:10px 14px;border-radius:10px;border:2px solid var(--border);
+    background:var(--surface);cursor:pointer;transition:.2s;
+    display:flex;align-items:center;gap:8px;justify-content:center;
+  }
+  .tb .i{font-size:1.2em;opacity:.7;transition:.2s}
+  .tb .t{font-family:'Fraunces',serif;font-size:1.2em;font-weight:800;transition:.2s}
+  .tb .s{color:var(--muted);font-size:.75em;font-weight:700;transition:.2s}
+  .tb:hover{transform:translateY(-1px)}
+  .tb.sm{border-color:var(--same)}.tb.sm .t{color:var(--same)}
+  .tb.sm.on{background:var(--same);box-shadow:0 0 24px var(--same-gl)}
+  .tb.sm.on .t,.tb.sm.on .s{color:#fff}.tb.sm.on .i{opacity:1}
+  .tb.df{border-color:var(--diff)}.tb.df .t{color:var(--diff)}
+  .tb.df.on{background:var(--diff);box-shadow:0 0 24px var(--diff-gl)}
+  .tb.df.on .t,.tb.df.on .s{color:#fff}.tb.df.on .i{opacity:1}
+
+  /* ROW 2: TYPE (left side, 2 buttons side by side) */
+  .r2{
+    grid-column:1/2;display:flex;gap:8px;
+  }
+  .qb{
+    flex:1;padding:14px 16px;border-radius:12px;border:2px solid var(--border);
+    background:var(--surface);cursor:pointer;transition:.2s;text-align:center;
+  }
+  .qb .i{font-size:1.6em;opacity:.7;transition:.2s;display:block;margin-bottom:4px}
+  .qb .t{font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;display:block;transition:.2s}
+  .qb .s{color:var(--muted);font-size:.85em;font-weight:700;display:block;transition:.2s}
+  .qb .tp{
+    display:inline-block;margin-top:6px;padding:5px 10px;background:rgba(0,0,0,.25);
+    border-radius:6px;font-size:.85em;font-weight:700;color:var(--muted);transition:.2s;
+  }
+  .qb:hover{transform:translateY(-2px)}
+  .qb.cl{border-color:var(--closed)}.qb.cl .t{color:var(--closed)}
+  .qb.cl.on{background:var(--closed);box-shadow:0 0 30px var(--closed-gl)}
+  .qb.cl.on .t,.qb.cl.on .s{color:#fff}.qb.cl.on .tp{background:rgba(0,0,0,.3);color:rgba(255,255,255,.9)}.qb.cl.on .i{opacity:1}
+  .qb.op{border-color:var(--open)}.qb.op .t{color:var(--open)}
+  .qb.op.on{background:var(--open);box-shadow:0 0 30px var(--open-gl)}
+  .qb.op.on .t,.qb.op.on .s{color:#fff}.qb.op.on .tp{background:rgba(0,0,0,.3);color:rgba(255,255,255,.9)}.qb.op.on .i{opacity:1}
+
+  /* RIGHT COLUMN: QWORDS (spans row 2+3) */
+  .rc{
+    grid-column:2/3;grid-row:2/4;
+    border-left:1px solid var(--border);padding-left:10px;
+    display:flex;flex-direction:column;gap:4px;
+    transition:.3s;opacity:.2;pointer-events:none;
+    overflow-y:auto;
+  }
+  .rc.on{opacity:1;pointer-events:auto}
+  .wb{
+    padding:7px 10px;border-radius:8px;border:2px solid var(--border);
+    background:var(--surface);cursor:pointer;transition:.2s;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wb .n{font-family:'Fraunces',serif;font-size:1.15em;font-weight:800;color:var(--qw);transition:.2s}
+  .wb .e{color:var(--muted);font-size:.72em;font-weight:700;transition:.2s}
+  .wb:hover{border-color:var(--qw);transform:translateX(-2px)}
+  .wb.on{background:var(--qw);border-color:var(--qw);box-shadow:0 0 18px var(--qw-gl)}
+  .wb.on .n{color:#fff}.wb.on .e{color:rgba(255,255,255,.85)}
+  @keyframes p{0%,100%{border-color:var(--border)}50%{border-color:var(--qw)}}
+  .rc.on .wb:not(.on){animation:p 2.5s infinite}
+
+  /* ROW 3: DISPLAY (left) */
+  .r3{
+    grid-column:1/2;display:flex;align-items:center;gap:10px;
+  }
+  .disp{
+    flex:1;background:var(--surface);border:2px solid var(--border);border-radius:10px;
+    padding:12px 16px;text-align:center;
+  }
+  .disp .dl{font-size:.6em;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .disp .out{
+    font-family:'Fraunces',serif;font-size:1.6em;font-weight:800;color:var(--ink);min-height:1.2em;
+  }
+  .disp .out .qw{color:var(--qw)}.disp .out .vb{color:var(--closed)}.disp .out .rest{color:var(--muted)}
+  .rst{
+    background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+    padding:10px 18px;border-radius:8px;font-family:inherit;font-weight:900;
+    font-size:.85em;cursor:pointer;transition:.2s;flex-shrink:0;white-space:nowrap;
+  }
+  .rst:hover{border-color:var(--accent);color:var(--ink)}
+
+  @media(max-width:700px){
+    .main{grid-template-columns:1fr;grid-template-rows:auto auto auto auto}
+    .r1,.r2,.r3{grid-column:1}
+    .rc{grid-column:1;grid-row:auto;border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:8px;display:grid;grid-template-columns:repeat(3,1fr)}
+    .rc .lbl{grid-column:1/4}
+    .r3{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>🔗 Question Chain</h1>
+  <button id="langEN" onclick="setLang('en')" style="border-color:#4361ee;color:#4361ee">🇬🇧 EN</button>
+  <button id="langTR" onclick="setLang('tr')">🇹🇷 TR</button>
+  <button onclick="toggleR()" id="btnRules">📋 Rules</button>
+  <button onclick="reset()">↻ Reset</button>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)toggleR()">
+  <div class="rb">
+    <button class="cx" onclick="toggleR()">✕</button>
+    <h3 id="rb-title">How the question chain works</h3>
+    <ol id="rb-rules">
+      <li><b>A</b> says a sentence: <i>"Ik werk bij Westport."</i></li>
+      <li><b>B</b> asks a question — about the answer <b>or</b> something new.</li>
+      <li><b>A</b> answers in a full sentence.</li>
+      <li><b>C</b> asks the next question. <b>Don't stop!</b></li>
+    </ol>
+    <div class="ex">
+      <span class="sp sp-a">A</span> Ik werk bij Westport.<br>
+      <span class="sp sp-b">B</span> <span class="q">Waar is Westport?</span> <span style="color:var(--muted);font-size:.75em">(open · same)</span><br>
+      <span class="sp sp-a">A</span> Westport is in Eindhoven.<br>
+      <span class="sp sp-c">C</span> <span class="q">Hoe laat begin je?</span> <span style="color:var(--muted);font-size:.75em">(open · new)</span><br>
+      <span class="sp sp-a">A</span> Ik begin om 7 uur.<br>
+      <span class="sp sp-b">B</span> <span class="q">Begin je altijd om 7 uur?</span> <span style="color:var(--muted);font-size:.75em">(closed · same)</span><br>
+      <span style="color:var(--accent);font-weight:700" id="rb-chain">… keeps going!</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ROW 1: TOPIC -->
+  <div class="r1">
+    <span class="lbl" style="flex-shrink:0;margin-right:6px" id="lbl-topic">Topic</span>
+    <div class="tb sm" id="bSm" onclick="topic('same')">
+      <span class="i">🔄</span>
+      <div><span class="t" id="t-same">Same subject</span><span class="s" id="s-same">Ask more about the answer</span></div>
+    </div>
+    <div class="tb df" id="bDf" onclick="topic('diff')">
+      <span class="i">🆕</span>
+      <div><span class="t" id="t-diff">New subject</span><span class="s" id="s-diff">Ask about something else</span></div>
+    </div>
+  </div>
+
+  <!-- ROW 2: TYPE (side by side) -->
+  <div class="r2">
+    <div class="qb cl" id="bCl" onclick="type('closed')">
+      <span class="i">✋</span>
+      <span class="t" id="t-closed">Closed question</span>
+      <span class="s" id="s-closed">Ja / Nee</span>
+      <span class="tp"><span style="color:var(--closed)">VERB</span> + subject + rest <span style="color:var(--closed)">?</span> ↗</span>
+    </div>
+    <div class="qb op" id="bOp" onclick="type('open')">
+      <span class="i">💬</span>
+      <span class="t" id="t-open">Open question</span>
+      <span class="s" id="s-open">Who / What / Where …</span>
+      <span class="tp"><span style="color:var(--open)">Q-WORD</span> + verb + subject + rest <span style="color:var(--open)">?</span> ↘</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: QWORDS -->
+  <div class="rc" id="rc">
+    <span class="lbl" id="lbl-pick">Pick a word</span>
+    <div class="wb" onclick="qw(this,'wie')"><span class="n">wie</span><span class="e" id="tr-wie">who</span></div>
+    <div class="wb" onclick="qw(this,'wat')"><span class="n">wat</span><span class="e" id="tr-wat">what</span></div>
+    <div class="wb" onclick="qw(this,'waar')"><span class="n">waar</span><span class="e" id="tr-waar">where</span></div>
+    <div class="wb" onclick="qw(this,'wanneer')"><span class="n">wanneer</span><span class="e" id="tr-wanneer">when</span></div>
+    <div class="wb" onclick="qw(this,'waarom')"><span class="n">waarom</span><span class="e" id="tr-waarom">why</span></div>
+    <div class="wb" onclick="qw(this,'hoe')"><span class="n">hoe</span><span class="e" id="tr-hoe">how</span></div>
+    <div class="wb" onclick="qw(this,'hoe laat')"><span class="n">hoe laat</span><span class="e" id="tr-hoelaat">what time</span></div>
+    <div class="wb" onclick="qw(this,'hoeveel')"><span class="n">hoeveel</span><span class="e" id="tr-hoeveel">how many</span></div>
+    <div class="wb" onclick="qw(this,'welke')"><span class="n">welke</span><span class="e" id="tr-welke">which</span></div>
+  </div>
+
+  <!-- ROW 3: DISPLAY -->
+  <div class="r3">
+    <div class="disp">
+      <div class="dl" id="lbl-structure">Your question structure</div>
+      <div class="out" id="out"><span style="color:var(--muted);font-size:.55em;font-weight:400" id="hint-click">Click above ↑</span></div>
+    </div>
+    <button class="rst" onclick="reset()">↻ Next</button>
+  </div>
+
+</div>
+
+<script>
+let S={t:null,q:null,w:null};
+let lang='en';
+
+const T={
+  en:{
+    rules:'How the question chain works',
+    r1:'A says a sentence: <i>"Ik werk bij Westport."</i>',
+    r2:'B asks a question — about the answer <b>or</b> something new.',
+    r3:'A answers in a full sentence.',
+    r4:'C asks the next question. <b>Don\'t stop!</b>',
+    chain:'… keeps going!',
+    btnRules:'📋 Rules',
+    topic:'Topic',
+    same:'Same subject', sameS:'Ask more about the answer',
+    diff:'New subject', diffS:'Ask about something else',
+    closed:'Closed question', closedS:'Ja / Nee',
+    open:'Open question', openS:'Who / What / Where …',
+    pick:'Pick a word',
+    structure:'Your question structure',
+    clickHint:'Click above ↑',
+    pickHint:'← pick a word',
+    words:{wie:'who',wat:'what',waar:'where',wanneer:'when',waarom:'why',hoe:'how','hoe laat':'what time',hoeveel:'how many',welke:'which'}
+  },
+  tr:{
+    rules:'Soru zinciri nasıl çalışır',
+    r1:'A bir cümle söyler: <i>"Ik werk bij Westport."</i>',
+    r2:'B bir soru sorar — cevap hakkında <b>veya</b> yeni bir konu hakkında.',
+    r3:'A tam bir cümleyle cevap verir.',
+    r4:'C bir sonraki soruyu sorar. <b>Durma!</b>',
+    chain:'… devam ediyor!',
+    btnRules:'📋 Kurallar',
+    topic:'Konu',
+    same:'Aynı konu', sameS:'Cevap hakkında daha fazla sor',
+    diff:'Yeni konu', diffS:'Başka bir şey hakkında sor',
+    closed:'Kapalı soru', closedS:'Evet / Hayır',
+    open:'Açık soru', openS:'Kim / Ne / Nerede …',
+    pick:'Bir kelime seç',
+    structure:'Soru yapın',
+    clickHint:'Yukarıya tıkla ↑',
+    pickHint:'← bir kelime seç',
+    words:{wie:'kim',wat:'ne',waar:'nerede',wanneer:'ne zaman',waarom:'neden',hoe:'nasıl','hoe laat':'saat kaçta',hoeveel:'kaç tane',welke:'hangi'}
+  }
+};
+
+function setLang(l){
+  lang=l;
+  document.getElementById('langEN').style.color = l==='en'?'#4361ee':'var(--muted)';
+  document.getElementById('langEN').style.borderColor = l==='en'?'#4361ee':'var(--border)';
+  document.getElementById('langTR').style.color = l==='tr'?'#e74c3c':'var(--muted)';
+  document.getElementById('langTR').style.borderColor = l==='tr'?'#e74c3c':'var(--border)';
+  const t=T[l];
+  document.getElementById('rb-title').textContent=t.rules;
+  const lis=document.getElementById('rb-rules').querySelectorAll('li');
+  lis[0].innerHTML='<b>A</b> '+t.r1;
+  lis[1].innerHTML='<b>B</b> '+t.r2;
+  lis[2].innerHTML='<b>A</b> '+t.r3;
+  lis[3].innerHTML='<b>C</b> '+t.r4;
+  document.getElementById('rb-chain').textContent=t.chain;
+  document.getElementById('btnRules').textContent=t.btnRules;
+  document.getElementById('lbl-topic').textContent=t.topic;
+  document.getElementById('t-same').textContent=t.same;
+  document.getElementById('s-same').textContent=t.sameS;
+  document.getElementById('t-diff').textContent=t.diff;
+  document.getElementById('s-diff').textContent=t.diffS;
+  document.getElementById('t-closed').textContent=t.closed;
+  document.getElementById('s-closed').textContent=t.closedS;
+  document.getElementById('t-open').textContent=t.open;
+  document.getElementById('s-open').textContent=t.openS;
+  document.getElementById('lbl-pick').textContent=t.pick;
+  document.getElementById('lbl-structure').textContent=t.structure;
+  // update q-word translations
+  const wmap={wie:'wie',wat:'wat',waar:'waar',wanneer:'wanneer',waarom:'waarom',hoe:'hoe','hoe laat':'hoelaat',hoeveel:'hoeveel',welke:'welke'};
+  for(const[nl,id] of Object.entries(wmap)){
+    const el=document.getElementById('tr-'+id);
+    if(el)el.textContent=t.words[nl];
+  }
+  upd();
+}
+
+function topic(v){S.t=v;document.getElementById('bSm').classList.toggle('on',v==='same');document.getElementById('bDf').classList.toggle('on',v==='diff');upd()}
+function type(v){
+  S.q=v;S.w=null;
+  document.getElementById('bCl').classList.toggle('on',v==='closed');
+  document.getElementById('bOp').classList.toggle('on',v==='open');
+  const r=document.getElementById('rc');
+  if(v==='open')r.classList.add('on');
+  else{r.classList.remove('on');document.querySelectorAll('.wb').forEach(b=>b.classList.remove('on'))}
+  upd();
+}
+function qw(el,w){S.w=w;document.querySelectorAll('.wb').forEach(b=>b.classList.remove('on'));el.classList.add('on');upd()}
+function upd(){
+  const o=document.getElementById('out');
+  const t=T[lang];
+  if(!S.q){o.innerHTML='<span style="color:var(--muted);font-size:.55em;font-weight:400">'+t.clickHint+'</span>';return}
+  if(S.q==='closed')o.innerHTML='<span class="vb">WERKWOORD</span> + je / hij / wij … + <span class="rest">rest</span> <span class="vb">?</span> <span style="color:#27ae60">↗</span>';
+  if(S.q==='open'&&!S.w)o.innerHTML='<span class="qw">???</span> + werkwoord + onderwerp + rest <span class="qw">?</span> ↘ <span style="color:var(--muted);font-size:.5em">'+t.pickHint+'</span>';
+  if(S.q==='open'&&S.w){const c=S.w.charAt(0).toUpperCase()+S.w.slice(1);o.innerHTML='<span class="qw">'+c+'</span> + <span class="vb">werkwoord</span> + je / hij … + <span class="rest">rest</span> <span class="qw">?</span> <span style="color:var(--open)">↘</span>'}
+}
+function reset(){
+  S={t:null,q:null,w:null};
+  document.querySelectorAll('.on').forEach(b=>b.classList.remove('on'));
+  upd();
+}
+function toggleR(){document.getElementById('ov').classList.toggle('show')}
+</script>
+</body>
+</html>
