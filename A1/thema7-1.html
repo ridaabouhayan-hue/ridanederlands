@@ -228,6 +228,10 @@
                 </div>
             </div>
         </section>
+    <div class="nav-buttons" style="display:flex; justify-content:space-between; margin-top:30px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+            <span></span>
+            <a href="thema7-2.html" class="wa-btn" style="background:#4e8cff;text-decoration:none;">Volgende (2) ➡️</a>
+        </div>
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 
@@ -319,7 +323,7 @@
     // Simpler: just check all answers, show hidden word "station" at the end
     function buildPuzzel(){const g=document.getElementById('puzzel-grid');g.innerHTML='';puzzelData.forEach((item,i)=>{g.innerHTML+=`<div class="puzzel-row"><span class="puzzel-nr">${i+1}.</span><input type="text" id="puz-${i}" placeholder="…" autocomplete="off" maxlength="${item.ans.length+2}"><span class="puzzel-hint">${item.hint}</span></div>`;});}
     function checkPuzzel(){let g=0;puzzelData.forEach((item,i)=>{const inp=document.getElementById('puz-'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ans){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('puzzel-score');sc.style.display='inline-block';sc.textContent=`${g}/${puzzelData.length}`;sc.className='score-badge '+(g===puzzelData.length?'score-goed':g>=4?'score-midden':'score-slecht');if(g===puzzelData.length){const gh=document.getElementById('puzzel-geheim');gh.style.display='block';gh.textContent='🎉 Geheim woord: STATION!';}}
-    function resetPuzzel(){document.getElementById('puzzel-grid').innerHTML='';document.getElementById('puzzel-score').style.display='none';document.getElementById('puzzel-geheim').style.display='none';buildPuzzel();}
+    function resetPuzzel(){if(typeof puzzelData!=="undefined")puzzelData=shuffle(puzzelData);document.getElementById('puzzel-grid').innerHTML='';document.getElementById('puzzel-score').style.display='none';document.getElementById('puzzel-geheim').style.display='none';buildPuzzel();}
 
     // ── OPDRACHT 3: Werkwoord MC ──
     const wwData=[
@@ -366,7 +370,7 @@
     function removeZOWord(zinIdx,posIdx){const removed=zoState[zinIdx].splice(posIdx,1)[0];removed.chip.classList.remove('used');renderZOAnswer(zinIdx);}
     function renderZOAnswer(zinIdx){const ans=document.getElementById('zo-ans-'+zinIdx);ans.className='zo-answer';ans.innerHTML=zoState[zinIdx].map((item,pi)=>`<span class="zo-placed" onclick="removeZOWord(${zinIdx},${pi})">${item.word}</span>`).join('');}
     function checkZO(){let g=0;zoData.forEach((item,i)=>{const ans=document.getElementById('zo-ans-'+i);const userAns=zoState[i].map(s=>s.word).join(' ');ans.classList.remove('correct-ans','fout-ans');if(userAns===item.answer){ans.classList.add('correct-ans');g++;}else ans.classList.add('fout-ans');});const sc=document.getElementById('zo-score');sc.style.display='inline-block';sc.textContent=`${g}/${zoData.length}`;sc.className='score-badge '+(g===zoData.length?'score-goed':g>=4?'score-midden':'score-slecht');}
-    function resetZO(){document.getElementById('zo-container').innerHTML='';document.getElementById('zo-score').style.display='none';buildZO();}
+    function resetZO(){document.getElementById('zo-container').innerHTML='';document.getElementById('zo-score').style.display='none';zoData=shuffle(zoData);buildZO();}
 
     // ── OPDRACHT 6: Schrijfopdracht ──
     const schrijfVragen=['Hoe ga jij naar school of naar je werk? 📝','Welk vervoermiddel neem jij het vaakst? Waarom?','Schrijf een zin met het woord "trein" en het woord "laat".'];
