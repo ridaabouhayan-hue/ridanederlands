@@ -456,15 +456,14 @@ const ORD_DATA = [
 /* ==========================================================================
    STATE MANAGEMENT
    ========================================================================== */
-let state = JSON.parse(localStorage.getItem('nt2_7_2_v2')) || {
+let state = {
     lang: 'nl',
     scores: {},
     checked: {},
     answers: { dictee: [], mc: {}, invul: {}, ord: [], schrijf: [] }
 };
-const lsKey = 'nt2_7_2_v2';
-function saveState() { localStorage.setItem(lsKey, JSON.stringify(state)); updateProgress(); }
-function eraseAll() { if (confirm(I18N[state.lang].confirmErase)) { localStorage.removeItem(lsKey); location.reload(); } }
+function saveState() { updateProgress(); }
+function eraseAll() { if (confirm(I18N[state.lang].confirmErase)) { location.reload(); } }
 function shuffle(arr) { return arr.map(v => ({ v, sort: Math.random() })).sort((a,b) => a.sort - b.sort).map(o => o.v); }
 function speak(text) { 
     if(!('speechSynthesis' in window)) return;
