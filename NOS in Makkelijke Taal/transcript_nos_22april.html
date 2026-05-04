@@ -238,40 +238,92 @@
             box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
         }
 
-        /* Language Switcher */
-        .lang-bar {
+        /* --- Language Switcher --- */
+        .lang-switcher {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-        .lang-btn {
-            background: var(--white);
-            border: 2px solid var(--primary-light);
+
+        .lang-switcher .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary);
+            background: transparent;
             color: var(--primary);
-            font-family: 'Nunito', sans-serif;
-            font-weight: 800;
-            font-size: 0.95em;
-            padding: 8px 20px;
-            border-radius: 30px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: 'Nunito', sans-serif;
         }
-        .lang-btn:hover, .lang-btn.active {
+
+        .lang-switcher .lang-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .lang-switcher .lang-btn.active {
             background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
         }
-        /* Modal base-form tag */
-        .base-form {
+
+        /* --- Vocab (Clickable Translations) --- */
+        .vocab {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 2px dashed var(--primary);
+            font-weight: 700;
+            color: var(--primary);
+            transition: all 0.2s;
             display: inline-block;
-            margin-top: 8px;
-            font-size: 0.88em;
-            color: var(--text-gray);
-            background: #f0f0f8;
-            border-radius: 6px;
-            padding: 3px 9px;
-            font-style: normal;
+        }
+
+        .vocab:hover {
+            background-color: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        /* --- Tooltip --- */
+        .tooltip {
+            position: absolute;
+            bottom: 120%; /* Position above the word */
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: #1a1a2e; /* Dark elegant tooltip */
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Triangle for tooltip */
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1a1a2e transparent transparent transparent;
+        }
+
+        /* Show tooltip */
+        .vocab.show-tooltip .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
         }
 
     </style>
@@ -279,10 +331,12 @@
 <body>
 
 <!-- Taalknopjes -->
-<div class="lang-bar">
-    <button class="lang-btn" id="lang-nl" onclick="setLang('nl')">🇳🇱 NL (uitleg)</button>
-    <button class="lang-btn active" id="lang-en" onclick="setLang('en')">🇬🇧 English</button>
-    <button class="lang-btn" id="lang-tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+<!-- LANGUAGE SWITCHER -->
+<div class="lang-switcher">
+    <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+    <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+    <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+    <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
 </div>
 
 <div class="container">
@@ -307,27 +361,27 @@
             <p>Goedemiddag. Dit is het NOS Journaal in Makkelijke Taal van woensdag 22 april en ik ben Simone Weimans.</p>
             <p>In dit journaal gaat het over problemen met het stroomnet. Sommige mensen kunnen <span class="highlight">geen nieuwe stroomaansluiting</span> meer krijgen. We vertellen over boa's. Er is een tekort aan zulke speciale controleurs. En we laten zien dat de Amerikaanse rivierkreeft voor overlast zorgt in Nederlandse rivieren.</p>
             
-            <p>In een deel van het land is soms zo veel stroom nodig dat het <span class="dict-word" onclick="showTranslation('stroomnet','power grid','elektrik şebekesi','dat het <b>stroomnet</b> niet genoeg elektriciteit kan leveren')">stroomnet</span> niet genoeg <span class="dict-word" onclick="showTranslation('elektriciteit','electricity','elektrik','niet genoeg <b>elektriciteit</b> kan leveren')">elektriciteit</span> kan <span class="dict-word" onclick="showTranslation('leveren','to supply / deliver','temin etmek, sağlamak','het stroomnet niet genoeg elektriciteit kan <b>leveren</b>','leveren (ik lever, hij levert)')">leveren</span>. Het probleem is nu zo groot dat er voor het eerst <span class="dict-word" onclick="showTranslation('maatregelen','measures','önlemler','er voor het eerst <b>maatregelen</b> zijn genomen')">maatregelen</span> zijn <span class="dict-word" onclick="showTranslation('genomen','taken','alınmış','er voor het eerst maatregelen zijn <b>genomen</b>','nemen (ik neem, hij neemt)')">genomen</span>. Vanaf juli komen mensen die een nieuwe <span class="dict-word" onclick="showTranslation('stroomaansluiting','power connection','elektrik bağlantısı','die een nieuwe <b>stroomaansluiting</b> willen')">stroomaansluiting</span> willen eerst op een <span class="dict-word" onclick="showTranslation('wachtlijst','waiting list','bekleme listesi','eerst op een <b>wachtlijst</b>')">wachtlijst</span>. De problemen met de stroom zijn op dit moment het grootst in de <span class="dict-word" onclick="showTranslation('provincie','province','il / eyalet','het grootst in de <b>provincie</b> Utrecht')">provincie</span> Utrecht. Het gaat om de stad Utrecht en dit <span class="dict-word" onclick="showTranslation('gebied','area / region','bölge','de stad Utrecht en dit <b>gebied</b> er omheen')">gebied</span> er omheen. Hier zit het stroomnet 'vol' zoals dat heet.</p>
+            <p>In een deel van het land is soms zo veel stroom nodig dat het <span class="vocab" data-en="power grid" data-tr="elektrik şebekesi" data-ar="شبكة الكهرباء">stroomnet</span> niet genoeg <span class="vocab" data-en="electricity" data-tr="elektrik" data-ar="الكهرباء">elektriciteit</span> kan <span class="vocab" data-en="to supply / deliver" data-tr="temin etmek, sağlamak" data-ar="توفير / تسليم">leveren</span>. Het probleem is nu zo groot dat er voor het eerst <span class="vocab" data-en="measures" data-tr="önlemler" data-ar="إجراءات">maatregelen</span> zijn <span class="vocab" data-en="taken" data-tr="alınmış" data-ar="اتُّخِذت">genomen</span>. Vanaf juli komen mensen die een nieuwe <span class="vocab" data-en="power connection" data-tr="elektrik bağlantısı" data-ar="توصيلة كهربائية">stroomaansluiting</span> willen eerst op een <span class="vocab" data-en="waiting list" data-tr="bekleme listesi" data-ar="قائمة انتظار">wachtlijst</span>. De problemen met de stroom zijn op dit moment het grootst in de <span class="vocab" data-en="province" data-tr="il / eyalet" data-ar="مقاطعة">provincie</span> Utrecht. Het gaat om de stad Utrecht en dit <span class="vocab" data-en="area / region" data-tr="bölge" data-ar="منطقة">gebied</span> er omheen. Hier zit het stroomnet 'vol' zoals dat heet.</p>
 
-            <p>Dat <span class="dict-word" onclick="showTranslation('betekent','means','anlamına gelir','Dat <b>betekent</b> dat het stroomnet niet méér elektriciteit kan leveren','betekenen (ik beteken, het betekent)')">betekent</span> dat het stroomnet niet méér elektriciteit kan leveren dan nu al wordt gevraagd. Daardoor is in Utrecht geen <span class="dict-word" onclick="showTranslation('ruimte','space / room','yer, alan','geen <b>ruimte</b> voor plannen om huizen te bouwen')">ruimte</span> voor plannen om huizen te <span class="dict-word" onclick="showTranslation('bouwen','to build','inşa etmek','plannen om huizen te <b>bouwen</b>','bouwen (ik bouw, hij bouwt)')">bouwen</span>. Het stroomnet is niet sterk genoeg om voor meer nieuwe huizen elektriciteit te geven. En dat <span class="dict-word" onclick="showTranslation('geldt','applies / counts','geçerlidir','En dat <b>geldt</b> ook voor nieuwe bedrijven','gelden (ik geld, het geldt)')">geldt</span> ook voor nieuwe <span class="dict-word" onclick="showTranslation('bedrijven','companies / businesses','şirketler, işletmeler','ook voor nieuwe <b>bedrijven</b>')">bedrijven</span>. Ook die kunnen niet meer worden <span class="dict-word" onclick="showTranslation('aangesloten','connected','bağlanmak','kunnen niet meer worden <b>aangesloten</b> op het stroomnetwerk','aansluiten (ik sluit aan, hij sluit aan)')">aangesloten</span> op het stroomnetwerk. Er wordt op dit moment gewerkt om het stroomnet <span class="dict-word" onclick="showTranslation('uit te breiden','to expand','genişletmek','gewerkt om het stroomnet <b>uit te breiden</b>','uitbreiden (ik breid uit, hij breidt uit)')">uit te breiden</span>, maar dat gaat nog jaren duren.</p>
+            <p>Dat <span class="vocab" data-en="means" data-tr="anlamına gelir" data-ar="يعني">betekent</span> dat het stroomnet niet méér elektriciteit kan leveren dan nu al wordt gevraagd. Daardoor is in Utrecht geen <span class="vocab" data-en="space / room" data-tr="yer, alan" data-ar="مساحة / مكان">ruimte</span> voor plannen om huizen te <span class="vocab" data-en="to build" data-tr="inşa etmek" data-ar="بناء">bouwen</span>. Het stroomnet is niet sterk genoeg om voor meer nieuwe huizen elektriciteit te geven. En dat <span class="vocab" data-en="applies / counts" data-tr="geçerlidir" data-ar="ينطبق">geldt</span> ook voor nieuwe <span class="vocab" data-en="companies / businesses" data-tr="şirketler, işletmeler" data-ar="شركات">bedrijven</span>. Ook die kunnen niet meer worden <span class="vocab" data-en="connected" data-tr="bağlanmak" data-ar="مُوصَّل">aangesloten</span> op het stroomnetwerk. Er wordt op dit moment gewerkt om het stroomnet <span class="vocab" data-en="to expand" data-tr="genişletmek" data-ar="توسيع">uit te breiden</span>, maar dat gaat nog jaren duren.</p>
 
-            <p>Tot die tijd komt iedereen die om een stroomaansluiting vraagt dus eerst op een wachtlijst. En dat heeft ook <span class="dict-word" onclick="showTranslation('gevolgen','consequences','sonuçlar','dat heeft ook <b>gevolgen</b> voor mensen die hun huis duurzaam willen maken')">gevolgen</span> voor mensen die hun huis <span class="dict-word" onclick="showTranslation('duurzaam','sustainable','sürdürülebilir','die hun huis <b>duurzaam</b> en energiezuinig willen maken')">duurzaam</span> en <span class="dict-word" onclick="showTranslation('energiezuinig','energy-efficient','enerji tasarruflu','huis duurzaam en <b>energiezuinig</b> willen maken')">energiezuinig</span> willen maken. Steeds meer mensen willen hun huis <span class="dict-word" onclick="showTranslation('verwarmen','to heat','ısıtmak','hun huis <b>verwarmen</b> met een warmtepomp','verwarmen (ik verwarm, hij verwarmt)')">verwarmen</span> met een <span class="dict-word" onclick="showTranslation('warmtepomp','heat pump','ısı pompası','hun huis verwarmen met een <b>warmtepomp</b>')">warmtepomp</span>, ze willen elektrisch koken of een <span class="dict-word" onclick="showTranslation('laadpaal','charging point','şarj istasyonu','of een <b>laadpaal</b> voor de elektrische auto')">laadpaal</span> voor de elektrische auto. Daarvoor is dan vaak een nieuwe, sterkere stroomaansluiting nodig. Maar door de problemen met het stroomnet kan dat niet. Het wordt dus moeilijker om je huis aan te <span class="dict-word" onclick="showTranslation('aan te passen','to adapt / adjust','uyarlamak, adapte etmek','je huis <b>aan te passen</b> en zuiniger te maken','aanpassen (ik pas aan, hij past aan)')">passen</span> en <span class="dict-word" onclick="showTranslation('zuiniger','more economical','daha tasarruflu','je huis aan te passen en <b>zuiniger</b> te maken','zuinig → zuiniger (comparatief)')">zuiniger</span> te maken.</p>
+            <p>Tot die tijd komt iedereen die om een stroomaansluiting vraagt dus eerst op een wachtlijst. En dat heeft ook <span class="vocab" data-en="consequences" data-tr="sonuçlar" data-ar="عواقب">gevolgen</span> voor mensen die hun huis <span class="vocab" data-en="sustainable" data-tr="sürdürülebilir" data-ar="مستدام">duurzaam</span> en <span class="vocab" data-en="energy-efficient" data-tr="enerji tasarruflu" data-ar="موفر للطاقة">energiezuinig</span> willen maken. Steeds meer mensen willen hun huis <span class="vocab" data-en="to heat" data-tr="ısıtmak" data-ar="تدفئة">verwarmen</span> met een <span class="vocab" data-en="heat pump" data-tr="ısı pompası" data-ar="مضخة حرارية">warmtepomp</span>, ze willen elektrisch koken of een <span class="vocab" data-en="charging point" data-tr="şarj istasyonu" data-ar="محطة شحن">laadpaal</span> voor de elektrische auto. Daarvoor is dan vaak een nieuwe, sterkere stroomaansluiting nodig. Maar door de problemen met het stroomnet kan dat niet. Het wordt dus moeilijker om je huis aan te <span class="vocab" data-en="to adapt / adjust" data-tr="uyarlamak, adapte etmek" data-ar="تعديل / تكييف">passen</span> en <span class="vocab" data-en="more economical" data-tr="daha tasarruflu" data-ar="أكثر توفيراً">zuiniger</span> te maken.</p>
 
-            <p>Een <span class="dict-word" onclick="showTranslation('tegenvaller','setback / disappointment','hayal kırıklığı','Een <b>tegenvaller</b> voor mensen bij de bouwmarkt')">tegenvaller</span> voor mensen bij de bouwmarkt:</p>
+            <p>Een <span class="vocab" data-en="setback / disappointment" data-tr="hayal kırıklığı" data-ar="خيبة أمل">tegenvaller</span> voor mensen bij de bouwmarkt:</p>
 
             <div class="quote-box">
                 <span class="speaker">Klant bij bouwmarkt</span>
-                <span class="quote-text">"Ik vind dat het niet moet kunnen. Want we moeten <span class="dict-word" onclick="showTranslation('zogenaamd','supposedly','sözde, güya','we moeten <b>zogenaamd</b> van het gas af')">zogenaamd</span> van het gas af. En dan is koken op stroom zeker een goede optie. En daar heb je <span class="dict-word" onclick="showTranslation('uitbreiding','expansion','genişleme','heb je <b>uitbreiding</b> van je stroomvoorziening voor nodig')">uitbreiding</span> van je <span class="dict-word" onclick="showTranslation('stroomvoorziening','power supply','elektrik temini','uitbreiding van je <b>stroomvoorziening</b> voor nodig')">stroomvoorziening</span> voor nodig. Ik vind het wel een probleem. Het is vooral belangrijk dat we gewoon kunnen blijven <span class="dict-word" onclick="showTranslation('verduurzamen','make more sustainable','daha sürdürülebilir hale getirmek','kunnen blijven <b>verduurzamen</b>','verduurzamen (ik verduurzaam, hij verduurzaamt)')">verduurzamen</span>."</span>
+                <span class="quote-text">"Ik vind dat het niet moet kunnen. Want we moeten <span class="vocab" data-en="supposedly" data-tr="sözde, güya" data-ar="ما يُسمى">zogenaamd</span> van het gas af. En dan is koken op stroom zeker een goede optie. En daar heb je <span class="vocab" data-en="expansion" data-tr="genişleme" data-ar="توسعة">uitbreiding</span> van je <span class="vocab" data-en="power supply" data-tr="elektrik temini" data-ar="إمداد الكهرباء">stroomvoorziening</span> voor nodig. Ik vind het wel een probleem. Het is vooral belangrijk dat we gewoon kunnen blijven <span class="vocab" data-en="make more sustainable" data-tr="daha sürdürülebilir hale getirmek" data-ar="جعله مستداماً">verduurzamen</span>."</span>
             </div>
 
-            <p>Hier zijn ook mensen die zelf een <span class="dict-word" onclick="showTranslation('oplossing','solution','çözüm','mensen die zelf een <b>oplossing</b> hebben')">oplossing</span> hebben voor de stroomproblemen:</p>
+            <p>Hier zijn ook mensen die zelf een <span class="vocab" data-en="solution" data-tr="çözüm" data-ar="حلّ">oplossing</span> hebben voor de stroomproblemen:</p>
 
             <div class="quote-box speaker-alt">
                 <span class="speaker">Klant met zonnepanelen</span>
-                <span class="quote-text">"We gaan <span class="dict-word" onclick="showTranslation('zonnepanelen','solar panels','güneş panelleri','We gaan <b>zonnepanelen</b> installeren')">zonnepanelen</span> installeren en een grote <span class="dict-word" onclick="showTranslation('thuisbatterij','home battery','ev bataryası','een grote <b>thuisbatterij</b>')">thuisbatterij</span>, zodat we zo veel mogelijk energie zelf <span class="dict-word" onclick="showTranslation('opslaan','to store','depolamak','energie zelf <b>opslaan</b> en kunnen gebruiken','opslaan (ik sla op, hij slaat op)')">opslaan</span> en kunnen gebruiken wanneer we dat nodig hebben. Je hebt dan toch genoeg stroom om zelf je warmtepomp <span class="dict-word" onclick="showTranslation('aan te sturen','to control / operate','kontrol etmek, çalıştırmak','zelf je warmtepomp <b>aan te sturen</b>','aansturen (ik stuur aan, hij stuurt aan)')">aan te sturen</span>."</span>
+                <span class="quote-text">"We gaan <span class="vocab" data-en="solar panels" data-tr="güneş panelleri" data-ar="ألواح شمسية">zonnepanelen</span> installeren en een grote <span class="vocab" data-en="home battery" data-tr="ev bataryası" data-ar="بطارية منزلية">thuisbatterij</span>, zodat we zo veel mogelijk energie zelf <span class="vocab" data-en="to store" data-tr="depolamak" data-ar="تخزين">opslaan</span> en kunnen gebruiken wanneer we dat nodig hebben. Je hebt dan toch genoeg stroom om zelf je warmtepomp <span class="vocab" data-en="to control / operate" data-tr="kontrol etmek, çalıştırmak" data-ar="تشغيل / التحكم">aan te sturen</span>."</span>
             </div>
 
-            <p>De problemen met het <span class="dict-word" onclick="showTranslation('volle','full','dolu','het <b>volle</b> stroomnet zijn niet alleen in Utrecht','vol → volle (bijvoeglijk naamwoord)')">volle</span> stroomnet zijn niet alleen in Utrecht. In het hele land komt het voor. Maar het is nu voor het eerst dat er mensen niet meteen een nieuwe stroomaansluiting kunnen krijgen.</p>
+            <p>De problemen met het <span class="vocab" data-en="full" data-tr="dolu" data-ar="ممتلئ">volle</span> stroomnet zijn niet alleen in Utrecht. In het hele land komt het voor. Maar het is nu voor het eerst dat er mensen niet meteen een nieuwe stroomaansluiting kunnen krijgen.</p>
 
             <!-- QUIZ SECTIE 1 -->
             <div class="quiz-section">
@@ -335,7 +389,7 @@
                 
                 <div class="question-block">
                     <p>1. Wat is er aan de hand met het stroomnet in de provincie Utrecht?</p>
-                    <label><input type="radio" name="q1" value="a"> A. Er is te veel stroom over.</label>
+                    <label><input type="radio" name="q1" value="a"> A. Er is te veel stroom en niemand wil het.</label>
                     <label><input type="radio" name="q1" value="b"> B. Het stroomnet zit 'vol' en kan niet meer elektriciteit leveren.</label>
                     <label><input type="radio" name="q1" value="c"> C. De stroom is heel erg goedkoop geworden.</label>
                 </div>
@@ -349,7 +403,7 @@
 
                 <div class="question-block">
                     <p>3. Waarom kunnen er in Utrecht geen nieuwe huizen gebouwd worden op dit moment?</p>
-                    <label><input type="radio" name="q3" value="a"> A. Omdat er geen ruimte meer is om te bouwen.</label>
+                    <label><input type="radio" name="q3" value="a"> A. Omdat de huizen te duur zijn.</label>
                     <label><input type="radio" name="q3" value="b"> B. Omdat het stroomnet niet sterk genoeg is voor de extra elektriciteit.</label>
                     <label><input type="radio" name="q3" value="c"> C. Omdat mensen liever in een andere provincie wonen.</label>
                 </div>
@@ -381,22 +435,58 @@
             2. Tekort aan Boa's
         </div>
         <div class="text-content">
-            <p>En dan nog meer nieuws uit de provincie Utrecht. Er is daar een <span class="dict-word" onclick="showTranslation('tekort','shortage','eksiklik / yetersizlik','Er is daar een <b>tekort</b> aan boa\'s')">tekort</span> aan boa's: dat zijn de speciale <span class="dict-word" onclick="showTranslation('controleurs','inspectors','denetçiler','dat zijn de speciale <b>controleurs</b> die het veilig proberen te houden')">controleurs</span> die het <span class="dict-word" onclick="showTranslation('veilig','safe / safely','güvenli','die het <b>veilig</b> proberen te houden op straat')">veilig</span> proberen te houden op straat. Dat er te weinig boa's zijn, blijkt uit <span class="dict-word" onclick="showTranslation('onderzoek','research / investigation','araştırma','blijkt uit <b>onderzoek</b> van journalisten')">onderzoek</span> van journalisten van RTV Utrecht.</p>
+            <p>En dan nog meer nieuws uit de provincie Utrecht. Er is daar een <span class="vocab" data-en="shortage" data-tr="eksiklik / yetersizlik" data-ar="نقص">tekort</span> aan boa's: dat zijn de speciale <span class="vocab" data-en="inspectors" data-tr="denetçiler" data-ar="مراقبون">controleurs</span> die het <span class="vocab" data-en="safe / safely" data-tr="güvenli" data-ar="آمن">veilig</span> proberen te houden op straat. Dat er te weinig boa's zijn, blijkt uit <span class="vocab" data-en="research / investigation" data-tr="araştırma" data-ar="بحث / تحقيق">onderzoek</span> van journalisten van RTV Utrecht.</p>
             
-            <p>Boa's horen niet bij de <span class="dict-word" onclick="showTranslation('politie','police','polis','Boa\'s horen niet bij de <b>politie</b>')">politie</span>, maar sommige taken zijn wel hetzelfde. Een boa mag bijvoorbeeld <span class="dict-word" onclick="showTranslation('boetes uitschrijven','issue fines','para cezası yazmak','Een boa mag bijvoorbeeld <b>boetes uitschrijven</b>','uitschrijven (ik schrijf uit, hij schrijft uit)')">boetes uitschrijven</span>. Zoals een <span class="dict-word" onclick="showTranslation('boete','fine (penalty)','para cezası','Zoals een <b>boete</b> voor fout parkeren')">boete</span> voor fout <span class="dict-word" onclick="showTranslation('parkeren','to park','park etmek','een boete voor fout <b>parkeren</b>','parkeren (ik parkeer, hij parkeert)')">parkeren</span>. Ze mogen een <span class="dict-word" onclick="showTranslation('verdachte aanhouden','arrest a suspect','şüpheli tutuklamak','Ze mogen een <b>verdachte aanhouden</b>','aanhouden (ik houd aan, hij houdt aan)')">verdachte aanhouden</span>. Ze hebben dus ook <span class="dict-word" onclick="showTranslation('handboeien','handcuffs','kelepce','Ze hebben dus ook <b>handboeien</b> bij zich')">handboeien</span> bij zich. En als ze het nodig vinden, mogen ze <span class="dict-word" onclick="showTranslation('geweld gebruiken','use force','güç kullanmak','mogen ze <b>geweld gebruiken</b>')">geweld gebruiken</span>. Daarom hebben sommige boa's een <span class="dict-word" onclick="showTranslation('wapenstok','baton / truncheon','cop / düi','sommige boa\'s een <b>wapenstok</b> bij zich')">wapenstok</span> bij zich: een harde <span class="dict-word" onclick="showTranslation('rubberen','rubber (adjective)','kauçuk, lastik','een harde <b>rubberen</b> staaf')">rubberen</span> <span class="dict-word" onclick="showTranslation('staaf','rod / stick','çubuk, çomak','een harde rubberen <b>staaf</b>')">staaf</span>.</p>
+            <p>Boa's horen niet bij de <span class="vocab" data-en="police" data-tr="polis" data-ar="شرطة">politie</span>, maar sommige taken zijn wel hetzelfde. Een boa mag bijvoorbeeld <span class="vocab" data-en="issue fines" data-tr="para cezası yazmak" data-ar="كتابة مخالفات">boetes uitschrijven</span>. Zoals een <span class="vocab" data-en="fine (penalty)" data-tr="para cezası" data-ar="غرامة">boete</span> voor fout <span class="vocab" data-en="to park" data-tr="park etmek" data-ar="ركن السيارة">parkeren</span>. Ze mogen een <span class="vocab" data-en="arrest a suspect" data-tr="şüpheli tutuklamak" data-ar="اعتقال مشتبه به">verdachte aanhouden</span>. Ze hebben dus ook <span class="vocab" data-en="handcuffs" data-tr="kelepce" data-ar="أصفاد">handboeien</span> bij zich. En als ze het nodig vinden, mogen ze <span class="vocab" data-en="use force" data-tr="güç kullanmak" data-ar="استخدام القوة">geweld gebruiken</span>. Daarom hebben sommige boa's een <span class="vocab" data-en="baton / truncheon" data-tr="cop / düi" data-ar="هراوة">wapenstok</span> bij zich: een harde <span class="vocab" data-en="rubber (adjective)" data-tr="kauçuk, lastik" data-ar="مطاطي">rubberen</span> <span class="vocab" data-en="rod / stick" data-tr="çubuk, çomak" data-ar="عصا">staaf</span>.</p>
 
-            <p>Het tekort aan boa's komt doordat ze er <span class="highlight">steeds meer taken bij krijgen</span>. Deze boa <span class="dict-word" onclick="showTranslation('merkt','notices / notices that','fark ediyor','Deze boa <b>merkt</b> dat er te veel te doen is','merken (ik merk, hij merkt)')">merkt</span> dat er te veel te doen is:</p>
+            <p>Het tekort aan boa's komt doordat ze er <span class="highlight">steeds meer taken bij krijgen</span>. Deze boa <span class="vocab" data-en="notices / notices that" data-tr="fark ediyor" data-ar="يلاحظ">merkt</span> dat er te veel te doen is:</p>
 
             <div class="quote-box">
                 <span class="speaker">Boa aan het werk</span>
-                <span class="quote-text">"Op deze papieren staan de <span class="dict-word" onclick="showTranslation('meldingen','reports / notifications','bildirimler, şikayet raporları','staan de <b>meldingen</b> die binnen zijn gekomen','melding → meldingen (meervoud)')">meldingen</span> die binnen zijn gekomen. Dit gaat bijvoorbeeld over parkeren grote bussen. Parkeren bij een <span class="dict-word" onclick="showTranslation('laadpaalplek','charging point spot','şarj noktası','Parkeren bij een <b>laadpaalplek</b>')">laadpaalplek</span>. Dat er een auto <span class="dict-word" onclick="showTranslation('constant','constantly','sürekli olarak','een auto <b>constant</b> op de stoep parkeert')">constant</span> op de <span class="dict-word" onclick="showTranslation('stoep','pavement / sidewalk','kaldırım','constant op de <b>stoep</b> parkeert')">stoep</span> parkeert. En er staat al een langere tijd een auto op het <span class="dict-word" onclick="showTranslation('industrieterrein','industrial estate','sanayi bölgesi','auto op het <b>industrieterrein</b>')">industrieterrein</span> die eigenlijk <span class="dict-word" onclick="showTranslation('weggesleept','towed away','çekilmek','die eigenlijk <b>weggesleept</b> moet worden','wegslepen (ik sleep weg, hij sleept weg)')">weggesleept</span> moet worden. Daar zijn we eigenlijk al twee weken niet aan <span class="dict-word" onclick="showTranslation('toegekomen','gotten around to','fırsat bulamadık','al twee weken niet aan <b>toegekomen</b>','toekomen aan (ik kom toe aan)')">toegekomen</span>."</span>
+                <span class="quote-text">"Op deze papieren staan de <span class="vocab" data-en="reports / notifications" data-tr="bildirimler, şikayet raporları" data-ar="بلاغات">meldingen</span> die binnen zijn gekomen. Dit gaat bijvoorbeeld over parkeren grote bussen. Parkeren bij een <span class="vocab" data-en="charging point spot" data-tr="şarj noktası" data-ar="موقف شحن">laadpaalplek</span>. Dat er een auto <span class="vocab" data-en="constantly" data-tr="sürekli olarak" data-ar="باستمرار">constant</span> op de <span class="vocab" data-en="pavement / sidewalk" data-tr="kaldırım" data-ar="رصيف">stoep</span> parkeert. En er staat al een langere tijd een auto op het <span class="vocab" data-en="industrial estate" data-tr="sanayi bölgesi" data-ar="منطقة صناعية">industrieterrein</span> die eigenlijk <span class="vocab" data-en="towed away" data-tr="çekilmek" data-ar="مسحوب">weggesleept</span> moet worden. Daar zijn we eigenlijk al twee weken niet aan <span class="vocab" data-en="gotten around to" data-tr="fırsat bulamadık" data-ar="تمكنّا من">toegekomen</span>."</span>
             </div>
 
-            <p>Boa's krijgen dus steeds meer taken. En er zijn niet genoeg mensen die boa willen worden. Het wordt <span class="dict-word" onclick="showTranslation('gezien als','seen as','olarak görülüyor','Het wordt <b>gezien als</b> een zware baan','zien (ik zie, hij ziet)')">gezien als</span> een <span class="dict-word" onclick="showTranslation('zware baan','tough job','zor bir iş','een <b>zware baan</b> waarin je te maken krijgt met boze mensen')">zware baan</span> waarin je soms te maken krijgt met <span class="dict-word" onclick="showTranslation('boze','angry','kızgın, sinirli','te maken krijgt met <b>boze</b> mensen','boos → boze (bijvoeglijk naamwoord)')">boze</span> mensen of <span class="dict-word" onclick="showTranslation('agressief gedrag','aggressive behavior','saldırgan davranış','boze mensen of <b>agressief gedrag</b>')">agressief gedrag</span>. Zwaar of niet, deze boa vindt haar baan vooral heel belangrijk:</p>
+            <p>Boa's krijgen dus steeds meer taken. En er zijn niet genoeg mensen die boa willen worden. Het wordt <span class="vocab" data-en="seen as" data-tr="olarak görülüyor" data-ar="يُنظر إليه على أنه">gezien als</span> een <span class="vocab" data-en="tough job" data-tr="zor bir iş" data-ar="عمل شاق">zware baan</span> waarin je soms te maken krijgt met <span class="vocab" data-en="angry" data-tr="kızgın, sinirli" data-ar="غاضب">boze</span> mensen of <span class="vocab" data-en="aggressive behavior" data-tr="saldırgan davranış" data-ar="سلوك عدواني">agressief gedrag</span>. Zwaar of niet, deze boa vindt haar baan vooral heel belangrijk:</p>
 
             <div class="quote-box speaker-alt">
                 <span class="speaker">Boa over haar werk</span>
-                <span class="quote-text">"We zijn er voor de <span class="dict-word" onclick="showTranslation('burger','citizen','vatandaş','We zijn er voor de <b>burger</b>')">burger</span>. En de burger zich <span class="dict-word" onclick="showTranslation('veilig laten voelen','make feel safe','güvende hissettirmek','de burger zich <b>veilig laten voelen</b>')">veilig laten voelen</span> en alles wat daarmee te maken heeft."</span>
+                <span class="quote-text">"We zijn er voor de <span class="vocab" data-en="citizen" data-tr="vatandaş" data-ar="مواطن">burger</span>. En de burger zich <span class="vocab" data-en="make feel safe" data-tr="güvende hissettirmek" data-ar="جعله يشعر بالأمان">veilig laten voelen</span> en alles wat daarmee te maken heeft."</span>
+            </div>
+
+            <!-- QUIZ SECTIE 2: BOA's -->
+            <div class="quiz-section">
+                <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5em;">📝 Oefen met deze vragen (Sectie 2 — Boa's)</h3>
+                
+                <div class="question-block">
+                    <p>1. Wat is een boa?</p>
+                    <label><input type="radio" name="q6" value="a"> A. Een speciale controleur die het veilig houdt op straat.</label>
+                    <label><input type="radio" name="q6" value="b"> B. Een soort politieauto.</label>
+                    <label><input type="radio" name="q6" value="c"> C. Een dierenarts die werkt in de natuur.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>2. Wat mag een boa doen?</p>
+                    <label><input type="radio" name="q7" value="a"> A. Alleen maar praten met mensen.</label>
+                    <label><input type="radio" name="q7" value="b"> B. Boetes uitschrijven en verdachten aanhouden.</label>
+                    <label><input type="radio" name="q7" value="c"> C. Alleen parkeerplekken aanwijzen.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>3. Waarom zijn er te weinig boa's?</p>
+                    <label><input type="radio" name="q8" value="a"> A. Omdat ze te veel vakantie hebben.</label>
+                    <label><input type="radio" name="q8" value="b"> B. Omdat ze steeds meer taken krijgen en niet genoeg mensen het willen doen.</label>
+                    <label><input type="radio" name="q8" value="c"> C. Omdat boa's in een ander land moeten werken.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>4. Waarom vinden sommige mensen het werk van een boa zwaar?</p>
+                    <label><input type="radio" name="q9" value="a"> A. Omdat ze heel vroeg moeten opstaan.</label>
+                    <label><input type="radio" name="q9" value="b"> B. Omdat ze soms te maken krijgen met boze mensen of agressief gedrag.</label>
+                    <label><input type="radio" name="q9" value="c"> C. Omdat het werk heel saai is.</label>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers2()">✅ Controleer antwoorden</button>
+                <div id="quiz-result-2" style="margin-top: 15px; font-weight: 800; font-size: 1.1em;"></div>
             </div>
         </div>
     </div>
@@ -408,38 +498,74 @@
             3. De Amerikaanse Rivierkreeft
         </div>
         <div class="text-content">
-            <p>En dan de Amerikaanse <span class="dict-word" onclick="showTranslation('rivierkreeft','crayfish','nehir istakoz','En dan de Amerikaanse <b>rivierkreeft</b>')">rivierkreeft</span>. Al jaren <span class="dict-word" onclick="showTranslation('veroorzaakt','causes','neden olmak','Al jaren <b>veroorzaakt</b> dit diertje veel schade','veroorzaken (ik veroorzaak, hij veroorzaakt)')">veroorzaakt</span> dit <span class="dict-word" onclick="showTranslation('diertje','little creature / critter','küçük hayvan, canlıcık','dit <b>diertje</b> veel schade aan de natuur','dier → diertje (verkleinwoord)')">diertje</span> veel <span class="dict-word" onclick="showTranslation('schade','damage','hasar, zarar','veel <b>schade</b> aan de natuur in Nederland')">schade</span> aan de <span class="dict-word" onclick="showTranslation('natuur','nature','doğa','schade aan de <b>natuur</b> in Nederland')">natuur</span> in Nederland. Omdat er steeds meer rivierkreeften bij komen, worden ze nu op sommige plekken zo veel mogelijk <span class="dict-word" onclick="showTranslation('gevangen','caught / captured','yakalanmak','worden ze nu op sommige plekken zo veel mogelijk <b>gevangen</b>','vangen (ik vang, hij vangt)')">gevangen</span>.</p>
+            <p>En dan de Amerikaanse <span class="vocab" data-en="crayfish" data-tr="nehir istakoz" data-ar="جراد النهر">rivierkreeft</span>. Al jaren <span class="vocab" data-en="causes" data-tr="neden olmak" data-ar="يسبب">veroorzaakt</span> dit <span class="vocab" data-en="little creature / critter" data-tr="küçük hayvan, canlıcık" data-ar="حيوان صغير">diertje</span> veel <span class="vocab" data-en="damage" data-tr="hasar, zarar" data-ar="ضرر">schade</span> aan de <span class="vocab" data-en="nature" data-tr="doğa" data-ar="طبيعة">natuur</span> in Nederland. Omdat er steeds meer rivierkreeften bij komen, worden ze nu op sommige plekken zo veel mogelijk <span class="vocab" data-en="caught / captured" data-tr="yakalanmak" data-ar="تم اصطياده">gevangen</span>.</p>
 
-            <p>Ruim 40 jaar geleden is zo'n kreeft per <span class="dict-word" onclick="showTranslation('per ongeluk','by accident','kazara, yanlışlıkla','zo\'n kreeft <b>per ongeluk</b> in Nederland beland')">ongeluk</span> in Nederland <span class="dict-word" onclick="showTranslation('beland','ended up','düştü, sona geldi','zo\'n kreeft per ongeluk in Nederland <b>beland</b>','belanden (ik beland, hij belandt)')">beland</span>. <span class="dict-word" onclick="showTranslation('Waarschijnlijk','Probably','muhtemelen, büyük ihtimalle','<b>Waarschijnlijk</b> heeft iemand de kreeft vrijgelaten')">Waarschijnlijk</span> heeft iemand de kreeft uit z'n <span class="dict-word" onclick="showTranslation('aquarium','fish tank','akvaryum','de kreeft uit z\'n <b>aquarium</b> vrijgelaten')">aquarium</span> <span class="dict-word" onclick="showTranslation('vrijgelaten','released','serbest bırakmış','de kreeft uit z\'n aquarium <b>vrijgelaten</b> in de natuur','vrijlaten (ik laat vrij, hij laat vrij)')">vrijgelaten</span> in de natuur. Er zijn nu al meer dan <span class="highlight">tien miljoen Amerikaanse rivierkreeften</span> in Nederland.</p>
+            <p>Ruim 40 jaar geleden is zo'n kreeft per <span class="vocab" data-en="by accident" data-tr="kazara, yanlışlıkla" data-ar="بالصدفة">ongeluk</span> in Nederland <span class="vocab" data-en="ended up" data-tr="düştü, sona geldi" data-ar="انتهى به المطاف">beland</span>. <span class="vocab" data-en="Probably" data-tr="muhtemelen, büyük ihtimalle" data-ar="على الأرجح">Waarschijnlijk</span> heeft iemand de kreeft uit z'n <span class="vocab" data-en="fish tank" data-tr="akvaryum" data-ar="حوض سمك">aquarium</span> <span class="vocab" data-en="released" data-tr="serbest bırakmış" data-ar="أُطلق سراحه">vrijgelaten</span> in de natuur. Er zijn nu al meer dan <span class="highlight">tien miljoen Amerikaanse rivierkreeften</span> in Nederland.</p>
 
-            <p>De Amerikaanse rivierkreeft is een groot probleem omdat ze <span class="dict-word" onclick="showTranslation('gaten graven','dig holes','delik kazmak','ze <b>gaten graven</b> in oevers en dijken','graven (ik graaf, hij graaft)')">gaten graven</span> in <span class="dict-word" onclick="showTranslation('oevers','riverbanks','nehir kıyıları','gaten graven in <b>oevers</b> en dijken')">oevers</span> en <span class="dict-word" onclick="showTranslation('dijken','dikes / dams','setler, bent','in oevers en <b>dijken</b>')">dijken</span>. En ze eten alles in de rivier op. Daarom worden ze nu dus gevangen. En dat <span class="dict-word" onclick="showTranslation('gebeurt','happens','oluyor, gerçekleşiyor','En dat <b>gebeurt</b> hier al, in dit natuurgebied in Delft','gebeuren (het gebeurt)')">gebeurt</span> hier al, in dit <span class="dict-word" onclick="showTranslation('natuurgebied','nature reserve','doğa koruma alanı','in dit <b>natuurgebied</b> in Delft')">natuurgebied</span> in Delft. Deze man vertelt aan onze <span class="dict-word" onclick="showTranslation('verslaggever','reporter','muhabir','vertelt aan onze <b>verslaggever</b>')">verslaggever</span> dat er veel kreeften in het gebied zijn:</p>
+            <p>De Amerikaanse rivierkreeft is een groot probleem omdat ze <span class="vocab" data-en="dig holes" data-tr="delik kazmak" data-ar="حفر ثقوب">gaten graven</span> in <span class="vocab" data-en="riverbanks" data-tr="nehir kıyıları" data-ar="ضفاف الأنهار">oevers</span> en <span class="vocab" data-en="dikes / dams" data-tr="setler, bent" data-ar="سدود">dijken</span>. En ze eten alles in de rivier op. Daarom worden ze nu dus gevangen. En dat <span class="vocab" data-en="happens" data-tr="oluyor, gerçekleşiyor" data-ar="يحدث">gebeurt</span> hier al, in dit <span class="vocab" data-en="nature reserve" data-tr="doğa koruma alanı" data-ar="محمية طبيعية">natuurgebied</span> in Delft. Deze man vertelt aan onze <span class="vocab" data-en="reporter" data-tr="muhabir" data-ar="مراسل">verslaggever</span> dat er veel kreeften in het gebied zijn:</p>
 
             <div class="quote-box">
                 <span class="speaker">Onderzoeker</span>
-                <span class="quote-text">"We <span class="dict-word" onclick="showTranslation('gokken','guess / estimate','tahmin ediyoruz','We <b>gokken</b> dat er ongeveer 20 a 30 miljoen kreeften leven','gokken (ik gok, hij gokt)')">gokken</span> dat er ongeveer 20 a 30 miljoen... in elk geval <span class="dict-word" onclick="showTranslation('tientallen miljoenen','tens of millions','onlarca milyon','in elk geval <b>tientallen miljoenen</b> kreeften leven')">tientallen miljoenen</span> kreeften leven. Dus veel meer dan dat er mensen in Nederland wonen."</span>
+                <span class="quote-text">"We <span class="vocab" data-en="guess / estimate" data-tr="tahmin ediyoruz" data-ar="نقدّر / نخمّن">gokken</span> dat er ongeveer 20 a 30 miljoen... in elk geval <span class="vocab" data-en="tens of millions" data-tr="onlarca milyon" data-ar="عشرات الملايين">tientallen miljoenen</span> kreeften leven. Dus veel meer dan dat er mensen in Nederland wonen."</span>
             </div>
 
             <div class="quote-box speaker-alt">
                 <span class="speaker">Verslaggever</span>
-                <span class="quote-text">"<span class="dict-word" onclick="showTranslation('Ongelofelijk','Unbelievable / Incredible','inanılmaz','<b>Ongelofelijk</b>. Ik kan me voorstellen dat dat een groot probleem is.')">Ongelofelijk</span>. Ik kan me <span class="dict-word" onclick="showTranslation('voorstellen','to imagine','hayal etmek, anlamak','Ik kan me <b>voorstellen</b> dat dat een groot probleem is','voorstellen (ik stel voor, hij stelt voor)')">voorstellen</span> dat dat een groot probleem is."</span>
+                <span class="quote-text">"<span class="vocab" data-en="Unbelievable / Incredible" data-tr="inanılmaz" data-ar="لا يُصدَّق">Ongelofelijk</span>. Ik kan me <span class="vocab" data-en="to imagine" data-tr="hayal etmek, anlamak" data-ar="تخيّل">voorstellen</span> dat dat een groot probleem is."</span>
             </div>
 
             <div class="quote-box">
                 <span class="speaker">Onderzoeker</span>
-                <span class="quote-text">"Ja, je ziet overal waar die kreeften <span class="dict-word" onclick="showTranslation('voorkomen','occur / are found','bulunmak, ortaya çıkmak','overal waar die kreeften <b>voorkomen</b>','voorkomen (het komt voor)')">voorkomen</span>, hou je eigenlijk niks over, want ze eten alles. Ze eten vissen, ze eten <span class="dict-word" onclick="showTranslation('waterplanten','water plants','su bitkileri','ze eten <b>waterplanten</b>')">waterplanten</span>, ze eten <span class="dict-word" onclick="showTranslation('kikkerdril','frogspawn / frog eggs','kurbaga yumurtası','ze eten <b>kikkerdril</b> op')">kikkerdril</span> op. En dan blijft er <span class="dict-word" onclick="showTranslation('uiteindelijk','eventually / in the end','sonunda, nihayetinde','En dan blijft er <b>uiteindelijk</b> alleen maar kreeft over')">uiteindelijk</span> alleen maar kreeft over in het water."</span>
+                <span class="quote-text">"Ja, je ziet overal waar die kreeften <span class="vocab" data-en="occur / are found" data-tr="bulunmak, ortaya çıkmak" data-ar="يتواجد">voorkomen</span>, hou je eigenlijk niks over, want ze eten alles. Ze eten vissen, ze eten <span class="vocab" data-en="water plants" data-tr="su bitkileri" data-ar="نباتات مائية">waterplanten</span>, ze eten <span class="vocab" data-en="frogspawn / frog eggs" data-tr="kurbaga yumurtası" data-ar="بيض الضفادع">kikkerdril</span> op. En dan blijft er <span class="vocab" data-en="eventually / in the end" data-tr="sonunda, nihayetinde" data-ar="في النهاية">uiteindelijk</span> alleen maar kreeft over in het water."</span>
             </div>
 
             <div class="quote-box speaker-alt">
                 <span class="speaker">Verslaggever</span>
-                <span class="quote-text">"Is het <span class="dict-word" onclick="showTranslation('mogelijk','possible','mümkün','Is het <b>mogelijk</b> om gewoon alle rivierkreeften te vangen')">mogelijk</span> om gewoon alle rivierkreeften te vangen en dat het probleem gewoon weg is?"</span>
+                <span class="quote-text">"Is het <span class="vocab" data-en="possible" data-tr="mümkün" data-ar="ممكن">mogelijk</span> om gewoon alle rivierkreeften te vangen en dat het probleem gewoon weg is?"</span>
             </div>
 
             <div class="quote-box">
                 <span class="speaker">Onderzoeker</span>
-                <span class="quote-text">"Nee, dat <span class="dict-word" onclick="showTranslation('verwachten','to expect','beklemek','dat <b>verwachten</b> we niet','verwachten (ik verwacht, hij verwacht)')">verwachten</span> we niet. Omdat het er tientallen miljoenen zijn, gaan we ze nooit allemaal <span class="dict-word" onclick="showTranslation('wegkrijgen','get rid of','kurtulmak, uzaklaştırmak','gaan we ze nooit allemaal <b>wegkrijgen</b>','wegkrijgen (ik krijg weg, hij krijgt weg)')">wegkrijgen</span>. Maar wat we wel in deze gebieden proberen, is dat we de <span class="dict-word" onclick="showTranslation('hoeveelheden','quantities / amounts','miktarlar','dat we de <b>hoeveelheden</b> heel laag maken','hoeveelheid → hoeveelheden (meervoud)')">hoeveelheden</span> heel laag maken, zodat we er minder <span class="dict-word" onclick="showTranslation('last van hebben','nuisance / trouble from','sorun yaşamak','zodat we er minder <b>last van hebben</b>')">last van hebben</span>."</span>
+                <span class="quote-text">"Nee, dat <span class="vocab" data-en="to expect" data-tr="beklemek" data-ar="نتوقع">verwachten</span> we niet. Omdat het er tientallen miljoenen zijn, gaan we ze nooit allemaal <span class="vocab" data-en="get rid of" data-tr="kurtulmak, uzaklaştırmak" data-ar="التخلص من">wegkrijgen</span>. Maar wat we wel in deze gebieden proberen, is dat we de <span class="vocab" data-en="quantities / amounts" data-tr="miktarlar" data-ar="كميات">hoeveelheden</span> heel laag maken, zodat we er minder <span class="vocab" data-en="nuisance / trouble from" data-tr="sorun yaşamak" data-ar="نعاني منه">last van hebben</span>."</span>
             </div>
 
-            <p>Daarom gaan deze mannen dus twee keer per week de rivier op. Ze vangen wel honderden kreeften per keer. En <span class="dict-word" onclick="showTranslation('restaurants','restaurants','restoranlar','En <b>restaurants</b> zijn daar blij mee en zetten de rivierkreeft op het menu')">restaurants</span> zijn daar blij mee en zetten de rivierkreeft op het <span class="dict-word" onclick="showTranslation('menu','menu','menü','zetten de rivierkreeft op het <b>menu</b>')">menu</span>. Nu worden de rivierkreeften nog op 10 plekken in Nederland gevangen. Vanaf volgend jaar zal dat op 170 plaatsen gaan <span class="dict-word" onclick="showTranslation('gebeuren','to happen','olmak, gerçekleşmek','zal dat op 170 plaatsen gaan <b>gebeuren</b>','gebeuren (het gebeurt)')">gebeuren</span>.</p>
+            <p>Daarom gaan deze mannen dus twee keer per week de rivier op. Ze vangen wel honderden kreeften per keer. En <span class="vocab" data-en="restaurants" data-tr="restoranlar" data-ar="مطاعم">restaurants</span> zijn daar blij mee en zetten de rivierkreeft op het <span class="vocab" data-en="menu" data-tr="menü" data-ar="قائمة الطعام">menu</span>. Nu worden de rivierkreeften nog op 10 plekken in Nederland gevangen. Vanaf volgend jaar zal dat op 170 plaatsen gaan <span class="vocab" data-en="to happen" data-tr="olmak, gerçekleşmek" data-ar="يحدث">gebeuren</span>.</p>
+
+            <!-- QUIZ SECTIE 3: Rivierkreeft -->
+            <div class="quiz-section">
+                <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5em;">📝 Oefen met deze vragen (Sectie 3 — Rivierkreeft)</h3>
+                
+                <div class="question-block">
+                    <p>1. Hoe is de Amerikaanse rivierkreeft in Nederland gekomen?</p>
+                    <label><input type="radio" name="q10" value="a"> A. Ze zijn zelf uit Amerika gezwommen.</label>
+                    <label><input type="radio" name="q10" value="b"> B. Waarschijnlijk heeft iemand een kreeft uit een aquarium losgelaten in de natuur.</label>
+                    <label><input type="radio" name="q10" value="c"> C. Een restaurant heeft ze besteld uit Amerika.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>2. Waarom is de rivierkreeft een probleem voor de natuur?</p>
+                    <label><input type="radio" name="q11" value="a"> A. Ze maken te veel lawaai.</label>
+                    <label><input type="radio" name="q11" value="b"> B. Ze graven gaten in oevers en dijken, en eten alles in de rivier op.</label>
+                    <label><input type="radio" name="q11" value="c"> C. Ze zijn te groot voor de rivieren.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>3. Hoeveel rivierkreeften zijn er ongeveer in Nederland?</p>
+                    <label><input type="radio" name="q12" value="a"> A. Ongeveer duizend.</label>
+                    <label><input type="radio" name="q12" value="b"> B. Tientallen miljoenen — meer dan het aantal mensen in Nederland.</label>
+                    <label><input type="radio" name="q12" value="c"> C. Ongeveer honderd.</label>
+                </div>
+
+                <div class="question-block">
+                    <p>4. Wat gebeurt er met de gevangen kreeften?</p>
+                    <label><input type="radio" name="q13" value="a"> A. Ze worden teruggegooid in de rivier.</label>
+                    <label><input type="radio" name="q13" value="b"> B. Restaurants zetten ze op het menu.</label>
+                    <label><input type="radio" name="q13" value="c"> C. Ze worden naar Amerika teruggestuurd.</label>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers3()">✅ Controleer antwoorden</button>
+                <div id="quiz-result-3" style="margin-top: 15px; font-weight: 800; font-size: 1.1em;"></div>
+            </div>
         </div>
     </div>
 
@@ -460,58 +586,55 @@
 
 </div>
 
-<!-- Vertaling Modal -->
-<div id="translation-modal" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; border: 2px solid var(--primary); border-radius: 16px; padding: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 1000; width: 90%; max-width: 450px;">
-    <span onclick="closeTranslation()" style="position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 1.5em; font-weight: bold; color: var(--text-gray); line-height: 1;">&times;</span>
-    <h4 id="trans-nl" style="color: var(--primary); margin-bottom: 5px; font-size: 1.3em; font-weight: 900;"></h4>
-    <p id="trans-en" style="color: var(--secondary); font-weight: 800; margin-bottom: 8px; font-size: 1.1em;"></p>
-    <div id="trans-base" style="margin-bottom: 10px;"></div>
-    <div style="background: var(--bg); padding: 12px; border-radius: 10px; font-size: 1em; color: var(--text-dark); border-left: 4px solid var(--primary-light);">
-        <i id="trans-context"></i>
-    </div>
-</div>
-
 <script>
-    let currentLang = 'en';
+    // Tooltip en taal functionaliteit
+    let currentLang = 'nl'; // Default: no translation
 
-    function setLang(lang) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('lang-' + lang).classList.add('active');
-        // update label in modal if open
-        const modal = document.getElementById('translation-modal');
-        if (modal.style.display === 'block') {
-            const nlLabel = modal.getAttribute('data-nl');
-            const enVal  = modal.getAttribute('data-en');
-            const trVal  = modal.getAttribute('data-tr');
-            const base   = modal.getAttribute('data-base');
-            renderModal(nlLabel, enVal, trVal, base);
-        }
-    }
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const vocabWords = document.querySelectorAll('.vocab');
 
-    function renderModal(nl, en, tr, base) {
-        const modal = document.getElementById('translation-modal');
-        modal.setAttribute('data-nl', nl);
-        modal.setAttribute('data-en', en);
-        modal.setAttribute('data-tr', tr);
-        modal.setAttribute('data-base', base || '');
-        document.getElementById('trans-nl').innerText = nl;
-        const translation = currentLang === 'tr' ? tr : en;
-        const flag = currentLang === 'tr' ? '🇹🇷' : '🇬🇧';
-        document.getElementById('trans-en').innerText = flag + ' ' + translation;
-        const baseHtml = base ? `<span class="base-form">📖 basisvorm: ${base}</span>` : '';
-        document.getElementById('trans-base').innerHTML = baseHtml;
-    }
+    // Functie om de taal te wisselen
+    langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            langBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentLang = btn.getAttribute('data-lang');
+            
+            // Sluit alle open tooltips als we van taal wisselen
+            vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+        });
+    });
 
-    function showTranslation(nl, en, tr, context, base) {
-        renderModal(nl, en, tr, base);
-        document.getElementById('trans-context').innerHTML = context;
-        document.getElementById('translation-modal').style.display = 'block';
-    }
+    // Functie voor de klik op een moeilijk woord
+    vocabWords.forEach(word => {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        word.appendChild(tooltip);
 
-    function closeTranslation() {
-        document.getElementById('translation-modal').style.display = 'none';
-    }
+        word.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            vocabWords.forEach(w => {
+                if (w !== word) w.classList.remove('show-tooltip');
+            });
+
+            if (currentLang === 'nl') return;
+
+            const translation = word.getAttribute('data-' + currentLang);
+            if (translation) {
+                tooltip.textContent = translation;
+                word.classList.toggle('show-tooltip');
+            } else {
+                tooltip.textContent = '...';
+                word.classList.toggle('show-tooltip');
+            }
+        });
+    });
+
+    document.addEventListener('click', () => {
+        vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+    });
+
 
     // Quiz functionaliteit
     function checkAnswers() {
@@ -540,6 +663,44 @@
         if (score===total) { resultDiv.innerHTML=`🎉 Super goed! Je hebt alles goed (${score}/${total}).`; resultDiv.style.color='#2ecc71'; }
         else if (score>=total/2) { resultDiv.innerHTML=`👍 Goed gedaan! Je score is ${score}/${total}.`; resultDiv.style.color='var(--primary)'; }
         else { resultDiv.innerHTML=`Blijf oefenen! Je score is ${score}/${total}.`; resultDiv.style.color='#e74c3c'; }
+    }
+
+    // Quiz sectie 2 - BOA
+    function checkAnswers2() {
+        const ca = { q6:'a', q7:'b', q8:'b', q9:'b' };
+        let score = 0, total = Object.keys(ca).length;
+        for (let q in ca) {
+            const sel = document.querySelector('input[name="'+q+'"]:checked');
+            const labels = document.querySelectorAll('input[name="'+q+'"]');
+            labels.forEach(r => { r.parentElement.style.border='2px solid transparent'; r.parentElement.style.backgroundColor='var(--white)'; });
+            if (sel) {
+                if (sel.value === ca[q]) { score++; sel.parentElement.style.border='2px solid #2ecc71'; sel.parentElement.style.backgroundColor='#eafaf1'; }
+                else { sel.parentElement.style.border='2px solid #e74c3c'; sel.parentElement.style.backgroundColor='#fdedec'; document.querySelector('input[name="'+q+'"][value="'+ca[q]+'"]').parentElement.style.border='2px solid #2ecc71'; }
+            } else { document.querySelector('input[name="'+q+'"][value="'+ca[q]+'"]').parentElement.style.border='2px dashed #f39c12'; }
+        }
+        const r = document.getElementById('quiz-result-2');
+        if(score===total){r.innerHTML='🎉 Super goed! Alles goed ('+score+'/'+total+').';r.style.color='#2ecc71';}
+        else if(score>=total/2){r.innerHTML='👍 Goed gedaan! Score: '+score+'/'+total+'.';r.style.color='var(--primary)';}
+        else{r.innerHTML='Blijf oefenen! Score: '+score+'/'+total+'.';r.style.color='#e74c3c';}
+    }
+
+    // Quiz sectie 3 - Rivierkreeft
+    function checkAnswers3() {
+        const ca = { q10:'b', q11:'b', q12:'b', q13:'b' };
+        let score = 0, total = Object.keys(ca).length;
+        for (let q in ca) {
+            const sel = document.querySelector('input[name="'+q+'"]:checked');
+            const labels = document.querySelectorAll('input[name="'+q+'"]');
+            labels.forEach(r => { r.parentElement.style.border='2px solid transparent'; r.parentElement.style.backgroundColor='var(--white)'; });
+            if (sel) {
+                if (sel.value === ca[q]) { score++; sel.parentElement.style.border='2px solid #2ecc71'; sel.parentElement.style.backgroundColor='#eafaf1'; }
+                else { sel.parentElement.style.border='2px solid #e74c3c'; sel.parentElement.style.backgroundColor='#fdedec'; document.querySelector('input[name="'+q+'"][value="'+ca[q]+'"]').parentElement.style.border='2px solid #2ecc71'; }
+            } else { document.querySelector('input[name="'+q+'"][value="'+ca[q]+'"]').parentElement.style.border='2px dashed #f39c12'; }
+        }
+        const r = document.getElementById('quiz-result-3');
+        if(score===total){r.innerHTML='🎉 Super goed! Alles goed ('+score+'/'+total+').';r.style.color='#2ecc71';}
+        else if(score>=total/2){r.innerHTML='👍 Goed gedaan! Score: '+score+'/'+total+'.';r.style.color='var(--primary)';}
+        else{r.innerHTML='Blijf oefenen! Score: '+score+'/'+total+'.';r.style.color='#e74c3c';}
     }
 </script>
 

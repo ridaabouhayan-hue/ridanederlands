@@ -13,6 +13,14 @@
 
 <div class="container">
     
+    <!-- LANGUAGE SWITCHER -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+        <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+        <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
+    </div>
+
     <!-- HEADER & VIDEO -->
     <div class="header">
         <h1>📺 TITEL VAN DE VIDEO</h1>
@@ -33,7 +41,7 @@
         </div>
         <div class="text-content">
             <p>Hier kun je de normale tekst plakken van de video of het transcript.</p>
-            <p>Je kunt <span class="highlight">belangrijke woorden markeren</span> met de highlight class.</p>
+            <p>Je kunt <span class="highlight">belangrijke woorden markeren</span> met de highlight class. En je kunt moeilijke woorden vertalen, zoals <span class="vocab" data-en="vocabulary" data-tr="kelime dağarcığı" data-ar="مفردات">woordenschat</span>.</p>
             
             <!-- Dialoog Voorbeeld -->
             <div class="quote-box">
@@ -50,6 +58,58 @@
     </div>
 
 </div>
+
+<script>
+    // Tooltip en taal functionaliteit
+    let currentLang = 'nl'; // Default: no translation
+
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const vocabWords = document.querySelectorAll('.vocab');
+
+    // Functie om de taal te wisselen
+    langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            langBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentLang = btn.getAttribute('data-lang');
+            
+            // Sluit alle open tooltips als we van taal wisselen
+            vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+        });
+    });
+
+    // Functie voor de klik op een moeilijk woord
+    vocabWords.forEach(word => {
+        // Maak de tooltip div aan voor elk woord
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        word.appendChild(tooltip);
+
+        word.addEventListener('click', (e) => {
+            e.stopPropagation(); // Voorkom dat klik ergens anders wordt geregistreerd
+            
+            // Sluit alle andere open tooltips
+            vocabWords.forEach(w => {
+                if (w !== word) w.classList.remove('show-tooltip');
+            });
+
+            if (currentLang === 'nl') {
+                return; // Geen vertaling als 'nl' is geselecteerd
+            }
+
+            const translation = word.getAttribute('data-' + currentLang);
+            if (translation) {
+                tooltip.textContent = translation;
+                word.classList.toggle('show-tooltip');
+            }
+        });
+    });
+
+    // Sluit tooltips als je ergens anders klikt
+    document.addEventListener('click', () => {
+        vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+    });
+</script>
 
 </body>
 </html>
