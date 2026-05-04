@@ -60,6 +60,7 @@
         #rec-status{color:#ef4444;font-weight:700;margin-top:10px;display:none;animation:blink 1s infinite}
         @keyframes blink{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
         audio{margin-top:15px;width:100%;max-width:300px;display:none}
+    .speak-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;transition:.2s;padding:4px}.speak-btn:hover{transform:scale(1.15)}
     </style>
 </head>
 <body>
@@ -89,7 +90,7 @@
             <p data-translate="vocabIntro" style="color:var(--text-muted)">Klik op een taal hierboven om de vertaling te zien.</p>
             <div class="vocab-table-wrap">
                 <table class="vocab-table">
-                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <thead><tr><th style="width:40px">🔊</th><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
                     <tbody id="vocab-body"></tbody>
                 </table>
             </div>
@@ -194,7 +195,19 @@
         ar:`<div class="uitleg-box" dir="rtl"><h3>🚉 السؤال عن الطريق ووصفه</h3><p>كيف تخبر شخصاً إلى أين يذهب؟ تستخدم الاتجاهات.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> اذهب للأمام مباشرة.</li><li><strong>Linksaf:</strong> انعطف يساراً.</li><li><strong>Rechtsaf:</strong> انعطف يميناً.</li><li><strong>Oversteken:</strong> اعبر الشارع.</li></ul></div>`,
         ps:`<div class="uitleg-box" dir="rtl"><h3>🚉 د لارې پوښتل او ښودل</h3><p>څنګه چا ته ووایاست چې چیرته لاړ شي؟ تاسو لارښوونې کاروئ.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> نیغ په نیغه لاړ شه.</li><li><strong>Linksaf:</strong> کیڼ لور ته وګرځه.</li><li><strong>Rechtsaf:</strong> ښي لور ته وګرځه.</li><li><strong>Oversteken:</strong> له سړک څخه تېر شه.</li></ul></div>`
     };
-    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    let _ttsAudio = null;
+    function speak(text) {
+        if(_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        _ttsAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=' + encodeURIComponent(text));
+        _ttsAudio.play().catch(function() {
+            if('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                var u = new SpeechSynthesisUtterance(text); u.lang='nl-NL'; u.rate=0.85;
+                window.speechSynthesis.speak(u);
+            }
+        });
+    }
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="width:40px"><button class="speak-btn" onclick="speak('${r.nl}')">🔊</button></td><td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
     function setLang(l){
         document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
         event.target.closest('.lang-btn').classList.add('active');
@@ -219,7 +232,7 @@
     }
 
     // ── OPDRACHT 1: Puzzel ──
-    const puzzelData=[
+    let puzzelData=[
         {desc:"Niet dichtbij, maar heel ...", ans:'VER', secretIdx:0}, // V
         {desc:"Niet links, maar ...", ans:'RECHTS', secretIdx:1}, // E
         {desc:"Waar auto's rijden.", ans:'WEG', secretIdx:2}, // G
@@ -281,14 +294,14 @@
             document.getElementById('puzzel-geheim').textContent=`Geheim woord = ${secretWord}`;
         }
     }
-    function resetPuzzel(){if(typeof puzzelData!=="undefined")puzzelData=shuffle(puzzelData);
+    function resetPuzzel(){puzzelData=shuffle(puzzelData);
         document.getElementById('puzzel-geheim').textContent='';
         document.getElementById('puzzel-score').style.display='none';
         buildPuzzel();
     }
 
     // ── OPDRACHT 2: Invullen ──
-    const invulData=[
+    let invulData=[
         {text:"Je moet de straat ...", opts:['oversteken','linksaf','kruispunt'], ans:'oversteken'},
         {text:"Ga bij het stoplicht ... (⬅️)", opts:['rechtsaf','linksaf','rechtdoor'], ans:'linksaf'},
         {text:"Blijf steeds ... gaan (⬆️).", opts:['rechtdoor','rechtsaf','eerst'], ans:'rechtdoor'},
@@ -307,7 +320,7 @@
         sc.textContent=`${g}/${invulData.length}`;
         sc.className='score-badge '+(g===invulData.length?'score-goed':g>=(invulData.length/2)?'score-midden':'score-slecht');
     }
-    function resetMC(){if(typeof mcData!=="undefined")mcData=shuffle(mcData);if(typeof windData!=="undefined")windData=shuffle(windData);if(typeof invulData!=="undefined")invulData=shuffle(invulData);if(typeof mcData!=='undefined')mcData=shuffle(mcData);if(typeof windData!=='undefined')windData=shuffle(windData);if(typeof invulData!=='undefined')invulData=shuffle(invulData);
+    function resetMC(){invulData=shuffle(invulData);
         document.getElementById('mc-invul').innerHTML='';
         document.getElementById('mc-score').style.display='none';
         buildMC();

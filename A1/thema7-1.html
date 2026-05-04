@@ -93,6 +93,7 @@
         .wa-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:#25D366;color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.92rem;font-weight:700;transition:all .2s;text-decoration:none;margin-top:8px}
         .wa-btn:hover{opacity:.88}
         .voice-tip{font-size:.82rem;color:var(--text-muted,#aaa);margin-top:8px;font-style:italic}
+    .speak-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;transition:.2s;padding:4px}.speak-btn:hover{transform:scale(1.15)}
     </style>
 </head>
 <body>
@@ -119,7 +120,7 @@
             <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
             <div class="vocab-table-wrap">
                 <table class="vocab-table">
-                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <thead><tr><th style="width:40px">🔊</th><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
                     <tbody id="vocab-body"></tbody>
                 </table>
             </div>
@@ -267,7 +268,19 @@
     };
 
     // ── LANG ──
-    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    let _ttsAudio = null;
+    function speak(text) {
+        if(_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        _ttsAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=' + encodeURIComponent(text));
+        _ttsAudio.play().catch(function() {
+            if('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                var u = new SpeechSynthesisUtterance(text); u.lang='nl-NL'; u.rate=0.85;
+                window.speechSynthesis.speak(u);
+            }
+        });
+    }
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="width:40px"><button class="speak-btn" onclick="speak('${r.nl}')">🔊</button></td><td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
     function setLang(l){
         document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
         event.target.closest('.lang-btn').classList.add('active');
@@ -308,7 +321,7 @@
     function resetVerbind(){vbSel=null;vbType=null;vbDone=0;document.getElementById('vb1-links').innerHTML='';document.getElementById('vb1-rechts').innerHTML='';document.getElementById('vb1-score').style.display='none';buildVerbind();}
 
     // ── OPDRACHT 2: Kruiswoordpuzzel ──
-    const puzzelData=[
+    let puzzelData=[
         {hint:'Groot voertuig voor veel mensen. Stopt bij haltes.',ans:'bus',geheimIdx:0},
         {hint:'Je trapt met je voeten. Populair in Nederland.',ans:'fiets',geheimIdx:4},
         {hint:'Rijdt op rails door de stad.',ans:'tram',geheimIdx:2},
@@ -323,7 +336,7 @@
     // Simpler: just check all answers, show hidden word "station" at the end
     function buildPuzzel(){const g=document.getElementById('puzzel-grid');g.innerHTML='';puzzelData.forEach((item,i)=>{g.innerHTML+=`<div class="puzzel-row"><span class="puzzel-nr">${i+1}.</span><input type="text" id="puz-${i}" placeholder="…" autocomplete="off" maxlength="${item.ans.length+2}"><span class="puzzel-hint">${item.hint}</span></div>`;});}
     function checkPuzzel(){let g=0;puzzelData.forEach((item,i)=>{const inp=document.getElementById('puz-'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ans){inp.classList.add('correct');g++;}else inp.classList.add('fout');});const sc=document.getElementById('puzzel-score');sc.style.display='inline-block';sc.textContent=`${g}/${puzzelData.length}`;sc.className='score-badge '+(g===puzzelData.length?'score-goed':g>=4?'score-midden':'score-slecht');if(g===puzzelData.length){const gh=document.getElementById('puzzel-geheim');gh.style.display='block';gh.textContent='🎉 Geheim woord: STATION!';}}
-    function resetPuzzel(){if(typeof puzzelData!=="undefined")puzzelData=shuffle(puzzelData);document.getElementById('puzzel-grid').innerHTML='';document.getElementById('puzzel-score').style.display='none';document.getElementById('puzzel-geheim').style.display='none';buildPuzzel();}
+    function resetPuzzel(){puzzelData=shuffle(puzzelData);document.getElementById('puzzel-grid').innerHTML='';document.getElementById('puzzel-score').style.display='none';document.getElementById('puzzel-geheim').style.display='none';buildPuzzel();}
 
     // ── OPDRACHT 3: Werkwoord MC ──
     const wwData=[
@@ -355,7 +368,7 @@
     function resetMV(){document.getElementById('mv-grid').innerHTML='';document.getElementById('mv-score').style.display='none';buildMV();}
 
     // ── OPDRACHT 5: Zin ordenen ──
-    const zoData=[
+    let zoData=[
         {words:['Ik','ga','met','de','auto','.'],answer:'Ik ga met de auto .'},
         {words:['Hij','gaat','met','de','tram','.'],answer:'Hij gaat met de tram .'},
         {words:['Wij','nemen','de','metro','.'],answer:'Wij nemen de metro .'},

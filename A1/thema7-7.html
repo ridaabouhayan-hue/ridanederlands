@@ -65,6 +65,7 @@
         #rec-status{color:#ef4444;font-weight:700;margin-top:10px;display:none;animation:blink 1s infinite}
         @keyframes blink{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
         audio{margin-top:15px;width:100%;max-width:300px;display:none}
+    .speak-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;transition:.2s;padding:4px}.speak-btn:hover{transform:scale(1.15)}
     </style>
 </head>
 <body>
@@ -94,7 +95,7 @@
             <p data-translate="vocabIntro" style="color:var(--text-muted)">Klik op een taal hierboven om de vertaling te zien.</p>
             <div class="vocab-table-wrap">
                 <table class="vocab-table">
-                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <thead><tr><th style="width:40px">🔊</th><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
                     <tbody id="vocab-body"></tbody>
                 </table>
             </div>
@@ -199,7 +200,19 @@
         ar:`<div class="uitleg-box" dir="rtl"><h3>🚗 متأخر جداً! (الاتصال في الازدحام)</h3><p>إذا كنت متأخراً عن العمل، يجب عليك الاتصال. تستخدم كلمات مثل <strong>file</strong> (ازدحام)، <strong>onderweg</strong> (في الطريق).</p></div><div class="tip-blok" dir="rtl"><strong>نصيحة:</strong> استخدم <strong>dus</strong> (لذا) لإعطاء نتيجة.<br><em>أنا في ازدحام مروري، <strong>dus</strong> سأتأخر.</em></div>`,
         ps:`<div class="uitleg-box" dir="rtl"><h3>🚗 ډیر ناوخته! (په ترافیک کې زنګ وهل)</h3><p>که تاسو کار ته ناوخته یاست، نو باید زنګ ووهئ. تاسو داسې کلمې کاروئ لکه <strong>file</strong> (ترافیک)، <strong>onderweg</strong> (په لاره کې).</p></div><div class="tip-blok" dir="rtl"><strong>لارښوونه:</strong> د پایلې لپاره <strong>dus</strong> (نو) وکاروئ.<br><em>زه په ترافیک کې یم، <strong>dus</strong> زه به ناوخته راشم.</em></div>`
     };
-    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    let _ttsAudio = null;
+    function speak(text) {
+        if(_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        _ttsAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=' + encodeURIComponent(text));
+        _ttsAudio.play().catch(function() {
+            if('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                var u = new SpeechSynthesisUtterance(text); u.lang='nl-NL'; u.rate=0.85;
+                window.speechSynthesis.speak(u);
+            }
+        });
+    }
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="width:40px"><button class="speak-btn" onclick="speak('${r.nl}')">🔊</button></td><td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
     function setLang(l){
         document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
         event.target.closest('.lang-btn').classList.add('active');
@@ -224,7 +237,7 @@
     }
 
     // ── OPDRACHT 1: Zin ordenen ──
-    const zoData=[
+    let zoData=[
         {words:['Ik','sta','in','de','file','.'],answer:'Ik sta in de file .'},
         {words:['Ik','ben','nu','onderweg','.'],answer:'Ik ben nu onderweg .'},
         {words:['Ik','kom','iets','te','laat','.'],answer:'Ik kom iets te laat .'},
@@ -241,7 +254,7 @@
     function resetZO(){document.getElementById('zo-container').innerHTML='';document.getElementById('zo-score').style.display='none';zoData=shuffle(zoData);buildZO();}
 
     // ── OPDRACHT 2: Invullen ──
-    const invulData=[
+    let invulData=[
         {text:"Er is een ongeluk gebeurd. Er staat een lange ...", opts:['collega','file','plek'], ans:'file'},
         {text:"Ik sta in de file, ... ik kom te laat.", opts:['dus','prima','alvast'], ans:'dus'},
         {text:"Kan jij aan de docent ... dat ik 10 minuten later kom?", opts:['doorgeven','snappen','denken'], ans:'doorgeven'},
@@ -260,7 +273,7 @@
         sc.textContent=`${g}/${invulData.length}`;
         sc.className='score-badge '+(g===invulData.length?'score-goed':g>=(invulData.length/2)?'score-midden':'score-slecht');
     }
-    function resetMC(){if(typeof mcData!=="undefined")mcData=shuffle(mcData);if(typeof windData!=="undefined")windData=shuffle(windData);if(typeof invulData!=="undefined")invulData=shuffle(invulData);if(typeof mcData!=='undefined')mcData=shuffle(mcData);if(typeof windData!=='undefined')windData=shuffle(windData);if(typeof invulData!=='undefined')invulData=shuffle(invulData);
+    function resetMC(){invulData=shuffle(invulData);
         document.getElementById('mc-invul').innerHTML='';
         document.getElementById('mc-score').style.display='none';
         buildMC();
