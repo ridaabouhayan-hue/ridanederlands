@@ -1,27 +1,346 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <De kaart van Nederland>De kaart van Nederland — NT2 A1</De kaart van Nederland>
+    <title>7.5 De kaart van Nederland — NT2 A1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4e8cff; --theme-bg: rgba(78, 140, 255, 0.15); }
+        .theme-groen  { --theme: #4caf82; --theme-bg: rgba(76, 175, 130, 0.15); }
+        .theme-oranje { --theme: #f4a261; --theme-bg: rgba(244, 162, 97, 0.15); }
+        .theme-paars  { --theme: #8b7ef8; --theme-bg: rgba(139, 126, 248, 0.15); }
+        .theme-geel   { --theme: #f4d03f; --theme-bg: rgba(244, 208, 63, 0.15); }
+        .theme-rood   { --theme: #e07070; --theme-bg: rgba(224, 112, 112, 0.15); }
+        .theme-cyaan  { --theme: #4ecdc4; --theme-bg: rgba(78, 205, 196, 0.15); }
+        .theme-roze   { --theme: #f78fb3; --theme-bg: rgba(247, 143, 179, 0.15); }
+
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}
+        .uitleg-box h3{color:#6366f1;margin-top:0}
+        .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:1.2rem 0;font-size:.93rem}
+        .voorbeeld-blok strong{color:#10b981}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}
+        .tip-blok strong{color:#ca8a04}
+        .reset-btn{margin-top:10px;margin-left:10px;padding:8px 18px;background:transparent;color:var(--theme,#6366f1);border:2px solid var(--theme,#6366f1);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+        .reset-btn:hover{background:var(--theme-bg,rgba(99,102,241,.1))}
+        .opdracht-card{background:var(--card-bg,#182040);border:1px solid var(--theme,rgba(99,102,241,.2));border-top:4px solid var(--theme,#6366f1);border-radius:16px;padding:25px;margin-bottom:25px;box-shadow:0 4px 20px var(--theme-bg,rgba(0,0,0,0.1));position:relative}
+        .opdracht-nr{display:none;}
+        .opdracht-card h3{color:#fff;margin-top:0;font-size:1.15rem;margin-bottom:5px}
+        .instructie{color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:20px}
+        .check-btn{margin-top:15px;padding:8px 18px;background:var(--theme,#6366f1);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700;transition:opacity .2s}
+        .check-btn:hover{opacity:.9}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}
+        .score-midden{background:rgba(234,179,8,.15);color:#ca8a04}
+        .score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+        
+        .mc-list{list-style:none;padding:0;margin:0}
+        .mc-list li{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;margin-bottom:10px}
+        .mc-list select{background:#2a325a;color:#fff;border:1px solid rgba(255,255,255,.2);padding:5px 10px;border-radius:6px;margin-left:10px;font-family:inherit;font-size:.95rem}
+        .mc-list select.correct{border-color:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,.2)}
+        .mc-list select.fout{border-color:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,.2)}
+        
+        .schrijf-list{list-style:none;padding:0;margin:0}
+        .schrijf-list li{margin-bottom:15px}
+        .schrijf-list textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;color:#fff;font-family:inherit;font-size:.95rem;min-height:80px;resize:vertical;margin-top:8px}
+        .schrijf-list textarea:focus{outline:none;border-color:var(--theme,#6366f1)}
+        
+        .audio-record-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;text-align:center}
+        #btn-record{background:#ef4444;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+        #btn-record:hover{background:#dc2626;transform:scale(1.05)}
+        #btn-stop{background:#f59e0b;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:none;align-items:center;gap:8px}
+        #rec-status{color:#ef4444;font-weight:700;margin-top:10px;display:none;animation:blink 1s infinite}
+        @keyframes blink{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+        audio{margin-top:15px;width:100%;max-width:300px;display:none}
+        
+        .verbind-container{display:flex;gap:30px;justify-content:center;margin-bottom:15px}
+        .verbind-col{display:flex;flex-direction:column;gap:10px;width:45%}
+        .verbind-item{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;text-align:center;cursor:pointer;user-select:none;transition:all .2s}
+        .verbind-item:hover{background:rgba(255,255,255,.1)}
+        .verbind-item.selected{border-color:var(--theme);background:var(--theme-bg)}
+        .verbind-item.matched{opacity:.5;cursor:default;border-color:#10b981;background:rgba(16,185,129,.1)}
+        .verbind-item.matched-fout{border-color:#ef4444;animation:shake .4s}
+    </style>
 </head>
 <body>
-    <nav class="language-bar"><span class="label">🌐 Taal:</span><span class="lang-btn active">🇳🇱 Nederlands</span><span class="lang-btn">🇬🇧 English</span></nav>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+    </nav>
     <main class="page-container">
         <a href="thema7.html" class="back-link">← Terug naar Thema 7</a>
         <header class="page-header">
             <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema7.html">Thema 7</a><span>›</span><span>7.5</span></div>
             <h1>🗺️ De kaart van Nederland</h1>
-            <p class="subDe kaart van Nederland">Woordenlijst — vertalingen en opdrachten komen binnenkort!</p>
+            <p class="subtitle" data-translate="subtitle">Leer woorden over de geografie van Nederland.</p>
         </header>
+
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+        
+        <div class="fase-label">Fase 1: Leren</div>
+        
         <section class="content-section animate-in">
-            <span class="section-label blue">📚 Woordenlijst</span>
-            <h2>Woorden van paragraaf 7.5</h2>
-            <div class="vocab-table-wrap"><table class="vocab-table"><thead><tr><th>🇳🇱 Nederlands</th><th>🇬🇧 English</th></tr></thead><tbody><tr><td>belangrijk, belangrijke</td><td>important</td></tr><tr><td>het eiland, de eilanden</td><td>island</td></tr><tr><td>de hoofdstad, de hoofdsteden</td><td>capital</td></tr><tr><td>de kaart, de kaarten</td><td>map</td></tr><tr><td>het land, de landen</td><td>country</td></tr><tr><td>het midden</td><td>middle</td></tr><tr><td>het noorden</td><td>north</td></tr><tr><td>naartoe</td><td>to, towards</td></tr><tr><td>het oosten</td><td>east</td></tr><tr><td>de provincie, de provincies</td><td>province</td></tr><tr><td>het westen</td><td>west</td></tr><tr><td>het zuiden</td><td>south</td></tr></tbody></table></div>
+            <span class="section-label blue" data-translate="vocabTitle">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 7.5</h2>
+            <p data-translate="vocabIntro" style="color:var(--text-muted)">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
         </section>
-        <section class="content-section animate-in" style="text-align:center;padding:2rem"><p style="font-size:1.2rem;color:var(--text-muted,#aaa)">🏗️ Opdrachten komen binnenkort!</p></section>
+
+        <!-- UITLEG -->
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+
+        <div class="fase-label">Fase 2: Oefenen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 1: Windstreken -->
+            <div class="opdracht-card theme-blauw">
+                <span class="opdracht-nr">OPDRACHT 1</span>
+                <h3>Vul in: noord, oost, zuid, of west</h3>
+                <p class="instructie" data-translate="instrMC1">Kies de juiste windstreek in Nederland.</p>
+                <ul class="mc-list" id="mc-wind"></ul>
+                <button class="check-btn" onclick="checkMC('mc-wind','mc-wind-score')">Controleer</button>
+                <span id="mc-wind-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC('mc-wind','mc-wind-score',windData,buildWind)">🔄 Opnieuw</button>
+            </div>
+
+            <!-- Opdracht 2: Verbind de woorden -->
+            <div class="opdracht-card theme-cyaan">
+                <span class="opdracht-nr">OPDRACHT 2</span>
+                <h3>Verbind het woord met de juiste betekenis</h3>
+                <p class="instructie" data-translate="instrVerbind">Klik op een woord (links), dan op de beschrijving (rechts).</p>
+                <div class="verbind-container">
+                    <div class="verbind-col" id="vb1-links"></div>
+                    <div class="verbind-col" id="vb1-rechts"></div>
+                </div>
+                <span id="vb1-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetVerbind()">🔄 Opnieuw</button>
+            </div>
+
+        </section>
+
+        <div class="fase-label">Fase 3: Toepassen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 3: Schrijfopdracht -->
+            <div class="opdracht-card theme-groen">
+                <span class="opdracht-nr">OPDRACHT 3</span>
+                <h3>Schrijfopdracht</h3>
+                <p class="instructie" data-translate="instrSchrijf">Schrijf in het Nederlands en stuur je antwoorden naar de docent!</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💬 Stuur naar docent via WhatsApp</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Verzonden!</span>
+            </div>
+
+            <!-- Opdracht 4: Spreekopdracht -->
+            <div class="opdracht-card theme-roze">
+                <span class="opdracht-nr">OPDRACHT 4</span>
+                <h3 data-translate="sprekTitle">Spreekopdracht: Neem een voice memo op!</h3>
+                <div class="tip-blok"><strong data-translate="sprekInstr">📋 Opdracht:</strong> <span data-translate="sprekTekst">Vertel waar jij woont in Nederland. Ligt jouw plaats in het noorden, oosten, zuiden, of westen? Of in het midden? Noem ook in welke provincie je woont.</span></div>
+                <p class="instructie" data-translate="sprekHoe">📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder een voice memo op.</p>
+                
+                <div class="audio-record-box">
+                    <button id="btn-record" onclick="startRecording()">🔴 Start Opname</button>
+                    <button id="btn-stop" onclick="stopRecording()">⏹️ Stop Opname</button>
+                    <div id="rec-status">🎙️ Aan het opnemen...</div>
+                    <audio id="audio-playback" controls></audio>
+                </div>
+                <p style="margin-top:15px;font-size:0.9rem;color:var(--text-muted)" data-translate="voiceTip">Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!</p>
+            </div>
+
+        </section>
+
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+    <script>
+    const VOCAB=[
+        {nl:'belangrijk',en:'important',tr:'önemli',ar:'مهم',ps:'مهم',ex:'Amsterdam is een belangrijke stad.'},
+        {nl:'het eiland',en:'island',tr:'ada',ar:'الجزيرة',ps:'ټاپو',ex:'Texel is een eiland.'},
+        {nl:'de hoofdstad',en:'capital',tr:'başkent',ar:'العاصمة',ps:'پلازمینه',ex:'Amsterdam is de hoofdstad.'},
+        {nl:'de kaart',en:'map',tr:'harita',ar:'الخريطة',ps:'نقشه',ex:'Kijk op de kaart van Nederland.'},
+        {nl:'het land',en:'country',tr:'ülke',ar:'البلد',ps:'هیواد',ex:'Nederland is een klein land.'},
+        {nl:'het midden',en:'middle',tr:'orta',ar:'الوسط',ps:'منځ',ex:'Utrecht ligt in het midden.'},
+        {nl:'het noorden',en:'north',tr:'kuzey',ar:'الشمال',ps:'شمال',ex:'Groningen ligt in het noorden.'},
+        {nl:'naartoe',en:'to, towards',tr:'-e doğru',ar:'نحو / إلى',ps:'لور ته',ex:'Waar ga je naartoe?'},
+        {nl:'het oosten',en:'east',tr:'doğu',ar:'الشرق',ps:'ختیځ',ex:'Enschede ligt in het oosten.'},
+        {nl:'de provincie',en:'province',tr:'eyalet',ar:'المقاطعة',ps:'ولایت',ex:'Nederland heeft 12 provincies.'},
+        {nl:'het westen',en:'west',tr:'batı',ar:'الغرب',ps:'لویدیځ',ex:'Rotterdam ligt in het westen.'},
+        {nl:'het zuiden',en:'south',tr:'güney',ar:'الجنوب',ps:'سویل',ex:'Maastricht ligt in het zuiden.'},
+    ];
+    const UI={
+        nl:{subtitle:'Leer woorden over de geografie van Nederland.',vocabTitle:'Woorden van paragraaf 7.5',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrMC1:'Kies de juiste windstreek.',instrVerbind:'Verbind de twee delen van de zin of betekenis.',instrSchrijf:'Schrijf zinnen in het Nederlands en stuur ze naar de docent!',sprekTitle:'Spreekopdracht: Neem een voice memo op!',sprekInstr:'📋 Opdracht:',sprekTekst:'Vertel waar jij woont in Nederland. Ligt jouw plaats in het noorden, oosten, zuiden, of westen? Of in het midden? Noem ook in welke provincie je woont.',sprekHoe:'📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder op.',voiceTip:'Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!'},
+        en:{subtitle:'Learn vocabulary about the geography of the Netherlands.',vocabTitle:'Words of paragraph 7.5',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',instrMC1:'Choose the correct compass direction.',instrVerbind:'Match the two parts of the sentence or meaning.',instrSchrijf:'Write sentences in Dutch and send them to the teacher!',sprekTitle:'Speaking assignment: Record a voice memo!',sprekInstr:'📋 Assignment:',sprekTekst:'Tell where you live in the Netherlands. Is your place in the north, east, south, or west? Or in the middle? Also mention which province you live in.',sprekHoe:'📱 Record on your phone and send the file via WhatsApp, or record directly below.',voiceTip:'Tip: open WhatsApp, hold the microphone 🎙️ and speak your answer!'},
+        tr:{subtitle:'Hollanda coğrafyası hakkında kelimeler öğrenin.',vocabTitle:'Paragraf 7.5 kelimeleri',vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',instrMC1:'Doğru yönü seçin.',instrVerbind:'Cümlenin iki bölümünü veya anlamını eşleştirin.',instrSchrijf:'Cümleleri Hollandaca olarak yazın ve öğretmeninize gönderin!',sprekTitle:'Konuşma görevi: Sesli mesaj kaydedin!',sprekInstr:'📋 Görev:',sprekTekst:'Hollanda\'da nerede yaşadığınızı anlatın. Yaşadığınız yer kuzeyde, doğuda, güneyde veya batıda mı? Veya ortada mı? Ayrıca hangi eyalette yaşadığınızı da belirtin.',sprekHoe:'📱 Telefonunuzla kaydedin ve WhatsApp ile gönderin veya doğrudan aşağıdan kaydedin.',voiceTip:'İpucu: WhatsApp\'ı açın, mikrofonu 🎙️ basılı tutun ve cevabınızı söyleyin!'},
+        ar:{subtitle:'تعلم مفردات حول جغرافية هولندا.',vocabTitle:'كلمات الفقرة 7.5',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',instrMC1:'اختر الاتجاه الصحيح.',instrVerbind:'طابق الجزأين من الجملة أو المعنى.',instrSchrijf:'اكتب الجمل باللغة الهولندية وأرسلها إلى المعلم!',sprekTitle:'مهمة التحدث: سجل مذكرة صوتية!',sprekInstr:'📋 المهمة:',sprekTekst:'أخبر أين تعيش في هولندا. هل مكانك في الشمال، الشرق، الجنوب، أم الغرب؟ أم في الوسط؟ اذكر أيضًا المقاطعة التي تعيش فيها.',sprekHoe:'📱 سجل بهاتفك وأرسل الملف عبر واتساب، أو سجل مباشرة أدناه.',voiceTip:'نصيحة: افتح واتساب، اضغط مع الاستمرار على المايكروفون 🎙️ وتحدث بقوة!'},
+        ps:{subtitle:'د هالنډ جغرافیې په اړه کلمې زده کړئ.',vocabTitle:'د پراګراف 7.5 کلمې',vocabIntro:'د ژباړې لیدلو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',instrMC1:'سم لوری وټاکئ.',instrVerbind:'د جملې دوه برخې یا معنی سره وصل کړئ.',instrSchrijf:'جملې په هالنډي ژبه ولیکئ او ښوونکي ته یې واستوئ!',sprekTitle:'د خبرو دنده: غږ ثبت کړئ!',sprekInstr:'📋 دنده:',sprekTekst:'ووایاست چې په هالنډ کې چیرته اوسیږئ. ایا ستاسو ځای په شمال، ختیځ، سویل یا لویدیځ کې دی؟ یا په منځ کې؟ دا هم یادونه وکړئ چې په کوم ولایت کې اوسیږئ.',sprekHoe:'📱 په خپل تلیفون کې ثبت کړئ او فایل د واټساپ له لارې واستوئ، یا مستقیم لاندې ثبت کړئ.',voiceTip:'لارښوونه: واټساپ خلاص کړئ، مایکروفون 🎙️ ونیسئ او خپل ځواب ووایاست!'},
+    };
+    const UITLEG={
+        nl:`<div class="uitleg-box"><h3>🗺️ De windstreken</h3><p>We gebruiken de windstreken om te vertellen waar een plaats ligt in een land.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li>Het <strong>noorden</strong> (boven) - <em>Bijv: Groningen ligt in het noorden.</em></li><li>Het <strong>oosten</strong> (rechts) - <em>Bijv: Enschede ligt in het oosten.</em></li><li>Het <strong>zuiden</strong> (onder) - <em>Bijv: Maastricht ligt in het zuiden.</em></li><li>Het <strong>westen</strong> (links) - <em>Bijv: Den Haag ligt in het westen.</em></li><li>Het <strong>midden</strong> - <em>Bijv: Utrecht ligt in het midden.</em></li></ul></div><div class="voorbeeld-blok"><strong>Land, provincie, hoofdstad</strong><br>Nederland is het <strong>land</strong>.<br>Nederland heeft twaalf <strong>provincies</strong> (bijv. Noord-Holland, Friesland).<br>Amsterdam is de <strong>hoofdstad</strong>.</div>`,
+        en:`<div class="uitleg-box"><h3>🗺️ The points of the compass</h3><p>We use the points of the compass to say where a place is.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li>North (up) - <em>Groningen is in the north.</em></li><li>East (right)</li><li>South (down)</li><li>West (left)</li><li>Middle - <em>Utrecht is in the middle.</em></li></ul></div><div class="voorbeeld-blok"><strong>Country, province, capital</strong><br>Netherlands is the <strong>country</strong>.<br>It has twelve <strong>provinces</strong>.<br>Amsterdam is the <strong>capital</strong>.</div>`,
+        tr:`<div class="uitleg-box"><h3>🗺️ Yönler</h3><p>Bir yerin nerede olduğunu söylemek için yönleri kullanırız.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li>Kuzey (yukarı)</li><li>Doğu (sağ)</li><li>Güney (aşağı)</li><li>Batı (sol)</li><li>Orta</li></ul></div><div class="voorbeeld-blok"><strong>Ülke, eyalet, başkent</strong><br>Hollanda bir <strong>ülke</strong>dir.<br>On iki <strong>eyalet</strong>i vardır.<br>Amsterdam <strong>başkent</strong>tir.</div>`,
+        ar:`<div class="uitleg-box" dir="rtl"><h3>🗺️ الاتجاهات</h3><p>نستخدم الاتجاهات لنقول أين يقع مكان ما.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li>الشمال (أعلى)</li><li>الشرق (يمين)</li><li>الجنوب (أسفل)</li><li>الغرب (يسار)</li><li>الوسط</li></ul></div><div class="voorbeeld-blok" dir="rtl"><strong>البلد، المقاطعة، العاصمة</strong><br>هولندا هي <strong>البلد</strong>.<br>لديها اثنا عشر <strong>مقاطعة</strong>.<br>أمستردام هي <strong>العاصمة</strong>.</div>`,
+        ps:`<div class="uitleg-box" dir="rtl"><h3>🗺️ لوري</h3><p>موږ د ځای موقعیت ښودلو لپاره لوري کاروو.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li>شمال (پورته)</li><li>ختیځ (ښیې)</li><li>سویل (لاندې)</li><li>لویدیځ (کیڼ)</li><li>منځ</li></ul></div><div class="voorbeeld-blok" dir="rtl"><strong>هیواد، ولایت، پلازمینه</strong><br>هالنډ <strong>هیواد</strong> دی.<br>دولس <strong>ولایتونه</strong> لري.<br>امسټرډم <strong>پلازمینه</strong> ده.</div>`
+    };
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    function setLang(l){
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        event.target.closest('.lang-btn').classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{
+            const k=el.getAttribute('data-translate');
+            if(UI['nl'] && UI['nl'][k]) {
+                if(l === 'nl') {
+                    el.innerHTML = UI['nl'][k];
+                } else if (UI[l] && UI[l][k]) {
+                    el.innerHTML = UI['nl'][k] + `<br><span style="color:#6366f1; font-size:0.9em; font-weight:500;">${UI[l][k]}</span>`;
+                }
+            }
+        });
+        buildTable(l);
+        if(UITLEG['nl']) {
+            if(l === 'nl') {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'];
+            } else if (UITLEG[l]) {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'] + '<div style="margin-top:20px; padding-top:15px; border-top:2px dashed rgba(99,102,241,0.3);">' + UITLEG[l] + '</div>';
+            }
+        }
+    }
+
+    // ── OPDRACHT 1: Windstreken ──
+    const windData=[
+        {text:"Groningen ligt in het ...", opts:['noorden','oosten','zuiden','westen'], ans:'noorden'},
+        {text:"Maastricht ligt in het ...", opts:['noorden','oosten','zuiden','westen'], ans:'zuiden'},
+        {text:"Rotterdam ligt in het ...", opts:['noorden','oosten','zuiden','westen'], ans:'westen'},
+        {text:"Enschede ligt in het ...", opts:['noorden','oosten','zuiden','westen'], ans:'oosten'},
+        {text:"Utrecht ligt in het ...", opts:['midden','noorden','zuiden','westen'], ans:'midden'}
+    ];
+    function buildWind(){const ul=document.getElementById('mc-wind');ul.innerHTML='';windData.forEach((item,i)=>{ul.innerHTML+=`<li>${item.text} <select id="mc-wind-${i}"><option value="">-- kies --</option>${item.opts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></li>`;});}
+    function checkMC(ulId, scoreId){
+        let g=0; 
+        const data = ulId === 'mc-wind' ? windData : [];
+        data.forEach((item,i)=>{
+            const sel=document.getElementById(`${ulId}-${i}`);
+            sel.classList.remove('correct','fout');
+            if(sel.value===item.ans){sel.classList.add('correct');g++;}else{sel.classList.add('fout');}
+        });
+        const sc=document.getElementById(scoreId);
+        sc.style.display='inline-block';
+        sc.textContent=`${g}/${data.length}`;
+        sc.className='score-badge '+(g===data.length?'score-goed':g>=(data.length/2)?'score-midden':'score-slecht');
+    }
+    function resetMC(ulId, scoreId, dataArr, builderFn){
+        document.getElementById(ulId).innerHTML='';
+        document.getElementById(scoreId).style.display='none';
+        builderFn();
+    }
+
+    // ── OPDRACHT 2: Verbinden ──
+    const verbindData=[
+        {l:'Texel',r:'een eiland'},
+        {l:'Amsterdam',r:'de hoofdstad'},
+        {l:'Noord-Holland',r:'een provincie'},
+        {l:'Nederland',r:'een land'}
+    ];
+    let vSelectedLinks=null;
+    function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+    function buildVerbind(){
+        const cl=document.getElementById('vb1-links');const cr=document.getElementById('vb1-rechts');
+        cl.innerHTML='';cr.innerHTML='';vSelectedLinks=null;
+        document.getElementById('vb1-score').style.display='none';
+        const L=verbindData.map(x=>x.l);const R=shuffle(verbindData.map(x=>x.r));
+        L.forEach(x=>{const d=document.createElement('div');d.className='verbind-item links';d.textContent=x;d.onclick=()=>selectLinks(d);cl.appendChild(d);});
+        R.forEach(x=>{const d=document.createElement('div');d.className='verbind-item rechts';d.textContent=x;d.onclick=()=>selectRechts(d);cr.appendChild(d);});
+    }
+    function selectLinks(el){if(el.classList.contains('matched'))return;document.querySelectorAll('.verbind-item.links').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');vSelectedLinks=el;}
+    function selectRechts(el){
+        if(el.classList.contains('matched'))return;
+        if(!vSelectedLinks)return;
+        const lText=vSelectedLinks.textContent;const rText=el.textContent;
+        const correct=verbindData.find(x=>x.l===lText && x.r===rText);
+        if(correct){
+            vSelectedLinks.classList.remove('selected');vSelectedLinks.classList.add('matched');
+            el.classList.add('matched');vSelectedLinks=null;checkVerbindScore();
+        }else{
+            el.classList.add('matched-fout');
+            setTimeout(()=>{el.classList.remove('matched-fout');},400);
+        }
+    }
+    function checkVerbindScore(){
+        const m=document.querySelectorAll('.verbind-item.links.matched').length;
+        if(m===verbindData.length){
+            const s=document.getElementById('vb1-score');s.style.display='inline-block';
+            s.className='score-badge score-goed';s.textContent=`${m}/${verbindData.length} Goed!`;
+        }
+    }
+    function resetVerbind(){buildVerbind();}
+
+    // ── OPDRACHT 3: Schrijfopdracht ──
+    const schrijfVragen=['In welk land woon jij nu?','In welke provincie woon je?','Uit welk land kom je oorspronkelijk?'];
+    function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:14px"><div class="tip-blok"><strong>🤚 Laat je zinnen zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{ul.innerHTML+=`<li><label>${i+1}. ${v}</label><textarea id="schr-${i}" placeholder="Schrijf hier je antwoord…"></textarea></li>`;});}
+    function saveSchrijf(){
+        let text = "Mijn antwoorden (Thema 7.5):\n\n";
+        schrijfVragen.forEach((v,i)=>{
+            const antwoord = document.getElementById('schr-'+i).value.trim() || "(geen antwoord)";
+            text += `${i+1}. ${v}\n👉 ${antwoord}\n\n`;
+        });
+        const url = `https://wa.me/31626211106?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+        document.getElementById('schrijf-fb').style.display='inline';
+        setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);
+    }
+
+    // ── AUDIO RECORDER ──
+    let mediaRecorder;
+    let audioChunks = [];
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            audioChunks = [];
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+            mediaRecorder.addEventListener("stop", () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audioPlayer = document.getElementById('audio-playback');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+            });
+            document.getElementById('btn-record').style.display = 'none';
+            document.getElementById('btn-stop').style.display = 'inline-block';
+            document.getElementById('rec-status').style.display = 'block';
+        } catch (e) {
+            alert("Microfoon toegang geweigerd of niet beschikbaar.");
+        }
+    }
+    function stopRecording() {
+        if(mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+        }
+        document.getElementById('btn-record').style.display = 'inline-block';
+        document.getElementById('btn-stop').style.display = 'none';
+        document.getElementById('rec-status').style.display = 'none';
+        document.getElementById('btn-record').innerHTML = '🔴 Opnieuw opnemen';
+    }
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded',()=>{
+        buildWind();buildVerbind();buildSchrijf();
+        setLang('nl');
+    });
+    </script>
 </body>
 </html>

@@ -1,27 +1,332 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <Op de doos, achter de doos, in de doos>Op de doos, achter de doos, in de doos — NT2 A1</Op de doos, achter de doos, in de doos>
+    <title>7.6 Op de doos, achter de doos, in de doos — NT2 A1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4e8cff; --theme-bg: rgba(78, 140, 255, 0.15); }
+        .theme-groen  { --theme: #4caf82; --theme-bg: rgba(76, 175, 130, 0.15); }
+        .theme-oranje { --theme: #f4a261; --theme-bg: rgba(244, 162, 97, 0.15); }
+        .theme-paars  { --theme: #8b7ef8; --theme-bg: rgba(139, 126, 248, 0.15); }
+        .theme-geel   { --theme: #f4d03f; --theme-bg: rgba(244, 208, 63, 0.15); }
+        .theme-rood   { --theme: #e07070; --theme-bg: rgba(224, 112, 112, 0.15); }
+        .theme-cyaan  { --theme: #4ecdc4; --theme-bg: rgba(78, 205, 196, 0.15); }
+        .theme-roze   { --theme: #f78fb3; --theme-bg: rgba(247, 143, 179, 0.15); }
+
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}
+        .uitleg-box h3{color:#6366f1;margin-top:0}
+        .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:1.2rem 0;font-size:.93rem}
+        .voorbeeld-blok strong{color:#10b981}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}
+        .tip-blok strong{color:#ca8a04}
+        .reset-btn{margin-top:10px;margin-left:10px;padding:8px 18px;background:transparent;color:var(--theme,#6366f1);border:2px solid var(--theme,#6366f1);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+        .reset-btn:hover{background:var(--theme-bg,rgba(99,102,241,.1))}
+        .opdracht-card{background:var(--card-bg,#182040);border:1px solid var(--theme,rgba(99,102,241,.2));border-top:4px solid var(--theme,#6366f1);border-radius:16px;padding:25px;margin-bottom:25px;box-shadow:0 4px 20px var(--theme-bg,rgba(0,0,0,0.1));position:relative}
+        .opdracht-nr{display:none;}
+        .opdracht-card h3{color:#fff;margin-top:0;font-size:1.15rem;margin-bottom:5px}
+        .instructie{color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:20px}
+        .check-btn{margin-top:15px;padding:8px 18px;background:var(--theme,#6366f1);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700;transition:opacity .2s}
+        .check-btn:hover{opacity:.9}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}
+        .score-midden{background:rgba(234,179,8,.15);color:#ca8a04}
+        .score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+        
+        .mc-list{list-style:none;padding:0;margin:0}
+        .mc-list li{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;margin-bottom:10px}
+        .mc-list select{background:#2a325a;color:#fff;border:1px solid rgba(255,255,255,.2);padding:5px 10px;border-radius:6px;margin-left:10px;font-family:inherit;font-size:.95rem}
+        .mc-list select.correct{border-color:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,.2)}
+        .mc-list select.fout{border-color:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,.2)}
+
+        .puzzel-grid{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:15px}
+        .puzzel-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:15px;width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
+        .puzzel-item input{background:#2a325a;color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px;border-radius:6px;font-family:inherit;font-size:.95rem;width:100%}
+        .puzzel-item input.correct{border-color:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,.2)}
+        .puzzel-item input.fout{border-color:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,.2)}
+        
+        .schrijf-list{list-style:none;padding:0;margin:0}
+        .schrijf-list li{margin-bottom:15px}
+        .schrijf-list textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;color:#fff;font-family:inherit;font-size:.95rem;min-height:80px;resize:vertical;margin-top:8px}
+        .schrijf-list textarea:focus{outline:none;border-color:var(--theme,#6366f1)}
+        
+        .audio-record-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;text-align:center}
+        #btn-record{background:#ef4444;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+        #btn-record:hover{background:#dc2626;transform:scale(1.05)}
+        #btn-stop{background:#f59e0b;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:none;align-items:center;gap:8px}
+        #rec-status{color:#ef4444;font-weight:700;margin-top:10px;display:none;animation:blink 1s infinite}
+        @keyframes blink{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+        audio{margin-top:15px;width:100%;max-width:300px;display:none}
+    </style>
 </head>
 <body>
-    <nav class="language-bar"><span class="label">🌐 Taal:</span><span class="lang-btn active">🇳🇱 Nederlands</span><span class="lang-btn">🇬🇧 English</span></nav>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+    </nav>
     <main class="page-container">
         <a href="thema7.html" class="back-link">← Terug naar Thema 7</a>
         <header class="page-header">
             <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema7.html">Thema 7</a><span>›</span><span>7.6</span></div>
             <h1>📦 Op de doos, achter de doos, in de doos</h1>
-            <p class="subOp de doos, achter de doos, in de doos">Woordenlijst — vertalingen en opdrachten komen binnenkort!</p>
+            <p class="subtitle" data-translate="subtitle">Leer voorzetsels van plaats.</p>
         </header>
+
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+        
+        <div class="fase-label">Fase 1: Leren</div>
+        
         <section class="content-section animate-in">
-            <span class="section-label blue">📚 Woordenlijst</span>
-            <h2>Woorden van paragraaf 7.6</h2>
-            <div class="vocab-table-wrap"><table class="vocab-table"><thead><tr><th>🇳🇱 Nederlands</th><th>🇬🇧 English</th></tr></thead><tbody><tr><td>aan</td><td>on</td></tr><tr><td>achter</td><td>behind</td></tr><tr><td>boven</td><td>above</td></tr><tr><td>in</td><td>in</td></tr><tr><td>naast</td><td>next to</td></tr><tr><td>onder</td><td>below</td></tr><tr><td>op</td><td>on, on top</td></tr><tr><td>over</td><td>about</td></tr><tr><td>tegenover</td><td>opposite</td></tr><tr><td>tussen</td><td>between</td></tr><tr><td>uit</td><td>out of</td></tr><tr><td>voor</td><td>in front of</td></tr></tbody></table></div>
+            <span class="section-label blue" data-translate="vocabTitle">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 7.6</h2>
+            <p data-translate="vocabIntro" style="color:var(--text-muted)">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
         </section>
-        <section class="content-section animate-in" style="text-align:center;padding:2rem"><p style="font-size:1.2rem;color:var(--text-muted,#aaa)">🏗️ Opdrachten komen binnenkort!</p></section>
+
+        <!-- UITLEG -->
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+
+        <div class="fase-label">Fase 2: Oefenen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 1: Vul het voorzetsel in -->
+            <div class="opdracht-card theme-blauw">
+                <span class="opdracht-nr">OPDRACHT 1</span>
+                <h3>Waar is de kat? Vul het voorzetsel in</h3>
+                <p class="instructie" data-translate="instrKies">Kies het juiste voorzetsel (in, op, onder, naast, achter, voor).</p>
+                <ul class="mc-list" id="mc-voor"></ul>
+                <button class="check-btn" onclick="checkMC()">Controleer</button>
+                <span id="mc-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- Opdracht 2: Typ het voorzetsel -->
+            <div class="opdracht-card theme-cyaan">
+                <span class="opdracht-nr">OPDRACHT 2</span>
+                <h3>Typ het woord</h3>
+                <p class="instructie" data-translate="instrTyp">Lees de zin en typ het juiste woord (bijv. in, op, uit, over).</p>
+                <div class="puzzel-grid" id="puzzel-grid"></div>
+                <button class="check-btn" onclick="checkTyp()">Controleer</button>
+                <span id="puzzel-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetTyp()">🔄 Opnieuw</button>
+            </div>
+
+        </section>
+
+        <div class="fase-label">Fase 3: Toepassen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 3: Schrijfopdracht -->
+            <div class="opdracht-card theme-groen">
+                <span class="opdracht-nr">OPDRACHT 3</span>
+                <h3>Schrijfopdracht</h3>
+                <p class="instructie" data-translate="instrSchrijf">Schrijf in het Nederlands en stuur je antwoorden naar de docent!</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💬 Stuur naar docent via WhatsApp</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Verzonden!</span>
+            </div>
+
+            <!-- Opdracht 4: Spreekopdracht -->
+            <div class="opdracht-card theme-roze">
+                <span class="opdracht-nr">OPDRACHT 4</span>
+                <h3 data-translate="sprekTitle">Spreekopdracht: Neem een voice memo op!</h3>
+                <div class="tip-blok"><strong data-translate="sprekInstr">📋 Opdracht:</strong> <span data-translate="sprekTekst">Kijk om je heen in je kamer. Waar is je telefoon? Waar is je tas? Vertel waar 3 objecten liggen (gebruik in, op, onder, naast, etc.).</span></div>
+                <p class="instructie" data-translate="sprekHoe">📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder een voice memo op.</p>
+                
+                <div class="audio-record-box">
+                    <button id="btn-record" onclick="startRecording()">🔴 Start Opname</button>
+                    <button id="btn-stop" onclick="stopRecording()">⏹️ Stop Opname</button>
+                    <div id="rec-status">🎙️ Aan het opnemen...</div>
+                    <audio id="audio-playback" controls></audio>
+                </div>
+                <p style="margin-top:15px;font-size:0.9rem;color:var(--text-muted)" data-translate="voiceTip">Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!</p>
+            </div>
+
+        </section>
+
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+    <script>
+    const VOCAB=[
+        {nl:'aan',en:'on (attached to)',tr:'-e bitişik, üzerinde',ar:'على (متصل بـ)',ps:'په (نښلول شوی)',ex:'De jas hangt aan de kapstok.'},
+        {nl:'achter',en:'behind',tr:'arkasında',ar:'خلف',ps:'شاته',ex:'Ik sta achter de boom.'},
+        {nl:'boven',en:'above',tr:'yukarısında',ar:'فوق',ps:'پاس',ex:'De lamp hangt boven de tafel.'},
+        {nl:'in',en:'in',tr:'içinde',ar:'في',ps:'په منځ کې',ex:'De sleutels zitten in mijn tas.'},
+        {nl:'naast',en:'next to',tr:'yanında',ar:'بجانب',ps:'څنګ ته',ex:'Hij zit naast mij.'},
+        {nl:'onder',en:'under, below',tr:'altında',ar:'تحت',ps:'لاندې',ex:'De kat slaapt onder de tafel.'},
+        {nl:'op',en:'on, on top',tr:'üzerinde',ar:'على (من فوق)',ps:'درباندې',ex:'Het boek ligt op de tafel.'},
+        {nl:'over',en:'over, across',tr:'üzerinden, hakkında',ar:'فوق / عبر',ps:'په سر / پورې غاړه',ex:'Ik loop over de brug.'},
+        {nl:'tegenover',en:'opposite',tr:'karşısında',ar:'مقابل',ps:'مخامخ',ex:'De bank is tegenover het station.'},
+        {nl:'tussen',en:'between',tr:'arasında',ar:'بين',ps:'منځ کې',ex:'Ik sta tussen Jan en Piet.'},
+        {nl:'uit',en:'out of',tr:'dışarı',ar:'من / خارج',ps:'بهر / څخه',ex:'Ik pak het boek uit de tas.'},
+        {nl:'voor',en:'in front of',tr:'önünde',ar:'أمام',ps:'مخکې',ex:'De auto staat voor het huis.'},
+    ];
+    const UI={
+        nl:{subtitle:'Leer voorzetsels van plaats.',vocabTitle:'Woorden van paragraaf 7.6',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrKies:'Kies het juiste voorzetsel (in, op, onder, naast, achter, voor).',instrTyp:'Lees de zin en typ het juiste woord (bijv. in, op, uit, over).',instrSchrijf:'Schrijf zinnen in het Nederlands en stuur ze naar de docent!',sprekTitle:'Spreekopdracht: Neem een voice memo op!',sprekInstr:'📋 Opdracht:',sprekTekst:'Kijk om je heen in je kamer. Waar is je telefoon? Waar is je tas? Vertel waar 3 objecten liggen (gebruik in, op, onder, naast, etc.).',sprekHoe:'📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder op.',voiceTip:'Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!'},
+        en:{subtitle:'Learn prepositions of place.',vocabTitle:'Words of paragraph 7.6',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',instrKies:'Choose the correct preposition.',instrTyp:'Read the sentence and type the correct word.',instrSchrijf:'Write sentences in Dutch and send them to the teacher!',sprekTitle:'Speaking assignment: Record a voice memo!',sprekInstr:'📋 Assignment:',sprekTekst:'Look around your room. Where is your phone? Where is your bag? Tell where 3 objects are (use in, on, under, next to, etc.).',sprekHoe:'📱 Record on your phone and send the file via WhatsApp, or record directly below.',voiceTip:'Tip: open WhatsApp, hold the microphone 🎙️ and speak your answer!'},
+        tr:{subtitle:'Yer edatlarını öğrenin.',vocabTitle:'Paragraf 7.6 kelimeleri',vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',instrKies:'Doğru edatı seçin.',instrTyp:'Cümleyi okuyun ve doğru kelimeyi yazın.',instrSchrijf:'Cümleleri Hollandaca olarak yazın ve öğretmeninize gönderin!',sprekTitle:'Konuşma görevi: Sesli mesaj kaydedin!',sprekInstr:'📋 Görev:',sprekTekst:'Odanıza etrafınıza bakın. Telefonunuz nerede? Çantanız nerede? 3 nesnenin nerede olduğunu söyleyin (içinde, üstünde, altında, yanında vb. kullanın).',sprekHoe:'📱 Telefonunuzla kaydedin ve WhatsApp ile gönderin veya doğrudan aşağıdan kaydedin.',voiceTip:'İpucu: WhatsApp\'ı açın, mikrofonu 🎙️ basılı tutun ve cevabınızı söyleyin!'},
+        ar:{subtitle:'تعلم حروف الجر الدالة على المكان.',vocabTitle:'كلمات الفقرة 7.6',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',instrKies:'اختر حرف الجر الصحيح.',instrTyp:'اقرأ الجملة واكتب الكلمة الصحيحة.',instrSchrijf:'اكتب الجمل باللغة الهولندية وأرسلها إلى المعلم!',sprekTitle:'مهمة التحدث: سجل مذكرة صوتية!',sprekInstr:'📋 المهمة:',sprekTekst:'انظر حولك في غرفتك. أين هاتفك؟ أين حقيبتك؟ أخبر أين توجد 3 أشياء (استخدم في، على، تحت، بجانب، إلخ).',sprekHoe:'📱 سجل بهاتفك وأرسل الملف عبر واتساب، أو سجل مباشرة أدناه.',voiceTip:'نصيحة: افتح واتساب، اضغط مع الاستمرار على المايكروفون 🎙️ وتحدث بقوة!'},
+        ps:{subtitle:'د ځای ضمیرونه زده کړئ.',vocabTitle:'د پراګراف 7.6 کلمې',vocabIntro:'د ژباړې لیدلو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',instrKies:'سم ضمیر وټاکئ.',instrTyp:'جمله ولولئ او سمه کلمه ولیکئ.',instrSchrijf:'جملې په هالنډي ژبه ولیکئ او ښوونکي ته یې واستوئ!',sprekTitle:'د خبرو دنده: غږ ثبت کړئ!',sprekInstr:'📋 دنده:',sprekTekst:'په خپله خونه کې شاوخوا وګورئ. ستاسو تلیفون چیرته دی؟ ستاسو کڅوړه چیرته ده؟ ووایاست چې 3 شیان چیرته دي (استعمال کړئ: په، باندې، لاندې، څنګ ته، او داسې نور).',sprekHoe:'📱 په خپل تلیفون کې ثبت کړئ او فایل د واټساپ له لارې واستوئ، یا مستقیم لاندې ثبت کړئ.',voiceTip:'لارښوونه: واټساپ خلاص کړئ، مایکروفون 🎙️ ونیسئ او خپل ځواب ووایاست!'},
+    };
+    const UITLEG={
+        nl:`<div class="uitleg-box"><h3>📦 Waar is het? (Voorzetsels)</h3><p>We gebruiken voorzetsels (prepositions) om te vertellen <strong>waar</strong> iets of iemand is.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>in</strong> - De pen zit in de tas.</li><li><strong>op</strong> - De appel ligt op de tafel.</li><li><strong>onder</strong> - De hond slaapt onder de stoel.</li><li><strong>achter</strong> - Ik sta achter de deur.</li><li><strong>voor</strong> - De auto staat voor het huis.</li><li><strong>naast</strong> - Hij zit naast mij.</li><li><strong>tussen</strong> - De tafel staat tussen twee stoelen.</li><li><strong>tegenover</strong> - De supermarkt is tegenover de school.</li><li><strong>boven</strong> - Het schilderij hangt boven de bank.</li></ul></div>`,
+        en:`<div class="uitleg-box"><h3>📦 Where is it? (Prepositions)</h3><p>We use prepositions to tell <strong>where</strong> something or someone is.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>in</strong> - The pen is in the bag.</li><li><strong>op</strong> (on) - The apple is on the table.</li><li><strong>onder</strong> (under) - The dog sleeps under the chair.</li><li><strong>achter</strong> (behind) - I stand behind the door.</li><li><strong>voor</strong> (in front of) - The car is in front of the house.</li><li><strong>naast</strong> (next to) - He sits next to me.</li><li><strong>tussen</strong> (between) - The table is between two chairs.</li><li><strong>tegenover</strong> (opposite) - The supermarket is opposite the school.</li><li><strong>boven</strong> (above) - The painting is above the sofa.</li></ul></div>`,
+        tr:`<div class="uitleg-box"><h3>📦 Nerede? (Yer Edatları)</h3><p>Bir şeyin veya birinin <strong>nerede</strong> olduğunu anlatmak için edatları kullanırız.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>in</strong> (içinde)</li><li><strong>op</strong> (üstünde)</li><li><strong>onder</strong> (altında)</li><li><strong>achter</strong> (arkasında)</li><li><strong>voor</strong> (önünde)</li><li><strong>naast</strong> (yanında)</li><li><strong>tussen</strong> (arasında)</li><li><strong>tegenover</strong> (karşısında)</li><li><strong>boven</strong> (yukarısında)</li></ul></div>`,
+        ar:`<div class="uitleg-box" dir="rtl"><h3>📦 أين هو؟ (حروف الجر)</h3><p>نستخدم حروف الجر لنخبر <strong>أين</strong> يوجد شيء أو شخص ما.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>in</strong> (في/داخل)</li><li><strong>op</strong> (على/فوق)</li><li><strong>onder</strong> (تحت)</li><li><strong>achter</strong> (خلف/وراء)</li><li><strong>voor</strong> (أمام)</li><li><strong>naast</strong> (بجانب)</li><li><strong>tussen</strong> (بين)</li><li><strong>tegenover</strong> (مقابل)</li><li><strong>boven</strong> (فوق/أعلى)</li></ul></div>`,
+        ps:`<div class="uitleg-box" dir="rtl"><h3>📦 دا چیرته دی؟ (د ځای ضمیرونه)</h3><p>موږ ضمیرونه کاروو ترڅو ووایو چې یو شی یا څوک <strong>چیرته</strong> دی.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>in</strong> (په منځ کې)</li><li><strong>op</strong> (باندې)</li><li><strong>onder</strong> (لاندې)</li><li><strong>achter</strong> (شاته)</li><li><strong>voor</strong> (مخکې)</li><li><strong>naast</strong> (څنګ ته)</li><li><strong>tussen</strong> (منځ کې)</li><li><strong>tegenover</strong> (مخامخ)</li><li><strong>boven</strong> (پاس)</li></ul></div>`
+    };
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    function setLang(l){
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        event.target.closest('.lang-btn').classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{
+            const k=el.getAttribute('data-translate');
+            if(UI['nl'] && UI['nl'][k]) {
+                if(l === 'nl') {
+                    el.innerHTML = UI['nl'][k];
+                } else if (UI[l] && UI[l][k]) {
+                    el.innerHTML = UI['nl'][k] + `<br><span style="color:#6366f1; font-size:0.9em; font-weight:500;">${UI[l][k]}</span>`;
+                }
+            }
+        });
+        buildTable(l);
+        if(UITLEG['nl']) {
+            if(l === 'nl') {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'];
+            } else if (UITLEG[l]) {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'] + '<div style="margin-top:20px; padding-top:15px; border-top:2px dashed rgba(99,102,241,0.3);">' + UITLEG[l] + '</div>';
+            }
+        }
+    }
+
+    // ── OPDRACHT 1: MC Voorzetsels ──
+    const mcData=[
+        {text:"De hond slaapt ___ de tafel.", opts:['op','onder','in'], ans:'onder'},
+        {text:"Het boek ligt ___ de tafel.", opts:['op','onder','tussen'], ans:'op'},
+        {text:"De sleutels zitten ___ mijn tas.", opts:['in','naast','boven'], ans:'in'},
+        {text:"Ik sta ___ de boom, je ziet me niet.", opts:['voor','achter','naast'], ans:'achter'},
+        {text:"Zij woont in het huis ___ ons.", opts:['tegenover','onder','uit'], ans:'tegenover'}
+    ];
+    function buildMC(){const ul=document.getElementById('mc-voor');ul.innerHTML='';mcData.forEach((item,i)=>{ul.innerHTML+=`<li>${item.text} <select id="mc-voor-${i}"><option value="">-- kies --</option>${item.opts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></li>`;});}
+    function checkMC(){
+        let g=0; 
+        mcData.forEach((item,i)=>{
+            const sel=document.getElementById(`mc-voor-${i}`);
+            sel.classList.remove('correct','fout');
+            if(sel.value===item.ans){sel.classList.add('correct');g++;}else{sel.classList.add('fout');}
+        });
+        const sc=document.getElementById('mc-score');
+        sc.style.display='inline-block';
+        sc.textContent=`${g}/${mcData.length}`;
+        sc.className='score-badge '+(g===mcData.length?'score-goed':g>=(mcData.length/2)?'score-midden':'score-slecht');
+    }
+    function resetMC(){
+        document.getElementById('mc-voor').innerHTML='';
+        document.getElementById('mc-score').style.display='none';
+        buildMC();
+    }
+
+    // ── OPDRACHT 2: Typ het woord ──
+    const typData=[
+        {text:"Ik pak het brood ___ de zak.", ans:'uit'},
+        {text:"Jan zit ___ de bank (sofa).", ans:'op'},
+        {text:"Het vliegtuig vliegt ___ de stad.", ans:'boven'},
+        {text:"Mijn telefoon ligt ___ mijn laptop en mijn boek.", ans:'tussen'}
+    ];
+    function buildTyp(){
+        const grid=document.getElementById('puzzel-grid');grid.innerHTML='';
+        typData.forEach((item,i)=>{
+            grid.innerHTML+=`<div class="puzzel-item"><span>${item.text}</span><input type="text" id="typ-${i}" placeholder="typ woord"></div>`;
+        });
+    }
+    function checkTyp(){
+        let g=0;
+        typData.forEach((item,i)=>{
+            const inp=document.getElementById(`typ-${i}`);
+            inp.classList.remove('correct','fout');
+            if(inp.value.trim().toLowerCase()===item.ans){inp.classList.add('correct');g++;}else{inp.classList.add('fout');}
+        });
+        const sc=document.getElementById('puzzel-score');
+        sc.style.display='inline-block';
+        sc.textContent=`${g}/${typData.length}`;
+        sc.className='score-badge '+(g===typData.length?'score-goed':g>=(typData.length/2)?'score-midden':'score-slecht');
+    }
+    function resetTyp(){
+        document.getElementById('puzzel-grid').innerHTML='';
+        document.getElementById('puzzel-score').style.display='none';
+        buildTyp();
+    }
+
+    // ── OPDRACHT 3: Schrijfopdracht ──
+    const schrijfVragen=['Waar is jouw mobiele telefoon nu?','Waar zijn jouw schoenen nu?','Beschrijf waar de supermarkt is in jouw buurt (gebruik "naast" of "tegenover" of "achter").'];
+    function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:14px"><div class="tip-blok"><strong>🤚 Laat je zinnen zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{ul.innerHTML+=`<li><label>${i+1}. ${v}</label><textarea id="schr-${i}" placeholder="Schrijf hier je antwoord…"></textarea></li>`;});}
+    function saveSchrijf(){
+        let text = "Mijn antwoorden (Thema 7.6):\n\n";
+        schrijfVragen.forEach((v,i)=>{
+            const antwoord = document.getElementById('schr-'+i).value.trim() || "(geen antwoord)";
+            text += `${i+1}. ${v}\n👉 ${antwoord}\n\n`;
+        });
+        const url = `https://wa.me/31626211106?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+        document.getElementById('schrijf-fb').style.display='inline';
+        setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);
+    }
+
+    // ── AUDIO RECORDER ──
+    let mediaRecorder;
+    let audioChunks = [];
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            audioChunks = [];
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+            mediaRecorder.addEventListener("stop", () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audioPlayer = document.getElementById('audio-playback');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+            });
+            document.getElementById('btn-record').style.display = 'none';
+            document.getElementById('btn-stop').style.display = 'inline-block';
+            document.getElementById('rec-status').style.display = 'block';
+        } catch (e) {
+            alert("Microfoon toegang geweigerd of niet beschikbaar.");
+        }
+    }
+    function stopRecording() {
+        if(mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+        }
+        document.getElementById('btn-record').style.display = 'inline-block';
+        document.getElementById('btn-stop').style.display = 'none';
+        document.getElementById('rec-status').style.display = 'none';
+        document.getElementById('btn-record').innerHTML = '🔴 Opnieuw opnemen';
+    }
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded',()=>{
+        buildMC();buildTyp();buildSchrijf();
+        setLang('nl');
+    });
+    </script>
 </body>
 </html>

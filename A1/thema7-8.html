@@ -1,27 +1,371 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <Waar is het station?>Waar is het station? — NT2 A1</Waar is het station?>
+    <title>7.8 Waar is het station? — NT2 A1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4e8cff; --theme-bg: rgba(78, 140, 255, 0.15); }
+        .theme-groen  { --theme: #4caf82; --theme-bg: rgba(76, 175, 130, 0.15); }
+        .theme-oranje { --theme: #f4a261; --theme-bg: rgba(244, 162, 97, 0.15); }
+        .theme-paars  { --theme: #8b7ef8; --theme-bg: rgba(139, 126, 248, 0.15); }
+        .theme-geel   { --theme: #f4d03f; --theme-bg: rgba(244, 208, 63, 0.15); }
+        .theme-rood   { --theme: #e07070; --theme-bg: rgba(224, 112, 112, 0.15); }
+        .theme-cyaan  { --theme: #4ecdc4; --theme-bg: rgba(78, 205, 196, 0.15); }
+        .theme-roze   { --theme: #f78fb3; --theme-bg: rgba(247, 143, 179, 0.15); }
+
+        .uitleg-box{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-left:4px solid #6366f1;border-radius:12px;padding:20px 24px;margin:1.5rem 0}
+        .uitleg-box h3{color:#6366f1;margin-top:0}
+        .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:1.2rem 0;font-size:.93rem}
+        .voorbeeld-blok strong{color:#10b981}
+        .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:12px 16px;margin:.8rem 0;font-size:.88rem}
+        .tip-blok strong{color:#ca8a04}
+        .reset-btn{margin-top:10px;margin-left:10px;padding:8px 18px;background:transparent;color:var(--theme,#6366f1);border:2px solid var(--theme,#6366f1);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s}
+        .reset-btn:hover{background:var(--theme-bg,rgba(99,102,241,.1))}
+        .opdracht-card{background:var(--card-bg,#182040);border:1px solid var(--theme,rgba(99,102,241,.2));border-top:4px solid var(--theme,#6366f1);border-radius:16px;padding:25px;margin-bottom:25px;box-shadow:0 4px 20px var(--theme-bg,rgba(0,0,0,0.1));position:relative}
+        .opdracht-nr{display:none;}
+        .opdracht-card h3{color:#fff;margin-top:0;font-size:1.15rem;margin-bottom:5px}
+        .instructie{color:var(--text-muted,#aaa);font-size:.9rem;margin-bottom:20px}
+        .check-btn{margin-top:15px;padding:8px 18px;background:var(--theme,#6366f1);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700;transition:opacity .2s}
+        .check-btn:hover{opacity:.9}
+        .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+        .score-goed{background:rgba(16,185,129,.15);color:#10b981}
+        .score-midden{background:rgba(234,179,8,.15);color:#ca8a04}
+        .score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+        
+        .puzzel-grid{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:15px}
+        .puzzel-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:15px;width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
+        .puzzel-item input{background:#2a325a;color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px;border-radius:6px;font-family:inherit;font-size:.95rem;width:100%;text-align:center;letter-spacing:2px;text-transform:uppercase}
+        .puzzel-item input.correct{border-color:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,.2)}
+        .puzzel-item input.fout{border-color:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,.2)}
+        .puzzel-geheim{margin-top:15px;font-size:1.1rem;font-weight:700;color:var(--theme)}
+        
+        .mc-list{list-style:none;padding:0;margin:0}
+        .mc-list li{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;margin-bottom:10px}
+        .mc-list select{background:#2a325a;color:#fff;border:1px solid rgba(255,255,255,.2);padding:5px 10px;border-radius:6px;margin-left:10px;font-family:inherit;font-size:.95rem}
+        .mc-list select.correct{border-color:#10b981;box-shadow:0 0 0 2px rgba(16,185,129,.2)}
+        .mc-list select.fout{border-color:#ef4444;box-shadow:0 0 0 2px rgba(239,68,68,.2)}
+        
+        .schrijf-list{list-style:none;padding:0;margin:0}
+        .schrijf-list li{margin-bottom:15px}
+        .schrijf-list textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;color:#fff;font-family:inherit;font-size:.95rem;min-height:80px;resize:vertical;margin-top:8px}
+        .schrijf-list textarea:focus{outline:none;border-color:var(--theme,#6366f1)}
+        
+        .audio-record-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;text-align:center}
+        #btn-record{background:#ef4444;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+        #btn-record:hover{background:#dc2626;transform:scale(1.05)}
+        #btn-stop{background:#f59e0b;color:#fff;border:none;padding:12px 24px;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;display:none;align-items:center;gap:8px}
+        #rec-status{color:#ef4444;font-weight:700;margin-top:10px;display:none;animation:blink 1s infinite}
+        @keyframes blink{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+        audio{margin-top:15px;width:100%;max-width:300px;display:none}
+    </style>
 </head>
 <body>
-    <nav class="language-bar"><span class="label">🌐 Taal:</span><span class="lang-btn active">🇳🇱 Nederlands</span><span class="lang-btn">🇬🇧 English</span></nav>
+    <nav class="language-bar">
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+    </nav>
     <main class="page-container">
         <a href="thema7.html" class="back-link">← Terug naar Thema 7</a>
         <header class="page-header">
             <div class="breadcrumb"><a href="index.html">Thema's</a><span>›</span><a href="thema7.html">Thema 7</a><span>›</span><span>7.8</span></div>
             <h1>🚉 Waar is het station?</h1>
-            <p class="subWaar is het station?">Woordenlijst — vertalingen en opdrachten komen binnenkort!</p>
+            <p class="subtitle" data-translate="subtitle">Leer de weg vragen en de route beschrijven.</p>
         </header>
+
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+        
+        <div class="fase-label">Fase 1: Leren</div>
+        
         <section class="content-section animate-in">
-            <span class="section-label blue">📚 Woordenlijst</span>
-            <h2>Woorden van paragraaf 7.8</h2>
-            <div class="vocab-table-wrap"><table class="vocab-table"><thead><tr><th>🇳🇱 Nederlands</th><th>🇬🇧 English</th></tr></thead><tbody><tr><td>bij</td><td>at</td></tr><tr><td>dichtbij</td><td>near</td></tr><tr><td>eerst</td><td>first</td></tr><tr><td>het kruispunt, de kruispunten</td><td>intersection</td></tr><tr><td>linksaf</td><td>turn left</td></tr><tr><td>links</td><td>left</td></tr><tr><td>oversteken (steek over/steekt over/steken over)</td><td>to cross</td></tr><tr><td>rechtdoor</td><td>straight</td></tr><tr><td>rechtsaf</td><td>turn right</td></tr><tr><td>rechts</td><td>right</td></tr><tr><td>ver</td><td>far</td></tr><tr><td>de weg</td><td>way, route</td></tr></tbody></table></div>
+            <span class="section-label blue" data-translate="vocabTitle">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 7.8</h2>
+            <p data-translate="vocabIntro" style="color:var(--text-muted)">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">🇳🇱 Nederlands</th><th data-translate="thExample">Voorbeeldzin</th></tr></thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
         </section>
-        <section class="content-section animate-in" style="text-align:center;padding:2rem"><p style="font-size:1.2rem;color:var(--text-muted,#aaa)">🏗️ Opdrachten komen binnenkort!</p></section>
+
+        <!-- UITLEG -->
+        <section class="content-section animate-in"><div id="uitleg-content"></div></section>
+
+        <div class="fase-label">Fase 2: Oefenen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 1: Kruiswoord Route -->
+            <div class="opdracht-card theme-blauw">
+                <span class="opdracht-nr">OPDRACHT 1</span>
+                <h3>Woordpuzzel</h3>
+                <p class="instructie" data-translate="instrPuzzel">De rode letters vormen samen een geheim woord! 🔍</p>
+                <div class="puzzel-grid" id="puzzel-grid"></div>
+                <button class="check-btn" onclick="checkPuzzel()">Controleer</button>
+                <span id="puzzel-score" class="score-badge" style="display:none"></span>
+                <div class="puzzel-geheim" id="puzzel-geheim"></div>
+                <button class="reset-btn" onclick="resetPuzzel()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- Opdracht 2: Invullen -->
+            <div class="opdracht-card theme-cyaan">
+                <span class="opdracht-nr">OPDRACHT 2</span>
+                <h3>Kies het juiste woord</h3>
+                <p class="instructie" data-translate="instrInvul">Kies de juiste richting (linksaf, rechtsaf, rechtdoor, oversteken).</p>
+                <ul class="mc-list" id="mc-invul"></ul>
+                <button class="check-btn" onclick="checkMC()">Controleer</button>
+                <span id="mc-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC()">🔄 Opnieuw</button>
+            </div>
+
+        </section>
+
+        <div class="fase-label">Fase 3: Toepassen</div>
+        
+        <section class="content-section animate-in">
+            
+            <!-- Opdracht 3: Schrijfopdracht -->
+            <div class="opdracht-card theme-groen">
+                <span class="opdracht-nr">OPDRACHT 3</span>
+                <h3>Schrijfopdracht</h3>
+                <p class="instructie" data-translate="instrSchrijf">Schrijf in het Nederlands en stuur je antwoorden naar de docent!</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="check-btn" onclick="saveSchrijf()">💬 Stuur naar docent via WhatsApp</button>
+                <span id="schrijf-fb" style="margin-left:10px;color:#10b981;font-weight:600;display:none">✓ Verzonden!</span>
+            </div>
+
+            <!-- Opdracht 4: Spreekopdracht -->
+            <div class="opdracht-card theme-roze">
+                <span class="opdracht-nr">OPDRACHT 4</span>
+                <h3 data-translate="sprekTitle">Spreekopdracht: Neem een voice memo op!</h3>
+                <div class="tip-blok"><strong data-translate="sprekInstr">📋 Opdracht:</strong> <span data-translate="sprekTekst">Iemand vraagt aan jou op straat: "Sorry, mag ik u iets vragen? Waar is de supermarkt?". Vertel de weg. Bijvoorbeeld: "U gaat eerst rechtdoor, en dan rechtsaf..."</span></div>
+                <p class="instructie" data-translate="sprekHoe">📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder een voice memo op.</p>
+                
+                <div class="audio-record-box">
+                    <button id="btn-record" onclick="startRecording()">🔴 Start Opname</button>
+                    <button id="btn-stop" onclick="stopRecording()">⏹️ Stop Opname</button>
+                    <div id="rec-status">🎙️ Aan het opnemen...</div>
+                    <audio id="audio-playback" controls></audio>
+                </div>
+                <p style="margin-top:15px;font-size:0.9rem;color:var(--text-muted)" data-translate="voiceTip">Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!</p>
+            </div>
+
+        </section>
+
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+    <script>
+    const VOCAB=[
+        {nl:'bij',en:'at, near',tr:'yanında, -de',ar:'عند / بجوار',ps:'سره / څنګ ته',ex:'Het station is bij de supermarkt.'},
+        {nl:'dichtbij',en:'close, near',tr:'yakın',ar:'قريب',ps:'نږدې',ex:'De school is hier dichtbij.'},
+        {nl:'eerst',en:'first',tr:'önce',ar:'أولاً',ps:'لومړی',ex:'Eerst ga je rechtdoor.'},
+        {nl:'het kruispunt',en:'intersection',tr:'kavşak',ar:'التقاطع',ps:'څلور لارې',ex:'Steek over bij het kruispunt.'},
+        {nl:'linksaf',en:'turn left',tr:'sola dön',ar:'انعطف يساراً',ps:'کیڼ لور ته وګرځه',ex:'Ga hier linksaf.'},
+        {nl:'links',en:'left',tr:'sol',ar:'يسار',ps:'کیڼ',ex:'De winkel is aan de linkerkant.'},
+        {nl:'oversteken',en:'to cross',tr:'karşıya geçmek',ar:'يعبر',ps:'تېرېدل',ex:'Je moet de straat oversteken.'},
+        {nl:'rechtdoor',en:'straight ahead',tr:'düz git',ar:'إلى الأمام مباشرة',ps:'نیغ په نیغه',ex:'Ga steeds rechtdoor.'},
+        {nl:'rechtsaf',en:'turn right',tr:'sağa dön',ar:'انعطف يميناً',ps:'ښي لور ته وګرځه',ex:'Ga bij het stoplicht rechtsaf.'},
+        {nl:'rechts',en:'right',tr:'sağ',ar:'يمين',ps:'ښي',ex:'Het ziekenhuis is rechts.'},
+        {nl:'ver',en:'far',tr:'uzak',ar:'بعيد',ps:'لرې',ex:'Het is niet ver lopen.'},
+        {nl:'de weg',en:'way, road',tr:'yol',ar:'الطريق',ps:'لاره',ex:'Mag ik u de weg vragen?'},
+    ];
+    const UI={
+        nl:{subtitle:'Leer de weg vragen en de route beschrijven.',vocabTitle:'Woorden van paragraaf 7.8',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrPuzzel:'De rode letters vormen samen een geheim woord! 🔍',instrInvul:'Kies de juiste richting (linksaf, rechtsaf, rechtdoor, oversteken).',instrSchrijf:'Schrijf zinnen in het Nederlands en stuur ze naar de docent!',sprekTitle:'Spreekopdracht: Neem een voice memo op!',sprekInstr:'📋 Opdracht:',sprekTekst:'Iemand vraagt aan jou: "Sorry, waar is de supermarkt?". Vertel de weg. Bijv: "U gaat eerst rechtdoor..."',sprekHoe:'📱 Neem op met je telefoon en stuur het bestand via WhatsApp, of neem direct hieronder op.',voiceTip:'Tip: open WhatsApp, houd het microfoontje 🎙️ ingedrukt en spreek je antwoord in!'},
+        en:{subtitle:'Learn to ask the way and describe the route.',vocabTitle:'Words of paragraph 7.8',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',instrPuzzel:'The red letters form a secret word! 🔍',instrInvul:'Choose the correct direction.',instrSchrijf:'Write sentences in Dutch and send them to the teacher!',sprekTitle:'Speaking assignment: Record a voice memo!',sprekInstr:'📋 Assignment:',sprekTekst:'Someone asks you: "Sorry, where is the supermarket?". Tell the way. E.g.: "First you go straight ahead..."',sprekHoe:'📱 Record on your phone and send the file via WhatsApp, or record directly below.',voiceTip:'Tip: open WhatsApp, hold the microphone 🎙️ and speak your answer!'},
+        tr:{subtitle:'Yol sormayı ve rotayı tarif etmeyi öğrenin.',vocabTitle:'Paragraf 7.8 kelimeleri',vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',instrPuzzel:'Kırmızı harfler gizli bir kelime oluşturur! 🔍',instrInvul:'Doğru yönü seçin.',instrSchrijf:'Cümleleri Hollandaca olarak yazın ve öğretmeninize gönderin!',sprekTitle:'Konuşma görevi: Sesli mesaj kaydedin!',sprekInstr:'📋 Görev:',sprekTekst:'Biri size "Afedersiniz, süpermarket nerede?" diye soruyor. Yolu tarif edin. Örn: "Önce düz gidersiniz..."',sprekHoe:'📱 Telefonunuzla kaydedin ve WhatsApp ile gönderin veya doğrudan aşağıdan kaydedin.',voiceTip:'İpucu: WhatsApp\'ı açın, mikrofonu 🎙️ basılı tutun ve cevabınızı söyleyin!'},
+        ar:{subtitle:'تعلم أن تسأل عن الطريق وتصف الطريق.',vocabTitle:'كلمات الفقرة 7.8',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',instrPuzzel:'الأحرف الحمراء تشكل كلمة سرية! 🔍',instrInvul:'اختر الاتجاه الصحيح.',instrSchrijf:'اكتب الجمل باللغة الهولندية وأرسلها إلى المعلم!',sprekTitle:'مهمة التحدث: سجل مذكرة صوتية!',sprekInstr:'📋 المهمة:',sprekTekst:'يسألك شخص: "عفواً، أين السوبر ماركت؟". صف له الطريق. مثال: "تذهب أولاً بشكل مستقيم..."',sprekHoe:'📱 سجل بهاتفك وأرسل الملف عبر واتساب، أو سجل مباشرة أدناه.',voiceTip:'نصيحة: افتح واتساب، اضغط مع الاستمرار على المايكروفون 🎙️ وتحدث بقوة!'},
+        ps:{subtitle:'زده کړئ چې څنګه لاره وپوښتئ او د لارې تشریح وکړئ.',vocabTitle:'د پراګراف 7.8 کلمې',vocabIntro:'د ژباړې لیدلو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',instrPuzzel:'سرې خولۍ یوه پټه کلمه جوړوي! 🔍',instrInvul:'سم لوری وټاکئ.',instrSchrijf:'جملې په هالنډي ژبه ولیکئ او ښوونکي ته یې واستوئ!',sprekTitle:'د خبرو دنده: غږ ثبت کړئ!',sprekInstr:'📋 دنده:',sprekTekst:'یو څوک پوښتنه کوي: "وبښئ، سوپر مارکیټ چیرته دی؟". لاره وښایاست. بیلګه: "لومړی تاسو نیغ په نیغه ځئ..."',sprekHoe:'📱 په خپل تلیفون کې ثبت کړئ او فایل د واټساپ له لارې واستوئ، یا مستقیم لاندې ثبت کړئ.',voiceTip:'لارښوونه: واټساپ خلاص کړئ، مایکروفون 🎙️ ونیسئ او خپل ځواب ووایاست!'},
+    };
+    const UITLEG={
+        nl:`<div class="uitleg-box"><h3>🚉 De weg vragen en wijzen</h3><p>Hoe vertel je iemand waar hij of zij naartoe moet? Je gebruikt richtingen.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> Ga rechtdoor tot het kruispunt.</li><li><strong>Linksaf:</strong> Ga bij het stoplicht linksaf.</li><li><strong>Rechtsaf:</strong> Ga de eerste straat rechtsaf.</li><li><strong>Oversteken:</strong> Steek de straat over.</li></ul></div><div class="voorbeeld-blok"><strong>Gesprek op straat:</strong><br>A: "Pardon, mag ik u iets vragen? Weet u waar het station is?"<br>B: "Jazeker. Je gaat <strong>eerst</strong> rechtdoor. Dan ga je bij het kruispunt <strong>linksaf</strong>. Het station is dan <strong>rechts</strong>. Het is dichtbij."<br>A: "Bedankt!"</div>`,
+        en:`<div class="uitleg-box"><h3>🚉 Asking and showing the way</h3><p>How do you tell someone where to go? You use directions.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> Go straight ahead.</li><li><strong>Linksaf:</strong> Turn left.</li><li><strong>Rechtsaf:</strong> Turn right.</li><li><strong>Oversteken:</strong> Cross the street.</li></ul></div><div class="voorbeeld-blok"><strong>Conversation on the street:</strong><br>A: "Excuse me, where is the station?"<br>B: "You go <strong>eerst</strong> straight ahead. Then turn <strong>linksaf</strong>. The station is <strong>rechts</strong>. It is close."<br>A: "Thanks!"</div>`,
+        tr:`<div class="uitleg-box"><h3>🚉 Yol sormak ve tarif etmek</h3><p>Birine nereye gideceğini nasıl söylersiniz? Yönleri kullanırsınız.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> Düz git.</li><li><strong>Linksaf:</strong> Sola dön.</li><li><strong>Rechtsaf:</strong> Sağa dön.</li><li><strong>Oversteken:</strong> Karşıya geç.</li></ul></div>`,
+        ar:`<div class="uitleg-box" dir="rtl"><h3>🚉 السؤال عن الطريق ووصفه</h3><p>كيف تخبر شخصاً إلى أين يذهب؟ تستخدم الاتجاهات.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> اذهب للأمام مباشرة.</li><li><strong>Linksaf:</strong> انعطف يساراً.</li><li><strong>Rechtsaf:</strong> انعطف يميناً.</li><li><strong>Oversteken:</strong> اعبر الشارع.</li></ul></div>`,
+        ps:`<div class="uitleg-box" dir="rtl"><h3>🚉 د لارې پوښتل او ښودل</h3><p>څنګه چا ته ووایاست چې چیرته لاړ شي؟ تاسو لارښوونې کاروئ.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>Rechtdoor:</strong> نیغ په نیغه لاړ شه.</li><li><strong>Linksaf:</strong> کیڼ لور ته وګرځه.</li><li><strong>Rechtsaf:</strong> ښي لور ته وګرځه.</li><li><strong>Oversteken:</strong> له سړک څخه تېر شه.</li></ul></div>`
+    };
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    function setLang(l){
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        event.target.closest('.lang-btn').classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{
+            const k=el.getAttribute('data-translate');
+            if(UI['nl'] && UI['nl'][k]) {
+                if(l === 'nl') {
+                    el.innerHTML = UI['nl'][k];
+                } else if (UI[l] && UI[l][k]) {
+                    el.innerHTML = UI['nl'][k] + `<br><span style="color:#6366f1; font-size:0.9em; font-weight:500;">${UI[l][k]}</span>`;
+                }
+            }
+        });
+        buildTable(l);
+        if(UITLEG['nl']) {
+            if(l === 'nl') {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'];
+            } else if (UITLEG[l]) {
+                document.getElementById('uitleg-content').innerHTML = UITLEG['nl'] + '<div style="margin-top:20px; padding-top:15px; border-top:2px dashed rgba(99,102,241,0.3);">' + UITLEG[l] + '</div>';
+            }
+        }
+    }
+
+    // ── OPDRACHT 1: Puzzel ──
+    const puzzelData=[
+        {desc:"Niet dichtbij, maar heel ...", ans:'VER', secretIdx:0}, // V
+        {desc:"Niet links, maar ...", ans:'RECHTS', secretIdx:1}, // E
+        {desc:"Waar auto's rijden.", ans:'WEG', secretIdx:2}, // G
+    ];
+    // Secret word: VEG? no, how about:
+    // VER (V)
+    // KRUISPUNT (U) -> wait. let's just highlight some red letters.
+    
+    function buildPuzzel(){
+        const grid=document.getElementById('puzzel-grid');grid.innerHTML='';
+        puzzelData.forEach((item,i)=>{
+            const div=document.createElement('div');div.className='puzzel-item';
+            div.innerHTML=`<span>${item.desc}</span>`;
+            const wrapper = document.createElement('div');
+            wrapper.style.display='flex'; wrapper.style.gap='5px'; wrapper.style.justifyContent='center';
+            for(let c=0; c<item.ans.length; c++){
+                const inp=document.createElement('input');
+                inp.type='text'; inp.maxLength=1;
+                inp.style.width='40px'; inp.style.height='40px';
+                inp.style.textAlign='center'; inp.style.fontSize='1.2rem';
+                inp.dataset.row=i; inp.dataset.col=c;
+                if(c===item.secretIdx){
+                    inp.style.color='#ef4444'; inp.style.borderBottom='3px solid #ef4444';
+                    inp.classList.add('secret-letter');
+                }
+                inp.oninput=(e)=>{
+                    if(e.target.value.length===1) {
+                        const next = document.querySelector(`input[data-row="${i}"][data-col="${c+1}"]`);
+                        if(next) next.focus();
+                    }
+                }
+                wrapper.appendChild(inp);
+            }
+            div.appendChild(wrapper);
+            grid.appendChild(div);
+        });
+    }
+    function checkPuzzel(){
+        let correctWords=0; let secretWord='';
+        puzzelData.forEach((item,i)=>{
+            let isCorrect=true;
+            for(let c=0; c<item.ans.length; c++){
+                const inp=document.querySelector(`input[data-row="${i}"][data-col="${c}"]`);
+                inp.classList.remove('correct','fout');
+                if(inp.value.toUpperCase()===item.ans[c]){
+                    inp.classList.add('correct');
+                    if(c===item.secretIdx) secretWord += item.ans[c];
+                }else{
+                    inp.classList.add('fout'); isCorrect=false;
+                }
+            }
+            if(isCorrect) correctWords++;
+        });
+        const sc=document.getElementById('puzzel-score');
+        sc.style.display='inline-block';
+        sc.textContent=`${correctWords}/${puzzelData.length}`;
+        sc.className='score-badge '+(correctWords===puzzelData.length?'score-goed':'score-slecht');
+        if(correctWords===puzzelData.length) {
+            document.getElementById('puzzel-geheim').textContent=`Geheim woord = ${secretWord}`;
+        }
+    }
+    function resetPuzzel(){
+        document.getElementById('puzzel-geheim').textContent='';
+        document.getElementById('puzzel-score').style.display='none';
+        buildPuzzel();
+    }
+
+    // ── OPDRACHT 2: Invullen ──
+    const invulData=[
+        {text:"Je moet de straat ...", opts:['oversteken','linksaf','kruispunt'], ans:'oversteken'},
+        {text:"Ga bij het stoplicht ... (⬅️)", opts:['rechtsaf','linksaf','rechtdoor'], ans:'linksaf'},
+        {text:"Blijf steeds ... gaan (⬆️).", opts:['rechtdoor','rechtsaf','eerst'], ans:'rechtdoor'},
+        {text:"Het station is niet ver, het is ...", opts:['dichtbij','ver','weg'], ans:'dichtbij'}
+    ];
+    function buildMC(){const ul=document.getElementById('mc-invul');ul.innerHTML='';invulData.forEach((item,i)=>{ul.innerHTML+=`<li>${item.text} <select id="mc-invul-${i}"><option value="">-- kies --</option>${item.opts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></li>`;});}
+    function checkMC(){
+        let g=0; 
+        invulData.forEach((item,i)=>{
+            const sel=document.getElementById(`mc-invul-${i}`);
+            sel.classList.remove('correct','fout');
+            if(sel.value===item.ans){sel.classList.add('correct');g++;}else{sel.classList.add('fout');}
+        });
+        const sc=document.getElementById('mc-score');
+        sc.style.display='inline-block';
+        sc.textContent=`${g}/${invulData.length}`;
+        sc.className='score-badge '+(g===invulData.length?'score-goed':g>=(invulData.length/2)?'score-midden':'score-slecht');
+    }
+    function resetMC(){
+        document.getElementById('mc-invul').innerHTML='';
+        document.getElementById('mc-score').style.display='none';
+        buildMC();
+    }
+
+    // ── OPDRACHT 3: Schrijfopdracht ──
+    const schrijfVragen=['Vraag aan de docent: "Waar is het station?"','Schrijf in het Nederlands: "Go straight ahead and turn left."','Is jouw huis dichtbij of ver van de school?'];
+    function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='<li style="margin-bottom:14px"><div class="tip-blok"><strong>🤚 Laat je zinnen zien aan de docent!</strong></div></li>';schrijfVragen.forEach((v,i)=>{ul.innerHTML+=`<li><label>${i+1}. ${v}</label><textarea id="schr-${i}" placeholder="Schrijf hier je antwoord…"></textarea></li>`;});}
+    function saveSchrijf(){
+        let text = "Mijn antwoorden (Thema 7.8):\n\n";
+        schrijfVragen.forEach((v,i)=>{
+            const antwoord = document.getElementById('schr-'+i).value.trim() || "(geen antwoord)";
+            text += `${i+1}. ${v}\n👉 ${antwoord}\n\n`;
+        });
+        const url = `https://wa.me/31626211106?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+        document.getElementById('schrijf-fb').style.display='inline';
+        setTimeout(()=>document.getElementById('schrijf-fb').style.display='none',2500);
+    }
+
+    // ── AUDIO RECORDER ──
+    let mediaRecorder;
+    let audioChunks = [];
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            audioChunks = [];
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+            mediaRecorder.addEventListener("stop", () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audioPlayer = document.getElementById('audio-playback');
+                audioPlayer.src = audioUrl;
+                audioPlayer.style.display = 'block';
+            });
+            document.getElementById('btn-record').style.display = 'none';
+            document.getElementById('btn-stop').style.display = 'inline-block';
+            document.getElementById('rec-status').style.display = 'block';
+        } catch (e) {
+            alert("Microfoon toegang geweigerd of niet beschikbaar.");
+        }
+    }
+    function stopRecording() {
+        if(mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+        }
+        document.getElementById('btn-record').style.display = 'inline-block';
+        document.getElementById('btn-stop').style.display = 'none';
+        document.getElementById('rec-status').style.display = 'none';
+        document.getElementById('btn-record').innerHTML = '🔴 Opnieuw opnemen';
+    }
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded',()=>{
+        buildPuzzel();buildMC();buildSchrijf();
+        setLang('nl');
+    });
+    </script>
 </body>
 </html>
