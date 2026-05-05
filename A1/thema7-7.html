@@ -239,12 +239,24 @@
     
     let _ttsAudio = null;
     function speak(text) {
-        if(_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
-        _ttsAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=' + encodeURIComponent(text));
-        _ttsAudio.play().catch(function() {
-            if('speechSynthesis' in window) {
+        if (!text) return;
+        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        
+        // Probeer eerst Google TTS (altijd Nederlands)
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
+        _ttsAudio.play().catch(() => {
+            // Fallback naar Web Speech API met geforceerde Nederlandse stem
+            if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                var u = new SpeechSynthesisUtterance(text); u.lang='nl-NL'; u.rate=0.85;
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'nl-NL';
+                u.rate = 0.85;
+                
+                // Zoek specifiek naar een NL-stem (voorkomt dat systeemtaal van telefoon wordt gebruikt)
+                const voices = window.speechSynthesis.getVoices();
+                const nlVoice = voices.find(v => v.lang.includes('nl-NL') || v.lang.includes('nl_NL'));
+                if (nlVoice) u.voice = nlVoice;
+                
                 window.speechSynthesis.speak(u);
             }
         });

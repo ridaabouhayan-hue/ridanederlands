@@ -169,14 +169,54 @@
         ps:`<div class="uitleg-box" dir="rtl"><h3>سلام او خداحافظي</h3><p>د ۱.۲ پراګراف کې سلام او خداحافظي زده کوئ. د ورځې سم وخت کې سمه کلمه وکاروئ!</p></div>`,
         zh:`<div class="uitleg-box"><h3>问候语与告别语</h3><p>在第1.2段，你将学习如何用荷兰语问候和道别。根据一天中的不同时间使用正确的词！</p><table style="width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0"><thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">时间</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">问候语</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">告别语</th></tr></thead><tbody><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">早上</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedemorgen（早上好）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)" rowspan="3">doei / tot ziens / dag（再见）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">下午</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedemiddag（下午好）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">晚上</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedenavond（晚上好）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">随时（非正式）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">hoi / hallo / dag（你好）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">doei / dag（再见）</td></tr></tbody></table></div><div class="tip-blok"><strong>正式与非正式：</strong> "Goedemorgen meneer" = 正式（在工作场合）。 "Hoi!" = 非正式（与朋友）</div>`
     };
-    // Verbetering 1: Speech synthesis
-    function speakWord(word) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = 'nl-NL';
-        utterance.rate = 0.85;
-     const _mc={};
+    let _ttsAudio = null;
+    function speak(text) {
+        if (!text) return;
+        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        
+        // Probeer eerst Google TTS (altijd Nederlands)
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
+        _ttsAudio.play().catch(() => {
+            // Fallback naar Web Speech API met geforceerde Nederlandse stem
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'nl-NL';
+                u.rate = 0.85;
+                
+                // Zoek specifiek naar een NL-stem (voorkomt dat systeemtaal van telefoon wordt gebruikt)
+                const voices = window.speechSynthesis.getVoices();
+                const nlVoice = voices.find(v => v.lang.includes('nl-NL') || v.lang.includes('nl_NL'));
+                if (nlVoice) u.voice = nlVoice;
+                
+                window.speechSynthesis.speak(u);
+            }
+        });
+    }
+
+    function buildTable(lang){
+        const tbody=document.getElementById('vocab-body');tbody.innerHTML='';
+        VOCAB.forEach(row=>{
+            const spokenWord=row.nl.split(',')[0].replace(/^(de |het |een )/i,'').trim();
+            const tr=document.createElement('tr');
+            tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td><td><button class="speak-btn" onclick="speak('${spokenWord.replace(/'/g,"\\'")}')">🔊</button></td>`;
+            tbody.appendChild(tr);
+        });
+        document.getElementById('th-lang').textContent=UI[lang].thLang;
+    }
+
+    function setLang(l){
+        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+        if (event && event.target) event.target.closest('.lang-btn').classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{
+            const k=el.getAttribute('data-translate');
+            if(UI[l] && UI[l][k]) el.innerHTML = UI[l][k];
+        });
+        if(UITLEG[l]) document.getElementById('uitleg-content').innerHTML = UITLEG[l];
+        buildTable(l);
+    }
+
+    const _mc={};
     function checkMCq(btn,keuze,ant,scoreId,total,uitlegTekst){
         const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');
         if([...groep].some(b=>b.classList.contains('correct')))return;

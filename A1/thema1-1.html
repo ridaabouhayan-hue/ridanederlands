@@ -191,22 +191,36 @@
         ps:`<div class="uitleg-box" dir="rtl"><h3>د ځان معرفي کول</h3><p>د ۱.۱ پراګراف کې زده کوئ چې د هالنډي ژبې کې ځان معرفي کړئ:</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → زما نوم ... دی</li><li>Ik kom uit ... → زه له ... راغلی یم</li><li>Ik woon in ... → زه ... کې اوسیږم</li><li>Ik ben ... jaar oud → زه د ... کلونو یم</li></ul></div>`,
         zh:`<div class="uitleg-box"><h3>自我介绍</h3><p>在第1.1段，你将学习如何用荷兰语介绍自己。请使用以下句子：</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → 我的名字是 ...</li><li>Ik kom uit ... → 我来自 ...（国家）</li><li>Ik woon in ... → 我住在 ...（城市/国家）</li><li>Ik ben ... jaar oud → 我 ... 岁。</li><li>Ik ben getrouwd / niet getrouwd → 我已婚 / 未婚。</li><li>Ik heb ... kinderen → 我有 ... 个孩子。</li></ul></div><div class="voorbeeld-blok">🇨🇳 例子：你好！我的名字是Julia。我来自叙利亚。我住在乌得勒支。我28岁。我已婚，有两个孩子。</div><div class="tip-blok"><strong>注意：</strong> "Ik heet Julia" = "Mijn naam is Julia" — 两种说法都正确！</div>`
     };
-    // Verbetering 1: Speech synthesis
-    function speakWord(word) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = 'nl-NL';
-        utterance.rate = 0.85;
-        utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
+    let _ttsAudio = null;
+    function speak(text) {
+        if (!text) return;
+        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        
+        // Probeer eerst Google TTS (altijd Nederlands)
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
+        _ttsAudio.play().catch(() => {
+            // Fallback naar Web Speech API met geforceerde Nederlandse stem
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'nl-NL';
+                u.rate = 0.85;
+                
+                // Zoek specifiek naar een NL-stem (voorkomt dat systeemtaal van telefoon wordt gebruikt)
+                const voices = window.speechSynthesis.getVoices();
+                const nlVoice = voices.find(v => v.lang.includes('nl-NL') || v.lang.includes('nl_NL'));
+                if (nlVoice) u.voice = nlVoice;
+                
+                window.speechSynthesis.speak(u);
+            }
+        });
     }
     function buildTable(lang){
         const tbody=document.getElementById('vocab-body');tbody.innerHTML='';
         VOCAB.forEach(row=>{
             const spokenWord=row.nl.split(',')[0].replace(/^(de |het |een )/i,'').trim();
             const tr=document.createElement('tr');
-            tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td><td><button class="speak-btn" onclick="speakWord('${spokenWord.replace(/'/g,"\\'")}')">🔊</button></td>`;
+            tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td><td><button class="speak-btn" onclick="speak('${spokenWord.replace(/'/g,"\\'")}')">🔊</button></td>`;
             tbody.appendChild(tr);
         });
         document.getElementById('th-lang').textContent=UI[lang].thLang;
