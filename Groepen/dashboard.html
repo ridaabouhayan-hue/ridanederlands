@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groepen — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:      #f8f6f1;
+            --surface: #ffffff;
+            --border:  #e5e7eb;
+            --text:    #1f2937;
+            --muted:   #6b7280;
+            --accent:  #4361ee;
+            --accent-l:#dbeafe;
+            --green:   #16a34a;
+            --green-l: #dcfce7;
+            --red:     #dc2626;
+            --amber:   #d97706;
+            --amber-l: #fef3c7;
+            --radius:  16px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout {
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+        /* ── TABS ── */
+        .tabs-wrap {
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 14px 22px;
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab:hover { color: var(--accent); }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 28px 24px 60px;
+        }
+
+        .group-panel { display: none; }
+        .group-panel.active { display: block; }
+
+        /* ── SECTION CARD ── */
+        .section-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--accent);
+        }
+
+        .section-card h2 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-card p,
+        .section-card li {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .section-card ul { padding-left: 1.2rem; }
+
+        /* ── LINK LIST ── */
+        .link-list { list-style: none; padding: 0; }
+
+        .link-list li {
+            margin-bottom: 8px;
+        }
+
+        .link-list a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.92rem;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .link-list a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-l);
+        }
+
+        /* ── STATUS BADGES ── */
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-green { background: var(--green-l); color: var(--green); }
+        .badge-amber { background: var(--amber-l); color: var(--amber); }
+        .badge-blue  { background: var(--accent-l); color: var(--accent); }
+
+        /* ── NOTE BOX ── */
+        .note-box {
+            background: var(--amber-l);
+            border-left: 4px solid var(--amber);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state p { font-size: 0.95rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<!-- AUTH CHECK — direct blokkeren als geen sessie -->
+<script>
+    if (sessionStorage.getItem('groepen_auth') !== '1') {
+        window.location.replace('index.html');
+    }
+    // Blokkeer de terugknop vanuit het dashboard
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, location.href);
+    });
+</script>
+
+<!-- TOPBAR -->
+<div class="topbar">
+    <div class="topbar-title">🗂️ Groepen Dashboard</div>
+    <button class="btn-logout" onclick="logout()">🔒 Afsluiten</button>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+    <button class="tab active" onclick="showGroup(0, this)">👥 Groep A</button>
+    <button class="tab" onclick="showGroup(1, this)">👥 Groep B</button>
+    <button class="tab" onclick="showGroup(2, this)">👥 Groep C</button>
+    <!-- Voeg hier meer groepen toe -->
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- ══ GROEP A ══ -->
+    <div class="group-panel active" id="panel-0">
+        <div class="section-card">
+            <h2>📋 Notities — Groep A</h2>
+            <p>Voeg hier jouw aantekeningen over Groep A toe.</p>
+            <div class="note-box">
+                💡 Groep A start met Pre-A1 Onderwerp 1–3 deze week.
+            </div>
+        </div>
+
+        <div class="section-card" style="border-color: #16a34a;">
+            <h2 style="color:#16a34a;">✅ Opdrachten deze week</h2>
+            <ul class="link-list">
+                <li>
+                    <a href="../Pre-A1/alfa1.html" target="_blank">
+                        🔤 Onderwerp 1 — Alfabet & klanken
+                        <span class="badge badge-green" style="margin-left:auto;">Actief</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../Pre-A1/alfa2.html" target="_blank">
+                        ✍️ Onderwerp 2 — Interpunctie
+                        <span class="badge badge-amber" style="margin-left:auto;">Volgende week</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section-card" style="border-color: #9333ea;">
+            <h2 style="color:#9333ea;">📝 Eigen aantekeningen</h2>
+            <p>Vervang deze tekst met je eigen notities over Groep A.</p>
+            <ul>
+                <li>Student 1 — heeft moeite met interpunctie</li>
+                <li>Student 2 — snel, kan al verder</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ══ GROEP B ══ -->
+    <div class="group-panel" id="panel-1">
+        <div class="section-card">
+            <h2>📋 Notities — Groep B</h2>
+            <p>Voeg hier jouw aantekeningen over Groep B toe.</p>
+        </div>
+        <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <p>Nog geen inhoud voor Groep B.<br>Voeg opdrachten en notities toe in de HTML.</p>
+        </div>
+    </div>
+
+    <!-- ══ GROEP C ══ -->
+    <div class="group-panel" id="panel-2">
+        <div class="section-card">
+            <h2>📋 Notities — Groep C</h2>
+            <p>Voeg hier jouw aantekeningen over Groep C toe.</p>
+        </div>
+        <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <p>Nog geen inhoud voor Groep C.<br>Voeg opdrachten en notities toe in de HTML.</p>
+        </div>
+    </div>
+
+</div><!-- /main -->
+
+<script>
+    function showGroup(index, btn) {
+        document.querySelectorAll('.group-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('panel-' + index).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function logout() {
+        sessionStorage.removeItem('groepen_auth');
+        window.location.replace('index.html');
+    }
+</script>
+
+</body>
+</html>
