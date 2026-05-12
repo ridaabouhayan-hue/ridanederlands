@@ -253,13 +253,16 @@
         if (!text) return;
         if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
         
+        // Zorg voor een kleine pauze aan het begin zodat het eerste woord niet wegvalt, en fix 'file'
+        let spokenText = ", " + text.replace(/\bfile\b/gi, "fie-le");
+        
         // Probeer eerst Google TTS (altijd Nederlands)
-        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
         _ttsAudio.play().catch(() => {
             // Fallback naar Web Speech API met geforceerde Nederlandse stem
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(text);
+                const u = new SpeechSynthesisUtterance(spokenText);
                 u.lang = 'nl-NL';
                 u.rate = 0.85;
                 
