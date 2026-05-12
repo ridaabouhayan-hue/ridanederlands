@@ -569,39 +569,33 @@ body {
           <th>ik</th>
           <th>jij / hij / zij</th>
           <th>wij / zij</th>
-          <th>Betekenis (EN)</th>
-          <th id="th-lang">Vertaling</th>
+          <th id="th-lang">Betekenis</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="mw">kunnen</span></td>
           <td>kan</td><td>kan / kunt</td><td>kunnen</td>
-          <td class="meaning-col">can, be able to</td>
           <td class="modal-trans" data-k="kunnen"></td>
         </tr>
         <tr>
           <td><span class="mw">moeten</span></td>
           <td>moet</td><td>moet</td><td>moeten</td>
-          <td class="meaning-col">must, have to</td>
           <td class="modal-trans" data-k="moeten"></td>
         </tr>
         <tr>
           <td><span class="mw">willen</span></td>
           <td>wil</td><td>wil / wilt</td><td>willen</td>
-          <td class="meaning-col">want to</td>
           <td class="modal-trans" data-k="willen"></td>
         </tr>
         <tr>
           <td><span class="mw">mogen</span></td>
           <td>mag</td><td>mag</td><td>mogen</td>
-          <td class="meaning-col">may, be allowed to</td>
           <td class="modal-trans" data-k="mogen"></td>
         </tr>
         <tr>
           <td><span class="mw">zullen</span></td>
           <td>zal</td><td>zal / zult</td><td>zullen</td>
-          <td class="meaning-col">shall, will (future)</td>
           <td class="modal-trans" data-k="zullen"></td>
         </tr>
       </tbody>
@@ -729,6 +723,9 @@ body {
     Klik op de zin met de <strong>goede woordvolgorde</strong>. Het modale werkwoord staat op positie 2. De infinitief staat <strong>als laatste</strong>!
   </div>
   <div id="mc-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="resetMC()">↺ Opnieuw proberen / Hussel</button>
+  </div>
 </div>
 
 <!-- ⑦ OEFENING 3 — WOORDVOLGORDE -->
@@ -1053,36 +1050,63 @@ const MC = [
 
 let mcAnswered = new Array(MC.length).fill(false);
 let mcScore = 0;
+let mcOrder = [];
+
+function shuffleArray(arr) {
+  const newArr = [...arr];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
 
 function buildMC() {
   const c = document.getElementById('mc-container');
-  c.innerHTML = MC.map((q,qi) => `
+  mcOrder = MC.map(q => {
+    const indices = q.opts.map((_, i) => i);
+    return shuffleArray(indices);
+  });
+
+  c.innerHTML = MC.map((q,qi) => {
+    const shuffledOpts = mcOrder[qi].map(oldIdx => q.opts[oldIdx]);
+    return `
     <div class="mc-item">
       <div class="mc-q">${qi+1}. ${q.q}</div>
       <div class="mc-opts">
-        ${q.opts.map((o,oi) => `
+        ${shuffledOpts.map((o,oi) => `
           <button class="mc-opt" id="mc${qi}_${oi}" onclick="answerMC(${qi},${oi})">
             ${String.fromCharCode(65+oi)}. ${o}
           </button>`).join('')}
       </div>
       <div class="mc-exp" id="mcexp${qi}">${q.exp}</div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function answerMC(qi, oi) {
   if (mcAnswered[qi]) return;
   mcAnswered[qi] = true;
   const q = MC[qi];
-  const correct = oi === q.cor;
+  const oldIdx = mcOrder[qi][oi];
+  const correct = (oldIdx === q.cor);
   if (correct) mcScore++;
+  
+  const correctOi = mcOrder[qi].indexOf(q.cor);
+  
   for (let i = 0; i < q.opts.length; i++) {
     const btn = document.getElementById(`mc${qi}_${i}`);
     btn.disabled = true;
-    if (i === q.cor) btn.classList.add('mc-correct');
+    if (i === correctOi) btn.classList.add('mc-correct');
     else if (i === oi) btn.classList.add('mc-wrong');
   }
   document.getElementById(`mcexp${qi}`).classList.add('show');
+}
+
+function resetMC() {
+  mcAnswered = new Array(MC.length).fill(false);
+  mcScore = 0;
+  buildMC();
 }
 
 buildMC();
@@ -1125,27 +1149,35 @@ const woState = WO.map(w => ({
 }));
 
 let woScore = 0;
+let woOrder = [];
 
 function buildWO() {
   const c = document.getElementById('wo-container');
-  c.innerHTML = WO.map((q,qi) => `
+  woOrder = WO.map(q => {
+    const indices = q.words.map((_, i) => i);
+    return shuffleArray(indices);
+  });
+
+  c.innerHTML = WO.map((q,qi) => {
+    const shuffledIndices = woOrder[qi];
+    return `
     <div class="wo-item" id="woi${qi}">
       <div class="wo-q-label">${qi+1}. ${q.label}</div>
       <div class="zone-label">Woorden — klik in de goede volgorde:</div>
       <div class="word-pool" id="wpool${qi}">
-        ${q.words.map((w,wi) =>
-          `<span class="chip chip-pool" id="wchip${qi}_${wi}" onclick="pickWO(${qi},${wi})">${w}</span>`
+        ${shuffledIndices.map((wi) =>
+          `<span class="chip chip-pool" id="wchip${qi}_${wi}" onclick="pickWO(${qi},${wi})">${q.words[wi]}</span>`
         ).join('')}
       </div>
       <div class="zone-label">Jouw zin:</div>
       <div class="answer-zone" id="wzone${qi}"></div>
       <div class="btn-row">
         <button class="btn btn-orange btn-sm" onclick="checkWO(${qi})">✔ Controleer</button>
-        <button class="btn btn-ghost btn-sm" onclick="resetWO(${qi})">↺ Reset</button>
+        <button class="btn btn-ghost btn-sm" onclick="resetWO(${qi})">↺ Reset / Hussel</button>
       </div>
       <div class="wo-feedback" id="wfb${qi}"></div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function pickWO(qi, wi) {
