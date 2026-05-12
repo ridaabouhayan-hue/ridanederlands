@@ -369,7 +369,7 @@
     let schrijfVragen=['Zoek je vaak woorden op? Welk woordenboek of app gebruik je?', 'Schrijf 3 nieuwe woorden op die je vandaag hebt geleerd. Wat is de betekenis?'];
     function buildSchrijf(){
         const ul=document.getElementById('schrijf1');
-        ul.innerHTML='<li style="margin-bottom:14px"><div class="tip-blok"><strong data-translate="schrijfTip">🤚 Laat je zinnen zien aan de docent!</strong></div></li>';
+        ul.innerHTML='<li style="margin-bottom:14px"><div class="tip-blok"><strong data-translate="schrijfTip">🤚 Laat je zinnen zien aan de docent! (Show your sentences to the teacher)</strong></div></li>';
         schrijfVragen.forEach((v,i)=>{
             ul.innerHTML+=`<li>
                 <label style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:5px;">${i+1}. ${v}</label>
@@ -383,26 +383,26 @@
         const langBtn = document.querySelector('.lang-btn.active');
         if(!langBtn) return;
         const lang = langBtn.textContent.toLowerCase();
-        let targetCode = null;
-        if(lang.includes('english')) targetCode = 'en';
-        else if(lang.includes('türkçe')) targetCode = 'tr';
-        else if(lang.includes('عربية')) targetCode = 'ar';
-        else if(lang.includes('پښتو')) targetCode = 'ps';
-        if(!targetCode) {
-            schrijfVragen.forEach((_,i)=>{ const el=document.getElementById('schr-trans-'+i); if(el) el.textContent=''; });
+        let targetCode = 'en';
+        if('english' in lang) targetCode = 'en';
+        else if('türkçe' in lang) targetCode = 'tr';
+        else if('عربية' in lang) targetCode = 'ar';
+        else if('پښتو' in lang) targetCode = 'ps';
+        else {
+            schrijfVragen.forEach((_,i)=>document.getElementById('schr-trans-'+i).textContent='');
             return;
         }
         for(let i=0; i<schrijfVragen.length; i++) {
             let el = document.getElementById('schr-trans-'+i);
             if(!el) continue;
-            el.textContent = "⏳ Vertalen...";
+            el.textContent = "Vertalen... (Translating...)";
             try {
                 let res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(schrijfVragen[i])}&langpair=nl|${targetCode}`);
                 let data = await res.json();
                 if(data && data.responseData && data.responseData.translatedText) {
                     el.textContent = data.responseData.translatedText;
-                    el.dir = (targetCode === 'ar' || targetCode === 'ps') ? 'rtl' : 'ltr';
-                } else { el.textContent = ''; }
+                    if(targetCode === 'ar' || targetCode === 'ps') el.dir = 'rtl';
+                }
             } catch(e) { el.textContent = ''; }
         }
     }

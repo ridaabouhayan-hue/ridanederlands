@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dutch Past Tense (Perfectum)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f1419;
+      --bg-card: #1a1f2e;
+      --bg-card-light: #242b3d;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #334155;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .formula-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .formula-item {
+      background: var(--bg-card);
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .formula-item.hebben { color: var(--accent-blue); }
+    .formula-item.zijn { color: var(--accent-purple); }
+    .formula-item span { color: var(--accent-green); font-weight: 600; }
+
+    .plus {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    /* Main Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 1000px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .card.regular::before {
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+    }
+
+    .card.irregular::before {
+      background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .card.regular .card-icon {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+    }
+
+    .card.irregular .card-icon {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Flowchart */
+    .flowchart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-step {
+      background: var(--bg-card-light);
+      padding: 1rem 1.8rem;
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+      border: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .flow-step.start {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      border: none;
+    }
+
+    .flow-step .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+
+    .flow-step.start .label {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .flow-step .verb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .arrow-down {
+      width: 2px;
+      height: 30px;
+      background: var(--border-color);
+      position: relative;
+    }
+
+    .arrow-down::after {
+      content: '▼';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--border-color);
+      font-size: 0.7rem;
+    }
+
+    /* Decision Box */
+    .decision-box {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      transform: rotate(0deg);
+      text-align: center;
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .decision-box .question {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .decision-box .mnemonics {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .decision-box .mnemonic-highlight {
+      background: rgba(255,255,255,0.2);
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Branch */
+    .branch-container {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .branch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .branch-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .branch-label {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .branch-label.yes {
+      background: var(--accent-green);
+      color: white;
+    }
+
+    .branch-label.no {
+      background: var(--accent-blue);
+      color: white;
+    }
+
+    .branch-line {
+      width: 2px;
+      height: 25px;
+      background: var(--border-color);
+    }
+
+    .result-box {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.3rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .result-box.t-ending {
+      background: rgba(16, 185, 129, 0.2);
+      border: 2px solid var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .result-box.d-ending {
+      background: rgba(59, 130, 246, 0.2);
+      border: 2px solid var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Example */
+    .example-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .example-step {
+      background: var(--bg-card-light);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .example-arrow {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .example-step.final {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .example-step.final.d {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Irregular Section */
+    .irregular-content {
+      text-align: center;
+    }
+
+    .warning-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .irregular-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .irregular-item {
+      background: var(--bg-card-light);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .irregular-item .infinitive {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .irregular-item .participle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent-orange);
+      font-weight: 600;
+    }
+
+    /* Example Sentences Section */
+    .sentences-section {
+      margin-top: 2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .sentences-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1rem;
+    }
+
+    .sentence-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .sentence-type {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .sentence-type.reg-t {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .sentence-type.reg-d {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .sentence-type.irreg {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .sentence-content {
+      flex: 1;
+    }
+
+    .sentence-dutch {
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+
+    .sentence-dutch .highlight {
+      font-weight: 600;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .sentence-dutch .highlight.t { background: rgba(16, 185, 129, 0.25); color: var(--accent-green); }
+    .sentence-dutch .highlight.d { background: rgba(59, 130, 246, 0.25); color: var(--accent-blue); }
+    .sentence-dutch .highlight.irreg { background: rgba(245, 158, 11, 0.25); color: var(--accent-orange); }
+
+    .sentence-english {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    /* Mnemonic Footer */
+    .mnemonic-footer {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .mnemonic-footer h3 {
+      color: var(--accent-orange);
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+
+    .mnemonic-options {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .mnemonic-option {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+    }
+
+    .mnemonic-option span {
+      color: var(--accent-orange);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Dutch Past Tense</h1>
+      <p class="subtitle">Het Perfectum — Talking about the past</p>
+      <div class="formula-bar">
+        <div class="formula-item hebben"><span>hebben</span> / <span>zijn</span></div>
+        <span class="plus">+</span>
+        <div class="formula-item">ge- + stam + <span>t</span> / <span>d</span> / <span>en</span></div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+      <!-- Regular Verbs Card -->
+      <div class="card regular">
+        <div class="card-header">
+          <div class="card-icon">📐</div>
+          <div>
+            <div class="card-title">Regular Verbs</div>
+            <div class="card-subtitle">Follow the rules — use 't kofschip!</div>
+          </div>
+        </div>
+
+        <div class="flowchart">
+          <!-- Step 1: Infinitive -->
+          <div class="flow-step start">
+            <div class="label">Step 1: Start with infinitive</div>
+            <div class="verb">werken</div>
+          </div>
+          
+          <div class="arrow-down"></div>
+
+          <!-- Step 2: Find stem -->
+          <div class="flow-step">
+            <div class="label">Step 2: Find the stem</div>
+            <div class="verb">werk</div>
+          </div>
+
+          <div class="arrow-down"></div>
+
+          <!-- Decision -->
+          <div class="decision-box">
+            <div class="question">Does the stem end in:</div>
+            <div class="mnemonics">
+              <span class="mnemonic-highlight">t, k, f, s, ch, p</span> ?
+            </div>
+          </div>
+
+          <!-- Branches -->
+          <div class="branch-container">
+            <div class="branch">
+              <div class="branch-arrow">
+                <div class="branch-label yes">YES ✓</div>
+                <div class="branch-line"></div>
+              </div>
+              <div class="result-box t-ending">ge + stam + T</div>
+            </div>
+            
+            <div class="branch">
+              <div class="branch-arrow">
+                <div class="branch-label no">NO ✗</div>
+                <div class="branch-line"></div>
+              </div>
+              <div class="result-box d-ending">ge + stam + D</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Examples -->
+        <div class="example-row">
+          <div class="example-step">werken</div>
+          <span class="example-arrow">→</span>
+          <div class="example-step">wer<strong>k</strong></div>
+          <span class="example-arrow">→</span>
+          <div class="example-step">k in kofschip? ✓</div>
+          <span class="example-arrow">→</span>
+          <div class="example-step final">gewerkt</div>
+        </div>
+
+        <div class="example-row">
+          <div class="example-step">leven</div>
+          <span class="example-arrow">→</span>
+          <div class="example-step">lee<strong>v</strong></div>
+          <span class="example-arrow">→</span>
+          <div class="example-step">v in kofschip? ✗</div>
+          <span class="example-arrow">→</span>
+          <div class="example-step final d">geleefd</div>
+        </div>
+      </div>
+
+      <!-- Irregular Verbs Card -->
+      <div class="card irregular">
+        <div class="card-header">
+          <div class="card-icon">🎲</div>
+          <div>
+            <div class="card-title">Irregular Verbs</div>
+            <div class="card-subtitle">No rules — you must memorize these!</div>
+          </div>
+        </div>
+
+        <div class="irregular-content">
+          <div class="warning-badge">
+            ⚠️ These verbs don't follow 't kofschip — just learn them!
+          </div>
+
+          <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Irregular verbs often end in <strong style="color: var(--accent-orange);">-en</strong> and the vowel changes
+          </p>
+
+          <div class="irregular-grid">
+            <div class="irregular-item">
+              <div class="infinitive">gaan (to go)</div>
+              <div class="participle">gegaan</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">komen (to come)</div>
+              <div class="participle">gekomen</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">eten (to eat)</div>
+              <div class="participle">gegeten</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">drinken (to drink)</div>
+              <div class="participle">gedronken</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">slapen (to sleep)</div>
+              <div class="participle">geslapen</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">lezen (to read)</div>
+              <div class="participle">gelezen</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">schrijven (to write)</div>
+              <div class="participle">geschreven</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">zien (to see)</div>
+              <div class="participle">gezien</div>
+            </div>
+            <div class="irregular-item">
+              <div class="infinitive">zijn (to be)</div>
+              <div class="participle">geweest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Sentences -->
+    <section class="sentences-section">
+      <h2 class="section-title">📝 Example Sentences</h2>
+      
+      <div class="sentences-grid">
+        <div class="sentence-card">
+          <div class="sentence-type reg-t">✓</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">Ik <span class="highlight t">heb</span> gisteren <span class="highlight t">gewerkt</span>.</div>
+            <div class="sentence-english">I worked yesterday.</div>
+          </div>
+        </div>
+
+        <div class="sentence-card">
+          <div class="sentence-type reg-t">✓</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">Hij <span class="highlight t">heeft</span> de hele dag <span class="highlight t">gefietst</span>.</div>
+            <div class="sentence-english">He cycled all day.</div>
+          </div>
+        </div>
+
+        <div class="sentence-card">
+          <div class="sentence-type reg-d">✓</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">Wij <span class="highlight d">hebben</span> Nederlands <span class="highlight d">geleerd</span>.</div>
+            <div class="sentence-english">We learned Dutch.</div>
+          </div>
+        </div>
+
+        <div class="sentence-card">
+          <div class="sentence-type reg-d">✓</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">Ze <span class="highlight d">heeft</span> in Eindhoven <span class="highlight d">gewoond</span>.</div>
+            <div class="sentence-english">She lived in Eindhoven.</div>
+          </div>
+        </div>
+
+        <div class="sentence-card">
+          <div class="sentence-type irreg">★</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">Ik <span class="highlight irreg">ben</span> naar Amsterdam <span class="highlight irreg">gegaan</span>.</div>
+            <div class="sentence-english">I went to Amsterdam.</div>
+          </div>
+        </div>
+
+        <div class="sentence-card">
+          <div class="sentence-type irreg">★</div>
+          <div class="sentence-content">
+            <div class="sentence-dutch">We <span class="highlight irreg">hebben</span> koffie <span class="highlight irreg">gedronken</span>.</div>
+            <div class="sentence-english">We drank coffee.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mnemonic Footer -->
+    <div class="mnemonic-footer">
+      <h3>💡 Remember 't kofschip — pick your favorite mnemonic!</h3>
+      <div class="mnemonic-options">
+        <div class="mnemonic-option">'<span>t</span> <span>k</span>o<span>f</span><span>s</span><span>ch</span>i<span>p</span></div>
+        <div class="mnemonic-option"><span>s</span>o<span>f</span><span>t</span> <span>k</span>et<span>ch</span>u<span>p</span></div>
+        <div class="mnemonic-option">x<span>t</span><span>c</span> <span>k</span>o<span>f</span><span>f</span>ie<span>s</span>ho<span>p</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
