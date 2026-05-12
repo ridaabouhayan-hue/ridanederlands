@@ -281,8 +281,38 @@
     
     let _ttsAudio = null;
     function speak(text) {
-        if (!text) return;
-        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
+    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers
+    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
         _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
         _ttsAudio.play().catch(() => {
             if ('speechSynthesis' in window) {
@@ -356,7 +386,7 @@
         "Onze auto is stuk ."
     ];
     let activeZinBlocks=[];
-    function buildZinnen(){
+    function buildZinnen(){if(typeof zinData !== "undefined") zinData = shuffle(zinData);
         const w=document.getElementById('zo-wrapper');w.innerHTML='';activeZinBlocks=[];
         zinData.forEach((zin,i)=>{
             const parts=zin.split(' ');const shuf=shuffle(parts);
@@ -394,7 +424,7 @@
         "Dat is zijn fiets.",
         "Waar is jullie huis?"
     ];
-    function buildDictee(){
+    function buildDictee(){if(typeof dicteeData !== "undefined") dicteeData = shuffle(dicteeData);
         const ul=document.getElementById('dictee1');ul.innerHTML='';
         dicteeData.forEach((item,i)=>{
             ul.innerHTML+=`<li>

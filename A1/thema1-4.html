@@ -108,6 +108,8 @@
     </div>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
     <script>
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
     const VOCAB=[
         {nl:'de broer, de broers',en:'brother',tr:'erkek kardeş',ar:'أخ',ps:'ورور',ex:'Mijn broer is 20 jaar.'},
         {nl:'de dochter, de dochters',en:'daughter',tr:'kız',ar:'ابنة',ps:'لور',ex:'Mijn dochter heet Sara.'},
@@ -124,8 +126,38 @@
     const UITLEG={nl:`<div class="uitleg-box"><h3>Familieleden</h3><p>In paragraaf 1.4 leer je de woorden voor je familie.</p><table style="width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0"><thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">👤 NL</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">🇬🇧 EN</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Emoji</th></tr></thead><tbody><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">vader</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">father</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👨</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">moeder</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">mother</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👩</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">broer</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">brother</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👦</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">zus</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">sister</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👧</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">zoon</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">son</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">🧒</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">dochter</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">daughter</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">🧒</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">opa</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">grandfather</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👴</td></tr><tr><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">oma</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">grandmother</td><td style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">👵</td></tr></tbody></table></div><div class="tip-blok"><strong>Let op:</strong> vader/moeder = ouders | zoon/dochter = kinderen | opa/oma = grootouders</div>`,en:`<div class="uitleg-box"><h3>Family members</h3><div class="tip-blok"><strong>Key words:</strong> vader (father) · moeder (mother) · broer (brother) · zus (sister) · zoon (son) · dochter (daughter) · opa (grandfather) · oma (grandmother)</div></div>`,tr:`<div class="uitleg-box"><h3>Aile üyeleri</h3><div class="tip-blok"><strong>Temel kelimeler:</strong> vader (baba) · moeder (anne) · broer (erkek kardeş) · zus (kız kardeş) · zoon (oğul) · dochter (kız) · opa (büyükbaba) · oma (büyükanne)</div></div>`,ar:`<div class="uitleg-box" dir="rtl"><h3>أفراد العائلة</h3><div class="tip-blok" dir="rtl"><strong>كلمات أساسية:</strong> vader (أب) · moeder (أم) · broer (أخ) · zus (أخت) · zoon (ابن) · dochter (ابنة) · opa (جد) · oma (جدة)</div></div>`,ps:`<div class="uitleg-box" dir="rtl"><h3>د کورنۍ غړي</h3><div class="tip-blok" dir="rtl"><strong>اساسي کلمې:</strong> vader (پلار) · moeder (مور) · broer (ورور) · zus (خور) · zoon (زوی) · dochter (لور) · opa (نیکه) · oma (انا)</div></div>`};
     let _ttsAudio = null;
     function speak(text) {
-        if (!text) return;
-        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
+    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers
+    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
         
         // Probeer eerst Google TTS (altijd Nederlands)
         _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);

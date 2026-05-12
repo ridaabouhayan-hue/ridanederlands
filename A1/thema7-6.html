@@ -233,18 +233,48 @@
     let UITLEG={
         nl:`<div class="uitleg-box"><h3>📦 De Voorzetsels (Waar is het?)</h3><p>Voorzetsels vertellen waar iets of iemand is.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>Op</strong> de doos.</li><li><strong>In</strong> de doos.</li><li><strong>Onder</strong> de doos.</li><li><strong>Voor</strong> de doos.</li><li><strong>Achter</strong> de doos.</li><li><strong>Naast</strong> de doos.</li><li><strong>Tussen</strong> twee dozen.</li><li><strong>Boven</strong> de doos (het hangt, het raakt de doos niet).</li></ul></div>`,
         en:`<div class="uitleg-box"><h3>📦 The Prepositions (Where is it?)</h3><p>Prepositions tell where something or someone is.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li><strong>Op</strong> the box (on).</li><li><strong>In</strong> the box (in).</li><li><strong>Onder</strong> the box (under).</li><li><strong>Voor</strong> the box (in front of).</li><li><strong>Achter</strong> the box (behind).</li><li><strong>Naast</strong> the box (next to).</li><li><strong>Tussen</strong> two boxes (between).</li><li><strong>Boven</strong> the box (above).</li></ul></div>`,
-        tr:`<div class="uitleg-box"><h3>📦 Edatlar (Nerede?)</h3><p>Edatlar bir şeyin veya birinin nerede olduğunu söyler.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li>Kutunun <strong>op</strong> (üzerinde).</li><li>Kutunun <strong>in</strong> (içinde).</li><li>Kutunun <strong>onder</strong> (altında).</li><li>Kutunun <strong>voor</strong> (önünde).</li><li>Kutunun <strong>achter</strong> (arkasında).</li><li>Kutunun <strong>naast</strong> (yanında).</li><li>İki kutunun <strong>tussen</strong> (arasında).</li><li>Kutunun <strong>boven</strong> (yukarısında).</li></ul></div>`,
+        tr:`<div class="uitleg-box"><h3>📦 Edatlar (Nerede?)</h3><p>Edatlar bir şeyin veya birinin nerede olduğunu söyler.</p><ul style="margin:.5rem 0 0;padding-left:1.3em;font-size:.93rem;line-height:2"><li>Kutunun <strong>op</strong>.</li><li>Kutunun <strong>in</strong>.</li><li>Kutunun <strong>onder</strong>.</li><li>Kutunun <strong>voor</strong>.</li><li>Kutunun <strong>achter</strong>.</li><li>Kutunun <strong>naast</strong>.</li><li>İki kutunun <strong>tussen</strong>.</li><li>Kutunun <strong>boven</strong>.</li></ul></div>`,
         ar:`<div class="uitleg-box" dir="rtl"><h3>📦 حروف الجر (أين هي؟)</h3><p>تخبر حروف الجر بمكان وجود شيء أو شخص ما.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>Op</strong> الصندوق (على).</li><li><strong>In</strong> الصندوق (في).</li><li><strong>Onder</strong> الصندوق (تحت).</li><li><strong>Voor</strong> الصندوق (أمام).</li><li><strong>Achter</strong> الصندوق (خلف).</li><li><strong>Naast</strong> الصندوق (بجانب).</li><li><strong>Tussen</strong> صندوقين (بين).</li><li><strong>Boven</strong> الصندوق (فوق).</li></ul></div>`,
-        ps:`<div class="uitleg-box" dir="rtl"><h3>📦 د ځای حروف (چیرته دی؟)</h3><p>د ځای حروف ښیې چې یو شی یا یو څوک چیرته دی.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li>د بکس <strong>op</strong> (باندې).</li><li>د بکس <strong>in</strong> (کې).</li><li>د بکس <strong>onder</strong> (لاندې).</li><li>د بکس <strong>voor</strong> (مخکې).</li><li>د بکس <strong>achter</strong> (شاته).</li><li>د بکس <strong>naast</strong> (څنګ ته).</li><li>د دوه بکسونو <strong>tussen</strong> (تر منځ).</li><li>د بکس <strong>boven</strong> (پورته).</li></ul></div>`,
+        ps:`<div class="uitleg-box" dir="rtl"><h3>📦 د ځای حروف (چیرته دی؟)</h3><p>د ځای حروف ښیې چې یو شی یا یو څوک چیرته دی.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li>د بکس <strong>op</strong>.</li><li>د بکس <strong>in</strong>.</li><li>د بکس <strong>onder</strong>.</li><li>د بکس <strong>voor</strong>.</li><li>د بکس <strong>achter</strong>.</li><li>د بکس <strong>naast</strong>.</li><li>د دوه بکسونو <strong>tussen</strong>.</li><li>د بکس <strong>boven</strong>.</li></ul></div>`,
     };
     
     let _ttsAudio = null;
     function speak(text) {
-        if (!text) return;
-        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
+    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers
+    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
         
         // Zorg voor een kleine pauze aan het begin zodat het eerste woord niet wegvalt
-        let spokenText = ". . . " + text;
+        let spokenText = ". . . . . " + text;
         
         // Probeer eerst Google TTS (altijd Nederlands)
         _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
@@ -316,7 +346,8 @@
         {text:"Ik zit in de auto, ik stap er ___.", opts:['in','uit','op'], ans:'uit'},
         {text:"Ik hang het schilderij ___ de muur.", opts:['aan','in','boven'], ans:'aan'}
     ];
-    function buildMC(){const ul=document.getElementById('mc-voor');ul.innerHTML='';mcData.forEach((item,i)=>{ul.innerHTML+=`<li>${item.text} <select id="mc-voor-${i}"><option value="">-- kies --</option>${shuffle(item.opts).map(o=>`<option value="${o}">${o}</option>`).join('')}</select></li>`;});}
+    function buildMC(){
+  if(typeof MC !== "undefined") MC = shuffle(MC);if(typeof mcData !== "undefined") mcData = shuffle(mcData);const ul=document.getElementById('mc-voor');ul.innerHTML='';mcData.forEach((item,i)=>{ul.innerHTML+=`<li>${item.text} <select id="mc-voor-${i}"><option value="">-- kies --</option>${shuffle(item.opts).map(o=>`<option value="${o}">${o}</option>`).join('')}</select></li>`;});}
     function checkMC(ulId, scoreId){
         let g=0; 
         const data = ulId === 'mc-voor' ? mcData : [];
@@ -379,7 +410,7 @@
     ];
     let activeZinBlocks=[];
     function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-    function buildZinnen(){
+    function buildZinnen(){if(typeof zinData !== "undefined") zinData = shuffle(zinData);
         const w=document.getElementById('zo-wrapper');w.innerHTML='';activeZinBlocks=[];
         zinData.forEach((zin,i)=>{
             const parts=zin.split(' ');const shuf=shuffle(parts);
@@ -423,7 +454,7 @@
         "Ik fiets over de brug.",
         "De supermarkt is naast de bakker."
     ];
-    function buildDictee(){
+    function buildDictee(){if(typeof dicteeData !== "undefined") dicteeData = shuffle(dicteeData);
         const ul=document.getElementById('dictee1');ul.innerHTML='';
         dicteeData.forEach((item,i)=>{
             ul.innerHTML+=`<li>

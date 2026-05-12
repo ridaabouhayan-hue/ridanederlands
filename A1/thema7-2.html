@@ -310,7 +310,7 @@ const I18N = {
         uitlegTitle1: "❓ Asking questions with 'How?'", uitlegText1: "With <strong>Hoe?</strong> you ask about the way/manner. Common question words:",
         uitlegTitle2: "Other question words:", uitlegTip: "<strong>Pay attention to word order!</strong> After the question word comes the verb, then the subject:<br><em><strong>Hoe</strong> ga <strong>je</strong> naar school?</em>",
         vocabTitle: "📚 Vocabulary", vocabIntro: "Click the speaker icon to hear the word.", thExample: "Example sentence",
-        opd1_title: "🔗 Assignment 1 — Connect", opd1_instr: "Click a question (left) and the correct answer (right).",
+        opd1_title: "🔗 Assignment 1 — Connect", opd1_instr: "Click a question and the correct answer.",
         opd2_title: "🎧 Assignment 2 — Dictation", opd2_instr: "Click the speaker and type exactly what you hear.",
         opd3_title: "🎯 Assignment 3 — Multiple Choice", opd3_instr: "Read the question and select the right answer.",
         opd4_title: "🧩 Assignment 4 — Fill in", opd4_instr: "Choose from: Waar, Hoeveel, Hoelang, Wanneer, Wie, Hoe, Waarom, Wat, Hoe laat",
@@ -469,6 +469,36 @@ let _ttsAudio = null;
 function speak(text) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
+    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers
+    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
     
     // Probeer eerst Google TTS (altijd Nederlands)
     _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);

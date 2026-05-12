@@ -101,6 +101,8 @@
     </div>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
     <script>
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
     const VOCAB=[
         {nl:'het alfabet',en:'alphabet',tr:'alfabe',ar:'الأبجدية',ps:'الفبا',ex:'Het alfabet heeft 26 letters.'},
         {nl:'de letter, de letters',en:'letter',tr:'harf',ar:'حرف',ps:'توری',ex:"De letter 'a' is een klinker."},
@@ -109,11 +111,41 @@
         {nl:'spellen',en:'to spell',tr:'harflemek',ar:'تهجئة',ps:'تورین توری کول',ex:'Hoe spel je "Julia"? J-U-L-I-A'},
     ];
     const UI={nl:{subtitle:'Leer het alfabet en letters.',vocabTitle:'Woorden van paragraaf 1.5',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands'},en:{subtitle:'Learn the alphabet and letters.',vocabTitle:'Words of paragraph 1.5',thExample:'Example sentence',thLang:'🇬🇧 English'},tr:{subtitle:'Alfabeyi ve harfleri öğrenin.',vocabTitle:"Paragraf 1.5'in kelimeleri",thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe'},ar:{subtitle:'تعلم الأبجدية والحروف.',vocabTitle:'كلمات الفقرة 1.5',thExample:'جملة مثال',thLang:'🇸🇦 العربية'},ps:{subtitle:'الفبا او توري زده کړئ.',vocabTitle:'د پراګراف 1.5 کلمې',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو'}};
-    const UITLEG={nl:`<div class="uitleg-box"><h3>Het Nederlandse alfabet</h3><p>Het Nederlandse alfabet heeft <strong>26 letters</strong>. Er zijn <strong>5 klinkers</strong> (a, e, i, o, u) en <strong>21 medeklinkers</strong>.</p><div style="font-size:1.3rem;letter-spacing:3px;padding:12px;background:rgba(99,102,241,.06);border-radius:8px;margin:8px 0;line-height:2">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div><div class="tip-blok"><strong>Klinkers:</strong> A · E · I · O · U (5 klinkers) · De rest zijn medeklinkers.</div></div>`,en:`<div class="uitleg-box"><h3>The Dutch alphabet</h3><p>The Dutch alphabet has <strong>26 letters</strong>. There are <strong>5 vowels</strong> (a, e, i, o, u) and <strong>21 consonants</strong>.</p><div class="tip-blok"><strong>Vowels:</strong> A · E · I · O · U</div></div>`,tr:`<div class="uitleg-box"><h3>Hollanda alfabesi</h3><p>Hollanda alfabesinde <strong>26 harf</strong> vardır. <strong>5 sesli harf</strong> (a, e, i, o, u) ve <strong>21 ünsüz harf</strong> vardır.</p></div>`,ar:`<div class="uitleg-box" dir="rtl"><h3>الأبجدية الهولندية</h3><p>الأبجدية الهولندية لها <strong>26 حرفاً</strong>. هناك <strong>5 حروف علة</strong> (a, e, i, o, u) و <strong>21 حرف ساكن</strong>.</p></div>`,ps:`<div class="uitleg-box" dir="rtl"><h3>هالنډي الفبا</h3><p>هالنډي الفباء <strong>۲۶ توري</strong> لري. <strong>۵ غږیز توري</strong> (a, e, i, o, u) او <strong>۲۱ بې غږه توري</strong> شته.</p></div>`};
+    const UITLEG={nl:`<div class="uitleg-box"><h3>Het Nederlandse alfabet</h3><p>Het Nederlandse alfabet heeft <strong>26 letters</strong>. Er zijn <strong>5 klinkers</strong> en <strong>21 medeklinkers</strong>.</p><div style="font-size:1.3rem;letter-spacing:3px;padding:12px;background:rgba(99,102,241,.06);border-radius:8px;margin:8px 0;line-height:2">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div><div class="tip-blok"><strong>Klinkers:</strong> A · E · I · O · U (5 klinkers) · De rest zijn medeklinkers.</div></div>`,en:`<div class="uitleg-box"><h3>The Dutch alphabet</h3><p>The Dutch alphabet has <strong>26 letters</strong>. There are <strong>5 vowels</strong> and <strong>21 consonants</strong>.</p><div class="tip-blok"><strong>Vowels:</strong> A · E · I · O · U</div></div>`,tr:`<div class="uitleg-box"><h3>Hollanda alfabesi</h3><p>Hollanda alfabesinde <strong>26 harf</strong> vardır. <strong>5 sesli harf</strong> ve <strong>21 ünsüz harf</strong> vardır.</p></div>`,ar:`<div class="uitleg-box" dir="rtl"><h3>الأبجدية الهولندية</h3><p>الأبجدية الهولندية لها <strong>26 حرفاً</strong>. هناك <strong>5 حروف علة</strong> و <strong>21 حرف ساكن</strong>.</p></div>`,ps:`<div class="uitleg-box" dir="rtl"><h3>هالنډي الفبا</h3><p>هالنډي الفباء <strong>۲۶ توري</strong> لري. <strong>۵ غږیز توري</strong> او <strong>۲۱ بې غږه توري</strong> شته.</p></div>`};
     let _ttsAudio = null;
     function speak(text) {
-        if (!text) return;
-        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
+    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    
+    // Fix 'file' pronunciation and add delay for Bluetooth speakers
+    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(spokenText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
         
         // Probeer eerst Google TTS (altijd Nederlands)
         _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
