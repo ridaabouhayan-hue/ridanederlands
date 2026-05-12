@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -24,21 +24,15 @@
             document.getElementById('toggleIcon').textContent = on ? '☀️' : '🌙';
             document.getElementById('toggleLabel').textContent = on ? 'Licht' : 'Donker';
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.body.classList.contains('dark')) {
-                document.getElementById('toggleIcon').textContent = '☀️';
-                document.getElementById('toggleLabel').textContent = 'Licht';
-            }
-        });
     </script>
 <div class="container">
 
-    <div class="lang-tabs">
-        <button class="lang-tab active"><span class="flag">🇳🇱</span> Nederlands</button>
-        <button class="lang-tab"><span class="flag">🇬🇧</span> English <span class="wip-tag">🚧</span></button>
-        <button class="lang-tab"><span class="flag">🇸🇦</span> العربية <span class="wip-tag">🚧</span></button>
-        <button class="lang-tab"><span class="flag">🇹🇷</span> Türkçe <span class="wip-tag">🚧</span></button>
-        <button class="lang-tab"><span class="flag">🇦🇫</span> پښتو <span class="wip-tag">🚧</span></button>
+    <div class="lang-tabs" id="lang-tabs">
+        <button class="lang-tab active" onclick="setLang('nl', event)"><span class="flag">🇳🇱</span> Nederlands</button>
+        <button class="lang-tab" onclick="setLang('en', event)"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-tab" onclick="setLang('ar', event)"><span class="flag">🇸🇦</span> العربية</button>
+        <button class="lang-tab" onclick="setLang('tr', event)"><span class="flag">🇹🇷</span> Türkçe</button>
+        <button class="lang-tab" onclick="setLang('ps', event)"><span class="flag">🇦🇫</span> پښتو</button>
     </div>
 
     <div class="breadcrumb">
@@ -47,27 +41,95 @@
 
     <header style="text-align:left; margin-bottom:1.5rem;">
         <h1 style="font-size:1.9rem;">✍️ Interpunctie</h1>
-        <p class="subtitle" style="text-align:left; margin:0;">Onderwerp 2 van 7</p>
+        <p class="subtitle" style="text-align:left; margin:0;" data-translate="subtitle">Onderwerp 2 van 7</p>
     </header>
 
-    <!-- WIP Banner -->
-    <div class="wip-banner">
-        <div class="wip-icon">🚧</div>
-        <h2>Pagina in constructie</h2>
-        <p>Deze pagina wordt binnenkort aangevuld met uitleg, voorbeelden en oefeningen.<br>
-           Kom snel terug!</p>
+    <!-- LESSON SECTION -->
+    <div class="lesson-section animate-in">
+        <h2 data-translate="uitlegTitle">📋 Uitleg: Leestekens</h2>
+        
+        <!-- PUNT -->
+        <div class="leesteken-item" style="margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:2rem; font-weight:900; color:var(--amber);">.</span>
+                <strong data-translate="puntLabel">De punt — einde van een zin</strong>
+            </div>
+            <div class="example-box">
+                <button class="speak-btn" onclick="speak('Ik ben Jan.')">🔊</button>
+                <button class="slow-speak-btn" onclick="speak('Ik ben Jan.', true)" title="Langzaam">🐢</button>
+                <span>Ik ben Jan<span style="color:var(--amber); font-weight:900;">.</span></span>
+                <div class="trans-text" id="trans-punt" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">I am Jan.</div>
+            </div>
+        </div>
+
+        <!-- VRAAGTEKEN -->
+        <div class="leesteken-item" style="margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:2rem; font-weight:900; color:var(--amber);">?</span>
+                <strong data-translate="vraagLabel">Het vraagteken — je stelt een vraag</strong>
+            </div>
+            <div class="example-box">
+                <button class="speak-btn" onclick="speak('Wie ben jij?')">🔊</button>
+                <button class="slow-speak-btn" onclick="speak('Wie ben jij?', true)" title="Langzaam">🐢</button>
+                <span>Wie ben jij<span style="color:var(--amber); font-weight:900;">?</span></span>
+                <div class="trans-text" id="trans-vraag" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">Who are you?</div>
+            </div>
+        </div>
+
+        <!-- UITROEPTEKEN -->
+        <div class="leesteken-item" style="margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:2rem; font-weight:900; color:var(--amber);">!</span>
+                <strong data-translate="uitroepLabel">Het uitroepteken — iets is belangrijk</strong>
+            </div>
+            <div class="example-box">
+                <button class="speak-btn" onclick="speak('Pas op!')">🔊</button>
+                <button class="slow-speak-btn" onclick="speak('Pas op!', true)" title="Langzaam">🐢</button>
+                <span>Pas op<span style="color:var(--amber); font-weight:900;">!</span></span>
+                <div class="trans-text" id="trans-uitroep" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">Watch out!</div>
+            </div>
+        </div>
+
+        <!-- KOMMA -->
+        <div class="leesteken-item">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:2rem; font-weight:900; color:var(--amber);">,</span>
+                <strong data-translate="kommaLabel">De komma — pauze in een zin</strong>
+            </div>
+            <div class="example-box">
+                <button class="speak-btn" onclick="speak('Ik koop brood, kaas en melk.')">🔊</button>
+                <button class="slow-speak-btn" onclick="speak('Ik koop brood, kaas en melk.', true)" title="Langzaam">🐢</button>
+                <span>Ik koop brood<span style="color:var(--amber); font-weight:900;">,</span> kaas en melk.</span>
+                <div class="trans-text" id="trans-komma" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">I buy bread, cheese and milk.</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Preview -->
-    <div class="lesson-section">
-        <h2>📋 Wat leer je hier?</h2>
-        <p>🔜 <strong>Uitleg:</strong> De punt <strong>.</strong> — einde van een zin</p>
-        <p>🔜 <strong>Uitleg:</strong> Het vraagteken <strong>?</strong> — je stelt een vraag</p>
-        <p>🔜 <strong>Uitleg:</strong> Het uitroepteken <strong>!</strong> — iets is belangrijk of enthousiast</p>
-        <p>🔜 <strong>Uitleg:</strong> De komma <strong>,</strong> — pauze in een zin of opsomming</p>
-        <p>🔜 <strong>Oefening 1:</strong> Welk leesteken hoort hier? (meerkeuze)</p>
-        <p>🔜 <strong>Oefening 2:</strong> Voeg de juiste interpunctie toe aan de zin</p>
-        <p>🔜 <strong>Mini-toets:</strong> Test je kennis van leestekens</p>
+    <!-- EXERCISE 1: MCQ -->
+    <div class="exercise-section animate-in" style="animation-delay:0.2s;">
+        <h2 data-translate="oef1Title">🔜 Oefening 1: Welk leesteken hoort hier?</h2>
+        <p class="exercise-intro" data-translate="oef1Intro">Kies het juiste leesteken.</p>
+        <div id="mcq-container"></div>
+        <div class="score-bar" id="score-mcq" style="display:none;">
+            <div class="score-info">Score: <span id="score-val-mcq">0/5</span></div>
+            <div class="score-progress"><div class="score-fill" id="score-fill-mcq" style="width:0%;"></div></div>
+            <button class="btn-reset" onclick="resetMCQ()">Opnieuw</button>
+        </div>
+    </div>
+
+    <!-- EXERCISE 2: INPUT -->
+    <div class="exercise-section animate-in" style="animation-delay:0.4s;">
+        <h2 data-translate="oef2Title">🔜 Oefening 2: Voeg de juiste interpunctie toe</h2>
+        <p class="exercise-intro" data-translate="oef2Intro">Typ de zin over met een punt, vraagteken of uitroepteken.</p>
+        <div id="input-container"></div>
+        <div class="score-bar" id="score-input" style="display:none;">
+            <div class="score-info">Score: <span id="score-val-input">0/5</span></div>
+            <div class="score-progress"><div class="score-fill" id="score-fill-input" style="width:0%;"></div></div>
+            <button class="btn-reset" onclick="resetInput()">Opnieuw</button>
+        </div>
+        <div style="margin-top:20px; text-align:center;">
+            <button class="btn-next" onclick="checkInput()">✅ Controleer antwoorden</button>
+        </div>
     </div>
 
     <div class="nav-row">
@@ -75,9 +137,287 @@
         <a href="alfa3.html" class="btn-next">Volgende: Woorden &amp; zinnen →</a>
     </div>
 
-    <footer class="site-footer">🇳🇱 Pre-A1 Basiskennis · Onderwerp 2 van 7</footer>
+    <footer class="site-footer" data-translate="footer">🇳🇱 Pre-A1 Basiskennis · Onderwerp 2 van 7</footer>
 
 </div>
+
+<script>
+    let _ttsAudio = null;
+    function speak(text, isSlow = false) {
+        if (!text) return;
+        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        let processedText = text;
+        if (isSlow) { processedText = processedText.split(' ').join(', , '); }
+        let spokenText = ". . . . . . . . . . " + processedText;
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+        _ttsAudio.play().catch(() => {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(processedText);
+                u.lang = 'nl-NL';
+                u.rate = isSlow ? 0.6 : 0.9;
+                window.speechSynthesis.speak(u);
+            }
+        });
+    }
+
+    const UI = {
+        nl: {
+            subtitle: "Onderwerp 2 van 7",
+            uitlegTitle: "📋 Uitleg: Leestekens",
+            puntLabel: "De punt — einde van een zin",
+            vraagLabel: "Het vraagteken — je stelt een vraag",
+            uitroepLabel: "Het uitroepteken — iets is belangrijk",
+            kommaLabel: "De komma — pauze in een zin",
+            oef1Title: "🔜 Oefening 1: Welk leesteken hoort hier?",
+            oef1Intro: "Kies het juiste leesteken.",
+            oef2Title: "🔜 Oefening 2: Voeg de juiste interpunctie toe",
+            oef2Intro: "Typ de zin over met een punt, vraagteken of uitroepteken.",
+            footer: "🇳🇱 Pre-A1 Basiskennis · Onderwerp 2 van 7",
+            transPunt: "Ik ben Jan.",
+            transVraag: "Wie ben jij?",
+            transUitroep: "Pas op!",
+            transKomma: "Ik koop brood, kaas en melk."
+        },
+        en: {
+            subtitle: "Topic 2 of 7",
+            uitlegTitle: "📋 Explanation: Punctuation",
+            puntLabel: "The dot — end of a sentence",
+            vraagLabel: "The question mark — you are asking a question",
+            uitroepLabel: "The exclamation mark — something is important",
+            kommaLabel: "The comma — pause in a sentence",
+            oef1Title: "🔜 Exercise 1: Which punctuation mark belongs here?",
+            oef1Intro: "Choose the correct punctuation mark.",
+            oef2Title: "🔜 Exercise 2: Add the correct punctuation",
+            oef2Intro: "Rewrite the sentence with a dot, question mark or exclamation mark.",
+            footer: "🇳🇱 Pre-A1 Basic Knowledge · Topic 2 of 7",
+            transPunt: "I am Jan.",
+            transVraag: "Who are you?",
+            transUitroep: "Watch out!",
+            transKomma: "I buy bread, cheese and milk."
+        },
+        ar: {
+            subtitle: "الموضوع 2 من 7",
+            uitlegTitle: "📋 شرح: علامات الترقيم",
+            puntLabel: "النقطة — نهاية الجملة",
+            vraagLabel: "علامة الاستفهام — أنت تطرح سؤالاً",
+            uitroepLabel: "علامة التعجب — شيء مهم",
+            kommaLabel: "الفاصلة — وقفة في الجملة",
+            oef1Title: "🔜 التمرين 1: أي علامة ترقيم تنتمي هنا؟",
+            oef1Intro: "اختر علامة الترقيم الصحيحة.",
+            oef2Title: "🔜 التمرين 2: أضف علامات الترقيم الصحيحة",
+            oef2Intro: "أعد كتابة الجملة بنقطة أو علامة استفهام أو علامة تعجب.",
+            footer: "🇳🇱 Pre-A1 المعرفة الأساسية · الموضوع 2 من 7",
+            transPunt: "أنا جان.",
+            transVraag: "من أنت؟",
+            transUitroep: "انتبه!",
+            transKomma: "أنا أشتري الخبز والجبن والحليب."
+        },
+        tr: {
+            subtitle: "Konu 2 / 7",
+            uitlegTitle: "📋 Açıklama: Noktalama İşaretleri",
+            puntLabel: "Nokta — bir cümlenin sonu",
+            vraagLabel: "Soru işareti — bir soru soruyorsunuz",
+            uitroepLabel: "Ünlem işareti — bir şey önemli",
+            kommaLabel: "Virgül — bir cümlede duraklama",
+            oef1Title: "🔜 Alıştırma 1: Buraya hangi noktalama işareti gelmeli?",
+            oef1Intro: "Doğru noktalama işaretini seçin.",
+            oef2Title: "🔜 Alıştırma 2: Doğru noktalamayı ekleyin",
+            oef2Intro: "Cümleyi nokta, soru işareti veya ünlem işareti ile yeniden yazın.",
+            footer: "🇳🇱 Pre-A1 Temel Bilgi · Konu 2 / 7",
+            transPunt: "Ben Jan.",
+            transVraag: "Sen kimsin?",
+            transUitroep: "Dikkat et!",
+            transKomma: "Ekmek, peynir ve süt alıyorum."
+        },
+        ps: {
+            subtitle: "موضوع ۲ له ۷ څخه",
+            uitlegTitle: "📋 تشریح: د ټکي ایښودلو نښې",
+            puntLabel: "ټکی — د جملې پای",
+            vraagLabel: "د پوښتنې نښه — تاسو پوښتنه کوئ",
+            uitroepLabel: "د غږ نښه — یو څه مهم دي",
+            kommaLabel: "کامه — په یوه جمله کې وقفه",
+            oef1Title: "🔜 لومړی تمرین: دلته کومه نښه راځي؟",
+            oef1Intro: "سمه نښه غوره کړئ.",
+            oef2Title: "🔜 دوهم تمرین: سمه نښه ورزیاته کړئ",
+            oef2Intro: "جمله د ټکي، د پوښتنې نښې یا د غږ نښې سره ولیکئ.",
+            footer: "🇳🇱 Pre-A1 بنسټیزه پوهه · موضوع ۲ له ۷ څخه",
+            transPunt: "زه جان یم.",
+            transVraag: "ته څوک یې؟",
+            transUitroep: "پام کوه!",
+            transKomma: "زه ډوډۍ، پنیر او شیدې اخلم."
+        }
+    };
+
+    function setLang(l, event) {
+        document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
+        if (event) event.target.closest('.lang-tab').classList.add('active');
+        
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const k = el.getAttribute('data-translate');
+            if (UI[l][k]) el.textContent = UI[l][k];
+        });
+
+        // Update example translations
+        document.getElementById('trans-punt').textContent = UI[l].transPunt;
+        document.getElementById('trans-vraag').textContent = UI[l].transVraag;
+        document.getElementById('trans-uitroep').textContent = UI[l].transUitroep;
+        document.getElementById('trans-komma').textContent = UI[l].transKomma;
+
+        // RTL check
+        const isRtl = ['ar', 'ps'].includes(l);
+        document.getElementById('trans-punt').dir = isRtl ? 'rtl' : 'ltr';
+        document.getElementById('trans-vraag').dir = isRtl ? 'rtl' : 'ltr';
+        document.getElementById('trans-uitroep').dir = isRtl ? 'rtl' : 'ltr';
+        document.getElementById('trans-komma').dir = isRtl ? 'rtl' : 'ltr';
+    }
+
+    // MCQ EXERCISE
+    const mcqData = [
+        { q: "Hoe gaat het__", options: [".", "?", "!"], a: "?" },
+        { q: "Ik woon in Amsterdam__", options: [".", "?", "!"], a: "." },
+        { q: "Pas op__", options: [".", "?", "!"], a: "!" },
+        { q: "Mijn naam is Sarah__", options: [".", "?", "!"], a: "." },
+        { q: "Waar kom jij vandaan__", options: [".", "?", "!"], a: "?" }
+    ];
+
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    let currentMcqData = [];
+    function buildMCQ() {
+        currentMcqData = shuffle([...mcqData]);
+        const container = document.getElementById('mcq-container');
+        container.innerHTML = '';
+        currentMcqData.forEach((d, i) => {
+            const div = document.createElement('div');
+            div.className = 'q-item';
+            div.innerHTML = `
+                <div class="q-text">
+                    <button class="speak-btn" onclick="speak('${d.q.replace('__', '')}')">🔊</button>
+                    ${i + 1}. ${d.q}
+                </div>
+                <div class="options">
+                    ${d.options.map(o => `<button class="opt-btn" onclick="checkMCQ(${i}, '${o}', event)">${o}</button>`).join('')}
+                </div>
+                <div class="feedback" id="feedback-mcq-${i}"></div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    let mcqScore = 0;
+    let mcqAnswered = 0;
+    function checkMCQ(index, choice, event) {
+        const btn = event.target;
+        const feedback = document.getElementById(`feedback-mcq-${index}`);
+        const parent = btn.parentElement;
+        
+        if (choice === currentMcqData[index].a) {
+            btn.classList.add('correct');
+            feedback.textContent = "✅ Goed!";
+            feedback.className = "feedback correct";
+            mcqScore++;
+        } else {
+            btn.classList.add('wrong');
+            feedback.textContent = `❌ Fout. Het moet zijn: ${currentMcqData[index].a}`;
+            feedback.className = "feedback wrong";
+        }
+        
+        parent.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+        mcqAnswered++;
+        
+        if (mcqAnswered === 5) {
+            document.getElementById('score-mcq').style.display = 'flex';
+            document.getElementById('score-val-mcq').textContent = `${mcqScore}/5`;
+            document.getElementById('score-fill-mcq').style.width = `${(mcqScore / 5) * 100}%`;
+        }
+    }
+
+    function resetMCQ() {
+        mcqScore = 0; mcqAnswered = 0;
+        document.getElementById('score-mcq').style.display = 'none';
+        buildMCQ();
+    }
+
+    // INPUT EXERCISE
+    const inputData = [
+        { q: "Ik heb een rode auto", a: "Ik heb een rode auto." },
+        { q: "Wil je koffie", a: "Wil je koffie?" },
+        { q: "Halt", a: "Halt!" },
+        { q: "De zon schijnt", a: "De zon schijnt." },
+        { q: "Wat is jouw telefoonnummer", a: "Wat is jouw telefoonnummer?" }
+    ];
+
+    let currentInputData = [];
+    function buildInput() {
+        currentInputData = shuffle([...inputData]);
+        const container = document.getElementById('input-container');
+        container.innerHTML = '';
+        currentInputData.forEach((d, i) => {
+            const div = document.createElement('div');
+            div.className = 'q-item';
+            div.innerHTML = `
+                <div class="q-text">${i + 1}. ${d.q}</div>
+                <input type="text" id="input-${i}" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--gray-200); font-family:inherit; font-size:1rem;" placeholder="Typ de zin met interpunctie..." autocomplete="off">
+                <div class="feedback" id="feedback-input-${i}"></div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function checkInput() {
+        let score = 0;
+        currentInputData.forEach((d, i) => {
+            const inp = document.getElementById(`input-${i}`);
+            const feedback = document.getElementById(`feedback-input-${i}`);
+            const val = inp.value.trim();
+            
+            if (val === d.a) {
+                inp.style.borderColor = "var(--green)";
+                feedback.textContent = "✅ Goed!";
+                feedback.className = "feedback correct";
+                score++;
+            } else {
+                inp.style.borderColor = "var(--red)";
+                feedback.textContent = `❌ Fout. Het moet zijn: ${d.a}`;
+                feedback.className = "feedback wrong";
+            }
+        });
+        
+        document.getElementById('score-input').style.display = 'flex';
+        document.getElementById('score-val-input').textContent = `${score}/5`;
+        document.getElementById('score-fill-input').style.width = `${(score / 5) * 100}%`;
+    }
+
+    function resetInput() {
+        document.getElementById('score-input').style.display = 'none';
+        buildInput();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buildMCQ();
+        buildInput();
+    });
+</script>
+
+<style>
+    .speak-btn, .slow-speak-btn {
+        background: none; border: none; cursor: pointer; padding: 4px; vertical-align: middle;
+    }
+    .slow-speak-btn { filter: grayscale(1); opacity: 0.6; font-size: 1.1rem; }
+    .slow-speak-btn:hover { filter: grayscale(0); opacity: 1; transform: scale(1.1); }
+    .trans-text { min-height: 1.2rem; }
+    .opt-btn { margin: 4px; }
+    input:focus { outline: none; border-color: var(--amber-mid) !important; }
+</style>
+
 </body>
 </html>
-
