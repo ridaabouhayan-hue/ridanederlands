@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNM — WOII & Modern Nederland</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --red: #c0392b;
+    --gold: #d4a017;
+    --navy: #1c2e4a;
+    --muted: #7a6e5f;
+    --border: #c8bba8;
+    --green: #2d6a4f;
+    --purple: #5b4fcf;
+    --purple-light: #eeecfb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hero {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 80px);
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(28px, 5.5vw, 58px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.7);
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 18px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+  }
+  .pill:hover, .pill.active { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+
+  .main { max-width: 960px; margin: 0 auto; padding: 50px 24px 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .icon-red  { background: var(--red); }
+  .icon-navy { background: var(--navy); }
+  .section-header h2 { font-size: 30px; font-weight: 900; }
+  .section-header small {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .lead { font-size: 17px; font-weight: 400; line-height: 1.85; color: #2a2420; margin-bottom: 36px; max-width: 720px; }
+  .subheading { font-size: 21px; font-weight: 800; margin-bottom: 18px; }
+
+  /* METAPHOR BOX */
+  .metaphor {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0 28px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .metaphor-emoji { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .metaphor strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metaphor p { font-size: 14.5px; color: #2a2060; line-height: 1.65; }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-warn    { background: #fff8e6; border-left: 5px solid var(--gold); }
+  .callout-info    { background: #eef2f8; border-left: 5px solid var(--navy); }
+  .callout-success { background: #eef7f2; border-left: 5px solid var(--green); }
+  .callout-emoji { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .callout p { font-size: 14.5px; color: #3a3228; line-height: 1.65; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 32px; margin-bottom: 48px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--red), var(--navy));
+    border-radius: 3px;
+  }
+  .tl-item {
+    position: relative;
+    padding: 0 0 34px 28px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+  }
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+  .tl-dot {
+    position: absolute;
+    left: -22px; top: 6px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 3px solid var(--paper);
+    box-shadow: 0 0 0 2px var(--ink);
+  }
+  .dot-red   { background: var(--red); }
+  .dot-gold  { background: var(--gold); }
+  .dot-navy  { background: var(--navy); }
+  .dot-green { background: var(--green); }
+  .tl-year { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 4px; letter-spacing: 1px; }
+  .tl-title { font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+  .tl-text { font-size: 14.5px; color: #3a3228; line-height: 1.7; }
+  .tl-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-red  { background: #fde8e6; color: var(--red); }
+  .badge-navy { background: #e6eaf0; color: var(--navy); }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 36px; }
+  .stat-card { background: var(--navy); color: var(--paper); border-radius: 12px; padding: 24px; text-align: center; }
+  .stat-num { font-size: 34px; font-weight: 900; color: var(--gold); display: block; margin-bottom: 6px; line-height: 1.1; }
+  .stat-label { font-size: 13px; line-height: 1.4; color: rgba(245,240,232,0.8); }
+
+  /* DATE CARDS */
+  .dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .date-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: box-shadow 0.2s;
+  }
+  .date-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+  .date-num { font-size: 21px; font-weight: 900; color: var(--red); min-width: 72px; line-height: 1.2; }
+  .date-desc strong { display: block; font-weight: 800; font-size: 15px; margin-bottom: 4px; }
+  .date-desc span { font-size: 13px; color: var(--muted); }
+
+  /* RIGHTS */
+  .rights-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin: 24px 0; }
+  .right-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: all 0.2s;
+  }
+  .right-card:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,46,74,0.1); }
+  .right-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .right-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .right-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  /* FLOWCHART */
+  .democracy-chart { background: white; border: 1.5px solid var(--border); border-radius: 16px; padding: 32px; margin: 24px 0; text-align: center; }
+  .democracy-chart h3 { font-size: 19px; font-weight: 800; margin-bottom: 28px; color: var(--navy); }
+  .flow-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .flow-box { background: var(--navy); color: var(--paper); border-radius: 8px; padding: 12px 20px; font-size: 13px; font-weight: 800; min-width: 140px; line-height: 1.3; }
+  .flow-box.light { background: var(--cream); color: var(--ink); border: 1.5px solid var(--border); }
+  .flow-box.gold  { background: var(--gold); color: white; }
+  .flow-box.red   { background: var(--red);  color: white; }
+  .flow-arrow { font-size: 20px; color: var(--muted); }
+  .flow-sublabel { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+
+  /* TABLE */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); }
+  .compare-table th { background: var(--navy); color: var(--paper); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 13px 18px; text-align: left; }
+  .compare-table td { padding: 12px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: var(--cream); }
+  .compare-table td:first-child { font-weight: 700; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--navy); white-space: nowrap; }
+  .check { color: var(--green); font-weight: bold; }
+
+  /* EXAM */
+  .exam-section { background: var(--navy); color: var(--paper); border-radius: 16px; padding: 30px 32px; margin-top: 44px; }
+  .exam-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; color: var(--gold); }
+  .exam-tips-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .exam-tips-list li { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 11px 15px; font-size: 13.5px; line-height: 1.5; display: flex; gap: 10px; }
+  .tip-icon { flex-shrink: 0; }
+
+  /* DIVIDER */
+  .section-divider { display: flex; align-items: center; gap: 16px; margin: 60px 0 50px; }
+  .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-symbol { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
+
+  /* QUIZ */
+  .quiz-block { background: var(--cream); border: 2px dashed var(--border); border-radius: 16px; padding: 32px; margin-top: 40px; }
+  .quiz-block h3 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .quiz-q { margin-bottom: 20px; padding: 16px 20px; background: white; border-radius: 10px; border: 1.5px solid var(--border); }
+  .q-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .q-text { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-opt { background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; text-align: left; font-family: 'Nunito', sans-serif; font-weight: 600; }
+  .quiz-opt:hover { background: var(--navy); color: white; border-color: var(--navy); }
+  .quiz-opt.correct { background: #d4edda; border-color: var(--green); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong   { background: #f8d7da; border-color: var(--red);   color: var(--red); }
+  .q-feedback { margin-top: 10px; font-size: 13px; font-style: italic; color: var(--muted); display: none; padding: 8px 12px; background: var(--cream); border-radius: 6px; line-height: 1.55; }
+  .q-feedback.show { display: block; }
+
+  .footer { text-align: center; padding: 32px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 1px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    .dates-grid, .stats-row, .rights-grid, .exam-tips-list { grid-template-columns: 1fr; }
+    .flow-row { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .main { padding: 28px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">KNM · Thema 1 · Modules 6 & 7</div>
+  <h1>De Tweede Wereldoorlog<br>&amp; Modern Nederland</h1>
+  <p>Leer de geschiedenis begrijpen en ontdek hoe Nederland vandaag werkt</p>
+</div>
+
+<div class="nav-pills">
+  <a href="#woii"       class="pill active">⚔️ WOII 1940–1945</a>
+  <a href="#cijfers"    class="pill">📊 Cijfers</a>
+  <a href="#datums"     class="pill">📅 Datums</a>
+  <a href="#modern"     class="pill">🏛️ Modern Nederland</a>
+  <a href="#rechten"    class="pill">⚖️ Grondrechten</a>
+  <a href="#democratie" class="pill">🗳️ Democratie</a>
+  <a href="#quiz"       class="pill">🧠 Oefenvragen</a>
+</div>
+
+<div class="main">
+
+  <!-- WOII -->
+  <div id="woii">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚔️</div>
+      <div>
+        <h2>De Tweede Wereldoorlog</h2>
+        <small>1940 – 1945 · Bezetting &amp; Bevrijding</small>
+      </div>
+    </div>
+
+    <p class="lead">
+      Van 1940 tot 1945 was Nederland bezet door Duitsland. Dit was een van de donkerste periodes in de Nederlandse geschiedenis. Het is belangrijk voor het KNM-examen om de belangrijkste feiten te kennen.
+    </p>
+
+    <div class="metaphor">
+      <span class="metaphor-emoji">💭</span>
+      <div>
+        <strong>Denk het zo</strong>
+        <p>Stel je voor: iemand sterker dan jij komt jouw huis binnen en zegt "nu is dit mijn huis — jij doet wat ik zeg." Je mag niets meer zelf beslissen. Dat is precies wat er in 1940 met heel Nederland gebeurde. Duitsland was die sterkere partij die binnenkwam en de baas speelde — maar dan over een heel land, met miljoenen mensen.</p>
+      </div>
+    </div>
+
+    <div class="subheading">⏱️ Tijdlijn van de Bezetting</div>
+
+    <div class="timeline">
+
+      <div class="tl-item" data-delay="0">
+        <div class="tl-dot dot-red"></div>
+        <div class="tl-year">10 MEI 1940</div>
+        <div class="tl-title">Duitsland valt Nederland binnen <span class="tl-badge badge-red">START</span></div>
+        <div class="tl-text">Op 10 mei 1940 begon de oorlog voor Nederland. Duitse soldaten kwamen het land binnen. Na slechts 5 dagen kon Nederland niet meer vechten en moest stoppen. De bezetting begon. Nederland had geen keus: het kleine land kon niet op tegen het grote Duitse leger.</div>
+      </div>
+
+      <div class="tl-item" data-delay="100">
+        <div class="tl-dot dot-red"></div>
+        <div class="tl-year">14 MEI 1940</div>
+        <div class="tl-title">Rotterdam gebombardeerd 💣</div>
+        <div class="tl-text">Het stadscentrum van Rotterdam werd volledig vernietigd door Duitse bommen. Duizenden mensen verloren hun huis in een paar uur. Duitsland dreigde ook andere steden te bombarderen als Nederland niet stopte met vechten. Nederland capituleerde — "capituleren" betekent: opgeven en stoppen met vechten.</div>
+      </div>
+
+      <div class="tl-item" data-delay="200">
+        <div class="tl-dot dot-gold"></div>
+        <div class="tl-year">ZOMER 1940</div>
+        <div class="tl-title">Koningin vlucht naar Londen 👑</div>
+        <div class="tl-text">Koningin Wilhelmina vluchtte naar Londen in Engeland. Vanuit Londen sprak ze via de radio tot de Nederlanders thuis. Ze zei: "Geef niet op. Blijf vechten voor de vrijheid." In een tijd zonder internet of sociale media was haar stem op de radio voor veel mensen een teken van hoop — een bewijs dat Nederland niet vergeten was.</div>
+      </div>
+
+      <div class="tl-item" data-delay="300">
+        <div class="tl-dot dot-red"></div>
+        <div class="tl-year">1942–1944</div>
+        <div class="tl-title">Vervolging van Joodse Nederlanders</div>
+        <div class="tl-text">De nazi's — de extreme, gewelddadige partij van Hitler — begonnen Joodse mensen op te pakken en weg te sturen naar concentratiekampen waar ze werden vermoord. Meer dan 100.000 Nederlandse Joden stierven. Sommige mensen verstopten hun Joodse buren in hun huis. Dat noemde men <strong>onderduiken</strong>. <strong>Anne Frank</strong> deed dat ook.</div>
+      </div>
+
+      <div class="tl-item" data-delay="400">
+        <div class="tl-dot dot-red"></div>
+        <div class="tl-year">WINTER 1944–1945</div>
+        <div class="tl-title">De Hongerwinter ❄️</div>
+        <div class="tl-text">Canadese en Amerikaanse soldaten kwamen Nederland bevrijden vanuit het zuiden. Maar het westen van Nederland — Amsterdam, Rotterdam, Den Haag — bleef bezet. Als straf blokkeerde Duitsland alle voedseltoevoer. Er was bijna niets meer te eten. Mensen kookten tulpenbollen en suikerbieten om te overleven. Ongeveer <strong>20.000 mensen</strong> stierven van honger in die ene winter.</div>
+      </div>
+
+      <div class="tl-item" data-delay="500">
+        <div class="tl-dot dot-green"></div>
+        <div class="tl-year">5 MEI 1945</div>
+        <div class="tl-title">Bevrijding! 🎉 <span class="tl-badge badge-navy">EINDE</span></div>
+        <div class="tl-text">Op 5 mei 1945 gaf Duitsland zich over in Nederland. Het land was eindelijk vrij! Mensen kwamen de straat op, dansten en huilden van blijdschap. Canadese soldaten werden als helden ontvangen. Tot op de dag van vandaag herdenken Nederlanders dit moment elk jaar op 4 en 5 mei.</div>
+      </div>
+
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-emoji">📖</span>
+      <div>
+        <strong>Anne Frank — wie was zij?</strong>
+        <p>Anne Frank was een Joods meisje van 13 jaar. Haar familie verstopte zich ruim 2 jaar lang in een verborgen ruimte achter een boekenkast in een pand in Amsterdam. Ze noemden het het <em>Achterhuis</em>. Anne schreef alles op in haar dagboek: haar gevoelens, haar angsten, haar dromen voor later. In 1944 werden ze ontdekt en gedeporteerd. Anne stierf in het concentratiekamp Bergen-Belsen in 1945 — slechts weken voor het einde van de oorlog. Haar vader Otto was de enige overlevende en publiceerde haar dagboek. Het is nu vertaald in meer dan 70 talen. Het Anne Frank Huis in Amsterdam is een van de meest bezochte musea ter wereld.</p>
+      </div>
+    </div>
+
+    <div class="metaphor">
+      <span class="metaphor-emoji">💭</span>
+      <div>
+        <strong>Denk het zo — Wat betekent "onderduiken"?</strong>
+        <p>"Onderduiken" betekent letterlijk: onder water gaan zodat niemand je ziet. In de oorlog betekende het: je verstoppen in iemands huis — op een zolder, in een kelder, of achter een valse muur — zodat de Duitsers je niet konden vinden. De mensen die anderen verstopten, riskeerden hun eigen leven. Als ze gepakt werden, werden ze ook gedeporteerd. Toch deden duizenden Nederlanders dit. Zij worden de <em>verzetsmensen</em> genoemd.</p>
+      </div>
+    </div>
+
+    <div id="cijfers">
+      <div class="subheading">📊 Feiten in Cijfers</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">5 jaar</span>
+          <div class="stat-label">Duur van de bezetting<br>(1940–1945)</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">100.000+</span>
+          <div class="stat-label">Nederlandse Joden<br>vermoord door de nazi's</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">20.000</span>
+          <div class="stat-label">Mensen gestorven<br>tijdens de Hongerwinter</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="datums">
+      <div class="subheading">📅 Twee Heel Belangrijke Datums</div>
+      <div class="dates-grid">
+        <div class="date-card" style="border-top: 4px solid var(--red);">
+          <div class="date-num">4 MEI</div>
+          <div class="date-desc">
+            <strong>Dodenherdenking 🕯️</strong>
+            <span>Herdenking van ALLE mensen die stierven in oorlogen. Om 20:00 uur is er in heel Nederland 2 minuten stilte. Geen muziek, geen praten. Dit is een dag van rouw — geen feestdag.</span>
+          </div>
+        </div>
+        <div class="date-card" style="border-top: 4px solid var(--green);">
+          <div class="date-num">5 MEI</div>
+          <div class="date-desc">
+            <strong>Bevrijdingsdag 🎉</strong>
+            <span>Feestdag! Nederland viert de vrijheid. Festivals en concerten door het hele land. Elke 5 jaar is het een officiële nationale vrije dag voor iedereen.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo — 4 mei vs. 5 mei</strong>
+          <p>Denk aan het als twee buren naast elkaar: 4 mei is de stille buur die rouwt en peinst, met de gordijnen dicht. 5 mei is de vrolijke buur die muziek aanzet en mensen uitnodigt. Ze delen een muur, maar ze doen het tegenovergestelde. Onthoud dit simpele trucje: <strong>"vier mei herdenk — vijf mei feest."</strong></p>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <span class="callout-emoji">⚠️</span>
+        <div>
+          <strong>Klassieke strikvraag op het examen!</strong>
+          <p>4 mei en 5 mei zijn NIET hetzelfde. 4 mei = rouw en stilte. 5 mei = feest en vrijheid. Dit verschil komt heel vaak terug als examenvraag. Zorg dat je het uit je hoofd kent!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-section">
+      <h3>🎯 Examentips: WOII</h3>
+      <ul class="exam-tips-list">
+        <li><span class="tip-icon">✅</span> Duitsland = de bezetter (1940–1945)</li>
+        <li><span class="tip-icon">✅</span> Rotterdam = gebombardeerd in mei 1940</li>
+        <li><span class="tip-icon">✅</span> Koningin Wilhelmina = vluchtte naar Londen</li>
+        <li><span class="tip-icon">✅</span> Anne Frank = Joods meisje, dagboek, schuilplaats Amsterdam</li>
+        <li><span class="tip-icon">✅</span> 4 mei = Dodenherdenking · 5 mei = Bevrijdingsdag</li>
+        <li><span class="tip-icon">✅</span> Hongerwinter = 1944–1945, ±20.000 doden</li>
+        <li><span class="tip-icon">⛔</span> België was GEEN bezetter — dat was Duitsland!</li>
+        <li><span class="tip-icon">⛔</span> 4 mei is GEEN feestdag — het is een herdenkingsdag</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-divider">
+    <span class="divider-symbol">✦ Module 7 ✦</span>
+  </div>
+
+  <!-- MODERN NEDERLAND -->
+  <div id="modern">
+    <div class="section-header">
+      <div class="section-icon icon-navy">🏛️</div>
+      <div>
+        <h2>Modern Nederland</h2>
+        <small>Democratie · Grondwet · Grondrechten</small>
+      </div>
+    </div>
+
+    <p class="lead">
+      Na de oorlog bouwde Nederland zich opnieuw op. Nederland is nu een moderne democratie met een grondwet die de rechten van alle mensen beschermt — ook van jou als inwoner van Nederland.
+    </p>
+
+    <div class="callout callout-info">
+      <span class="callout-emoji">📜</span>
+      <div>
+        <strong>Wat is de Grondwet?</strong>
+        <p>De <strong>grondwet</strong> is het belangrijkste wettendocument van Nederland — het allerbelangrijkste boek van de regels. Het bestaat al sinds <strong>1848</strong>. De grondwet beschrijft welke rechten alle mensen in Nederland hebben én hoe de overheid mag werken. Geen enkele andere wet mag in strijd zijn met de grondwet. Ze staat boven alles.</p>
+      </div>
+    </div>
+
+    <div class="metaphor">
+      <span class="metaphor-emoji">💭</span>
+      <div>
+        <strong>Denk het zo — De Grondwet als spelregels</strong>
+        <p>Stel je voor dat je een spel speelt. De grondwet is het rulebook — de spelregels die iedereen moet volgen, ook de overheid zelf. En die regels beschermen jou. Ze zeggen: "de overheid mag jou niet zomaar behandelen zoals ze wil." Jij hebt rechten, ze zijn opgeschreven, en er is een rechter die toeziet op naleving. Dat is heel bijzonder — in veel landen bestaat zoiets niet.</p>
+      </div>
+    </div>
+
+    <div id="rechten">
+      <div class="subheading" style="margin-top:32px;">⚖️ Grondrechten — Rechten van Iedereen</div>
+      <p style="font-size:14.5px; color:var(--muted); margin-bottom:18px; font-style:italic;">Deze rechten gelden voor IEDEREEN in Nederland — Nederlander of niet.</p>
+
+      <div class="rights-grid">
+        <div class="right-card">
+          <span class="right-icon">🗣️</span>
+          <div class="right-name">Vrijheid van meningsuiting</div>
+          <div class="right-desc">Je mag zeggen wat je denkt. Je mag de overheid of politici bekritiseren — ook als ze het er niet mee eens zijn.</div>
+        </div>
+        <div class="right-card">
+          <span class="right-icon">🕌</span>
+          <div class="right-name">Godsdienstvrijheid</div>
+          <div class="right-desc">Je mag geloven wat je wil — of helemaal niet geloven. De overheid bemoeit zich niet met jouw religie of geloof.</div>
+        </div>
+        <div class="right-card">
+          <span class="right-icon">⚖️</span>
+          <div class="right-name">Gelijkheid &amp; non-discriminatie</div>
+          <div class="right-desc">Iedereen is gelijk voor de wet. Niemand mag anders behandeld worden vanwege ras, geslacht, geloof of afkomst.</div>
+        </div>
+        <div class="right-card">
+          <span class="right-icon">📰</span>
+          <div class="right-name">Vrijheid van pers</div>
+          <div class="right-desc">Journalisten mogen vrij schrijven en berichten. De overheid mag geen kranten of nieuwsprogramma's verbieden.</div>
+        </div>
+        <div class="right-card">
+          <span class="right-icon">🤝</span>
+          <div class="right-name">Recht op vergadering</div>
+          <div class="right-desc">Je mag met anderen samenkomen en demonstreren. Je mag op straat protesteren als je ergens niet mee eens bent.</div>
+        </div>
+        <div class="right-card">
+          <span class="right-icon">🔒</span>
+          <div class="right-name">Recht op privacy</div>
+          <div class="right-desc">De overheid mag niet zomaar je huis binnenkomen of je berichten lezen. Jouw privéleven is van jou.</div>
+        </div>
+      </div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo — Waarom zijn grondrechten zo bijzonder?</strong>
+          <p>In sommige landen mag je niet protesteren, niet vrijuit spreken, of wordt je geloof door de overheid verboden. In Nederland zijn al deze dingen <em>wettelijk beschermd</em>. Dat betekent: als iemand jouw grondrecht schendt — zelfs de politie of de overheid zelf — kun je naar de rechter. Het zijn geen mooie woorden op papier. Het zijn echte wetten met echte gevolgen.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-success">
+        <span class="callout-emoji">💡</span>
+        <div>
+          <strong>Wat betekent dit voor jou persoonlijk?</strong>
+          <p>Als inwoner van Nederland heb jij ook deze rechten. Jij mag je geloof belijden, jij mag je mening geven, jij wordt behandeld als gelijke voor de wet. Niemand mag jou discrimineren vanwege je afkomst, religie of geslacht. Discriminatie is in Nederland verboden — en dat staat in de grondwet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="democratie">
+      <div class="subheading" style="margin-top:36px;">🗳️ Hoe werkt de Nederlandse Democratie?</div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo — Democratie in één zin</strong>
+          <p>Democratie betekent letterlijk: "het volk regeert." Maar één persoon kan het land niet besturen, en alle 17 miljoen Nederlanders samen beslissen ook niet over elk detail. Dus kies je mensen die dat namens jou doen — jouw vertegenwoordigers. Als ze het niet goed doen, stem je bij de volgende verkiezingen op iemand anders. Zo heb jij indirect de macht.</p>
+        </div>
+      </div>
+
+      <div class="democracy-chart">
+        <h3>Van Stem naar Wet — Hoe werkt het systeem?</h3>
+        <div class="flow-row">
+          <div style="text-align:center">
+            <div class="flow-box gold">👥 HET VOLK</div>
+            <div class="flow-sublabel">Alle stemgerechtigde inwoners · Vanaf 18 jaar</div>
+          </div>
+        </div>
+        <div class="flow-row"><span class="flow-arrow">↓</span></div>
+        <div class="flow-row">
+          <div style="text-align:center">
+            <div class="flow-box">🗳️ VERKIEZINGEN</div>
+            <div class="flow-sublabel">Elke 4 jaar · Iedereen stemt op een partij</div>
+          </div>
+        </div>
+        <div class="flow-row"><span class="flow-arrow">↓</span></div>
+        <div class="flow-row" style="gap:16px">
+          <div style="text-align:center">
+            <div class="flow-box">📋 TWEEDE KAMER</div>
+            <div class="flow-sublabel">150 leden · Direct gekozen door het volk</div>
+          </div>
+          <div style="text-align:center">
+            <div class="flow-box light">📋 EERSTE KAMER</div>
+            <div class="flow-sublabel">75 leden · Gekozen via provincies</div>
+          </div>
+        </div>
+        <div class="flow-row"><span class="flow-arrow">↓</span></div>
+        <div class="flow-row" style="gap:16px">
+          <div style="text-align:center">
+            <div class="flow-box">🏛️ MINISTER-PRESIDENT</div>
+            <div class="flow-sublabel">Hoofd van de regering · Echte macht</div>
+          </div>
+          <div style="text-align:center">
+            <div class="flow-box light">👑 KONING</div>
+            <div class="flow-sublabel">Staatshoofd · Ceremonieel · Geen echte macht</div>
+          </div>
+        </div>
+        <div class="flow-row"><span class="flow-arrow">↓</span></div>
+        <div class="flow-row">
+          <div style="text-align:center">
+            <div class="flow-box red">📜 WETTEN</div>
+            <div class="flow-sublabel">Regels die gelden voor heel Nederland</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subheading" style="margin-top:32px;">🔍 Eerste vs. Tweede Kamer</div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo — Ontwerper en Controleur</strong>
+          <p>De Tweede Kamer is als de <strong>ontwerper</strong>: zij bedenken en schrijven nieuwe wetten. De Eerste Kamer is als de <strong>controleur</strong>: zij lezen alles nog een keer goed door en zeggen "ja, dit klopt" of "nee, dit doen we niet." Zo worden slechte of te haastige wetten tegengehouden voordat ze echt ingaan. Twee paar ogen zien meer dan één.</p>
+        </div>
+      </div>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>Onderdeel</th><th>Tweede Kamer</th><th>Eerste Kamer</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Aantal leden</td><td>150 leden</td><td>75 leden</td></tr>
+          <tr><td>Hoe gekozen?</td><td>Direct door het volk</td><td>Indirect via provincies</td></tr>
+          <tr><td>Wetten maken?</td><td><span class="check">✓</span> Ja, stelt wetten voor</td><td>Alleen goedkeuren of afwijzen</td></tr>
+          <tr><td>Hoe vaak vergadering?</td><td>Meerdere keren per week</td><td>Eens per week (dinsdag)</td></tr>
+          <tr><td>Belang voor KNM</td><td>⭐⭐⭐ Heel belangrijk</td><td>⭐⭐ Belangrijk</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-warn">
+        <span class="callout-emoji">👑</span>
+        <div>
+          <strong>De Koning — Wat doet hij eigenlijk?</strong>
+          <p>De Koning (nu: Willem-Alexander) is het <em>staatshoofd</em>, maar heeft <strong>geen echte politieke macht</strong>. Hij opent het parlementaire jaar op Prinsjesdag, ondertekent wetten als formaliteit, en ontvangt buitenlandse leiders. Maar de echte beslissingen neemt het kabinet — geleid door de <strong>minister-president</strong>. Zelfs de beroemde Kersttoespraak wordt inhoudelijk geschreven door de minister-president, niet door de Koning zelf.</p>
+        </div>
+      </div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo — De Koning als symbool</strong>
+          <p>Denk aan de Koning als het <strong>gezicht op een muntstuk</strong>: iedereen herkent het, het vertegenwoordigt het land, het geeft trots en eenheid — maar de munt zelf bepaalt niet wat er met het geld gebeurt. De minister-president is meer als de bankdirecteur: die beslist wat er echt gedaan wordt. De Koning is er voor ceremonie, eenheid en nationale trots — niet voor de dagelijkse politiek.</p>
+        </div>
+      </div>
+
+      <div class="subheading" style="margin-top:32px;">🏷️ Welk soort land is Nederland precies?</div>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>Term</th><th>Wat betekent het?</th><th>Voorbeeld in Nederland</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Democratie</td><td>Het volk kiest de leiders via verkiezingen</td><td>Elke 4 jaar mogen Nederlanders stemmen</td></tr>
+          <tr><td>Constitutionele monarchie</td><td>Er is een Koning, maar hij moet zich ook aan de grondwet houden</td><td>Koning Willem-Alexander + Grondwet 1848</td></tr>
+          <tr><td>Parlementaire democratie</td><td>Een gekozen parlement maakt de wetten en bestuurt</td><td>Tweede Kamer stelt wetten voor; kabinet voert ze uit</td></tr>
+          <tr><td>Rechtsstaat</td><td>Iedereen — ook de overheid — moet zich aan de wet houden</td><td>Zelfs de politie kan voor de rechter worden gebracht</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="exam-section">
+      <h3>🎯 Examentips: Modern Nederland</h3>
+      <ul class="exam-tips-list">
+        <li><span class="tip-icon">✅</span> Nederland = constitutionele monarchie + parlementaire democratie</li>
+        <li><span class="tip-icon">✅</span> Grondwet bestaat al sinds 1848</li>
+        <li><span class="tip-icon">✅</span> Tweede Kamer = 150 leden, direct gekozen</li>
+        <li><span class="tip-icon">✅</span> Eerste Kamer = 75 leden, indirect via provincies</li>
+        <li><span class="tip-icon">✅</span> Koning = staatshoofd, ceremonieel, GEEN echte macht</li>
+        <li><span class="tip-icon">✅</span> Minister-president = hoofd van de regering, echte macht</li>
+        <li><span class="tip-icon">✅</span> Discriminatie is verboden in Nederland (grondrecht)</li>
+        <li><span class="tip-icon">⛔</span> Kersttoespraak = geschreven door minister-president, NIET de Koning!</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" class="quiz-block">
+    <h3>🧠 Oefenvragen — Test jezelf!</h3>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:24px; font-style:italic;">Klik op een antwoord om te zien of het goed is.</p>
+
+    <div class="quiz-q" id="q1">
+      <div class="q-num">VRAAG 01 / 06</div>
+      <div class="q-text">Welk land bezette Nederland tijdens de Tweede Wereldoorlog?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q1','Nee! België was nooit de bezetter — dit is een klassieke strikvraag. Duitsland bezette Nederland van 1940 tot 1945.')">A. België</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q1','Correct! Duitsland bezette Nederland van 10 mei 1940 tot 5 mei 1945. Na 5 dagen gevechten moest Nederland opgeven.')">B. Duitsland</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q1','Nee! Engeland was juist een bondgenoot van Nederland en hielp bij de bevrijding. Geen bezetter.')">C. Engeland</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q1','Nee! Rusland bezette Nederland niet. Duitsland was de bezetter.')">D. Rusland</button>
+      </div>
+      <div class="q-feedback" id="q1-fb"></div>
+    </div>
+
+    <div class="quiz-q" id="q2">
+      <div class="q-num">VRAAG 02 / 06</div>
+      <div class="q-text">Wat is 4 mei in Nederland?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q2','Nee! 5 mei is Bevrijdingsdag. 4 mei is een dag van rouw en herdenking — geen feest.')">A. Bevrijdingsdag — een feestdag</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q2','Correct! Op 4 mei herdenken Nederlanders alle slachtoffers van oorlogen. Om 20:00 uur is er 2 minuten stilte in heel Nederland.')">B. Dodenherdenking — herdenking van alle oorlogsslachtoffers</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q2','Nee! Koningsdag is op 27 april. Dat heeft niets met de oorlog te maken.')">C. Koningsdag</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q2','Nee! Anne Frank werd geboren op 12 juni. 4 mei is de nationale herdenkingsdag.')">D. De verjaardag van Anne Frank</button>
+      </div>
+      <div class="q-feedback" id="q2-fb"></div>
+    </div>
+
+    <div class="quiz-q" id="q3">
+      <div class="q-num">VRAAG 03 / 06</div>
+      <div class="q-text">Hoeveel leden heeft de Tweede Kamer?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q3','Nee! 75 leden is de Eerste Kamer. Onthoud: Eerste = 75, Tweede = 150.')">A. 75 leden</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q3','Nee! 100 is niet het goede getal. Tweede Kamer = 150 leden.')">B. 100 leden</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q3','Correct! De Tweede Kamer heeft 150 leden, direct gekozen door het volk bij verkiezingen.')">C. 150 leden</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q3','Nee! 200 is te veel. Tweede Kamer = 150, Eerste Kamer = 75.')">D. 200 leden</button>
+      </div>
+      <div class="q-feedback" id="q3-fb"></div>
+    </div>
+
+    <div class="quiz-q" id="q4">
+      <div class="q-num">VRAAG 04 / 06</div>
+      <div class="q-text">Waar vluchtte de Nederlandse koningin naartoe tijdens de Tweede Wereldoorlog?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q4','Nee! Niet Brussel. Koningin Wilhelmina vluchtte naar Londen.')">A. Brussel</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q4','Nee! Ze bleef niet in Nederland — dat was te gevaarlijk. Ze vluchtte naar Engeland.')">B. Ze bleef in Nederland</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q4','Correct! Koningin Wilhelmina vluchtte naar Londen en sprak van daaruit via de radio tot de Nederlanders. Haar stem was een teken van hoop.')">C. Londen</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q4','Nee! Ze ging naar Londen, niet Parijs. Parijs was overigens ook bezet door Duitsland.')">D. Parijs</button>
+      </div>
+      <div class="q-feedback" id="q4-fb"></div>
+    </div>
+
+    <div class="quiz-q" id="q5">
+      <div class="q-num">VRAAG 05 / 06</div>
+      <div class="q-text">Wie is het hoofd van de Nederlandse regering?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q5','Nee! De Koning is staatshoofd maar heeft geen echte politieke macht. Onthoud: de Koning is ceremonieel.')">A. De Koning</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q5','Correct! De minister-president is het hoofd van de regering en heeft de echte politieke macht. De Koning is alleen staatshoofd.')">B. De minister-president</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q5','Nee! De voorzitter van de Tweede Kamer leidt de vergaderingen, maar is niet het hoofd van de regering.')">C. De voorzitter van de Tweede Kamer</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q5','Nee! Een burgemeester leidt een gemeente. De minister-president leidt de landelijke regering.')">D. De burgemeester van Amsterdam</button>
+      </div>
+      <div class="q-feedback" id="q5-fb"></div>
+    </div>
+
+    <div class="quiz-q" id="q6">
+      <div class="q-num">VRAAG 06 / 06</div>
+      <div class="q-text">Wat garandeert de Nederlandse Grondwet (1848)?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,false,'q6','Nee! De Grondwet garandeert juist godsdienstvrijheid. Iedereen mag geloven wat hij wil — of helemaal niet.')">A. Dat iedereen hetzelfde geloof moet hebben</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q6','Nee! Andersom: de Grondwet beschermt vrijheid van meningsuiting. Je mag de overheid juist bekritiseren.')">B. Dat je de overheid niet mag bekritiseren</button>
+        <button class="quiz-opt" onclick="answer(this,true, 'q6','Correct! De Grondwet garandeert grondrechten voor iedereen: gelijkheid, vrijheid van meningsuiting, godsdienstvrijheid, privacy en meer.')">C. De grondrechten van iedereen: gelijkheid, vrijheid, privacy</button>
+        <button class="quiz-opt" onclick="answer(this,false,'q6','Nee! Belastingen regelt de Belastingdienst via aparte wetten. Dat staat niet in de Grondwet.')">D. Dat niemand belasting hoeft te betalen</button>
+      </div>
+      <div class="q-feedback" id="q6-fb"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  KNM Lesmateriaal · Thema 1 · Modules 6 &amp; 7 · Y&amp;S Coaching · 2026
+</div>
+
+<script>
+  function answer(btn, correct, qId, feedback) {
+    document.getElementById(qId).querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById(qId + '-fb');
+    fb.textContent = (correct ? '✅ ' : '❌ ') + feedback;
+    fb.classList.add('show');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), parseInt(entry.target.dataset.delay || 0));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.tl-item').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const target = document.querySelector(pill.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
