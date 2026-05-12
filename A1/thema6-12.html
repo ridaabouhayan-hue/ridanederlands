@@ -118,32 +118,29 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
     <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-    const VOCAB=[
-        {nl:"half",en:"half past",tr:"buçuk (bir sonraki saat)",ar:"النصف (مع الساعة التالية)",ps:"نیم. د راتلونکي ساعت سره",ex:"half drie = 2:30"},
-        {nl:"kwart over",en:"quarter past",tr:"çeyrek geçiyor",ar:"والربع",ps:"پاوه واوه",ex:"kwart over drie = 3:15"},
-        {nl:"kwart voor",en:"quarter to",tr:"çeyreğe var",ar:"إلا ربعاً",ps:"پاوه پاتي",ex:"kwart voor vier = 3:45"},
-        {nl:"over",en:"past (minutes)",tr:"geçiyor",ar:"دقائق مضت",ps:"واوه شوي",ex:"tien over drie = 3:10"},
-        {nl:"voor",en:"to (minutes)",tr:"kala",ar:"دقائق متبقية",ps:"دقیقې پاتي",ex:"tien voor vier = 3:50"},
-        {nl:"precies",en:"exactly / sharp",tr:"tam / tam saat",ar:"تماماً / بالضبط",ps:"سم / دقیقه",ex:"Het is precies drie uur."},
-        {nl:"bijna",en:"almost / nearly",tr:"neredeyse",ar:"تقريباً",ps:"نږدې",ex:"Het is bijna drie uur."},
-        {nl:"rond",en:"around (time)",tr:"yaklaşık (saat)",ar:"حوالي",ps:"شاوخوا",ex:"Ik kom rond drie uur."},
-    ];
-    const UI={
-        nl:{subtitle:'Leer de klok lezen in het Nederlands.',vocabTitle:'Woorden van paragraaf 6.12',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrWN:'Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!',instrSchrijf:'Schrijf drie zinnen met tijdstippen. Laat zien aan de docent!'},
-        en:{subtitle:'Learn to read the clock in Dutch.',vocabTitle:'Words of paragraph 6.12',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',instrWN:'Click ✓ Correct or ✗ Wrong. Wrong? Try again!',instrSchrijf:'Write three sentences with times. Show to your teacher!'},
-        tr:{subtitle:"Hollandaca'da saati okumayı öğrenin.",vocabTitle:"Paragraf 6.12'nin kelimeleri",vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',instrWN:'✓ Doğru veya ✗ Yanlış. Yanlış? Tekrar!',instrSchrijf:'Saatler ile üç cümle yaz.'},
-        ar:{subtitle:'تعلم قراءة الساعة بالهولندية.',vocabTitle:'كلمات الفقرة 6.12',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',instrWN:'اضغط ✓ صحيح أو ✗ خطأ.',instrSchrijf:'اكتب ثلاث جمل مع أوقات.'},
-        ps:{subtitle:'د ساعت لوستل زده کړئ.',vocabTitle:'د پراګراف 6.12 کلمې',vocabIntro:'د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',instrWN:'✓ سم یا ✗ غلط. غلط؟ بیا هڅه وکړئ!',instrSchrijf:'د وختونو سره دری جملې ولیکئ.'},
-    };
-    const UITLEG={
-        nl:`<div class="uitleg-box"><h3>De klok lezen in het Nederlands</h3><p>In Nederland gebruiken mensen de analoge klok op een speciale manier:</p><table class="klok-tabel"><thead><tr><th>Digitaal</th><th>Het is ...</th><th>Uitleg</th></tr></thead><tbody><tr><td>3:00</td><td>drie uur</td><td>precies</td></tr><tr><td>3:05</td><td>vijf over drie</td><td>5 minuten voorbij 3</td></tr><tr><td>3:15</td><td>kwart over drie</td><td>15 min voorbij 3</td></tr><tr><td>3:30</td><td>half vier</td><td>halve weg naar 4 (!) niet "half drie"</td></tr><tr><td>3:45</td><td>kwart voor vier</td><td>15 min vóór 4</td></tr><tr><td>3:50</td><td>tien voor vier</td><td>10 min vóór 4</td></tr></tbody></table></div><div class="tip-blok"><strong>Let op:</strong> "half vier" = 3:30 (NIET 4:30). "Half" verwijst naar het <em>volgende</em> uur!</div>`,
-        en:`<div class="uitleg-box"><h3>Reading the clock in Dutch</h3><table class="klok-tabel"><thead><tr><th>Digital</th><th>It is ...</th><th>Note</th></tr></thead><tbody><tr><td>3:00</td><td>drie uur</td><td>exactly three</td></tr><tr><td>3:15</td><td>kwart over drie</td><td>quarter past three</td></tr><tr><td>3:30</td><td>half vier</td><td>half way to four (!)</td></tr><tr><td>3:45</td><td>kwart voor vier</td><td>quarter to four</td></tr><tr><td>3:50</td><td>tien voor vier</td><td>ten to four</td></tr></tbody></table></div><div class="tip-blok"><strong>Watch out:</strong> "half vier" = 3:30 (NOT 4:30). "Half" refers to the <em>next</em> hour!</div>`,
-        tr:`<div class="uitleg-box"><h3>Hollandaca'da saati okumak</h3><table class="klok-tabel"><thead><tr><th>Dijital</th><th>Hollandaca</th><th>Not</th></tr></thead><tbody><tr><td>3:00</td><td>drie uur</td><td>tam saat üç</td></tr><tr><td>3:15</td><td>kwart over drie</td><td>üçü çeyrek geçiyor</td></tr><tr><td>3:30</td><td>half vier</td><td>dörde yarım kalmış (!)</td></tr><tr><td>3:45</td><td>kwart voor vier</td><td>dörde çeyrek var</td></tr><tr><td>3:50</td><td>tien voor vier</td><td>dörde on var</td></tr></tbody></table></div><div class="tip-blok"><strong>Dikkat:</strong> "half vier" = 3:30 (4:30 DEĞİL). "Half" bir sonraki saate atıfta bulunur!</div>`,
-        ar:`<div class="uitleg-box" dir="rtl"><h3>قراءة الساعة بالهولندية</h3><table class="klok-tabel"><thead><tr><th>رقمي</th><th>بالهولندية</th><th>ملاحظة</th></tr></thead><tbody><tr><td>3:00</td><td>drie uur</td><td>الثالثة تماماً</td></tr><tr><td>3:15</td><td>kwart over drie</td><td>ثلاثة وربع</td></tr><tr><td>3:30</td><td>half vier</td><td>منتصف الطريق إلى الرابعة (!)</td></tr><tr><td>3:45</td><td>kwart voor vier</td><td>الرابعة إلا ربعاً</td></tr><tr><td>3:50</td><td>tien voor vier</td><td>الرابعة إلا عشرة</td></tr></tbody></table></div><div class="tip-blok" dir="rtl"><strong>انتبه:</strong> "half vier" = 3:30 (وليس 4:30). يشير "half" إلى الساعة التالية!</div>`,
-        ps:`<div class="uitleg-box" dir="rtl"><h3>د هالنډي ژبې کې د ساعت لوستل</h3><table class="klok-tabel"><thead><tr><th>ډیجیتل</th><th>هالنډي</th><th>یادونه</th></tr></thead><tbody><tr><td>3:00</td><td>drie uur</td><td>سم درې بجې</td></tr><tr><td>3:15</td><td>kwart over drie</td><td>درې او پاوه</td></tr><tr><td>3:30</td><td>half vier</td><td>د څلورو لپاره نیمه لار (!)</td></tr><tr><td>3:45</td><td>kwart voor vier</td><td>څلور ته پاوه پاتي</td></tr><tr><td>3:50</td><td>tien voor vier</td><td>څلور ته لس دقیقې پاتي</td></tr></tbody></table></div><div class="tip-blok" dir="rtl"><strong>پام:</strong> "half vier" = 3:30 (نه 4:30). "Half" راتلونکي ساعت ته اشاره کوي!</div>`
-    };
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
     function buildTable(lang){
         const tbody=document.getElementById('vocab-body');tbody.innerHTML='';
         VOCAB.forEach(row=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td>`;tbody.appendChild(tr);});

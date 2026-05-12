@@ -165,82 +165,30 @@
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 
 <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-// ── DATA ────────────────────────────────────────────────────────────────────
-const VOCAB = [
-    {nl:'de school',      en:'school',       tr:'okul',         zh:'学校',      ex:'Ik ga naar school.'},
-    {nl:'de docent',      en:'teacher',      tr:'öğretmen',     zh:'老师',      ex:'De docent spreekt Nederlands.'},
-    {nl:'de cursist',     en:'student/pupil',tr:'öğrenci',      zh:'学员',      ex:'De cursist leert Nederlands.'},
-    {nl:'de pauze',       en:'break/pause',  tr:'mola',         zh:'休息',      ex:'In de pauze eten we.'},
-    {nl:'samen',          en:'together',     tr:'birlikte',     zh:'一起',      ex:'We leren samen.'},
-    {nl:'welkom',         en:'welcome',      tr:'hoş geldiniz', zh:'欢迎',      ex:'Welkom op school!'},
-    {nl:'gaan',           en:'to go',        tr:'gitmek',       zh:'去',        ex:'Ik ga naar school.'},
-    {nl:'lopen',          en:'to walk',      tr:'yürümek',      zh:'走路',      ex:'Ik loop naar school.'},
-    {nl:'binnen',         en:'inside',       tr:'içeri',        zh:'里面',      ex:'De cursisten zitten binnen.'},
-    {nl:'buiten',         en:'outside',      tr:'dışarı',       zh:'外面',      ex:'In de pauze ga ik buiten.'},
-    {nl:'naar',           en:'to/towards',   tr:'...\'ya/-e doğru',zh:'去/向',  ex:'Ik ga naar de school.'},
-    {nl:'zeggen',         en:'to say',       tr:'söylemek',     zh:'说',        ex:'De docent zegt: "Welkom!"'},
-];
-
-const UI = {
-    nl:{subtitle:'Leer vertellen dat je naar school gaat.',vocabTitle:'Woorden van paragraaf 2.1',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},
-    en:{subtitle:'Learn to say that you go to school.',vocabTitle:'Words of paragraph 2.1',thExample:'Example sentence',thLang:'🇬🇧 EN',oefTitle:'Exercises'},
-    tr:{subtitle:'Okula gittiğinizi söylemeyi öğrenin.',vocabTitle:'2.1 paragrafının kelimeleri',thExample:'Örnek cümle',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},
-    zh:{subtitle:'学习表达"我去上学"的荷兰语表达。',vocabTitle:'第2.1段的词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'},
-};
-
-const UITLEG = {
-    nl:`<div class="uitleg-box"><h3>Naar school gaan</h3>
-<p>In paragraaf 2.1 leer je over de school en hoe je zegt dat je naar school gaat.</p>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>de school</strong> — de plek waar je Nederlands leert</li>
-<li><strong>de docent</strong> — de persoon die les geeft</li>
-<li><strong>de cursist</strong> — de persoon die de les volgt (jij!)</li>
-<li><strong>gaan naar</strong> — richting aangeven: <em>Ik ga naar school.</em></li>
-<li><strong>lopen</strong> — te voet gaan: <em>Ik loop naar school.</em></li>
-</ul></div>
-<div class="voorbeeld-blok"><strong>Voorbeeldzinnen:</strong>
-<ul style="margin:.4rem 0 0;padding-left:1.3em;font-size:.92rem;line-height:2.2">
-<li>Ik ga naar <strong>school</strong>.</li>
-<li>De <strong>docent</strong> zegt: "Welkom!"</li>
-<li>In de <strong>pauze</strong> ga ik <strong>buiten</strong>.</li>
-<li>Wij leren <strong>samen</strong> Nederlands.</li>
-</ul></div>
-<div class="tip-blok"><strong>Let op:</strong> "gaan naar" + plaats: <em>Ik ga naar school.</em> / <em>Ik ga naar huis.</em></div>`,
-    en:`<div class="uitleg-box"><h3>Going to school</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>de school</strong> → school | <strong>de docent</strong> → teacher | <strong>de cursist</strong> → student</li>
-<li><strong>gaan naar</strong> → to go to: <em>Ik ga naar school.</em> (I go to school.)</li>
-<li><strong>lopen</strong> → to walk: <em>Ik loop naar school.</em> (I walk to school.)</li>
-<li><strong>binnen</strong> → inside | <strong>buiten</strong> → outside</li>
-</ul></div>`,
-    tr:`<div class="uitleg-box"><h3>Okula Gitmek</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>de school</strong> → okul | <strong>de docent</strong> → öğretmen | <strong>de cursist</strong> → öğrenci</li>
-<li><strong>gaan naar</strong> → ...\'e gitmek: <em>Ik ga naar school.</em></li>
-<li><strong>lopen</strong> → yürümek: <em>Ik loop naar school.</em></li>
-<li><strong>binnen</strong> → içeri | <strong>buiten</strong> → dışarı | <strong>pauze</strong> → mola</li>
-</ul></div>`,
-    zh:`<div class="uitleg-box"><h3>去学校（Naar school）</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>de school</strong> → 学校 | <strong>de docent</strong> → 老师 | <strong>de cursist</strong> → 学员</li>
-<li><strong>gaan naar + 地点</strong>：表示"去某地"：<em>Ik ga naar school.</em>（我去学校。）</li>
-<li><strong>lopen</strong> → 走路：<em>Ik loop naar school.</em>（我走路去学校。）</li>
-<li><strong>binnen</strong> → 里面 | <strong>buiten</strong> → 外面 | <strong>pauze</strong> → 休息</li>
-</ul>
-<table style="width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0">
-<thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">荷兰语</th><th style="padding:6px 10px;border:1px solid rgba(99,102,241,.2)">中文</th></tr></thead>
-<tbody>
-<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">Ik ga naar school.</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">我去学校。</td></tr>
-<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">Welkom!</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">欢迎！</td></tr>
-<tr><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">In de pauze ga ik buiten.</td><td style="padding:5px 10px;border:1px solid rgba(99,102,241,.2)">休息时间我去外面。</td></tr>
-</tbody></table></div>`
-};
-
-let currentLang = 'nl';
-
-function buildTable(lang){
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){
     const tb = document.getElementById('vocab-body'); tb.innerHTML = '';
     VOCAB.forEach(r => {
         const tr = document.createElement('tr');

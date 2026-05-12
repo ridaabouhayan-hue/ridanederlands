@@ -139,38 +139,30 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-const VOCAB=[
-    {nl:'hoeveel',en:'how many / how much',tr:'kaç / ne kadar',zh:'多少',ex:'Hoeveel cursisten zijn er?'},
-    {nl:'wanneer',en:'when',tr:'ne zaman',zh:'什么时候',ex:'Wanneer is de les?'},
-    {nl:'vragen',en:'to ask',tr:'sormak',zh:'问',ex:'Ik vraag aan de docent.'},
-];
-const UI={nl:{subtitle:'Leer vragen stellen met Hoeveel? en Wanneer?',vocabTitle:'Woorden van paragraaf 2.5',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to ask questions with Hoeveel? and Wanneer?',vocabTitle:'Words 2.5',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Hoeveel? ve Wanneer? ile soru sormayı öğrenin.',vocabTitle:'2.5 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习用Hoeveel?和Wanneer?提问。',vocabTitle:'第2.5段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
-const UITLEG={
-    nl:`<div class="uitleg-box"><h3>Vragen stellen: Hoeveel? en Wanneer?</h3>
-<div class="vraag-kaart"><div class="qw">Hoeveel? 🔢</div><div class="qs">Gebruik je voor aantallen en hoeveelheden.<br>Voorbeelden: Hoeveel cursisten zijn er? → Tien. | Hoeveel boeken heb jij? → Drie.</div></div>
-<div class="vraag-kaart"><div class="qw">Wanneer? 🕐</div><div class="qs">Gebruik je voor tijd, dag of moment.<br>Voorbeelden: Wanneer is de les? → Op maandag. | Wanneer ga je naar school? → Vandaag.</div></div></div>
-<div class="tip-blok"><strong>Let op:</strong> Hoeveel? → antwoord met een getal. Wanneer? → antwoord met een dag, tijd of datum.</div>`,
-    en:`<div class="uitleg-box"><h3>Asking questions: Hoeveel? and Wanneer?</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>Hoeveel?</strong> (How many/much?) → answer with a number: Hoeveel cursisten? → Tien.</li>
-<li><strong>Wanneer?</strong> (When?) → answer with a day/time: Wanneer is de les? → Op maandag.</li>
-</ul></div>`,
-    tr:`<div class="uitleg-box"><h3>Soru Sormak: Hoeveel? ve Wanneer?</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>Hoeveel?</strong> (Kaç? / Ne kadar?) → sayıyla cevap verin: Hoeveel cursisten? → Tien.</li>
-<li><strong>Wanneer?</strong> (Ne zaman?) → gün/saatle cevap verin: Wanneer is de les? → Op maandag.</li>
-</ul></div>`,
-    zh:`<div class="uitleg-box"><h3>提问：Hoeveel? 和 Wanneer?</h3>
-<ul style="line-height:2.2;font-size:.93rem">
-<li><strong>Hoeveel?</strong>（多少？）→ 用数字回答：Hoeveel cursisten? → Tien.（十个。）</li>
-<li><strong>Wanneer?</strong>（什么时候？）→ 用时间/日期回答：Wanneer is de les? → Op maandag.（星期一。）</li>
-</ul></div>
-<div class="tip-blok"><strong>总结：</strong>Hoeveel? → 数量。Wanneer? → 时间/日期。</div>`
-};
-let currentLang='nl';
-function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
 const mc1Data=[
     {v:'___ cursisten zitten er in de klas?',a:'Hoeveel',o:['Hoeveel','Wanneer']},

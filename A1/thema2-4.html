@@ -148,50 +148,30 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-const VOCAB=[
-    {nl:'maandag',en:'Monday',tr:'Pazartesi',zh:'星期一',ex:'Op maandag ga ik naar school.'},
-    {nl:'dinsdag',en:'Tuesday',tr:'Salı',zh:'星期二',ex:'Op dinsdag hebben we les.'},
-    {nl:'woensdag',en:'Wednesday',tr:'Çarşamba',zh:'星期三',ex:'Op woensdag is er geen les.'},
-    {nl:'donderdag',en:'Thursday',tr:'Perşembe',zh:'星期四',ex:'Op donderdag leren we nieuwe woorden.'},
-    {nl:'vrijdag',en:'Friday',tr:'Cuma',zh:'星期五',ex:'Op vrijdag is de laatste les.'},
-    {nl:'zaterdag',en:'Saturday',tr:'Cumartesi',zh:'星期六',ex:'Op zaterdag ga ik niet naar school.'},
-    {nl:'zondag',en:'Sunday',tr:'Pazar',zh:'星期日',ex:'Op zondag rust ik uit.'},
-    {nl:'vandaag',en:'today',tr:'bugün',zh:'今天',ex:'Vandaag is het maandag.'},
-    {nl:'morgen',en:'tomorrow',tr:'yarın',zh:'明天',ex:'Morgen ga ik naar school.'},
-    {nl:'de dag',en:'day',tr:'gün',zh:'天',ex:'Er zijn zeven dagen in een week.'},
-    {nl:'de week',en:'week',tr:'hafta',zh:'周/星期',ex:'Een week heeft zeven dagen.'},
-    {nl:'het weekend',en:'weekend',tr:'hafta sonu',zh:'周末',ex:'In het weekend ga ik niet naar school.'},
-];
-const UI={nl:{subtitle:'Leer de zeven dagen noemen en gebruiken.',vocabTitle:'Woorden van paragraaf 2.4',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to name and use the seven days.',vocabTitle:'Words 2.4',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Yedi günü öğrenin ve kullanın.',vocabTitle:'2.4 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习命名和使用一周七天。',vocabTitle:'第2.4段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
-const UITLEG={
-    nl:`<div class="uitleg-box"><h3>De dagen van de week</h3>
-<div class="dag-row">
-<span class="dag-chip">1. maandag</span><span class="dag-chip">2. dinsdag</span><span class="dag-chip">3. woensdag</span>
-<span class="dag-chip">4. donderdag</span><span class="dag-chip">5. vrijdag</span>
-<span class="dag-chip weekend">6. zaterdag</span><span class="dag-chip weekend">7. zondag</span>
-</div>
-<ul style="line-height:2.2;font-size:.93rem;margin:.5rem 0">
-<li><strong>vandaag</strong> = de dag van nu | <strong>morgen</strong> = de dag na vandaag</li>
-<li><strong>de week</strong> = 7 dagen | <strong>het weekend</strong> = zaterdag + zondag</li>
-</ul></div>
-<div class="tip-blok"><strong>Let op:</strong> Schrijf de dagen met een kleine letter in het Nederlands: <em>maandag</em>.</div>`,
-    en:`<div class="uitleg-box"><h3>Days of the week</h3>
-<div class="dag-row"><span class="dag-chip">1. maandag (Mon)</span><span class="dag-chip">2. dinsdag (Tue)</span><span class="dag-chip">3. woensdag (Wed)</span><span class="dag-chip">4. donderdag (Thu)</span><span class="dag-chip">5. vrijdag (Fri)</span><span class="dag-chip weekend">6. zaterdag (Sat)</span><span class="dag-chip weekend">7. zondag (Sun)</span></div>
-<ul style="line-height:2;font-size:.9rem"><li>vandaag = today | morgen = tomorrow</li><li>het weekend = Saturday + Sunday</li></ul></div>
-<div class="tip-blok"><strong>Note:</strong> Days are written with a lowercase letter in Dutch: maandag (not Maandag).</div>`,
-    tr:`<div class="uitleg-box"><h3>Haftanın Günleri</h3>
-<div class="dag-row"><span class="dag-chip">1. maandag (Pzt)</span><span class="dag-chip">2. dinsdag (Sal)</span><span class="dag-chip">3. woensdag (Çrş)</span><span class="dag-chip">4. donderdag (Per)</span><span class="dag-chip">5. vrijdag (Cum)</span><span class="dag-chip weekend">6. zaterdag (Cmt)</span><span class="dag-chip weekend">7. zondag (Paz)</span></div>
-<ul style="line-height:2;font-size:.9rem"><li>vandaag = bugün | morgen = yarın | het weekend = hafta sonu</li></ul></div>
-<div class="tip-blok"><strong>Dikkat:</strong> Hollandacada günler küçük harfle yazılır: maandag (Maandag değil).</div>`,
-    zh:`<div class="uitleg-box"><h3>一周七天</h3>
-<div class="dag-row"><span class="dag-chip">1. maandag 星期一</span><span class="dag-chip">2. dinsdag 星期二</span><span class="dag-chip">3. woensdag 星期三</span><span class="dag-chip">4. donderdag 星期四</span><span class="dag-chip">5. vrijdag 星期五</span><span class="dag-chip weekend">6. zaterdag 星期六</span><span class="dag-chip weekend">7. zondag 星期日</span></div>
-<ul style="line-height:2;font-size:.9rem"><li>vandaag = 今天 | morgen = 明天 | het weekend = 周末</li></ul></div>
-<div class="tip-blok"><strong>注意：</strong>荷兰语中星期名称用小写字母：maandag（不是Maandag）。</div>`
-};
-let currentLang='nl';
-function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
 const mc1Data=[
     {v:'De eerste dag van de week (in Nederland).',a:'maandag',o:['maandag','zondag','dinsdag']},

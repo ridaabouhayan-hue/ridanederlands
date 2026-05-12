@@ -222,29 +222,29 @@
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 
     <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-    const VOCAB=[
-        {nl:'de bloes',en:'blouse',tr:'bluz',ar:'بلوزة',ps:'بلوز',ex:'Ze draagt een mooie bloes.'},
-        {nl:'Een moment alstublieft.',en:'One moment please.',tr:'Bir dakika lütfen.',ar:'لحظة من فضلك.',ps:'یوه شیبه صبر وکړئ.',ex:'Een moment alstublieft, ik kijk.'},
-        {nl:'het feest',en:'party / celebration',tr:'parti',ar:'حفلة',ps:'مجلس',ex:'Zij koopt een jurk voor het feest.'},
-        {nl:'de kleding',en:'clothing / clothes',tr:'giyim / kıyafet',ar:'ملابس',ps:'جامه',ex:'Er is veel kleding in de winkel.'},
-        {nl:'de knoop',en:'button',tr:'düğme',ar:'زرار',ps:'تڼۍ',ex:'De knoop van mijn jas is kapot.'},
-        {nl:'de maat',en:'size',tr:'beden',ar:'مقاس',ps:'سایز',ex:'Welke maat heeft u?'},
-        {nl:'mogen',en:'may / to be allowed',tr:'izni olmak',ar:'مسموح له',ps:'اجازه لرل',ex:'Mag ik dit passen?'},
-        {nl:'de medewerker',en:'employee / staff member',tr:'çalışan',ar:'موظف',ps:'کارمند',ex:'De medewerker helpt mij.'},
-        {nl:'de paskamer',en:'fitting room',tr:'soyunma odası',ar:'غرفة القياس',ps:'اندازه اخیستو خونه',ex:'Waar is de paskamer?'},
-        {nl:'passen',en:'to try on / to fit',tr:'denemek / uymak',ar:'تجربة / تناسب',ps:'اندازه کول',ex:'De broek past goed.'},
-        {nl:'te',en:'too (too big, too small)',tr:'çok / fazla',ar:'أكثر من اللازم',ps:'ډیر',ex:'De jas is te groot.'},
-        {nl:'trouwen',en:'to get married',tr:'evlenmek',ar:'الزواج',ps:'واده کول',ex:'Zij kopen kleding voor het trouwen.'},
-    ];
-    const UI={
-        nl:{subtitle:'Leer hoe je kleding koopt in een winkel.',vocabTitle:'Woorden van paragraaf 6.3',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrWN:'Klik op ✓ Goed of ✗ Fout. Fout? Probeer opnieuw!',instrSchrijf:'Schrijf één zin. Laat je zin zien aan de docent!'},
-        en:{subtitle:'Learn how to buy clothes in a shop.',vocabTitle:'Words of paragraph 6.3',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',instrWN:'Click ✓ Correct or ✗ Wrong. Wrong? Try again!',instrSchrijf:'Write one sentence. Show it to your teacher!'},
-        tr:{subtitle:'Bir mağazada kıyafet satın almayı öğrenin.',vocabTitle:"Paragraf 6.3'ün kelimeleri",vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe'},
-        ar:{subtitle:'تعلم كيفية شراء الملابس في متجر.',vocabTitle:'كلمات الفقرة 6.3',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية'},
-        ps:{subtitle:'د پلورنځي کې د جامو اخیستل زده کړئ.',vocabTitle:'د پراګراف 6.3 کلمې',vocabIntro:'د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو'},
-    };
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
     function buildTable(lang){
         const tbody=document.getElementById('vocab-body');tbody.innerHTML='';
         VOCAB.forEach(row=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td>`;tbody.appendChild(tr);});

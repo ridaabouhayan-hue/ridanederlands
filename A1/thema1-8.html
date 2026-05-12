@@ -46,24 +46,30 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
     <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-        const VOCAB = [
-            { nl: 'goed', en: 'good', tr: 'iyi', ar: 'جيد', ps: 'ښه', ex: 'Het gaat goed met mij.' },
-            { nl: 'Het gaat wel.', en: "It's okay.", tr: 'İdare eder.', ar: 'بخير', ps: 'ښه ده', ex: 'Hoe gaat het? Het gaat wel.' },
-            { nl: 'Hoe gaat het?', en: 'How are you?', tr: 'Nasılsın?', ar: 'كيف حالك؟', ps: 'څنګه یې؟', ex: 'Hoi! Hoe gaat het?' },
-            { nl: 'Hoe is het?', en: 'How is it?', tr: 'Nasıl gidiyor?', ar: 'كيف الحال؟', ps: 'څنګه دی؟', ex: 'Hoe is het met je?' },
-            { nl: 'ook', en: 'also', tr: 'da/de', ar: 'أيضا', ps: 'هم', ex: 'Ik woon ook in Utrecht.' },
-            { nl: 'niet', en: 'not', tr: 'değil', ar: 'ليس', ps: 'نه', ex: 'Ik ben niet ziek.' },
-        ];
-        const UI = {
-            nl: { subtitle: 'Leer hoe je vraagt en antwoordt op "hoe gaat het?".', vocabTitle: 'Woorden van paragraaf 1.8', vocabIntro: 'Klik op een taal hierboven om de vertaling te zien.', thExample: 'Voorbeeldzin', thLang: '🇳🇱 Nederlands' },
-            en: { subtitle: 'Learn how to ask and answer "how are you?".', vocabTitle: 'Words of paragraph 1.8', vocabIntro: 'Click a language above to see the translation.', thExample: 'Example sentence', thLang: '🇬🇧 English' },
-            tr: { subtitle: '"Nasılsın?" sorusunu ve cevabını öğrenin.', vocabTitle: 'Paragraf 1.8\'in kelimeleri', vocabIntro: 'Çeviriyi görmek için yukarıdan bir dil seçin.', thExample: 'Örnek cümle', thLang: '🇹🇷 Türkçe' },
-            ar: { subtitle: 'تعلم كيف تسأل وتجيب على "كيف حالك؟".', vocabTitle: 'كلمات الفقرة 1.8', vocabIntro: 'انقر على لغة أعلاه لرؤية الترجمة.', thExample: 'جملة مثال', thLang: '🇸🇦 العربية' },
-            ps: { subtitle: 'د "څنګه یې؟" پوښتلو او ځواب ورکولو طریقه زده کړئ.', vocabTitle: 'د پراګراف 1.8 کلمې', vocabIntro: 'د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.', thExample: 'د بیلګې جمله', thLang: '🇦🇫 پښتو' },
-        };
-        function buildTable(lang) { const tbody = document.getElementById('vocab-body'); tbody.innerHTML = ''; VOCAB.forEach(row => { const tr = document.createElement('tr'); tr.innerHTML = `<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]}</td><td class="example-cell">${row.ex}</td>`; tbody.appendChild(tr); }); document.getElementById('th-lang').textContent = UI[lang].thLang; }
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang) { const tbody = document.getElementById('vocab-body'); tbody.innerHTML = ''; VOCAB.forEach(row => { const tr = document.createElement('tr'); tr.innerHTML = `<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]}</td><td class="example-cell">${row.ex}</td>`; tbody.appendChild(tr); }); document.getElementById('th-lang').textContent = UI[lang].thLang; }
         function setLang(l) { document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); event.target.closest('.lang-btn').classList.add('active'); document.querySelectorAll('[data-translate]').forEach(el => { const k = el.getAttribute('data-translate'); if (UI[l] && UI[l][k]) el.innerHTML = UI[l][k]; }); buildTable(l); }
         document.addEventListener('DOMContentLoaded', () => buildTable('nl'));
     </script>

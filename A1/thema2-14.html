@@ -135,44 +135,30 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-const VOCAB=[
-    {nl:'begrijpen',en:'to understand',tr:'anlamak',zh:'理解',ex:'Begrijp je het?'},
-    {nl:'Ja, ik begrijp het.',en:'Yes, I understand.',tr:'Evet, anlıyorum.',zh:'是的，我明白。',ex:'Begrijp je het? → Ja, ik begrijp het.'},
-    {nl:'Nee, ik begrijp het niet.',en:'No, I don\'t understand.',tr:'Hayır, anlamıyorum.',zh:'不，我不明白。',ex:'Begrijp je het? → Nee, ik begrijp het niet.'},
-    {nl:'duidelijk',en:'clear',tr:'açık/net',zh:'清晰的',ex:'Is het duidelijk? Ja, het is duidelijk.'},
-    {nl:'niet duidelijk',en:'not clear',tr:'net değil',zh:'不清楚',ex:'Het is niet duidelijk voor mij.'},
-    {nl:'herhalen',en:'to repeat',tr:'tekrarlamak',zh:'重复',ex:'Kunt u het herhalen?'},
-    {nl:'uitleggen',en:'to explain',tr:'açıklamak',zh:'解释',ex:'Kunt u het uitleggen?'},
-    {nl:'snap',en:'grasp/get (informal)',tr:'kavramak (samimi)',zh:'明白（口语）',ex:'Ik snap het!'},
-    {nl:'begrijpelijk',en:'understandable',tr:'anlaşılır',zh:'可理解的',ex:'De uitleg is begrijpelijk.'},
-    {nl:'moeilijk',en:'difficult',tr:'zor',zh:'难',ex:'Dit woord is moeilijk.'},
-    {nl:'makkelijk',en:'easy',tr:'kolay',zh:'容易',ex:'De opdracht is makkelijk.'},
-];
-const UI={nl:{subtitle:'Leer aangeven of je iets begrijpt of niet.',vocabTitle:'Woorden van paragraaf 2.14',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn to indicate whether you understand something or not.',vocabTitle:'Words 2.14',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Bir şeyi anlayıp anlamadığınızı ifade etmeyi öğrenin.',vocabTitle:'2.14 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习表达你是否理解某事。',vocabTitle:'第2.14段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
-const UITLEG={
-    nl:`<div class="uitleg-box"><h3>Begrijpen of niet begrijpen?</h3>
-<p>De docent vraagt: <strong>Begrijp je het?</strong></p>
-<div class="zin-kaart"><strong>✅ Ja!</strong> → "Ja, ik begrijp het." / "Ja, het is duidelijk." / "Ja, ik snap het!"</div>
-<div class="zin-kaart"><strong>❌ Nee!</strong> → "Nee, ik begrijp het niet." / "Het is niet duidelijk." / "Kunt u het herhalen?" / "Kunt u het uitleggen?"</div></div>
-<div class="tip-blok"><strong>Let op:</strong> "begrijpen" vervoeg je als: ik begrijp | jij begrijpt | hij begrijpt | wij begrijpen</div>`,
-    en:`<div class="uitleg-box"><h3>Understanding or not?</h3>
-<p>The teacher asks: <strong>Begrijp je het?</strong> (Do you understand?)</p>
-<div class="zin-kaart"><strong>✅ Yes!</strong> → "Ja, ik begrijp het." / "Ja, het is duidelijk." / "Ja, ik snap het!"</div>
-<div class="zin-kaart"><strong>❌ No!</strong> → "Nee, ik begrijp het niet." / "Kunt u het herhalen?" (Can you repeat?) / "Kunt u het uitleggen?" (Can you explain?)</div></div>`,
-    tr:`<div class="uitleg-box"><h3>Anlıyor musunuz?</h3>
-<p>Öğretmen sorar: <strong>Begrijp je het?</strong> (Anlıyor musunuz?)</p>
-<div class="zin-kaart"><strong>✅ Evet!</strong> → "Ja, ik begrijp het." / "Ja, het is duidelijk." / "Ja, ik snap het!"</div>
-<div class="zin-kaart"><strong>❌ Hayır!</strong> → "Nee, ik begrijp het niet." / "Kunt u het herhalen?" / "Kunt u het uitleggen?"</div></div>`,
-    zh:`<div class="uitleg-box"><h3>听懂了吗？</h3>
-<p>老师问：<strong>Begrijp je het?</strong>（你明白了吗？）</p>
-<div class="zin-kaart"><strong>✅ 是的！</strong> → "Ja, ik begrijp het."（是的，我明白。）/ "Ja, ik snap het!"（是的，我懂了！）</div>
-<div class="zin-kaart"><strong>❌ 不！</strong> → "Nee, ik begrijp het niet."（不，我不明白。）/ "Kunt u het herhalen?"（您能重复一遍吗？）/ "Kunt u het uitleggen?"（您能解释一下吗？）</div></div>
-<div class="tip-blok"><strong>记忆技巧：</strong>"begrijpen"变位：ik begrijp | jij begrijpt | hij begrijpt | wij begrijpen</div>`
-};
-let currentLang='nl';
-function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
 const mc1Data=[
     {v:'De docent vraagt: "Begrijp je het?" Je snapt het. Wat zeg je?',a:'Ja, ik begrijp het.',o:['Nee, ik begrijp het niet.','Ja, ik begrijp het.','Kunt u het herhalen?']},

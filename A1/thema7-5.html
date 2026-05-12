@@ -239,61 +239,29 @@
     };
     
     let _ttsAudio = null;
-    function speak(text) {
+function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     
-    // Fix 'file' pronunciation and add delay for Bluetooth speakers (10 dots for ~2s)
-    let spokenText = ". . . . . . . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
-    
-    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
-    _ttsAudio.play().catch(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(spokenText);
-            u.lang = 'nl-NL';
-            u.rate = 0.8;
-            window.speechSynthesis.speak(u);
-        }
-    });
-}
-    
-    // Fix 'file' pronunciation and add delay for Bluetooth speakers
-    let spokenText = ". . . . . " + text.replace(/\bfile\b/gi, "fie-luh");
-    
-    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
-    _ttsAudio.play().catch(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(spokenText);
-            u.lang = 'nl-NL';
-            u.rate = 0.8;
-            window.speechSynthesis.speak(u);
-        }
-    });
-}
-        
-        // Probeer eerst Google TTS (altijd Nederlands)
-        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);
-        _ttsAudio.play().catch(() => {
-            // Fallback naar Web Speech API met geforceerde Nederlandse stem
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(text);
-                u.lang = 'nl-NL';
-                u.rate = 0.85;
-                
-                // Zoek specifiek naar een NL-stem (voorkomt dat systeemtaal van telefoon wordt gebruikt)
-                const voices = window.speechSynthesis.getVoices();
-                const nlVoice = voices.find(v => v.lang.includes('nl-NL') || v.lang.includes('nl_NL'));
-                if (nlVoice) u.voice = nlVoice;
-                
-                window.speechSynthesis.speak(u);
-            }
-        });
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
     }
-
-    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="width:40px"><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g, "\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td class="trans-word" ${['ar','ps'].includes(lang)?'dir="rtl"':''}>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="width:40px"><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g, "\\'")}')">🔊</button><button class="slow-speak-btn" onclick="speak('${r.nl.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button></td><td class="nl-word">${r.nl}</td><td class="trans-word" ${['ar','ps'].includes(lang)?'dir="rtl"':''}>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
     
     function setLang(l, event){
         document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
@@ -444,7 +412,7 @@
         const ul=document.getElementById('dictee1');ul.innerHTML='';
         dicteeData.forEach((item,i)=>{
             ul.innerHTML+=`<li>
-                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}')">🔊 Luister</button>
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)">🔊 Luister</button><button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
                 <input type="text" id="dictee1-${i}" placeholder="Typ de zin hier precies na..." autocomplete="off" spellcheck="false">
             </li>`;
         });

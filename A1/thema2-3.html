@@ -147,52 +147,30 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 <script>
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-const VOCAB=[
-    {nl:'leren',en:'to learn',tr:'öğrenmek',zh:'学习',ex:'De cursisten leren Nederlands.'},
-    {nl:'lezen',en:'to read',tr:'okumak',zh:'阅读',ex:'Ik lees een tekst.'},
-    {nl:'luisteren',en:'to listen',tr:'dinlemek',zh:'听',ex:'We luisteren naar de docent.'},
-    {nl:'schrijven',en:'to write',tr:'yazmak',zh:'写',ex:'Zij schrijft een opdracht.'},
-    {nl:'spreken',en:'to speak',tr:'konuşmak',zh:'说话',ex:'Hij spreekt Nederlands.'},
-    {nl:'maken',en:'to make/do',tr:'yapmak',zh:'做',ex:'We maken een opdracht.'},
-    {nl:'het boek',en:'book',tr:'kitap',zh:'书',ex:'Ik lees in mijn boek.'},
-    {nl:'het bord',en:'blackboard',tr:'tahta',zh:'黑板',ex:'De docent schrijft op het bord.'},
-    {nl:'de computer',en:'computer',tr:'bilgisayar',zh:'电脑',ex:'We werken op de computer.'},
-    {nl:'de pen',en:'pen',tr:'kalem',zh:'钢笔',ex:'Ik schrijf met een pen.'},
-    {nl:'de opdracht',en:'assignment',tr:'ödev',zh:'作业',ex:'We maken een opdracht.'},
-    {nl:'de tekst',en:'text',tr:'metin',zh:'课文',ex:'Ik lees de tekst.'},
-];
-const UI={nl:{subtitle:'Leer woorden voor wat je doet op school.',vocabTitle:'Woorden van paragraaf 2.3',thExample:'Voorbeeldzin',thLang:'🇳🇱 NL',oefTitle:'Oefeningen'},en:{subtitle:'Learn words for what you do at school.',vocabTitle:'Words 2.3',thExample:'Example',thLang:'🇬🇧 EN',oefTitle:'Exercises'},tr:{subtitle:'Okulda yaptıklarınız için kelimeler.',vocabTitle:'2.3 kelimeleri',thExample:'Örnek',thLang:'🇹🇷 TR',oefTitle:'Alıştırmalar'},zh:{subtitle:'学习描述在学校做的事的词汇。',vocabTitle:'第2.3段词汇',thExample:'例句',thLang:'🇨🇳 中文',oefTitle:'练习'}};
-const UITLEG={
-    nl:`<div class="uitleg-box"><h3>Werkwoorden in de klas</h3>
-<table class="wt"><thead><tr><th>Werkwoord</th><th>ik</th><th>jij/hij</th><th>wij</th></tr></thead>
-<tbody><tr><td>lezen</td><td>lees</td><td>leest</td><td>lezen</td></tr>
-<tr><td>luisteren</td><td>luister</td><td>luistert</td><td>luisteren</td></tr>
-<tr><td>schrijven</td><td>schrijf</td><td>schrijft</td><td>schrijven</td></tr>
-<tr><td>spreken</td><td>spreek</td><td>spreekt</td><td>spreken</td></tr>
-<tr><td>maken</td><td>maak</td><td>maakt</td><td>maken</td></tr>
-</tbody></table></div>
-<div class="tip-blok"><strong>De 4 vaardigheden:</strong> lezen 📖 | luisteren 👂 | schrijven ✍️ | spreken 🗣️</div>`,
-    en:`<div class="uitleg-box"><h3>Verbs in the classroom</h3>
-<table class="wt"><thead><tr><th>Verb</th><th>Meaning</th></tr></thead>
-<tbody><tr><td>lezen</td><td>to read</td></tr><tr><td>luisteren</td><td>to listen</td></tr>
-<tr><td>schrijven</td><td>to write</td></tr><tr><td>spreken</td><td>to speak</td></tr>
-<tr><td>maken</td><td>to do/make</td></tr></tbody></table></div>`,
-    tr:`<div class="uitleg-box"><h3>Sınıftaki Fiiller</h3>
-<table class="wt"><thead><tr><th>Fiil</th><th>Türkçe</th></tr></thead>
-<tbody><tr><td>lezen</td><td>okumak</td></tr><tr><td>luisteren</td><td>dinlemek</td></tr>
-<tr><td>schrijven</td><td>yazmak</td></tr><tr><td>spreken</td><td>konuşmak</td></tr>
-<tr><td>maken</td><td>yapmak</td></tr></tbody></table></div>`,
-    zh:`<div class="uitleg-box"><h3>课堂动词</h3>
-<table class="wt"><thead><tr><th>动词</th><th>中文</th></tr></thead>
-<tbody><tr><td>lezen</td><td>阅读</td></tr><tr><td>luisteren</td><td>听</td></tr>
-<tr><td>schrijven</td><td>写</td></tr><tr><td>spreken</td><td>说话</td></tr>
-<tr><td>maken</td><td>做</td></tr></tbody></table>
-<div class="tip-blok"><strong>四项技能：</strong>lezen（读）📖 | luisteren（听）👂 | schrijven（写）✍️ | spreken（说）🗣️</div></div>`
-};
-let currentLang='nl';
-function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+let _ttsAudio = null;
+function speak(text, isSlow = false) {
+    if (!text) return;
+    if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+    
+    let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+    if (isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    
+    let spokenText = ". . . . . . . . . . " + processedText;
+    
+    _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+    _ttsAudio.play().catch(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(processedText);
+            u.lang = 'nl-NL';
+            u.rate = isSlow ? 0.6 : 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+    function buildTable(lang){const tb=document.getElementById('vocab-body');tb.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${r.nl}</td><td class="trans-word">${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tb.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 function setLang(l){currentLang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.textContent=UI[l][k];});buildTable(l);document.getElementById('uitleg-content').innerHTML=UITLEG[l]||UITLEG.nl;document.querySelectorAll('.instructie-lang').forEach(s=>{s.style.display=s.getAttribute('data-lang')===l?'block':'none';});}
 const mc1Data=[
     {v:'Je gebruikt je ogen om een boek te lezen.',a:'lezen',o:['luisteren','lezen','spreken']},
