@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tijd-voorzetsels - NT2 A1/A2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tijd-bg: #f5f3ff;
+            --tijd-main: #7c3aed;
+            --tijd-dark: #5b21b6;
+            --text-main: #2c3e50;
+            --text-light: #5d6d7e;
+            --white: #ffffff;
+            --success: #10b981;
+            --error: #ef4444;
+            --shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 1.2rem; display: flex; justify-content: center; gap: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 0.5rem 1.2rem; border-radius: 50px; transition: var(--transition); }
+        nav a:hover { background: #f1f5f9; color: var(--tijd-main); }
+
+        .lang-container { position: sticky; top: 70px; display: flex; justify-content: center; gap: 12px; padding: 20px; background: rgba(248, 250, 252, 0.98); backdrop-filter: blur(10px); z-index: 999; border-bottom: 2px solid #e2e8f0; }
+        .lang-btn { border: 2px solid #e2e8f0; background: white; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 800; font-size: 1rem; transition: var(--transition); }
+        .lang-btn.active { background: var(--tijd-main); color: white; border-color: var(--tijd-main); }
+
+        .hero { padding: 10rem 2rem 4rem; text-align: center; }
+        .hero h1 { font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(90deg, var(--tijd-main), #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.4rem; color: var(--text-light); max-width: 800px; margin: 0 auto; }
+
+        .container { max-width: 1300px; margin: 4rem auto; padding: 0 2rem; }
+        .section-title { font-size: 3rem; margin-bottom: 4rem; text-align: center; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 15px; }
+
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 3rem; margin-bottom: 6rem; }
+        .card { background: white; border-radius: 40px; padding: 3rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-10px); }
+        .emoji-header { font-size: 5rem; text-align: center; margin-bottom: 2rem; }
+        .card .word { font-size: 3rem; font-weight: 800; margin-bottom: 0.8rem; text-align: center; color: var(--tijd-main); }
+        .card .definition { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; text-align: center; font-weight: 600; }
+        .example-item { margin-bottom: 15px; font-size: 1.1rem; font-weight: 500; }
+        .translation-sub { font-size: 0.9rem; color: var(--text-light); margin-left: 25px; font-style: italic; margin-top: 2px; }
+        .logic-box { padding: 1.5rem; border-radius: 20px; font-size: 1.1rem; font-weight: 700; margin-top: auto; background: var(--tijd-bg); color: var(--tijd-dark); }
+
+        /* Exercises Styling */
+        .exercise-section { background: white; padding: 5rem 2rem; border-radius: 50px; box-shadow: var(--shadow); margin: 4rem auto; max-width: 1100px; }
+        .ex-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 2rem; text-align: center; color: var(--tijd-main); }
+        
+        /* Oefening 1: MC */
+        .mc-container { display: grid; gap: 1.5rem; }
+        .mc-row { background: #f8fafc; padding: 25px; border-radius: 25px; border: 2px solid #e2e8f0; }
+        .mc-question { font-size: 1.2rem; font-weight: 700; margin-bottom: 15px; }
+        .mc-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .mc-btn { padding: 10px 25px; border-radius: 12px; border: 2px solid #cbd5e1; background: white; cursor: pointer; font-weight: 700; transition: var(--transition); }
+        .mc-btn:hover { border-color: var(--tijd-main); }
+        .mc-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .mc-btn.wrong { background: var(--error); color: white; border-color: var(--error); }
+        .explanation { margin-top: 10px; font-size: 0.95rem; font-weight: 600; display: none; padding: 10px; border-radius: 10px; }
+
+        /* Oefening 3: Good/Wrong */
+        .gw-row { display: flex; align-items: center; justify-content: space-between; padding: 20px; background: #f8fafc; border-radius: 20px; margin-bottom: 15px; }
+        .gw-sentence { font-weight: 700; font-size: 1.1rem; }
+        .gw-btns { display: flex; gap: 10px; }
+        .gw-btn { font-size: 1.5rem; padding: 10px 20px; border-radius: 15px; border: 2px solid #e2e8f0; background: white; cursor: pointer; transition: var(--transition); }
+        .gw-btn:hover { background: #f1f5f9; }
+        .gw-btn.active-v { background: #dcfce7; border-color: var(--success); }
+        .gw-btn.active-x { background: #fee2e2; border-color: var(--error); }
+
+        /* Oefening 4: Agenda */
+        .agenda { background: white; border: 3px solid #e2e8f0; border-radius: 25px; overflow: hidden; margin-bottom: 2rem; }
+        .agenda-header { background: var(--tijd-main); color: white; padding: 15px; text-align: center; font-weight: 800; font-size: 1.5rem; }
+        .agenda-row { display: grid; grid-template-columns: 150px 1fr; border-bottom: 1px solid #e2e8f0; }
+        .day { padding: 15px; background: #f8fafc; font-weight: 800; border-right: 1px solid #e2e8f0; }
+        .event { padding: 15px; font-weight: 600; }
+        .agenda-q-row { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .agenda-q-row input { padding: 10px 15px; border: 3px solid #cbd5e1; border-radius: 12px; font-weight: 800; width: 180px; }
+
+        .score-container { text-align: center; margin-top: 4rem; padding: 2rem; background: var(--tijd-bg); border-radius: 30px; }
+        .score-box { font-size: 2.5rem; font-weight: 800; color: var(--tijd-main); margin-bottom: 1rem; }
+        .reset-btn { padding: 15px 40px; border-radius: 50px; background: var(--text-main); color: white; border: none; font-weight: 800; cursor: pointer; font-size: 1.1rem; transition: var(--transition); }
+        .reset-btn:hover { background: var(--tijd-main); transform: scale(1.05); }
+
+        [lang]:not([lang="nl"]) { display: none; }
+        .rtl-text { direction: rtl; text-align: right; }
+
+        @media (max-width: 768px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .agenda-row { grid-template-columns: 100px 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#intro">Start</a>
+        <a href="#uitleg">📚 <span lang="nl">Uitleg</span><span lang="en">Explanation</span><span lang="tr">Açıklama</span><span lang="ar">شرح</span><span lang="ps">تشریح</span></a>
+        <a href="#oefenen">✍️ <span lang="nl">Oefenen</span><span lang="en">Practice</span><span lang="tr">Pratik</span><span lang="ar">تمرین</span><span lang="ps">تمرین</span></a>
+    </nav>
+
+    <div class="lang-container">
+        <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+        <button class="lang-btn" id="btn-tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+        <button class="lang-btn" id="btn-ar" onclick="setLang('ar')">🇸🇦 العربية</button>
+        <button class="lang-btn" id="btn-ps" onclick="setLang('ps')">🇦🇫 پښتو</button>
+    </div>
+
+    <header class="hero" id="intro">
+        <h1>
+            <span lang="nl">Tijd-voorzetsels</span>
+            <span lang="en">Time Prepositions</span>
+            <span lang="tr">Zaman Edatları</span>
+            <span lang="ar" class="rtl-text">حروف جر الوقت</span>
+            <span lang="ps" class="rtl-text">د وخت حروف</span>
+        </h1>
+        <p>
+            <span lang="nl">Wanneer gebeurt er iets? Leer hoe je <strong>om, op, in, sinds</strong> en meer gebruikt.</span>
+            <span lang="en">When does something happen? Learn how to use <strong>om, op, in, sinds</strong> and more.</span>
+            <span lang="tr">Bir şey ne zaman oluyor? <strong>om, op, in, sinds</strong> ve daha fazlasını öğrenin.</span>
+            <span lang="ar" class="rtl-text">متى يحدث شيء ما؟ تعلم كيفية استخدام <strong>om, op, in, sinds</strong> والمزيد.</span>
+            <span lang="ps" class="rtl-text">یو څه کله پیښیږي؟ د <strong>om, op, in, sinds</strong> او نورو کارول زده کړئ.</span>
+        </p>
+    </header>
+
+    <main class="container" id="uitleg">
+        <!-- KLOKTIJD -->
+        <h2 class="section-title">⏰ <span lang="nl">Kloktijd</span><span lang="en">Clock Time</span><span lang="tr">Saat</span><span lang="ar">الوقت</span><span lang="ps">وخت</span></h2>
+        <div class="cards-grid" id="kloktijd-cards"></div>
+
+        <!-- DATUMS -->
+        <h2 class="section-title">📅 <span lang="nl">Datums & Periodes</span><span lang="en">Dates & Periods</span><span lang="tr">Tarihler</span><span lang="ar">التواريخ</span><span lang="ps">نیټې</span></h2>
+        <div class="cards-grid" id="datums-cards"></div>
+
+        <!-- TOEKOMST -->
+        <h2 class="section-title">🔮 <span lang="nl">Toekomst</span><span lang="en">Future</span><span lang="tr">Gelecek</span><span lang="ar">المستقبل</span><span lang="ps">راتلونکی</span></h2>
+        <div class="cards-grid" id="toekomst-cards"></div>
+
+        <!-- START/EIND -->
+        <h2 class="section-title">🗓 <span lang="nl">Start & Eind</span><span lang="en">Start & End</span><span lang="tr">Başlangıç ve Bitiş</span><span lang="ar">البداية والنهاية</span><span lang="ps">پیل او پای</span></h2>
+        <div class="cards-grid" id="starteind-cards"></div>
+
+        <!-- STARTPUNT -->
+        <h2 class="section-title">➡️ <span lang="nl">Startpunt</span><span lang="en">Starting Point</span><span lang="tr">Başlangıç Noktası</span><span lang="ar">نقطة البداية</span><span lang="ps">د پیل ټکی</span></h2>
+        <div class="cards-grid" id="startpunt-cards"></div>
+    </main>
+
+    <section class="exercise-section" id="oefenen">
+        <h2 class="section-title">✍️ <span lang="nl">Oefeningen</span><span lang="en">Exercises</span><span lang="tr">Egzersizler</span><span lang="ar">تمارين</span><span lang="ps">تمرینونه</span></h2>
+        
+        <!-- Oefening 1 -->
+        <div class="mc-container">
+            <h3 class="ex-title">1. Vul het juiste voorzetsel in</h3>
+            <div id="mc-questions"></div>
+        </div>
+
+        <hr style="margin: 4rem 0; opacity: 0.1;">
+
+        <!-- Oefening 3 -->
+        <div>
+            <h3 class="ex-title">2. Goed ✅ of fout ❌?</h3>
+            <div id="gw-questions"></div>
+        </div>
+
+        <hr style="margin: 4rem 0; opacity: 0.1;">
+
+        <!-- Oefening 4 -->
+        <div>
+            <h3 class="ex-title">3. Mini-Agenda</h3>
+            <div class="agenda">
+                <div class="agenda-header">Agenda van Sarah</div>
+                <div class="agenda-row"><div class="day">Maandag</div><div class="event">10:00 Tandarts</div></div>
+                <div class="agenda-row"><div class="day">Dinsdag</div><div class="event">14:00 - 16:00 Vergadering</div></div>
+                <div class="agenda-row"><div class="day">Woensdag</div><div class="event">Mijn verjaardag 🎂</div></div>
+                <div class="agenda-row"><div class="day">Donderdag</div><div class="event">09:00 Trein naar Parijs</div></div>
+                <div class="agenda-row"><div class="day">Vrijdag - Zondag</div><div class="event">Vakantie aan zee 🏖️</div></div>
+            </div>
+            <div id="agenda-questions"></div>
+        </div>
+
+        <div class="score-container">
+            <div class="score-box">Score: <span id="total-score">0</span> / 25</div>
+            <button class="reset-btn" onclick="resetAll()">Opnieuw Beginnen</button>
+        </div>
+
+        <footer style="margin-top: 4rem;">
+            <div class="logic-box" style="background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; padding: 2rem; border-radius: 25px;">
+                <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                    ⚠️ <span lang="nl">Let op: Meerdere betekenissen</span>
+                    <span lang="en">Attention: Multiple meanings</span>
+                    <span lang="tr">Dikkat: Birden fazla anlam</span>
+                    <span lang="ar">تنبيه: معانٍ متعددة</span>
+                    <span lang="ps">پاملرنه: څو ماناګانې</span>
+                </h3>
+                <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                    <span lang="nl">Kijk uit! Sommige voorzetsels hebben meerdere betekenissen. De betekenis hangt af van de context en de andere woorden in de zin.</span>
+                    <span lang="en">Watch out! Some prepositions have multiple meanings. The meaning depends on the context and other words in the sentence.</span>
+                    <span lang="tr">Dikkat! Bazı edatların birden fazla anlamı vardır. Anlam, bağlama ve cümledeki diğer kelimelere bağlıdır.</span>
+                    <span lang="ar">انتبه! بعض حروف الجر لها معانٍ متعددة. يعتمد المعنى على السياق والكلمات الأخرى في الجملة.</span>
+                    <span lang="ps">پام کوئ! ځینې حروف څو ماناګانې لري. مانا یې په متن او په جمله کې نورو کلمو پورې اړه لري.</span>
+                </p>
+                <ul style="margin-left: 2rem; font-weight: 600; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                    <li><strong>voor</strong>: 
+                        <span lang="nl">tijd ("voor 9 uur") vs. doel ("voor jou") vs. plaats ("voor de deur")</span>
+                        <span lang="en">time ("before 9") vs. purpose ("for you") vs. place ("in front of")</span>
+                        <span lang="tr">zaman vs. amaç vs. yer</span>
+                        <span lang="ar">وقت مقابل غرض مقابل مكان</span>
+                        <span lang="ps">وخت بمقابله هدف بمقابله ځای</span>
+                    </li>
+                    <li><strong>van</strong>: 
+                        <span lang="nl">start ("van 9 uur") vs. bezit ("van mij")</span>
+                        <span lang="en">start ("from 9") vs. possession ("mine")</span>
+                        <span lang="tr">başlangıç vs. aidiyet</span>
+                        <span lang="ar">بداية مقابل ملكية</span>
+                        <span lang="ps">پیل بمقابله ملکیت</span>
+                    </li>
+                    <li><strong>op</strong>: 
+                        <span lang="nl">tijd ("op maandag") vs. plaats ("op de tafel")</span>
+                        <span lang="en">time ("on Monday") vs. place ("on the table")</span>
+                        <span lang="tr">zaman ("Pazartesi") vs. yer ("masada")</span>
+                        <span lang="ar">وقت مقابل مكان</span>
+                        <span lang="ps">وخت بمقابله ځای</span>
+                    </li>
+                    <li><strong>in</strong>: 
+                        <span lang="nl">tijd ("in juni") vs. plaats ("in de doos")</span>
+                        <span lang="en">time ("in June") vs. place ("in the box")</span>
+                        <span lang="tr">zaman ("Haziran") vs. yer ("kutuda")</span>
+                        <span lang="ar">وقت مقابل مكان</span>
+                        <span lang="ps">وخت بمقابله ځای</span>
+                    </li>
+                    <li><strong>over</strong>: 
+                        <span lang="nl">tijd ("over 5 min") vs. richting ("over de brug") vs. onderwerp ("praten over")</span>
+                        <span lang="en">time ("in 5 min") vs. direction ("across") vs. subject ("talk about")</span>
+                        <span lang="tr">zaman vs. yön vs. konu</span>
+                        <span lang="ar">وقت مقابل اتجاه مقابل موضوع</span>
+                        <span lang="ps">وخت بمقابله لوری بمقابله موضوع</span>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </section>
+
+    <script>
+        let currentLang = 'nl';
+        let scores = { mc: 0, gw: 0, agenda: 0 };
+
+        const dataKloktijd = [
+            { word: "om", emoji: "🕒", def: { nl: "Exact tijdstip", en: "Exact time", tr: "Tam zaman", ar: "وقت محدد", ps: "ټاکلی وخت" }, 
+              ex: [{ nl: "De les begint om 9.00 uur.", en: "The lesson starts at 9:00.", tr: "Ders saat 9:00'da başlıyor.", ar: "يبدأ الدرس في الساعة 9:00.", ps: "لوست په ۹ بجو پیل کیږي." }],
+              rule: { nl: "OM = Exact moment.", en: "OM = Exact moment.", tr: "OM = Tam an.", ar: "OM = لحظة محددة.", ps: "OM = ټاکلی وخت." } },
+            { word: "voor", emoji: "⬅️", def: { nl: "Eerder dan", en: "Before", tr: "Daha önce", ar: "قبل", ps: "مخکې" }, 
+              ex: [{ nl: "Kom voor 9 uur.", en: "Come before 9 o'clock.", tr: "Saat 9'dan önce gel.", ar: "تعال قبل الساعة 9.", ps: "له ۹ بجو مخکې راشئ." }],
+              rule: { nl: "VOOR = Eerder.", en: "VOOR = Earlier.", tr: "VOOR = Daha erken.", ar: "VOOR = وقت أبكر.", ps: "VOOR = مخکې." } },
+            { word: "rond", emoji: "⌚", def: { nl: "Ongeveer", en: "Around / Approximately", tr: "Yaklaşık", ar: "حوالي", ps: "شاوخوا" }, 
+              ex: [{ nl: "Ik kom rond 9 uur.", en: "I'll come around 9 o'clock.", tr: "Saat 9 civarında gelirim.", ar: "سآتي حوالي الساعة 9.", ps: "زه به د ۹ بجو په شاوخوا کې راشم." }],
+              rule: { nl: "ROND = Niet exact.", en: "ROND = Not exact.", tr: "ROND = Tam değil.", ar: "ROND = غير دقيق.", ps: "ROND = نږدې." } },
+            { word: "na", emoji: "➡️", def: { nl: "Later dan", en: "After", tr: "Daha sonra", ar: "بعد", ps: "وروسته" }, 
+              ex: [{ nl: "We eten na 18.00 uur.", en: "We eat after 6 PM.", tr: "Saat 18:00'den sonra yeriz.", ar: "نأكل بعد الساعة 18:00.", ps: "موږ له ۱۸:۰۰ بجو وروسته ډوډۍ خورو." }],
+              rule: { nl: "NA = Later.", en: "NA = Later.", tr: "NA = Daha geç.", ar: "NA = وقت لاحق.", ps: "NA = وروسته." } }
+        ];
+
+        const dataDatums = [
+            { word: "op", emoji: "📆", def: { nl: "Dagen en datums", en: "Days and dates", tr: "Günler ve tarihler", ar: "الأيام والتواريخ", ps: "ورځې او نیټې" }, 
+              ex: [{ nl: "Op maandag heb ik les.", en: "On Monday I have class.", tr: "Pazartesi günü dersim var.", ar: "لدي درس يوم الاثنين.", ps: "زه د دوشنبې په ورځ لوست لرم." }, { nl: "Op 20 juni ben ik jarig.", en: "My birthday is on June 20th.", tr: "20 Haziran'da doğum günüm.", ar: "عيد ميلادي في 20 يونيو.", ps: "زما د زیږون ورځ د جون په ۲۰مه ده." }],
+              rule: { nl: "OP = Dag / Datum.", en: "OP = Day / Date.", tr: "OP = Gün / Tarih.", ar: "OP = يوم / تاريخ.", ps: "OP = ورځ / نیټه." } },
+            { word: "in", emoji: "🍂", def: { nl: "Maanden, jaren, seizoenen", en: "Months, years, seasons", tr: "Aylar, yıllar, mevsimler", ar: "الشهور، السنوات، المواسم", ps: "میاشتې، کلونه، فصلونه" }, 
+              ex: [{ nl: "In juni gaan we op vakantie.", en: "In June we go on vacation.", tr: "Haziran'da tatile gidiyoruz.", ar: "في يونيو نذهب في إجازة.", ps: "موږ په جون کې رخصتۍ ته ځو." }, { nl: "In de zomer is het warm.", en: "In the summer it is warm.", tr: "Yazın hava sıcak.", ar: "في الصيف الجو حار.", ps: "په اوړي کې هوا توده وي." }],
+              rule: { nl: "IN = Periode (maand/jaar).", en: "IN = Period (month/year).", tr: "IN = Dönem (ay/yıl).", ar: "IN = فترة (شهر/سنة).", ps: "IN = موده (میاشت/کال)." } }
+        ];
+
+        const dataToekomst = [
+            { word: "over", emoji: "⏱️", def: { nl: "Precies dat moment in de toekomst", en: "Exactly that moment in the future", tr: "Gelecekte tam o an", ar: "تلك اللحظة في المستقبل", ps: "په راتلونکي کې په هماغه شیبه کې" }, 
+              ex: [{ nl: "Over 2 dagen is de les.", en: "The lesson is in 2 days.", tr: "2 gün sonra ders var.", ar: "بعد يومين سيكون الدرس.", ps: "له ۲ ورځو وروسته لوست دی." }],
+              rule: { nl: "OVER = Toekomst (exact).", en: "OVER = Future (exact).", tr: "OVER = Gelecek (tam).", ar: "OVER = المستقبل (بالضبط).", ps: "OVER = راتلونکی." } },
+            { word: "binnen", emoji: "⏳", def: { nl: "Uiterlijk dan / In die periode", en: "Within / By then", tr: "En geç / O süre içinde", ar: "في غضون / أقصى موعد", ps: "په دغه موده کې" }, 
+              ex: [{ nl: "Binnen 1 uur ben ik klaar.", en: "I'll be ready within 1 hour.", tr: "1 saat içinde biterim.", ar: "سأنتهي في غضون ساعة.", ps: "زه به په یو ساعت کې فارغ شم." }],
+              rule: { nl: "BINNEN = Maximaal tijd.", en: "BINNEN = Maximum time.", tr: "BINNEN = Maksimum süre.", ar: "BINNEN = أقصى وقت.", ps: "BINNEN = ډیر وخت." } }
+        ];
+
+        const dataStartEind = [
+            { word: "van...tot", emoji: "↔️", def: { nl: "Begin en eind", en: "From...to", tr: "Başlangıç ve bitiş", ar: "البداية والنهاية", ps: "پیل او پای" }, 
+              ex: [{ nl: "Van 9 tot 17 uur werk ik.", en: "I work from 9 to 5.", tr: "Saat 9'dan 17'ye kadar çalışıyorum.", ar: "أعمل من 9 حتى 17.", ps: "زه له ۹ تر ۱۷ بجو کار کوم." }],
+              rule: { nl: "Altijd samen gebruiken.", en: "Always use together.", tr: "Her zaman birlikte kullanılır.", ar: "تستخدم دائماً معاً.", ps: "تل یوځای کارول کیږي." } },
+            { word: "tijdens", emoji: "🎭", def: { nl: "Gedurende een gebeurtenis", en: "During an event", tr: "Bir olay sırasında", ar: "أثناء حدث ما", ps: "د یوې پیښې په جریان کې" }, 
+              ex: [{ nl: "Tijdens de les moet je luisteren.", en: "During class you must listen.", tr: "Ders sırasında dinlemelisin.", ar: "أثناء الدرس يجب أن تستمع.", ps: "د لوست پر مهال باید غوږ ونیسئ." }],
+              rule: { nl: "Focus op de activiteit.", en: "Focus on the activity.", tr: "Etkinliğe odaklanın.", ar: "التركيز على النشاط.", ps: "په فعالیت تمرکز وکړئ." } }
+        ];
+
+        const dataStartpunt = [
+            { word: "vanaf", emoji: "🚀", def: { nl: "Startpunt (vroeger/nu/later)", en: "Starting point", tr: "Başlangıç noktası", ar: "نقطة البداية", ps: "د پیل ټکی" }, 
+              ex: [{ nl: "Vanaf maandag stop ik met roken.", en: "From Monday on I'll quit smoking.", tr: "Pazartesi'den itibaren sigarayı bırakıyorum.", ar: "اعتباراً من يوم الاثنين سأتوقف عن التدخين.", ps: "له دوشنبې څخه زه سګرټ پریږدم." }],
+              rule: { nl: "Focus op het begin.", en: "Focus on the start.", tr: "Başlangıca odaklanın.", ar: "التركيز على البداية.", ps: "په پیل تمرکز وکړئ." } },
+            { word: "sinds", emoji: "🕰️", def: { nl: "Start verleden → loopt nu door", en: "Since (past to present)", tr: "Geçmişten beri", ar: "منذ (من الماضي للحاضر)", ps: "له پخوا څخه تر اوسه" }, 
+              ex: [{ nl: "Sinds 2020 woon ik hier.", en: "I've been living here since 2020.", tr: "2020'den beri burada yaşıyorum.", ar: "أنا أسكن هنا منذ عام 2020.", ps: "زه له ۲۰۲۰ راهیسې دلte اوسیږم." }],
+              rule: { nl: "Moet in het verleden begonnen zijn.", en: "Must have started in the past.", tr: "Geçmişte başlamış olmalı.", ar: "يجب أن يكون قد بدأ في الماضي.", ps: "باید په تیر وخت کې پیل شوی وي." } }
+        ];
+
+        const mcQuestions = [
+            { q: "De les begint ___ 9.00 uur.", opts: ["om", "voor", "rond"], a: "om", expl: "Exacte tijd = om." },
+            { q: "___ de vakantie ga ik naar Marokko.", opts: ["tijdens", "sinds", "op"], a: "tijdens", expl: "Tijdens een periode/activiteit." },
+            { q: "___ 2020 woon ik in Nederland.", opts: ["sinds", "vanaf", "over"], a: "sinds", expl: "Begonnen in verleden en loopt door." },
+            { q: "Hij komt ___ 5 minuten.", opts: ["over", "binnen", "na"], a: "over", expl: "Exact dat moment in de toekomst." },
+            { q: "De winkel is open ___ 9 ___ 18 uur.", opts: ["van...tot", "om...na", "op...in"], a: "van...tot", expl: "Begin en eind van een periode." },
+            { q: "___ maandag heb ik een afspraak.", opts: ["op", "in", "om"], a: "op", expl: "Dagen van de week = op." },
+            { q: "___ januari is het vaak koud.", opts: ["in", "op", "om"], a: "in", expl: "Maanden = in." },
+            { q: "Ik kom ___ 10 uur, misschien iets later.", opts: ["rond", "om", "voor"], a: "rond", expl: "Ongeveer = rond." },
+            { q: "Kom ___ 12 uur, want daarna gaan we weg.", opts: ["voor", "na", "om"], a: "voor", expl: "Eerder dan 12 uur." },
+            { q: "We gaan eten ___ de film.", opts: ["na", "voor", "tijdens"], a: "na", expl: "Later dan the film." },
+            { q: "Ik ben ___ een uur klaar.", opts: ["binnen", "over", "om"], a: "binnen", expl: "Uiterlijk over een uur." },
+            { q: "___ volgende week begin ik met sporten.", opts: ["vanaf", "sinds", "op"], a: "vanaf", expl: "Startpunt in de toekomst." },
+            { q: "___ de zomer is het warm.", opts: ["in", "op", "om"], a: "in", expl: "Seizoenen = in." },
+            { q: "___ 5 mei vieren we bevrijdingsdag.", opts: ["op", "in", "voor"], a: "op", expl: "Datums = op." },
+            { q: "Ik woon hier ___ twee jaar.", opts: ["sinds", "vanaf", "over"], a: "sinds", expl: "Verleden tot nu." }
+        ];
+
+        const gwQuestions = [
+            { s: "Sinds volgende week begin ik.", a: false, expl: "Sinds kan niet in de toekomst. Gebruik 'vanaf'." },
+            { s: "Om ongeveer 9 uur kom ik.", a: false, expl: "Dubbelop. Gebruik 'rond 9 uur'." },
+            { s: "In maandag heb ik les.", a: false, expl: "Dagen = op maandag." },
+            { s: "Binnen 2 weken ga ik op vakantie.", a: true, expl: "Goed! Ergens in die periode." },
+            { s: "Tijdens de les mag je niet bellen.", a: true, expl: "Goed! Gedurende de activiteit." }
+        ];
+
+        const agendaQuestions = [
+            { q: "Wanneer is de afspraak bij de tandarts?", a: "om 10:00", expl: "Kloktijd = om." },
+            { q: "Hoe laat is de vergadering op dinsdag?", a: "van 14:00 tot 16:00", expl: "Begin en eind." },
+            { q: "Wanneer is Sarah jarig?", a: "op woensdag", expl: "Dag = op." },
+            { q: "Wanneer vertrekt de trein?", a: "om 09:00", expl: "Kloktijd = om." },
+            { q: "Wanneer heeft Sarah vakantie?", a: "van vrijdag tot zondag", expl: "Begin en eind." }
+        ];
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('body [lang]').forEach(el => {
+                const isMatch = el.getAttribute('lang') === lang;
+                el.style.display = isMatch ? (el.tagName === 'SPAN' ? 'inline' : 'block') : 'none';
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.id === 'btn-' + lang));
+            renderCards();
+        }
+
+        function renderCards() {
+            const label = { nl: "Logische regel", en: "Logic rule", tr: "Mantıksal kural", ar: "قاعدة منطقية", ps: "منطقي قاعده" }[currentLang];
+            const render = (data, containerId) => {
+                const cont = document.getElementById(containerId);
+                cont.innerHTML = data.map(item => `
+                    <div class="card">
+                        <div class="emoji-header">${item.emoji}</div>
+                        <div class="word">${item.word}</div>
+                        <div class="definition">${item.def[currentLang]}</div>
+                        <div class="example-list">
+                            ${item.ex.map(e => `
+                                <div class="example-item">
+                                    <div>✅ ${e.nl}</div>
+                                    ${currentLang !== 'nl' ? `<div class="translation-sub">(${e[currentLang]})</div>` : ''}
+                                </div>`).join('')}
+                        </div>
+                        <div class="logic-box">💡 <strong>${label}:</strong><br>${item.rule[currentLang]}</div>
+                    </div>`).join('');
+            };
+            render(dataKloktijd, 'kloktijd-cards');
+            render(dataDatums, 'datums-cards');
+            render(dataToekomst, 'toekomst-cards');
+            render(dataStartEind, 'starteind-cards');
+            render(dataStartpunt, 'startpunt-cards');
+        }
+
+        function renderExercises() {
+            // MC
+            const mcCont = document.getElementById('mc-questions');
+            mcCont.innerHTML = mcQuestions.map((q, i) => `
+                <div class="mc-row">
+                    <div class="mc-question">${i+1}. ${q.q}</div>
+                    <div class="mc-options">
+                        ${q.opts.map(opt => `<button class="mc-btn" onclick="checkMC(this, ${i}, '${opt}')">${opt}</button>`).join('')}
+                    </div>
+                    <div class="explanation" id="mc-expl-${i}">💡 ${q.expl}</div>
+                </div>`).join('');
+
+            // GW
+            const gwCont = document.getElementById('gw-questions');
+            gwCont.innerHTML = gwQuestions.map((q, i) => `
+                <div class="gw-row">
+                    <div class="gw-sentence">${q.s}</div>
+                    <div class="gw-btns">
+                        <button class="gw-btn" onclick="checkGW(this, ${i}, true)">✅</button>
+                        <button class="gw-btn" onclick="checkGW(this, ${i}, false)">❌</button>
+                    </div>
+                    <div class="explanation" id="gw-expl-${i}">💡 ${q.expl}</div>
+                </div>`).join('');
+
+            // Agenda
+            const agCont = document.getElementById('agenda-questions');
+            agCont.innerHTML = agendaQuestions.map((q, i) => `
+                <div class="agenda-q-row">
+                    <span style="font-weight:700; flex:1;">${q.q}</span>
+                    <input type="text" onchange="checkAgenda(this, ${i})">
+                    <div class="explanation" id="ag-expl-${i}">💡 ${q.expl}</div>
+                </div>`).join('');
+        }
+
+        function checkMC(btn, idx, opt) {
+            const q = mcQuestions[idx];
+            const expl = document.getElementById(`mc-expl-${idx}`);
+            const buttons = btn.parentElement.querySelectorAll('.mc-btn');
+            buttons.forEach(b => { b.disabled = true; b.classList.remove('correct', 'wrong'); });
+            
+            if (opt === q.a) {
+                btn.classList.add('correct');
+                scores.mc++;
+            } else {
+                btn.classList.add('wrong');
+                buttons.forEach(b => { if(b.innerText === q.a) b.classList.add('correct'); });
+            }
+            expl.style.display = 'block';
+            expl.style.background = opt === q.a ? '#dcfce7' : '#fee2e2';
+            updateScore();
+        }
+
+        function checkGW(btn, idx, val) {
+            const q = gwQuestions[idx];
+            const expl = document.getElementById(`gw-expl-${idx}`);
+            const row = btn.parentElement;
+            row.querySelectorAll('.gw-btn').forEach(b => b.disabled = true);
+
+            if (val === q.a) {
+                btn.classList.add(val ? 'active-v' : 'active-x');
+                scores.gw++;
+            } else {
+                btn.classList.add(val ? 'active-v' : 'active-x');
+                btn.style.borderColor = 'var(--error)';
+                row.querySelectorAll('.gw-btn').forEach(b => {
+                    if ((q.a && b.innerText === '✅') || (!q.a && b.innerText === '❌')) b.classList.add(q.a ? 'active-v' : 'active-x');
+                });
+            }
+            expl.style.display = 'block';
+            expl.style.background = val === q.a ? '#dcfce7' : '#fee2e2';
+            updateScore();
+        }
+
+        function checkAgenda(input, idx) {
+            const q = agendaQuestions[idx];
+            const val = input.value.trim().toLowerCase();
+            const expl = document.getElementById(`ag-expl-${idx}`);
+            
+            if (val === q.a.toLowerCase()) {
+                input.style.borderColor = 'var(--success)';
+                scores.agenda++;
+            } else {
+                input.style.borderColor = 'var(--error)';
+                input.value += ` (Antwoord: ${q.a})`;
+            }
+            input.disabled = true;
+            expl.style.display = 'block';
+            updateScore();
+        }
+
+        function updateScore() {
+            const total = scores.mc + scores.gw + scores.agenda;
+            document.getElementById('total-score').innerText = total;
+        }
+
+        function resetAll() {
+            scores = { mc: 0, gw: 0, agenda: 0 };
+            document.getElementById('total-score').innerText = "0";
+            renderExercises();
+        }
+
+        // Initialize
+        setLang('nl');
+        renderExercises();
+    </script>
+</body>
+</html>
