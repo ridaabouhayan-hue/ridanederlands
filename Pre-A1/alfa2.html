@@ -58,7 +58,7 @@
                 <button class="speak-btn" onclick="speak('Ik ben Jan.')">🔊</button>
                 <button class="slow-speak-btn" onclick="speak('Ik ben Jan.', true)" title="Langzaam">🐢</button>
                 <span>Ik ben Jan<span style="color:var(--amber); font-weight:900;">.</span></span>
-                <div class="trans-text" id="trans-punt" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">I am Jan.</div>
+                <div class="trans-text" id="trans-punt" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px; display:none;"></div>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
                 <button class="speak-btn" onclick="speak('Wie ben jij?')">🔊</button>
                 <button class="slow-speak-btn" onclick="speak('Wie ben jij?', true)" title="Langzaam">🐢</button>
                 <span>Wie ben jij<span style="color:var(--amber); font-weight:900;">?</span></span>
-                <div class="trans-text" id="trans-vraag" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">Who are you?</div>
+                <div class="trans-text" id="trans-vraag" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px; display:none;"></div>
             </div>
         </div>
 
@@ -86,7 +86,7 @@
                 <button class="speak-btn" onclick="speak('Pas op!')">🔊</button>
                 <button class="slow-speak-btn" onclick="speak('Pas op!', true)" title="Langzaam">🐢</button>
                 <span>Pas op<span style="color:var(--amber); font-weight:900;">!</span></span>
-                <div class="trans-text" id="trans-uitroep" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">Watch out!</div>
+                <div class="trans-text" id="trans-uitroep" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px; display:none;"></div>
             </div>
         </div>
 
@@ -100,7 +100,7 @@
                 <button class="speak-btn" onclick="speak('Ik koop brood, kaas en melk.')">🔊</button>
                 <button class="slow-speak-btn" onclick="speak('Ik koop brood, kaas en melk.', true)" title="Langzaam">🐢</button>
                 <span>Ik koop brood<span style="color:var(--amber); font-weight:900;">,</span> kaas en melk.</span>
-                <div class="trans-text" id="trans-komma" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px;">I buy bread, cheese and milk.</div>
+                <div class="trans-text" id="trans-komma" style="font-size:0.9rem; color:var(--gray-600); font-style:italic; margin-top:4px; display:none;"></div>
             </div>
         </div>
     </div>
@@ -148,7 +148,7 @@
         if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
         let processedText = text;
         if (isSlow) { processedText = processedText.split(' ').join(', , '); }
-        let spokenText = ". . . . . . . . . . " + processedText;
+        let spokenText = ", , , , , " + processedText;
         _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
         _ttsAudio.play().catch(() => {
             if ('speechSynthesis' in window) {
@@ -259,26 +259,47 @@
         });
 
         // Update example translations
-        document.getElementById('trans-punt').textContent = UI[l].transPunt;
-        document.getElementById('trans-vraag').textContent = UI[l].transVraag;
-        document.getElementById('trans-uitroep').textContent = UI[l].transUitroep;
-        document.getElementById('trans-komma').textContent = UI[l].transKomma;
+        const transPunt = document.getElementById('trans-punt');
+        const transVraag = document.getElementById('trans-vraag');
+        const transUitroep = document.getElementById('trans-uitroep');
+        const transKomma = document.getElementById('trans-komma');
+
+        transPunt.textContent = UI[l].transPunt;
+        transVraag.textContent = UI[l].transVraag;
+        transUitroep.textContent = UI[l].transUitroep;
+        transKomma.textContent = UI[l].transKomma;
+
+        // Hide translations for Dutch
+        const isNl = l === 'nl';
+        [transPunt, transVraag, transUitroep, transKomma].forEach(el => {
+            el.style.display = isNl ? 'none' : 'block';
+        });
 
         // RTL check
         const isRtl = ['ar', 'ps'].includes(l);
-        document.getElementById('trans-punt').dir = isRtl ? 'rtl' : 'ltr';
-        document.getElementById('trans-vraag').dir = isRtl ? 'rtl' : 'ltr';
-        document.getElementById('trans-uitroep').dir = isRtl ? 'rtl' : 'ltr';
-        document.getElementById('trans-komma').dir = isRtl ? 'rtl' : 'ltr';
+        [transPunt, transVraag, transUitroep, transKomma].forEach(el => {
+            el.dir = isRtl ? 'rtl' : 'ltr';
+        });
     }
 
     // MCQ EXERCISE
     const mcqData = [
-        { q: "Hoe gaat het__", options: [".", "?", "!"], a: "?" },
-        { q: "Ik woon in Amsterdam__", options: [".", "?", "!"], a: "." },
-        { q: "Pas op__", options: [".", "?", "!"], a: "!" },
-        { q: "Mijn naam is Sarah__", options: [".", "?", "!"], a: "." },
-        { q: "Waar kom jij vandaan__", options: [".", "?", "!"], a: "?" }
+        { q: "Mijn naam is Peter__", options: [".", "?", "!"], a: "." },
+        { q: "Hoe laat is het__", options: [".", "?", "!"], a: "?" },
+        { q: "Kijk uit__", options: [".", "?", "!"], a: "!" },
+        { q: "Ja__ dat is goed.", options: [",", ".", "?"], a: "," },
+        { q: "Het is mooi weer__", options: [".", "?", "!"], a: "." },
+        { q: "Waar is de bakker__", options: [".", "?", "!"], a: "?" },
+        { q: "STOP__", options: [".", "?", "!"], a: "!" },
+        { q: "Nee__ ik weet het niet.", options: [",", ".", "!"], a: "," },
+        { q: "Ik woon in Utrecht__", options: [".", "?", "!"], a: "." },
+        { q: "Kom je ook__", options: [".", "?", "!"], a: "?" },
+        { q: "Stilte__", options: [".", "?", "!"], a: "!" },
+        { q: "Ik koop melk__ kaas en brood.", options: [",", ".", "?"], a: "," },
+        { q: "De kat slaapt__", options: [".", "?", "!"], a: "." },
+        { q: "Wat ga je doen__", options: [".", "?", "!"], a: "?" },
+        { q: "Gefeliciteerd__", options: [".", "?", "!"], a: "!" },
+        { q: "Maandag__ dinsdag en woensdag.", options: [",", ".", "!"], a: "," }
     ];
 
     function shuffle(array) {
@@ -334,10 +355,10 @@
         parent.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
         mcqAnswered++;
         
-        if (mcqAnswered === 5) {
+        if (mcqAnswered === currentMcqData.length) {
             document.getElementById('score-mcq').style.display = 'flex';
-            document.getElementById('score-val-mcq').textContent = `${mcqScore}/5`;
-            document.getElementById('score-fill-mcq').style.width = `${(mcqScore / 5) * 100}%`;
+            document.getElementById('score-val-mcq').textContent = `${mcqScore}/${currentMcqData.length}`;
+            document.getElementById('score-fill-mcq').style.width = `${(mcqScore / currentMcqData.length) * 100}%`;
         }
     }
 
@@ -349,11 +370,22 @@
 
     // INPUT EXERCISE
     const inputData = [
-        { q: "Ik heb een rode auto", a: "Ik heb een rode auto." },
-        { q: "Wil je koffie", a: "Wil je koffie?" },
-        { q: "Halt", a: "Halt!" },
-        { q: "De zon schijnt", a: "De zon schijnt." },
-        { q: "Wat is jouw telefoonnummer", a: "Wat is jouw telefoonnummer?" }
+        { q: "Ik ga naar huis", a: "Ik ga naar huis." },
+        { q: "Heb je een auto", a: "Heb je een auto?" },
+        { q: "Help", a: "Help!" },
+        { q: "Ik zie een vogel een hond en een kat", a: "Ik zie een vogel, een hond en een kat." },
+        { q: "De koffie is koud", a: "De koffie is koud." },
+        { q: "Waar is de docent", a: "Waar is de docent?" },
+        { q: "Pas op", a: "Pas op!" },
+        { q: "Vandaag is het maandag dinsdag of woensdag", a: "Vandaag is het maandag, dinsdag of woensdag." },
+        { q: "Het boek is leuk", a: "Het boek is leuk." },
+        { q: "Wil je thee", a: "Wil je thee?" },
+        { q: "STOP", a: "STOP!" },
+        { q: "Rida Peter en Jan zijn hier", a: "Rida, Peter en Jan zijn hier." },
+        { q: "Ik heb honger", a: "Ik heb honger." },
+        { q: "Hoe heet jij", a: "Hoe heet jij?" },
+        { q: "Kom hier", a: "Kom hier!" },
+        { q: "Eén twee drie", a: "Eén, twee, drie." }
     ];
 
     let currentInputData = [];
@@ -393,8 +425,8 @@
         });
         
         document.getElementById('score-input').style.display = 'flex';
-        document.getElementById('score-val-input').textContent = `${score}/5`;
-        document.getElementById('score-fill-input').style.width = `${(score / 5) * 100}%`;
+        document.getElementById('score-val-input').textContent = `${score}/${currentInputData.length}`;
+        document.getElementById('score-fill-input').style.width = `${(score / currentInputData.length) * 100}%`;
     }
 
     function resetInput() {
