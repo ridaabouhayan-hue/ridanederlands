@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nederlandse Voorzetsels - NT2 A1/A2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --plaats-bg: #fff5f7;
+            --plaats-main: #e91e63;
+            --plaats-dark: #ad1457;
+            --richting-bg: #f0fbfc;
+            --richting-main: #0097a7;
+            --richting-dark: #006064;
+            --text-main: #2c3e50;
+            --text-light: #5d6d7e;
+            --white: #ffffff;
+            --shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 1.2rem; display: flex; justify-content: center; gap: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 0.5rem 1.2rem; border-radius: 50px; transition: var(--transition); }
+        nav a:hover { background: #f1f5f9; }
+
+        .lang-container { position: sticky; top: 70px; display: flex; justify-content: center; gap: 12px; padding: 20px; background: rgba(248, 250, 252, 0.98); backdrop-filter: blur(10px); z-index: 999; border-bottom: 2px solid #e2e8f0; }
+        .lang-btn { border: 2px solid #e2e8f0; background: white; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 800; font-size: 1rem; transition: var(--transition); }
+        .lang-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+
+        .hero { padding: 10rem 2rem 4rem; text-align: center; }
+        .hero h1 { font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(90deg, var(--plaats-main), var(--richting-main)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.4rem; color: var(--text-light); max-width: 800px; margin: 0 auto; }
+
+        .container { max-width: 1300px; margin: 4rem auto; padding: 0 2rem; }
+        .section-title { font-size: 3rem; margin-bottom: 4rem; text-align: center; font-weight: 800; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 3rem; }
+        
+        .card { background: white; border-radius: 40px; padding: 3rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .emoji-header { font-size: 5rem; text-align: center; margin-bottom: 2rem; }
+        .card .word { font-size: 3rem; font-weight: 800; margin-bottom: 0.8rem; text-align: center; }
+        .plaats .word { color: var(--plaats-main); }
+        .richting .word { color: var(--richting-main); }
+        .card .definition { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; text-align: center; }
+        .card .example-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 1.1rem; font-weight: 500; }
+        .card .logic-box { padding: 1.5rem; border-radius: 20px; font-size: 1.1rem; font-weight: 700; margin-top: auto; }
+        .plaats .logic-box { background: var(--plaats-bg); color: var(--plaats-dark); }
+        .richting .logic-box { background: var(--richting-bg); color: var(--richting-dark); }
+
+        .exercise-section { background: white; padding: 5rem 2rem; border-radius: 50px; box-shadow: var(--shadow); margin: 6rem auto; max-width: 1000px; }
+        .exercise-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 3rem auto; max-width: 450px; background: #2c3e50; padding: 10px; border-radius: 15px; }
+        .grid-cell { aspect-ratio: 1; background: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; border-radius: 8px; }
+        .exercise-questions { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+        .q-row { background: #f1f5f9; padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; }
+        .q-row input { width: 80px; padding: 10px; border: 3px solid #cbd5e1; border-radius: 12px; text-align: center; font-weight: 800; font-size: 1.2rem; }
+        .feedback { font-size: 1.8rem; margin-left: auto; }
+
+        /* STANDAARD: Verberg andere talen, maar laat NL zien */
+        [lang]:not([lang="nl"]) { display: none; }
+        .rtl-text { direction: rtl; text-align: right; }
+
+        @media (max-width: 768px) {
+            .cards-grid, .exercise-questions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#intro">Start</a>
+        <a href="#plaats">📍 <span lang="nl">Plaats</span><span lang="tr">Yer</span><span lang="ar">المكان</span><span lang="ps">ځای</span></a>
+        <a href="#richting">🚀 <span lang="nl">Richting</span><span lang="tr">Yön</span><span lang="ar">الاتجاه</span><span lang="ps">لوری</span></a>
+        <a href="#oefenen">✍️ <span lang="nl">Oefenen</span><span lang="tr">Pratik</span><span lang="ar">تمرین</span><span lang="ps">تمرین</span></a>
+    </nav>
+
+    <div class="lang-container">
+        <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+        <button class="lang-btn" id="btn-tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+        <button class="lang-btn" id="btn-ar" onclick="setLang('ar')">🇸🇦 العربية</button>
+        <button class="lang-btn" id="btn-ps" onclick="setLang('ps')">🇦🇫 پښتو</button>
+    </div>
+
+    <header class="hero" id="intro">
+        <h1>
+            <span lang="nl">Voorzetsels Leren</span>
+            <span lang="tr">Edatları Öğrenin</span>
+            <span lang="ar" class="rtl-text">تعلم حروف الجر</span>
+            <span lang="ps" class="rtl-text">د حروفو زده کړه</span>
+        </h1>
+        <p>
+            <span lang="nl">Leer het verschil tussen <strong>Plaats</strong> en <strong>Richting</strong>.</span>
+            <span lang="tr"><strong>Yer</strong> ve <strong>Yön</strong> arasındaki farkı öğrenin.</span>
+            <span lang="ar" class="rtl-text">تعلم الفرق بين <strong>المكان</strong> و <strong>الاتجاه</strong>.</span>
+            <span lang="ps" class="rtl-text">د <strong>ځای</strong> او <strong>لوري</strong> تر منځ توپیر زده کړئ.</span>
+        </p>
+    </header>
+
+    <section class="container" id="plaats">
+        <h2 class="section-title" style="color: var(--plaats-main);">📍 <span lang="nl">Plaats</span><span lang="tr">Yer</span><span lang="ar">المكان</span><span lang="ps">ځای</span></h2>
+        <div class="cards-grid" id="plaats-container"></div>
+    </section>
+
+    <section class="container" id="richting">
+        <h2 class="section-title" style="color: var(--richting-main);">🚀 <span lang="nl">Richting</span><span lang="tr">Yön</span><span lang="ar">الاتجاه</span><span lang="ps">لوری</span></h2>
+        <div class="cards-grid" id="richting-container"></div>
+    </section>
+
+    <section class="exercise-section" id="oefenen">
+        <h2 class="section-title">✍️ <span lang="nl">Oefenen</span><span lang="tr">Pratik</span><span lang="ar">تمرین</span><span lang="ps">تمرین</span></h2>
+        <div id="exercise-container"></div>
+    </section>
+
+    <script>
+        let currentLang = 'nl';
+
+        const dataPlaats = [
+            { word: "in", emoji: "📦", def: { nl: "In een holle ruimte.", tr: "Bir boşluk içinde.", ar: "داخل مساحة مجوفة.", ps: "په یو خالي ځای کې." }, ex: ["De melk staat in de koelkast."], rule: { nl: "IN = Hol object.", tr: "IN = Boş nesne.", ar: "IN = شيء مجوف.", ps: "IN = خالي شی." } },
+            { word: "op", emoji: "🪑", def: { nl: "Op een oppervlak.", tr: "Bir yüzeyin üzerinde.", ar: "فوق سطح ما.", ps: "د یوې سطحې پر سر." }, ex: ["De laptop staat op de tafel."], rule: { nl: "OP = Contact met oppervlak.", tr: "OP = Yüzeyle temas.", ar: "OP = تلامس مع السطح.", ps: "OP = له سطحې سره تماس." } },
+            { word: "boven", emoji: "☁️", def: { nl: "Hoger dan (geen contact).", tr: "Daha yüksekte.", ar: "أعلى (بدون تلامس).", ps: "پورته (بې له تماس)." }, ex: ["De lamp hangt boven de tafel."], rule: { nl: "BOVEN = Zweeft erover.", tr: "BOVEN = Üzerinde süzülür.", ar: "BOVEN = يطفو فوقه.", ps: "BOVEN = له پاسه ځړېدل." } },
+            { word: "onder", emoji: "👟", def: { nl: "Lager dan.", tr: "Daha aşağıda.", ar: "أسفل من.", ps: "لاندې." }, ex: ["De kat zit onder de tafel."], rule: { nl: "ONDER = Lager dan.", tr: "ONDER = Daha aşağıda.", ar: "ONDER = أسفل.", ps: "ONDER = لاندې." } },
+            { word: "voor", emoji: "🚪", def: { nl: "Voorkant.", tr: "Ön.", ar: "أمام.", ps: "مخکې." }, ex: ["De auto staat voor het huis."], rule: { nl: "VOOR = Voorkant.", tr: "VOOR = Ön.", ar: "VOOR = أمام.", ps: "VOOR = مخکې." } },
+            { word: "achter", emoji: "🌳", def: { nl: "Achterkant.", tr: "Arka.", ar: "خلف.", ps: "شاته." }, ex: ["De tuin is achter het huis."], rule: { nl: "ACHTER = Achterkant.", tr: "ACHTER = Arka.", ar: "ACHTER = خلف.", ps: "ACHTER = شاته." } },
+            { word: "naast", emoji: "🧍‍♂️", def: { nl: "Zijkant.", tr: "Yan.", ar: "بجانب.", ps: "څنګ ته." }, ex: ["Ik zit naast mijn vriend."], rule: { nl: "NAAST = Opzij.", tr: "NAAST = Yan.", ar: "NAAST = بجانب.", ps: "NAAST = څنګ ته." } },
+            { word: "tussen", emoji: "↔️", def: { nl: "In het midden van 2.", tr: "İkisinin arasında.", ar: "بين شيئين.", ps: "د دوو تر منځ." }, ex: ["Ik sta tussen twee bomen."], rule: { nl: "TUSSEN = Midden.", tr: "TUSSEN = Orta.", ar: "TUSSEN = في المنتصف.", ps: "TUSSEN = منځ." } },
+            { word: "tegen", emoji: "🧱", def: { nl: "Leunend tegen.", tr: "Dayalı.", ar: "متكئ على.", ps: "پورې تکیه." }, ex: ["De fiets staat tegen de muur."], rule: { nl: "TEGEN = Contact.", tr: "TEGEN = Temas.", ar: "TEGEN = تلامس.", ps: "TEGEN = تماس." } },
+            { word: "aan", emoji: "🖼️", def: { nl: "Vastzittend.", tr: "Bitişik/Asılı.", ar: "عند/على.", ps: "پورې نښتی." }, ex: ["De klok hangt aan de muur."], rule: { nl: "AAN = Bevestigd.", tr: "AAN = Sabitlenmiş.", ar: "AAN = مثبت.", ps: "AAN = نښلول شوی." } },
+            { word: "dicht bij", emoji: "🏡", def: { nl: "Korte afstand.", tr: "Yakın.", ar: "قريب.", ps: "نږدې." }, ex: ["Ik woon dicht bij school."], rule: { nl: "DICHT BIJ = Nabij.", tr: "DICHT BIJ = Yakın.", ar: "DICHT BIJ = قريب.", ps: "DICHT BIJ = nږدې." } },
+            { word: "ver van", emoji: "✈️", def: { nl: "Grote afstand.", tr: "Uzak.", ar: "بعيد.", ps: "لیرې." }, ex: ["Ik woon ver van werk."], rule: { nl: "VER VAN = Afstand.", tr: "VER VAN = Uzak.", ar: "VER VAN = بعيد.", ps: "VER VAN = لیرې." } },
+            { word: "links van", emoji: "👈", def: { nl: "Linkerkant.", tr: "Sol.", ar: "يسار.", ps: "کیڼ." }, ex: ["De kast staat links."], rule: { nl: "LINKS = Linkerkant.", tr: "LINKS = Sol.", ar: "LINKS = يسار.", ps: "LINKS = کیڼ." } },
+            { word: "rechts van", emoji: "👉", def: { nl: "Rechterkant.", tr: "Sağ.", ar: "يمين.", ps: "ښي." }, ex: ["De bank staat rechts."], rule: { nl: "RECHTS = Rechterkant.", tr: "RECHTS = Sağ.", ar: "RECHTS = يمين.", ps: "RECHTS = ښي." } }
+        ];
+
+        const dataRichting = [
+            { word: "in", emoji: "📥", def: { nl: "Naar binnen.", tr: "İçeri.", ar: "للدخل.", ps: "دننه." }, ex: ["Stap in de bus."], rule: { nl: "IN = Naar binnen.", tr: "IN = İçeri.", ar: "IN = للداخل.", ps: "IN = دننه." } },
+            { word: "uit", emoji: "📤", def: { nl: "Naar buiten.", tr: "Dışarı.", ar: "للخارج.", ps: "باندې." }, ex: ["Stap uit de bus."], rule: { nl: "UIT = Naar buiten.", tr: "UIT = Dışarı.", ar: "UIT = للخارج.", ps: "UIT = بهر." } },
+            { word: "naar", emoji: "🎯", def: { nl: "Bestemming.", tr: "Hedef.", ar: "إلى.", ps: "ته." }, ex: ["Ik ga naar huis."], rule: { nl: "NAAR = Bestemming.", tr: "NAAR = Hedef.", ar: "NAAR = وجهة.", ps: "NAAR = هدف." } },
+            { word: "van", emoji: "🏁", def: { nl: "Oorsprong.", tr: "Başlangıç.", ar: "من.", ps: "له." }, ex: ["Ik kom van werk."], rule: { nl: "VAN = Beginpunt.", tr: "VAN = Kaynak.", ar: "VAN = من.", ps: "VAN = سرچینه." } },
+            { word: "naar boven", emoji: "⬆️", def: { nl: "Omhoog.", tr: "Yukarı.", ar: "للأعلى.", ps: "پورته." }, ex: ["Ik ga naar boven."], rule: { nl: "BOVEN = Omhoog.", tr: "BOVEN = Yukarı.", ar: "BOVEN = للأعلى.", ps: "BOVEN = پورته." } },
+            { word: "naar beneden", emoji: "⬇️", def: { nl: "Omlaag.", tr: "Aşağı.", ar: "للأسفل.", ps: "ښکته." }, ex: ["Ik ga naar beneden."], rule: { nl: "BENEDEN = Omlaag.", tr: "BENEDEN = Aşağı.", ar: "BENEDEN = للأسفل.", ps: "BENEDEN = ښکته." } },
+            { word: "over", emoji: "🌉", def: { nl: "Passeren.", tr: "Üzerinden.", ar: "عبر.", ps: "له پاسه." }, ex: ["Over de brug."], rule: { nl: "OVER = Passeren.", tr: "OVER = Üzerinden.", ar: "OVER = عبر.", ps: "OVER = تېرېدل." } },
+            { word: "door", emoji: "🚇", def: { nl: "Ermiddenin.", tr: "İçinden.", ar: "من خلال.", ps: "له منځه." }, ex: ["Door de tunnel."], rule: { nl: "DOOR = Eruit komen.", tr: "DOOR = İçinden.", ar: "DOOR = من خلال.", ps: "DOOR = له منځه." } },
+            { word: "rond", emoji: "🔄", def: { nl: "Cirkel.", tr: "Daire.", ar: "حول.", ps: "شاوخوا." }, ex: ["Rond het huis."], rule: { nl: "ROND = Cirkel.", tr: "ROND = Daire.", ar: "ROND = حول.", ps: "ROND = شاوخوا." } },
+            { word: "langs", emoji: "🛤️", def: { nl: "Parallel.", tr: "Boyunca.", ar: "على طول.", ps: "په اوږدو کې." }, ex: ["Langs de weg."], rule: { nl: "LANGS = Ernaast.", tr: "LANGS = Yanında.", ar: "LANGS = على طول.", ps: "LANGS = په اوږدو کې." } },
+            { word: "weg van", emoji: "🏃‍♂️💨", def: { nl: "Afstand.", tr: "Uzaklaşmak.", ar: "بعيداً عن.", ps: "لیرې." }, ex: ["Weg van het gevaar."], rule: { nl: "WEG = Afstand.", tr: "WEG = Uzaklaşmak.", ar: "WEG = ابتعاد.", ps: "WEG = لیرې." } }
+        ];
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('body [lang]').forEach(el => {
+                const isMatch = el.getAttribute('lang') === lang;
+                if (el.tagName === 'SPAN') {
+                    el.style.display = isMatch ? 'inline' : 'none';
+                } else {
+                    el.style.display = isMatch ? 'block' : 'none';
+                }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.id === 'btn-' + lang);
+            });
+            renderCards();
+            renderExercises();
+        }
+
+        function renderCards() {
+            const labels = { nl: "Logische regel", tr: "Mantıksal kural", ar: "قاعدة منطقية", ps: "منطقي قاعده" };
+            const pCont = document.getElementById('plaats-container');
+            const rCont = document.getElementById('richting-container');
+            if (!pCont || !rCont) return;
+            
+            const createContent = (item, type) => `
+                <div class="card ${type}">
+                    <div class="emoji-header">${item.emoji}</div>
+                    <div class="word">${item.word}</div>
+                    <div class="definition">${item.def[currentLang]}</div>
+                    <div class="example-list">
+                        ${item.ex.map(e => `<div class="example-item">✅ ${e}</div>`).join('')}
+                    </div>
+                    <div class="logic-box">💡 <strong>${labels[currentLang]}:</strong><br>${item.rule[currentLang]}</div>
+                </div>`;
+            pCont.innerHTML = dataPlaats.map(i => createContent(i, 'plaats')).join('');
+            rCont.innerHTML = dataRichting.map(i => createContent(i, 'richting')).join('');
+        }
+
+        const exercises = [
+            {
+                grid: ["🐱", "1", "🛒", "2", "⚽", "3", "👟", "4", "🧦", "5", "☀️", "6", "🐟", "7", "📏", "8", "⏰", "9", "🛍️", "10", "🍾", "11", "🧢", "12", "📱"],
+                qs: [
+                    { q: "Kijk naar 🐱. Wat staat rechts?", a: "1" },
+                    { q: "Kijk naar 🛒. Wat staat onder?", a: "4" },
+                    { q: "Kijk naar ⏰. Wat staat links?", a: "8" },
+                    { q: "Kijk naar ⏰. Wat staat onder?", a: "11" }
+                ]
+            },
+            {
+                grid: ["🍎", "A", "🍌", "B", "🍇", "C", "🚗", "D", "🚲", "E", "🏠", "F", "🌳", "G", "🌸", "H", "🍦", "I", "🍕", "J", "🎾", "K", "🎸", "L", "🎨"],
+                qs: [
+                    { q: "Kijk naar 🍌. Wat staat rechts?", a: "B" },
+                    { q: "Kijk naar 🌳. Wat staat rechts?", a: "G" },
+                    { q: "Kijk naar 🚲. Wat staat boven?", a: "B" },
+                    { q: "Kijk naar 🏠. Wat staat rechts?", a: "F" }
+                ]
+            },
+            {
+                grid: ["🔴", "X", "🔵", "Y", "🟢", "Z", "T", "7", "W", "8", "S", "9", "M", "10", "D", "11", "H", "12", "V", "13", "L", "14", "P", "15", "K"],
+                qs: [
+                    { q: "Kijk naar 🔵. Wat staat rechts?", a: "Y" },
+                    { q: "Kijk naar S. Wat staat onder?", a: "11" },
+                    { q: "Kijk naar Z. Wat staat rechts?", a: "T" },
+                    { q: "Kijk naar 9. Wat staat boven?", a: "T" }
+                ]
+            }
+        ];
+
+        function renderExercises() {
+            const cont = document.getElementById('exercise-container');
+            if (!cont) return;
+            cont.innerHTML = exercises.map((ex, idx) => `
+                <div style="margin-bottom: 4rem;">
+                    <h3 style="text-align:center; margin-bottom:1.5rem; font-size:1.8rem; font-weight:800;">Oefening ${idx + 1}</h3>
+                    <div class="exercise-grid">${ex.grid.map(c => `<div class="grid-cell">${c}</div>`).join('')}</div>
+                    <div class="exercise-questions">
+                        ${ex.qs.map(q => `
+                            <div class="q-row">
+                                <span style="font-weight:700;">${q.q}</span>
+                                <input type="text" oninput="check(this, '${q.a}')" placeholder="...">
+                                <span class="feedback"></span>
+                            </div>`).join('')}
+                    </div>
+                </div>`).join('');
+        }
+
+        function check(input, answer) {
+            const f = input.nextElementSibling;
+            if (input.value.trim().toLowerCase() === answer.toLowerCase()) {
+                f.innerText = "✅"; f.style.color = "green"; input.style.borderColor = "green";
+            } else if (input.value.length > 0) {
+                f.innerText = "❌"; f.style.color = "red"; input.style.borderColor = "red";
+            } else {
+                f.innerText = ""; input.style.borderColor = "#cbd5e1";
+            }
+        }
+
+        // DIRECT STARTEN
+        setLang('nl');
+    </script>
+</body>
+</html>
