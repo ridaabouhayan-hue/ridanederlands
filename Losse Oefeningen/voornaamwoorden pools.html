@@ -76,6 +76,13 @@
     text-align: right;
   }
 
+  /* BiDi Isolates styling */
+  bdi {
+    unicode-bidi: isolate;
+    direction: ltr;
+    display: inline-block;
+  }
+
   .container {
     max-width: 960px;
     margin: 0 auto;
@@ -870,6 +877,7 @@
       <button class="lang-btn" onclick="switchLanguage('en')">🇬🇧 English</button>
       <button class="lang-btn" onclick="switchLanguage('ar')">🇸🇦 العربية</button>
       <button class="lang-btn" onclick="switchLanguage('tr')">🇹🇷 Türkçe</button>
+      <button class="lang-btn" onclick="switchLanguage('zh')">🇨🇳 中文</button>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
       <span class="sun-icon">☀️</span>
@@ -1074,8 +1082,8 @@ const uiTranslations = {
     scoreLbl: "النتيجة: ",
     resetBtn: "↻ البدء من جديد",
     footerText: "نيدرلاندز العملية الأساسية · تمارين الضمائر الشخصية",
-    feedbackCorrect: "✅ إجابة صحيحة! أحسنت!",
-    feedbackWrong: "❌ حاول مرة أخرى!"
+    feedbackCorrect: "✅ إجابة صحيحة! أحسنت!\u200F",
+    feedbackWrong: "❌ حاول مرة أخرى!\u200F"
   },
   tr: {
     langLabel: "Türkçe",
@@ -1101,6 +1109,31 @@ const uiTranslations = {
     footerText: "Werkend Nederlands Temel · Şahıs Zamirleri Çalışması",
     feedbackCorrect: "✅ Doğru! Tebrikler!",
     feedbackWrong: "❌ Tekrar dene!"
+  },
+  zh: {
+    langLabel: "中文",
+    flag: "🇨🇳",
+    edition: "🇨🇳 中文版",
+    title: "荷兰语人称代词",
+    subtitle: "带对比表和练习的互动指南，专为中文使用者设计。",
+    sec1Title: "对比表 / 概览",
+    sec1Intro: "下表展示了荷兰语各类代词：主语（动作发出者）、宾语（动作承受者）和物主代词（所有权）。",
+    thPair: "荷兰语 → 中文",
+    thSub: "主语 (Onderwerp)",
+    thObj: "宾语 (Object)",
+    thPoss: "物主代词 (Bezittelijk)",
+    thEx: "例句",
+    sec2Title: "指代物品",
+    sec2Intro: "在指代人称以外的物品（单数或复数）时，我们需要根据该名词使用 de 还是 het 冠词来选择代词。",
+    sec3Title: "互动问答 / Oefeningen",
+    sec3Intro: "选择正确的代词或物主代词填空。点击选项即可查看即时反馈和中文解析。",
+    progressLbl: "进度：完成 ",
+    progressOf: " / 10 题",
+    scoreLbl: "得分：",
+    resetBtn: "↻ 重新开始",
+    footerText: "实用荷兰语基础 · 人称代词练习",
+    feedbackCorrect: "✅ 回答正确！做得好！",
+    feedbackWrong: "❌ 再试一次！"
   }
 };
 
@@ -1109,10 +1142,10 @@ const pronounsData = [
   {
     id: "ik",
     nlLabel: "ik",
-    translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben" },
-    subject: { nl: "ik", translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben" } },
-    object: { nl: "mij / me", translations: { nl: "mij / me", pl: "mnie / mi", en: "me", ar: "ني / إياي", tr: "beni / bana" } },
-    possessive: { nl: "mijn", translations: { nl: "mijn", pl: "mój / moja / moje", en: "my", ar: "لي / ملكي", tr: "benim" } },
+    translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben", zh: "我" },
+    subject: { nl: "ik", translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben", zh: "我" } },
+    object: { nl: "mij / me", translations: { nl: "mij / me", pl: "mnie / mi", en: "me", ar: "ني / إياي", tr: "beni / bana", zh: "我" } },
+    possessive: { nl: "mijn", translations: { nl: "mijn", pl: "mój / moja / moje", en: "my", ar: "لي / ملكي", tr: "benim", zh: "我的" } },
     examples: [
       {
         nl: "<span class='hl'>Ik</span> werk bij Westport.",
@@ -1120,8 +1153,9 @@ const pronounsData = [
           nl: "Ik werk bij Westport.",
           pl: "<span class='hl-trans'>Ja</span> pracuję w Westport.",
           en: "<span class='hl-trans'>I</span> work at Westport.",
-          ar: "<span class='hl-trans'>أنا</span> أعمل في ويستبورت.",
-          tr: "Westport'ta <span class='hl-trans'>çalışıyorum</span>."
+          ar: "<span class='hl-trans'>أنا</span> أعمل في <bdi>Westport</bdi>.\u200F",
+          tr: "Westport'ta <span class='hl-trans'>çalışıyorum</span>.",
+          zh: "<span class='hl-trans'>我</span>在 Westport 工作。"
         }
       },
       {
@@ -1130,8 +1164,9 @@ const pronounsData = [
           nl: "Hij helpt mij.",
           pl: "On pomaga <span class='hl-trans'>mi</span>.",
           en: "He helps <span class='hl-trans'>me</span>.",
-          ar: "هو يساعد<span class='hl-trans'>ني</span>.",
-          tr: "O bana yardım <span class='hl-trans'>ediyor</span>."
+          ar: "هو يساعد<span class='hl-trans'>ني</span>.\u200F",
+          tr: "O bana yardım <span class='hl-trans'>ediyor</span>.",
+          zh: "他帮助<span class='hl-trans'>我</span>。"
         }
       },
       {
@@ -1140,8 +1175,9 @@ const pronounsData = [
           nl: "Dit is mijn collega.",
           pl: "To jest <span class='hl-trans'>mój</span> kolega.",
           en: "This is <span class='hl-trans'>my</span> colleague.",
-          ar: "هذا زمي<span class='hl-trans'>لي</span>.",
-          tr: "Bu <span class='hl-trans'>benim</span> meslektaşım."
+          ar: "هذا زمي<span class='hl-trans'>لي</span>.\u200F",
+          tr: "Bu <span class='hl-trans'>benim</span> meslektaşım.",
+          zh: "这是<span class='hl-trans'>我的</span>同事。"
         }
       }
     ]
@@ -1149,10 +1185,10 @@ const pronounsData = [
   {
     id: "jij",
     nlLabel: "jij / je",
-    translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen" },
-    subject: { nl: "jij / je", translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen" } },
-    object: { nl: "jou / je", translations: { nl: "jou / je", pl: "ciebie / cię", en: "you", ar: "ك / إياك", tr: "seni / sana" } },
-    possessive: { nl: "jouw / je", translations: { nl: "jouw / je", pl: "twój / twoja / ...", en: "your", ar: "لك / ملكك", tr: "senin" } },
+    translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen", zh: "你" },
+    subject: { nl: "jij / je", translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen", zh: "你" } },
+    object: { nl: "jou / je", translations: { nl: "jou / je", pl: "ciebie / cię", en: "you", ar: "ك / إياك", tr: "seni / sana", zh: "你" } },
+    possessive: { nl: "jouw / je", translations: { nl: "jouw / je", pl: "twój / twoja / ...", en: "your", ar: "لك / ملكك", tr: "senin", zh: "你的" } },
     examples: [
       {
         nl: "<span class='hl'>Jij</span> spreekt goed Nederlands.",
@@ -1161,7 +1197,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>Ty</span> dobrze mówisz po niderlandzku.",
           en: "<span class='hl-trans'>You</span> speak Dutch well.",
           ar: "<span class='hl-trans'>أنت</span> تتحدث الهولندية جيداً.",
-          tr: "<span class='hl-trans'>Sen</span> iyi Felemenkçe konuşuyorsun."
+          tr: "<span class='hl-trans'>Sen</span> iyi Felemenkçe konuşuyorsun.",
+          zh: "<span class='hl-trans'>你</span>荷兰语说得很好。"
         }
       },
       {
@@ -1170,8 +1207,9 @@ const pronounsData = [
           nl: "Ik bel jou morgen.",
           pl: "Zadzwonię do <span class='hl-trans'>ciebie</span> jutro.",
           en: "I will call <span class='hl-trans'>you</span> tomorrow.",
-          ar: "سأتصل <span class='hl-trans'>بك</span> غداً.",
-          tr: "<span class='hl-trans'>Seni</span> yarın arayacağım."
+          ar: "سأتصل <span class='hl-trans'>بك</span> غداً.\u200F",
+          tr: "<span class='hl-trans'>Seni</span> yarın arayacağım.",
+          zh: "<span class='hl-trans'>我</span>明天给你打电话。"
         }
       },
       {
@@ -1180,8 +1218,9 @@ const pronounsData = [
           nl: "Waar is jouw tas?",
           pl: "Gdzie jest <span class='hl-trans'>twoja</span> torba?",
           en: "Where is <span class='hl-trans'>your</span> bag?",
-          ar: "أين حقيبـ<span class='hl-trans'>تك</span>؟",
-          tr: "Çant<span class='hl-trans'>an</span> nerede?"
+          ar: "أين حقيبـ<span class='hl-trans'>تك</span>؟\u200F",
+          tr: "Çant<span class='hl-trans'>an</span> nerede?",
+          zh: "<span class='hl-trans'>你的</span>包在哪里？"
         }
       }
     ]
@@ -1189,10 +1228,10 @@ const pronounsData = [
   {
     id: "u",
     nlLabel: "u",
-    translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)" },
-    subject: { nl: "u", translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)" } },
-    object: { nl: "u", translations: { nl: "u", pl: "Pana / Panią", en: "you (formal)", ar: "حضرتك", tr: "sizi / size" } },
-    possessive: { nl: "uw", translations: { nl: "uw", pl: "Pański / Pani", en: "your (formal)", ar: "الخاص بحضرتك", tr: "sizin" } },
+    translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)", zh: "您" },
+    subject: { nl: "u", translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)", zh: "您" } },
+    object: { nl: "u", translations: { nl: "u", pl: "Pana / Panią", en: "you (formal)", ar: "حضرتك", tr: "sizi / size", zh: "您" } },
+    possessive: { nl: "uw", translations: { nl: "uw", pl: "Pański / Pani", en: "your (formal)", ar: "الخاص بحضرتك", tr: "sizin", zh: "您的" } },
     examples: [
       {
         nl: "<span class='hl'>U</span> werkt hier al lang.",
@@ -1201,7 +1240,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>Pan/Pani</span> już długo tu pracuje.",
           en: "<span class='hl-trans'>You (formal)</span> have been working here a long time.",
           ar: "<span class='hl-trans'>حضرتك</span> تعمل هنا منذ فترة طويلة.",
-          tr: "<span class='hl-trans'>Siz</span> uzun zamandır burada çalışıyorsunuz."
+          tr: "<span class='hl-trans'>Siz</span> uzun zamandır burada çalışıyorsunuz.",
+          zh: "<span class='hl-trans'>您</span>在这里工作很久了。"
         }
       },
       {
@@ -1210,8 +1250,9 @@ const pronounsData = [
           nl: "Ik help u graag.",
           pl: "Chętnie pomogę <span class='hl-trans'>Panu/Pani</span>.",
           en: "I am happy to help <span class='hl-trans'>you</span>.",
-          ar: "يسعدني مساعـ<span class='hl-trans'>دتكم</span>.",
-          tr: "<span class='hl-trans'>Size</span> memnuniyetle yardımcı olurum."
+          ar: "يسعدني مساعـ<span class='hl-trans'>دتكم</span>.\u200F",
+          tr: "<span class='hl-trans'>Size</span> memnuniyetle yardımcı olurum.",
+          zh: "<span class='hl-trans'>我</span>很乐意帮助您。"
         }
       },
       {
@@ -1220,8 +1261,9 @@ const pronounsData = [
           nl: "Is dit uw handtekening?",
           pl: "Czy to <span class='hl-trans'>Pański/Pani</span> podpis?",
           en: "Is this <span class='hl-trans'>your</span> signature?",
-          ar: "هل هذا توقيع <span class='hl-trans'>حضرتك</span>؟",
-          tr: "Bu <span class='hl-trans'>sizin</span> imzanız mı?"
+          ar: "هل هذا توقيع <span class='hl-trans'>حضرتك</span>؟\u200F",
+          tr: "Bu <span class='hl-trans'>sizin</span> imzanız mı?",
+          zh: "这是<span class='hl-trans'>您的</span>签名吗？"
         }
       }
     ]
@@ -1229,10 +1271,10 @@ const pronounsData = [
   {
     id: "hij",
     nlLabel: "hij",
-    translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o (eril)" },
-    subject: { nl: "hij", translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o" } },
-    object: { nl: "hem", translations: { nl: "hem", pl: "jego / go", en: "him", ar: "ه / إياه", tr: "onu / ona" } },
-    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "his", ar: "له / ملكه", tr: "onun" } },
+    translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o (eril)", zh: "他" },
+    subject: { nl: "hij", translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o", zh: "他" } },
+    object: { nl: "hem", translations: { nl: "hem", pl: "go / jego", en: "him", ar: "ه / إياه", tr: "onu / ona", zh: "他" } },
+    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "his", ar: "له / ملكه", tr: "onun", zh: "他的" } },
     examples: [
       {
         nl: "<span class='hl'>Hij</span> is de manager.",
@@ -1241,7 +1283,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>On</span> jest kierownikiem.",
           en: "<span class='hl-trans'>He</span> is the manager.",
           ar: "<span class='hl-trans'>هو</span> المدير.",
-          tr: "<span class='hl-trans'>O</span> müdürdür."
+          tr: "<span class='hl-trans'>O</span> müdürdür.",
+          zh: "<span class='hl-trans'>他</span>是经理。"
         }
       },
       {
@@ -1250,8 +1293,9 @@ const pronounsData = [
           nl: "Ik ken hem goed.",
           pl: "Dobrze <span class='hl-trans'>go</span> znam.",
           en: "I know <span class='hl-trans'>him</span> well.",
-          ar: "أعرف<span class='hl-trans'>ه</span> جيداً.",
-          tr: "<span class='hl-trans'>Onu</span> iyi tanıyorum."
+          ar: "أعرف<span class='hl-trans'>ه</span> جيداً.\u200F",
+          tr: "<span class='hl-trans'>Onu</span> iyi tanıyorum.",
+          zh: "<span class='hl-trans'>我</span>很了解他。"
         }
       },
       {
@@ -1260,8 +1304,9 @@ const pronounsData = [
           nl: "Dat is zijn auto.",
           pl: "To jest <span class='hl-trans'>jego</span> samochód.",
           en: "That is <span class='hl-trans'>his</span> car.",
-          ar: "هذه سيار<span class='hl-trans'>ته</span>.",
-          tr: "Bu <span class='hl-trans'>onun</span> arabası."
+          ar: "هذه سيار<span class='hl-trans'>ته</span>.\u200F",
+          tr: "Bu <span class='hl-trans'>onun</span> arabası.",
+          zh: "那是<span class='hl-trans'>他的</span>车。"
         }
       }
     ]
@@ -1269,10 +1314,10 @@ const pronounsData = [
   {
     id: "zij",
     nlLabel: "zij / ze",
-    translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o (dişil)" },
-    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o" } },
-    object: { nl: "haar", translations: { nl: "haar", pl: "ją / jej", en: "her", ar: "ها / إياها", tr: "onu" } },
-    possessive: { nl: "haar", translations: { nl: "haar", pl: "jej", en: "her", ar: "لها / ملكها", tr: "onun" } },
+    translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o (dişil)", zh: "她" },
+    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o", zh: "她" } },
+    object: { nl: "haar", translations: { nl: "haar", pl: "ją / jej", en: "her", ar: "ها / إياها", tr: "onu", zh: "她" } },
+    possessive: { nl: "haar", translations: { nl: "haar", pl: "jej", en: "her", ar: "لها / ملكها", tr: "onun", zh: "她的" } },
     examples: [
       {
         nl: "<span class='hl'>Zij</span> woont in Rotterdam.",
@@ -1281,7 +1326,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>Ona</span> mieszka w Rotterdamie.",
           en: "<span class='hl-trans'>She</span> lives in Rotterdam.",
           ar: "<span class='hl-trans'>هي</span> تسكن في روتردام.",
-          tr: "<span class='hl-trans'>O</span> Rotterdam'da yaşıyor."
+          tr: "<span class='hl-trans'>O</span> Rotterdam'da yaşıyor.",
+          zh: "<span class='hl-trans'>她</span>住在鹿特丹。"
         }
       },
       {
@@ -1290,8 +1336,9 @@ const pronounsData = [
           nl: "Ik zie haar elke dag.",
           pl: "Widzę <span class='hl-trans'>ją</span> każdego dnia.",
           en: "I see <span class='hl-trans'>her</span> every day.",
-          ar: "أرا<span class='hl-trans'>ها</span> كل يوم.",
-          tr: "<span class='hl-trans'>Onu</span> her gün görüyorum."
+          ar: "أرا<span class='hl-trans'>ها</span> كل يوم.\u200F",
+          tr: "<span class='hl-trans'>Onu</span> her gün görüyorum.",
+          zh: "<span class='hl-trans'>我</span>每天都见到她。"
         }
       },
       {
@@ -1300,8 +1347,9 @@ const pronounsData = [
           nl: "Dit is haar nummer.",
           pl: "To jest <span class='hl-trans'>jej</span> numer.",
           en: "This is <span class='hl-trans'>her</span> number.",
-          ar: "هذا رقمـ<span class='hl-trans'>ها</span>.",
-          tr: "Bu <span class='hl-trans'>onun</span> numarası."
+          ar: "هذا رقمـ<span class='hl-trans'>ha</span>.\u200F",
+          tr: "Bu <span class='hl-trans'>onun</span> numarası.",
+          zh: "这是<span class='hl-trans'>她的</span>号码。"
         }
       }
     ]
@@ -1309,10 +1357,10 @@ const pronounsData = [
   {
     id: "het",
     nlLabel: "het",
-    translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي لغير العاقل", tr: "o (nötr)" },
-    subject: { nl: "het", translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي", tr: "o" } },
-    object: { nl: "het", translations: { nl: "het", pl: "je / jego", en: "it", ar: "ه / ها", tr: "onu" } },
-    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "its", ar: "له", tr: "onun" } },
+    translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي لغير العاقل", tr: "o (nötr)", zh: "它 (中性/幼儿)" },
+    subject: { nl: "het", translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي", tr: "o", zh: "它" } },
+    object: { nl: "het", translations: { nl: "het", pl: "je / jego", en: "it", ar: "ه / ها", tr: "onu", zh: "它" } },
+    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "its", ar: "له", tr: "onun", zh: "它的" } },
     examples: [
       {
         nl: "<span class='hl'>Het</span> kind slaapt.",
@@ -1320,8 +1368,9 @@ const pronounsData = [
           nl: "Het kind slaapt.",
           pl: "<span class='hl-trans'>Ono</span> śpi (dziecko).",
           en: "<span class='hl-trans'>The child/it</span> is sleeping.",
-          ar: "الطفل نائم (يُعامل معاملة <span class='hl-trans'>het</span>).",
-          tr: "Çocuk (o) uyuyor."
+          ar: "الطفل نائم (يُعامل معاملة <bdi>het</bdi>).\u200F",
+          tr: "Çocuk (o) uyuyor.",
+          zh: "孩子（<span class='hl-trans'>它</span>）在睡觉。"
         }
       },
       {
@@ -1330,8 +1379,9 @@ const pronounsData = [
           nl: "Ik zoek het.",
           pl: "Szukam <span class='hl-trans'>tego / je</span>.",
           en: "I am looking for <span class='hl-trans'>it</span>.",
-          ar: "أنا أبحث عنـ<span class='hl-trans'>ه</span>.",
-          tr: "<span class='hl-trans'>Onu</span> arıyorum."
+          ar: "أنا أبحث عنـ<span class='hl-trans'>ه</span>.\u200F",
+          tr: "<span class='hl-trans'>Onu</span> arıyorum.",
+          zh: "<span class='hl-trans'>我</span>在寻找它。"
         }
       },
       {
@@ -1340,8 +1390,9 @@ const pronounsData = [
           nl: "Dat is zijn fiets.",
           pl: "To jest <span class='hl-trans'>jego</span> rower (dziecka).",
           en: "That is <span class='hl-trans'>its</span> bicycle (the child's).",
-          ar: "هذه دراجـ<span class='hl-trans'>ته</span> (الخاصة بالطفل).",
-          tr: "Bu <span class='hl-trans'>onun</span> bisikleti (çocuğun)."
+          ar: "هذه دراجـ<span class='hl-trans'>ته</span> (الخاصة بالطفل).\u200F",
+          tr: "Bu <span class='hl-trans'>onun</span> bisikleti (çocuğun).",
+          zh: "那是<span class='hl-trans'>它的</span>自行车（指孩子的）。"
         }
       }
     ]
@@ -1349,10 +1400,10 @@ const pronounsData = [
   {
     id: "wij",
     nlLabel: "wij / we",
-    translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz" },
-    subject: { nl: "wij / we", translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz" } },
-    object: { nl: "ons", translations: { nl: "ons", pl: "nas / nam", en: "us", ar: "نا / إيانا", tr: "bizi / bize" } },
-    possessive: { nl: "ons / onze", translations: { nl: "ons / onze", pl: "nasz / nasza / ...", en: "our", ar: "لنا / ملكنا", tr: "bizim" } },
+    translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz", zh: "我们" },
+    subject: { nl: "wij / we", translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz", zh: "我们" } },
+    object: { nl: "ons", translations: { nl: "ons", pl: "nas / nam", en: "us", ar: "نا / إيانا", tr: "bizi / bize", zh: "我们" } },
+    possessive: { nl: "ons / onze", translations: { nl: "ons / onze", pl: "nasz / nasza / ...", en: "our", ar: "لنا / ملكنا", tr: "bizim", zh: "我们的" } },
     examples: [
       {
         nl: "<span class='hl'>Wij</span> beginnen om 8 uur.",
@@ -1361,7 +1412,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>My</span> zaczynamy o godzinie 8:00.",
           en: "<span class='hl-trans'>We</span> start at 8 o'clock.",
           ar: "<span class='hl-trans'>نحن</span> نبدأ الساعة 8.",
-          tr: "<span class='hl-trans'>Biz</span> saat 8'de başlıyoruz."
+          tr: "<span class='hl-trans'>Biz</span> saat 8'de başlıyoruz.",
+          zh: "<span class='hl-trans'>我们</span> 8 点开始。"
         }
       },
       {
@@ -1370,8 +1422,9 @@ const pronounsData = [
           nl: "De baas belt ons.",
           pl: "Szef dzwoni do <span class='hl-trans'>nas</span>.",
           en: "The boss is calling <span class='hl-trans'>us</span>.",
-          ar: "المدير يتصل <span class='hl-trans'>بنا</span>.",
-          tr: "Patron <span class='hl-trans'>bizi</span> arıyor."
+          ar: "المدير يتصل <span class='hl-trans'>بنا</span>.\u200F",
+          tr: "Patron <span class='hl-trans'>bizi</span> arıyor.",
+          zh: "老板给<span class='hl-trans'>我们</span>打电话。"
         }
       },
       {
@@ -1380,8 +1433,9 @@ const pronounsData = [
           nl: "Dit is onze afdeling.",
           pl: "To jest <span class='hl-trans'>nasz</span> dział.",
           en: "This is <span class='hl-trans'>our</span> department.",
-          ar: "هذا قسمـ<span class='hl-trans'>نا</span>.",
-          tr: "Bu <span class='hl-trans'>bizim</span> departmanımız."
+          ar: "هذا قسمـ<span class='hl-trans'>نا</span>.\u200F",
+          tr: "Bu <span class='hl-trans'>bizim</span> departmanımız.",
+          zh: "这是<span class='hl-trans'>我们的</span>部门。"
         }
       }
     ]
@@ -1389,10 +1443,10 @@ const pronounsData = [
   {
     id: "jullie",
     nlLabel: "jullie",
-    translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz (çoğul)" },
-    subject: { nl: "jullie", translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz" } },
-    object: { nl: "jullie", translations: { nl: "jullie", pl: "was / wam", en: "you (plural)", ar: "كم / إياكم", tr: "sizi / size" } },
-    possessive: { nl: "jullie", translations: { nl: "jullie", pl: "wasz / wasza / ...", en: "your (plural)", ar: "لكم / ملككم", tr: "sizin" } },
+    translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz (çoğul)", zh: "你们" },
+    subject: { nl: "jullie", translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz", zh: "你们" } },
+    object: { nl: "jullie", translations: { nl: "jullie", pl: "was / wam", en: "you (plural)", ar: "كم / إياكم", tr: "sizi / size", zh: "你们" } },
+    possessive: { nl: "jullie", translations: { nl: "jullie", pl: "wasz / wasza / ...", en: "your (plural)", ar: "لكم / ملككم", tr: "sizin", zh: "你们的" } },
     examples: [
       {
         nl: "<span class='hl'>Jullie</span> werken hard.",
@@ -1401,7 +1455,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>Wy</span> ciężko pracujecie.",
           en: "<span class='hl-trans'>You</span> work hard.",
           ar: "<span class='hl-trans'>أنتم</span> تعملون بجد.",
-          tr: "<span class='hl-trans'>Siz</span> çok çalışıyorsunuz."
+          tr: "<span class='hl-trans'>Siz</span> çok çalışıyorsunuz.",
+          zh: "<span class='hl-trans'>你们</span>工作很努力。"
         }
       },
       {
@@ -1410,8 +1465,9 @@ const pronounsData = [
           nl: "Ik wacht op jullie.",
           pl: "Czekam na <span class='hl-trans'>was</span>.",
           en: "I am waiting for <span class='hl-trans'>you</span>.",
-          ar: "أنا بانتظار<span class='hl-trans'>كم</span>.",
-          tr: "<span class='hl-trans'>Sizi</span> bekliyorum."
+          ar: "أنا بانتظار<span class='hl-trans'>كم</span>.\u200F",
+          tr: "<span class='hl-trans'>Sizi</span> bekliyorum.",
+          zh: "我正在等<span class='hl-trans'>你们</span>。"
         }
       },
       {
@@ -1420,8 +1476,9 @@ const pronounsData = [
           nl: "Is dat jullie ploeg?",
           pl: "Czy to jest <span class='hl-trans'>wasza</span> zmiana?",
           en: "Is that <span class='hl-trans'>your</span> shift?",
-          ar: "هل هذه نوبتـ<span class='hl-trans'>كم</span>؟",
-          tr: "Bu <span class='hl-trans'>sizin</span> vardiyanız mı?"
+          ar: "هل هذه نوبتـ<span class='hl-trans'>كم</span>؟\u200F",
+          tr: "Bu <span class='hl-trans'>sizin</span> vardiyanız mı?",
+          zh: "那是<span class='hl-trans'>你们的</span>轮班组吗？"
         }
       }
     ]
@@ -1429,10 +1486,10 @@ const pronounsData = [
   {
     id: "zij_mv",
     nlLabel: "zij / ze",
-    translations: { nl: "zij / ze (mv.)", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar" },
-    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar" } },
-    object: { nl: "hen / ze", translations: { nl: "hen / ze", pl: "ich / im", en: "them", ar: "هم / هن / إياهم", tr: "onları / onlara" } },
-    possessive: { nl: "hun", translations: { nl: "hun", pl: "ich", en: "their", ar: "لهم / ملكهم", tr: "onların" } },
+    translations: { nl: "zij / ze (mv.)", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar", zh: "他们 / 它们" },
+    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar", zh: "他们" } },
+    object: { nl: "hen / ze", translations: { nl: "hen / ze", pl: "ich / im", en: "them", ar: "هم / هن / إياهم", tr: "onları / onlara", zh: "他们" } },
+    possessive: { nl: "hun", translations: { nl: "hun", pl: "ich", en: "their", ar: "لهم / ملكهم", tr: "onların", zh: "他们的" } },
     examples: [
       {
         nl: "<span class='hl'>Zij</span> komen uit Polen.",
@@ -1441,7 +1498,8 @@ const pronounsData = [
           pl: "<span class='hl-trans'>Oni</span> pochodzą z Polski.",
           en: "<span class='hl-trans'>They</span> come from Poland.",
           ar: "<span class='hl-trans'>هم</span> من بولندا.",
-          tr: "<span class='hl-trans'>Onlar</span> Polonya'dan geliyorlar."
+          tr: "<span class='hl-trans'>Onlar</span> Polonya'dan geliyorlar.",
+          zh: "<span class='hl-trans'>他们</span>来自波兰。"
         }
       },
       {
@@ -1450,8 +1508,9 @@ const pronounsData = [
           nl: "Ik help hen elke dag.",
           pl: "Pomagam <span class='hl-trans'>im</span> każdego dnia.",
           en: "I help <span class='hl-trans'>them</span> every day.",
-          ar: "أنا أساعد<span class='hl-trans'>هم</span> كل يوم.",
-          tr: "<span class='hl-trans'>Onlara</span> her gün yardım ediyorum."
+          ar: "أنا أساعد<span class='hl-trans'>هم</span> كل يوم.\u200F",
+          tr: "<span class='hl-trans'>Onlara</span> her gün yardım ediyorum.",
+          zh: "我每天都帮助<span class='hl-trans'>他们</span>。"
         }
       },
       {
@@ -1460,8 +1519,9 @@ const pronounsData = [
           nl: "Dat zijn hun spullen.",
           pl: "To są <span class='hl-trans'>ich</span> rzeczy.",
           en: "Those are <span class='hl-trans'>their</span> things.",
-          ar: "هذه أشياؤ<span class='hl-trans'>هم</span>.",
-          tr: "Bunlar <span class='hl-trans'>onların</span> eşyaları."
+          ar: "هذه أشياؤ<span class='hl-trans'>هم</span>.\u200F",
+          tr: "Bunlar <span class='hl-trans'>onların</span> eşyaları.",
+          zh: "那是<span class='hl-trans'>他们的</span>东西。"
         }
       }
     ]
@@ -1472,13 +1532,14 @@ const pronounsData = [
 const objectRulesData = {
   de: {
     badge: "de-woord",
-    titles: { nl: "Słowa z 'de'", pl: "Słowa z 'de'", en: "De-words", ar: "كلمات de", tr: "de-kelimesi" },
+    titles: { nl: "Słowa z 'de'", pl: "Słowa z 'de'", en: "De-words", ar: "كلمات <bdi>de</bdi>", tr: "de-kelimesi", zh: "de类词" },
     desc: {
       nl: "Als onderwerp gebruiken we <strong>hij</strong>, als object gebruiken we <strong>hem</strong>.",
       pl: "Jako podmiot używamy <strong>hij</strong>, a jako dopełnienie <strong>hem</strong>.",
       en: "As subject we use <strong>hij</strong> (he), as object we use <strong>hem</strong> (him).",
-      ar: "للمبتدأ نستخدم <strong>hij</strong> (هو)، وللمفعول به <strong>hem</strong> (ـه).",
-      tr: "Özne olarak <strong>hij</strong> (o), nesne olarak <strong>hem</strong> (onu) kullanırız."
+      ar: "للمبتدأ نستخدم <strong><bdi>hij</bdi></strong> (هو)، وللمفعول به <strong><bdi>hem</bdi></strong> (ـe).\u200F",
+      tr: "Özne olarak <strong>hij</strong> (o), nesne olarak <strong>hem</strong> (onu) kullanırız.",
+      zh: "作主语时我们使用 <strong>hij</strong>，作宾语时使用 <strong>hem</strong>。"
     },
     ex1: {
       nl: "De computer staat hier. → <strong>Hij</strong> staat hier.",
@@ -1487,7 +1548,8 @@ const objectRulesData = {
         pl: "Komputer stoi tutaj. → On stoi tutaj.",
         en: "The computer is here. → It is here.",
         ar: "الكمبيوتر هنا. ← هو هنا.",
-        tr: "Bilgisayar burada duruyor. → O burada duruyor."
+        tr: "Bilgisayar burada duruyor. → O burada duruyor.",
+        zh: "电脑放在这里。 → 它放在这里。"
       }
     },
     ex2: {
@@ -1497,19 +1559,21 @@ const objectRulesData = {
         pl: "Gdzie jest klucz? → Szukam go.",
         en: "Where is the key? → I am looking for it.",
         ar: "أين المفتاح؟ ← أنا أبحث عنه.",
-        tr: "Anahtar nerede? → Onu arıyorum."
+        tr: "Anahtar nerede? → Onu arıyorum.",
+        zh: "钥匙在哪里？ → 我在找它。"
       }
     }
   },
   het: {
     badge: "het-woord",
-    titles: { nl: "Słowa z 'het'", pl: "Słowa z 'het'", en: "Het-words", ar: "كلمات het", tr: "het-kelimesi" },
+    titles: { nl: "Słowa z 'het'", pl: "Słowa z 'het'", en: "Het-words", ar: "كلمات <bdi>het</bdi>", tr: "het-kelimesi", zh: "het类词" },
     desc: {
       nl: "Als onderwerp en object gebruiken we altijd <strong>het</strong>.",
       pl: "Zarówno jako podmiot, jak i dopełnienie zawsze używamy <strong>het</strong>.",
       en: "Both as subject and object we always use <strong>het</strong> (it).",
-      ar: "للمبتدأ والمفعول به نستخدم دائماً <strong>het</strong> (هو/هي لغير العاقل).",
-      tr: "Özne ve nesne olarak her zaman <strong>het</strong> (o) kullanırız."
+      ar: "للمبتدأ والمفعول به نستخدم دائماً <strong><bdi>het</bdi></strong> (هو/هي لغير العاقل).\u200F",
+      tr: "Özne ve nesne olarak her zaman <strong>het</strong> (o) kullanırız.",
+      zh: "无论是作主语还是宾语，我们始终使用 <strong>het</strong>。"
     },
     ex1: {
       nl: "Het rapport is klaar. → <strong>Het</strong> ligt op tafel.",
@@ -1518,7 +1582,8 @@ const objectRulesData = {
         pl: "Raport jest gotowy. → On leży na stole.",
         en: "The report is ready. → It is on the table.",
         ar: "التقرير جاهز. ← هو يقع على الطاولة.",
-        tr: "Rapor hazır. → O masanın üzerinde duruyor."
+        tr: "Rapor hazır. → O masanın üzerinde duruyor.",
+        zh: "报告准备好了。 → 它在桌子上。"
       }
     },
     ex2: {
@@ -1528,19 +1593,21 @@ const objectRulesData = {
         pl: "Czytam książkę. → Czytam ją.",
         en: "I am reading the book. → I am reading it.",
         ar: "أنا أقرأ الكتاب. ← أنا أقرأه.",
-        tr: "Kitabı okuyorum. → Onu okuyorum."
+        tr: "Kitabı okuyorum. → Onu okuyorum.",
+        zh: "我在读这本书。 → 我在读它。"
       }
     }
   },
   mv: {
     badge: "meervoud",
-    titles: { nl: "Meervoud (de & het)", pl: "Liczba mnoga (de & het)", en: "Plural (de & het)", ar: "الجمع (de & het)", tr: "Çoğul (de & het)" },
+    titles: { nl: "Meervoud (de & het)", pl: "Liczba mnoga (de & het)", en: "Plural (de & het)", ar: "الجمع (de & het)", tr: "Çoğul (de & het)", zh: "复数 (de & het)" },
     desc: {
       nl: "Als onderwerp gebruiken we <strong>zij/ze</strong>, als object gebruiken we <strong>ze</strong>.",
       pl: "Jako podmiot używamy <strong>zij/ze</strong>, a jako dopełnienie <strong>ze</strong>.",
       en: "As subject we use <strong>zij/ze</strong> (they), as object we use <strong>ze</strong> (them).",
-      ar: "للمبتدأ نستخدم <strong>zij/ze</strong> (هم/هن)، وللمفعول به <strong>ze</strong> (ـهم).",
-      tr: "Özne olarak <strong>zij/ze</strong> (onlar), nesne olarak <strong>ze</strong> (onları) kullanırız."
+      ar: "للمبتدأ نستخدم <strong><bdi>zij/ze</bdi></strong> (هم/هن)، وللمفعول به <strong><bdi>ze</bdi></strong> (ـهم).\u200F",
+      tr: "Özne olarak <strong>zij/ze</strong> (onlar), nesne olarak <strong>ze</strong> (onları) kullanırız.",
+      zh: "作主语时我们使用 <strong>zij/ze</strong>，作宾语时使用 <strong>ze</strong>。"
     },
     ex1: {
       nl: "De documenten liggen daar. → <strong>Ze</strong> liggen daar.",
@@ -1549,7 +1616,8 @@ const objectRulesData = {
         pl: "Dokumenty leżą tam. → One leżą tam.",
         en: "The documents are there. → They are there.",
         ar: "المستندات هناك. ← هي هناك.",
-        tr: "Belgeler orada duruyor. → Onlar orada duruyor."
+        tr: "Belgeler orada duruyor. → Onlar orada duruyor.",
+        zh: "文件放在那里。 → 它们在那里。"
       }
     },
     ex2: {
@@ -1559,7 +1627,8 @@ const objectRulesData = {
         pl: "E-maile nadeszły. → Przeczytaj je uważnie!",
         en: "The emails have arrived. → Read them carefully!",
         ar: "وصلت رسائل البريد الإلكتروني. ← اقرأها جيداً!",
-        tr: "E-postalar geldi. → Onları iyi oku!"
+        tr: "E-postalar geldi. → Onları iyi oku!",
+        zh: "电子邮件收到了。 → 仔细阅读它们！"
       }
     }
   }
@@ -1605,12 +1674,12 @@ const tipContentData = {
   `,
   ar: `
     <h5>نصيحة هامة جداً للمتحدثين بالعربية:</h5>
-    <p>في اللغة الهولندية، لا ننظر أبداً إلى جنس الكلمة (سواء كانت مذكر أو مؤنث) في اللغة العربية! بل نعتمد فقط وفقط على أداة التعريف الخاصة بها <strong>de</strong> أو <strong>het</strong> في الهولندية:</p>
+    <p>في اللغة الهولندية، لا ننظر أبداً إلى جنس الكلمة (سواء كانت مذكر أو مؤنث) في اللغة العربية! بل نعتمد فقط وفقط على أداة التعريف الخاصة بها <strong><bdi>de</bdi></strong> أو <strong><bdi>het</bdi></strong> في الهولندية:</p>
     <ul>
-      <li><strong>الكلمات التي تأخذ de</strong> (مثل <em>de auto</em> - السيارة، وهي مؤنثة بالعربية؛ أو <em>de tafel</em> - الطاولة) نستخدم معها الضمير <strong>hij</strong> (هو) أو <strong>hem</strong> (ـه)!
+      <li><strong>الكلمات التي تأخذ <bdi>de</bdi></strong> (مثل <em><bdi>de auto</bdi></em> - السيارة، وهي مؤنثة بالعربية؛ أو <em><bdi>de tafel</bdi></em> - الطاولة) نستخدم معها الضمير <strong><bdi>hij</bdi></strong> (هو) أو <strong><bdi>hem</bdi></strong> (ـه)!\u200F
         <br><small style="color:var(--text-gray);font-style:italic;">De auto is mooi. ← <strong>Hij</strong> is mooi. (السيارة جميلة ← هي [هو] جميلة.)</small>
       </li>
-      <li><strong>الكلمات التي تأخذ het</strong> (مثل <em>het boek</em> - الكتاب) نستخدم معها الضمير <strong>het</strong> حصراً!
+      <li><strong>الكلمات التي تأخذ <bdi>het</bdi></strong> (مثل <em><bdi>het boek</bdi></em> - الكتاب) نستخدم معها الضمير <strong><bdi>het</bdi></strong> حصراً!\u200F
         <br><small style="color:var(--text-gray);font-style:italic;">Ik koop het boek. ← Ik koop <strong>het</strong>. (أنا أشتري الكتاب ← أنا أشتريه [شراء هذا].)</small>
       </li>
     </ul>
@@ -1624,6 +1693,18 @@ const tipContentData = {
       </li>
       <li>Rodajniği <strong>het</strong> olan kelimeler (örn: <em>het boek</em>, <em>het kantoor</em>) için hem özne hem nesne olarak her zaman <strong>het</strong> (o/onu) kullanırız.
         <br><small style="color:var(--text-gray);font-style:italic;">Ik lees het boek. → Ik lees <strong>het</strong>. (Kitabı okuyorum. → Onu okuyorum.)</small>
+      </li>
+    </ul>
+  `,
+  zh: `
+    <h5>给中文使用者的关键提示：</h5>
+    <p>在荷兰语中，不要根据中文的语义性别（他/她/它）来代指物品！我们必须严格根据名词的冠词（<strong>de</strong> 或 <strong>het</strong>）来判断：</p>
+    <ul>
+      <li><strong>de类词</strong>（如 <em>de auto</em> 汽车、<em>de tafel</em> 桌子）都看作阳性：我们用 <strong>hij</strong>（作主语）或 <strong>hem</strong>（作宾语）来代指。
+        <br><small style="color:var(--text-gray);font-style:italic;">De auto is mooi. → <strong>Hij</strong> is mooi. (汽车很漂亮。 → 它很漂亮。)</small>
+      </li>
+      <li><strong>het类词</strong>（如 <em>het boek</em> 书、<em>het kantoor</em> 办公室）用 <strong>het</strong> 来代指。
+        <br><small style="color:var(--text-gray);font-style:italic;">Ik koop het boek. → Ik koop <strong>het</strong>. (我买书。 → 我买它。)</small>
       </li>
     </ul>
   `
@@ -1640,15 +1721,17 @@ const quizQuestionsData = [
       nl: "Hassan woont in Eindhoven. ___ werkt bij VDL.",
       pl: "Hassan mieszka w Eindhoven. ___ pracuje w VDL.",
       en: "Hassan lives in Eindhoven. ___ works at VDL.",
-      ar: "حسن يعيش في أيندهوفن. ___ يعمل في VDL.",
-      tr: "Hassan Eindhoven'da yaşıyor. ___ VDL'de çalışıyor."
+      ar: "حسن يعيش في أيندهوفن. <bdi>___</bdi> يعمل في <bdi>VDL</bdi>.\u200F",
+      tr: "Hassan Eindhoven'da yaşıyor. ___ VDL'de çalışıyor.",
+      zh: "Hassan 住在埃因霍温。___ 在 VDL 工作。"
     },
     explanations: {
       nl: "\"Hassan\" is een man (hij) en is het onderwerp van het werkwoord (werkt). We gebruiken het onderwerpspronomen <strong>hij</strong>.",
       pl: "\"Hassan\" to mężczyzna (on) i jest podmiotem wykonującym czynność (werkt). W niderlandzkim zaimek podmiotowy w liczbie pojedynczej rodzaju męskiego to zawsze <strong>hij</strong>.",
       en: "\"Hassan\" is a man (he) and is the subject performing the action (works). We use the subject pronoun <strong>hij</strong>.",
-      ar: "\"حسن\" هو رجل (هو) وهو الفاعل الذي يقوم بالعمل (werkt). نستخدم ضمير الفاعل للمفرد المذكر <strong>hij</strong>.",
-      tr: "\"Hassan\" bir erkektir (o) ve eylemi gerçekleştiren öznedir (çalışıyor). Erkek tekil şahıs özne zamiri olan <strong>hij</strong> kullanırız."
+      ar: "\"حسن\" هو رجل (هو) وهو الفاعل الذي يقوم بالعمل (<bdi>werkt</bdi>). نستخدم ضمير الفاعل للمفرد المذكر <strong><bdi>hij</bdi></strong>.\u200F",
+      tr: "\"Hassan\" bir erkektir (o) ve eylemi gerçekleştiren öznedir (çalışıyor). Erkek tekil şahıs özne zamiri olan <strong>hij</strong> kullanırız.",
+      zh: "“Hassan” 是一个男性（他），并且是动词（工作）的主语。因此我们使用主语代词 <strong>hij</strong>。"
     }
   },
   {
@@ -1660,15 +1743,17 @@ const quizQuestionsData = [
       nl: "Amira slaapt nog. Hassan maakt ___ voorzichtig wakker.",
       pl: "Amira jeszcze śpi. Hassan budzi ___ ostrożnie.",
       en: "Amira is still sleeping. Hassan wakes ___ up carefully.",
-      ar: "أميرة لا تزال نائمة. حسن يوقظ ___ بحذر.",
-      tr: "Amira hâlâ uyuyor. Hassan ___ dikkatlice uyandırıyor."
+      ar: "أميرة لا تزال نائمة. حسن يوقظ <bdi>___</bdi> بحذر.\u200F",
+      tr: "Amira hâlâ uyuyor. Hassan ___ dikkatlice uyandırıyor.",
+      zh: "Amira 还在睡觉。Hassan 小心地把 ___ 叫醒。"
     },
     explanations: {
       nl: "\"Amira\" is een vrouw (zij). In deze zin is ze het object (Hassan maakt háár wakker). We gebruiken het objectpronomen <strong>haar</strong>.",
       pl: "\"Amira\" to kobieta (ona) i w tym zdaniu jest dopełnieniem (odbiorcą czynności budzenia - Hassan budzi ją). Używamy zaimka dopełnieniowego rodzaju żeńskiego <strong>haar</strong>.",
       en: "\"Amira\" is a female (she). In this sentence, she is the object receiving the action (Hassan wakes her up). We use the object pronoun <strong>haar</strong>.",
-      ar: "\"أميرة\" هي امرأة (هي). في هذه الجملة هي المفعول به (حسن يوقظها). نستخدم ضمير المفعول به للمؤنث <strong>haar</strong>.",
-      tr: "\"Amira\" bir kadındır (o). Bu cümlede eylemden etkilenen nesnedir (Hassan onu uyandırıyor). Dişil nesne zamiri olan <strong>haar</strong> kullanırız."
+      ar: "\"أميرة\" هي امرأة (هي). في هذه الجملة هي المفعول به (حسن يوقظها). نستخدم ضمير المفعول به للمؤنث <strong><bdi>haar</bdi></strong>.\u200F",
+      tr: "\"Amira\" bir kadındır (o). Bu cümlede eylemden etkilenen nesnedir (Hassan onu uyandırıyor). Dişil nesne zamiri olan <strong>haar</strong> kullanırız.",
+      zh: "“Amira” 是一个女性（她）。在这句话中，她是动作的承受者（宾语，即 Hassan 唤醒“她”）。因此我们使用宾语代词 <strong>haar</strong>。"
     }
   },
   {
@@ -1680,15 +1765,17 @@ const quizQuestionsData = [
       nl: "Dit is Pawan. Hij is ___ nieuwe collega. [mijn]",
       pl: "To jest Pawan. On jest ___ nowym kolegą. [mój]",
       en: "This is Pawan. He is ___ new colleague. [my]",
-      ar: "هذا باوان. هو زمي___ الجديد. [زميلي/الخاص بي]",
-      tr: "Bu Pawan. O ___ yeni meslektaşım. [benim]"
+      ar: "هذا باوان. هو زمي<bdi>___</bdi> الجديد.\u200F",
+      tr: "Bu Pawan. O ___ yeni meslektaşım. [benim]",
+      zh: "这是 Pawan。他是 ___ 新同事。 [我的]"
     },
     explanations: {
       nl: "We drukken bezit uit (mijn nieuwe collega). Het bezittelijk voornaamwoord voor de eerste persoon is <strong>mijn</strong>.",
       pl: "Chcemy wyrazić posiadanie/przynależność (mój nowy kolega). Zaimek dzierżawczy przed rzeczownikiem dla osoby \"ja\" to zawsze <strong>mijn</strong>.",
       en: "We are expressing ownership (my new colleague). The possessive pronoun placed before the noun is always <strong>mijn</strong>.",
-      ar: "نريد التعبير عن الملكية (زميلي الجديد). ضمير الملكية الذي يوضع قبل الاسم للمتكلم هو دائماً <strong>mijn</strong>.",
-      tr: "Aitlik/sahiplik ifade etmek istiyoruz (benim yeni meslektaşım). Bir isimden önce gelen birinci tekil şahıs iyelik zamiri her zaman <strong>mijn</strong>'dır."
+      ar: "نريد التعبير عن الملكية (زميلي الجديد). ضمير الملكية الذي يوضع قبل الاسم للمتكلم هو دائماً <strong><bdi>mijn</bdi></strong>.\u200F",
+      tr: "Aitlik/sahiplik ifade etmek istiyoruz (benim yeni meslektaşım). Bir isimden önce gelen birinci tekil şahıs iyelik zamiri her zaman <strong>mijn</strong>'dır.",
+      zh: "我们正在表达所有关系（我的新同事）。放在名词前修饰第一人称的所有格/物主代词始终是 <strong>mijn</strong>。"
     }
   },
   {
@@ -1700,15 +1787,17 @@ const quizQuestionsData = [
       nl: "De bus is laat vandaag. ___ komt pas over tien minuten.",
       pl: "Autobus jest dzisiaj spóźniony. ___ przyjedzie dopiero za dziesięć minut.",
       en: "The bus is late today. ___ will only arrive in ten minutes.",
-      ar: "الحافلة متأخرة اليوم. ___ ستصل فقط بعد عشر دقائق.",
-      tr: "Otobüs bugün gecikti. ___ ancak on dakika sonra gelecek."
+      ar: "الحافلة متأخرة اليوم. <bdi>___</bdi> ستصل فقط بعد عشر دقائق.\u200F",
+      tr: "Otobüs bugün gecikti. ___ ancak on dakika sonra gelecek.",
+      zh: "公交车今天迟到了。___ 十分钟后才会到。"
     },
     explanations: {
       nl: "\"De bus\" is een de-woord. Als onderwerp vervangen we de-woorden door het pronomen <strong>hij</strong>.",
       pl: "Słowo \"de bus\" ma rodzajnik <strong>de</strong>. Jako podmiot (wykonawca czynności przyjechania) zastępujemy je zaimkiem podmiotowym <strong>hij</strong> (zgodnie z zasadą dla rzeczowników z rodzajnikiem de).",
       en: "\"De bus\" is a de-word. As the subject, we replace de-words with the subject pronoun <strong>hij</strong>.",
-      ar: "كلمة \"de bus\" تأخذ أداة التعريف <strong>de</strong>. كفاعل، نستبدل الكلمات التي تأخذ de بالضمير الفاعل <strong>hij</strong>.",
-      tr: "\"De bus\" bir de-kelimesidir. Özne olarak de-kelimelerini şahıs zamiri olan <strong>hij</strong> ile değiştiririz."
+      ar: "كلمة \"<bdi>de bus</bdi>\" تأخذ أداة التعريف <strong><bdi>de</bdi></strong>. كفاعل، نستبدل الكلمات التي تأخذ <bdi>de</bdi> بالضمير الفاعل <strong><bdi>hij</bdi></strong>.\u200F",
+      tr: "\"De bus\" bir de-kelimesidir. Özne olarak de-kelimelerini şahıs zamiri olan <strong>hij</strong> ile değiştiririz.",
+      zh: "“De bus” 是一个 de类词。作主语时，我们用代词 <strong>hij</strong>（它）来指代 de类词。"
     }
   },
   {
@@ -1720,15 +1809,17 @@ const quizQuestionsData = [
       nl: "Het kantoor is dicht. ___ gaat pas morgenochtend open.",
       pl: "Biuro jest zamknięte. ___ otwiera się dopiero jutro rano.",
       en: "The office is closed. ___ only opens tomorrow morning.",
-      ar: "المكتب مغلق. ___ سيفتح فقط صباح الغد.",
-      tr: "Ofis kapalı. ___ ancak yarın sabah açılacak."
+      ar: "المكتب مغلق. <bdi>___</bdi> سيفتح فقط صباح الغد.\u200F",
+      tr: "Ofis kapalı. ___ ancak yarın sabah açılacak.",
+      zh: "办公室关门了。___ 明天早上才会开。"
     },
     explanations: {
       nl: "\"Het kantoor\" is een het-woord. We vervangen het-woorden als onderwerp door <strong>het</strong>.",
       pl: "Słowo \"het kantoor\" łączy się z rodzajnikiem <strong>het</strong>. Rzeczowniki typu <strong>het</strong> jako podmiot zastępujemy zaimkiem <strong>het</strong>.",
       en: "\"Het kantoor\" is a het-word. We replace het-words in the subject position with <strong>het</strong>.",
-      ar: "سلسلة \"het kantoor\" تأخذ أداة التعريف <strong>het</strong>. نستبدل الكلمات التي تأخذ het كفاعل بالضمير <strong>het</strong>.",
-      tr: "\"Het kantoor\" bir het-kelimesidir. Özne konumundaki het-kelimelerini <strong>het</strong> zamiri ile değiştiririz."
+      ar: "سلسلة \"<bdi>het kantoor</bdi>\" تأخذ أداة التعريف <strong><bdi>het</bdi></strong>. نستبدل الكلمات التي تأخذ <bdi>het</bdi> كفاعل بالضمير <strong><bdi>het</bdi></strong>.\u200F",
+      tr: "\"Het kantoor\" bir het-kelimesidir. Özne konumundaki het-kelimelerini <strong>het</strong> zamiri ile değiştiririz.",
+      zh: "“Het kantoor” 是一个 het类词。作主语时，我们用代词 <strong>het</strong>（它）来指代 het类词。"
     }
   },
   {
@@ -1740,15 +1831,17 @@ const quizQuestionsData = [
       nl: "Waar is de computer? Ik zoek ___.",
       pl: "Gdzie jest komputer? Szukam ___.",
       en: "Where is the computer? I am looking for ___.",
-      ar: "أين الكمبيوتر؟ أنا أبحث عن___.",
-      tr: "Bilgisayar nerede? Ben ___ arıyorum."
+      ar: "أين الكمبيوتر؟ أنا أبحث عن <bdi>___</bdi>.\u200F",
+      tr: "Bilgisayar nerede? Ben ___ arıyorum.",
+      zh: "电脑在哪里？我在寻找 ___。"
     },
     explanations: {
       nl: "\"De computer\" is een de-woord. We zoeken 'hem' (het object), dus gebruiken we het objectpronomen <strong>hem</strong>.",
       pl: "Słowo \"de computer\" to słowo z rodzajnikiem <strong>de</strong>. Szukamy go (dopełnienie), więc zastępujemy go zaimkiem dopełnieniowym <strong>hem</strong>.",
       en: "\"De computer\" is a de-word. We are looking for 'it' (the object), so we replace it with the object pronoun <strong>hem</strong>.",
-      ar: "كلمة \"de computer\" تأخذ أداة التعريف <strong>de</strong>. نحن نبحث عنه (مفعول به)، لذا نستبدله بضمير المفعول به للمذكر <strong>hem</strong>.",
-      tr: "\"De computer\" bir de-kelimesidir. Onu arıyoruz (nesne), bu yüzden nesne zamiri olan <strong>hem</strong> kullanırız."
+      ar: "كلمة \"<bdi>de computer</bdi>\" تأخذ أداة التعريف <strong><bdi>de</bdi></strong>. نحن نبحث عنه (مفعول به)، لذا نستبدله بضمير المفعول به للمذكر <strong><bdi>hem</bdi></strong>.\u200F",
+      tr: "\"De computer\" bir de-kelimesidir. Onu arıyoruz (nesne), bu yüzden nesne zamiri olan <strong>hem</strong> kullanırız.",
+      zh: "“De computer” 是一个 de类词。我们要代指的是宾语（我在找“它”），因此我们使用 de类词的宾语代词 <strong>hem</strong>。"
     }
   },
   {
@@ -1760,15 +1853,17 @@ const quizQuestionsData = [
       nl: "Het rapport is erg lang. Ik lees ___ vanavond.",
       pl: "Raport jest bardzo długi. Przeczytam ___ dziś wieczorem.",
       en: "The report is very long. I will read ___ tonight.",
-      ar: "التقرير طويل جداً. سأقرأ___ هذا المساء.",
-      tr: "Rapor çok uzun. Onu ___ bu akşam okuyacağım."
+      ar: "التقرير طويل جداً. سأقرأ <bdi>___</bdi> هذا المساء.\u200F",
+      tr: "Rapor çok uzun. Onu ___ bu akşam okuyacağım.",
+      zh: "报告非常长。我今晚读 ___。"
     },
     explanations: {
       nl: "\"Het rapport\" is een het-woord. We lezen het (object), dus we vervangen het door het objectpronomen <strong>het</strong>.",
       pl: "Słowo \"het rapport\" ma rodzajnik <strong>het</strong>. Szukamy / czytamy je (dopełnienie), dlatego zastępujemy je zaimkiem dopełnieniowym <strong>het</strong>.",
       en: "\"Het rapport\" is a het-word. We are reading 'it' (the object), so we replace it with the object pronoun <strong>het</strong>.",
-      ar: "كلمة \"het rapport\" تأخذ أداة التعريف <strong>het</strong>. نحن نقرأه (مفعول به)، لذا نستبدله بضمير المفعول به لغير العاقل <strong>het</strong>.",
-      tr: "\"Het rapport\" bir het-kelimesidir. Onu okuyoruz (nesne), bu yüzden nesne zamiri olan <strong>het</strong> kullanırız."
+      ar: "كلمة \"<bdi>het rapport</bdi>\" تأخذ أداة التعريف <strong><bdi>het</bdi></strong>. نحن نقرأه (مفعول به)، لذا نستبدله بضمير المفعول به لغير العاقل <strong><bdi>het</bdi></strong>.\u200F",
+      tr: "\"Het rapport\" bir het-kelimesidir. Onu okuyoruz (nesne), bu yüzden nesne zamiri olan <strong>het</strong> kullanırız.",
+      zh: "“Het rapport” 是一个 het类词。这里作宾语（读“它”），因此我们使用 het类词的宾语代词 <strong>het</strong>。"
     }
   },
   {
@@ -1780,15 +1875,17 @@ const quizQuestionsData = [
       nl: "Waar liggen de sleutels? Ik kan ___ nergens vinden.",
       pl: "Gdzie leżą klucze? Nie mogę ___ nigdzie znaleźć.",
       en: "Where are the keys? I can't find ___ anywhere.",
-      ar: "أين المفاتيح؟ لا أستطيع أن أجد___ في أي مكان.",
-      tr: "Anahtarlar nerede? Onları hiçbir yerde bulamıyorum."
+      ar: "أين المفاتيح؟ لا أستطيع أن أجد <bdi>___</bdi> في أي مكان.\u200F",
+      tr: "Anahtarlar nerede? Onları hiçbir yerde bulamıyorum.",
+      zh: "钥匙在哪里？我到处都找不到 ___。"
     },
     explanations: {
       nl: "\"De sleutels\" is meervoud. Zelfstandig naamwoorden in het meervoud vervangen we als object door <strong>ze</strong>.",
       pl: "Słowo \"de sleutels\" jest w liczbie mnogiej. Wszystkie rzeczowniki w liczbie mnogiej jako dopełnienie (znaleźć je) zastępujemy zaimkiem <strong>ze</strong>.",
       en: "\"De sleutels\" is plural. Plural nouns in the object position (finding them) are replaced by the pronoun <strong>ze</strong>.",
-      ar: "كلمة \"de sleutels\" في صيغة الجمع. نستبدل أسماء الجمع المفعول بها دائماً بالضمير <strong>ze</strong> (ـهم/ـها).",
-      tr: "\"De sleutels\" çoğuldur. Çoğul isimleri nesne konumunda (onları bulmak) her zaman <strong>ze</strong> zamiri ile değiştiririz."
+      ar: "كلمة \"<bdi>de sleutels</bdi>\" في صيغة الجمع. نستبدل أسماء الجمع المفعول بها دائماً بالضمير <strong><bdi>ze</bdi></strong> (ـهم/ـها).\u200F",
+      tr: "\"De sleutels\" çoğuldur. Çoğul isimleri nesne konumunda (onları bulmak) her zaman <strong>ze</strong> zamiri ile değiştiririz.",
+      zh: "“De sleutels” 是复数。复数名词作宾语（找到“它们”）时，我们一律用 <strong>ze</strong> 代替。"
     }
   },
   {
@@ -1800,15 +1897,17 @@ const quizQuestionsData = [
       nl: "Mijn collega's werken hard. ___ project moet deze week klaar zijn. [hun]",
       pl: "Moi koledzy ciężko pracują. ___ projekt musi być gotowy w tym tygodniu. [ich]",
       en: "My colleagues work hard. ___ project must be finished this week. [their]",
-      ar: "زملائي يعملون بجد. مشروعـ___ يجب أن ينتهي هذا الاسبوع. [مشروعهم/الخاص بهم]",
-      tr: "Meslektaşlarım çok çalışıyor. ___ projesi bu hafta bitmeli. [onların]"
+      ar: "زملائي يعملون بجد. مشروعـ<bdi>___</bdi> يجب أن ينتهي هذا الاسبوع.\u200F",
+      tr: "Meslektaşlarım çok çalışıyor. ___ projesi bu hafta bitmeli. [onların]",
+      zh: "我的同事们工作很努力。___ 项目必须在本周完成。 [他们的]"
     },
     explanations: {
       nl: "Het gaat om het project van de collega's (hun project, meervoud bezit). Het bezittelijk voornaamwoord is <strong>hun</strong>.",
       pl: "Chodzi o projekt należący do kolegów (\"ich\" projekt, 3. osoba liczby mnogiej). Zaimek dzierżawczy określający własność grupy ludzi to <strong>hun</strong>.",
       en: "It refers to the project belonging to the colleagues (their project, plural possession). The possessive pronoun is <strong>hun</strong>.",
-      ar: "يعود المشروع إلى الزملاء (مشروعهم، ملكية الجمع). ضمير الملكية للغائبين الجمع هو <strong>hun</strong>.",
-      tr: "Meslektaşların projesinden bahsediyoruz (onların projesi, çoğul sahiplik). Doğru iyelik zamiri <strong>hun</strong>'dur."
+      ar: "يعود المشروع إلى الزملاء (مشروعهم، ملكية الجمع). ضمير الملكية للغائبين الجمع هو <strong><bdi>hun</bdi></strong>.\u200F",
+      tr: "Meslektaşların projesinden bahsediyoruz (onların projesi, çoğul sahiplik). Doğru iyelik zamiri <strong>hun</strong>'dur.",
+      zh: "这指的是同事们的项目（他们的项目，复数所有格）。表示他们的物主代词是 <strong>hun</strong>。"
     }
   },
   {
@@ -1820,15 +1919,17 @@ const quizQuestionsData = [
       nl: "Dag meneer Visser, is dit ___ jas?",
       pl: "Dzień dobry panie Visser, czy to ___ kurtka?",
       en: "Hello Mr. Visser, is this ___ coat?",
-      ar: "مرحباً سيد فيشر، هل هذه سترة ___؟ [سترتك/الخاصة بحضرتك]",
-      tr: "Merhaba Bay Visser, bu ___ ceketiniz mi? [sizin]"
+      ar: "مرحباً سيد فيشر، هل هذه سترة <bdi>___</bdi>؟\u200F",
+      tr: "Merhaba Bay Visser, bu ___ ceketiniz mi? [sizin]",
+      zh: "您好 Visser 先生，这是 ___ 大衣吗？ [您的]"
     },
     explanations: {
       nl: "We spreken meneer Visser formeel aan (u) en vragen naar zijn bezit. Het formele bezittelijk voornaamwoord is <strong>uw</strong>.",
       pl: "Zwracamy się grzecznościowo i formalnie do Pana (\"meneer Visser\") i pytamy o własność (Pana kurtka). Używamy formy grzecznościowej zaimka dzierżawczego, która brzmi <strong>uw</strong>.",
       en: "We are addressing Mr. Visser formally (u) and asking about his possession. The formal possessive pronoun is <strong>uw</strong>.",
-      ar: "نحن نخاطب السيد فيشر بصيغة رسمية (u) ونسأل عن ملكيته. ضمير الملكية الرسمي للمخاطب هو <strong>uw</strong>.",
-      tr: "Bay Visser'a resmi olarak (u) hitap ediyoruz ve onun ceketini soruyoruz. Resmi iyelik zamiri <strong>uw</strong>'dur."
+      ar: "نحن نخاطب السيد فيشر بصيغة رسمية (<bdi>u</bdi>) ونسأل عن ملكيته. ضمير الملكية الرسمي للمخاطب هو <strong><bdi>uw</bdi></strong>.\u200F",
+      tr: "Bay Visser'a resmi olarak (u) hitap ediyoruz ve onun ceketini soruyoruz. Resmi iyelik zamiri <strong>uw</strong>'dur.",
+      zh: "我们正式地尊称 Visser 先生（您），并询问他的随身物品。敬语性质的物主代词是 <strong>uw</strong>。"
     }
   }
 ];
