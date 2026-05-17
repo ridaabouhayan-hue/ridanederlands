@@ -1,6 +1,6 @@
 import os
 
-base_dir = r'h:\Mijn Drive\HTML FILES\Losse Oefeningen'
+base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Losse Oefeningen')
 
 html_template = """<!DOCTYPE html>
 <html lang="nl">
