@@ -7,6 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --border: #e2e8f0;
+    
     --primary: #2563eb;
     --primary-light: #eff6ff;
     --primary-border: #bfdbfe;
@@ -15,16 +21,43 @@
     --secondary-light: #fef2f2;
     --secondary-border: #fecaca;
     
-    --bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text-dark: #1e293b;
-    --text-gray: #64748b;
-    --border: #e2e8f0;
-    
     --success: #16a34a;
     --success-light: #f0fdf4;
+    --success-border: #bbf7d0;
+    
     --error: #dc2626;
     --error-light: #fef2f2;
+    --error-border: #fecaca;
+    
+    --shadow: 0 4px 20px rgba(37, 99, 235, 0.04);
+    --header-gradient: linear-gradient(135deg, #2563eb, #1e3a8a);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --text-dark: #f8fafc;
+    --text-gray: #94a3b8;
+    --border: #334155;
+    
+    --primary: #3b82f6;
+    --primary-light: #1e3a8a;
+    --primary-border: #1e40af;
+    
+    --secondary: #ef4444;
+    --secondary-light: #450a0a;
+    --secondary-border: #7f1d1d;
+    
+    --success: #22c55e;
+    --success-light: #052e16;
+    --success-border: #14532d;
+    
+    --error: #ef4444;
+    --error-light: #450a0a;
+    --error-border: #7f1d1d;
+    
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --header-gradient: linear-gradient(135deg, #1e3a8a, #0f172a);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,22 +68,101 @@
     color: var(--text-dark);
     line-height: 1.6;
     padding: 30px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* RTL overrides */
+  [dir="rtl"] body {
+    text-align: right;
   }
 
   .container {
     max-width: 960px;
     margin: 0 auto;
+    position: relative;
   }
+
+  /* --- UTILITY BAR (LANG & THEME) --- */
+  .utility-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .lang-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .lang-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .lang-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .lang-btn.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 900;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.1);
+  }
+
+  .theme-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+  }
+
+  [data-theme="dark"] .theme-toggle .sun-icon { display: block; }
+  [data-theme="dark"] .theme-toggle .moon-icon { display: none; }
+  .theme-toggle .sun-icon { display: none; }
+  .theme-toggle .moon-icon { display: block; }
 
   /* --- HEADER BANNER --- */
   .header {
-    background: linear-gradient(135deg, var(--primary), #1e3a8a);
+    background: var(--header-gradient);
     color: #ffffff;
     padding: 50px 30px;
     border-radius: 24px;
     text-align: center;
     margin-bottom: 40px;
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.12);
     position: relative;
     overflow: hidden;
   }
@@ -63,6 +175,34 @@
     width: 100%;
     height: 6px;
     background: linear-gradient(90deg, #ffffff 50%, var(--secondary) 50%);
+  }
+
+  .edition-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    animation: bounceIn 0.5s ease-out;
+  }
+
+  [dir="rtl"] .edition-badge {
+    right: auto;
+    left: 20px;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
   }
 
   .header h1 {
@@ -86,8 +226,9 @@
     border-radius: 20px;
     padding: 35px;
     margin-bottom: 35px;
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.04);
+    box-shadow: var(--shadow);
     border: 1px solid var(--border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
   .section-title {
@@ -127,7 +268,7 @@
     border-radius: 16px;
     border: 1px solid var(--border);
     margin-bottom: 20px;
-    background: #ffffff;
+    background: var(--card-bg);
   }
 
   table {
@@ -135,6 +276,10 @@
     border-collapse: collapse;
     font-size: 0.95rem;
     text-align: left;
+  }
+
+  [dir="rtl"] table {
+    text-align: right;
   }
 
   thead {
@@ -148,7 +293,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #1e3a8a;
+    color: var(--primary);
   }
 
   tbody tr {
@@ -161,7 +306,7 @@
   }
 
   tbody tr:hover {
-    background-color: #fafbfd;
+    background-color: var(--primary-light);
   }
 
   tbody td {
@@ -176,7 +321,12 @@
     color: var(--text-dark);
     white-space: nowrap;
     border-right: 1px solid var(--border);
-    background: #fafafa;
+    background: var(--bg);
+  }
+
+  [dir="rtl"] .row-header {
+    border-right: none;
+    border-left: 1px solid var(--border);
   }
 
   .row-header .nl-lang {
@@ -223,7 +373,6 @@
     background-color: var(--secondary-light);
     color: var(--secondary);
     border: 1px solid var(--secondary-border);
-    font-weight: 700;
   }
 
   /* Examples Styling */
@@ -264,7 +413,7 @@
     margin-top: 2px;
   }
 
-  .ex-pl .hl-pl {
+  .ex-pl .hl-trans {
     color: var(--secondary);
     font-weight: 700;
     font-style: normal;
@@ -279,7 +428,7 @@
   }
 
   .rule-card {
-    background: #fafafa;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px;
@@ -295,6 +444,11 @@
     width: 4px;
     height: 100%;
     background: var(--primary);
+  }
+
+  [dir="rtl"] .rule-card::before {
+    left: auto;
+    right: 0;
   }
 
   .rule-card.de-rule::before { background: #3b82f6; }
@@ -339,7 +493,7 @@
 
   .rule-ex-item {
     font-size: 0.9rem;
-    background: #ffffff;
+    background: var(--card-bg);
     padding: 10px 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
@@ -383,13 +537,13 @@
   .tip-content h5 {
     font-size: 1.05rem;
     font-weight: 800;
-    color: #991b1b;
+    color: var(--secondary);
     margin-bottom: 6px;
   }
 
   .tip-content p {
     font-size: 0.95rem;
-    color: #7f1d1d;
+    color: var(--text-dark);
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -397,7 +551,12 @@
   .tip-content ul {
     margin-left: 20px;
     font-size: 0.92rem;
-    color: #7f1d1d;
+    color: var(--text-dark);
+  }
+
+  [dir="rtl"] .tip-content ul {
+    margin-left: 0;
+    margin-right: 20px;
   }
 
   .tip-content li {
@@ -420,14 +579,14 @@
 
   .quiz-progress-text {
     font-weight: 800;
-    color: #1e3a8a;
+    color: var(--primary);
   }
 
   .quiz-progress-bar-container {
     flex-grow: 1;
     max-width: 400px;
     height: 12px;
-    background: #e2e8f0;
+    background: var(--border);
     border-radius: 6px;
     overflow: hidden;
     position: relative;
@@ -441,7 +600,7 @@
   }
 
   .quiz-score-badge {
-    background: #ffffff;
+    background: var(--card-bg);
     color: var(--primary);
     border: 2px solid var(--primary);
     padding: 6px 16px;
@@ -457,7 +616,7 @@
   }
 
   .quiz-card {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 18px;
     padding: 25px;
@@ -466,7 +625,7 @@
 
   .quiz-card:hover {
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    border-color: #cbd5e1;
+    border-color: var(--primary-border);
   }
 
   .quiz-question-header {
@@ -479,11 +638,12 @@
 
   .quiz-question-num {
     background: var(--text-dark);
-    color: #ffffff;
+    color: var(--bg);
     font-size: 0.85rem;
     font-weight: 900;
     padding: 4px 10px;
     border-radius: 8px;
+    white-space: nowrap;
   }
 
   .quiz-sentence {
@@ -517,7 +677,7 @@
   }
 
   .option-btn {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 2px solid var(--border);
     padding: 12px 16px;
     border-radius: 12px;
@@ -537,15 +697,15 @@
   }
 
   .option-btn.selected-correct {
-    background-color: var(--success-light);
-    border-color: var(--success);
-    color: var(--success);
+    background-color: var(--success-light) !important;
+    border-color: var(--success) !important;
+    color: var(--success) !important;
   }
 
   .option-btn.selected-wrong {
-    background-color: var(--error-light);
-    border-color: var(--error);
-    color: var(--error);
+    background-color: var(--error-light) !important;
+    border-color: var(--error) !important;
+    color: var(--error) !important;
   }
 
   .option-btn.show-correct {
@@ -577,15 +737,27 @@
   .quiz-feedback.correct-feedback {
     display: block;
     background: var(--success-light);
-    color: #166534;
+    color: var(--success);
     border-left: 4px solid var(--success);
+    border-right: none;
+  }
+
+  [dir="rtl"] .quiz-feedback.correct-feedback {
+    border-left: none;
+    border-right: 4px solid var(--success);
   }
 
   .quiz-feedback.wrong-feedback {
     display: block;
     background: var(--error-light);
-    color: #991b1b;
+    color: var(--error);
     border-left: 4px solid var(--error);
+    border-right: none;
+  }
+
+  [dir="rtl"] .quiz-feedback.wrong-feedback {
+    border-left: none;
+    border-right: 4px solid var(--error);
   }
 
   .quiz-feedback-title {
@@ -601,7 +773,7 @@
     display: block;
     margin: 30px auto 0;
     background: var(--text-dark);
-    color: #ffffff;
+    color: var(--bg);
     border: none;
     padding: 12px 30px;
     border-radius: 12px;
@@ -613,7 +785,8 @@
   }
 
   .quiz-reset-btn:hover {
-    background-color: #0f172a;
+    background-color: var(--primary);
+    color: #ffffff;
   }
 
   /* --- FOOTER --- */
@@ -674,6 +847,14 @@
     .row-header {
       font-size: 0.85rem;
     }
+
+    .edition-badge {
+      position: relative;
+      top: 0;
+      right: 0;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
   }
 </style>
 </head>
@@ -681,394 +862,52 @@
 
 <div class="container">
 
+  <!-- UTILITY BAR (LANGUAGES & THEME TOGGLE) -->
+  <div class="utility-bar">
+    <div class="lang-bar" id="lang-bar">
+      <button class="lang-btn" onclick="switchLanguage('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-btn" onclick="switchLanguage('pl')">🇵🇱 Polski</button>
+      <button class="lang-btn" onclick="switchLanguage('en')">🇬🇧 English</button>
+      <button class="lang-btn" onclick="switchLanguage('ar')">🇸🇦 العربية</button>
+      <button class="lang-btn" onclick="switchLanguage('tr')">🇹🇷 Türkçe</button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+      <span class="sun-icon">☀️</span>
+      <span class="moon-icon">🌙</span>
+    </button>
+  </div>
+
   <!-- HERO HEADER -->
   <header class="header">
-    <h1>Zaimki Osobowe w Języku Niderlandzkim</h1>
-    <p>Interaktywny przewodnik z tabelą porównawczą i ćwiczeniami przygotowany specjalnie dla osób polskojęzycznych.</p>
+    <div class="edition-badge" id="edition-badge">🇵🇱 Edycja polska</div>
+    <h1 id="main-title">Zaimki Osobowe w Języku Niderlandzkim</h1>
+    <p id="main-subtitle">Interaktywny przewodnik z tabelą porównawczą i ćwiczeniami przygotowany specjalnie dla osób polskojęzycznych.</p>
   </header>
 
   <!-- SECTION 1: TABELA PORÓWNAWCZA -->
   <section class="section-card">
     <div class="section-title">
       <span class="number">1</span>
-      <h2>Tabela Porównawcza / Vergelijkingstabel</h2>
+      <h2 id="sec1-title">Tabela Porównawcza</h2>
     </div>
     
-    <p class="intro-text">
+    <p class="intro-text" id="sec1-intro">
       Poniższa tabela łączy formy niderlandzkie i ich polskie odpowiedniki. Każdy zaimek ma formę podmiotu (osoba wykonująca czynność), dopełnienia (odbiorca czynności) oraz formę dzierżawczą (określającą własność).
     </p>
 
     <div class="table-wrapper">
-      <table>
+      <table id="pronouns-table">
         <thead>
           <tr>
-            <th>NL → PL</th>
-            <th>Podmiot<br><small style="color:#1e3a8a;">Onderwerp</small></th>
-            <th>Dopełnienie<br><small style="color:#1e3a8a;">Object</small></th>
-            <th>Dzierżawczy<br><small style="color:#1e3a8a;">Bezittelijk</small></th>
-            <th>Przykłady<br><small style="color:#1e3a8a;">Voorbeeldzinnen</small></th>
+            <th id="th-pair">NL → TRANS</th>
+            <th id="th-sub">Onderwerp</th>
+            <th id="th-obj">Object</th>
+            <th id="th-poss">Bezittelijk</th>
+            <th id="th-ex">Voorbeeldzinnen</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- ja / ik -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">ik</div>
-              <div class="pl-lang">ja</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ik</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ja</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> mij / me</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> mnie / mi</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> mijn</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> mój / moja / moje</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Ik</span> werk bij Westport.</div>
-                <div class="ex-pl"><span class="hl-pl">Ja</span> pracuję w Westport.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Hij helpt <span class="hl">mij</span>.</div>
-                <div class="ex-pl">On pomaga <span class="hl-pl">mi</span>.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dit is <span class="hl">mijn</span> collega.</div>
-                <div class="ex-pl">To jest <span class="hl-pl">mój</span> kolega.</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ty / jij -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">jij / je</div>
-              <div class="pl-lang">ty</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jij / je</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ty</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jou / je</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ciebie / cię</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jouw / je</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> twój / twoja / ...</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Jij</span> spreekt goed Nederlands.</div>
-                <div class="ex-pl"><span class="hl-pl">Ty</span> dobrze mówisz po niderlandzku.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik bel <span class="hl">jou</span> morgen.</div>
-                <div class="ex-pl">Zadzwonię do <span class="hl-pl">ciebie</span> jutro.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Waar is <span class="hl">jouw</span> tas?</div>
-                <div class="ex-pl">Gdzie jest <span class="hl-pl">twoja</span> torba?</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- Pan / Pani (u) -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">u</div>
-              <div class="pl-lang">Pan / Pani</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> u</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pan / Pani</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> u</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pana / Panią</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> uw</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pański / Pani</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">U</span> werkt hier al lang.</div>
-                <div class="ex-pl"><span class="hl-pl">Pan/Pani</span> już długo tu pracuje.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik help <span class="hl">u</span> graag.</div>
-                <div class="ex-pl">Chętnie pomogę <span class="hl-pl">Panu/Pani</span>.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Is dit <span class="hl">uw</span> handtekening?</div>
-                <div class="ex-pl">Czy to <span class="hl-pl">Pański/Pani</span> podpis?</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- on / hij -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">hij</div>
-              <div class="pl-lang">on</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hij</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> on</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hem</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego / go</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zijn</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Hij</span> is de manager.</div>
-                <div class="ex-pl"><span class="hl-pl">On</span> jest kierownikiem.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik ken <span class="hl">hem</span> goed.</div>
-                <div class="ex-pl">Dobrze <span class="hl-pl">go</span> znam.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dat is <span class="hl">zijn</span> auto.</div>
-                <div class="ex-pl">To jest <span class="hl-pl">jego</span> samochód.</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ona / zij -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">zij / ze</div>
-              <div class="pl-lang">ona</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zij / ze</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ona</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> haar</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ją / jej</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> haar</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jej</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Zij</span> woont in Rotterdam.</div>
-                <div class="ex-pl"><span class="hl-pl">Ona</span> mieszka w Rotterdamie.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik zie <span class="hl">haar</span> elke dag.</div>
-                <div class="ex-pl">Widzę <span class="hl-pl">ją</span> każdego dnia.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dit is <span class="hl">haar</span> nummer.</div>
-                <div class="ex-pl">To jest <span class="hl-pl">jej</span> numer.</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ono / het -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">het</div>
-              <div class="pl-lang">ono</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> het</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ono</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> het</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> je / jego</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zijn</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Het</span> kind slaapt.</div>
-                <div class="ex-pl"><span class="hl-pl">Ono</span> śpi (dziecko).</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik zoek <span class="hl">het</span>.</div>
-                <div class="ex-pl">Szukam <span class="hl-pl">tego / je</span>.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dat is <span class="hl">zijn</span> fiets.</div>
-                <div class="ex-pl">To jest <span class="hl-pl">jego</span> rower (dziecka).</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- my / wij -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">wij / we</div>
-              <div class="pl-lang">my</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> wij / we</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> my</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ons</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> nas / nam</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ons / onze</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> nasz / nasza / ...</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Wij</span> beginnen om 8 uur.</div>
-                <div class="ex-pl"><span class="hl-pl">My</span> zaczynamy o godzinie 8:00.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">De baas belt <span class="hl">ons</span>.</div>
-                <div class="ex-pl">Szef dzwoni do <span class="hl-pl">nas</span>.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dit is <span class="hl">onze</span> afdeling.</div>
-                <div class="ex-pl">To jest <span class="hl-pl">nasz</span> dział.</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- wy / jullie -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">jullie</div>
-              <div class="pl-lang">wy</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> wy</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> was / wam</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> wasz / wasza / ...</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Jullie</span> werken hard.</div>
-                <div class="ex-pl"><span class="hl-pl">Wy</span> ciężko pracujecie.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik wacht op <span class="hl">jullie</span>.</div>
-                <div class="ex-pl">Czekam na <span class="hl-pl">was</span>.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Is dat <span class="hl">jullie</span> ploeg?</div>
-                <div class="ex-pl">Czy to jest <span class="hl-pl">wasza</span> zmiana?</div>
-              </div>
-            </td>
-          </tr>
-
-          <!-- oni / zij -->
-          <tr>
-            <td class="row-header">
-              <div class="nl-lang">zij / ze</div>
-              <div class="pl-lang">oni / one</div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zij / ze</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> oni / one</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hen / ze</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ich / im</span>
-              </div>
-            </td>
-            <td>
-              <div class="badge-pair">
-                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hun</span>
-                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ich</span>
-              </div>
-            </td>
-            <td class="examples-column">
-              <div class="example-pair">
-                <div class="ex-nl"><span class="hl">Zij</span> komen uit Polen.</div>
-                <div class="ex-pl"><span class="hl-pl">Oni</span> pochodzą z Polski.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Ik help <span class="hl">hen</span> elke dag.</div>
-                <div class="ex-pl">Pomagam <span class="hl-pl">im</span> każdego dnia.</div>
-              </div>
-              <div class="example-pair">
-                <div class="ex-nl">Dat zijn <span class="hl">hun</span> spullen.</div>
-                <div class="ex-pl">To są <span class="hl-pl">ich</span> rzeczy.</div>
-              </div>
-            </td>
-          </tr>
+        <tbody id="pronouns-table-body">
+          <!-- Dynamically filled by JavaScript -->
         </tbody>
       </table>
     </div>
@@ -1078,79 +917,22 @@
   <section class="section-card">
     <div class="section-title">
       <span class="number">2</span>
-      <h2>Odniesienie do przedmiotów / Refereren naar objecten</h2>
+      <h2 id="sec2-title">Odniesienie do przedmiotów</h2>
     </div>
 
-    <p class="intro-text">
-      Kiedy mówimy o rzeczach lub przedmiotach (w liczbie pojedynczej lub mnogiej), musimy wybrać odpowiedni zaimek w zależności od tego, czy słowo łączy się z rodzajnikiem <strong>de</strong> czy <strong>het</strong>.
+    <p class="intro-text" id="sec2-intro">
+      Kiedy mówimy o rzeczach lub przedmiotach (w liczbie pojedynczej lub mnogiej), musimy wybrać odpowiedni zaimek w zależności od tego, czy słowo łączy się z rodzajnikiem de czy het.
     </p>
 
-    <div class="object-grid">
-      <!-- DE WORDS -->
-      <div class="rule-card de-rule">
-        <h4><span class="rule-badge">de-woord</span> Słowa z "de"</h4>
-        <p class="rule-desc">Jako podmiot używamy <strong>hij</strong> (on), a jako dopełnienie używamy <strong>hem</strong> (go/jego).</p>
-        <div class="rule-examples">
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">De computer staat hier. → <strong>Hij</strong> staat hier.</div>
-            <div class="rule-ex-pl">Komputer stoi tutaj. → On stoi tutaj.</div>
-          </div>
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">Waar is de sleutel? → Ik zoek <strong>hem</strong>.</div>
-            <div class="rule-ex-pl">Gdzie jest klucz? → Szukam go.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- HET WORDS -->
-      <div class="rule-card het-rule">
-        <h4><span class="rule-badge">het-woord</span> Słowa z "het"</h4>
-        <p class="rule-desc">Zarówno jako podmiot, jak i dopełnienie zawsze używamy zaimek <strong>het</strong> (ono/to).</p>
-        <div class="rule-examples">
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">Het rapport is klaar. → <strong>Het</strong> ligt op tafel.</div>
-            <div class="rule-ex-pl">Raport jest gotowy. → On/To leży na stole.</div>
-          </div>
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">Ik lees het boek. → Ik lees <strong>het</strong>.</div>
-            <div class="rule-ex-pl">Czytam książkę. → Czytam ją/to.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MEERVOUD -->
-      <div class="rule-card mv-rule">
-        <h4><span class="rule-badge">meervoud</span> Liczba mnoga (de & het)</h4>
-        <p class="rule-desc">Jako podmiot używamy <strong>zij/ze</strong> (one/oni), a jako dopełnienie używamy <strong>ze</strong> (ich/je).</p>
-        <div class="rule-examples">
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">De documenten liggen daar. → <strong>Ze</strong> liggen daar.</div>
-            <div class="rule-ex-pl">Dokumenty leżą tam. → One leżą tam.</div>
-          </div>
-          <div class="rule-ex-item">
-            <div class="rule-ex-nl">De e-mails zijn binnen. → Lees <strong>ze</strong> goed!</div>
-            <div class="rule-ex-pl">E-maile nadeszły. → Przeczytaj je uważnie!</div>
-          </div>
-        </div>
-      </div>
+    <div class="object-grid" id="object-rules-container">
+      <!-- Dynamically filled by JS -->
     </div>
 
     <!-- Polish Specific Tip Box -->
     <div class="tip-box">
       <div class="tip-icon">💡</div>
-      <div class="tip-content">
-        <h5>Bardzo ważna wskazówka dla Polaków:</h5>
-        <p>
-          W języku niderlandzkim nie patrzymy na to, jakiego rodzaju jest dany wyraz w języku polskim! Patrzymy wyłącznie na rodzajnik <strong>de</strong> lub <strong>het</strong> w niderlandzkim.
-        </p>
-        <ul>
-          <li><strong>De auto</strong> (samochód — w języku polskim rodzaj męski) oraz <strong>de tafel</strong> (stół/tabela — w języku polskim odpowiednio rodzaj męski i żeński) to słowa z rodzajnikiem <strong>de</strong>. Dlatego w niderlandzkim zastępujemy je przez <strong>hij</strong> lub <strong>hem</strong>!
-            <br><small style="color:#7f1d1d;font-style:italic;">De auto is mooi. → <strong>Hij</strong> is mooi. (Samochód jest ładny. → On jest ładny.)</small>
-          </li>
-          <li><strong>Het boek</strong> (książka — w języku polskim rodzaj żeński "ona"!) to słowo z rodzajnikiem <strong>het</strong>. Dlatego zastępujemy je przez zaimek <strong>het</strong>, a nie przez formy żeńskie!
-            <br><small style="color:#7f1d1d;font-style:italic;">Ik koop het boek. → Ik koop <strong>het</strong>. (Kupuję książkę. → Kupuję ją [to].)</small>
-          </li>
-        </ul>
+      <div class="tip-content" id="tip-content-box">
+        <!-- Dynamically filled by JS -->
       </div>
     </div>
   </section>
@@ -1159,226 +941,1174 @@
   <section class="section-card">
     <div class="section-title">
       <span class="number">3</span>
-      <h2>Interaktywny Quiz / Oefeningen</h2>
+      <h2 id="sec3-title">Interaktywny Quiz</h2>
     </div>
 
-    <p class="intro-text">
-      Wybierz właściwy zaimek osobowy lub dzierżawczy, aby poprawnie uzupełnić luki w zdaniach. Kliknij odpowiedź, aby natychmiast sprawdzić wynik i przeczytać wyjaśnienie po polsku.
+    <p class="intro-text" id="sec3-intro">
+      Wybierz właściwy zaimek osobowy lub dzierżawczy, aby poprawnie uzupełnić luki w zdaniach. Kliknij odpowiedź, aby natychmiast sprawdzić wynik i przeczytać wyjaśnienie w swoim języku.
     </p>
 
     <!-- Score Dashboard -->
     <div class="quiz-dashboard">
-      <div class="quiz-progress-text">Postęp: <span id="quiz-answered">0</span> z 10 pytań</div>
+      <div class="quiz-progress-text" id="quiz-progress-lbl">Postęp: <span id="quiz-answered">0</span> z 10 pytań</div>
       <div class="quiz-progress-bar-container">
         <div class="quiz-progress-bar" id="quiz-bar"></div>
       </div>
-      <div class="quiz-score-badge">Wynik: <span id="quiz-score">0</span> / 10</div>
+      <div class="quiz-score-badge" id="quiz-score-lbl">Wynik: <span id="quiz-score">0</span> / 10</div>
     </div>
 
     <!-- Quiz List -->
     <div class="quiz-grid" id="quiz-container">
-      <!-- Questions will be dynamically inserted here by JS for high polish and instant reactivity -->
+      <!-- Questions will be dynamically inserted here by JS -->
     </div>
 
-    <button class="quiz-reset-btn" onclick="resetQuiz()">↻ Zacznij od nowa</button>
+    <button class="quiz-reset-btn" id="reset-btn" onclick="resetQuiz()">↻ Zacznij od nowa</button>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    Werkend Nederlands Basis · Oefenmateriaal Zaimki Osobowe
+    <span id="footer-text">Werkend Nederlands Basis · Oefenmateriaal Zaimki Osobowe</span>
     <small>Gemaakt door Rida Abouhayan</small>
   </footer>
 
 </div>
 
-<!-- INTERACTIVE QUIZ ENGINE -->
+<!-- DATA TRANSLATION SYSTEM -->
 <script>
-const quizData = [
+// UI Translations
+const uiTranslations = {
+  nl: {
+    langLabel: "Nederlands",
+    flag: "🇳🇱",
+    edition: "🇳🇱 Nederlandse editie",
+    title: "Persoonlijke Voornaamwoorden",
+    subtitle: "Interactieve gids met vergelijkingstabel en oefeningen.",
+    sec1Title: "Vergelijkingstabel / Overzicht",
+    sec1Intro: "Deze tabel toont de Nederlandse voornaamwoorden per categorie: onderwerp (wie het doet), object (de ontvanger) en bezittelijk (eigendom).",
+    thPair: "Pronomen",
+    thSub: "Onderwerp",
+    thObj: "Object",
+    thPoss: "Bezittelijk",
+    thEx: "Voorbeelden",
+    sec2Title: "Refereren naar objecten",
+    sec2Intro: "Wanneer we naar dingen of voorwerpen verwijzen, kiezen we het voornaamwoord op basis van het lidwoord (de of het) van het zelfstandig naamwoord.",
+    sec3Title: "Interactieve Oefeningen",
+    sec3Intro: "Kies het juiste persoonlijke of bezittelijke voornaamwoord om de zinnen compleet te maken. Klik op een optie voor directe feedback en uitleg.",
+    progressLbl: "Voortgang: ",
+    progressOf: "van de 10 vragen",
+    scoreLbl: "Score: ",
+    resetBtn: "↻ Opnieuw starten",
+    footerText: "Werkend Nederlands Basis · Persoonlijke Voornaamwoorden",
+    feedbackCorrect: "✅ Correct! Goed gedaan!",
+    feedbackWrong: "❌ Probeer het nog eens!"
+  },
+  pl: {
+    langLabel: "Polski",
+    flag: "🇵🇱",
+    edition: "🇵🇱 Edycja polska",
+    title: "Zaimki Osobowe w Języku Niderlandzkim",
+    subtitle: "Interaktywny przewodnik z tabelą porównawczą i ćwiczeniami przygotowany specjalnie dla osób polskojęzycznych.",
+    sec1Title: "Tabela Porównawcza",
+    sec1Intro: "Poniższa tabela łączy formy niderlandzkie i ich polskie odpowiedniki. Każdy zaimek ma formę podmiotu (wykonawca), dopełnienia (odbiorca) oraz formę dzierżawczą (własność).",
+    thPair: "NL → PL",
+    thSub: "Podmiot (Onderwerp)",
+    thObj: "Dopełnienie (Object)",
+    thPoss: "Dzierżawczy (Bezittelijk)",
+    thEx: "Przykłady",
+    sec2Title: "Odniesienie do przedmiotów",
+    sec2Intro: "Kiedy mówimy o rzeczach lub przedmiotach (w liczbie pojedynczej lub mnogiej), musimy wybrać odpowiedni zaimek w zależności od tego, czy słowo łączy się z rodzajnikiem de czy het.",
+    sec3Title: "Interaktywny Quiz / Oefeningen",
+    sec3Intro: "Wybierz właściwy zaimek osobowy lub dzierżawczy, aby poprawnie uzupełnić luki w zdaniach. Kliknij odpowiedź, aby natychmiast sprawdzić wynik i przeczytać wyjaśnienie po polsku.",
+    progressLbl: "Postęp: ",
+    progressOf: "z 10 pytań",
+    scoreLbl: "Wynik: ",
+    resetBtn: "↻ Zacznij od nowa",
+    footerText: "Werkend Nederlands Basis · Oefenmateriaal Zaimki Osobowe",
+    feedbackCorrect: "✅ Dobrze! (Goed gedaan!)",
+    feedbackWrong: "❌ Spróbuj jeszcze raz!"
+  },
+  en: {
+    langLabel: "English",
+    flag: "🇬🇧",
+    edition: "🇬🇧 English edition",
+    title: "Personal Pronouns in Dutch",
+    subtitle: "Interactive guide with a comparison table and exercises designed for English speakers.",
+    sec1Title: "Comparison Table",
+    sec1Intro: "The table below connects Dutch pronoun forms with English equivalents: Subject (the doer), Object (the receiver), and Possessive (ownership).",
+    thPair: "NL → EN",
+    thSub: "Subject",
+    thObj: "Object",
+    thPoss: "Possessive",
+    thEx: "Examples",
+    sec2Title: "Referring to Objects",
+    sec2Intro: "When referring to things or objects (singular or plural), we select the pronoun depending on whether the noun takes the article de or het.",
+    sec3Title: "Interactive Quiz",
+    sec3Intro: "Choose the correct personal or possessive pronoun to fill in the blanks. Click an option for instant feedback and explanation.",
+    progressLbl: "Progress: ",
+    progressOf: "of 10 questions",
+    scoreLbl: "Score: ",
+    resetBtn: "↻ Reset Quiz",
+    footerText: "Werkend Nederlands Basis · Personal Pronouns Practice",
+    feedbackCorrect: "✅ Correct! Well done!",
+    feedbackWrong: "❌ Try again!"
+  },
+  ar: {
+    langLabel: "العربية",
+    flag: "🇸🇦",
+    edition: "🇸🇦 النسخة العربية",
+    title: "الضمائر الشخصية في اللغة الهولندية",
+    subtitle: "دليل تفاعلي مع جدول مقارنة وتمارين مخصصة للمتحدثين باللغة العربية.",
+    sec1Title: "جدول المقارنة",
+    sec1Intro: "يربط الجدول أدناه صيغ الضمائر الهولندية بمثيلاتها العربية: الفاعل (من يقوم بالفعل)، المفعول به (المستقبل للفعل)، والملكّية.",
+    thPair: "الهولندية ← العربية",
+    thSub: "الفاعل (Onderwerp)",
+    thObj: "المفعول به (Object)",
+    thPoss: "الملكية (Bezittelijk)",
+    thEx: "أمثلة",
+    sec2Title: "الإشارة إلى الأشياء والجماد",
+    sec2Intro: "عند الإشارة إلى الأشياء أو المواد (مفرد أو جمع)، نختار الضمير بناءً على ما إذا كانت الكلمة تأخذ أداة التعريف de أو het.",
+    sec3Title: "الاختبار التفاعلي",
+    sec3Intro: "اختر الضمير الشخصي أو ضمير الملكية المناسب لملء الفراغات في الجمل. انقر على الإجابة للتحقق فوراً وقراءة الشرح بالعربية.",
+    progressLbl: "التقدم: ",
+    progressOf: "من 10 أسئلة",
+    scoreLbl: "النتيجة: ",
+    resetBtn: "↻ البدء من جديد",
+    footerText: "نيدرلاندز العملية الأساسية · تمارين الضمائر الشخصية",
+    feedbackCorrect: "✅ إجابة صحيحة! أحسنت!",
+    feedbackWrong: "❌ حاول مرة أخرى!"
+  },
+  tr: {
+    langLabel: "Türkçe",
+    flag: "🇹🇷",
+    edition: "🇹🇷 Türkçe sürümü",
+    title: "Felemenkçe Şahıs Zamirleri",
+    subtitle: "Felemenkçe zamirleri Türkçe karşılıkları ve interaktif egzersizlerle öğrenin.",
+    sec1Title: "Karşılaştırma Tablosu",
+    sec1Intro: "Aşağıdaki tablo Felemenkçe zamir formlarını Türkçe karşılıkları ile eşleştirir: Özne (işi yapan), Nesne (etkilenen) ve İyelik (sahiplik).",
+    thPair: "NL → TR",
+    thSub: "Özne (Onderwerp)",
+    thObj: "Nesne (Object)",
+    thPoss: "İyelik (Bezittelijk)",
+    thEx: "Örnekler",
+    sec2Title: "Nesnelere Atıfta Bulunma",
+    sec2Intro: "Nesnelerden veya eşyalardan bahsederken (tekil veya çoğul), ismin de veya het artikeli almasına göre uygun zamiri seçeriz.",
+    sec3Title: "İnteraktif Test",
+    sec3Intro: "Cümlelerdeki boşlukları doldurmak için doğru şahıs veya iyelik zamirini seçin. Cevabınızı kontrol etmek ve Türkçe açıklamayı okumak için bir seçeneğe tıklayın.",
+    progressLbl: "İlerleme: ",
+    progressOf: "10 sorudan",
+    scoreLbl: "Skor: ",
+    resetBtn: "↻ Yeniden Başlat",
+    footerText: "Werkend Nederlands Temel · Şahıs Zamirleri Çalışması",
+    feedbackCorrect: "✅ Doğru! Tebrikler!",
+    feedbackWrong: "❌ Tekrar dene!"
+  }
+};
+
+// Pronouns Table Dataset
+const pronounsData = [
+  {
+    id: "ik",
+    nlLabel: "ik",
+    translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben" },
+    subject: { nl: "ik", translations: { nl: "ik", pl: "ja", en: "I", ar: "أنا", tr: "ben" } },
+    object: { nl: "mij / me", translations: { nl: "mij / me", pl: "mnie / mi", en: "me", ar: "ني / إياي", tr: "beni / bana" } },
+    possessive: { nl: "mijn", translations: { nl: "mijn", pl: "mój / moja / moje", en: "my", ar: "لي / ملكي", tr: "benim" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Ik</span> werk bij Westport.",
+        trans: {
+          nl: "Ik werk bij Westport.",
+          pl: "<span class='hl-trans'>Ja</span> pracuję w Westport.",
+          en: "<span class='hl-trans'>I</span> work at Westport.",
+          ar: "<span class='hl-trans'>أنا</span> أعمل في ويستبورت.",
+          tr: "Westport'ta <span class='hl-trans'>çalışıyorum</span>."
+        }
+      },
+      {
+        nl: "Hij helpt <span class='hl'>mij</span>.",
+        trans: {
+          nl: "Hij helpt mij.",
+          pl: "On pomaga <span class='hl-trans'>mi</span>.",
+          en: "He helps <span class='hl-trans'>me</span>.",
+          ar: "هو يساعد<span class='hl-trans'>ني</span>.",
+          tr: "O bana yardım <span class='hl-trans'>ediyor</span>."
+        }
+      },
+      {
+        nl: "Dit is <span class='hl'>mijn</span> collega.",
+        trans: {
+          nl: "Dit is mijn collega.",
+          pl: "To jest <span class='hl-trans'>mój</span> kolega.",
+          en: "This is <span class='hl-trans'>my</span> colleague.",
+          ar: "هذا زمي<span class='hl-trans'>لي</span>.",
+          tr: "Bu <span class='hl-trans'>benim</span> meslektaşım."
+        }
+      }
+    ]
+  },
+  {
+    id: "jij",
+    nlLabel: "jij / je",
+    translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen" },
+    subject: { nl: "jij / je", translations: { nl: "jij / je", pl: "ty", en: "you", ar: "أنت", tr: "sen" } },
+    object: { nl: "jou / je", translations: { nl: "jou / je", pl: "ciebie / cię", en: "you", ar: "ك / إياك", tr: "seni / sana" } },
+    possessive: { nl: "jouw / je", translations: { nl: "jouw / je", pl: "twój / twoja / ...", en: "your", ar: "لك / ملكك", tr: "senin" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Jij</span> spreekt goed Nederlands.",
+        trans: {
+          nl: "Jij spreekt goed Nederlands.",
+          pl: "<span class='hl-trans'>Ty</span> dobrze mówisz po niderlandzku.",
+          en: "<span class='hl-trans'>You</span> speak Dutch well.",
+          ar: "<span class='hl-trans'>أنت</span> تتحدث الهولندية جيداً.",
+          tr: "<span class='hl-trans'>Sen</span> iyi Felemenkçe konuşuyorsun."
+        }
+      },
+      {
+        nl: "Ik bel <span class='hl'>jou</span> morgen.",
+        trans: {
+          nl: "Ik bel jou morgen.",
+          pl: "Zadzwonię do <span class='hl-trans'>ciebie</span> jutro.",
+          en: "I will call <span class='hl-trans'>you</span> tomorrow.",
+          ar: "سأتصل <span class='hl-trans'>بك</span> غداً.",
+          tr: "<span class='hl-trans'>Seni</span> yarın arayacağım."
+        }
+      },
+      {
+        nl: "Waar is <span class='hl'>jouw</span> tas?",
+        trans: {
+          nl: "Waar is jouw tas?",
+          pl: "Gdzie jest <span class='hl-trans'>twoja</span> torba?",
+          en: "Where is <span class='hl-trans'>your</span> bag?",
+          ar: "أين حقيبـ<span class='hl-trans'>تك</span>؟",
+          tr: "Çant<span class='hl-trans'>an</span> nerede?"
+        }
+      }
+    ]
+  },
+  {
+    id: "u",
+    nlLabel: "u",
+    translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)" },
+    subject: { nl: "u", translations: { nl: "u", pl: "Pan / Pani", en: "you (formal)", ar: "حضرتك", tr: "siz (saygı)" } },
+    object: { nl: "u", translations: { nl: "u", pl: "Pana / Panią", en: "you (formal)", ar: "حضرتك", tr: "sizi / size" } },
+    possessive: { nl: "uw", translations: { nl: "uw", pl: "Pański / Pani", en: "your (formal)", ar: "الخاص بحضرتك", tr: "sizin" } },
+    examples: [
+      {
+        nl: "<span class='hl'>U</span> werkt hier al lang.",
+        trans: {
+          nl: "U werkt hier al lang.",
+          pl: "<span class='hl-trans'>Pan/Pani</span> już długo tu pracuje.",
+          en: "<span class='hl-trans'>You (formal)</span> have been working here a long time.",
+          ar: "<span class='hl-trans'>حضرتك</span> تعمل هنا منذ فترة طويلة.",
+          tr: "<span class='hl-trans'>Siz</span> uzun zamandır burada çalışıyorsunuz."
+        }
+      },
+      {
+        nl: "Ik help <span class='hl'>u</span> graag.",
+        trans: {
+          nl: "Ik help u graag.",
+          pl: "Chętnie pomogę <span class='hl-trans'>Panu/Pani</span>.",
+          en: "I am happy to help <span class='hl-trans'>you</span>.",
+          ar: "يسعدني مساعـ<span class='hl-trans'>دتكم</span>.",
+          tr: "<span class='hl-trans'>Size</span> memnuniyetle yardımcı olurum."
+        }
+      },
+      {
+        nl: "Is dit <span class='hl'>uw</span> handtekening?",
+        trans: {
+          nl: "Is dit uw handtekening?",
+          pl: "Czy to <span class='hl-trans'>Pański/Pani</span> podpis?",
+          en: "Is this <span class='hl-trans'>your</span> signature?",
+          ar: "هل هذا توقيع <span class='hl-trans'>حضرتك</span>؟",
+          tr: "Bu <span class='hl-trans'>sizin</span> imzanız mı?"
+        }
+      }
+    ]
+  },
+  {
+    id: "hij",
+    nlLabel: "hij",
+    translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o (eril)" },
+    subject: { nl: "hij", translations: { nl: "hij", pl: "on", en: "he", ar: "هو", tr: "o" } },
+    object: { nl: "hem", translations: { nl: "hem", pl: "jego / go", en: "him", ar: "ه / إياه", tr: "onu / ona" } },
+    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "his", ar: "له / ملكه", tr: "onun" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Hij</span> is de manager.",
+        trans: {
+          nl: "Hij is de manager.",
+          pl: "<span class='hl-trans'>On</span> jest kierownikiem.",
+          en: "<span class='hl-trans'>He</span> is the manager.",
+          ar: "<span class='hl-trans'>هو</span> المدير.",
+          tr: "<span class='hl-trans'>O</span> müdürdür."
+        }
+      },
+      {
+        nl: "Ik ken <span class='hl'>hem</span> goed.",
+        trans: {
+          nl: "Ik ken hem goed.",
+          pl: "Dobrze <span class='hl-trans'>go</span> znam.",
+          en: "I know <span class='hl-trans'>him</span> well.",
+          ar: "أعرف<span class='hl-trans'>ه</span> جيداً.",
+          tr: "<span class='hl-trans'>Onu</span> iyi tanıyorum."
+        }
+      },
+      {
+        nl: "Dat is <span class='hl'>zijn</span> auto.",
+        trans: {
+          nl: "Dat is zijn auto.",
+          pl: "To jest <span class='hl-trans'>jego</span> samochód.",
+          en: "That is <span class='hl-trans'>his</span> car.",
+          ar: "هذه سيار<span class='hl-trans'>ته</span>.",
+          tr: "Bu <span class='hl-trans'>onun</span> arabası."
+        }
+      }
+    ]
+  },
+  {
+    id: "zij",
+    nlLabel: "zij / ze",
+    translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o (dişil)" },
+    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "ona", en: "she", ar: "هي", tr: "o" } },
+    object: { nl: "haar", translations: { nl: "haar", pl: "ją / jej", en: "her", ar: "ها / إياها", tr: "onu" } },
+    possessive: { nl: "haar", translations: { nl: "haar", pl: "jej", en: "her", ar: "لها / ملكها", tr: "onun" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Zij</span> woont in Rotterdam.",
+        trans: {
+          nl: "Zij woont in Rotterdam.",
+          pl: "<span class='hl-trans'>Ona</span> mieszka w Rotterdamie.",
+          en: "<span class='hl-trans'>She</span> lives in Rotterdam.",
+          ar: "<span class='hl-trans'>هي</span> تسكن في روتردام.",
+          tr: "<span class='hl-trans'>O</span> Rotterdam'da yaşıyor."
+        }
+      },
+      {
+        nl: "Ik zie <span class='hl'>haar</span> elke dag.",
+        trans: {
+          nl: "Ik zie haar elke dag.",
+          pl: "Widzę <span class='hl-trans'>ją</span> każdego dnia.",
+          en: "I see <span class='hl-trans'>her</span> every day.",
+          ar: "أرا<span class='hl-trans'>ها</span> كل يوم.",
+          tr: "<span class='hl-trans'>Onu</span> her gün görüyorum."
+        }
+      },
+      {
+        nl: "Dit is <span class='hl'>haar</span> nummer.",
+        trans: {
+          nl: "Dit is haar nummer.",
+          pl: "To jest <span class='hl-trans'>jej</span> numer.",
+          en: "This is <span class='hl-trans'>her</span> number.",
+          ar: "هذا رقمـ<span class='hl-trans'>ها</span>.",
+          tr: "Bu <span class='hl-trans'>onun</span> numarası."
+        }
+      }
+    ]
+  },
+  {
+    id: "het",
+    nlLabel: "het",
+    translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي لغير العاقل", tr: "o (nötr)" },
+    subject: { nl: "het", translations: { nl: "het", pl: "ono", en: "it", ar: "هو/هي", tr: "o" } },
+    object: { nl: "het", translations: { nl: "het", pl: "je / jego", en: "it", ar: "ه / ها", tr: "onu" } },
+    possessive: { nl: "zijn", translations: { nl: "zijn", pl: "jego", en: "its", ar: "له", tr: "onun" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Het</span> kind slaapt.",
+        trans: {
+          nl: "Het kind slaapt.",
+          pl: "<span class='hl-trans'>Ono</span> śpi (dziecko).",
+          en: "<span class='hl-trans'>The child/it</span> is sleeping.",
+          ar: "الطفل نائم (يُعامل معاملة <span class='hl-trans'>het</span>).",
+          tr: "Çocuk (o) uyuyor."
+        }
+      },
+      {
+        nl: "Ik zoek <span class='hl'>het</span>.",
+        trans: {
+          nl: "Ik zoek het.",
+          pl: "Szukam <span class='hl-trans'>tego / je</span>.",
+          en: "I am looking for <span class='hl-trans'>it</span>.",
+          ar: "أنا أبحث عنـ<span class='hl-trans'>ه</span>.",
+          tr: "<span class='hl-trans'>Onu</span> arıyorum."
+        }
+      },
+      {
+        nl: "Dat is <span class='hl'>zijn</span> fiets.",
+        trans: {
+          nl: "Dat is zijn fiets.",
+          pl: "To jest <span class='hl-trans'>jego</span> rower (dziecka).",
+          en: "That is <span class='hl-trans'>its</span> bicycle (the child's).",
+          ar: "هذه دراجـ<span class='hl-trans'>ته</span> (الخاصة بالطفل).",
+          tr: "Bu <span class='hl-trans'>onun</span> bisikleti (çocuğun)."
+        }
+      }
+    ]
+  },
+  {
+    id: "wij",
+    nlLabel: "wij / we",
+    translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz" },
+    subject: { nl: "wij / we", translations: { nl: "wij / we", pl: "my", en: "we", ar: "نحن", tr: "biz" } },
+    object: { nl: "ons", translations: { nl: "ons", pl: "nas / nam", en: "us", ar: "نا / إيانا", tr: "bizi / bize" } },
+    possessive: { nl: "ons / onze", translations: { nl: "ons / onze", pl: "nasz / nasza / ...", en: "our", ar: "لنا / ملكنا", tr: "bizim" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Wij</span> beginnen om 8 uur.",
+        trans: {
+          nl: "Wij beginnen om 8 uur.",
+          pl: "<span class='hl-trans'>My</span> zaczynamy o godzinie 8:00.",
+          en: "<span class='hl-trans'>We</span> start at 8 o'clock.",
+          ar: "<span class='hl-trans'>نحن</span> نبدأ الساعة 8.",
+          tr: "<span class='hl-trans'>Biz</span> saat 8'de başlıyoruz."
+        }
+      },
+      {
+        nl: "De baas belt <span class='hl'>ons</span>.",
+        trans: {
+          nl: "De baas belt ons.",
+          pl: "Szef dzwoni do <span class='hl-trans'>nas</span>.",
+          en: "The boss is calling <span class='hl-trans'>us</span>.",
+          ar: "المدير يتصل <span class='hl-trans'>بنا</span>.",
+          tr: "Patron <span class='hl-trans'>bizi</span> arıyor."
+        }
+      },
+      {
+        nl: "Dit is <span class='hl'>onze</span> afdeling.",
+        trans: {
+          nl: "Dit is onze afdeling.",
+          pl: "To jest <span class='hl-trans'>nasz</span> dział.",
+          en: "This is <span class='hl-trans'>our</span> department.",
+          ar: "هذا قسمـ<span class='hl-trans'>نا</span>.",
+          tr: "Bu <span class='hl-trans'>bizim</span> departmanımız."
+        }
+      }
+    ]
+  },
+  {
+    id: "jullie",
+    nlLabel: "jullie",
+    translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz (çoğul)" },
+    subject: { nl: "jullie", translations: { nl: "jullie", pl: "wy", en: "you (plural)", ar: "أنتم", tr: "siz" } },
+    object: { nl: "jullie", translations: { nl: "jullie", pl: "was / wam", en: "you (plural)", ar: "كم / إياكم", tr: "sizi / size" } },
+    possessive: { nl: "jullie", translations: { nl: "jullie", pl: "wasz / wasza / ...", en: "your (plural)", ar: "لكم / ملككم", tr: "sizin" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Jullie</span> werken hard.",
+        trans: {
+          nl: "Jullie werken hard.",
+          pl: "<span class='hl-trans'>Wy</span> ciężko pracujecie.",
+          en: "<span class='hl-trans'>You</span> work hard.",
+          ar: "<span class='hl-trans'>أنتم</span> تعملون بجد.",
+          tr: "<span class='hl-trans'>Siz</span> çok çalışıyorsunuz."
+        }
+      },
+      {
+        nl: "Ik wacht op <span class='hl'>jullie</span>.",
+        trans: {
+          nl: "Ik wacht op jullie.",
+          pl: "Czekam na <span class='hl-trans'>was</span>.",
+          en: "I am waiting for <span class='hl-trans'>you</span>.",
+          ar: "أنا بانتظار<span class='hl-trans'>كم</span>.",
+          tr: "<span class='hl-trans'>Sizi</span> bekliyorum."
+        }
+      },
+      {
+        nl: "Is dat <span class='hl'>jullie</span> ploeg?",
+        trans: {
+          nl: "Is dat jullie ploeg?",
+          pl: "Czy to jest <span class='hl-trans'>wasza</span> zmiana?",
+          en: "Is that <span class='hl-trans'>your</span> shift?",
+          ar: "هل هذه نوبتـ<span class='hl-trans'>كم</span>؟",
+          tr: "Bu <span class='hl-trans'>sizin</span> vardiyanız mı?"
+        }
+      }
+    ]
+  },
+  {
+    id: "zij_mv",
+    nlLabel: "zij / ze",
+    translations: { nl: "zij / ze (mv.)", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar" },
+    subject: { nl: "zij / ze", translations: { nl: "zij / ze", pl: "oni / one", en: "they", ar: "هم / هن", tr: "onlar" } },
+    object: { nl: "hen / ze", translations: { nl: "hen / ze", pl: "ich / im", en: "them", ar: "هم / هن / إياهم", tr: "onları / onlara" } },
+    possessive: { nl: "hun", translations: { nl: "hun", pl: "ich", en: "their", ar: "لهم / ملكهم", tr: "onların" } },
+    examples: [
+      {
+        nl: "<span class='hl'>Zij</span> komen uit Polen.",
+        trans: {
+          nl: "Zij komen uit Polen.",
+          pl: "<span class='hl-trans'>Oni</span> pochodzą z Polski.",
+          en: "<span class='hl-trans'>They</span> come from Poland.",
+          ar: "<span class='hl-trans'>هم</span> من بولندا.",
+          tr: "<span class='hl-trans'>Onlar</span> Polonya'dan geliyorlar."
+        }
+      },
+      {
+        nl: "Ik help <span class='hl'>hen</span> elke dag.",
+        trans: {
+          nl: "Ik help hen elke dag.",
+          pl: "Pomagam <span class='hl-trans'>im</span> każdego dnia.",
+          en: "I help <span class='hl-trans'>them</span> every day.",
+          ar: "أنا أساعد<span class='hl-trans'>هم</span> كل يوم.",
+          tr: "<span class='hl-trans'>Onlara</span> her gün yardım ediyorum."
+        }
+      },
+      {
+        nl: "Dat zijn <span class='hl'>hun</span> spullen.",
+        trans: {
+          nl: "Dat zijn hun spullen.",
+          pl: "To są <span class='hl-trans'>ich</span> rzeczy.",
+          en: "Those are <span class='hl-trans'>their</span> things.",
+          ar: "هذه أشياؤ<span class='hl-trans'>هم</span>.",
+          tr: "Bunlar <span class='hl-trans'>onların</span> eşyaları."
+        }
+      }
+    ]
+  }
+];
+
+// Object Rules Content
+const objectRulesData = {
+  de: {
+    badge: "de-woord",
+    titles: { nl: "Słowa z 'de'", pl: "Słowa z 'de'", en: "De-words", ar: "كلمات de", tr: "de-kelimesi" },
+    desc: {
+      nl: "Als onderwerp gebruiken we <strong>hij</strong>, als object gebruiken we <strong>hem</strong>.",
+      pl: "Jako podmiot używamy <strong>hij</strong>, a jako dopełnienie <strong>hem</strong>.",
+      en: "As subject we use <strong>hij</strong> (he), as object we use <strong>hem</strong> (him).",
+      ar: "للمبتدأ نستخدم <strong>hij</strong> (هو)، وللمفعول به <strong>hem</strong> (ـه).",
+      tr: "Özne olarak <strong>hij</strong> (o), nesne olarak <strong>hem</strong> (onu) kullanırız."
+    },
+    ex1: {
+      nl: "De computer staat hier. → <strong>Hij</strong> staat hier.",
+      trans: {
+        nl: "De computer staat hier. → Hij staat hier.",
+        pl: "Komputer stoi tutaj. → On stoi tutaj.",
+        en: "The computer is here. → It is here.",
+        ar: "الكمبيوتر هنا. ← هو هنا.",
+        tr: "Bilgisayar burada duruyor. → O burada duruyor."
+      }
+    },
+    ex2: {
+      nl: "Waar is de sleutel? → Ik zoek <strong>hem</strong>.",
+      trans: {
+        nl: "Waar is de sleutel? → Ik zoek hem.",
+        pl: "Gdzie jest klucz? → Szukam go.",
+        en: "Where is the key? → I am looking for it.",
+        ar: "أين المفتاح؟ ← أنا أبحث عنه.",
+        tr: "Anahtar nerede? → Onu arıyorum."
+      }
+    }
+  },
+  het: {
+    badge: "het-woord",
+    titles: { nl: "Słowa z 'het'", pl: "Słowa z 'het'", en: "Het-words", ar: "كلمات het", tr: "het-kelimesi" },
+    desc: {
+      nl: "Als onderwerp en object gebruiken we altijd <strong>het</strong>.",
+      pl: "Zarówno jako podmiot, jak i dopełnienie zawsze używamy <strong>het</strong>.",
+      en: "Both as subject and object we always use <strong>het</strong> (it).",
+      ar: "للمبتدأ والمفعول به نستخدم دائماً <strong>het</strong> (هو/هي لغير العاقل).",
+      tr: "Özne ve nesne olarak her zaman <strong>het</strong> (o) kullanırız."
+    },
+    ex1: {
+      nl: "Het rapport is klaar. → <strong>Het</strong> ligt op tafel.",
+      trans: {
+        nl: "Het rapport is klaar. → Het ligt op tafel.",
+        pl: "Raport jest gotowy. → On leży na stole.",
+        en: "The report is ready. → It is on the table.",
+        ar: "التقرير جاهز. ← هو يقع على الطاولة.",
+        tr: "Rapor hazır. → O masanın üzerinde duruyor."
+      }
+    },
+    ex2: {
+      nl: "Ik lees het boek. → Ik lees <strong>het</strong>.",
+      trans: {
+        nl: "Ik lees het boek. → Ik lees het.",
+        pl: "Czytam książkę. → Czytam ją.",
+        en: "I am reading the book. → I am reading it.",
+        ar: "أنا أقرأ الكتاب. ← أنا أقرأه.",
+        tr: "Kitabı okuyorum. → Onu okuyorum."
+      }
+    }
+  },
+  mv: {
+    badge: "meervoud",
+    titles: { nl: "Meervoud (de & het)", pl: "Liczba mnoga (de & het)", en: "Plural (de & het)", ar: "الجمع (de & het)", tr: "Çoğul (de & het)" },
+    desc: {
+      nl: "Als onderwerp gebruiken we <strong>zij/ze</strong>, als object gebruiken we <strong>ze</strong>.",
+      pl: "Jako podmiot używamy <strong>zij/ze</strong>, a jako dopełnienie <strong>ze</strong>.",
+      en: "As subject we use <strong>zij/ze</strong> (they), as object we use <strong>ze</strong> (them).",
+      ar: "للمبتدأ نستخدم <strong>zij/ze</strong> (هم/هن)، وللمفعول به <strong>ze</strong> (ـهم).",
+      tr: "Özne olarak <strong>zij/ze</strong> (onlar), nesne olarak <strong>ze</strong> (onları) kullanırız."
+    },
+    ex1: {
+      nl: "De documenten liggen daar. → <strong>Ze</strong> liggen daar.",
+      trans: {
+        nl: "De documenten liggen daar. → Ze liggen daar.",
+        pl: "Dokumenty leżą tam. → One leżą tam.",
+        en: "The documents are there. → They are there.",
+        ar: "المستندات هناك. ← هي هناك.",
+        tr: "Belgeler orada duruyor. → Onlar orada duruyor."
+      }
+    },
+    ex2: {
+      nl: "De e-mails zijn binnen. → Lees <strong>ze</strong> goed!",
+      trans: {
+        nl: "De e-mails zijn binnen. → Lees ze goed!",
+        pl: "E-maile nadeszły. → Przeczytaj je uważnie!",
+        en: "The emails have arrived. → Read them carefully!",
+        ar: "وصلت رسائل البريد الإلكتروني. ← اقرأها جيداً!",
+        tr: "E-postalar geldi. → Onları iyi oku!"
+      }
+    }
+  }
+};
+
+// Grammar Tip Box Content
+const tipContentData = {
+  nl: `
+    <h5>Tip voor gevorderden:</h5>
+    <p>Let in het Nederlands alleen op het lidwoord (<strong>de</strong> of <strong>het</strong>) van het zelfstandig naamwoord, niet op het geslacht in je moedertaal!</p>
+    <ul>
+      <li><strong>De auto</strong> & <strong>de tafel</strong> krijgen <strong>hij/hem</strong>.
+        <br><small style="color:var(--text-gray);font-style:italic;">De tafel is groot. → <strong>Hij</strong> is groot.</small>
+      </li>
+      <li><strong>Het boek</strong> krijgt <strong>het</strong>.
+        <br><small style="color:var(--text-gray);font-style:italic;">Ik lees het boek. → Ik lees <strong>het</strong>.</small>
+      </li>
+    </ul>
+  `,
+  pl: `
+    <h5>Bardzo ważna wskazówka dla Polaków:</h5>
+    <p>W języku niderlandzkim nie patrzymy na to, jakiego rodzaju jest dany wyraz w języku polskim! Patrzymy wyłącznie na rodzajnik <strong>de</strong> lub <strong>het</strong> w niderlandzkim.</p>
+    <ul>
+      <li><strong>De auto</strong> (samochód - r. męski) oraz <strong>de tafel</strong> (stół - r. męski / tabela - r. żeński) łączą się z rodzajnikiem <strong>de</strong>. Dlatego zastępujemy je przez <strong>hij</strong> lub <strong>hem</strong>!
+        <br><small style="color:var(--text-gray);font-style:italic;">De auto is mooi. → <strong>Hij</strong> is mooi. (Samochód jest ładny. → On jest ładny.)</small>
+      </li>
+      <li><strong>Het boek</strong> (książka - r. żeński!) łączy się z rodzajnikiem <strong>het</strong>. Dlatego zastępujemy je przez <strong>het</strong>, a nie formy żeńskie!
+        <br><small style="color:var(--text-gray);font-style:italic;">Ik koop het boek. → Ik koop <strong>het</strong>. (Kupuję książkę. → Kupuję ją [to].)</small>
+      </li>
+    </ul>
+  `,
+  en: `
+    <h5>Crucial tip for English speakers:</h5>
+    <p>In Dutch, inanimate objects are not simply referred to as "it" (unless they are het-words). We look strictly at the grammatical article:</p>
+    <ul>
+      <li><strong>De-words</strong> (like <em>de computer</em>, <em>de sleutel</em>) are treated as masculine: we refer to them as <strong>hij</strong> (he) or <strong>hem</strong> (him).
+        <br><small style="color:var(--text-gray);font-style:italic;">De computer is old. → <strong>Hij</strong> is old.</small>
+      </li>
+      <li><strong>Het-words</strong> (like <em>het boek</em>, <em>het rapport</em>) are referred to as <strong>het</strong> (it).
+        <br><small style="color:var(--text-gray);font-style:italic;">I like the book. → I like <strong>het</strong>.</small>
+      </li>
+    </ul>
+  `,
+  ar: `
+    <h5>نصيحة هامة جداً للمتحدثين بالعربية:</h5>
+    <p>في اللغة الهولندية، لا ننظر أبداً إلى جنس الكلمة (سواء كانت مذكر أو مؤنث) في اللغة العربية! بل نعتمد فقط وفقط على أداة التعريف الخاصة بها <strong>de</strong> أو <strong>het</strong> في الهولندية:</p>
+    <ul>
+      <li><strong>الكلمات التي تأخذ de</strong> (مثل <em>de auto</em> - السيارة، وهي مؤنثة بالعربية؛ أو <em>de tafel</em> - الطاولة) نستخدم معها الضمير <strong>hij</strong> (هو) أو <strong>hem</strong> (ـه)!
+        <br><small style="color:var(--text-gray);font-style:italic;">De auto is mooi. ← <strong>Hij</strong> is mooi. (السيارة جميلة ← هي [هو] جميلة.)</small>
+      </li>
+      <li><strong>الكلمات التي تأخذ het</strong> (مثل <em>het boek</em> - الكتاب) نستخدم معها الضمير <strong>het</strong> حصراً!
+        <br><small style="color:var(--text-gray);font-style:italic;">Ik koop het boek. ← Ik koop <strong>het</strong>. (أنا أشتري الكتاب ← أنا أشتريه [شراء هذا].)</small>
+      </li>
+    </ul>
+  `,
+  tr: `
+    <h5>Türkçe konuşanlar için önemli ipucu:</h5>
+    <p>Türkçe'de kelimelerin cinsiyeti (o/onu) olmadığı için bu ayrım başta zor gelebilir. Formülümüz sadece Felemenkçe artikellere dayanır:</p>
+    <ul>
+      <li>Rodajniği <strong>de</strong> olan kelimeler (örn: <em>de computer</em>, <em>de sleutel</em>) için özne olarak <strong>hij</strong> (o), nesne olarak <strong>hem</strong> (onu) kullanırız.
+        <br><small style="color:var(--text-gray);font-style:italic;">De auto is mooi. → <strong>Hij</strong> is mooi. (Araba güzel. → O güzel.)</small>
+      </li>
+      <li>Rodajniği <strong>het</strong> olan kelimeler (örn: <em>het boek</em>, <em>het kantoor</em>) için hem özne hem nesne olarak her zaman <strong>het</strong> (o/onu) kullanırız.
+        <br><small style="color:var(--text-gray);font-style:italic;">Ik lees het boek. → Ik lees <strong>het</strong>. (Kitabı okuyorum. → Onu okuyorum.)</small>
+      </li>
+    </ul>
+  `
+};
+
+// Quiz Questions Dataset (with dynamic translations & explanations)
+const quizQuestionsData = [
   {
     id: 1,
     sentence: "Hassan woont in Eindhoven. <span class='gap'>___</span> werkt bij VDL.",
-    translation: "Hassan mieszka w Eindhoven. ___ pracuje w VDL.",
     options: ["hij", "hem", "zijn", "zij"],
     correct: "hij",
-    explanation: "\"Hassan\" to mężczyzna (on) i jest podmiotem wykonującym czynność (werkt - pracuje). W niderlandzkim zaimek podmiotowy w liczbie pojedynczej rodzaju męskiego to zawsze <strong>hij</strong>."
+    translations: {
+      nl: "Hassan woont in Eindhoven. ___ werkt bij VDL.",
+      pl: "Hassan mieszka w Eindhoven. ___ pracuje w VDL.",
+      en: "Hassan lives in Eindhoven. ___ works at VDL.",
+      ar: "حسن يعيش في أيندهوفن. ___ يعمل في VDL.",
+      tr: "Hassan Eindhoven'da yaşıyor. ___ VDL'de çalışıyor."
+    },
+    explanations: {
+      nl: "\"Hassan\" is een man (hij) en is het onderwerp van het werkwoord (werkt). We gebruiken het onderwerpspronomen <strong>hij</strong>.",
+      pl: "\"Hassan\" to mężczyzna (on) i jest podmiotem wykonującym czynność (werkt). W niderlandzkim zaimek podmiotowy w liczbie pojedynczej rodzaju męskiego to zawsze <strong>hij</strong>.",
+      en: "\"Hassan\" is a man (he) and is the subject performing the action (works). We use the subject pronoun <strong>hij</strong>.",
+      ar: "\"حسن\" هو رجل (هو) وهو الفاعل الذي يقوم بالعمل (werkt). نستخدم ضمير الفاعل للمفرد المذكر <strong>hij</strong>.",
+      tr: "\"Hassan\" bir erkektir (o) ve eylemi gerçekleştiren öznedir (çalışıyor). Erkek tekil şahıs özne zamiri olan <strong>hij</strong> kullanırız."
+    }
   },
   {
     id: 2,
     sentence: "Amira slaapt nog. Hassan maakt <span class='gap'>___</span> voorzichtig wakker.",
-    translation: "Amira jeszcze śpi. Hassan budzi ___ ostrożnie.",
     options: ["hij", "haar", "hem", "zij"],
     correct: "haar",
-    explanation: "\"Amira\" to kobieta (ona) i w tym zdaniu jest dopełnieniem (odbiorcą czynności budzenia - Hassan budzi ją). Używamy zaimka dopełnieniowego rodzaju żeńskiego <strong>haar</strong>."
+    translations: {
+      nl: "Amira slaapt nog. Hassan maakt ___ voorzichtig wakker.",
+      pl: "Amira jeszcze śpi. Hassan budzi ___ ostrożnie.",
+      en: "Amira is still sleeping. Hassan wakes ___ up carefully.",
+      ar: "أميرة لا تزال نائمة. حسن يوقظ ___ بحذر.",
+      tr: "Amira hâlâ uyuyor. Hassan ___ dikkatlice uyandırıyor."
+    },
+    explanations: {
+      nl: "\"Amira\" is een vrouw (zij). In deze zin is ze het object (Hassan maakt háár wakker). We gebruiken het objectpronomen <strong>haar</strong>.",
+      pl: "\"Amira\" to kobieta (ona) i w tym zdaniu jest dopełnieniem (odbiorcą czynności budzenia - Hassan budzi ją). Używamy zaimka dopełnieniowego rodzaju żeńskiego <strong>haar</strong>.",
+      en: "\"Amira\" is a female (she). In this sentence, she is the object receiving the action (Hassan wakes her up). We use the object pronoun <strong>haar</strong>.",
+      ar: "\"أميرة\" هي امرأة (هي). في هذه الجملة هي المفعول به (حسن يوقظها). نستخدم ضمير المفعول به للمؤنث <strong>haar</strong>.",
+      tr: "\"Amira\" bir kadındır (o). Bu cümlede eylemden etkilenen nesnedir (Hassan onu uyandırıyor). Dişil nesne zamiri olan <strong>haar</strong> kullanırız."
+    }
   },
   {
     id: 3,
     sentence: "Dit is Pawan. Hij is <span class='gap'>___</span> nieuwe collega.",
-    translation: "To jest Pawan. On jest ___ nowym kolegą. [mój]",
     options: ["mijn", "mij", "me", "ik"],
     correct: "mijn",
-    explanation: "Chcemy wyrazić posiadanie/przynależność (mój nowy kolega). Zaimek dzierżawczy przed rzeczownikiem dla osoby \"ja\" to zawsze <strong>mijn</strong>."
+    translations: {
+      nl: "Dit is Pawan. Hij is ___ nieuwe collega. [mijn]",
+      pl: "To jest Pawan. On jest ___ nowym kolegą. [mój]",
+      en: "This is Pawan. He is ___ new colleague. [my]",
+      ar: "هذا باوان. هو زمي___ الجديد. [زميلي/الخاص بي]",
+      tr: "Bu Pawan. O ___ yeni meslektaşım. [benim]"
+    },
+    explanations: {
+      nl: "We drukken bezit uit (mijn nieuwe collega). Het bezittelijk voornaamwoord voor de eerste persoon is <strong>mijn</strong>.",
+      pl: "Chcemy wyrazić posiadanie/przynależność (mój nowy kolega). Zaimek dzierżawczy przed rzeczownikiem dla osoby \"ja\" to zawsze <strong>mijn</strong>.",
+      en: "We are expressing ownership (my new colleague). The possessive pronoun placed before the noun is always <strong>mijn</strong>.",
+      ar: "نريد التعبير عن الملكية (زميلي الجديد). ضمير الملكية الذي يوضع قبل الاسم للمتكلم هو دائماً <strong>mijn</strong>.",
+      tr: "Aitlik/sahiplik ifade etmek istiyoruz (benim yeni meslektaşım). Bir isimden önce gelen birinci tekil şahıs iyelik zamiri her zaman <strong>mijn</strong>'dır."
+    }
   },
   {
     id: 4,
     sentence: "De bus is laat vandaag. <span class='gap'>___</span> komt pas over tien minuten.",
-    translation: "Autobus jest dzisiaj spóźniony. ___ przyjedzie dopiero za dziesięć minut.",
     options: ["Het", "Hij", "Ze", "Hem"],
     correct: "Hij",
-    explanation: "Słowo \"de bus\" ma rodzajnik <strong>de</strong>. Jako podmiot (wykonawca czynności przyjechania) zastępujemy je zaimkiem podmiotowym <strong>hij</strong> (zgodnie z zasadą dla rzeczowników z rodzajnikiem de)."
+    translations: {
+      nl: "De bus is laat vandaag. ___ komt pas over tien minuten.",
+      pl: "Autobus jest dzisiaj spóźniony. ___ przyjedzie dopiero za dziesięć minut.",
+      en: "The bus is late today. ___ will only arrive in ten minutes.",
+      ar: "الحافلة متأخرة اليوم. ___ ستصل فقط بعد عشر دقائق.",
+      tr: "Otobüs bugün gecikti. ___ ancak on dakika sonra gelecek."
+    },
+    explanations: {
+      nl: "\"De bus\" is een de-woord. Als onderwerp vervangen we de-woorden door het pronomen <strong>hij</strong>.",
+      pl: "Słowo \"de bus\" ma rodzajnik <strong>de</strong>. Jako podmiot (wykonawca czynności przyjechania) zastępujemy je zaimkiem podmiotowym <strong>hij</strong> (zgodnie z zasadą dla rzeczowników z rodzajnikiem de).",
+      en: "\"De bus\" is a de-word. As the subject, we replace de-words with the subject pronoun <strong>hij</strong>.",
+      ar: "كلمة \"de bus\" تأخذ أداة التعريف <strong>de</strong>. كفاعل، نستبدل الكلمات التي تأخذ de بالضمير الفاعل <strong>hij</strong>.",
+      tr: "\"De bus\" bir de-kelimesidir. Özne olarak de-kelimelerini şahıs zamiri olan <strong>hij</strong> ile değiştiririz."
+    }
   },
   {
     id: 5,
     sentence: "Het kantoor is dicht. <span class='gap'>___</span> gaat pas morgenochtend open.",
-    translation: "Biuro jest zamknięte. ___ otwiera się dopiero jutro rano.",
     options: ["Hij", "Het", "Ze", "Hem"],
     correct: "Het",
-    explanation: "Słowo \"het kantoor\" łączy się z rodzajnikiem <strong>het</strong>. Rzeczowniki typu <strong>het</strong> jako podmiot zastępujemy zaimkiem <strong>het</strong>."
+    translations: {
+      nl: "Het kantoor is dicht. ___ gaat pas morgenochtend open.",
+      pl: "Biuro jest zamknięte. ___ otwiera się dopiero jutro rano.",
+      en: "The office is closed. ___ only opens tomorrow morning.",
+      ar: "المكتب مغلق. ___ سيفتح فقط صباح الغد.",
+      tr: "Ofis kapalı. ___ ancak yarın sabah açılacak."
+    },
+    explanations: {
+      nl: "\"Het kantoor\" is een het-woord. We vervangen het-woorden als onderwerp door <strong>het</strong>.",
+      pl: "Słowo \"het kantoor\" łączy się z rodzajnikiem <strong>het</strong>. Rzeczowniki typu <strong>het</strong> jako podmiot zastępujemy zaimkiem <strong>het</strong>.",
+      en: "\"Het kantoor\" is a het-word. We replace het-words in the subject position with <strong>het</strong>.",
+      ar: "سلسلة \"het kantoor\" تأخذ أداة التعريف <strong>het</strong>. نستبدل الكلمات التي تأخذ het كفاعل بالضمير <strong>het</strong>.",
+      tr: "\"Het kantoor\" bir het-kelimesidir. Özne konumundaki het-kelimelerini <strong>het</strong> zamiri ile değiştiririz."
+    }
   },
   {
     id: 6,
     sentence: "Waar is de computer? Ik zoek <span class='gap'>___</span>.",
-    translation: "Gdzie jest komputer? Szukam ___.",
     options: ["het", "hem", "ze", "hij"],
     correct: "hem",
-    explanation: "Słowo \"de computer\" to słowo z rodzajnikiem <strong>de</strong>. Szukamy go (dopełnienie), więc zastępujemy go zaimkiem dopełnieniowym <strong>hem</strong>."
+    translations: {
+      nl: "Waar is de computer? Ik zoek ___.",
+      pl: "Gdzie jest komputer? Szukam ___.",
+      en: "Where is the computer? I am looking for ___.",
+      ar: "أين الكمبيوتر؟ أنا أبحث عن___.",
+      tr: "Bilgisayar nerede? Ben ___ arıyorum."
+    },
+    explanations: {
+      nl: "\"De computer\" is een de-woord. We zoeken 'hem' (het object), dus gebruiken we het objectpronomen <strong>hem</strong>.",
+      pl: "Słowo \"de computer\" to słowo z rodzajnikiem <strong>de</strong>. Szukamy go (dopełnienie), więc zastępujemy go zaimkiem dopełnieniowym <strong>hem</strong>.",
+      en: "\"De computer\" is a de-word. We are looking for 'it' (the object), so we replace it with the object pronoun <strong>hem</strong>.",
+      ar: "كلمة \"de computer\" تأخذ أداة التعريف <strong>de</strong>. نحن نبحث عنه (مفعول به)، لذا نستبدله بضمير المفعول به للمذكر <strong>hem</strong>.",
+      tr: "\"De computer\" bir de-kelimesidir. Onu arıyoruz (nesne), bu yüzden nesne zamiri olan <strong>hem</strong> kullanırız."
+    }
   },
   {
     id: 7,
     sentence: "Het rapport is erg lang. Ik lees <span class='gap'>___</span> vanavond.",
-    translation: "Raport jest bardzo długi. Przeczytam ___ dziś wieczorem.",
     options: ["hem", "het", "ze", "hij"],
     correct: "het",
-    explanation: "Słowo \"het rapport\" ma rodzajnik <strong>het</strong>. Szukamy / czytamy je (dopełnienie), dlatego zastępujemy je zaimkiem dopełnieniowym <strong>het</strong>."
+    translations: {
+      nl: "Het rapport is erg lang. Ik lees ___ vanavond.",
+      pl: "Raport jest bardzo długi. Przeczytam ___ dziś wieczorem.",
+      en: "The report is very long. I will read ___ tonight.",
+      ar: "التقرير طويل جداً. سأقرأ___ هذا المساء.",
+      tr: "Rapor çok uzun. Onu ___ bu akşam okuyacağım."
+    },
+    explanations: {
+      nl: "\"Het rapport\" is een het-woord. We lezen het (object), dus we vervangen het door het objectpronomen <strong>het</strong>.",
+      pl: "Słowo \"het rapport\" ma rodzajnik <strong>het</strong>. Szukamy / czytamy je (dopełnienie), dlatego zastępujemy je zaimkiem dopełnieniowym <strong>het</strong>.",
+      en: "\"Het rapport\" is a het-word. We are reading 'it' (the object), so we replace it with the object pronoun <strong>het</strong>.",
+      ar: "كلمة \"het rapport\" تأخذ أداة التعريف <strong>het</strong>. نحن نقرأه (مفعول به)، لذا نستبدله بضمير المفعول به لغير العاقل <strong>het</strong>.",
+      tr: "\"Het rapport\" bir het-kelimesidir. Onu okuyoruz (nesne), bu yüzden nesne zamiri olan <strong>het</strong> kullanırız."
+    }
   },
   {
     id: 8,
     sentence: "Waar liggen de sleutels? Ik kan <span class='gap'>___</span> nergens vinden.",
-    translation: "Gdzie leżą klucze? Nie mogę ___ nigdzie znaleźć.",
     options: ["hem", "het", "ze", "zij"],
     correct: "ze",
-    explanation: "Słowo \"de sleutels\" jest w liczbie mnogiej. Wszystkie rzeczowniki w liczbie mnogiej jako dopełnienie (znaleźć je) zastępujemy zaimkiem <strong>ze</strong>."
+    translations: {
+      nl: "Waar liggen de sleutels? Ik kan ___ nergens vinden.",
+      pl: "Gdzie leżą klucze? Nie mogę ___ nigdzie znaleźć.",
+      en: "Where are the keys? I can't find ___ anywhere.",
+      ar: "أين المفاتيح؟ لا أستطيع أن أجد___ في أي مكان.",
+      tr: "Anahtarlar nerede? Onları hiçbir yerde bulamıyorum."
+    },
+    explanations: {
+      nl: "\"De sleutels\" is meervoud. Zelfstandig naamwoorden in het meervoud vervangen we als object door <strong>ze</strong>.",
+      pl: "Słowo \"de sleutels\" jest w liczbie mnogiej. Wszystkie rzeczowniki w liczbie mnogiej jako dopełnienie (znaleźć je) zastępujemy zaimkiem <strong>ze</strong>.",
+      en: "\"De sleutels\" is plural. Plural nouns in the object position (finding them) are replaced by the pronoun <strong>ze</strong>.",
+      ar: "كلمة \"de sleutels\" في صيغة الجمع. نستبدل أسماء الجمع المفعول بها دائماً بالضمير <strong>ze</strong> (ـهم/ـها).",
+      tr: "\"De sleutels\" çoğuldur. Çoğul isimleri nesne konumunda (onları bulmak) her zaman <strong>ze</strong> zamiri ile değiştiririz."
+    }
   },
   {
     id: 9,
     sentence: "Mijn collega's werken hard. <span class='gap'>___</span> project moet deze week klaar zijn.",
-    translation: "Moi koledzy ciężko pracują. ___ projekt musi być gotowy w tym tygodniu. [ich]",
     options: ["Ons", "Hun", "Haar", "Jullie"],
     correct: "Hun",
-    explanation: "Chodzi o projekt należący do kolegów (\"ich\" projekt, 3. osoba liczby mnogiej). Zaimek dzierżawczy określający własność grupy ludzi to <strong>hun</strong>."
+    translations: {
+      nl: "Mijn collega's werken hard. ___ project moet deze week klaar zijn. [hun]",
+      pl: "Moi koledzy ciężko pracują. ___ projekt musi być gotowy w tym tygodniu. [ich]",
+      en: "My colleagues work hard. ___ project must be finished this week. [their]",
+      ar: "زملائي يعملون بجد. مشروعـ___ يجب أن ينتهي هذا الاسبوع. [مشروعهم/الخاص بهم]",
+      tr: "Meslektaşlarım çok çalışıyor. ___ projesi bu hafta bitmeli. [onların]"
+    },
+    explanations: {
+      nl: "Het gaat om het project van de collega's (hun project, meervoud bezit). Het bezittelijk voornaamwoord is <strong>hun</strong>.",
+      pl: "Chodzi o projekt należący do kolegów (\"ich\" projekt, 3. osoba liczby mnogiej). Zaimek dzierżawczy określający własność grupy ludzi to <strong>hun</strong>.",
+      en: "It refers to the project belonging to the colleagues (their project, plural possession). The possessive pronoun is <strong>hun</strong>.",
+      ar: "يعود المشروع إلى الزملاء (مشروعهم، ملكية الجمع). ضمير الملكية للغائبين الجمع هو <strong>hun</strong>.",
+      tr: "Meslektaşların projesinden bahsediyoruz (onların projesi, çoğul sahiplik). Doğru iyelik zamiri <strong>hun</strong>'dur."
+    }
   },
   {
     id: 10,
     sentence: "Dag meneer Visser, is dit <span class='gap'>___</span> jas?",
-    translation: "Dzień dobry panie Visser, czy to ___ kurtka?",
     options: ["uw", "u", "jouw", "je"],
     correct: "uw",
-    explanation: "Zwracamy się grzecznościowo i formalnie do Pana (\"meneer Visser\") i pytamy o własność (Pana kurtka). Używamy formy grzecznościowej zaimka dzierżawczego, która brzmi <strong>uw</strong>."
+    translations: {
+      nl: "Dag meneer Visser, is dit ___ jas?",
+      pl: "Dzień dobry panie Visser, czy to ___ kurtka?",
+      en: "Hello Mr. Visser, is this ___ coat?",
+      ar: "مرحباً سيد فيشر، هل هذه سترة ___؟ [سترتك/الخاصة بحضرتك]",
+      tr: "Merhaba Bay Visser, bu ___ ceketiniz mi? [sizin]"
+    },
+    explanations: {
+      nl: "We spreken meneer Visser formeel aan (u) en vragen naar zijn bezit. Het formele bezittelijk voornaamwoord is <strong>uw</strong>.",
+      pl: "Zwracamy się grzecznościowo i formalnie do Pana (\"meneer Visser\") i pytamy o własność (Pana kurtka). Używamy formy grzecznościowej zaimka dzierżawczego, która brzmi <strong>uw</strong>.",
+      en: "We are addressing Mr. Visser formally (u) and asking about his possession. The formal possessive pronoun is <strong>uw</strong>.",
+      ar: "نحن نخاطب السيد فيشر بصيغة رسمية (u) ونسأل عن ملكيته. ضمير الملكية الرسمي للمخاطب هو <strong>uw</strong>.",
+      tr: "Bay Visser'a resmi olarak (u) hitap ediyoruz ve onun ceketini soruyoruz. Resmi iyelik zamiri <strong>uw</strong>'dur."
+    }
   }
 ];
 
-let scores = {};
-let answeredCount = 0;
+// App State
+let currentLang = localStorage.getItem("nt2-pronouns-lang") || "pl";
+let currentTheme = localStorage.getItem("nt2-pronouns-theme") || "light";
+let quizScores = {};
+let quizAnsweredCount = 0;
 
-function initQuiz() {
+// Apply Theme on load
+document.documentElement.setAttribute("data-theme", currentTheme);
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("nt2-pronouns-lang", lang);
+
+  // Set HTML direction and lang attribute
+  if (lang === "ar") {
+    document.documentElement.setAttribute("dir", "rtl");
+    document.documentElement.setAttribute("lang", "ar");
+  } else {
+    document.documentElement.setAttribute("dir", "ltr");
+    document.documentElement.setAttribute("lang", lang);
+  }
+
+  updateUIStrings();
+  renderComparisonTable();
+  renderObjectReferenceCards();
+  renderQuiz();
+  updateDashboard();
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === "light" ? "dark" : "light";
+  localStorage.setItem("nt2-pronouns-theme", currentTheme);
+  document.documentElement.setAttribute("data-theme", currentTheme);
+}
+
+function updateUIStrings() {
+  const t = uiTranslations[currentLang];
+  
+  // Header
+  document.getElementById("edition-badge").textContent = t.edition;
+  document.getElementById("main-title").textContent = t.title;
+  document.getElementById("main-subtitle").textContent = t.subtitle;
+  
+  // Section Titles
+  document.getElementById("sec1-title").textContent = t.sec1Title;
+  document.getElementById("sec1-intro").textContent = t.sec1Intro;
+  document.getElementById("sec2-title").textContent = t.sec2Title;
+  document.getElementById("sec2-intro").textContent = t.sec2Intro;
+  document.getElementById("sec3-title").textContent = t.sec3Title;
+  document.getElementById("sec3-intro").textContent = t.sec3Intro;
+  
+  // Table Headers
+  document.getElementById("th-pair").textContent = t.thPair;
+  document.getElementById("th-sub").textContent = t.thSub;
+  document.getElementById("th-obj").textContent = t.thObj;
+  document.getElementById("th-poss").textContent = t.thPoss;
+  document.getElementById("th-ex").textContent = t.thEx;
+  
+  // Quiz labels
+  document.getElementById("reset-btn").textContent = t.resetBtn;
+  document.getElementById("footer-text").textContent = t.footerText;
+  
+  // Active state in lang buttons
+  const buttons = document.querySelectorAll(".lang-btn");
+  buttons.forEach(btn => {
+    btn.classList.remove("active");
+    if (btn.getAttribute("onclick").includes(`'${currentLang}'`)) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+function renderComparisonTable() {
+  const tbody = document.getElementById("pronouns-table-body");
+  tbody.innerHTML = "";
+
+  pronounsData.forEach(p => {
+    const row = document.createElement("tr");
+
+    // NL badge
+    const nlBadgeHtml = `<span class="badge nl-badge"><span class="flag">🇳🇱</span> ${p.subject.nl}</span>`;
+    
+    // Trans badge (with flags)
+    const activeFlag = uiTranslations[currentLang].flag;
+    const transSubjectHtml = `<span class="badge pl-badge"><span class="flag">${activeFlag}</span> ${p.subject.translations[currentLang]}</span>`;
+    const transObjectHtml = `<span class="badge pl-badge"><span class="flag">${activeFlag}</span> ${p.object.translations[currentLang]}</span>`;
+    const transPossHtml = `<span class="badge pl-badge"><span class="flag">${activeFlag}</span> ${p.possessive.translations[currentLang]}</span>`;
+
+    row.innerHTML = `
+      <td class="row-header">
+        <div class="nl-lang">${p.nlLabel}</div>
+        <div class="pl-lang">${p.translations[currentLang]}</div>
+      </td>
+      <td>
+        <div class="badge-pair">
+          ${nlBadgeHtml}
+          ${transSubjectHtml}
+        </div>
+      </td>
+      <td>
+        <div class="badge-pair">
+          <span class="badge nl-badge"><span class="flag">🇳🇱</span> ${p.object.nl}</span>
+          ${transObjectHtml}
+        </div>
+      </td>
+      <td>
+        <div class="badge-pair">
+          <span class="badge nl-badge"><span class="flag">🇳🇱</span> ${p.possessive.nl}</span>
+          ${transPossHtml}
+        </div>
+      </td>
+      <td class="examples-column">
+        ${p.examples.map(ex => `
+          <div class="example-pair">
+            <div class="ex-nl">${ex.nl}</div>
+            <div class="ex-pl">${ex.trans[currentLang]}</div>
+          </div>
+        `).join("")}
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function renderObjectReferenceCards() {
+  const container = document.getElementById("object-rules-container");
+  container.innerHTML = "";
+
+  const cards = ["de", "het", "mv"];
+  cards.forEach(key => {
+    const card = objectRulesData[key];
+    const el = document.createElement("div");
+    el.className = `rule-card ${key}-rule`;
+    
+    el.innerHTML = `
+      <h4><span class="rule-badge">${card.badge}</span> ${card.titles[currentLang]}</h4>
+      <p class="rule-desc">${card.desc[currentLang]}</p>
+      <div class="rule-examples">
+        <div class="rule-ex-item">
+          <div class="rule-ex-nl">${card.ex1.nl}</div>
+          <div class="rule-ex-pl">${card.ex1.trans[currentLang]}</div>
+        </div>
+        <div class="rule-ex-item">
+          <div class="rule-ex-nl">${card.ex2.nl}</div>
+          <div class="rule-ex-pl">${card.ex2.trans[currentLang]}</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  // Render tip content
+  document.getElementById("tip-content-box").innerHTML = tipContentData[currentLang];
+}
+
+function renderQuiz() {
   const container = document.getElementById("quiz-container");
   container.innerHTML = "";
-  scores = {};
-  answeredCount = 0;
-  updateDashboard();
-
-  quizData.forEach((q) => {
+  
+  quizQuestionsData.forEach(q => {
     const card = document.createElement("div");
     card.className = "quiz-card";
     card.id = `q-card-${q.id}`;
     
-    // Shuffle options to make it educational
-    const shuffledOptions = [...q.options];
+    // Use stored state if question is already answered to prevent state loss during language switch
+    const savedScore = quizScores[q.id];
+    const isAnswered = savedScore !== undefined;
 
     card.innerHTML = `
       <div class="quiz-question-header">
         <span class="quiz-question-num">Pytanie ${q.id}</span>
         <div class="quiz-sentence" id="q-sentence-${q.id}">${q.sentence}</div>
       </div>
-      <div class="quiz-translation">${q.translation}</div>
-      <div class="quiz-options">
-        ${shuffledOptions.map(opt => `
-          <button class="option-btn" onclick="selectOption(${q.id}, '${opt}', this)">${opt}</button>
+      <div class="quiz-translation">${q.translations[currentLang]}</div>
+      <div class="quiz-options" id="q-options-${q.id}">
+        ${q.options.map(opt => `
+          <button class="option-btn ${isAnswered ? 'disabled' : ''}" onclick="selectOption(${q.id}, '${opt}', this)">${opt}</button>
         `).join("")}
       </div>
       <div class="quiz-feedback" id="q-feedback-${q.id}"></div>
     `;
     container.appendChild(card);
+
+    // If already answered, restore visual feedback in current language
+    if (isAnswered) {
+      restoreQuizState(q.id);
+    }
   });
 }
 
 function selectOption(qId, selectedOpt, btnEl) {
-  const question = quizData.find(q => q.id === qId);
-  const card = document.getElementById(`q-card-${qId}`);
-  const feedback = document.getElementById(`q-feedback-${qId}`);
-  const sentence = document.getElementById(`q-sentence-${qId}`);
+  if (quizScores[qId] !== undefined) return; // already answered
   
-  // If already answered, do nothing
-  if (scores[qId] !== undefined) return;
-  
-  const buttons = card.querySelectorAll(".option-btn");
-  buttons.forEach(btn => {
-    btn.classList.add("disabled");
-    if (btn.textContent.trim() === question.correct) {
-      btn.classList.add("show-correct");
-    }
-  });
-
+  const question = quizQuestionsData.find(q => q.id === qId);
   const isCorrect = selectedOpt === question.correct;
-  scores[qId] = isCorrect ? 1 : 0;
-  answeredCount++;
+  
+  quizScores[qId] = isCorrect ? 1 : 0;
+  quizAnsweredCount++;
 
-  if (isCorrect) {
-    btnEl.classList.add("selected-correct");
-    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--success); color: var(--success);">${question.correct}</span>`);
-    
-    feedback.className = "quiz-feedback correct-feedback";
-    feedback.innerHTML = `
-      <div class="quiz-feedback-title">✅ Dobrze! (Goed gedaan!)</div>
-      <p>${question.explanation}</p>
-    `;
-  } else {
-    btnEl.classList.add("selected-wrong");
-    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--error); color: var(--error);">${selectedOpt}</span>`);
-    
-    feedback.className = "quiz-feedback wrong-feedback";
-    feedback.innerHTML = `
-      <div class="quiz-feedback-title">❌ Spróbuj jeszcze raz!</div>
-      <p>Wybrana odpowiedź to <strong>${selectedOpt}</strong>. Prawidłowa odpowiedź to <strong>${question.correct}</strong>.<br><br>${question.explanation}</p>
-    `;
-  }
-
+  restoreQuizState(qId, selectedOpt);
   updateDashboard();
 }
 
-function updateDashboard() {
-  const scoreText = document.getElementById("quiz-score");
-  const answeredText = document.getElementById("quiz-answered");
-  const progressBar = document.getElementById("quiz-bar");
+function restoreQuizState(qId, activeSelection = null) {
+  const question = quizQuestionsData.find(q => q.id === qId);
+  const card = document.getElementById(`q-card-${qId}`);
+  const feedback = document.getElementById(`q-feedback-${qId}`);
+  const sentence = document.getElementById(`q-sentence-${qId}`);
+  const isCorrect = quizScores[qId] === 1;
 
-  let correctSum = 0;
-  Object.keys(scores).forEach(key => {
-    correctSum += scores[key];
+  const buttons = card.querySelectorAll(".option-btn");
+  buttons.forEach(btn => {
+    btn.classList.add("disabled");
+    const optText = btn.textContent.trim();
+    
+    if (optText === question.correct) {
+      btn.classList.add("show-correct");
+    }
+    
+    if (activeSelection && optText === activeSelection) {
+      if (isCorrect) {
+        btn.classList.add("selected-correct");
+      } else {
+        btn.classList.add("selected-wrong");
+      }
+    }
   });
 
-  scoreText.textContent = correctSum;
-  answeredText.textContent = answeredCount;
+  const t = uiTranslations[currentLang];
+
+  if (isCorrect) {
+    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--success); color: var(--success);">${question.correct}</span>`);
+    feedback.className = "quiz-feedback correct-feedback";
+    feedback.innerHTML = `
+      <div class="quiz-feedback-title">${t.feedbackCorrect}</div>
+      <p>${question.explanations[currentLang]}</p>
+    `;
+  } else {
+    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--error); color: var(--error);">${question.correct}</span>`);
+    feedback.className = "quiz-feedback wrong-feedback";
+    feedback.innerHTML = `
+      <div class="quiz-feedback-title">${t.feedbackWrong}</div>
+      <p>${question.explanations[currentLang]}</p>
+    `;
+  }
+}
+
+function updateDashboard() {
+  const t = uiTranslations[currentLang];
   
-  const percentage = (answeredCount / quizData.length) * 100;
-  progressBar.style.width = `${percentage}%`;
+  let correctSum = 0;
+  Object.keys(quizScores).forEach(key => {
+    correctSum += quizScores[key];
+  });
+
+  document.getElementById("quiz-score").textContent = correctSum;
+  document.getElementById("quiz-answered").textContent = quizAnsweredCount;
+  
+  // Dashboard text
+  document.getElementById("quiz-progress-lbl").innerHTML = `${t.progressLbl} <span id="quiz-answered">${quizAnsweredCount}</span> ${t.progressOf}`;
+  document.getElementById("quiz-score-lbl").innerHTML = `${t.scoreLbl} <span id="quiz-score">${correctSum}</span> / 10`;
+
+  const percentage = (quizAnsweredCount / quizQuestionsData.length) * 100;
+  document.getElementById("quiz-bar").style.width = `${percentage}%`;
 }
 
 function resetQuiz() {
-  initQuiz();
+  quizScores = {};
+  quizAnsweredCount = 0;
+  renderQuiz();
+  updateDashboard();
 }
 
-// Start on page load
+// Initial Run
 window.onload = function() {
-  initQuiz();
+  switchLanguage(currentLang);
 };
 </script>
 
