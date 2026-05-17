@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zaimki Osobowe w Języku Niderlandzkim — Werkend Nederlands</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --primary-border: #bfdbfe;
+    
+    --secondary: #dc2626;
+    --secondary-light: #fef2f2;
+    --secondary-border: #fecaca;
+    
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --border: #e2e8f0;
+    
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+    --error: #dc2626;
+    --error-light: #fef2f2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding: 30px 20px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* --- HEADER BANNER --- */
+  .header {
+    background: linear-gradient(135deg, var(--primary), #1e3a8a);
+    color: #ffffff;
+    padding: 50px 30px;
+    border-radius: 24px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ffffff 50%, var(--secondary) 50%);
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  .header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 600;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* --- SECTIONS --- */
+  .section-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.04);
+    border: 1px solid var(--border);
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 800;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    gap: 12px;
+  }
+
+  .section-title span.number {
+    background: var(--primary-light);
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  .intro-text {
+    font-size: 1.05rem;
+    color: var(--text-gray);
+    margin-bottom: 25px;
+  }
+
+  /* --- UNIFIED COMPARISON TABLE --- */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    background: #ffffff;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  thead {
+    background: var(--primary-light);
+    border-bottom: 2px solid var(--primary-border);
+  }
+
+  thead th {
+    padding: 16px 20px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1e3a8a;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s ease;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background-color: #fafbfd;
+  }
+
+  tbody td {
+    padding: 16px 20px;
+    vertical-align: middle;
+  }
+
+  /* Row Headers */
+  .row-header {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text-dark);
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+    background: #fafafa;
+  }
+
+  .row-header .nl-lang {
+    color: var(--primary);
+  }
+
+  .row-header .pl-lang {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* Pronoun Badge Containers */
+  .badge-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 120px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    width: fit-content;
+  }
+
+  .badge .flag {
+    font-size: 0.85rem;
+  }
+
+  .badge.nl-badge {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+  }
+
+  .badge.pl-badge {
+    background-color: var(--secondary-light);
+    color: var(--secondary);
+    border: 1px solid var(--secondary-border);
+    font-weight: 700;
+  }
+
+  /* Examples Styling */
+  .examples-column {
+    min-width: 320px;
+  }
+
+  .example-pair {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .example-pair:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .ex-nl {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .ex-nl .hl {
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 800;
+  }
+
+  .ex-pl {
+    font-size: 0.88rem;
+    color: var(--text-gray);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .ex-pl .hl-pl {
+    color: var(--secondary);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  /* --- OBJECT REFERENCE CARDS --- */
+  .object-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+  }
+
+  .rule-card {
+    background: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+  }
+
+  .rule-card.de-rule::before { background: #3b82f6; }
+  .rule-card.het-rule::before { background: #10b981; }
+  .rule-card.mv-rule::before { background: #8b5cf6; }
+
+  .rule-card h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rule-badge {
+    background: #e2e8f0;
+    color: var(--text-dark);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .rule-card.de-rule .rule-badge { background: #dbeafe; color: #1e4ed8; }
+  .rule-card.het-rule .rule-badge { background: #d1fae5; color: #065f46; }
+  .rule-card.mv-rule .rule-badge { background: #ede9fe; color: #5b21b6; }
+
+  .rule-desc {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .rule-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rule-ex-item {
+    font-size: 0.9rem;
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .rule-ex-nl {
+    font-weight: 700;
+  }
+
+  .rule-ex-nl strong {
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0 4px;
+    border-radius: 3px;
+  }
+
+  .rule-ex-pl {
+    color: var(--text-gray);
+    font-style: italic;
+    font-size: 0.82rem;
+    margin-top: 2px;
+  }
+
+  /* Polish Tip Box */
+  .tip-box {
+    background: var(--secondary-light);
+    border: 1px solid var(--secondary-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 30px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .tip-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .tip-content h5 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #991b1b;
+    margin-bottom: 6px;
+  }
+
+  .tip-content p {
+    font-size: 0.95rem;
+    color: #7f1d1d;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .tip-content ul {
+    margin-left: 20px;
+    font-size: 0.92rem;
+    color: #7f1d1d;
+  }
+
+  .tip-content li {
+    margin-bottom: 6px;
+  }
+
+  /* --- QUIZ SECTION (INTERACTIEVE EXERCISES) --- */
+  .quiz-dashboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--primary-light);
+    border: 1px solid var(--primary-border);
+    padding: 15px 25px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .quiz-progress-text {
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+
+  .quiz-progress-bar-container {
+    flex-grow: 1;
+    max-width: 400px;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .quiz-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+  }
+
+  .quiz-score-badge {
+    background: #ffffff;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 6px 16px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 1.1rem;
+  }
+
+  .quiz-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .quiz-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 25px;
+    transition: all 0.2s ease;
+  }
+
+  .quiz-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border-color: #cbd5e1;
+  }
+
+  .quiz-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    gap: 15px;
+  }
+
+  .quiz-question-num {
+    background: var(--text-dark);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  .quiz-sentence {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    flex-grow: 1;
+  }
+
+  .quiz-sentence span.gap {
+    display: inline-block;
+    border-bottom: 3px solid var(--primary);
+    width: 80px;
+    text-align: center;
+    color: var(--primary);
+  }
+
+  .quiz-translation {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-left: 2px;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .option-btn {
+    background: #ffffff;
+    border: 2px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+  }
+
+  .option-btn:hover:not(.disabled) {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .option-btn.selected-correct {
+    background-color: var(--success-light);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .option-btn.selected-wrong {
+    background-color: var(--error-light);
+    border-color: var(--error);
+    color: var(--error);
+  }
+
+  .option-btn.show-correct {
+    background-color: var(--success-light);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .option-btn.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .quiz-feedback {
+    display: none;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .quiz-feedback.correct-feedback {
+    display: block;
+    background: var(--success-light);
+    color: #166534;
+    border-left: 4px solid var(--success);
+  }
+
+  .quiz-feedback.wrong-feedback {
+    display: block;
+    background: var(--error-light);
+    color: #991b1b;
+    border-left: 4px solid var(--error);
+  }
+
+  .quiz-feedback-title {
+    font-weight: 900;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .quiz-reset-btn {
+    display: block;
+    margin: 30px auto 0;
+    background: var(--text-dark);
+    color: #ffffff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .quiz-reset-btn:hover {
+    background-color: #0f172a;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    text-align: center;
+    padding: 40px 20px 20px;
+    margin-top: 50px;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    font-weight: 600;
+  }
+
+  .footer small {
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* --- MOBILE RESPONSIVENESS --- */
+  @media (max-width: 768px) {
+    body {
+      padding: 15px 10px;
+    }
+
+    .header {
+      padding: 35px 20px;
+    }
+
+    .header h1 {
+      font-size: 1.7rem;
+    }
+
+    .section-card {
+      padding: 20px 15px;
+    }
+
+    .badge-pair {
+      min-width: 100px;
+    }
+
+    .badge {
+      font-size: 0.85rem;
+      padding: 4px 8px;
+    }
+
+    .intro-text {
+      font-size: 0.95rem;
+    }
+
+    table {
+      font-size: 0.88rem;
+    }
+
+    thead th, tbody td {
+      padding: 10px 12px;
+    }
+
+    .row-header {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO HEADER -->
+  <header class="header">
+    <h1>Zaimki Osobowe w Języku Niderlandzkim</h1>
+    <p>Interaktywny przewodnik z tabelą porównawczą i ćwiczeniami przygotowany specjalnie dla osób polskojęzycznych.</p>
+  </header>
+
+  <!-- SECTION 1: TABELA PORÓWNAWCZA -->
+  <section class="section-card">
+    <div class="section-title">
+      <span class="number">1</span>
+      <h2>Tabela Porównawcza / Vergelijkingstabel</h2>
+    </div>
+    
+    <p class="intro-text">
+      Poniższa tabela łączy formy niderlandzkie i ich polskie odpowiedniki. Każdy zaimek ma formę podmiotu (osoba wykonująca czynność), dopełnienia (odbiorca czynności) oraz formę dzierżawczą (określającą własność).
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>NL → PL</th>
+            <th>Podmiot<br><small style="color:#1e3a8a;">Onderwerp</small></th>
+            <th>Dopełnienie<br><small style="color:#1e3a8a;">Object</small></th>
+            <th>Dzierżawczy<br><small style="color:#1e3a8a;">Bezittelijk</small></th>
+            <th>Przykłady<br><small style="color:#1e3a8a;">Voorbeeldzinnen</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ja / ik -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">ik</div>
+              <div class="pl-lang">ja</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ik</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ja</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> mij / me</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> mnie / mi</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> mijn</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> mój / moja / moje</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Ik</span> werk bij Westport.</div>
+                <div class="ex-pl"><span class="hl-pl">Ja</span> pracuję w Westport.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Hij helpt <span class="hl">mij</span>.</div>
+                <div class="ex-pl">On pomaga <span class="hl-pl">mi</span>.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dit is <span class="hl">mijn</span> collega.</div>
+                <div class="ex-pl">To jest <span class="hl-pl">mój</span> kolega.</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ty / jij -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">jij / je</div>
+              <div class="pl-lang">ty</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jij / je</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ty</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jou / je</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ciebie / cię</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jouw / je</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> twój / twoja / ...</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Jij</span> spreekt goed Nederlands.</div>
+                <div class="ex-pl"><span class="hl-pl">Ty</span> dobrze mówisz po niderlandzku.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik bel <span class="hl">jou</span> morgen.</div>
+                <div class="ex-pl">Zadzwonię do <span class="hl-pl">ciebie</span> jutro.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Waar is <span class="hl">jouw</span> tas?</div>
+                <div class="ex-pl">Gdzie jest <span class="hl-pl">twoja</span> torba?</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Pan / Pani (u) -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">u</div>
+              <div class="pl-lang">Pan / Pani</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> u</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pan / Pani</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> u</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pana / Panią</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> uw</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> Pański / Pani</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">U</span> werkt hier al lang.</div>
+                <div class="ex-pl"><span class="hl-pl">Pan/Pani</span> już długo tu pracuje.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik help <span class="hl">u</span> graag.</div>
+                <div class="ex-pl">Chętnie pomogę <span class="hl-pl">Panu/Pani</span>.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Is dit <span class="hl">uw</span> handtekening?</div>
+                <div class="ex-pl">Czy to <span class="hl-pl">Pański/Pani</span> podpis?</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- on / hij -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">hij</div>
+              <div class="pl-lang">on</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hij</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> on</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hem</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego / go</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zijn</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Hij</span> is de manager.</div>
+                <div class="ex-pl"><span class="hl-pl">On</span> jest kierownikiem.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik ken <span class="hl">hem</span> goed.</div>
+                <div class="ex-pl">Dobrze <span class="hl-pl">go</span> znam.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dat is <span class="hl">zijn</span> auto.</div>
+                <div class="ex-pl">To jest <span class="hl-pl">jego</span> samochód.</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ona / zij -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">zij / ze</div>
+              <div class="pl-lang">ona</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zij / ze</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ona</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> haar</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ją / jej</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> haar</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jej</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Zij</span> woont in Rotterdam.</div>
+                <div class="ex-pl"><span class="hl-pl">Ona</span> mieszka w Rotterdamie.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik zie <span class="hl">haar</span> elke dag.</div>
+                <div class="ex-pl">Widzę <span class="hl-pl">ją</span> każdego dnia.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dit is <span class="hl">haar</span> nummer.</div>
+                <div class="ex-pl">To jest <span class="hl-pl">jej</span> numer.</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ono / het -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">het</div>
+              <div class="pl-lang">ono</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> het</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ono</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> het</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> je / jego</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zijn</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> jego</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Het</span> kind slaapt.</div>
+                <div class="ex-pl"><span class="hl-pl">Ono</span> śpi (dziecko).</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik zoek <span class="hl">het</span>.</div>
+                <div class="ex-pl">Szukam <span class="hl-pl">tego / je</span>.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dat is <span class="hl">zijn</span> fiets.</div>
+                <div class="ex-pl">To jest <span class="hl-pl">jego</span> rower (dziecka).</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- my / wij -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">wij / we</div>
+              <div class="pl-lang">my</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> wij / we</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> my</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ons</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> nas / nam</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> ons / onze</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> nasz / nasza / ...</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Wij</span> beginnen om 8 uur.</div>
+                <div class="ex-pl"><span class="hl-pl">My</span> zaczynamy o godzinie 8:00.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">De baas belt <span class="hl">ons</span>.</div>
+                <div class="ex-pl">Szef dzwoni do <span class="hl-pl">nas</span>.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dit is <span class="hl">onze</span> afdeling.</div>
+                <div class="ex-pl">To jest <span class="hl-pl">nasz</span> dział.</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- wy / jullie -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">jullie</div>
+              <div class="pl-lang">wy</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> wy</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> was / wam</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> jullie</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> wasz / wasza / ...</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Jullie</span> werken hard.</div>
+                <div class="ex-pl"><span class="hl-pl">Wy</span> ciężko pracujecie.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik wacht op <span class="hl">jullie</span>.</div>
+                <div class="ex-pl">Czekam na <span class="hl-pl">was</span>.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Is dat <span class="hl">jullie</span> ploeg?</div>
+                <div class="ex-pl">Czy to jest <span class="hl-pl">wasza</span> zmiana?</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- oni / zij -->
+          <tr>
+            <td class="row-header">
+              <div class="nl-lang">zij / ze</div>
+              <div class="pl-lang">oni / one</div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> zij / ze</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> oni / one</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hen / ze</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ich / im</span>
+              </div>
+            </td>
+            <td>
+              <div class="badge-pair">
+                <span class="badge nl-badge"><span class="flag">🇳🇱</span> hun</span>
+                <span class="badge pl-badge"><span class="flag">🇵🇱</span> ich</span>
+              </div>
+            </td>
+            <td class="examples-column">
+              <div class="example-pair">
+                <div class="ex-nl"><span class="hl">Zij</span> komen uit Polen.</div>
+                <div class="ex-pl"><span class="hl-pl">Oni</span> pochodzą z Polski.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Ik help <span class="hl">hen</span> elke dag.</div>
+                <div class="ex-pl">Pomagam <span class="hl-pl">im</span> każdego dnia.</div>
+              </div>
+              <div class="example-pair">
+                <div class="ex-nl">Dat zijn <span class="hl">hun</span> spullen.</div>
+                <div class="ex-pl">To są <span class="hl-pl">ich</span> rzeczy.</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 2: REFEREREN NAAR OBJECTEN -->
+  <section class="section-card">
+    <div class="section-title">
+      <span class="number">2</span>
+      <h2>Odniesienie do przedmiotów / Refereren naar objecten</h2>
+    </div>
+
+    <p class="intro-text">
+      Kiedy mówimy o rzeczach lub przedmiotach (w liczbie pojedynczej lub mnogiej), musimy wybrać odpowiedni zaimek w zależności od tego, czy słowo łączy się z rodzajnikiem <strong>de</strong> czy <strong>het</strong>.
+    </p>
+
+    <div class="object-grid">
+      <!-- DE WORDS -->
+      <div class="rule-card de-rule">
+        <h4><span class="rule-badge">de-woord</span> Słowa z "de"</h4>
+        <p class="rule-desc">Jako podmiot używamy <strong>hij</strong> (on), a jako dopełnienie używamy <strong>hem</strong> (go/jego).</p>
+        <div class="rule-examples">
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">De computer staat hier. → <strong>Hij</strong> staat hier.</div>
+            <div class="rule-ex-pl">Komputer stoi tutaj. → On stoi tutaj.</div>
+          </div>
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">Waar is de sleutel? → Ik zoek <strong>hem</strong>.</div>
+            <div class="rule-ex-pl">Gdzie jest klucz? → Szukam go.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HET WORDS -->
+      <div class="rule-card het-rule">
+        <h4><span class="rule-badge">het-woord</span> Słowa z "het"</h4>
+        <p class="rule-desc">Zarówno jako podmiot, jak i dopełnienie zawsze używamy zaimek <strong>het</strong> (ono/to).</p>
+        <div class="rule-examples">
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">Het rapport is klaar. → <strong>Het</strong> ligt op tafel.</div>
+            <div class="rule-ex-pl">Raport jest gotowy. → On/To leży na stole.</div>
+          </div>
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">Ik lees het boek. → Ik lees <strong>het</strong>.</div>
+            <div class="rule-ex-pl">Czytam książkę. → Czytam ją/to.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEERVOUD -->
+      <div class="rule-card mv-rule">
+        <h4><span class="rule-badge">meervoud</span> Liczba mnoga (de & het)</h4>
+        <p class="rule-desc">Jako podmiot używamy <strong>zij/ze</strong> (one/oni), a jako dopełnienie używamy <strong>ze</strong> (ich/je).</p>
+        <div class="rule-examples">
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">De documenten liggen daar. → <strong>Ze</strong> liggen daar.</div>
+            <div class="rule-ex-pl">Dokumenty leżą tam. → One leżą tam.</div>
+          </div>
+          <div class="rule-ex-item">
+            <div class="rule-ex-nl">De e-mails zijn binnen. → Lees <strong>ze</strong> goed!</div>
+            <div class="rule-ex-pl">E-maile nadeszły. → Przeczytaj je uważnie!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Polish Specific Tip Box -->
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <h5>Bardzo ważna wskazówka dla Polaków:</h5>
+        <p>
+          W języku niderlandzkim nie patrzymy na to, jakiego rodzaju jest dany wyraz w języku polskim! Patrzymy wyłącznie na rodzajnik <strong>de</strong> lub <strong>het</strong> w niderlandzkim.
+        </p>
+        <ul>
+          <li><strong>De auto</strong> (samochód — w języku polskim rodzaj męski) oraz <strong>de tafel</strong> (stół/tabela — w języku polskim odpowiednio rodzaj męski i żeński) to słowa z rodzajnikiem <strong>de</strong>. Dlatego w niderlandzkim zastępujemy je przez <strong>hij</strong> lub <strong>hem</strong>!
+            <br><small style="color:#7f1d1d;font-style:italic;">De auto is mooi. → <strong>Hij</strong> is mooi. (Samochód jest ładny. → On jest ładny.)</small>
+          </li>
+          <li><strong>Het boek</strong> (książka — w języku polskim rodzaj żeński "ona"!) to słowo z rodzajnikiem <strong>het</strong>. Dlatego zastępujemy je przez zaimek <strong>het</strong>, a nie przez formy żeńskie!
+            <br><small style="color:#7f1d1d;font-style:italic;">Ik koop het boek. → Ik koop <strong>het</strong>. (Kupuję książkę. → Kupuję ją [to].)</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: QUIZ (INTERACTIEVE EXERCISES) -->
+  <section class="section-card">
+    <div class="section-title">
+      <span class="number">3</span>
+      <h2>Interaktywny Quiz / Oefeningen</h2>
+    </div>
+
+    <p class="intro-text">
+      Wybierz właściwy zaimek osobowy lub dzierżawczy, aby poprawnie uzupełnić luki w zdaniach. Kliknij odpowiedź, aby natychmiast sprawdzić wynik i przeczytać wyjaśnienie po polsku.
+    </p>
+
+    <!-- Score Dashboard -->
+    <div class="quiz-dashboard">
+      <div class="quiz-progress-text">Postęp: <span id="quiz-answered">0</span> z 10 pytań</div>
+      <div class="quiz-progress-bar-container">
+        <div class="quiz-progress-bar" id="quiz-bar"></div>
+      </div>
+      <div class="quiz-score-badge">Wynik: <span id="quiz-score">0</span> / 10</div>
+    </div>
+
+    <!-- Quiz List -->
+    <div class="quiz-grid" id="quiz-container">
+      <!-- Questions will be dynamically inserted here by JS for high polish and instant reactivity -->
+    </div>
+
+    <button class="quiz-reset-btn" onclick="resetQuiz()">↻ Zacznij od nowa</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    Werkend Nederlands Basis · Oefenmateriaal Zaimki Osobowe
+    <small>Gemaakt door Rida Abouhayan</small>
+  </footer>
+
+</div>
+
+<!-- INTERACTIVE QUIZ ENGINE -->
+<script>
+const quizData = [
+  {
+    id: 1,
+    sentence: "Hassan woont in Eindhoven. <span class='gap'>___</span> werkt bij VDL.",
+    translation: "Hassan mieszka w Eindhoven. ___ pracuje w VDL.",
+    options: ["hij", "hem", "zijn", "zij"],
+    correct: "hij",
+    explanation: "\"Hassan\" to mężczyzna (on) i jest podmiotem wykonującym czynność (werkt - pracuje). W niderlandzkim zaimek podmiotowy w liczbie pojedynczej rodzaju męskiego to zawsze <strong>hij</strong>."
+  },
+  {
+    id: 2,
+    sentence: "Amira slaapt nog. Hassan maakt <span class='gap'>___</span> voorzichtig wakker.",
+    translation: "Amira jeszcze śpi. Hassan budzi ___ ostrożnie.",
+    options: ["hij", "haar", "hem", "zij"],
+    correct: "haar",
+    explanation: "\"Amira\" to kobieta (ona) i w tym zdaniu jest dopełnieniem (odbiorcą czynności budzenia - Hassan budzi ją). Używamy zaimka dopełnieniowego rodzaju żeńskiego <strong>haar</strong>."
+  },
+  {
+    id: 3,
+    sentence: "Dit is Pawan. Hij is <span class='gap'>___</span> nieuwe collega.",
+    translation: "To jest Pawan. On jest ___ nowym kolegą. [mój]",
+    options: ["mijn", "mij", "me", "ik"],
+    correct: "mijn",
+    explanation: "Chcemy wyrazić posiadanie/przynależność (mój nowy kolega). Zaimek dzierżawczy przed rzeczownikiem dla osoby \"ja\" to zawsze <strong>mijn</strong>."
+  },
+  {
+    id: 4,
+    sentence: "De bus is laat vandaag. <span class='gap'>___</span> komt pas over tien minuten.",
+    translation: "Autobus jest dzisiaj spóźniony. ___ przyjedzie dopiero za dziesięć minut.",
+    options: ["Het", "Hij", "Ze", "Hem"],
+    correct: "Hij",
+    explanation: "Słowo \"de bus\" ma rodzajnik <strong>de</strong>. Jako podmiot (wykonawca czynności przyjechania) zastępujemy je zaimkiem podmiotowym <strong>hij</strong> (zgodnie z zasadą dla rzeczowników z rodzajnikiem de)."
+  },
+  {
+    id: 5,
+    sentence: "Het kantoor is dicht. <span class='gap'>___</span> gaat pas morgenochtend open.",
+    translation: "Biuro jest zamknięte. ___ otwiera się dopiero jutro rano.",
+    options: ["Hij", "Het", "Ze", "Hem"],
+    correct: "Het",
+    explanation: "Słowo \"het kantoor\" łączy się z rodzajnikiem <strong>het</strong>. Rzeczowniki typu <strong>het</strong> jako podmiot zastępujemy zaimkiem <strong>het</strong>."
+  },
+  {
+    id: 6,
+    sentence: "Waar is de computer? Ik zoek <span class='gap'>___</span>.",
+    translation: "Gdzie jest komputer? Szukam ___.",
+    options: ["het", "hem", "ze", "hij"],
+    correct: "hem",
+    explanation: "Słowo \"de computer\" to słowo z rodzajnikiem <strong>de</strong>. Szukamy go (dopełnienie), więc zastępujemy go zaimkiem dopełnieniowym <strong>hem</strong>."
+  },
+  {
+    id: 7,
+    sentence: "Het rapport is erg lang. Ik lees <span class='gap'>___</span> vanavond.",
+    translation: "Raport jest bardzo długi. Przeczytam ___ dziś wieczorem.",
+    options: ["hem", "het", "ze", "hij"],
+    correct: "het",
+    explanation: "Słowo \"het rapport\" ma rodzajnik <strong>het</strong>. Szukamy / czytamy je (dopełnienie), dlatego zastępujemy je zaimkiem dopełnieniowym <strong>het</strong>."
+  },
+  {
+    id: 8,
+    sentence: "Waar liggen de sleutels? Ik kan <span class='gap'>___</span> nergens vinden.",
+    translation: "Gdzie leżą klucze? Nie mogę ___ nigdzie znaleźć.",
+    options: ["hem", "het", "ze", "zij"],
+    correct: "ze",
+    explanation: "Słowo \"de sleutels\" jest w liczbie mnogiej. Wszystkie rzeczowniki w liczbie mnogiej jako dopełnienie (znaleźć je) zastępujemy zaimkiem <strong>ze</strong>."
+  },
+  {
+    id: 9,
+    sentence: "Mijn collega's werken hard. <span class='gap'>___</span> project moet deze week klaar zijn.",
+    translation: "Moi koledzy ciężko pracują. ___ projekt musi być gotowy w tym tygodniu. [ich]",
+    options: ["Ons", "Hun", "Haar", "Jullie"],
+    correct: "Hun",
+    explanation: "Chodzi o projekt należący do kolegów (\"ich\" projekt, 3. osoba liczby mnogiej). Zaimek dzierżawczy określający własność grupy ludzi to <strong>hun</strong>."
+  },
+  {
+    id: 10,
+    sentence: "Dag meneer Visser, is dit <span class='gap'>___</span> jas?",
+    translation: "Dzień dobry panie Visser, czy to ___ kurtka?",
+    options: ["uw", "u", "jouw", "je"],
+    correct: "uw",
+    explanation: "Zwracamy się grzecznościowo i formalnie do Pana (\"meneer Visser\") i pytamy o własność (Pana kurtka). Używamy formy grzecznościowej zaimka dzierżawczego, która brzmi <strong>uw</strong>."
+  }
+];
+
+let scores = {};
+let answeredCount = 0;
+
+function initQuiz() {
+  const container = document.getElementById("quiz-container");
+  container.innerHTML = "";
+  scores = {};
+  answeredCount = 0;
+  updateDashboard();
+
+  quizData.forEach((q) => {
+    const card = document.createElement("div");
+    card.className = "quiz-card";
+    card.id = `q-card-${q.id}`;
+    
+    // Shuffle options to make it educational
+    const shuffledOptions = [...q.options];
+
+    card.innerHTML = `
+      <div class="quiz-question-header">
+        <span class="quiz-question-num">Pytanie ${q.id}</span>
+        <div class="quiz-sentence" id="q-sentence-${q.id}">${q.sentence}</div>
+      </div>
+      <div class="quiz-translation">${q.translation}</div>
+      <div class="quiz-options">
+        ${shuffledOptions.map(opt => `
+          <button class="option-btn" onclick="selectOption(${q.id}, '${opt}', this)">${opt}</button>
+        `).join("")}
+      </div>
+      <div class="quiz-feedback" id="q-feedback-${q.id}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qId, selectedOpt, btnEl) {
+  const question = quizData.find(q => q.id === qId);
+  const card = document.getElementById(`q-card-${qId}`);
+  const feedback = document.getElementById(`q-feedback-${qId}`);
+  const sentence = document.getElementById(`q-sentence-${qId}`);
+  
+  // If already answered, do nothing
+  if (scores[qId] !== undefined) return;
+  
+  const buttons = card.querySelectorAll(".option-btn");
+  buttons.forEach(btn => {
+    btn.classList.add("disabled");
+    if (btn.textContent.trim() === question.correct) {
+      btn.classList.add("show-correct");
+    }
+  });
+
+  const isCorrect = selectedOpt === question.correct;
+  scores[qId] = isCorrect ? 1 : 0;
+  answeredCount++;
+
+  if (isCorrect) {
+    btnEl.classList.add("selected-correct");
+    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--success); color: var(--success);">${question.correct}</span>`);
+    
+    feedback.className = "quiz-feedback correct-feedback";
+    feedback.innerHTML = `
+      <div class="quiz-feedback-title">✅ Dobrze! (Goed gedaan!)</div>
+      <p>${question.explanation}</p>
+    `;
+  } else {
+    btnEl.classList.add("selected-wrong");
+    sentence.innerHTML = question.sentence.replace("<span class='gap'>___</span>", `<span class="gap" style="border-bottom-color: var(--error); color: var(--error);">${selectedOpt}</span>`);
+    
+    feedback.className = "quiz-feedback wrong-feedback";
+    feedback.innerHTML = `
+      <div class="quiz-feedback-title">❌ Spróbuj jeszcze raz!</div>
+      <p>Wybrana odpowiedź to <strong>${selectedOpt}</strong>. Prawidłowa odpowiedź to <strong>${question.correct}</strong>.<br><br>${question.explanation}</p>
+    `;
+  }
+
+  updateDashboard();
+}
+
+function updateDashboard() {
+  const scoreText = document.getElementById("quiz-score");
+  const answeredText = document.getElementById("quiz-answered");
+  const progressBar = document.getElementById("quiz-bar");
+
+  let correctSum = 0;
+  Object.keys(scores).forEach(key => {
+    correctSum += scores[key];
+  });
+
+  scoreText.textContent = correctSum;
+  answeredText.textContent = answeredCount;
+  
+  const percentage = (answeredCount / quizData.length) * 100;
+  progressBar.style.width = `${percentage}%`;
+}
+
+function resetQuiz() {
+  initQuiz();
+}
+
+// Start on page load
+window.onload = function() {
+  initQuiz();
+};
+</script>
+
+</body>
+</html>
