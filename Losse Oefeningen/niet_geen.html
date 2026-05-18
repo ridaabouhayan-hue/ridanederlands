@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niet of Geen? - NT2 A0/A1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --geen-bg: #ecfdf5; /* Emerald 50 */
+            --geen-main: #059669; /* Emerald 600 */
+            --geen-dark: #065f46; /* Emerald 800 */
+            
+            --niet-bg: #f5f3ff; /* Indigo/Violet 50 */
+            --niet-main: #6366f1; /* Indigo/Violet 600 */
+            --niet-dark: #4338ca; /* Indigo/Violet 800 */
+
+            --fout-bg: #fffbeb; /* Amber 50 */
+            --fout-main: #d97706; /* Amber 600 */
+            --fout-dark: #92400e; /* Amber 800 */
+            
+            --text-main: #2c3e50;
+            --text-light: #5d6d7e;
+            --white: #ffffff;
+            --shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 1.2rem; display: flex; justify-content: center; gap: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 0.5rem 1.2rem; border-radius: 50px; transition: var(--transition); }
+        nav a:hover { background: #f1f5f9; }
+        
+        .lang-container { position: sticky; top: 70px; display: flex; justify-content: center; gap: 12px; padding: 20px; background: rgba(248, 250, 252, 0.98); backdrop-filter: blur(10px); z-index: 999; border-bottom: 2px solid #e2e8f0; }
+        .lang-btn { border: 2px solid #e2e8f0; background: white; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 800; font-size: 1rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .lang-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+        
+        .hero { padding: 10rem 2rem 4rem; text-align: center; }
+        .hero h1 { font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(90deg, var(--geen-main), var(--niet-main)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.4rem; color: var(--text-light); max-width: 800px; margin: 0 auto; }
+        
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .section-title { font-size: 3rem; margin-bottom: 3rem; text-align: center; font-weight: 800; }
+        
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
+        .card { background: white; border-radius: 40px; padding: 3rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        
+        .emoji-header { font-size: 5rem; text-align: center; margin-bottom: 1.5rem; }
+        .card .word { font-size: 3.5rem; font-weight: 800; margin-bottom: 0.8rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        .geen .word { color: var(--geen-main); }
+        .niet .word { color: var(--niet-main); }
+        
+        .card .definition { font-size: 1.25rem; color: var(--text-main); margin-bottom: 2rem; text-align: center; font-weight: 500; }
+        .card .example-list { margin-bottom: 2rem; }
+        .card .example-item { margin-bottom: 18px; font-size: 1.15rem; font-weight: 500; background: #f8fafc; padding: 12px 18px; border-radius: 15px; border-left: 5px solid #cbd5e1; }
+        .geen .example-item { border-left-color: var(--geen-main); }
+        .niet .example-item { border-left-color: var(--niet-main); }
+        
+        .translation-sub { font-size: 0.95rem; color: var(--text-light); font-style: italic; margin-top: 4px; display: block; }
+        .card .logic-box { padding: 1.5rem; border-radius: 20px; font-size: 1.1rem; font-weight: 700; margin-top: auto; }
+        .geen .logic-box { background: var(--geen-bg); color: var(--geen-dark); }
+        .niet .logic-box { background: var(--niet-bg); color: var(--niet-dark); }
+        
+        .mistakes-section { background: var(--white); padding: 3rem; border-radius: 40px; box-shadow: var(--shadow); border: 2px dashed #cbd5e1; margin-bottom: 6rem; }
+        .mistakes-title { color: var(--fout-dark); font-size: 2rem; font-weight: 800; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+        .mistakes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2.5rem; }
+        .mistake-box { background: var(--fout-bg); border: 2px solid #fde68a; border-radius: 25px; padding: 2rem; }
+        .mistake-box h4 { font-size: 1.3rem; color: var(--fout-dark); margin-bottom: 1rem; font-weight: 800; border-bottom: 2px solid #fcd34d; padding-bottom: 5px; }
+        .mistake-row { display: flex; flex-direction: column; gap: 12px; }
+        .mistake-row div { font-size: 1.15rem; font-weight: 600; padding: 8px 15px; border-radius: 12px; display: flex; align-items: center; gap: 8px; }
+        .mistake-row .wrong { background: #fee2e2; color: #991b1b; }
+        .mistake-row .right { background: #d1fae5; color: #065f46; }
+        
+        .exercise-section { background: white; padding: 5rem 3rem; border-radius: 50px; box-shadow: var(--shadow); margin: 6rem auto; max-width: 1000px; }
+        .exercise-intro { text-align: center; margin-bottom: 3rem; }
+        .exercise-intro p { font-size: 1.2rem; color: var(--text-light); }
+        
+        .exercise-questions { display: flex; flex-direction: column; gap: 2rem; }
+        .q-row { background: #f1f5f9; padding: 22px; border-radius: 25px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition); border: 2px solid transparent; }
+        .q-row:hover { background: #e2e8f0; }
+        .q-sentence-container { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 1.25rem; font-weight: 600; width: 100%; }
+        .q-row input { width: 110px; padding: 8px 12px; border: 3px solid #cbd5e1; border-radius: 12px; text-align: center; font-weight: 800; font-size: 1.2rem; font-family: 'Outfit', sans-serif; color: var(--text-main); outline: none; transition: var(--transition); }
+        .q-row input:focus { border-color: var(--text-main); background: #fff; }
+        
+        .feedback { font-size: 1.8rem; display: inline-flex; align-items: center; margin-left: 10px; }
+        
+        [lang]:not([lang="nl"]) { display: none; }
+        
+        footer { text-align: center; padding: 4rem 2rem 2rem; color: var(--text-light); font-weight: 800; font-size: 1.1rem; border-top: 1px solid #e2e8f0; margin-top: 6rem; background: #fff; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .section-title { font-size: 2.2rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .mistakes-grid { grid-template-columns: 1fr; }
+            .exercise-section { padding: 3rem 1.5rem; }
+            .q-sentence-container { font-size: 1.1rem; }
+            .q-row input { width: 90px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#intro">Start</a>
+        <a href="#uitleg">💡 <span lang="nl">Regels</span><span lang="en">Rules</span></a>
+        <a href="#fouten">⚠️ <span lang="nl">Fouten</span><span lang="en">Mistakes</span></a>
+        <a href="#oefenen">✍️ <span lang="nl">Oefenen</span><span lang="en">Practice</span></a>
+    </nav>
+    
+    <div class="lang-container">
+        <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+    </div>
+    
+    <header class="hero" id="intro">
+        <h1>
+            <span lang="nl">Niet of Geen?</span>
+            <span lang="en">Niet or Geen?</span>
+        </h1>
+        <p>
+            <span lang="nl">Leer de belangrijkste regels voor ontkenning in het Nederlands. Speciaal voor werk en kantoor!</span>
+            <span lang="en">Learn the most important rules for negation in Dutch. Specially designed for work and office!</span>
+        </p>
+    </header>
+    
+    <main class="container">
+        <section id="uitleg">
+            <h2 class="section-title">
+                <span lang="nl">💡 De Regels</span>
+                <span lang="en">💡 The Rules</span>
+            </h2>
+            
+            <div class="cards-grid">
+                <!-- CARD: GEEN -->
+                <div class="card geen">
+                    <div class="emoji-header">🚫</div>
+                    <div class="word">geen</div>
+                    <div class="definition">
+                        <span lang="nl">Gebruik <strong>geen</strong> voor zelfstandige naamwoorden (mensen, dingen, plannen).</span>
+                        <span lang="en">Use <strong>geen</strong> before nouns (people, things, plans).</span>
+                    </div>
+                    
+                    <div class="example-list">
+                        <div class="example-item">
+                            <div>✅ Ik heb <strong>geen</strong> computer van de zaak.</div>
+                            <span class="translation-sub" lang="en">(I have no company computer.)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>✅ Wij hebben vandaag <strong>geen</strong> pauze.</div>
+                            <span class="translation-sub" lang="en">(We have no break today.)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>✅ Zij spreekt <strong>geen</strong> Nederlands met collega's.</div>
+                            <span class="translation-sub" lang="en">(She speaks no Dutch with colleagues.)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="logic-box">
+                        <span lang="nl">💡 <strong>Regel:</strong> geen + zelfstandig naamwoord (substantief). Het vervangt 'een' of een meervoud.</span>
+                        <span lang="en">💡 <strong>Rule:</strong> geen + noun. It replaces 'een' (a/an) or a plural without an article.</span>
+                    </div>
+                </div>
+                
+                <!-- CARD: NIET -->
+                <div class="card niet">
+                    <div class="emoji-header">🛑</div>
+                    <div class="word">niet</div>
+                    <div class="definition">
+                        <span lang="nl">Gebruik <strong>niet</strong> voor de rest (werkwoorden, bijvoeglijke naamwoorden, bijwoorden en specifieke dingen).</span>
+                        <span lang="en">Use <strong>niet</strong> for the rest (verbs, adjectives, adverbs, and specific things).</span>
+                    </div>
+                    
+                    <div class="example-list">
+                        <div class="example-item">
+                            <div>✅ Ik <strong>werk</strong> vandaag <strong>niet</strong>.</div>
+                            <span class="translation-sub" lang="en">(I am not working today. - negating a verb)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>✅ Dit kantoor is <strong>niet</strong> <strong>groot</strong>.</div>
+                            <span class="translation-sub" lang="en">(This office is not big. - negating an adjective)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>✅ Ik begrijp <strong>de instructie</strong> <strong>niet</strong>.</div>
+                            <span class="translation-sub" lang="en">(I do not understand the instruction. - negating a specific noun with 'de')</span>
+                        </div>
+                    </div>
+                    
+                    <div class="logic-box">
+                        <span lang="nl">💡 <strong>Regel:</strong> niet = voor de rest (werkwoorden, adjectieven, preposities, en specifieke woorden met de/het/mijn).</span>
+                        <span lang="en">💡 <strong>Rule:</strong> niet = for the rest (verbs, adjectives, prepositions, and specific nouns with de/het/my).</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: MISTAKES -->
+        <section class="mistakes-section" id="fouten">
+            <h3 class="mistakes-title">
+                <span lang="nl">⚠️ Veelgemaakte Fouten</span>
+                <span lang="en">⚠️ Common Mistakes</span>
+            </h3>
+            
+            <div class="mistakes-grid">
+                <div class="mistake-box">
+                    <h4 lang="nl">1. Zelfstandige naamwoorden</h4>
+                    <h4 lang="en">1. Nouns</h4>
+                    <div class="mistake-row">
+                        <div class="wrong">❌ Ik heb niet een contract bij VDL.</div>
+                        <div class="right">✅ Ik heb <strong>geen</strong> contract bij VDL.</div>
+                        <span class="translation-sub" lang="en">Explanation: In Dutch, we never say 'niet een'. We replace it with 'geen'.</span>
+                    </div>
+                </div>
+                
+                <div class="mistake-box">
+                    <h4 lang="nl">2. Werkwoorden & Bijwoorden</h4>
+                    <h4 lang="en">2. Verbs & Adverbs</h4>
+                    <div class="mistake-row">
+                        <div class="wrong">❌ Ik werk geen vandaag.</div>
+                        <div class="right">✅ Ik werk vandaag <strong>niet</strong>.</div>
+                        <span class="translation-sub" lang="en">Explanation: 'Vandaag' (today) and 'werken' (to work) are not nouns. So we must use 'niet'.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: EXERCISE -->
+        <section class="exercise-section" id="oefenen">
+            <div class="exercise-intro">
+                <h2 class="section-title">
+                    <span lang="nl">✍️ Oefenen</span>
+                    <span lang="en">✍️ Practice</span>
+                </h2>
+                <p>
+                    <span lang="nl">Typ <strong>niet</strong> of <strong>geen</strong> in de lege vakken. Krijg direct feedback!</span>
+                    <span lang="en">Type <strong>niet</strong> or <strong>geen</strong> in the blank spaces. Get instant feedback!</span>
+                </p>
+            </div>
+            
+            <div class="exercise-questions" id="exercise-container">
+                <!-- Generated dynamically by JS -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Gemaakt door Rida Abouhayan</p>
+    </footer>
+    
+    <script>
+        let currentLang = 'nl';
+        
+        const questions = [
+            {
+                parts: ["Ik heb ", " computer van de zaak."],
+                hint: { nl: "Ik heb (geen) computer van de zaak.", en: "I have no company computer." },
+                answer: "geen"
+            },
+            {
+                parts: ["De fabriek van VDL is vandaag ", " open."],
+                hint: { nl: "De fabriek van VDL is vandaag (niet) open.", en: "The VDL factory is not open today." },
+                answer: "niet"
+            },
+            {
+                parts: ["Wij drinken ", " koffie in de pauze."],
+                hint: { nl: "Wij drinken (geen) koffie in de pauze.", en: "We drink no coffee during the break." },
+                answer: "geen"
+            },
+            {
+                parts: ["Mijn collega spreekt ", " snel Nederlands."],
+                hint: { nl: "Mijn collega spreekt (niet) snel Nederlands.", en: "My colleague does not speak Dutch quickly." },
+                answer: "niet"
+            },
+            {
+                parts: ["Er zijn vandaag ", " vergaderingen gepland."],
+                hint: { nl: "Er zijn vandaag (geen) vergaderingen gepland.", en: "There are no meetings scheduled today." },
+                answer: "geen"
+            },
+            {
+                parts: ["Ik kan vanmiddag helaas ", " werken."],
+                hint: { nl: "Ik kan vanmiddag helaas (niet) werken.", en: "I unfortunately cannot work this afternoon." },
+                answer: "niet"
+            },
+            {
+                parts: ["Zij heeft ", " vast contract bij VDL."],
+                hint: { nl: "Zij heeft (geen) vast contract bij VDL.", en: "She has no permanent contract at VDL." },
+                answer: "geen"
+            },
+            {
+                parts: ["Dit rapport is nog ", " klaar."],
+                hint: { nl: "Dit rapport is nog (niet) klaar.", en: "This report is not ready yet." },
+                answer: "niet"
+            },
+            {
+                parts: ["Hij begrijpt de nieuwe machine ", "."],
+                hint: { nl: "Hij begrijpt de nieuwe machine (niet).", en: "He does not understand the new machine." },
+                answer: "niet"
+            },
+            {
+                parts: ["Er is ", " papier meer in de printer."],
+                hint: { nl: "Er is (geen) papier meer in de printer.", en: "There is no more paper in the printer." },
+                answer: "geen"
+            }
+        ];
+        
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('body [lang]').forEach(el => {
+                const isMatch = el.getAttribute('lang') === lang;
+                if (el.tagName === 'SPAN') {
+                    el.style.display = isMatch ? 'inline' : 'none';
+                } else {
+                    el.style.display = isMatch ? 'block' : 'none';
+                }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.id === 'btn-' + lang);
+            });
+            renderExercises();
+        }
+        
+        function renderExercises() {
+            const container = document.getElementById('exercise-container');
+            if (!container) return;
+            
+            container.innerHTML = questions.map((q, idx) => {
+                // Fetch the current value if the input already exists to preserve what the user typed
+                const inputId = `q-input-${idx}`;
+                const existingInput = document.getElementById(inputId);
+                const val = existingInput ? existingInput.value : '';
+                const borderColor = existingInput ? existingInput.style.borderColor : '#cbd5e1';
+                
+                // Get check status
+                let feedbackText = '';
+                if (val.trim().toLowerCase() === q.answer.toLowerCase()) {
+                    feedbackText = '<span style="color: green;">✅</span>';
+                } else if (val.trim().length > 0) {
+                    feedbackText = '<span style="color: red;">❌</span>';
+                }
+                
+                return `
+                    <div class="q-row">
+                        <div class="q-sentence-container">
+                            <span style="color: var(--text-light); font-weight: 800; margin-right: 10px;">${idx + 1}.</span>
+                            <span>${q.parts[0]}</span>
+                            <input type="text" id="${inputId}" value="${val}" style="border-color: ${borderColor}" oninput="check(${idx}, this)" placeholder="...">
+                            <span>${q.parts[1]}</span>
+                            <span class="feedback" id="q-feedback-${idx}">${feedbackText}</span>
+                        </div>
+                        <span class="translation-sub" lang="en">Translation: ${q.hint.en}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            // Reapply visible language setting to newly rendered dynamic translations
+            document.querySelectorAll('#exercise-container [lang]').forEach(el => {
+                const isMatch = el.getAttribute('lang') === currentLang;
+                if (el.tagName === 'SPAN') {
+                    el.style.display = isMatch ? 'inline' : 'none';
+                } else {
+                    el.style.display = isMatch ? 'block' : 'none';
+                }
+            });
+        }
+        
+        function check(idx, input) {
+            const val = input.value.trim().toLowerCase();
+            const correctAnswer = questions[idx].answer;
+            const feedbackEl = document.getElementById(`q-feedback-${idx}`);
+            
+            if (val === correctAnswer) {
+                feedbackEl.innerHTML = '<span style="color: green;">✅</span>';
+                input.style.borderColor = 'green';
+            } else if (val.length > 0) {
+                feedbackEl.innerHTML = '<span style="color: red;">❌</span>';
+                input.style.borderColor = 'red';
+            } else {
+                feedbackEl.innerHTML = '';
+                input.style.borderColor = '#cbd5e1';
+            }
+        }
+        
+        // Initial setup
+        setLang('nl');
+    </script>
+</body>
+</html>
