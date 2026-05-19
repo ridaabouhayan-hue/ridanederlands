@@ -465,6 +465,27 @@ section{margin:28px 0}
 </div><!-- container -->
 
 <script>
+
+// --- INJECTED FUZZY MATCH LOGIC ---
+function levenshtein(a, b) {
+    if(a.length === 0) return b.length;
+    if(b.length === 0) return a.length;
+    var matrix = [];
+    for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+    for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+    for(var i = 1; i <= b.length; i++){
+        for(var j = 1; j <= a.length; j++){
+            if(b.charAt(i-1) == a.charAt(j-1)){
+                matrix[i][j] = matrix[i-1][j-1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// ----------------------------------
+
 // ============================
 // LANGUAGE TOGGLE
 // ============================
@@ -561,35 +582,64 @@ function buildQuiz(){
 }
 
 function checkQuiz(qi,chosen,div){
-  if(div.dataset.done)return;div.dataset.done='1';quizAnswered++;
+  if(div.dataset.done === '1') return;
+  let attempts = parseInt(div.dataset.attempts || '0');
+  attempts++;
+  div.dataset.attempts = attempts;
+
   const labels=div.querySelectorAll('label'),fb=div.querySelector('.feedback'),correct=quizData[qi].correct;
-  labels.forEach((l,j)=>{if(j===correct)l.classList.add('correct');if(j===chosen&&j!==correct)l.classList.add('wrong')});
-  fb.style.display='block';
-  if(chosen===correct){quizScore++;fb.style.background='#d4edda';fb.style.color='var(--success)';fb.textContent='✓ '+(lang==='nl'?'Goed! ':'Dobrze! ')+quizData[qi].explain[lang]}
-  else{fb.style.background='#fde8e8';fb.style.color='var(--error)';fb.textContent='✗ '+(lang==='nl'?'Fout. ':'Źle. ')+quizData[qi].explain[lang]}
+  labels.forEach(l => l.classList.remove('wrong'));
+
+  if(chosen===correct){
+    div.dataset.done='1';
+    quizAnswered++;
+    quizScore += (attempts === 1 ? 1 : 0.5);
+    labels.forEach((l,j)=>{if(j===correct)l.classList.add('correct');});
+    fb.style.display='block';
+    fb.style.background='#d4edda';fb.style.color='var(--success)';
+    fb.innerHTML='✓ '+(lang==='nl'?'Goed! ':'Dobrze! ')+quizData[qi].explain[lang];
+  } else {
+    labels.forEach((l,j)=>{if(j===chosen)l.classList.add('wrong');});
+    fb.style.display='block';
+    fb.style.background='#fde8e8';fb.style.color='var(--error)';
+    
+    if (attempts === 1) {
+        fb.innerHTML='✗ '+(lang==='nl'?'Fout. ':'Źle. ') + '<button class="retry-btn" style="margin-left:10px;padding:4px 8px;border-radius:4px;border:none;background:var(--accent);color:white;cursor:pointer;">' + (lang==='nl'?'Probeer opnieuw':'Spróbuj ponownie') + '</button>';
+        fb.querySelector('.retry-btn').onclick = function(e) {
+            e.stopPropagation();
+            labels.forEach(l => l.classList.remove('wrong'));
+            fb.style.display = 'none';
+        };
+    } else {
+        div.dataset.done='1';
+        quizAnswered++;
+        labels.forEach((l,j)=>{if(j===correct)l.classList.add('correct');});
+        fb.innerHTML='✗ '+(lang==='nl'?'Fout. ':'Źle. ')+quizData[qi].explain[lang];
+    }
+  }
+
   document.getElementById('quizProgress').style.width=(quizAnswered/10*100)+'%';
-  if(quizAnswered===10){document.getElementById('scoreBar').style.display='block';document.getElementById('scoreNum').textContent=quizScore+'/10'}
+  if(quizAnswered===10){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}document.getElementById('scoreBar').style.display='block';document.getElementById('scoreNum').textContent=quizScore+'/10'}
 }
-function resetQuiz(){buildQuiz()}
 
 // ============================
 // DRAG & DROP (click-based)
 // ============================
 const dragSentences=[
-  {words:["Ik","werk","elke dag","in de fabriek"],answer:"Ik werk elke dag in de fabriek"},
-  {words:["Zij","spreekt","drie talen","op het werk"],answer:"Zij spreekt drie talen op het werk"},
-  {words:["Wij","hebben","pauze","om 12 uur"],answer:"Wij hebben pauze om 12 uur"},
-  {words:["Hij","wil","supervisor","worden"],answer:"Hij wil supervisor worden"},
-  {words:["Ik","moet","morgen","vroeg","werken"],answer:"Ik moet morgen vroeg werken"},
-  {words:["De levering","komt","vandaag","niet"],answer:"De levering komt vandaag niet"},
-  {words:["Zij","kan","goed","Nederlands","spreken"],answer:"Zij kan goed Nederlands spreken"},
-  {words:["De voorman","controleert","de machine"],answer:"De voorman controleert de machine"},
-  {words:["Wij","kunnen","de bestelling","versturen"],answer:"Wij kunnen de bestelling versturen"},
-  {words:["Hij","gaat","volgend jaar","de supervisor","opvolgen"],answer:"Hij gaat volgend jaar de supervisor opvolgen"},
-  {words:["Waar","werk","jij","vandaag"],answer:"Waar werk jij vandaag"},
-  {words:["Heb","je","pauze","om 12 uur"],answer:"Heb je pauze om 12 uur"},
-  {words:["Ik","heb","geen","tijd","vandaag"],answer:"Ik heb geen tijd vandaag"},
-  {words:["Hij","werkt","niet","op de expeditie"],answer:"Hij werkt niet op de expeditie"},
+  {words:["Ik","werk","elke dag","in de fabriek"],answer:"Ik werk elke dag in de fabriek", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["Zij","spreekt","drie talen","op het werk"],answer:"Zij spreekt drie talen op het werk", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["Wij","hebben","pauze","om 12 uur"],answer:"Wij hebben pauze om 12 uur", hint:{nl:"Tijd (om 12 uur) komt na het object.", pl:"Czas po obiekcie."}},
+  {words:["Hij","wil","supervisor","worden"],answer:"Hij wil supervisor worden", hint:{nl:"Tweede werkwoord (worden) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["Ik","moet","morgen","vroeg","werken"],answer:"Ik moet morgen vroeg werken", hint:{nl:"Tweede werkwoord (werken) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["De levering","komt","vandaag","niet"],answer:"De levering komt vandaag niet", hint:{nl:"Niet staat achteraan in de zin.", pl:"Niet stoi na końcu."}},
+  {words:["Zij","kan","goed","Nederlands","spreken"],answer:"Zij kan goed Nederlands spreken", hint:{nl:"Tweede werkwoord (spreken) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["De voorman","controleert","de machine"],answer:"De voorman controleert de machine", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["Wij","kunnen","de bestelling","versturen"],answer:"Wij kunnen de bestelling versturen", hint:{nl:"Tweede werkwoord (versturen) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["Hij","gaat","volgend jaar","de supervisor","opvolgen"],answer:"Hij gaat volgend jaar de supervisor opvolgen", hint:{nl:"Tweede werkwoord (opvolgen) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["Waar","werk","jij","vandaag"],answer:"Waar werk jij vandaag", hint:{nl:"Vraagwoord (waar) + werkwoord + onderwerp.", pl:"Słowo pytające + czasownik + podmiot."}},
+  {words:["Heb","je","pauze","om 12 uur"],answer:"Heb je pauze om 12 uur", hint:{nl:"Ja/nee vraag begint met het werkwoord.", pl:"Pytanie tak/nie zaczyna się od czasownika."}},
+  {words:["Ik","heb","geen","tijd","vandaag"],answer:"Ik heb geen tijd vandaag", hint:{nl:"Gebruik geen voor het zelfstandig naamwoord.", pl:"Użyj geen przed rzeczownikiem."}},
+  {words:["Hij","werkt","niet","op de expeditie"],answer:"Hij werkt niet op de expeditie", hint:{nl:"Niet staat voor de plaats.", pl:"Niet stoi przed miejscem."}},
 ];
 
 function buildDragExercises(){
@@ -616,7 +666,7 @@ function buildDragExercises(){
     btn.onclick=()=>{
       const attempt=Array.from(zone.children).map(c=>c.textContent).join(' ');
       if(attempt===item.answer){fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!')}
-      else{fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer}
+      else{fb.className='dd-feedback nok';fb.innerHTML='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer + (item.hint ? '<br><span style="color:var(--accent2);font-size:0.85rem">💡 Tip: ' + item.hint[lang] + '</span>' : '')}
     };
     ex.appendChild(bank);ex.appendChild(zone);ex.appendChild(btn);ex.appendChild(fb);
     area.appendChild(ex);
@@ -627,17 +677,17 @@ function buildDragExercises(){
 // SCHRIJF
 // ============================
 const schrijfData=[
-  {words:["werkt","Hij","het magazijn","in"],answer:"Hij werkt in het magazijn"},
-  {words:["heb","Ik","twee kinderen"],answer:"Ik heb twee kinderen"},
-  {words:["wil","Zij","Nederlands","leren"],answer:"Zij wil Nederlands leren"},
-  {words:["is","De machine","kapot","vandaag"],answer:"De machine is vandaag kapot"},
-  {words:["moet","Hij","de collega's","aansturen"],answer:"Hij moet de collega's aansturen"},
-  {words:["heeft","Zij","een nieuwe bestelling"],answer:"Zij heeft een nieuwe bestelling"},
-  {words:["kunnen","Wij","morgen","beginnen"],answer:"Wij kunnen morgen beginnen"},
-  {words:["stuur","Ik","het pakket","naar de klant"],answer:"Ik stuur het pakket naar de klant"},
+  {words:["werkt","Hij","het magazijn","in"],answer:"Hij werkt in het magazijn", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["heb","Ik","twee kinderen"],answer:"Ik heb twee kinderen", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["wil","Zij","Nederlands","leren"],answer:"Zij wil Nederlands leren", hint:{nl:"Tweede werkwoord (leren) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["is","De machine","kapot","vandaag"],answer:"De machine is vandaag kapot", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["moet","Hij","de collega's","aansturen"],answer:"Hij moet de collega's aansturen", hint:{nl:"Tweede werkwoord (aansturen) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["heeft","Zij","een nieuwe bestelling"],answer:"Zij heeft een nieuwe bestelling", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["kunnen","Wij","morgen","beginnen"],answer:"Wij kunnen morgen beginnen", hint:{nl:"Tweede werkwoord (beginnen) staat achteraan.", pl:"Drugi czasownik na końcu."}},
+  {words:["stuur","Ik","het pakket","naar de klant"],answer:"Ik stuur het pakket naar de klant", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
   {words:["gaat","Hij","de supervisor","opvolgen"],answer:"Hij gaat de supervisor opvolgen"},
-  {words:["spreekt","Zij","drie talen","op het werk"],answer:"Zij spreekt drie talen op het werk"},
-  {words:["werk","jij","Waar","vandaag"],answer:"Waar werk jij vandaag"},
+  {words:["spreekt","Zij","drie talen","op het werk"],answer:"Zij spreekt drie talen op het werk", hint:{nl:"Werkwoord op positie 2.", pl:"Czasownik na pozycji 2."}},
+  {words:["werk","jij","Waar","vandaag"],answer:"Waar werk jij vandaag", hint:{nl:"Vraagwoord (waar) + werkwoord + onderwerp.", pl:"Słowo pytające + czasownik + podmiot."}},
   {words:["geen","Ik","heb","tijd"],answer:"Ik heb geen tijd"},
   {words:["Hoe","uur","werk","hoeveel","jij"],answer:"Hoeveel uur werk jij"},
   {words:["niet","werkt","De machine","goed"],answer:"De machine werkt niet goed"},
@@ -664,8 +714,18 @@ function buildSchrijfExercises(){
     btn.onclick=()=>{
       const val=input.value.trim().replace(/[.?!]+$/,'').trim();
       const ans=item.answer.replace(/[.?!]+$/,'').trim();
-      if(val.toLowerCase()===ans.toLowerCase()){fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'}
-      else{fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer;input.style.borderColor='var(--error)'}
+      let d = levenshtein(val.toLowerCase(), ans.toLowerCase());
+        if(d===0){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'
+        } else if (d <= 2) {try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className = 'dd-feedback ok';
+            fb.textContent = '✓ Goed! Let op de spelling: ' + ans;
+            fb.style.color = '#ca8a04';
+            input.style.borderColor = '#ca8a04';
+        } else {
+            fb.className='dd-feedback nok';fb.innerHTML='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer + (item.hint ? '<br><span style="color:var(--accent2);font-size:0.85rem">💡 Tip: ' + item.hint[lang] + '</span>' : '');input.style.borderColor='var(--error)'
+            fb.style.color = '';
+        }
     };
     input.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()});
     ex.appendChild(wordBox);ex.appendChild(hint);ex.appendChild(input);ex.appendChild(btn);ex.appendChild(fb);
@@ -724,8 +784,18 @@ function buildStudentExercises(){
     btn.onclick=()=>{
       const val=input.value.trim().replace(/[.?!]+$/,'').trim();
       const ans=item.right.replace(/[.?!]+$/,'').trim();
-      if(val.toLowerCase()===ans.toLowerCase()){fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'}
-      else{fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.right;input.style.borderColor='var(--error)'}
+      let d = levenshtein(val.toLowerCase(), ans.toLowerCase());
+        if(d===0){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'
+        } else if (d <= 2) {try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className = 'dd-feedback ok';
+            fb.textContent = '✓ Goed! Let op de spelling: ' + ans;
+            fb.style.color = '#ca8a04';
+            input.style.borderColor = '#ca8a04';
+        } else {
+            fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.right;input.style.borderColor='var(--error)'
+            fb.style.color = '';
+        }
     };
     input.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()});
     ex.appendChild(hint);ex.appendChild(input);ex.appendChild(btn);ex.appendChild(fb);
@@ -746,8 +816,18 @@ function buildStudentExercises(){
     btn.onclick=()=>{
       const val=input.value.trim().replace(/[.?!]+$/,'').trim();
       const ans=item.answer.replace(/[.?!]+$/,'').trim();
-      if(val.toLowerCase()===ans.toLowerCase()){fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'}
-      else{fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer;input.style.borderColor='var(--error)'}
+      let d = levenshtein(val.toLowerCase(), ans.toLowerCase());
+        if(d===0){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'
+        } else if (d <= 2) {try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className = 'dd-feedback ok';
+            fb.textContent = '✓ Goed! Let op de spelling: ' + ans;
+            fb.style.color = '#ca8a04';
+            input.style.borderColor = '#ca8a04';
+        } else {
+            fb.className='dd-feedback nok';fb.innerHTML='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer + (item.hint ? '<br><span style="color:var(--accent2);font-size:0.85rem">💡 Tip: ' + item.hint[lang] + '</span>' : '');input.style.borderColor='var(--error)'
+            fb.style.color = '';
+        }
     };
     input.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()});
     ex.appendChild(wordBox);ex.appendChild(input);ex.appendChild(btn);ex.appendChild(fb);
@@ -768,8 +848,18 @@ function buildStudentExercises(){
     btn.onclick=()=>{
       const val=input.value.trim().replace(/[.?!]+$/,'').trim();
       const ans=item.answer.replace(/[.?!]+$/,'').trim();
-      if(val.toLowerCase()===ans.toLowerCase()){fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'}
-      else{fb.className='dd-feedback nok';fb.textContent='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer;input.style.borderColor='var(--error)'}
+      let d = levenshtein(val.toLowerCase(), ans.toLowerCase());
+        if(d===0){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className='dd-feedback ok';fb.textContent='✓ '+(lang==='nl'?'Goed!':'Dobrze!');input.style.borderColor='var(--success)'
+        } else if (d <= 2) {try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            fb.className = 'dd-feedback ok';
+            fb.textContent = '✓ Goed! Let op de spelling: ' + ans;
+            fb.style.color = '#ca8a04';
+            input.style.borderColor = '#ca8a04';
+        } else {
+            fb.className='dd-feedback nok';fb.innerHTML='✗ '+(lang==='nl'?'Antwoord: ':'Odpowiedź: ')+item.answer + (item.hint ? '<br><span style="color:var(--accent2);font-size:0.85rem">💡 Tip: ' + item.hint[lang] + '</span>' : '');input.style.borderColor='var(--error)'
+            fb.style.color = '';
+        }
     };
     input.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click()});
     ex.appendChild(wordBox);ex.appendChild(input);ex.appendChild(btn);ex.appendChild(fb);
@@ -788,5 +878,61 @@ buildDragExercises();
 buildSchrijfExercises();
 buildStudentExercises();
 </script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // 1. .vocab spans
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+
+    // 2. Conjugation tables (.conj-table, .ww-tabel)
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            // If the target cell already has a button, skip
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+
+    // 3. Example sentences (.example)
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+<!-- /SPEECH SYNTHESIS INJECTION -->
+
 </body>
 </html>

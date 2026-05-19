@@ -118,6 +118,27 @@
     </main>
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
     <script>
+
+// --- INJECTED FUZZY MATCH LOGIC ---
+function levenshtein(a, b) {
+    if(a.length === 0) return b.length;
+    if(b.length === 0) return a.length;
+    var matrix = [];
+    for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+    for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+    for(var i = 1; i <= b.length; i++){
+        for(var j = 1; j <= a.length; j++){
+            if(b.charAt(i-1) == a.charAt(j-1)){
+                matrix[i][j] = matrix[i-1][j-1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// ----------------------------------
+
 let _ttsAudio = null;
 function speak(text, isSlow = false) {
     if (!text) return;
@@ -198,8 +219,40 @@ function speak(text, isSlow = false) {
     }
     function checkInvul(){
         let g=0;
-        invulData.forEach((item,i)=>{const inp=document.getElementById('inv-'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ant.toLowerCase()){inp.classList.add('correct');g++;}else inp.classList.add('fout');});
-        const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=5?'score-midden':'score-slecht');
+        invulData.forEach((item,i)=>{const inp=document.getElementById('inv-'+i);inp.classList.remove('correct','fout');let existingFz = inp.nextElementSibling;
+        if (existingFz && existingFz.className === 'fuzzy-note') existingFz.remove();
+        inp.classList.remove('correct-fuzzy');
+        inp.style.borderColor = '';
+        
+        let d = levenshtein(inp.value.trim().toLowerCase(), item.ant.toLowerCase());
+        if(d===0){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            inp.classList.add('correct');g++;
+        } else if (d <= 2) {try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+            inp.classList.add('correct');g++;
+            inp.classList.add('correct-fuzzy');
+            inp.style.borderColor = '#ca8a04';
+            let fz = document.createElement('span');
+            fz.className = 'fuzzy-note';
+            fz.style.color = '#ca8a04';
+            fz.style.fontSize = '0.85rem';
+            fz.style.marginLeft = '8px';
+            fz.textContent = `Goed! Let op de spelling: ${item.ant}`;
+            inp.parentNode.insertBefore(fz, inp.nextSibling);
+        } else {
+            inp.classList.add('fout');
+            let existingWr = inp.nextElementSibling;
+            if (existingWr && existingWr.className === 'wrong-note') existingWr.remove();
+            let ansSpan = document.createElement('span');
+            ansSpan.className = 'wrong-note';
+            ansSpan.style.color = '#e63946';
+            ansSpan.style.fontSize = '0.85rem';
+            ansSpan.style.marginLeft = '8px';
+            let correctAns = item.ant || item.a || item.ans || item.mv || '...';
+            if(typeof correctAns === 'string') correctAns = correctAns.replace(/\.toLowerCase\(\)/g, '');
+            ansSpan.innerHTML = `(Antwoord: ${correctAns}` + (item.hint ? ' — Tip: ' + item.hint : '') + ')';
+            inp.parentNode.insertBefore(ansSpan, inp.nextSibling);
+        }});
+        if(g===invulData.length){try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}} const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${g}/${invulData.length}`;sc.className='score-badge '+(g===invulData.length?'score-goed':g>=5?'score-midden':'score-slecht');
     }
     function resetInvul(){document.getElementById('invul1').innerHTML='';document.getElementById('invul-score').style.display='none';buildInvul();}
     const wnData=[
@@ -236,5 +289,61 @@ function speak(text, isSlow = false) {
         buildMC1();buildInvul();buildWN();buildSchrijf();
     });
     </script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // 1. .vocab spans
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+
+    // 2. Conjugation tables (.conj-table, .ww-tabel)
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            // If the target cell already has a button, skip
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+
+    // 3. Example sentences (.example)
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+<!-- /SPEECH SYNTHESIS INJECTION -->
+
 </body>
 </html>
