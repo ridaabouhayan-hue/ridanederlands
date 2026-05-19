@@ -9,8 +9,7 @@ folders = [
     'Zinstructuren',
     'verleden tijd'
 ]
-
-base_dir = r'h:\Mijn Drive\HTML FILES'
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 html_template = """<!DOCTYPE html>
 <html lang="nl">

@@ -1,7 +1,7 @@
 import os, re
 
-css_path = r'h:\Mijn Drive\HTML FILES\A2\style.css'
-html_path = r'h:\Mijn Drive\HTML FILES\A2\thema5-9.html'
+css_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'style.css')
+html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema5-9.html')
 
 # Read CSS
 with open(css_path, 'r', encoding='utf-8') as f:

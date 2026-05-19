@@ -1,3 +1,4 @@
+import os
 import re
 
 data = {
@@ -56,7 +57,7 @@ data = {
 
 import sys
 
-file_path = r'h:\Mijn Drive\HTML FILES\KNM\woordenlijst-knm.html'
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'woordenlijst-knm.html')
 with open(file_path, 'r', encoding='utf-8') as f:
     text = f.read()
 

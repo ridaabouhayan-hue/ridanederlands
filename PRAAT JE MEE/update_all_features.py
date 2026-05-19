@@ -1,6 +1,7 @@
+import os
 import re
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'r', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # 1. First replace all hardcoded goTo with prevLoc/nextLoc as fallback
@@ -181,5 +182,5 @@ if 'c.appendChild(chk)' not in html:
     html = html.replace("const fb=document.createElement('div'); fb.className='feedback-box'; fb.id='conv-fb'; c.appendChild(fb);", "const chk=document.createElement('button'); chk.className='btn-check'; chk.textContent=t('checkBtn'); chk.onclick=checkConv; c.appendChild(chk); const fb=document.createElement('div'); fb.className='feedback-box'; fb.id='conv-fb'; c.appendChild(fb);")
 html = html.replace("rb.onclick=initConv; c.appendChild(rb);", "rb.onclick=buildConv; c.appendChild(rb);")
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'w', encoding='utf-8') as f:
     f.write(html)

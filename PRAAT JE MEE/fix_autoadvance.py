@@ -1,11 +1,13 @@
+import os
 import sys
 import re
 
 files = [
-    r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1.html",
-    r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1-2ster.html",
-    r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1-3ster.html"
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1.html"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1-2ster.html"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1-3ster.html")
 ]
+
 
 def patch_file(fpath):
     with open(fpath, "r", encoding="utf-8") as f:

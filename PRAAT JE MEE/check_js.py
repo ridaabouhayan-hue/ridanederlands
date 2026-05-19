@@ -1,5 +1,6 @@
+import os
 import sys
-html_file = r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1-2ster.html"
+html_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1-2ster.html")
 with open(html_file, "r", encoding="utf-8") as f:
     html = f.read()
 

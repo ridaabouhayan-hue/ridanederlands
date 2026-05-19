@@ -1,6 +1,7 @@
+import os
 import re
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'r', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # 1. Update navigation to nextLoc() / prevLoc() globally (we already did this, but let's be sure nothing is missed)
@@ -172,5 +173,5 @@ updateui_new = '''  const sid = screens[currentIndex].id;
 # Actually wait, `thema-8-1-2ster.html` currently has:
 # `if(screens[currentIndex].id==='screen-4') initDrill();` 
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'w', encoding='utf-8') as f:
     f.write(html)

@@ -1,6 +1,7 @@
+import os
 import re
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'r', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # Fix NEXT BUTTONS ALWAYS
@@ -45,7 +46,7 @@ function speak'''
 
 html = re.sub(r'function buildDots\(\).*?function speak', dots_js, html, flags=re.DOTALL)
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'w', encoding='utf-8') as f:
     f.write(html)
 
 print("Done fixer2")

@@ -1,8 +1,7 @@
 import re
 import os
-
-input_file = r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-1-1.html"
-output_file = r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1.html"
+input_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-1-1.html")
+output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1.html")
 
 with open(input_file, 'r', encoding='utf-8') as f:
     html = f.read()

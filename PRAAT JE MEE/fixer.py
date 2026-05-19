@@ -1,6 +1,7 @@
+import os
 import re
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'r', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # 1. Update emojis to numbers
@@ -48,7 +49,7 @@ updateui_routing_fix = '''  const act = screens[currentIndex];
 
 html = re.sub(r'const act = screens\[currentIndex\];.*?(?=window\.scrollTo)', updateui_routing_fix + '\n  ', html, flags=re.DOTALL)
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'w', encoding='utf-8') as f:
     f.write(html)
 
 print("Done via fixer.py")

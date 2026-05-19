@@ -1,6 +1,7 @@
+import os
 import re
 
-with open(r'h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-8-1-2ster.html', 'r', encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'thema-8-1-2ster.html'), 'r', encoding='utf-8') as f:
     content = f.read()
 
 # 1. Update T values

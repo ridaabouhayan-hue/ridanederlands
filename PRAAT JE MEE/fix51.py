@@ -1,7 +1,7 @@
 import re
 import os
 
-base_file = r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1.html"
+base_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1.html")
 
 with open(base_file, 'r', encoding='utf-8') as f:
     base_html = f.read()
@@ -171,7 +171,7 @@ def create_1ster():
     html = html.replace("hint_nl:'Vraag of ze het kunnen bestellen', hint_en:'Ask if they can order it'", "hint_nl:'Vraag of ze het kunnen bestellen', hint_en:'Ask if they can order it', hint_ar:'اسأل إن كان بإمكانهم طلبه'")
     html = html.replace("hint_nl:'Reageer blij en sluit af', hint_en:'React happily and close'", "hint_nl:'Reageer blij en sluit af', hint_en:'React happily and close', hint_ar:'تفاعل بسعادة وأنهِ المحادثة'")
     
-    with open(r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1.html", 'w', encoding='utf-8') as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1.html"), 'w', encoding='utf-8') as f:
          f.write(html)
 
 
@@ -394,7 +394,7 @@ def create_2ster():
 
     html = apply_stars_replacements(html, '⭐⭐', 'Thema 5.1 ⭐⭐ — Kleding', wordsData, repeatPhrases, copyPhrases, sortBase, convSets, q5aBase, q5bBase, convFillSets, aTasks_nl, aTasks_en, bTasks_nl, bTasks_en, st_nl, st_en)
     
-    with open(r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1-2ster.html", 'w', encoding='utf-8') as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1-2ster.html"), 'w', encoding='utf-8') as f:
          f.write(html)
 
 def create_3ster():
@@ -584,7 +584,7 @@ def create_3ster():
 
     html = apply_stars_replacements(html, '⭐⭐⭐', 'Thema 5.1 ⭐⭐⭐ — Kleding', wordsData, repeatPhrases, copyPhrases, sortBase, convSets, q5aBase, q5bBase, convFillSets, aTasks_nl, aTasks_en, bTasks_nl, bTasks_en, st_nl, st_en)
     
-    with open(r"h:\Mijn Drive\HTML FILES\PRAAT JE MEE NIEUW\thema-5-1-3ster.html", 'w', encoding='utf-8') as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "thema-5-1-3ster.html"), 'w', encoding='utf-8') as f:
          f.write(html)
 
 
