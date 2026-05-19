@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNM – De Randstad & Nederland Waterland</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --red: #c0392b;
+    --gold: #d4a017;
+    --navy: #1c2e4a;
+    --muted: #7a6e5f;
+    --border: #c8bba8;
+    --green: #2d6a4f;
+    --purple: #5b4fcf;
+    --purple-light: #eeecfb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hero {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 80px);
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(28px, 5.5vw, 58px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.7);
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 18px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+  }
+  .pill:hover, .pill.active { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 50px 24px 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .icon-red  { background: var(--red); }
+  .icon-navy { background: var(--navy); }
+  .icon-gold { background: var(--gold); }
+  .section-header h2 { font-size: 30px; font-weight: 900; }
+  .section-header small {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .lead { font-size: 17px; font-weight: 400; line-height: 1.85; color: #2a2420; margin-bottom: 36px; max-width: 720px; }
+  .subheading { font-size: 21px; font-weight: 800; margin-top: 30px; margin-bottom: 18px; }
+
+  /* METAPHOR BOX */
+  .metaphor {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0 28px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .metaphor-emoji { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .metaphor strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metaphor p { font-size: 14.5px; color: #2a2060; line-height: 1.65; }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-warn    { background: #fff8e6; border-left: 5px solid var(--gold); }
+  .callout-info    { background: #eef2f8; border-left: 5px solid var(--navy); }
+  .callout-success { background: #eef7f2; border-left: 5px solid var(--green); }
+  .callout-emoji { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .callout p { font-size: 14.5px; color: #3a3228; line-height: 1.65; }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .stat-card { background: var(--navy); color: var(--paper); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 900; color: var(--gold); display: block; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: rgba(245,240,232,0.8); line-height: 1.4; }
+
+  /* CITIES GRID */
+  .cities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+  .city-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .city-card:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,46,74,0.1); }
+  .city-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+  .city-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .city-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+  /* EXAM SECTION */
+  .exam-section { background: var(--navy); color: var(--paper); border-radius: 16px; padding: 30px 32px; margin-top: 44px; }
+  .exam-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; color: var(--gold); }
+  .exam-tips-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .exam-tips-list li { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 11px 15px; font-size: 13.5px; line-height: 1.5; display: flex; gap: 10px; }
+  .tip-icon { flex-shrink: 0; }
+
+  /* QUIZ */
+  .quiz-block { background: var(--cream); border: 2px dashed var(--border); border-radius: 16px; padding: 32px; margin-top: 40px; }
+  .quiz-block h3 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .quiz-q { margin-bottom: 20px; padding: 16px 20px; background: white; border-radius: 10px; border: 1.5px solid var(--border); }
+  .q-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .q-text { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-opt { background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; text-align: left; font-family: 'Nunito', sans-serif; font-weight: 600; }
+  .quiz-opt:hover { background: var(--navy); color: white; border-color: var(--navy); }
+  .quiz-opt.correct { background: #d4edda; border-color: var(--green); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong   { background: #f8d7da; border-color: var(--red);   color: var(--red); }
+  .q-feedback { margin-top: 10px; font-size: 13px; font-style: italic; color: var(--muted); display: none; padding: 8px 12px; background: var(--cream); border-radius: 6px; line-height: 1.55; }
+  .q-feedback.show { display: block; }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .lang-btn {
+    padding: 7px 16px;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Nunito', sans-serif;
+  }
+  .lang-btn:hover { background: rgba(28,46,74,0.08); }
+  .lang-btn.active { background: var(--navy); color: var(--paper); box-shadow: 0 4px 10px rgba(28,46,74,0.25); }
+
+  /* VOCAB TOOLTIPS */
+  .vocab {
+    position: relative;
+    cursor: pointer;
+    border-bottom: 2px dashed var(--navy);
+    font-weight: 700;
+    color: var(--navy);
+    transition: all 0.2s;
+    display: inline;
+  }
+  .vocab:hover { background-color: rgba(28,46,74,0.08); border-radius: 4px; }
+  .tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: var(--navy);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    pointer-events: none;
+  }
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--navy) transparent transparent transparent;
+  }
+  .vocab.show-tooltip .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .footer { text-align: center; padding: 32px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 1px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    .cities-grid, .stats-row, .exam-tips-list { grid-template-columns: 1fr; }
+    .main { padding: 28px 16px 60px; }
+  }
+
+  /* TWO-COLUMN LAYOUT SYSTEM FOR SIDEBAR SUMMARIES */
+  .section-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 992px) {
+    .main {
+      max-width: 1100px;
+      transition: max-width 0.3s ease;
+    }
+    .section-layout {
+      grid-template-columns: 1.8fr 1fr;
+    }
+  }
+  .summary-sidebar {
+    align-self: start;
+  }
+  @media (min-width: 992px) {
+    .summary-sidebar {
+      position: sticky;
+      top: 24px;
+    }
+  }
+  .summary-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .summary-card.red-border {
+    border-left: 4px solid var(--red);
+  }
+  .summary-card.gold-border {
+    border-left: 4px solid var(--gold);
+  }
+  .summary-card h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-card p {
+    margin: 0 0 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .summary-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+  }
+  .summary-card li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .summary-card.rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  .summary-card.rtl ul {
+    padding-left: 0;
+    padding-right: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">KNM · Thema 1 · Modules 1 & 2</div>
+  <h1>De Randstad<br>&amp; Nederland Waterland</h1>
+  <p>Ontdek de geografie en leer hoe de Nederlanders wonen en vechten tegen het water</p>
+</div>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+  <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+  <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+  <button class="lang-btn" data-lang="vi">🇻🇳 VN</button>
+  <button class="lang-btn" data-lang="fa">🇮🇷 Farsi</button>
+  <button class="lang-btn" data-lang="da">🇦🇫 Dari</button>
+  <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
+  <button class="lang-btn" data-lang="th">🇹🇭 TH</button>
+</div>
+
+<div class="nav-pills">
+  
+      <a href="#randstad"   class="pill active">🏙️ De Randstad</a>
+      <a href="#waterland"  class="pill">💧 Nederland Waterland</a>
+      <a href="#quiz"       class="pill">🧠 Oefenvragen</a>
+    
+</div>
+
+<div class="main">
+<!-- RANDSTAD -->
+<div id="randstad">
+  <div class="section-header">
+    <div class="section-icon icon-navy">🏙️</div>
+    <div>
+      <h2>De Randstad</h2>
+      <small>Topic 1 · Het kloppende hart van Nederland</small>
+    </div>
+  </div>
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">De <span class="vocab" data-en="Randstad (Region of 4 main cities)" data-tr="Randstad (4 büyük şehir bölgesi)" data-vi="Randstad (Vùng 4 thành phố lớn)" data-ar="راندستاد (منطقة المدن الأربع الكبرى)" data-th="รันด์สตัด (พื้นที่สี่เมืองใหญ่)" data-da="راندستاد (منطقه چهار شهر بزرگ)" data-fa="راندستاد (منطقه چهار شهر بزرگ)">Randstad</span> is het gebied met daarin de vier grootste steden van Nederland: Amsterdam, Rotterdam, Den Haag en Utrecht. Samen vormen ze een soort hoefijzer of halve cirkel. In het midden van deze cirkel ligt het Groene Hart - een gebied met veel weilanden en boerderijen.</p>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo – De Donut</strong>
+          <p>Denk aan een donut: de steden liggen in een cirkel aan de buitenkant (het deeg), en in het midden ligt een groot groen gat. Dat gat is leeg en groen, vol weilanden, koeien en boeren. Zo kun je de Randstad onthouden: een ring van steden rondom een groen centrum (het Groene Hart).</p>
+        </div>
+      </div>
+    
+
+      <div class="cities-grid">
+        <div class="city-card">
+          <span class="city-emoji">❌❌❌</span>
+          <div class="city-name">Amsterdam</div>
+          <div class="city-desc">De hoofdstad van Nederland. Beroemd om de prachtige grachten, musea en toerisme. Een belangrijke plek voor cultuur en internationale bedrijven.</div>
+        </div>
+        <div class="city-card">
+          <span class="city-emoji">🚢</span>
+          <div class="city-name">Rotterdam</div>
+          <div class="city-desc">De stad met de grootste haven van Europa. Rotterdam werd gebombardeerd in de Tweede Wereldoorlog en heeft nu een hele moderne architectuur en wolkenkrabbers.</div>
+        </div>
+        <div class="city-card">
+          <span class="city-emoji">🏛️</span>
+          <div class="city-name">Den Haag</div>
+          <div class="city-desc">De regeringsstad van Nederland. Hier zit het parlement en de regering (de politiek) en woont en werkt de Koning. Ook de internationale rechtbanken zijn hier gevestigd.</div>
+        </div>
+        <div class="city-card">
+          <span class="city-emoji">⛪</span>
+          <div class="city-name">Utrecht</div>
+          <div class="city-desc">Het centrale verkeersknooppunt van Nederland. Utrecht heeft de grootste universiteit en een prachtig oud centrum met grachten en de beroemde Domtoren.</div>
+        </div>
+      </div>
+    
+      <div class="subheading">👥 Dichtbevolkt land</div>
+      <p>Als een land <span class="vocab" data-en="densely populated" data-tr="çok nüfuslu" data-vi="mật độ dân số cao" data-ar="مكتظ بالسكان" data-th="ประชากรหนาแน่น" data-da="پرجمعیت" data-fa="پرجمعیت">dichtbevolkt</span> is, betekent dat dat er veel mensen wonen op een klein stukje land. Nederland is een van de dichtstbevolkte landen van Europa. Op elke vierkante kilometer wonen gemiddeld meer dan 500 mensen!</p>
+      <p style="margin-top: 10px;">Dit verklaart veel over Nederland: waarom huizen zo duur zijn, waarom er zoveel files zijn, en waarom Nederlanders zo goed zijn in het plannen en organiseren van de ruimte.</p>
+      <div class="subheading">🚢 De Handel</div>
+      <p><span class="vocab" data-en="trade" data-tr="ticaret" data-vi="thương mại" data-ar="تجارة" data-th="การค้า" data-da="تجارت" data-fa="تجارت">Handel</span> is het kopen en verkopen van spullen. Nederland is altijd een handelsland geweest. Door de ligging aan zee en de grote rivieren konden Nederlandse <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span> naar alle hoeken van de wereld varen.</p>
+      <p style="margin-top: 10px;">Tot op de dag van vandaag is <span class="vocab" data-en="trade" data-tr="ticaret" data-vi="thương mại" data-ar="تجارة" data-th="การค้า" data-da="تجارت" data-fa="تجارت">handel</span> heel belangrijk voor Nederland. De haven van Rotterdam is de grootste haven van Europa. Veel producten die je in de winkel koopt, zijn via Rotterdam Nederland binnengekomen.</p>
+      <div class="subheading">🌾 Landbouw en Veeteelt</div>
+      <p><span class="vocab" data-en="agriculture" data-tr="tarım" data-vi="nông nghiệp" data-ar="زراعة" data-th="เกษตรกรรม" data-da="کشاورزی" data-fa="کشاورزی">Landbouw</span> is het werk van boeren op het land - het verbouwen van groenten, fruit en graan. <span class="vocab" data-en="livestock farming" data-tr="hayvancılık" data-vi="chăn nuôi" data-ar="تربية الماشية" data-th="การเลี้ยงสัตว์" data-da="دامداری" data-fa="دامداری">Veeteelt</span> is het werk van boeren met dieren, zoals koeien, varkens en kippen.</p>
+      <p style="margin-top: 10px;">Nederland is heel klein, maar is toch de op een na grootste exporteur van voedsel ter wereld (na de Verenigde Staten). Nederlandse boeren zijn experts in het produceren van veel voedsel op een klein stukje land. Je ziet dit terug in de beroemde Nederlandse kaas, bloemen en groenten.</p>
+      <div class="subheading">🏛️ De Politiek</div>
+      <p><span class="vocab" data-en="politics" data-tr="siyaset / politika" data-vi="chính trị" data-ar="سياسة" data-th="การเมือง" data-da="سیاست" data-fa="سیاست">Politiek</span> is de manier waarop we samen beslissingen nemen over het land. In Nederland gebeurt dit in Den Haag, waar de regering en het parlement zitten. Later in dit document leer je meer over hoe de Nederlandse democratie werkt.</p>
+    </div>
+    <aside class="summary-sidebar">
+<!-- NL Summary Card -->
+<div class="summary-card red-border i18n-el" data-lang="nl">
+  <h4>⚡ 📍 1. De Randstad: Het Kloppende Hart van Nederland</h4>
+  <p>De Randstad is het gebied met de vier grootste steden: Amsterdam, Rotterdam, Den Haag en Utrecht. Hier zijn de meeste banen, bedrijven en overheidsactiviteiten.</p>
+  <p><strong>💡 Waarom is dit belangrijk?</strong></p>
+  <p>Als je werk zoekt, werk je waarschijnlijk in de Randstad. Deze steden kennen helpt je om werkkansen te begrijpen. De meeste bedrijven en kantoren zijn hier gevestigd.</p>
+</div>
+<!-- EN Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="en" style="display: none;">
+  <h4>⚡ 📍 1. The Randstad: The Beating Heart of the Netherlands</h4>
+  <p>The Randstad is the area containing the four largest cities: Amsterdam, Rotterdam, The Hague (Den Haag), and Utrecht. Most jobs, companies, and government activity are here.</p>
+  <p><strong>💡 Why learn this for the KNM exam:</strong></p>
+  <p>If you're looking for work, you'll probably work in the Randstad. Knowing these cities helps you understand job opportunities.</p>
+</div>
+<!-- TR Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="tr" style="display: none;">
+  <h4>⚡ 📍 1. Randstad: Hollanda'nın Kalbi</h4>
+  <p>Randstad, en büyük dört şehri içeren bölgedir: Amsterdam, Rotterdam, Lahey (Den Haag) ve Utrecht. İşlerin, şirketlerin ve hükümet faaliyetlerinin çoğu buradadır.</p>
+  <p><strong>💡 KNM sınavı için bunu neden öğreniyorsunuz:</strong></p>
+  <p>İş arıyorsanız, muhtemelen Randstad'da çalışacaksınız. Bu şehirleri bilmek iş fırsatlarını anlamanıza yardımcı olur.</p>
+</div>
+<!-- VI Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="vi" style="display: none;">
+  <h4>⚡ 📍 1. Randstad: Trái tim của Hà Lan</h4>
+  <p>Randstad là vùng có bốn thành phố lớn nhất: Amsterdam, Rotterdam, Den Haag và Utrecht. Hầu hết việc làm, công ty và hoạt động chính phủ đều ở đây.</p>
+  <p><strong>💡 Tại sao học điều này cho kỳ thi KNM:</strong></p>
+  <p>Nếu bạn đang tìm việc, có thể bạn sẽ làm việc ở Randstad. Biết các thành phố này giúp bạn hiểu cơ hội việc làm.</p>
+</div>
+<!-- FA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="fa" style="display: none;">
+  <h4>⚡ 📍 1. راندستاد: قلب تپنده هلند</h4>
+  <p>راندستاد منطقه‌ای با چهار شهر بزرگ است: آمستردام، روتردام، دن‌هاخ و اوترخت. اکثر مشاغل، شرکت‌ها و فعالیت‌های دولتی اینجا هستند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>اگر به دنبال کار هستید، احتمالاً در راندستاد کار خواهید کرد. دانستن این شهرها به شما کمک می‌کند که فرصت‌های شغلی را درک کنید.</p>
+</div>
+<!-- DA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="da" style="display: none;">
+  <h4>⚡ 📍 1. راندستاد: قلب تپنده هلند</h4>
+  <p>راندستاد منطقه‌ای با چهار شهر بزرگ است: آمستردام، روتردام، دن‌هاخ و اوترخت. اکثر مشاغل، شرکت‌ها و فعالیت‌های دولتی اینجا هستند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>اگر به دنبال کار هستید، احتمالاً در راندستاد کار خواهید کرد. دانستن این شهرها به شما کمک می‌کند که فرصت‌های شغلی را درک کنید.</p>
+</div>
+<!-- AR Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="ar" style="display: none;">
+  <h4>⚡ 📍 1. راندستاد: قلب هولندا النابض</h4>
+  <p>راندستاد هي المنطقة التي تضم أكبر أربع مدن: أمستردام، روتردام، لاهاي، وأوتريخت. معظم الوظائف والشركات والنشاط الحكومي هنا.</p>
+  <p><strong>💡 لماذا تتعلم هذا لامتحان KNM؟</strong></p>
+  <p>إذا كنت تبحث عن عمل، ستعمل على الأرجح في راندستاد. معرفة هذه المدن ستساعدك على فهم فرص العمل.</p>
+</div>
+<!-- TH Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="th" style="display: none;">
+  <h4>⚡ 📍 1. Randstad: หัวใจของเนเธอร์แลนด์</h4>
+  <p>Randstad คือพื้นที่ที่มีสี่เมืองใหญ่ที่สุด: อัมสเตอร์ดัม, รอตเตอร์ดัม, เดอะเฮก และอูเทรคท์ งานส่วนใหญ่ บริษัท และกิจกรรมรัฐบาลอยู่ที่นี่</p>
+  <p><strong>💡 ทำไมต้องเรียนรู้สิ่งนี้สำหรับสอบ KNM:</strong></p>
+  <p>ถ้าคุณกำลังหางาน คุณอาจจะทำงานใน Randstad การรู้จักเมืองเหล่านี้ช่วยให้คุณเข้าใจโอกาสในการทำงาน</p>
+</div>
+    </aside>
+  </div>
+</div>
+
+      <div class="section-divider">
+        <div class="divider-symbol">🌊 HET WATER GEVECHT 🌊</div>
+      </div>
+    
+<!-- WATERLAND -->
+<div id="waterland">
+  <div class="section-header">
+    <div class="section-icon icon-red">💧</div>
+    <div>
+      <h2>Nederland Waterland</h2>
+      <small>Topic 2 · De strijd tegen het water</small>
+    </div>
+  </div>
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">Er is een gezegde: "God schiep de wereld, maar de Nederlanders schiepen Nederland." Dit is niet helemaal waar natuurlijk, maar het zegt wel iets belangrijks: een groot deel van Nederland ligt onder de zeespiegel. Zonder <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> en pompen zou bijna de helft van het land onder water staan!</p>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo – De Polder</strong>
+          <p>Stel je een badkuip voor vol met water. Je zet een scheidingswand in het midden en pompt al het water uit één helft weg. Die droge helft waar het water weg is, is de polder. De wand is de dijk die het water tegenhoudt. De polder ligt nu dus lager dan het water eromheen!</p>
+        </div>
+      </div>
+    
+      <div class="subheading">🧱 De Dijk</div>
+      <p>Een <span class="vocab" data-en="dike" data-tr="set / baraj" data-vi="đê" data-ar="سد" data-th="เขื่อน" data-da="سد" data-fa="سد">dijk</span> is een soort dikke muur die het water tegenhoudt. <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">Dijken</span> kunnen van aarde, zand, steen of beton zijn. Al duizenden jaren bouwen Nederlanders <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> om zichzelf te beschermen tegen de zee en de rivieren.</p>
+      <p style="margin-top: 10px;">De <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> zijn zo belangrijk in Nederland dat er zelfs uitdrukkingen over zijn. Als iets "dijkbewaking" nodig heeft, betekent dat dat je er goed op moet letten. En als je zegt dat de "<span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> doorbreken", bedoel je dat iets niet meer te stoppen is.</p>
+      <div class="subheading">🏖️ Het Duin</div>
+      <p><span class="vocab" data-en="dunes" data-tr="kumullar" data-vi="các cồn cát" data-ar="كثبان رملية" data-th="เนินทราย" data-da="تپه‌های شنی" data-fa="تپه‌های شنی">Duinen</span> zijn bergen van zand langs de kust. Ze zijn gevormd door de wind die zand van het strand naar boven blaast. <span class="vocab" data-en="dunes" data-tr="kumullar" data-vi="các cồn cát" data-ar="كثبان رملية" data-th="เนินทราย" data-da="تپه‌های شنی" data-fa="تپه‌های شنی">Duinen</span> zijn een natuurlijke bescherming tegen de zee - ze zijn de eerste verdedigingslinie van Nederland.</p>
+      <p style="margin-top: 10px;">In de <span class="vocab" data-en="dunes" data-tr="kumullar" data-vi="các cồn cát" data-ar="كثبان رملية" data-th="เนินทราย" data-da="تپه‌های شنی" data-fa="تپه‌های شنی">duinen</span> kun je prachtig wandelen en fietsen. Je vindt er bijzondere planten en dieren die nergens anders leven. Veel Nederlanders gaan in het weekend naar de <span class="vocab" data-en="dunes" data-tr="kumullar" data-vi="các cồn cát" data-ar="كثبان رملية" data-th="เนินทราย" data-da="تپه‌های شنی" data-fa="تپه‌های شنی">duinen</span> voor een frisse neus.</p>
+      <div class="subheading">🌿 De Polder</div>
+      <p>Een <span class="vocab" data-en="polder (reclaimed land)" data-tr="polder (kurutulmuş toprak)" data-vi="vùng đất lấn biển" data-ar="بولدر (أرض مستصلحة)" data-th="พอลเดอร์ (ที่ดินถมทะเล)" data-da="پولدیر (زمین خشک‌شده)" data-fa="پولدير (زمین خشک‌شده)">polder</span> is een stuk land dat drooggemaakt is. Vroeger was er water, nu is het droog land waar mensen wonen en boeren werken. De bekendste <span class="vocab" data-en="polder (reclaimed land)" data-tr="polder (kurutulmuş toprak)" data-vi="vùng đất lấn biển" data-ar="بولدر (أرض مستصلحة)" data-th="พอลเดอร์ (ที่ดินถมทะเล)" data-da="پولدیر (زمین خشک‌شده)" data-fa="پولدير (زمین خشک‌شده)">polder</span> is Flevoland - een hele provincie die nog geen honderd jaar geleden zee was!</p>
+      <p style="margin-top: 10px;">Hoe maak je een <span class="vocab" data-en="polder (reclaimed land)" data-tr="polder (kurutulmuş toprak)" data-vi="vùng đất lấn biển" data-ar="بولدر (أرض مستصلحة)" data-th="พอลเดอร์ (ที่ดินถมทะเล)" data-da="پولدیر (زمین خشک‌شده)" data-fa="پولدير (زمین خشک‌شده)">polder</span>? Eerst bouw je een <span class="vocab" data-en="dike" data-tr="set / baraj" data-vi="đê" data-ar="سد" data-th="เขื่อน" data-da="سد" data-fa="سد">dijk</span> rondom een stuk water. Dan pomp je het water weg met windmolens of elektrische pompen. Wat overblijft is vruchtbare grond. De uitdrukking "polderen" betekent in Nederland ook: samen overleggen tot je het eens bent, net zoals je samen moet werken om een <span class="vocab" data-en="polder (reclaimed land)" data-tr="polder (kurutulmuş toprak)" data-vi="vùng đất lấn biển" data-ar="بولدر (أرض مستصلحة)" data-th="พอลเดอร์ (ที่ดินถมทะเล)" data-da="پولدیر (زمین خشک‌شده)" data-fa="پولدير (زمین خشک‌شده)">polder</span> droog te houden.</p>
+      <div class="subheading">🛤️ De Afsluitdijk</div>
+      <p>De <span class="vocab" data-en="Afsluitdijk (32km dike)" data-tr="Afsluitdijk (32km set)" data-vi="Đê Afsluitdijk (32km)" data-ar="أفسلايتدايك (سد بطول ٣٢ كم)" data-th="อัฟสลุยต์ไดก์ (เขื่อน 32 กม.)" data-da="آفسلویت‌دیک (سد ۳۲ کیلومتری)" data-fa="آفسلایت‌دیک (سد ۳۲ کیلومتری)">Afsluitdijk</span> is een lange <span class="vocab" data-en="dike" data-tr="set / baraj" data-vi="đê" data-ar="سد" data-th="เขื่อน" data-da="سد" data-fa="سد">dijk</span> van 32 kilometer tussen Noord-Holland en Friesland. Deze <span class="vocab" data-en="dike" data-tr="set / baraj" data-vi="đê" data-ar="سد" data-th="เขื่อน" data-da="سد" data-fa="سد">dijk</span> werd gebouwd tussen 1927 en 1932. Door de <span class="vocab" data-en="Afsluitdijk (32km dike)" data-tr="Afsluitdijk (32km set)" data-vi="Đê Afsluitdijk (32km)" data-ar="أفسلايتدايك (سد بطول ٣٢ كم)" data-th="อัฟสลุยต์ไดก์ (เขื่อน 32 กม.)" data-da="آفسلویت‌دیک (سد ۳۲ کیلومتری)" data-fa="آفسلایت‌دیک (سد ۳۲ کیلومتری)">Afsluitdijk</span> veranderde de Zuiderzee (een binnenzee) in het IJsselmeer (een groot meer met zoet water).</p>
+      <p style="margin-top: 10px;">Je kunt over de <span class="vocab" data-en="Afsluitdijk (32km dike)" data-tr="Afsluitdijk (32km set)" data-vi="Đê Afsluitdijk (32km)" data-ar="أفسلايتدايك (سد بطول ٣٢ كم)" data-th="อัฟสลุยต์ไดก์ (เขื่อน 32 กม.)" data-da="آفسلویت‌دیک (سد ۳۲ کیلومتری)" data-fa="آفسلایت‌دیک (سد ۳۲ کیلومتری)">Afsluitdijk</span> rijden - het is een bijzondere ervaring om links en rechts alleen maar water te zien. Halverwege is er een monument waar je kunt stoppen en uitkijken over het water.</p>
+      <div class="subheading">🌊 De Watersnoodramp &amp; Deltawerken</div>
+      <p>In 1953 gebeurde er iets verschrikkelijks. Een zware storm en een springvloed braken door de <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> in Zeeland, Zuid-Holland en Noord-Brabant. Dit was de <span class="vocab" data-en="flood disaster (1953)" data-tr="sel felaketi (1953)" data-vi="thảm họa lũ lụt (1953)" data-ar="كارثة الفيضان (١٩٥٣)" data-th="ภัยพิบัติน้ำท่วม (ปี 1953)" data-da="فاجعه سیل (۱۹۵۳)" data-fa="فاجعه سیل (۱۹۵۳)">watersnoodramp</span>. Meer dan 1.800 mensen kwamen om het leven. Tienduizenden mensen verloren hun huis.</p>
+      <p style="margin-top: 10px;">Na deze ramp besloot Nederland: dit mag nooit meer gebeuren. Er werd een groot plan gemaakt: de <span class="vocab" data-en="Delta Works (storm barriers)" data-tr="Delta Projesi (fırtına engelleri)" data-vi="Công trình Delta (rào cản bão)" data-ar="أعمال الدلتا (حواجز العواصف)" data-th="เดลตาเวิร์กส์ (ระบบป้องกันน้ำท่วม)" data-da="دلتاورکن (پروژه‌های دلتا)" data-fa="پروژه‌های دلتا (سدهای محافظتی)">Deltawerken</span>. Dit zijn enorme <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> en stormvloedkeringen in Zeeland en Zuid-Holland. De bekendste is de Oosterscheldekering - een van de grootste bouwwerken ter wereld.</p>
+      <p style="margin-top: 10px;">Een <span class="vocab" data-en="flood" data-tr="sel" data-vi="lũ lụt" data-ar="فيضان" data-th="น้ำท่วม" data-da="سیل" data-fa="سیل">overstroming</span> is wanneer water over het land heen gaat, meestal doordat <span class="vocab" data-en="dikes" data-tr="setler / barajlar" data-vi="các con đê" data-ar="سدود" data-th="เขื่อน" data-da="سدها" data-fa="سدها">dijken</span> het water niet kunnen tegenhouden. Dankzij de <span class="vocab" data-en="Delta Works (storm barriers)" data-tr="Delta Projesi (fırtına engelleri)" data-vi="Công trình Delta (rào cản bão)" data-ar="أعمال الدلتا (حواجز العواصف)" data-th="เดลตาเวิร์กส์ (ระบบป้องกันน้ำท่วม)" data-da="دلتاورکن (پروژه‌های دلتا)" data-fa="پروژه‌های دلتا (سدهای محافظتی)">Deltawerken</span> is de kans op een grote <span class="vocab" data-en="flood" data-tr="sel" data-vi="lũ lụt" data-ar="فيضان" data-th="น้ำท่วม" data-da="سیل" data-fa="سیل">overstroming</span> nu veel kleiner.</p>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">25%</span>
+          <span class="stat-label">ligt direct onder zeeniveau</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">32 km</span>
+          <span class="stat-label">lengte van de Afsluitdijk</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">1.800+</span>
+          <span class="stat-label">doden bij Watersnoodramp (1953)</span>
+        </div>
+      </div>
+    
+    </div>
+    <aside class="summary-sidebar">
+<!-- NL Summary Card -->
+<div class="summary-card gold-border i18n-el" data-lang="nl">
+  <h4>⚡ 🌊 2. Nederland Waterland</h4>
+  <p>Ongeveer 25% van Nederland ligt onder de zeespiegel. Zonder dijken en pompen zou de helft van het land onder water staan. Nederlanders vechten al eeuwenlang tegen het water.</p>
+  <p><strong>💡 Waarom is dit belangrijk?</strong></p>
+  <p>De strijd tegen water verklaart waarom Nederlanders samenwerking, planning en organisatie zo belangrijk vinden. Het woord 'polderen' betekent samen overleggen tot je het eens bent - net zoals je samen moet werken om een polder droog te houden.</p>
+</div>
+<!-- EN Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="en" style="display: none;">
+  <h4>⚡ 🌊 2. The Netherlands: Land of Water</h4>
+  <p>About 25% of the Netherlands lies below sea level. Without dikes and pumps, half the country would be underwater. The Dutch have been fighting water for centuries.</p>
+  <p><strong>💡 Why learn this for the KNM exam:</strong></p>
+  <p>Understanding the water struggle shows why Dutch people value cooperation, planning, and organization. The word «polderen» means working together to reach agreement.</p>
+</div>
+<!-- TR Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="tr" style="display: none;">
+  <h4>⚡ 🌊 2. Hollanda: Su Ülkesi</h4>
+  <p>Hollanda'nın yaklaşık %25'i deniz seviyesinin altındadır. Setler ve pompalar olmadan ülkenin yarısı sular altında kalırdı. Hollandalılar yüzyıllardır suyla savaşıyor.</p>
+  <p><strong>💡 KNM sınavı için bunu neden öğreniyorsunuz:</strong></p>
+  <p>Su mücadelesini anlamak, Hollandalıların neden işbirliğine, planlamaya ve organizasyona değer verdiğini gösterir. «Polderen» kelimesi, uzlaşmaya varmak için birlikte çalışmak demektir.</p>
+</div>
+<!-- VI Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="vi" style="display: none;">
+  <h4>⚡ 🌊 2. Hà Lan - Vùng đất của nước</h4>
+  <p>Khoảng 25% Hà Lan nằm dưới mực nước biển. Không có đê và máy bơm, nửa nước sẽ bị ngập. Người Hà Lan đã chiến đấu với nước hàng thế kỷ.</p>
+  <p><strong>💡 Tại sao học điều này cho kỳ thi KNM:</strong></p>
+  <p>Hiểu cuộc chiến với nước cho thấy tại sao người Hà Lan coi trọng hợp tác, lập kế hoạch và tổ chức. Từ «polderen» có nghĩa là làm việc cùng nhau để đạt được thỏa thuận.</p>
+</div>
+<!-- FA Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="fa" style="display: none;">
+  <h4>⚡ 🌊 2. هلند سرزمین آب</h4>
+  <p>حدود ۲۵٪ هلند زیر سطح دریا قرار دارد. بدون سدها و پمپ‌ها، نیمی از کشور زیر آب می‌رفت. هلندی‌ها قرن‌ها با آب مبارزه کرده‌اند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>درک مبارزه با آب به شما نشان می‌دهد که چرا هلندی‌ها به همکاری، برنامه‌ریزی و سازماندهی اهمیت می‌دهند. کلمه «polderen» به معنای همکاری برای رسیدن به توافق است.</p>
+</div>
+<!-- DA Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="da" style="display: none;">
+  <h4>⚡ 🌊 2. هلند سرزمین آب</h4>
+  <p>حدود ۲۵٪ هلند زیر سطح دریا قرار دارد. بدون سدها و پمپ‌ها، نیمی از کشور زیر آب می‌رفت. هلندی‌ها قرن‌ها با آب مبارزه کرده‌اند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>درک مبارزه با آب به شما نشان می‌دهد که چرا هلندی‌ها به همکاری، برنامه‌ریزی و سازماندهی اهمیت می‌دهند. کلمه «polderen» به معنای همکاری برای رسیدن به توافق است.</p>
+</div>
+<!-- AR Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="ar" style="display: none;">
+  <h4>⚡ 🌊 2. هولندا أرض الماء</h4>
+  <p>حوالي ٢٥٪ من هولندا تحت مستوى سطح البحر. بدون السدود والمضخات، نصف البلاد ستكون تحت الماء. الهولنديون يحاربون الماء منذ قرون.</p>
+  <p><strong>💡 لماذا تتعلم هذا لامتحان KNM؟</strong></p>
+  <p>فهم معركة الماء يُظهر لماذا الهولنديون يقدرون التعاون والتخطيط والتنظيم. كلمة «polderen» تعني العمل معاً للوصول إلى اتفاق.</p>
+</div>
+<!-- TH Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="th" style="display: none;">
+  <h4>⚡ 🌊 2. เนเธอร์แลนด์ดินแดนแห่งน้ำ</h4>
+  <p>ประมาณ 25% ของเนเธอร์แลนด์อยู่ต่ำกว่าระดับน้ำทะเล ถ้าไม่มีเขื่อนและปั๊ม ครึ่งหนึ่งของประเทศจะจมน้ำ ชาวดัตช์ต่อสู้กับน้ำมาหลายศตวรรษ</p>
+  <p><strong>💡 ทำไมต้องเรียนรู้สิ่งนี้สำหรับสอบ KNM:</strong></p>
+  <p>การเข้าใจการต่อสู้กับน้ำแสดงให้เห็นว่าทำไมชาวดัตช์ให้ความสำคัญกับความร่วมมือ การวางแผน และการจัดระเบียบ คำว่า «polderen» หมายถึงการทำงานร่วมกันเพื่อบรรลุข้อตกลง</p>
+</div>
+    </aside>
+  </div>
+</div>
+
+      <div class="exam-section">
+        <h3>🎯 Examentips: Geografie &amp; Water</h3>
+        <ul class="exam-tips-list">
+          <li><span class="tip-icon">✅</span> 25% van Nederland ligt onder zeeniveau (NIET 50%!)</li>
+          <li><span class="tip-icon">✅</span> Parlement en regering zitten in Den Haag (NIET Amsterdam!)</li>
+          <li><span class="tip-icon">✅</span> Amsterdam is de officiële hoofdstad</li>
+          <li><span class="tip-icon">✅</span> Rotterdam heeft de grootste haven van Europa</li>
+          <li><span class="tip-icon">✅</span> Afsluitdijk veranderde Zuiderzee in zoetwater IJsselmeer</li>
+          <li><span class="tip-icon">✅</span> Deltawerken beschermen het zuidwesten tegen de zee</li>
+          <li><span class="tip-icon">⛔</span> Flevoland is GEEN natuurlijke provincie – het is een polder</li>
+          <li><span class="tip-icon">⛔</span> De Koning woont en werkt NIET in Amsterdam, maar in Den Haag</li>
+        </ul>
+      </div>
+    
+
+      <div id="quiz" class="quiz-block">
+        <h3>🧠 KNM Oefenvragen</h3>
+        <p style="margin-bottom: 20px; font-size: 14px; color: var(--muted);">Test je kennis direct voor het examen. Klik op het juiste antwoord.</p>
+        
+        <div class="quiz-q" id="q1">
+          <div class="q-num">VRAAG 01 / 06</div>
+          <div class="q-text">Welke vier steden vormen samen de Randstad?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, dit zijn steden in het noorden van het land.')">A. Groningen, Leeuwarden, Assen en Emmen</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q1', 'Correct! Amsterdam, Rotterdam, Den Haag en Utrecht vormen de Randstad.')">B. Amsterdam, Rotterdam, Den Haag en Utrecht</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, dit zijn steden in Brabant (het zuiden).')">C. Eindhoven, Tilburg, Breda en Den Bosch</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, dit zijn steden in Limburg.')">D. Maastricht, Heerlen, Roermond en Venlo</button>
+          </div>
+          <div class="q-feedback" id="q1-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q2">
+          <div class="q-num">VRAAG 02 / 06</div>
+          <div class="q-text">Wat ligt er in het midden van de stedenring van de Randstad?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, Flevoland ligt in het IJsselmeer.')">A. Flevoland</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, de Afsluitdijk ligt tussen Noord-Holland en Friesland.')">B. De Afsluitdijk</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q2', 'Correct! In het midden van de Randstad ligt het Groene Hart: een weiland- en landbouwgebied.')">C. Het Groene Hart</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, de Veluwe ligt in Gelderland.')">D. De Veluwe</button>
+          </div>
+          <div class="q-feedback" id="q2-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q3">
+          <div class="q-num">VRAAG 03 / 06</div>
+          <div class="q-text">Hoeveel procent van Nederland ligt direct onder de zeespiegel?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, dat is veel te weinig!')">A. 10%</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q3', 'Correct! Ongeveer 25% (een kwart) van Nederland ligt direct onder zeeniveau.')">B. 25%</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee! 50% zou onder water staan ZONDER dijken, maar ligt niet allemaal nu onder zeeniveau.')">C. 50%</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, dat is veel te veel.')">D. 75%</button>
+          </div>
+          <div class="q-feedback" id="q3-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q4">
+          <div class="q-num">VRAAG 04 / 06</div>
+          <div class="q-text">Wat is een polder?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, dat is een duin.')">A. Een berg van zand langs de kust</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q4', 'Correct! Een polder is een stuk land dat is drooggemaakt en waar vroeger water was.')">B. Een drooggemaakt stuk land dat vroeger water was</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, de Afsluitdijk is een dijk.')">C. Een lange dijk tussen twee provincies</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, dat is een gracht.')">D. Een waterweg in de stad</button>
+          </div>
+          <div class="q-feedback" id="q4-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q5">
+          <div class="q-num">VRAAG 05 / 06</div>
+          <div class="q-text">In welk jaar vond de Watersnoodramp plaats?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, dat was het einde van de Eerste Wereldoorlog.')">A. 1918</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, dat was het begin van de Tweede Wereldoorlog.')">B. 1940</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q5', 'Correct! De watersnoodramp gebeurde in februari 1953, waarbij grote delen van Zeeland overstroomden.')">C. 1953</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, in 1975 werd Suriname onafhankelijk.')">D. 1975</button>
+          </div>
+          <div class="q-feedback" id="q5-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q6">
+          <div class="q-num">VRAAG 06 / 06</div>
+          <div class="q-text">Wat zijn de Deltawerken?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, dat is de Betuweroute.')">A. Een spoorlijn door de Randstad</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, dat zijn gewone havens.')">B. Grote fabrieken in de haven van Rotterdam</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q6', 'Correct! De Deltawerken zijn enorme dijken en keringen gebouwd na de ramp van 1953.')">C. Enorme dijken en stormvloedkeringen in Zeeland en Zuid-Holland</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, dat zijn wetten.')">D. De regels voor de politiek in Den Haag</button>
+          </div>
+          <div class="q-feedback" id="q6-fb"></div>
+        </div>
+      </div>
+    
+<div class="footer">
+  KNM Lesmateriaal · Thema 1 · Modules 1 &amp; 2 · Y&amp;S Coaching · 2026
+</div>
+
+<script>
+  function answer(btn, correct, qId, feedback) {
+    document.getElementById(qId).querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById(qId + '-fb');
+    fb.textContent = (correct ? '✅ ' : '❌ ') + feedback;
+    fb.classList.add('show');
+  }
+
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const target = document.querySelector(pill.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // === VOCAB TOOLTIP & LANGUAGE SWITCHER ===
+  let currentLang = 'nl';
+  const langBtns = document.querySelectorAll('.lang-btn');
+  const vocabWords = document.querySelectorAll('.vocab');
+
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      langBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLang = btn.getAttribute('data-lang');
+      vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+
+      // Show/hide meertalige summaries
+      document.querySelectorAll('.i18n-el').forEach(el => {
+        if (el.getAttribute('data-lang') === currentLang) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  vocabWords.forEach(word => {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    // Adjust tooltip direction for RTL languages
+    word.appendChild(tooltip);
+
+    word.addEventListener('click', (e) => {
+      e.stopPropagation();
+      vocabWords.forEach(w => {
+        if (w !== word) w.classList.remove('show-tooltip');
+      });
+      if (currentLang === 'nl') return;
+      const translation = word.getAttribute('data-' + currentLang);
+      if (translation) {
+        tooltip.textContent = translation;
+        // Check if RTL language to set styling
+        if (['ar', 'fa', 'da'].includes(currentLang)) {
+          tooltip.style.direction = 'rtl';
+          tooltip.style.textAlign = 'right';
+        } else {
+          tooltip.style.direction = 'ltr';
+          tooltip.style.textAlign = 'left';
+        }
+        word.classList.toggle('show-tooltip');
+      }
+    });
+  });
+
+  document.addEventListener('click', () => {
+    vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+  });
+</script>
+
+</body>
+</html>

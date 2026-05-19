@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNM – Willem van Oranje, Gouden Eeuw & Koloniën</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --red: #c0392b;
+    --gold: #d4a017;
+    --navy: #1c2e4a;
+    --muted: #7a6e5f;
+    --border: #c8bba8;
+    --green: #2d6a4f;
+    --purple: #5b4fcf;
+    --purple-light: #eeecfb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hero {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 80px);
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(28px, 5.5vw, 58px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.7);
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 18px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+  }
+  .pill:hover, .pill.active { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 50px 24px 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .icon-red  { background: var(--red); }
+  .icon-navy { background: var(--navy); }
+  .icon-gold { background: var(--gold); }
+  .section-header h2 { font-size: 30px; font-weight: 900; }
+  .section-header small {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .lead { font-size: 17px; font-weight: 400; line-height: 1.85; color: #2a2420; margin-bottom: 36px; max-width: 720px; }
+  .subheading { font-size: 21px; font-weight: 800; margin-top: 30px; margin-bottom: 18px; }
+
+  /* METAPHOR BOX */
+  .metaphor {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0 28px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .metaphor-emoji { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .metaphor strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metaphor p { font-size: 14.5px; color: #2a2060; line-height: 1.65; }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-warn    { background: #fff8e6; border-left: 5px solid var(--gold); }
+  .callout-info    { background: #eef2f8; border-left: 5px solid var(--navy); }
+  .callout-success { background: #eef7f2; border-left: 5px solid var(--green); }
+  .callout-emoji { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .callout p { font-size: 14.5px; color: #3a3228; line-height: 1.65; }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .stat-card { background: var(--navy); color: var(--paper); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 900; color: var(--gold); display: block; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: rgba(245,240,232,0.8); line-height: 1.4; }
+
+  /* CITIES GRID */
+  .cities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+  .city-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .city-card:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,46,74,0.1); }
+  .city-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+  .city-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .city-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+  /* EXAM SECTION */
+  .exam-section { background: var(--navy); color: var(--paper); border-radius: 16px; padding: 30px 32px; margin-top: 44px; }
+  .exam-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; color: var(--gold); }
+  .exam-tips-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .exam-tips-list li { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 11px 15px; font-size: 13.5px; line-height: 1.5; display: flex; gap: 10px; }
+  .tip-icon { flex-shrink: 0; }
+
+  /* QUIZ */
+  .quiz-block { background: var(--cream); border: 2px dashed var(--border); border-radius: 16px; padding: 32px; margin-top: 40px; }
+  .quiz-block h3 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .quiz-q { margin-bottom: 20px; padding: 16px 20px; background: white; border-radius: 10px; border: 1.5px solid var(--border); }
+  .q-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .q-text { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-opt { background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; text-align: left; font-family: 'Nunito', sans-serif; font-weight: 600; }
+  .quiz-opt:hover { background: var(--navy); color: white; border-color: var(--navy); }
+  .quiz-opt.correct { background: #d4edda; border-color: var(--green); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong   { background: #f8d7da; border-color: var(--red);   color: var(--red); }
+  .q-feedback { margin-top: 10px; font-size: 13px; font-style: italic; color: var(--muted); display: none; padding: 8px 12px; background: var(--cream); border-radius: 6px; line-height: 1.55; }
+  .q-feedback.show { display: block; }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .lang-btn {
+    padding: 7px 16px;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Nunito', sans-serif;
+  }
+  .lang-btn:hover { background: rgba(28,46,74,0.08); }
+  .lang-btn.active { background: var(--navy); color: var(--paper); box-shadow: 0 4px 10px rgba(28,46,74,0.25); }
+
+  /* VOCAB TOOLTIPS */
+  .vocab {
+    position: relative;
+    cursor: pointer;
+    border-bottom: 2px dashed var(--navy);
+    font-weight: 700;
+    color: var(--navy);
+    transition: all 0.2s;
+    display: inline;
+  }
+  .vocab:hover { background-color: rgba(28,46,74,0.08); border-radius: 4px; }
+  .tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: var(--navy);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    pointer-events: none;
+  }
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--navy) transparent transparent transparent;
+  }
+  .vocab.show-tooltip .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .footer { text-align: center; padding: 32px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 1px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    .cities-grid, .stats-row, .exam-tips-list { grid-template-columns: 1fr; }
+    .main { padding: 28px 16px 60px; }
+  }
+
+  /* TWO-COLUMN LAYOUT SYSTEM FOR SIDEBAR SUMMARIES */
+  .section-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 992px) {
+    .main {
+      max-width: 1100px;
+      transition: max-width 0.3s ease;
+    }
+    .section-layout {
+      grid-template-columns: 1.8fr 1fr;
+    }
+  }
+  .summary-sidebar {
+    align-self: start;
+  }
+  @media (min-width: 992px) {
+    .summary-sidebar {
+      position: sticky;
+      top: 24px;
+    }
+  }
+  .summary-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .summary-card.red-border {
+    border-left: 4px solid var(--red);
+  }
+  .summary-card.gold-border {
+    border-left: 4px solid var(--gold);
+  }
+  .summary-card h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-card p {
+    margin: 0 0 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .summary-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+  }
+  .summary-card li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .summary-card.rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  .summary-card.rtl ul {
+    padding-left: 0;
+    padding-right: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">KNM · Thema 1 · Modules 3, 4 & 5</div>
+  <h1>Willem van Oranje,<br>Gouden Eeuw &amp; Koloniën</h1>
+  <p>Ontdek de geschiedenis van de vader des vaderlands, de rijkdom en de schaduwzijden</p>
+</div>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+  <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+  <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+  <button class="lang-btn" data-lang="vi">🇻🇳 VN</button>
+  <button class="lang-btn" data-lang="fa">🇮🇷 Farsi</button>
+  <button class="lang-btn" data-lang="da">🇦🇫 Dari</button>
+  <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
+  <button class="lang-btn" data-lang="th">🇹🇭 TH</button>
+</div>
+
+<div class="nav-pills">
+  
+      <a href="#willem"      class="pill active">👑 Willem v. Oranje</a>
+      <a href="#goudeneeuw"  class="pill">✨ De Gouden Eeuw</a>
+      <a href="#kolonien"    class="pill">🌍 Koloniën</a>
+      <a href="#quiz"        class="pill">🧠 Oefenvragen</a>
+    
+</div>
+
+<div class="main">
+<!-- WILLEM -->
+<div id="willem">
+  <div class="section-header">
+    <div class="section-icon icon-gold">👑</div>
+    <div>
+      <h2>Willem van Oranje</h2>
+      <small>Topic 3 · De vader des vaderlands</small>
+    </div>
+  </div>
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">Als je in Nederland woont, hoor je vaak de naam "Oranje". Het Nederlands elftal speelt in het oranje, Koningsdag is oranje, en de koninklijke familie heet het Huis van Oranje. Maar waar komt dat eigenlijk vandaan? Het antwoord ligt bij Willem van Oranje, die leefde van 1533 tot 1584.</p>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo – Willem van Oranje</strong>
+          <p>Denk aan Willem van Oranje als de vader van een groot gezin. De Spaanse koning was de strenge stiefvader die het huis overnam en zijn wil oplegde. Willem kwam in opstand om zijn gezin te beschermen en hun eigen vrijheid en religie te geven. Daarom noemen we hem de 'Vader des Vaderlands'.</p>
+        </div>
+      </div>
+    
+      <div class="subheading">⛪ Godsdienst en Geloof</div>
+      <p>Een <span class="vocab" data-en="religion" data-tr="din / inanç" data-vi="tôn giáo" data-ar="دين" data-th="ศาสนา" data-da="دین" data-fa="دین">godsdienst</span> is een geloof, zoals het christendom, de islam, het jodendom of het boeddhisme. In de tijd van Willem van Oranje waren er in Europa twee soorten christenen die ruzie met elkaar hadden: <span class="vocab" data-en="Catholics" data-tr="Katolikler" data-vi="người Công giáo" data-ar="كاثوليك" data-th="ชาวคาทอลิก" data-da="کاتولیک‌ها" data-fa="کاتولیک‌ها">katholieken</span> en <span class="vocab" data-en="Protestants" data-tr="Protestanlar" data-vi="người Kháng cách" data-ar="بروتستانت" data-th="ชาวโปรเตสแตนต์" data-da="پروتستان‌ها" data-fa="پروتستان‌ها">protestanten</span>.</p>
+      <p style="margin-top: 10px;"><span class="vocab" data-en="Catholics" data-tr="Katolikler" data-vi="người Công giáo" data-ar="كاثوليك" data-th="ชาวคาทอลิก" data-da="کاتولیک‌ها" data-fa="کاتولیک‌ها">Katholieken</span> volgen de paus in Rome. <span class="vocab" data-en="Protestants" data-tr="Protestanlar" data-vi="người Kháng cách" data-ar="بروتستانت" data-th="ชาวโปรเตสแตนต์" data-da="پروتستان‌ها" data-fa="پروتستان‌ها">Protestanten</span> vonden dat de kerk te veel <span class="vocab" data-en="power" data-tr="güç / iktidar" data-vi="quyền lực" data-ar="سلطة / قوة" data-th="อำนาจ" data-da="قدرت" data-fa="قدرت">macht</span> had en wilden hun eigen manier van geloven. Als iemand christelijk is, betekent dat dat hij of zij gelooft in God, Jezus Christus en de Bijbel - dit kan zowel <span class="vocab" data-en="Catholic" data-tr="Katolik" data-vi="Công giáo" data-ar="كاثوليكي" data-th="คาทอลิก" data-da="کاتولیک" data-fa="کاتولیک">katholiek</span> als protestants zijn.</p>
+      <div class="subheading">⚔️ De Opstand</div>
+      <p>In de 16e eeuw behoorde Nederland tot Spanje. De Spaanse koning Filips II was streng <span class="vocab" data-en="Catholic" data-tr="Katolik" data-vi="Công giáo" data-ar="كاثوليكي" data-th="คาทอลิก" data-da="کاتولیک" data-fa="کاتولیک">katholiek</span> en wilde dat iedereen <span class="vocab" data-en="Catholic" data-tr="Katolik" data-vi="Công giáo" data-ar="كاثوليكي" data-th="คาทอลิก" data-da="کاتولیک" data-fa="کاتولیک">katholiek</span> was. De <span class="vocab" data-en="Protestants" data-tr="Protestanlar" data-vi="người Kháng cách" data-ar="بروتستانت" data-th="ชาวโปรเตสแตนต์" data-da="پروتستان‌ها" data-fa="پروتستان‌ها">protestanten</span> in Nederland werden vervolgd en soms zelfs gedood.</p>
+      <p style="margin-top: 10px;">Willem van Oranje kwam in <span class="vocab" data-en="revolt" data-tr="isyan" data-vi="cuộc nổi dậy" data-ar="ثورة / انتفاضة" data-th="การก่อกบฏ" data-da="قیام" data-fa="قیام">opstand</span>. Een <span class="vocab" data-en="revolt" data-tr="isyan" data-vi="cuộc nổi dậy" data-ar="ثورة / انتفاضة" data-th="การก่อกบฏ" data-da="قیام" data-fa="قیام">opstand</span> is een protest waarbij mensen boos zijn op hun leiders en dat laten zien. Willem vond dat iedereen vrij moest zijn om te geloven wat hij wilde. Hij wordt daarom ook wel de "Vader des Vaderlands" genoemd.</p>
+      <div class="subheading">👑 Macht en Onafhankelijkheid</div>
+      <p><span class="vocab" data-en="power" data-tr="güç / iktidar" data-vi="quyền lực" data-ar="سلطة / قوة" data-th="อำนาจ" data-da="قدرت" data-fa="قدرت">Macht</span> hebben betekent dat je kunt zeggen wat anderen moeten doen. De Spaanse koning had veel <span class="vocab" data-en="power" data-tr="güç / iktidar" data-vi="quyền lực" data-ar="سلطة / قوة" data-th="อำนาจ" data-da="قدرت" data-fa="قدرت">macht</span> over Nederland. Door de <span class="vocab" data-en="revolt" data-tr="isyan" data-vi="cuộc nổi dậy" data-ar="ثورة / انتفاضة" data-th="การก่อกบฏ" data-da="قیام" data-fa="قیام">opstand</span> wilde Nederland <span class="vocab" data-en="independent" data-tr="bağımsız" data-vi="độc lập" data-ar="مستقل" data-th="อิสระ / เอกราช" data-da="مستقل" data-fa="مستقل">onafhankelijk</span> worden - dat betekent dat je zelf kunt beslissen, zonder dat een ander land de baas over je is.</p>
+      <p style="margin-top: 10px;">In 1648 werd Nederland officieel <span class="vocab" data-en="independent" data-tr="bağımsız" data-vi="độc lập" data-ar="مستقل" data-th="อิสระ / เอกราช" data-da="مستقل" data-fa="مستقل">onafhankelijk</span>. Het land werd een <span class="vocab" data-en="republic" data-tr="cumhuriyet" data-vi="cộng hòa" data-ar="جمهورية" data-th="สาธารณรัฐ" data-da="جمهوری" data-fa="جمهوری">republiek</span> - een land zonder koning waar het volk de leiders kiest. Nederland had wel een stadhouder uit de familie van Oranje, maar die had minder <span class="vocab" data-en="power" data-tr="güç / iktidar" data-vi="quyền lực" data-ar="سلطة / قوة" data-th="อำนาจ" data-da="قدرت" data-fa="قدرت">macht</span> dan een koning.</p>
+    </div>
+    <aside class="summary-sidebar">
+<!-- NL Summary Card -->
+<div class="summary-card red-border i18n-el" data-lang="nl">
+  <h4>⚡ 🧡 3. Willem van Oranje (1533-1584)</h4>
+  <p>Willem van Oranje kwam in opstand tegen de Spaanse koning omdat hij vond dat iedereen vrij moest zijn om te geloven wat hij wilde. Hij wordt de 'Vader des Vaderlands' genoemd.</p>
+  <p><strong>💡 Waarom is dit belangrijk?</strong></p>
+  <p>Oranje is de nationale kleur vanwege hem. Op Koningsdag (27 april) draagt iedereen oranje. Het Nederlandse volkslied (het Wilhelmus) gaat over hem. Dit begrijpen helpt je de Nederlandse cultuur te begrijpen.</p>
+</div>
+<!-- EN Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="en" style="display: none;">
+  <h4>⚡ 🧡 3. Willem van Oranje (William of Orange)</h4>
+  <p>Willem van Oranje (1533-1584) rebelled against the Spanish king because he wanted everyone to be free to practice their religion. He's called the «Father of the Fatherland».</p>
+  <p><strong>💡 Why learn this for the KNM exam:</strong></p>
+  <p>Orange is the national color because of him. On Koningsdag (King's Day), everyone wears orange. Understanding this history helps you understand Dutch culture.</p>
+</div>
+<!-- TR Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="tr" style="display: none;">
+  <h4>⚡ 🧡 3. Willem van Oranje</h4>
+  <p>Willem van Oranje (1533-1584), herkesin dinini özgürce yaşayabilmesini istediği için İspanya kralına karşı ayaklandı. Ona «Vatan'ın Babası» denir.</p>
+  <p><strong>💡 KNM sınavı için bunu neden öğreniyorsunuz:</strong></p>
+  <p>Turuncu, onun yüzünden ulusal renktir. Koningsdag'da (Kral Günü) herkes turuncu giyer. Bu tarihi anlamak Hollanda kültürünü anlamanıza yardımcı olur.</p>
+</div>
+<!-- VI Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="vi" style="display: none;">
+  <h4>⚡ 🧡 3. Willem van Oranje</h4>
+  <p>Willem van Oranje (1533-1584) nổi dậy chống lại vua Tây Ban Nha vì ông muốn mọi người được tự do tôn giáo. Ông được gọi là «Cha của Tổ quốc».</p>
+  <p><strong>💡 Tại sao học điều này cho kỳ thi KNM:</strong></p>
+  <p>Màu cam là màu quốc gia vì ông. Vào Koningsdag, mọi người mặc đồ cam. Hiểu lịch sử này giúp bạn hiểu văn hóa Hà Lan.</p>
+</div>
+<!-- FA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="fa" style="display: none;">
+  <h4>⚡ 🧡 3. ویلم فان اورانیه</h4>
+  <p>ویلم فان اورانیه (۱۵۳۳-۱۵۸۴) علیه پادشاه اسپانیا قیام کرد زیرا می‌خواست مردم آزاد باشند که هر دینی را که می‌خواهند داشته باشند. او را «پدر میهن» می‌نامند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>نارنجی رنگ ملی است به خاطر او. روز پادشاه (Koningsdag) همه نارنجی می‌پوشند. فهم این تاریخ به شما کمک می‌کند فرهنگ هلندی را درک کنید.</p>
+</div>
+<!-- DA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="da" style="display: none;">
+  <h4>⚡ 🧡 3. ویلم فان اورانیه</h4>
+  <p>ویلم فان اورانیه (۱۵۳۳-۱۵۸۴) علیه پادشاه اسپانیا قیام کرد زیرا می‌خواست مردم آزاد باشند که هر دینی را که می‌خواهند داشته باشند. او را «پدر میهن» می‌نامند.</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>نارنجی رنگ ملی است به خاطر او. روز پادشاه (Koningsdag) همه نارنجی می‌پوشند. فهم این تاریخ به شما کمک می‌کند فرهنگ هلندی را درک کنید.</p>
+</div>
+<!-- AR Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="ar" style="display: none;">
+  <h4>⚡ 🧡 3. فيليم فان أورانيه</h4>
+  <p>فيليم فان أورانيه (١٥٣٣-١٥٨٤) ثار ضد ملك إسبانيا لأنه أراد حرية الدين للجميع. يُسمى «أب الوطن».</p>
+  <p><strong>💡 لماذا تتعلم هذا لامتحان KNM؟</strong></p>
+  <p>اللون البرتقالي هو اللون الوطني بسببه. في يوم الملك (Koningsdag) الجميع يرتدي البرتقالي. فهم هذا التاريخ يساعدك على فهم الثقافة الهولندية.</p>
+</div>
+<!-- TH Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="th" style="display: none;">
+  <h4>⚡ 🧡 3. Willem van Oranje</h4>
+  <p>Willem van Oranje (1533-1584) ลุกฮือต่อต้านกษัตริย์สเปนเพราะต้องการให้ทุกคนมีเสรีภาพในการนับถือศาสนา เขาถูกเรียกว่า «บิดาแห่งชาติ»</p>
+  <p><strong>💡 ทำไมต้องเรียนรู้สิ่งนี้สำหรับสอบ KNM:</strong></p>
+  <p>สีส้มเป็นสีประจำชาติเพราะเขา ในวัน Koningsdag ทุกคนสวมชุดสีส้ม การเข้าใจประวัติศาสตร์นี้ช่วยให้คุณเข้าใจวัฒนธรรมดัตช์</p>
+</div>
+    </aside>
+  </div>
+</div>
+
+      <div class="section-divider">
+        <div class="divider-symbol">✨ DE GOUDEN EEUW ✨</div>
+      </div>
+    
+<!-- GOUDENEEUW -->
+<div id="goudeneeuw">
+  <div class="section-header">
+    <div class="section-icon icon-navy">✨</div>
+    <div>
+      <h2>De Gouden Eeuw</h2>
+      <small>Topic 4 · Nederland op het hoogtepunt (17e Eeuw)</small>
+    </div>
+  </div>
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">De periode van 1600 tot 1700 wordt de <span class="vocab" data-en="Golden Age (17th century)" data-tr="Altın Çağ (17. yüzyıl)" data-vi="Thời Kỳ Hoàng Kim (thế kỷ 17)" data-ar="العصر الذهبي (القرن السابع عشر)" data-th="ยุคทอง (ศตวรรษที่ 17)" data-da="عصر طلایی (قرن ۱۷)" data-fa="عصر طلایی (قرن ۱۷)">Gouden Eeuw</span> genoemd. In deze tijd was Nederland een van de rijkste en machtigste landen ter wereld. Nederlandse schilders als Rembrandt en Vermeer maakten meesterwerken. Nederlandse wetenschappers deden belangrijke ontdekkingen. En Nederlandse kooplieden handelden over de hele wereld.</p>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo – Specerijen als Goud</strong>
+          <p>Stel je voor dat peper of nootmuskaat nu zo duur zou zijn als een iPhone. Een klein zakje peperkorrels kon je een heel huis opleveren! Dit verklaart waarom kooplieden jarenlang op gevaarlijke zeereizen gingen: het was een enorme goudmijn.</p>
+        </div>
+      </div>
+    
+      <div class="subheading">🚢 De VOC</div>
+      <p>De V.O.C. (Vereenigde Oostindische Compagnie) was een groot Nederlands handelsbedrijf. Het was eigenlijk het eerste multinationale bedrijf ter wereld! De <span class="vocab" data-en="VOC (Dutch East India Company)" data-tr="VOC (Hollanda Doğu Hindistan Şirketi)" data-vi="VOC (Công ty Đông Ấn Hà Lan)" data-ar="شركة الهند الشرقية الهولندية (VOC)" data-th="VOC (บริษัทอินเดียตะวันออก)" data-da="کمپانی هند شرقی هلند (VOC)" data-fa="کمپانی هند شرقی هلند (VOC)">VOC</span> had eigen <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span>, eigen soldaten en eigen forten in Azië.</p>
+      <p style="margin-top: 10px;">De <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span> van de <span class="vocab" data-en="VOC (Dutch East India Company)" data-tr="VOC (Hollanda Doğu Hindistan Şirketi)" data-vi="VOC (Công ty Đông Ấn Hà Lan)" data-ar="شركة الهند الشرقية الهولندية (VOC)" data-th="VOC (บริษัทอินเดียตะวันออก)" data-da="کمپانی هند شرقی هلند (VOC)" data-fa="کمپانی هند شرقی هلند (VOC)">VOC</span> gingen naar Azië om specerijen te halen zoals peper, nootmuskaat en kruidnagel. In die tijd waren specerijen heel duur - bijna zo waardevol als goud. De <span class="vocab" data-en="VOC (Dutch East India Company)" data-tr="VOC (Hollanda Doğu Hindistan Şirketi)" data-vi="VOC (Công ty Đông Ấn Hà Lan)" data-ar="شركة الهند الشرقية الهولندية (VOC)" data-th="VOC (บริษัทอินเดียตะวันออก)" data-da="کمپانی هند شرقی هلند (VOC)" data-fa="کمپانی هند شرقی هلند (VOC)">VOC</span> maakte Nederland rijk, maar deed ook slechte dingen: de <span class="vocab" data-en="VOC (Dutch East India Company)" data-tr="VOC (Hollanda Doğu Hindistan Şirketi)" data-vi="VOC (Công ty Đông Ấn Hà Lan)" data-ar="شركة الهند الشرقية الهولندية (VOC)" data-th="VOC (บริษัทอินเดียตะวันออก)" data-da="کمپانی هند شرقی هلند (VOC)" data-fa="کمپانی هند شرقی هلند (VOC)">VOC</span> gebruikte geweld en dwong mensen om voor hen te werken.</p>
+      <div class="subheading">⛵ Schepen en Vervoer</div>
+      <p>Een <span class="vocab" data-en="ship" data-tr="gemi" data-vi="tàu lớn" data-ar="سفينة" data-th="เรือ" data-da="کشتی" data-fa="کشتی">schip</span> is een grote boot. Nederlandse <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span> voeren over de hele wereld. Ze vervoerden goederen - dat betekent dat ze spullen van de ene plaats naar de andere brachten. <span class="vocab" data-en="transport" data-tr="taşımak / nakletmek" data-vi="vận chuyển" data-ar="نقل" data-th="ขนส่ง" data-da="انتقال دادن" data-fa="حمل و نقل کردن">Vervoeren</span> doe je met <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span>, vrachtwagens, treinen of vliegtuigen.</p>
+      <div class="subheading">🏘️ De Grachten</div>
+      <p>Als je door Amsterdam of Utrecht loopt, zie je overal <span class="vocab" data-en="canals" data-tr="kanallar" data-vi="kênh đào" data-ar="القنوات" data-th="คลอง" data-da="کانال‌ها" data-fa="کانال‌ها">grachten</span> - waterwegen in de stad. De <span class="vocab" data-en="canals" data-tr="kanallar" data-vi="kênh đào" data-ar="القنوات" data-th="คลอง" data-da="کانال‌ها" data-fa="کانال‌ها">grachten</span> werden in de <span class="vocab" data-en="Golden Age (17th century)" data-tr="Altın Çağ (17. yüzyıl)" data-vi="Thời Kỳ Hoàng Kim (thế kỷ 17)" data-ar="العصر الذهبي (القرن السابع عشر)" data-th="ยุคทอง (ศตวรรษที่ 17)" data-da="عصر طلایی (قرن ۱۷)" data-fa="عصر طلایی (قرن ۱۷)">Gouden Eeuw</span> gegraven. Ze waren niet alleen mooi, maar ook praktisch: via de <span class="vocab" data-en="canals" data-tr="kanallar" data-vi="kênh đào" data-ar="القنوات" data-th="คลอง" data-da="کانال‌ها" data-fa="کانال‌ها">grachten</span> konden <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span> goederen naar de pakhuizen brengen.</p>
+      <p style="margin-top: 10px;">De huizen langs de <span class="vocab" data-en="canals" data-tr="kanallar" data-vi="kênh đào" data-ar="القنوات" data-th="คลอง" data-da="کانال‌ها" data-fa="کانال‌ها">grachten</span> waren van rijke kooplieden. Veel van deze grachtenpanden staan er nog steeds. Ze zijn nu heel duur en beroemd over de hele wereld.</p>
+      <div class="subheading">⛓️ De Schaduwzijde: Slavernij</div>
+      <p>De <span class="vocab" data-en="Golden Age (17th century)" data-tr="Altın Çağ (17. yüzyıl)" data-vi="Thời Kỳ Hoàng Kim (thế kỷ 17)" data-ar="العصر الذهبي (القرن السابع عشر)" data-th="ยุคทอง (ศตวรรษที่ 17)" data-da="عصر طلایی (قرن ۱۷)" data-fa="عصر طلایی (قرن ۱۷)">Gouden Eeuw</span> had ook een hele donkere kant. Nederland deed mee aan de <span class="vocab" data-en="slavery" data-tr="kölelik" data-vi="chế độ nô lệ" data-ar="العبودية" data-th="ระบบทาส" data-da="برده‌داری" data-fa="بردگی">slavernij</span>. Een <span class="vocab" data-en="slave" data-tr="köle" data-vi="nô lệ" data-ar="عبد" data-th="ทาส" data-da="برده" data-fa="برده">slaaf</span> is iemand die niet vrij is. Slaven moesten werken zonder betaald te krijgen. Ze werden behandeld als bezit, niet als mensen.</p>
+      <p style="margin-top: 10px;">Nederlandse <span class="vocab" data-en="ships" data-tr="gemiler" data-vi="các con tàu" data-ar="سفن" data-th="เรือ" data-da="کشتی‌ها" data-fa="کشتی‌ها">schepen</span> haalden mensen uit Afrika en brachten hen naar Suriname en de Caribische eilanden. Daar moesten zij werken op plantages onder vreselijke omstandigheden. Pas in 1863 werd <span class="vocab" data-en="slavery" data-tr="kölelik" data-vi="chế độ nô lệ" data-ar="العبودية" data-th="ระบบทาส" data-da="برده‌داری" data-fa="بردگی">slavernij</span> in Nederland verboden. Dit is een pijnlijk deel van de Nederlandse geschiedenis waar nu veel over gesproken wordt.</p>
+    </div>
+    <aside class="summary-sidebar">
+<!-- NL Summary Card -->
+<div class="summary-card gold-border i18n-el" data-lang="nl">
+  <h4>⚡ ✨ 4. De Gouden Eeuw (17e eeuw)</h4>
+  <p>Tussen 1600 en 1700 was Nederland een van de rijkste landen. De V.O.C. (Vereenigde Oostindische Compagnie) handelde over de hele wereld. Schilders als Rembrandt maakten meesterwerken.</p>
+  <p><strong>⚠️ LET OP - EXAMENVRAAG!</strong></p>
+  <p>Op het examen wordt gevraagd: 'In welke eeuw was de Gouden Eeuw?' Het antwoord is: de ZEVENTIENDE EEUW (17e eeuw). Dit MOET je onthouden!</p>
+</div>
+<!-- EN Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="en" style="display: none;">
+  <h4>⚡ ✨ 4. The Golden Age (17th Century)</h4>
+  <p>Between 1600 and 1700, the Netherlands was one of the richest countries. The VOC (Dutch East India Company) traded worldwide. Painters like Rembrandt created masterpieces.</p>
+  <p><strong>⚠️ Why learn this for the KNM exam:</strong></p>
+  <p>The exam will ask: «In which century was the Golden Age?» Answer: The 17th century (17e eeuw). Memorize this!</p>
+</div>
+<!-- TR Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="tr" style="display: none;">
+  <h4>⚡ ✨ 4. Altın Çağ (17. Yüzyıl)</h4>
+  <p>1600 ile 1700 arasında Hollanda en zengin ülkelerden biriydi. VOC (Hollanda Doğu Hindistan Şirketi) dünya çapında ticaret yapıyordu. Rembrandt gibi ressamlar başyapıtlar yarattı.</p>
+  <p><strong>⚠️ KNM sınavı için bunu neden öğreniyorsunuz:</strong></p>
+  <p>Sınav soracak: «Altın Çağ hangi yüzyıldaydı?» Cevap: 17. yüzyıl (17e eeuw). Bunu ezberleyin!</p>
+</div>
+<!-- VI Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="vi" style="display: none;">
+  <h4>⚡ ✨ 4. Thời đại Hoàng kim (Thế kỷ 17)</h4>
+  <p>Từ 1600 đến 1700, Hà Lan là một trong những nước giàu nhất. VOC (Công ty Đông Ấn) buôn bán khắp thế giới. Họa sĩ như Rembrandt tạo ra kiệt tác.</p>
+  <p><strong>⚠️ Tại sao học điều này cho kỳ thi KNM:</strong></p>
+  <p>Bài thi sẽ hỏi: «Thời đại Hoàng kim ở thế kỷ nào?» Đáp án: Thế kỷ 17 (17e eeuw). Nhớ điều này!</p>
+</div>
+<!-- FA Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="fa" style="display: none;">
+  <h4>⚡ ✨ 4. عصر طلایی (قرن ۱۷)</h4>
+  <p>بین ۱۶۰۰ و ۱۷۰۰، هلند یکی از ثروتمندترین کشورها بود. کمپانی هند شرقی (VOC) در سراسر جهان تجارت می‌کرد. نقاشانی مانند رامبرانت شاهکارهایی خلق کردند.</p>
+  <p><strong>⚠️ چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>در آزمون از شما سؤال خواهد شد: «عصر طلایی در چه قرنی بود؟» پاسخ: قرن ۱۷ (17e eeuw). این را حفظ کنید!</p>
+</div>
+<!-- DA Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="da" style="display: none;">
+  <h4>⚡ ✨ 4. عصر طلایی (قرن ۱۷)</h4>
+  <p>بین ۱۶۰۰ و ۱۷۰۰، هلند یکی از ثروتمندترین کشورها بود. کمپانی هند شرقی (VOC) در سراسر جهان تجارت می‌کرد. نقاشانی مانند رامبرانت شاهکارهایی خلق کردند.</p>
+  <p><strong>⚠️ چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>در آزمون از شما سؤال خواهد شد: «عصر طلایی در چه قرنی بود؟» پاسخ: قرن ۱۷ (هفدهمین قرن). این را حفظ کنید!</p>
+</div>
+<!-- AR Summary Card -->
+<div class="summary-card gold-border i18n-el rtl" data-lang="ar" style="display: none;">
+  <h4>⚡ ✨ 4. العصر الذهبي (القرن ١٧)</h4>
+  <p>بين ١٦٠٠ و١٧٠٠، كانت هولندا من أغنى الدول. شركة الهند الشرقية (VOC) تاجرت حول العالم. رسامون مثل رامبرانت أبدعوا روائع فنية.</p>
+  <p><strong>⚠️ لماذا تتعلم هذا لامتحان KNM؟</strong></p>
+  <p>الامتحان سيسألك: «في أي قرن كان العصر الذهبي؟» الجواب: القرن السابع عشر (17e eeuw). احفظ هذا!</p>
+</div>
+<!-- TH Summary Card -->
+<div class="summary-card gold-border i18n-el " data-lang="th" style="display: none;">
+  <h4>⚡ ✨ 4. ยุคทอง (ศตวรรษที่ 17)</h4>
+  <p>ระหว่าง 1600 ถึง 1700 เนเธอร์แลนด์เป็นหนึ่งในประเทศที่ร่ำรวยที่สุด VOC (บริษัทอินเดียตะวันออก) ค้าขายทั่วโลก จิตรกรอย่าง Rembrandt สร้างสรรค์ผลงานชิ้นเอก</p>
+  <p><strong>⚠️ ทำไมต้องเรียนรู้สิ่งนี้สำหรับสอบ KNM:</strong></p>
+  <p>ข้อสอบจะถาม: «ยุคทองอยู่ในศตวรรษไหน?» คำตอบ: ศตวรรษที่ 17 (17e eeuw) จำไว้!</p>
+</div>
+    </aside>
+  </div>
+</div>
+
+      <div class="section-divider">
+        <div class="divider-symbol">🌍 KOLONIËN 🌍</div>
+      </div>
+    
+<!-- KOLONIEN -->
+<div id="kolonien">
+  <div class="section-header">
+    <div class="section-icon icon-red">🌍</div>
+    <div>
+      <h2>Nederlandse Koloniën</h2>
+      <small>Topic 5 · Suriname, Indonesië &amp; Caribische Eilanden</small>
+    </div>
+  </div>
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">Een <span class="vocab" data-en="colony" data-tr="koloni / sömürge" data-vi="thuộc địa" data-ar="مستعمرة" data-th="อาณานิคม" data-da="مستعمره" data-fa="مستعمره">kolonie</span> is een gebied dat afhankelijk is van een ander land. Het andere land heeft de <span class="vocab" data-en="power" data-tr="güç / iktidar" data-vi="quyền lực" data-ar="سلطة / قوة" data-th="อำนาจ" data-da="قدرت" data-fa="قدرت">macht</span> en wordt rijk door de <span class="vocab" data-en="colony" data-tr="koloni / sömürge" data-vi="thuộc địa" data-ar="مستعمرة" data-th="อาณานิคม" data-da="مستعمره" data-fa="مستعمره">kolonie</span>. Nederland had <span class="vocab" data-en="colonies" data-tr="sömürgeler" data-vi="các thuộc địa" data-ar="المستعمرات" data-th="อาณานิคม" data-da="مستعمرات" data-fa="مستعمرات">koloniën</span> in verschillende delen van de wereld:</p>
+
+      <ul style="padding-left: 20px; margin-bottom: 24px;">
+        <li style="margin-bottom: 12px;"><strong>Indonesië</strong> (voormalig Nederlands-Indië): Kolonie in Azië. Rijk aan specerijen, koffie en thee. Onafhankelijk sinds <strong>1949</strong> na een bloedige oorlog.</li>
+        <li style="margin-bottom: 12px;"><strong>Suriname</strong>: Kolonie in Zuid-Amerika waar slaven moesten werken op suikerplantages. Onafhankelijk sinds <strong>1975</strong>.</li>
+        <li style="margin-bottom: 12px;"><strong>De Caribische Eilanden</strong>: Curaçao, Aruba, Sint Maarten, Bonaire, Sint Eustatius en Saba. Deels nog steeds onderdeel van het Koninkrijk der Nederlanden.</li>
+      </ul>
+    
+      <p>Door deze geschiedenis wonen er nu veel mensen met Indonesische, Surinaamse en Caribische roots in Nederland. Zij hebben de Nederlandse cultuur verrijkt met hun eten, muziek en tradities.</p>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">1648</span>
+          <span class="stat-label">Nederland officieel onafhankelijk</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">17e eeuw</span>
+          <span class="stat-label">De Gouden Eeuw</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">1863</span>
+          <span class="stat-label">Verbood Nederland officieel slavernij</span>
+        </div>
+      </div>
+    
+    </div>
+    <aside class="summary-sidebar">
+<!-- NL Summary Card -->
+<div class="summary-card red-border i18n-el" data-lang="nl">
+  <h4>⚡ 🌍 5. Nederlandse Koloniën</h4>
+  <p>Nederland had koloniën: Indonesië (tot 1949), Suriname (tot 1975), en Caribische eilanden (Curaçao, Aruba, etc.).</p>
+  <p><strong>⚠️ STRIKVRAAG - ONTHOUD DIT!</strong></p>
+  <p>België was NOOIT een kolonie van Nederland! Dit is een veelgestelde examenvraag waar veel mensen fout antwoorden. België en Nederland waren samen een koninkrijk (1815-1830), maar België was geen kolonie.</p>
+</div>
+<!-- EN Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="en" style="display: none;">
+  <h4>⚡ 🌍 5. Dutch Colonies</h4>
+  <p>The Netherlands had colonies: Indonesia (until 1949), Suriname (until 1975), and Caribbean islands. Note: Belgium was NEVER a colony - this is a common exam question!</p>
+  <p><strong>💡 Why learn this for the KNM exam:</strong></p>
+  <p>Because of this history, many people with Indonesian, Surinamese, and Caribbean roots live in the Netherlands. They have enriched Dutch culture with their food, music, and traditions.</p>
+</div>
+<!-- TR Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="tr" style="display: none;">
+  <h4>⚡ 🌍 5. Hollanda Sömürgeleri</h4>
+  <p>Hollanda'nın sömürgeleri vardı: Endonezya (1949'a kadar), Surinam (1975'e kadar) ve Karayip adaları. Not: Belçika HİÇBİR ZAMAN sömürge değildi - bu sınavda yaygın bir soru!</p>
+  <p><strong>💡 KNM sınavı için bunu neden öğreniyorsunuz:</strong></p>
+  <p>Bu tarih nedeniyle, Endonezya, Surinam ve Karayip kökenli birçok insan Hollanda'da yaşıyor. Yemekleri, müzikleri ve gelenekleriyle Hollanda kültürünü zenginleştirdiler.</p>
+</div>
+<!-- VI Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="vi" style="display: none;">
+  <h4>⚡ 🌍 5. Thuộc địa Hà Lan</h4>
+  <p>Hà Lan có thuộc địa: Indonesia (đến 1949), Suriname (đến 1975), và các đảo Caribbean. Lưu ý: Bỉ KHÔNG BAO GIỜ là thuộc địa - đây là câu hỏi phổ biến trong bài thi!</p>
+  <p><strong>💡 Tại sao học điều này cho kỳ thi KNM:</strong></p>
+  <p>Vì lịch sử này, nhiều người gốc Indonesia, Suriname và Caribbean sống ở Hà Lan. Họ làm phong phú văn hóa Hà Lan với ẩm thực, âm nhạc và truyền thống.</p>
+</div>
+<!-- FA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="fa" style="display: none;">
+  <h4>⚡ 🌍 5. مستعمرات هلند</h4>
+  <p>هلند مستعمراتی داشت: اندونزی (تا ۱۹۴۹)، سورینام (تا ۱۹۷۵)، و جزایر کارائیب. توجه: بلژیک هرگز مستعمره نبود - این یک سؤال رایج در آزمون است!</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>به خاطر این تاریخ، بسیاری از مردم با ریشه‌های اندونزیایی، سورینامی و کارائیبی در هلند زندگی می‌کنند. آن‌ها فرهنگ هلندی را با غذا، موسیقی و سنت‌های خود غنی کرده‌اند.</p>
+</div>
+<!-- DA Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="da" style="display: none;">
+  <h4>⚡ 🌍 5. مستعمرات هلند</h4>
+  <p>هلند مستعمراتی داشت: اندونزی (تا ۱۹۴۹)، سورینام (تا ۱۹۷۵)، و جزایر کارائیب. توجه: بلژیک هرگز مستعمره نبود - این یک سؤال رایج در آزمون است!</p>
+  <p><strong>💡 چرا این را برای آزمون KNM یاد می‌گیرید؟</strong></p>
+  <p>به خاطر این تاریخ، بسیاری از مردم با ریشه‌های اندونزیایی، سورینامی و کارائیبی در هلند زندگی می‌کنند. آن‌ها فرهنگ هلندی را با غذا، موسیقی و سنت‌های خود غنی کرده‌اند.</p>
+</div>
+<!-- AR Summary Card -->
+<div class="summary-card red-border i18n-el rtl" data-lang="ar" style="display: none;">
+  <h4>⚡ 🌍 5. المستعمرات الهولندية</h4>
+  <p>هولندا كان لديها مستعمرات: إندونيسيا (حتى ١٩٤٩)، سورينام (حتى ١٩٧٥)، وجزر الكاريبي. ملاحظة: بلجيكا لم تكن أبداً مستعمرة - هذا سؤال شائع في الامتحان!</p>
+  <p><strong>💡 لماذا تتعلم هذا لامتحان KNM؟</strong></p>
+  <p>بسبب هذا التاريخ، كثير من الناس من أصول إندونيسية وسورينامية وكاريبية يعيشون في هولندا. أثروا الثقافة الهولندية بطعامهم وموسيقاهم وتقاليدهم.</p>
+</div>
+<!-- TH Summary Card -->
+<div class="summary-card red-border i18n-el " data-lang="th" style="display: none;">
+  <h4>⚡ 🌍 5. อาณานิคมดัตช์</h4>
+  <p>เนเธอร์แลนด์มีอาณานิคม: อินโดนีเซีย (ถึง 1949), ซูรินาม (ถึง 1975), และหมู่เกาะแคริบเบียน หมายเหตุ: เบลเยียมไม่เคยเป็นอาณานิคม - นี่คือคำถามที่พบบ่อยในข้อสอบ!</p>
+  <p><strong>💡 ทำไมต้องเรียนรู้สิ่งนี้สำหรับสอบ KNM:</strong></p>
+  <p>เพราะประวัติศาสตร์นี้ ผู้คนจำนวนมากที่มีเชื้อสายอินโดนีเซีย ซูรินาม และแคริบเบียนอาศัยอยู่ในเนเธอร์แลนด์ พวกเขาเสริมสร้างวัฒนธรรมดัตช์ด้วยอาหาร ดนตรี และประเพณี</p>
+</div>
+    </aside>
+  </div>
+</div>
+
+      <div class="exam-section">
+        <h3>🎯 Examentips: Geschiedenis &amp; Koloniën</h3>
+        <ul class="exam-tips-list">
+          <li><span class="tip-icon">✅</span> Willem van Oranje is de Vader des Vaderlands</li>
+          <li><span class="tip-icon">✅</span> Tachtigjarige Oorlog (1568-1648) was tegen Spanje</li>
+          <li><span class="tip-icon">✅</span> Gouden Eeuw = 17e eeuw (1600-1700) (ONTHOUD DIT!)</li>
+          <li><span class="tip-icon">✅</span> De VOC dreef handel met Azië (specerijen)</li>
+          <li><span class="tip-icon">✅</span> Slavernij speelde een grote rol in Suriname en Caribische plantages</li>
+          <li><span class="tip-icon">✅</span> Slavernij verboden in 1863 (sinds kort excuses voor aangeboden)</li>
+          <li><span class="tip-icon">⛔</span> België was NOOIT een kolonie van Nederland! (Strikvraag!)</li>
+          <li><span class="tip-icon">⛔</span> De VOC handelde NIET met Amerika – dat deed de WIC</li>
+        </ul>
+      </div>
+    
+
+      <div id="quiz" class="quiz-block">
+        <h3>🧠 KNM Oefenvragen</h3>
+        <p style="margin-bottom: 20px; font-size: 14px; color: var(--muted);">Test je kennis direct voor het examen. Klik op het juiste antwoord.</p>
+        
+        <div class="quiz-q" id="q1">
+          <div class="q-num">VRAAG 01 / 06</div>
+          <div class="q-text">Waarom is oranje de nationale kleur van Nederland?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, de eerste tulpen kwamen uit Turkije.')">A. Omdat de eerste tulpen in Nederland oranje waren</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q1', 'Correct! Vanwege Willem van Oranje, de leider van de opstand tegen Spanje, is oranje de nationale kleur.')">B. Vanwege Willem van Oranje, de leider van de opstand tegen Spanje</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, de Spaanse koning droeg geen oranje.')">C. Omdat de Spaanse koning oranje kleding droeg</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, de vlag was vroeger oranje-wit-blauw, maar oranje komt van de familienaam.')">D. Omdat de vlag altijd oranje is geweest</button>
+          </div>
+          <div class="q-feedback" id="q1-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q2">
+          <div class="q-num">VRAAG 02 / 06</div>
+          <div class="q-text">Tegen welk land vocht Nederland in de Tachtigjarige Oorlog (1568-1648)?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, Duitsland bestond toen nog niet eens in die vorm.')">A. Duitsland</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, met Engeland was er later strijd.')">B. Engeland</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q2', 'Correct! Nederland vocht 80 jaar tegen Spanje voor onafhankelijkheid.')">C. Spanje</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee, Frankrijk was geen partij in de Tachtigjarige Oorlog.')">D. Frankrijk</button>
+          </div>
+          <div class="q-feedback" id="q2-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q3">
+          <div class="q-num">VRAAG 03 / 06</div>
+          <div class="q-text">In welke eeuw was de Gouden Eeuw?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, de 15e eeuw was de late middeleeuwen.')">A. De 15e eeuw</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, de 16e eeuw was de tijd van de opstand.')">B. De 16e eeuw</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q3', 'Correct! De Gouden Eeuw was in de 17e eeuw (1600-1700). Dit moet je echt onthouden!')">C. De 17e eeuw</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, de 18e eeuw was de Franse tijd.')">D. De 18e eeuw</button>
+          </div>
+          <div class="q-feedback" id="q3-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q4">
+          <div class="q-num">VRAAG 04 / 06</div>
+          <div class="q-text">Wat was de V.O.C. (Vereenigde Oostindische Compagnie)?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, dat was het Sint-Lucasgilde.')">A. Een vereniging voor Nederlandse schilders</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q4', 'Correct! De VOC was een groot Nederlands handelsbedrijf in de Gouden Eeuw.')">B. Een groot Nederlands handelsbedrijf in de Gouden Eeuw</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, Thorbecke maakte de grondwet veel later in 1848.')">C. De eerste Nederlandse grondwet</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, dat is niet waar.')">D. De boot waarmee de koning vluchtte</button>
+          </div>
+          <div class="q-feedback" id="q4-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q5">
+          <div class="q-num">VRAAG 05 / 06</div>
+          <div class="q-text">Welk van de volgende landen was GEEN kolonie van Nederland?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, Indonesië was een kolonie (Nederlands-Indië).')">A. Indonesië</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, Suriname was tot 1975 een kolonie.')">B. Suriname</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q5', 'Correct! België was nooit een kolonie. Dit is een veelvoorkomende strikvraag op het examen!')">C. België</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee, Curaçao is nog steeds verbonden met het Koninkrijk.')">D. Curaçao</button>
+          </div>
+          <div class="q-feedback" id="q5-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q6">
+          <div class="q-num">VRAAG 06 / 06</div>
+          <div class="q-text">Wat was de schaduwzijde (donkere kant) van de Gouden Eeuw?</div>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, het klimaat had hier niets mee te maken.')">A. Dat er te veel regen viel in Nederland</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q6', 'Correct! De rijkdom werd mede verdiend over de ruggen van slaven en door gewelddadige kolonisatie.')">B. Dat Nederland actief meedeed aan de slavernij en kolonisatie</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, de schilderkunst bloeide juist enorm.')">C. Dat er geen schilderijen werden gemaakt</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, het land werd juist erg rijk.')">D. Dat het land armer werd</button>
+          </div>
+          <div class="q-feedback" id="q6-fb"></div>
+        </div>
+      </div>
+    
+<div class="footer">
+  KNM Lesmateriaal · Thema 1 · Modules 3, 4 &amp; 5 · Y&amp;S Coaching · 2026
+</div>
+
+<script>
+  function answer(btn, correct, qId, feedback) {
+    document.getElementById(qId).querySelectorAll('.quiz-opt').forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById(qId + '-fb');
+    fb.textContent = (correct ? '✅ ' : '❌ ') + feedback;
+    fb.classList.add('show');
+  }
+
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const target = document.querySelector(pill.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // === VOCAB TOOLTIP & LANGUAGE SWITCHER ===
+  let currentLang = 'nl';
+  const langBtns = document.querySelectorAll('.lang-btn');
+  const vocabWords = document.querySelectorAll('.vocab');
+
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      langBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLang = btn.getAttribute('data-lang');
+      vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+
+      // Show/hide meertalige summaries
+      document.querySelectorAll('.i18n-el').forEach(el => {
+        if (el.getAttribute('data-lang') === currentLang) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  vocabWords.forEach(word => {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    // Adjust tooltip direction for RTL languages
+    word.appendChild(tooltip);
+
+    word.addEventListener('click', (e) => {
+      e.stopPropagation();
+      vocabWords.forEach(w => {
+        if (w !== word) w.classList.remove('show-tooltip');
+      });
+      if (currentLang === 'nl') return;
+      const translation = word.getAttribute('data-' + currentLang);
+      if (translation) {
+        tooltip.textContent = translation;
+        // Check if RTL language to set styling
+        if (['ar', 'fa', 'da'].includes(currentLang)) {
+          tooltip.style.direction = 'rtl';
+          tooltip.style.textAlign = 'right';
+        } else {
+          tooltip.style.direction = 'ltr';
+          tooltip.style.textAlign = 'left';
+        }
+        word.classList.toggle('show-tooltip');
+      }
+    });
+  });
+
+  document.addEventListener('click', () => {
+    vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+  });
+</script>
+
+</body>
+</html>
