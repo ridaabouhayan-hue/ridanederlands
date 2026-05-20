@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactieve Praatplaten - Nederlands Leren</title>
+    <meta name="description" content="Spreekkaarten en praatplaten voor NT2-cursisten. Oefen Nederlands spreken in tweetallen of drietallen met slow-audio ondersteuning.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Theme boxes styling */
+            --green-bg: #f4faf6;
+            --green-border: #c8ebd3;
+            --green-text: #166534;
+            --green-header: #15803d;
+            --green-badge: #22c55e;
+
+            --orange-bg: #fdf8f2;
+            --orange-border: #f8e5cc;
+            --orange-text: #9a3412;
+            --orange-header: #c2410c;
+            --orange-badge: #f97316;
+
+            --dialogue-box-bg: #f1f5f9;
+            --dialogue-box-border: #e2e8f0;
+            
+            --role-a-color: #1e3a8a;
+            --role-b-color: #7c2d12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 40px 16px 80px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ── INSTRUCTIONS (HOE WERKT HET) ── */
+        .instructions-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            margin-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .instructions-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e3a8a;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .step-badge {
+            background: var(--accent-light);
+            color: var(--accent);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border: 2px solid var(--accent);
+        }
+
+        .step-title {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-top: 4px;
+        }
+
+        .step-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* ── THEMES GRID (HOME SCREEN) ── */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .theme-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
+        }
+
+        .theme-icon-box {
+            font-size: 2.2rem;
+            background: var(--accent-light);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-card:hover .theme-icon-box {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .theme-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .theme-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        .theme-arrow {
+            margin-top: auto;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-card:hover .theme-arrow {
+            gap: 10px;
+        }
+
+        /* ── DETAIL VIEW SCREEN ── */
+        .detail-view {
+            display: none; /* Managed by JS */
+        }
+
+        .detail-view.active {
+            display: block;
+        }
+
+        .back-nav {
+            margin-bottom: 24px;
+        }
+
+        .btn-back {
+            background: white;
+            border: 1px solid var(--dialogue-box-border);
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: #f1f5f9;
+            transform: translateX(-3px);
+            border-color: #cbd5e1;
+        }
+
+        .active-theme-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .active-theme-icon {
+            font-size: 2.5rem;
+            background: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .active-theme-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        /* ROLE FILTER CONTROLS */
+        .role-selector-bar {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .role-selector-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .role-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .role-btn {
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 2px solid var(--dialogue-box-border);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .role-btn.active[data-role="all"] {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .role-btn.active[data-role="A"] {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .role-btn.active[data-role="B"] {
+            border-color: #ea580c;
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        /* ── PRAATPLAAT LAYOUT ── */
+        .praatplaat-layout {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 24px;
+            align-items: start;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .praatplaat-main-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        @media (max-width: 992px) {
+            .praatplaat-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── HELPER CARD (BLUE CARD) ── */
+        .helper-card {
+            background: #f0f9ff;
+            border: 2px solid #bae6fd;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .helper-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0369a1;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .helper-header .header-icon-circle {
+            background: #e0f2fe;
+            color: #0284c7;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+        }
+
+        .helper-subheading {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 6px;
+        }
+
+        .starter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .starter-item {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #334155;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .starter-item::before {
+            content: "•";
+            color: #38bdf8;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .starter-translation {
+            display: block;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .vocab-table {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .vocab-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #ffffff;
+            border: 1px solid #e0f2fe;
+            border-radius: 8px;
+        }
+
+        .vocab-emoji {
+            font-size: 1.2rem;
+        }
+
+        .vocab-text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vocab-nl {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .vocab-translation {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #64748b;
+        }
+
+        /* Language Selector Styling */
+        .lang-selector-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .lang-selector-label {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .lang-flags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .flag-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flag-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .flag-btn.active {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── QUESTION BOX (GREEN BOX) ── */
+        .questions-card {
+            background: var(--green-bg);
+            border: 2.5px solid var(--green-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .questions-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--green-header);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1.5px solid var(--green-border);
+            padding-bottom: 12px;
+        }
+
+        .header-icon-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+
+        .questions-header .header-icon-circle {
+            background: #dcf2e3;
+            color: var(--green-badge);
+        }
+
+        .question-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .question-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .question-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            background: #fff;
+            border-color: var(--green-border);
+        }
+
+        .question-emoji {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            color: var(--text-dark);
+            flex-grow: 1;
+        }
+
+        /* ── EXAMPLE BOX (ORANGE BOX) ── */
+        .example-card {
+            background: var(--orange-bg);
+            border: 2.5px solid var(--orange-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .example-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--orange-header);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1.5px solid var(--orange-border);
+            padding-bottom: 12px;
+        }
+
+        .example-header .header-icon-circle {
+            background: #fee2e2;
+            color: var(--orange-badge);
+        }
+
+        .dialogue-container {
+            background: white;
+            border: 1px solid var(--dialogue-box-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: var(--transition);
+        }
+
+        .dialogue-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: opacity 0.25s ease, background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .dialogue-line:hover {
+            background: #f8fafc;
+        }
+
+        /* Role Circle Badge */
+        .role-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1rem;
+            color: white;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .dialogue-line.role-A .role-badge {
+            background: var(--role-a-color);
+        }
+
+        .dialogue-line.role-B .role-badge {
+            background: var(--role-b-color);
+        }
+
+        .dialogue-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex-grow: 1;
+            padding-top: 4px;
+        }
+
+        /* Audio buttons style */
+        .audio-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .audio-btn:hover {
+            background: var(--accent-light);
+            transform: scale(1.15);
+        }
+
+        /* Highlight effects when focused on a role */
+        .filter-A .dialogue-line.role-B {
+            opacity: 0.25;
+        }
+        .filter-B .dialogue-line.role-A {
+            opacity: 0.25;
+        }
+
+        /* Highlight effect when speaking */
+        .speaking-highlight {
+            background-color: #fef08a !important; /* Soft yellow highlight */
+            box-shadow: 0 0 10px rgba(254, 240, 138, 0.5);
+            transform: scale(1.01);
+        }
+        
+        .speaking-active-icon {
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Speed Voice Control */
+        .audio-settings-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            justify-content: space-between;
+        }
+
+        .audio-speed-label {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .speed-toggle {
+            display: flex;
+            background: #f1f5f9;
+            padding: 3px;
+            border-radius: 20px;
+        }
+
+        .speed-btn {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .speed-btn.active {
+            background: white;
+            color: var(--accent);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* WhatsApp Recording Section */
+        .whatsapp-box {
+            background: #f0fdf4;
+            border: 2.5px solid #bbf7d0;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .whatsapp-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #166534;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-icon-circle {
+            background: #dcf2e3;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .whatsapp-desc {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #374151;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            margin-top: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(18, 140, 126, 0.4);
+        }
+
+        .whatsapp-logo {
+            font-size: 1.35rem;
+        }
+
+        /* Print formatting */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .instructions-card, .role-selector-bar, .back-nav, .audio-settings-bar, .audio-btn, .speed-toggle, .whatsapp-box, .helper-card {
+                display: none !important;
+            }
+            .praatplaat-layout {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .questions-card, .example-card {
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            .dialogue-container {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- ══ HEADER ══ -->
+        <header>
+            <h1 class="main-title">Interactieve Praatplaten</h1>
+            <p class="subtitle">Oefen Nederlands spreken met een klasgenoot. Kies een thema en praat met elkaar!</p>
+        </header>
+
+        <!-- ══ SCREEN 1: THEMES OVERVIEW ══ -->
+        <div id="screen-overview">
+            
+            <!-- HOE WERKT HET SECTION -->
+            <div class="instructions-card">
+                <div class="lang-selector-container">
+                    <span class="lang-selector-label">🌐 Kies je taal / Choose language:</span>
+                    <div class="lang-flags">
+                        <button class="flag-btn active" onclick="switchLanguage('nl')" title="Nederlands">🇳🇱 NL</button>
+                        <button class="flag-btn" onclick="switchLanguage('en')" title="English">🇬🇧 EN</button>
+                        <button class="flag-btn" onclick="switchLanguage('tr')" title="Türkçe">🇹🇷 TR</button>
+                        <button class="flag-btn" onclick="switchLanguage('ar')" title="العربية">🇸🇾 AR</button>
+                        <button class="flag-btn" onclick="switchLanguage('ps')" title="پښتو">🇦🇫 PS</button>
+                    </div>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+                
+                <div class="instructions-title" id="txt-instructionsTitle">
+                    <span>💡</span> Hoe werkt het? (Stap voor stap)
+                </div>
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-badge">1</div>
+                        <div class="step-title" id="txt-step1Title">Kies een thema</div>
+                        <div class="step-desc" id="txt-step1Desc">Klik op een onderwerp hieronder dat je wilt oefenen.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-badge">2</div>
+                        <div class="step-title" id="txt-step2Title">Maak een groepje</div>
+                        <div class="step-desc" id="txt-step2Desc">Werk samen in tweetallen (2) of drietallen (3).</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-badge">3</div>
+                        <div class="step-title" id="txt-step3Title">Oefen het gesprek</div>
+                        <div class="step-desc" id="txt-step3Desc">Stel de vragen en gebruik de voorbeeld-dialoog. Klik op 🔊 om te luisteren.</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-badge">4</div>
+                        <div class="step-title" id="txt-step4Title">Neem op & stuur op</div>
+                        <div class="step-desc" id="txt-step4Desc">Neem jullie gesprek op met de telefoon. Stuur de opname via WhatsApp naar de docent!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THEMES LIST -->
+            <div class="section-title" id="txt-selectTopic">
+                <span>📁</span> Selecteer een onderwerp
+            </div>
+            
+            <div class="themes-grid" id="themes-container">
+                <!-- Theme cards will be injected here via JavaScript -->
+            </div>
+        </div>
+
+        <!-- ══ SCREEN 2: ACTIVE THEME VIEW ══ -->
+        <div id="screen-detail" class="detail-view">
+            
+            <!-- NAV BACK & LANGUAGE SELECTOR -->
+            <div class="back-nav" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+                <button class="btn-back" id="txt-backNav" onclick="goBackToOverview()">
+                    <span>←</span> Terug naar alle thema's
+                </button>
+                <div class="lang-flags">
+                    <button class="flag-btn active" onclick="switchLanguage('nl')" title="Nederlands">🇳🇱 NL</button>
+                    <button class="flag-btn" onclick="switchLanguage('en')" title="English">🇬🇧 EN</button>
+                    <button class="flag-btn" onclick="switchLanguage('tr')" title="Türkçe">🇹🇷 TR</button>
+                    <button class="flag-btn" onclick="switchLanguage('ar')" title="العربية">🇸🇾 AR</button>
+                    <button class="flag-btn" onclick="switchLanguage('ps')" title="پښتو">🇦🇫 PS</button>
+                </div>
+            </div>
+
+            <!-- SELECTED THEME TITLE -->
+            <div class="active-theme-header">
+                <div class="active-theme-icon" id="active-theme-icon">🍽️</div>
+                <div>
+                    <h2 class="active-theme-title" id="active-theme-title">Eten en drinken</h2>
+                    <p class="subtitle" style="margin: 0; text-align: left;" id="active-theme-desc">Praat over eten en drinken.</p>
+                </div>
+            </div>
+
+            <!-- THE PRAATPLAAT LAYOUT -->
+            <div class="praatplaat-layout">
+                
+                <!-- MAIN COLUMN (Left: Questions & Example Dialogue) -->
+                <div class="praatplaat-main-col">
+                    
+                    <!-- STEL DEZE VRAGEN (GREEN CARD) -->
+                    <div class="questions-card">
+                        <h3 class="questions-header" id="txt-questionsHeader">
+                            <span class="header-icon-circle">?</span>
+                            Stel deze vragen
+                        </h3>
+                        <ul class="question-list" id="active-questions-list">
+                            <!-- Questions will be injected here -->
+                        </ul>
+                    </div>
+
+                    <!-- VOORBEELD (ORANGE CARD) -->
+                    <div class="example-card">
+                        <h3 class="example-header" id="txt-exampleHeader">
+                            <span class="header-icon-circle">👀</span>
+                            Voorbeeld
+                        </h3>
+
+                        <!-- CONTROLS: CHOOSE YOUR ROLE -->
+                        <div class="role-selector-bar" style="box-shadow: none; border: 1.5px solid var(--orange-border); background: #fffcf9; padding: 12px; margin-bottom: 16px;">
+                            <div class="role-selector-title" id="txt-roleTitle">
+                                <span>👥</span> Wie ben jij? Klik op een rol om te focussen:
+                            </div>
+                            <div class="role-buttons">
+                                <button class="role-btn active" data-role="all" id="txt-roleAll" onclick="setRoleFilter('all')">
+                                    Oefen samen (beide tonen)
+                                </button>
+                                <button class="role-btn" data-role="A" id="txt-roleA" onclick="setRoleFilter('A')">
+                                    🔵 Ik ben Cursist A
+                                </button>
+                                <button class="role-btn" data-role="B" id="txt-roleB" onclick="setRoleFilter('B')">
+                                    🟠 Ik ben Cursist B
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dialogue-container" id="active-dialogue-container">
+                            <!-- Dialogue turns will be injected here -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SIDEBAR COLUMN (Right: Sentence Builders & Vocabulary) -->
+                <div class="praatplaat-sidebar-col">
+                    
+                    <!-- HULPMIDDELEN CARD (BLUE CARD) -->
+                    <div class="helper-card">
+                        <h3 class="helper-header" id="txt-helperHeader">
+                            <span class="header-icon-circle">💬</span>
+                            Zinsopbouw & Woordenschat
+                        </h3>
+                        
+                        <div class="helper-section">
+                            <h4 class="helper-subheading" id="txt-helperStarters">Zinsopbouw (Opzet-zinnen):</h4>
+                            <ul class="starter-list" id="active-starters-list">
+                                <!-- Sentence starters will be injected here -->
+                            </ul>
+                        </div>
+                        
+                        <div class="helper-section" style="margin-top: 20px;">
+                            <h4 class="helper-subheading" id="txt-helperVocab">Handige woorden (Woordenschat):</h4>
+                            <div class="vocab-table" id="active-vocab-table">
+                                <!-- Vocabulary will be injected here -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- WHATSAPP RECORDING BOX -->
+            <div class="whatsapp-box">
+                <div class="whatsapp-header" id="txt-whatsappHeader">
+                    <span class="whatsapp-icon-circle">🎙️</span>
+                    Klaar met oefenen? Neem het gesprek op!
+                </div>
+                <p class="whatsapp-desc" id="txt-whatsappDesc">
+                    Neem jullie gesprek op met de spraakrecorder van de telefoon. 
+                    Klik daarna op de groene knop om de opname via WhatsApp naar de docent te sturen!
+                </p>
+                <a id="whatsapp-link" class="btn-whatsapp" href="#" target="_blank">
+                    <span id="txt-whatsappBtn"><span class="whatsapp-logo">📲</span> Open WhatsApp en stuur opname naar docent</span>
+                </a>
+            </div>
+
+            <!-- AUDIO & SETTINGS CONTROL -->
+            <div class="audio-settings-bar">
+                <div class="audio-speed-label" id="txt-speedLabel">
+                    <span>🐢</span> Spraak-snelheid:
+                </div>
+                <div class="speed-toggle">
+                    <button class="speed-btn active" id="txt-speedSlow" onclick="setSpeechSpeed(0.75)">Langzaam</button>
+                    <button class="speed-btn" id="txt-speedNormal" onclick="setSpeechSpeed(0.95)">Normaal</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ══ JAVASCRIPT LOGIC ══ -->
+    <script>
+        // ── 5 THEMES DATA STRUCTURE ──
+        const themesData = [
+            {
+                id: "eten-drinken",
+                title: "Eten en drinken",
+                icon: "🍽️",
+                description: "Vragen stellen en antwoorden geven over maaltijden, favoriet eten, boodschappen en koken.",
+                questions: [
+                    { 
+                        emoji: "☕", 
+                        text: "Wat drink jij 's ochtends?",
+                        translations: {
+                            en: "What do you drink in the morning?",
+                            tr: "Sabahları ne içersin?",
+                            ar: "ماذا تشرب في الصباح؟",
+                            ps: "ته سهار څه څښې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🍽️", 
+                        text: "Wat eet jij vanavond?",
+                        translations: {
+                            en: "What are you eating tonight?",
+                            tr: "Bu akşam ne yiyorsun?",
+                            ar: "ماذا تأكل الليلة؟",
+                            ps: "ته نن شپه څه خورې؟"
+                        }
+                    },
+                    { 
+                        emoji: "😋", 
+                        text: "Wat vind jij lekker?",
+                        translations: {
+                            en: "What do you like?",
+                            tr: "Neyi seversin?",
+                            ar: "ماذا تحب؟",
+                            ps: "ته څه خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🤢", 
+                        text: "Wat vind jij niet lekker?",
+                        translations: {
+                            en: "What don't you like?",
+                            tr: "Neyi sevmezsin?",
+                            ar: "ماذا لا تحب؟",
+                            ps: "ته څه نه خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🛒", 
+                        text: "Waar koop jij eten?",
+                        translations: {
+                            en: "Where do you buy food?",
+                            tr: "Nereden yiyecek alırsın?",
+                            ar: "أين تشتري الطعام؟",
+                            ps: "ته له کوم ځایه خواړه اخلې؟"
+                        }
+                    },
+                    { 
+                        emoji: "👨‍🍳", 
+                        text: "Kook jij zelf?",
+                        translations: {
+                            en: "Do you cook yourself?",
+                            tr: "Kendin yemek pişirir misin?",
+                            ar: "هل تطبخ بنفسك؟",
+                            ps: "ایا ته په خپله پخلی کوې؟"
+                        }
+                    }
+                ],
+                dialogue: [
+                    { 
+                        role: "A", 
+                        text: "Wat drink jij 's ochtends?",
+                        translations: {
+                            en: "What do you drink in the morning?",
+                            tr: "Sabahları ne içersin?",
+                            ar: "ماذا تشرب في الصباح؟",
+                            ps: "ته سهار څه څښې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik drink thee. En jij?",
+                        translations: {
+                            en: "I drink tea. And you?",
+                            tr: "Çay içerim. Ya sen?",
+                            ar: "أنا أشرب الشاي. وأنت؟",
+                            ps: "زه چای څښم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik drink koffie. Wat eet jij vanavond?",
+                        translations: {
+                            en: "I drink coffee. What are you eating tonight?",
+                            tr: "Kahve içerim. Bu akşam ne yiyorsun?",
+                            ar: "أنا أشرب القهوة. ماذا تأكل الليلة؟",
+                            ps: "زه قهوه څښم. نن شپه څه خورې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik eet rijst met kip. En jij?",
+                        translations: {
+                            en: "I eat rice with chicken. And you?",
+                            tr: "Tavuklu pilav yiyorum. Ya sen?",
+                            ar: "أنا آكل الأرز مع الدجاج. وأنت؟",
+                            ps: "زه له چرګ سره وریجې خورم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik eet vis met friet. Kook jij?",
+                        translations: {
+                            en: "I eat fish with fries. Do you cook?",
+                            tr: "Balık ve patates kızartması yiyorum. Yemek pişirir misin?",
+                            ar: "أنا آكل السمك مع البطاطس المقلية. هل تطبخ؟",
+                            ps: "زه له چپسو سره کبان خورم. ایا پخلی کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ja, ik kook elke dag. Kook jij ook?",
+                        translations: {
+                            en: "Yes, I cook every day. Do you cook too?",
+                            tr: "Evet, her gün yemek pişiririm. Sen de pişirir misin?",
+                            ar: "نعم، أنا أطبخ كل يوم. هل تطبخ أنت أيضاً؟",
+                            ps: "هو، زه هره ورځ پخلی کوم. ایا ته هم پخلی کوې؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Nee, mijn man kookt. Ik doe de boodschappen.",
+                        translations: {
+                            en: "No, my husband cooks. I do the groceries.",
+                            tr: "Hayır, eşim yemek pişirir. Alışverişi ben yaparım.",
+                            ar: "لا، زوجي يطبخ. أنا أقوم بالتسوق.",
+                            ps: "نه، زما خاوند پخلی کوي. زه سودا کوم."
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Waar koop jij eten?",
+                        translations: {
+                            en: "Where do you buy food?",
+                            tr: "Nereden yiyecek alırsın?",
+                            ar: "أين تشتري الطعام؟",
+                            ps: "ته له کوم ځایه خواړه اخلې؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik koop eten in de supermarkt.",
+                        translations: {
+                            en: "I buy food in the supermarket.",
+                            tr: "Yiyecekleri süpermarketten alıyorum.",
+                            ar: "أشتري الطعام من السوبرماركت.",
+                            ps: "زه له سوپر مارکیټ څخه خواړه اخلم."
+                        }
+                    }
+                ],
+                sentenceStarters: [
+                    { nl: "Ik drink in de ochtend ...", en: "In the morning I drink ...", tr: "Sabahları ... içerim.", ar: "أشرب في الصباح ...", ps: "زه سهار ... څښم" },
+                    { nl: "Ik eet graag ...", en: "I like to eat ...", tr: "... yemeyi severim.", ar: "أحب أن آكل ...", ps: "زه خوښوم چې ... وخورم" },
+                    { nl: "Vind jij ... lekker?", en: "Do you like ...?", tr: "... sever misin?", ar: "هل تحب ...؟", ps: "ایا ته ... خوښوې؟" },
+                    { nl: "Ik vind ... niet lekker.", en: "I don't like ...", tr: "... sevmem.", ar: "لا أحب ...", ps: "زه ... نه خوښوم." },
+                    { nl: "Ik koop eten in ...", en: "I buy food in ...", tr: "Yiyecekleri ...'den alırım.", ar: "أشتري الطعام من ...", ps: "زه له ... څخه خواړه اخلم." }
+                ],
+                vocabulary: [
+                    { emoji: "☕", nl: "de koffie / de thee", en: "coffee / tea", tr: "kahve / çay", ar: "القهوة / الشاي", ps: "قهوه / چای" },
+                    { emoji: "🍎", nl: "het fruit / de groenten", en: "fruit / vegetables", tr: "meyve / sebze", ar: "الفواكه / الخضار", ps: "ميوه / سبزيجات" },
+                    { emoji: "🍞", nl: "het ontbijt / het avondeten", en: "breakfast / dinner", tr: "kahvaltı / akşam yemeği", ar: "الفطور / العشاء", ps: "سهارنۍ / د شپې ډوډۍ" },
+                    { emoji: "🛒", nl: "de supermarkt / de markt", en: "supermarket / market", tr: "süpermarket / pazar", ar: "السوبرماركت / السوق", ps: "سوپر مارکیټ / بازار" },
+                    { emoji: "👨‍🍳", nl: "koken / eten maken", en: "to cook / to make food", tr: "yemek pişirmek / yemek yapmak", ar: "الطبخ / إعداد الطعام", ps: "پخلی / د خوړو چمتو کول" }
+                ]
+            },
+            {
+                id: "jezelf-voorstellen",
+                title: "Jezelf voorstellen",
+                icon: "👋",
+                description: "Praat met elkaar over je naam, waar je vandaan komt, je talen en waar je nu woont.",
+                questions: [
+                    { 
+                        emoji: "📛", 
+                        text: "Hoe heet jij?",
+                        translations: {
+                            en: "What is your name?",
+                            tr: "Adın ne?",
+                            ar: "ما اسمك؟",
+                            ps: "ستا نوم څه دی؟"
+                        }
+                    },
+                    { 
+                        emoji: "🌍", 
+                        text: "Waar kom jij vandaan?",
+                        translations: {
+                            en: "Where do you come from?",
+                            tr: "Nerelisin?",
+                            ar: "من أين أنت؟",
+                            ps: "ته د کوم ځای یې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🗣️", 
+                        text: "Welke taal spreek jij?",
+                        translations: {
+                            en: "Which language do you speak?",
+                            tr: "Hangi dili konuşuyorsun?",
+                            ar: "ما هي اللغة التي تتحدثها؟",
+                            ps: "ته په کومه ژبه خبرې کوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🏠", 
+                        text: "Waar woon jij nu?",
+                        translations: {
+                            en: "Where do you live now?",
+                            tr: "Şimdi nerede yaşıyorsun?",
+                            ar: "أين تعيش الآن؟",
+                            ps: "ته اوس چیرته اوسېږې؟"
+                        }
+                    },
+                    { 
+                        emoji: "📱", 
+                        text: "Wat is jouw telefoonnummer?",
+                        translations: {
+                            en: "What is your phone number?",
+                            tr: "Telefon numaran ne?",
+                            ar: "ما هو رقم هاتفك؟",
+                            ps: "ستا د تلیفون شمیره څه ده؟"
+                        }
+                    },
+                    { 
+                        emoji: "👶", 
+                        text: "Heb jij kinderen?",
+                        translations: {
+                            en: "Do you have children?",
+                            tr: "Çocuğun var mı?",
+                            ar: "هل لديك أطفال؟",
+                            ps: "ایا ته ماشومان لرې؟"
+                        }
+                    }
+                ],
+                dialogue: [
+                    { 
+                        role: "A", 
+                        text: "Hallo, hoe heet jij?",
+                        translations: {
+                            en: "Hello, what is your name?",
+                            tr: "Merhaba, adın ne?",
+                            ar: "مرحباً، ما اسمك؟",
+                            ps: "سلام، ستا نوم څه دی؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Hoi! Ik heet Maria. En jij?",
+                        translations: {
+                            en: "Hi! My name is Maria. And you?",
+                            tr: "Selam! Benim adım Maria. Ya sen?",
+                            ar: "أهلاً! اسمي ماريا. وأنت؟",
+                            ps: "سلام! زما نوم ماریا دی. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik heet Jan. Waar kom jij vandaan?",
+                        translations: {
+                            en: "My name is Jan. Where do you come from?",
+                            tr: "Benim adım Jan. Nerelisin?",
+                            ar: "اسمي يان. من أين أنت؟",
+                            ps: "زما نوم جان دی. ته د کوم ځای یې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik kom uit Syrië. En jij?",
+                        translations: {
+                            en: "I come from Syria. And you?",
+                            tr: "Suriyeliyim. Ya sen?",
+                            ar: "أنا من سوريا. وأنت؟",
+                            ps: "زه د سوریې یم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik kom uit Nederland. Welke taal spreek jij?",
+                        translations: {
+                            en: "I come from the Netherlands. Which language do you speak?",
+                            tr: "Hollandalıyım. Hangi dili konuşuyorsun?",
+                            ar: "أنا من هولندا. ما هي اللغة التي تتحدثها؟",
+                            ps: "زه د هالنډ یم. ته په کومه ژبه خبرې کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik spreek Arabisch. En een beetje Nederlands. En jij?",
+                        translations: {
+                            en: "I speak Arabic. And a little Dutch. And you?",
+                            tr: "Arapça konuşuyorum. Ve biraz Hollandaca. Ya sen?",
+                            ar: "أتحدث العربية. وقليلاً من الهولندية. وأنت؟",
+                            ps: "زه په عربي خبرې کوم. او لږ په هالنډي. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik spreek Nederlands en Engels. Waar woon jij?",
+                        translations: {
+                            en: "I speak Dutch and English. Where do you live?",
+                            tr: "Hollandaca ve İngilizce konuşuyorum. Nerede yaşıyorsun?",
+                            ar: "أتحدث الهولندية والإنجليزية. أين تعيش؟",
+                            ps: "زه په هالنډي او انګلیسي خبرې کوم. چیرته اوسېږې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik woon in Utrecht. En jij?",
+                        translations: {
+                            en: "I live in Utrecht. And you?",
+                            tr: "Utrecht'te yaşıyorum. Ya sen?",
+                            ar: "أعيش في أوتريخت. وأنت؟",
+                            ps: "زه په اتریخت کې اوسېږم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik woon in Zeist. Leuk om te ontmoeten!",
+                        translations: {
+                            en: "I live in Zeist. Nice to meet you!",
+                            tr: "Zeist'ta yaşıyorum. Tanıştığıma memnun oldum!",
+                            ar: "أعيش في زيست. تشرفت بلقائك!",
+                            ps: "زه په زیست کې اوسېږم. په لیدو مو خوښ شوم!"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Dag Jan! Tot ziens.",
+                        translations: {
+                            en: "Bye Jan! Goodbye.",
+                            tr: "Güle güle Jan! Görüşmek üzere.",
+                            ar: "وداعاً يا يان! إلى اللقاء.",
+                            ps: "د خدای په امان جانه! تر لیدو پورې."
+                        }
+                    }
+                ],
+                sentenceStarters: [
+                    { nl: "Ik heet ...", en: "My name is ...", tr: "Adım ...", ar: "اسمي ...", ps: "زما نوم ... دی" },
+                    { nl: "Ik kom uit ...", en: "I come from ...", tr: "...'den geliyorum.", ar: "أنا من ...", ps: "زه د ... یم" },
+                    { nl: "Ik spreek ...", en: "I speak ...", tr: "... konuşuyorum.", ar: "أتحدث ...", ps: "زه په ... خبرې کوم" },
+                    { nl: "Ik woon in ...", en: "I live in ...", tr: "...'da yaşıyorum.", ar: "أنا أعيش في ...", ps: "زه په ... کې اوسېږم." },
+                    { nl: "Mijn nummer is ...", en: "My number is ...", tr: "Numaram ...", ar: "رقمي هو ...", ps: "زما شمیره ده ..." }
+                ],
+                vocabulary: [
+                    { emoji: "📛", nl: "de naam / de achternaam", en: "name / last name", tr: "ad / soyadı", ar: "الاسم / الكنية", ps: "نوم / تخلص" },
+                    { emoji: "🌍", nl: "het land / de stad", en: "country / city", tr: "ülke / şehir", ar: "البلد / المدينة", ps: "هیواد / ښار" },
+                    { emoji: "🗣️", nl: "de taal / talen", en: "language / languages", tr: "dil / diller", ar: "اللغة / اللغات", ps: "ژبه / ژبې" },
+                    { emoji: "🏠", nl: "wonen / het adres", en: "to live / address", tr: "yaşamak / adres", ar: "العيش / العنوان", ps: "اوسېدل / پته" },
+                    { emoji: "👥", nl: "de man / de vrouw", en: "husband / wife", tr: "koca / karı", ar: "الزوج / الزوجة", ps: "خاوند / ښځه" }
+                ]
+            },
+            {
+                id: "mijn-huis",
+                title: "Mijn huis",
+                icon: "🏠",
+                description: "Vertel over je woning, de verschillende kamers, een tuin of balkon, en de buurt.",
+                questions: [
+                    { 
+                        emoji: "🏢", 
+                        text: "Woon je in een huis of een appartement?",
+                        translations: {
+                            en: "Do you live in a house or an apartment?",
+                            tr: "Evde mi yoksa apartmanda mı yaşıyorsun?",
+                            ar: "هل تعيش في منزل أم شقة؟",
+                            ps: "ایا ته په کور کې اوسېږې که په اپارتمان کې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🌳", 
+                        text: "Heb je een tuin of een balkon?",
+                        translations: {
+                            en: "Do you have a garden or a balcony?",
+                            tr: "Bahçen mi yoksa balkonun mu var?",
+                            ar: "هل لديك حديقة أم شرفة؟",
+                            ps: "ایا ته باغ لرې که بالکون؟"
+                        }
+                    },
+                    { 
+                        emoji: "🔑", 
+                        text: "Hoeveel kamers heeft jouw huis?",
+                        translations: {
+                            en: "How many rooms does your house have?",
+                            tr: "Evinin kaç odası var?",
+                            ar: "كم غرفة في منزلك؟",
+                            ps: "ستا کور څو خونې لري؟"
+                        }
+                    },
+                    { 
+                        emoji: "🛌", 
+                        text: "Welke kamer vind je fijn?",
+                        translations: {
+                            en: "Which room do you like?",
+                            tr: "Hangi odayı seversin?",
+                            ar: "أي غرفة تحبها؟",
+                            ps: "کوم کارډ / خونه خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "👨‍👩‍👧‍👦", 
+                        text: "Met wie woon jij?",
+                        translations: {
+                            en: "Who do you live with?",
+                            tr: "Kiminle yaşıyorsun?",
+                            ar: "مع من تعيش؟",
+                            ps: "ته له چا سره اوسېږې؟"
+                        }
+                    },
+                    { 
+                        emoji: "❤️", 
+                        text: "Is jouw huis mooi?",
+                        translations: {
+                            en: "Is your house nice?",
+                            tr: "Evin güzel mi?",
+                            ar: "هل منزلك جميل؟",
+                            ps: "ایا ستا کور ښکلی دی؟"
+                        }
+                    }
+                ],
+                dialogue: [
+                    { 
+                        role: "A", 
+                        text: "Woon je in een huis of een appartement?",
+                        translations: {
+                            en: "Do you live in a house or an apartment?",
+                            tr: "Evde mi yoksa dairede mi yaşıyorsun?",
+                            ar: "هل تعيش في منزل أم شقة؟",
+                            ps: "ایا ته په کور کې اوسېږې که په اپارتمان کې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik woon in een appartement. En jij?",
+                        translations: {
+                            en: "I live in an apartment. And you?",
+                            tr: "Bir dairede yaşıyorum. Ya sen?",
+                            ar: "أعيش في شقة. وأنت؟",
+                            ps: "زه په اپارتمان کې اوسېږم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik woon in een huis. Met een tuin. Heb jij een balkon?",
+                        translations: {
+                            en: "I live in a house. With a garden. Do you have a balcony?",
+                            tr: "Bir evde yaşıyorum. Bahçeli. Balkonun var mı?",
+                            ar: "أعيش في منزل. مع حديقة. هل لديك شرفة؟",
+                            ps: "زه په کور کې اوسېږم. له باغچې سره. ایا ته بالکون لرې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ja, ik heb een balkon. Is jouw tuin groot?",
+                        translations: {
+                            en: "Yes, I have a balcony. Is your garden big?",
+                            tr: "Evet, bir balkonum var. Bahçen büyük mü?",
+                            ar: "نعم، لدي شرفة. هل حديقتك كبيرة؟",
+                            ps: "هو، زه بالکون لرم. ایا ستا باغچه لویه ده؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Nee, de tuin is klein. Met wie woon jij?",
+                        translations: {
+                            en: "No, the garden is small. Who do you live with?",
+                            tr: "Hayır, bahçe küçük. Kiminle yaşıyorsun?",
+                            ar: "لا، الحديقة صغيرة. مع من تعيش؟",
+                            ps: "نه، باغچه کوچنۍ ده. ته له چا سره اوسېږې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik woon met mijn man en twee kinderen. En jij?",
+                        translations: {
+                            en: "I live with my husband and two children. And you?",
+                            tr: "Eşim ve iki çocuğumla yaşıyorum. Ya sen?",
+                            ar: "أعيش مع زوجي وطفلين. وأنت؟",
+                            ps: "زه له خپل خاوند او دوو ماشومانو سره اوسېږم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik woon alleen. Is jouw buurt leuk?",
+                        translations: {
+                            en: "I live alone. Is your neighborhood nice?",
+                            tr: "Yalnız yaşıyorum. Mahallen güzel mi?",
+                            ar: "أعيش بمفردي. هل منطقتك جميلة؟",
+                            ps: "زه یوازې اوسېږم. ایا ستا سیمه ښه ده؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ja, het is rustig. Er is een park dichtbij. En jouw buurt?",
+                        translations: {
+                            en: "Yes, it is quiet. There is a park nearby. And your neighborhood?",
+                            tr: "Evet, sessiz. Yakınlarda bir park var. Peki senin mahallen?",
+                            ar: "نعم، إنها هادئة. هناك حديقة قريبة. ومنطقتك أنت؟",
+                            ps: "هو، آرامه ده. نږدې یو پارک شته. او ستا سیمه؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Mijn buurt is ook leuk. Het bos is dichtbij.",
+                        translations: {
+                            en: "My neighborhood is also nice. The forest is nearby.",
+                            tr: "Benim mahallem de güzel. Orman yakın.",
+                            ar: "منطقتي جميلة أيضاً. الغابة قريبة.",
+                            ps: "زما سیمه هم ښه ده. ځنګل نږدې دی."
+                        }
+                    }
+                ],
+                sentenceStarters: [
+                    { nl: "Ik woon in een ...", en: "I live in a ...", tr: "...'da yaşıyorum.", ar: "أعيش في ...", ps: "زه په ... کې اوسېږم." },
+                    { nl: "Mijn huis heeft ... kamers.", en: "My house has ... rooms.", tr: "Evimde ... oda var.", ar: "بيتي فيه ... غرف.", ps: "زما کور ... خونې لري." },
+                    { nl: "Mijn favoriete kamer is ...", en: "My favorite room is ...", tr: "En sevdiğim oda ...", ar: "غرفتي المفضلة هي ...", ps: "زما د خوښې خونه ... ده" },
+                    { nl: "Ik heb een tuin / balkon.", en: "I have a garden / balcony.", tr: "Bahçem / balkonum var.", ar: "لدي حديقة / شرفة.", ps: "زه باغچه / بالکون لرم." },
+                    { nl: "Ik woon met ...", en: "I live with ...", tr: "... ile yaşıyorum.", ar: "أعيش مع ...", ps: "زه له ... سره اوسېږم." }
+                ],
+                vocabulary: [
+                    { emoji: "🏢", nl: "het appartement / het huis", en: "apartment / house", tr: "daire / ev", ar: "الشقة / المنزل", ps: "اپارتمان / کور" },
+                    { emoji: "🛌", nl: "de woonkamer / de slaapkamer", en: "living room / bedroom", tr: "oturma odası / yatak odası", ar: "غرفة المعيشة / غرفة النوم", ps: "د ناستي خونه / د خوب خونه" },
+                    { emoji: "🍳", nl: "de keuken / de badkamer", en: "kitchen / bathroom", tr: "mutfak / banyo", ar: "المطبخ / الحمام", ps: "پخلنځی / تشناب" },
+                    { emoji: "🌳", nl: "de tuin / het balkon", en: "garden / balcony", tr: "bahçe / balkon", ar: "الحديقة / الشرفة", ps: "باغ / بالکون" },
+                    { emoji: "👥", nl: "de buurt / het park", en: "neighborhood / park", tr: "mahalle / park", ar: "الحي / الحديقة", ps: "سیمه / پارک" }
+                ]
+            },
+            {
+                id: "vrije-tijd",
+                title: "Vrije tijd en hobby's",
+                icon: "⚽",
+                description: "Vragen en antwoorden over sport, wat je leuk vindt om te doen, muziek en het weekend.",
+                questions: [
+                    { 
+                        emoji: "🎨", 
+                        text: "Wat doe jij in je vrije tijd?",
+                        translations: {
+                            en: "What do you do in your free time?",
+                            tr: "Boş zamanlarında ne yaparsın?",
+                            ar: "ماذا تفعل في وقت فراغك؟",
+                            ps: "ته په خپل فارغ وخت کې څه کوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🏃", 
+                        text: "Houd je van sporten?",
+                        translations: {
+                            en: "Do you like sports?",
+                            tr: "Spor yapmayı sever misin?",
+                            ar: "هل تحب الرياضة؟",
+                            ps: "ایا سپورت کول خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "📺", 
+                        text: "Kijk je graag tv?",
+                        translations: {
+                            en: "Do you like to watch TV?",
+                            tr: "Televizyon izlemeyi sever misin?",
+                            ar: "هل تحب مشاهدة التلفزيون؟",
+                            ps: "ایا تلویزیون کتل خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🎵", 
+                        text: "Welke muziek vind jij leuk?",
+                        translations: {
+                            en: "What music do you like?",
+                            tr: "Hangi müzikleri seversin?",
+                            ar: "ما هي الموسيقى التي تحبها؟",
+                            ps: "کوم ډول موسیقي خوښوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "📅", 
+                        text: "Wat doe je in het weekend?",
+                        translations: {
+                            en: "What do you do on the weekend?",
+                            tr: "Hafta sonları ne yaparsın?",
+                            ar: "ماذا تفعل في عطلة نهاية الأسبوع؟",
+                            ps: "ته د اونۍ په پای کې څه کوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🌳", 
+                        text: "Wandel jij graag?",
+                        translations: {
+                            en: "Do you like to walk?",
+                            tr: "Yürümeyi sever misin?",
+                            ar: "هل تحب المشي؟",
+                            ps: "ایا ګرځېدل خوښوې؟"
+                        }
+                    }
+                ],
+                dialogue: [
+                    { 
+                        role: "A", 
+                        text: "Wat doe jij in je vrije tijd?",
+                        translations: {
+                            en: "What do you do in your free time?",
+                            tr: "Boş zamanlarında ne yaparsın?",
+                            ar: "ماذا تفعل في وقت فراغك؟",
+                            ps: "ته په خپل فارغ وخت کې څه کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik wandel graag. En jij?",
+                        translations: {
+                            en: "I like to walk. And you?",
+                            tr: "Yürümeyi severim. Ya sen?",
+                            ar: "أحب المشي. وأنت؟",
+                            ps: "زه ګرځیدل خوښوم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik luister naar muziek. En ik lees een boek. Sport jij?",
+                        translations: {
+                            en: "I listen to music. And I read a book. Do you play sports?",
+                            tr: "Müzik dinlerim. Ve kitap okurum. Spor yapar mısın?",
+                            ar: "أستمع إلى الموسيقى. وأقرأ كتاباً. هل تمارس الرياضة؟",
+                            ps: "زه موسیقي اورم. او کتاب لولم. ایا سپورت کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ja, ik voetbal op zaterdag. En jij?",
+                        translations: {
+                            en: "Yes, I play soccer on Saturdays. And you?",
+                            tr: "Evet, cumartesi günleri futbol oynarım. Ya sen?",
+                            ar: "نعم، ألعب كرة القدم يوم السبت. وأنت؟",
+                            ps: "هو، زه د شنبې په ورځ فوټبال کوم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik loop hard. Wat doe jij in het weekend?",
+                        translations: {
+                            en: "I go running. What do you do on the weekend?",
+                            tr: "Koşarım. Hafta sonu ne yaparsın?",
+                            ar: "أمارس الجري. ماذا تفعل في عطلة نهاية الأسبوع؟",
+                            ps: "زه منډې وهم. ته د اونۍ په پای کې څه کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik ga naar familie. Of naar vrienden. En jij?",
+                        translations: {
+                            en: "I visit family. Or friends. And you?",
+                            tr: "Aileme giderim. Veya arkadaşlarıma. Ya sen?",
+                            ar: "أذهب إلى عائلتي. أو إلى أصدقائي. وأنت؟",
+                            ps: "زه خپلې کورنۍ ته ځم. یا ملګرو ته. او ته?"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik kijk een film. Of ik ga koken. Heb jij een hobby?",
+                        translations: {
+                            en: "I watch a movie. Or I cook. Do you have a hobby?",
+                            tr: "Film izlerim. Veya yemek yaparım. Hobin var mı?",
+                            ar: "أشاهد فيلماً. أو أطبخ. هل لديك هواية؟",
+                            ps: "زه فلم ګورم. یا پخلی کوم. ایا شوق لرې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ja, ik werk in de tuin. Dat is leuk.",
+                        translations: {
+                            en: "Yes, I work in the garden. That is fun.",
+                            tr: "Evet, bahçede çalışırım. Bu eğlenceli.",
+                            ar: "نعم، أعمل في الحديقة. هذا ممتع.",
+                            ps: "هو، زه په باغچه کې کار کوم. دا خوندور دی."
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Mooi hoor!",
+                        translations: {
+                            en: "Nice!",
+                            tr: "Çok güzel!",
+                            ar: "جميل جداً!",
+                            ps: "خورا ښه!"
+                        }
+                    }
+                ],
+                sentenceStarters: [
+                    { nl: "In mijn vrije tijd ...", en: "In my free time ...", tr: "Boş zamanlarımda ...", ar: "في وقت فراغي ...", ps: "په خپل فارغ وخت کې زه ..." },
+                    { nl: "Ik houd van sporten, ik doe ...", en: "I like sports, I do ...", tr: "Spor yapmayı severim, ... yaparım.", ar: "أحب الرياضة، وأمارس ...", ps: "زه سپورت خوښوم، زه ... کوم" },
+                    { nl: "In het weekend ga ik naar ...", en: "On the weekend I go to ...", tr: "Hafta sonu ...'a giderim.", ar: "في عطلة نهاية الأسبوع أذهب إلى ...", ps: "د اونۍ په پای کې زه ... ته ځم" },
+                    { nl: "Mijn hobby is ...", en: "My hobby is ...", tr: "Hobim ...", ar: "هوايتي هي ...", ps: "زما شوق ... دی" },
+                    { nl: "Ik kijk graag ...", en: "I like to watch ...", tr: "... izlemeyi severim.", ar: "أحب مشاهدة ...", ps: "زه د ... کتل خوښوم." }
+                ],
+                vocabulary: [
+                    { emoji: "⚽", nl: "de sport / de hobby", en: "sport / hobby", tr: "spor / hobi", ar: "الرياضة / الهواية", ps: "سپورټ / شوق" },
+                    { emoji: "🎵", nl: "de muziek / luisteren", en: "music / listening", tr: "müzik / dinlemek", ar: "الموسيقى / الاستماع", ps: "موسیقي / اوریدل" },
+                    { emoji: "📚", nl: "lezen / het boek", en: "to read / book", tr: "okumak / kitap", ar: "القراءة / الكتاب", ps: "لوستل / کتاب" },
+                    { emoji: "🌳", nl: "wandelen / buiten", en: "walking / outside", tr: "yürümek / dışarısı", ar: "المشي / بالخارج", ps: "ګرځېدل / بهر" },
+                    { emoji: "👥", nl: "vrienden / familie", en: "friends / family", tr: "arkadaşlar / aile", ar: "الأصدقاء / العائلة", ps: "ملګري / کورنۍ" }
+                ]
+            },
+            {
+                id: "dagelijkse-routine",
+                title: "Mijn dag",
+                icon: "⏰",
+                description: "Bespreek hoe laat je opstaat, je ontbijt, hoe je reist en wat je in de avond doet.",
+                questions: [
+                    { 
+                        emoji: "🌅", 
+                        text: "Hoe laat sta jij op?",
+                        translations: {
+                            en: "What time do you get up?",
+                            tr: "Saat kaçta kalkarsın?",
+                            ar: "في أي ساعة تستيقظ؟",
+                            ps: "ته څو بجې پاڅېږې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🥣", 
+                        text: "Wat eet jij in de ochtend?",
+                        translations: {
+                            en: "What do you eat in the morning?",
+                            tr: "Sabahları ne yersin?",
+                            ar: "ماذا تأكل في الصباح؟",
+                            ps: "ته سهار څه خورې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🚲", 
+                        text: "Hoe ga je naar school?",
+                        translations: {
+                            en: "How do you go to school?",
+                            tr: "Okula nasıl gidersin?",
+                            ar: "كيف تذهب إلى المدرسة؟",
+                            ps: "ته څنګه ښوونځي ته ځې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🍲", 
+                        text: "Hoe laat eet jij warm?",
+                        translations: {
+                            en: "What time do you eat hot dinner?",
+                            tr: "Saat kaçta sıcak yemek yersin?",
+                            ar: "في أي ساعة تأكل الوجبة الساخنة؟",
+                            ps: "ته څو بجې ګرمه ډوډۍ خورې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🌃", 
+                        text: "Wat doe jij in de avond?",
+                        translations: {
+                            en: "What do you do in the evening?",
+                            tr: "Akşamları ne yaparsın?",
+                            ar: "ماذا تفعل في المساء؟",
+                            ps: "ته په ماښام کې څه کوې؟"
+                        }
+                    },
+                    { 
+                        emoji: "🛌", 
+                        text: "Hoe laat ga je slapen?",
+                        translations: {
+                            en: "What time do you go to sleep?",
+                            tr: "Saat kaçta yatarsın?",
+                            ar: "في أي ساعة تذهب للنوم؟",
+                            ps: "ته څو بجې ویده کېږې؟"
+                        }
+                    }
+                ],
+                dialogue: [
+                    { 
+                        role: "A", 
+                        text: "Hoe laat sta jij op?",
+                        translations: {
+                            en: "What time do you get up?",
+                            tr: "Saat kaçta kalkarsın?",
+                            ar: "في أي ساعة تستيقظ؟",
+                            ps: "ته څو بجې پاڅېږې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik sta op om 7 uur. En jij?",
+                        translations: {
+                            en: "I get up at 7 o'clock. And you?",
+                            tr: "Saat 7'de kalkarım. Ya sen?",
+                            ar: "أستيقظ في الساعة 7. وأنت؟",
+                            ps: "زه په ۷ بجو پاڅېږم. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik sta op om 6 uur. Wat eet jij als ontbijt?",
+                        translations: {
+                            en: "I get up at 6 o'clock. What do you eat for breakfast?",
+                            tr: "Saat 6'da kalkarım. Kahvaltıda ne yersin?",
+                            ar: "أستيقظ في الساعة 6. ماذا تأكل في الفطور؟",
+                            ps: "زه په ۶ بجو پاڅېږم. ته په سهارنۍ کې څه خورې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik eet brood met kaas. En jij?",
+                        translations: {
+                            en: "I eat bread with cheese. And you?",
+                            tr: "Peynirli ekmek yerim. Ya sen?",
+                            ar: "آكل الخبز مع الجبن. وأنت؟",
+                            ps: "زه له پنیر سره ډوډۍ خورم. او ته?"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik eet yoghurt. Hoe ga je naar school?",
+                        translations: {
+                            en: "I eat yogurt. How do you go to school?",
+                            tr: "Yoğurt yerim. Okula nasıl gidersin?",
+                            ar: "آكل اللبن. كيف تذهب إلى المدرسة؟",
+                            ps: "زه مستې خورم. ته څنګه ښوونځي ته ځې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik ga altijd met de fiets naar school. En hoe reis jij?",
+                        translations: {
+                            en: "I always go to school by bicycle. And how do you travel?",
+                            tr: "Okula her zaman bisikletle giderim. Peki sen nasıl seyahat ediyorsun?",
+                            ar: "أذهب دائماً بالدراجة إلى المدرسة. وكيف تسافر أنت؟",
+                            ps: "زه تل په بایسکل ښوونځي ته ځم. او ته څنګه سفر کوې؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik ga met de bus. Wat doe jij meestal in de avond?",
+                        translations: {
+                            en: "I go by bus. What do you usually do in the evening?",
+                            tr: "Ben otobüsle gidiyorum. Akşamları genellikle ne yaparsın?",
+                            ar: "أذهب بالحافلة. ماذا تفعل عادة في المساء؟",
+                            ps: "زه په بس کې ځم. ته په ماښام کې ډیری وخت څه کوې؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "In de avond kijk ik tv of leer ik Nederlands. Hoe laat ga jij slapen?",
+                        translations: {
+                            en: "In the evening I watch TV or learn Dutch. What time do you go to sleep?",
+                            tr: "Akşamları televizyon izlerim veya Hollandaca çalışırım. Saat kaçta uyursun?",
+                            ar: "في المساء أشاهد التلفزيون أو أتعلم الهولندية. في أي ساعة تذهب للنوم؟",
+                            ps: "په ماښام کې زه تلویزیون ګورم یا هالنډي زده کوم. ته څو بجې ویده کېږې؟"
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Ik ga vroeg slapen, rond 10 uur. En jij?",
+                        translations: {
+                            en: "I go to sleep early, around 10 o'clock. And you?",
+                            tr: "Erken uyurum, saat 10 civarı. Ya sen?",
+                            ar: "أنام باكراً، حوالي الساعة 10. وأنت؟",
+                            ps: "زه وختي ویده کېږم، د ۱۰ بجو په شاوخوا کې. او ته؟"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Ik ga wat later slapen, rond 11 uur. Maar ik lees eerst nog een beetje.",
+                        translations: {
+                            en: "I go to sleep a bit later, around 11 o'clock. But I read a little bit first.",
+                            tr: "Ben biraz daha geç yatarım, saat 11 civarı. Ama önce biraz kitap okurum.",
+                            ar: "أنام متأخراً قليلاً، حوالي الساعة 11. لكني أقرأ قليلاً أولاً.",
+                            ps: "زه لږ ناوخته ویده کېږم, د ۱۱ بجو په شاوخوا کې. مګر زه لومړی لږ مطالعه کوم."
+                        }
+                    },
+                    { 
+                        role: "A", 
+                        text: "Slaap lekker alvast voor straks!",
+                        translations: {
+                            en: "Sleep well already for later!",
+                            tr: "Şimdiden iyi uykular!",
+                            ar: "تصبح على خير مسبقاً!",
+                            ps: "له اوس څخه درته د ښه خوب هیله کوم!"
+                        }
+                    },
+                    { 
+                        role: "B", 
+                        text: "Jij ook, Jan! Tot morgen.",
+                        translations: {
+                            en: "You too, Jan! See you tomorrow.",
+                            tr: "Sana da Jan! Yarın görüşürüz.",
+                            ar: "وأنت بخير يا يان! أراك غداً.",
+                            ps: "ته هم همدارنګه، جان! تر سبا پورې."
+                        }
+                    }
+                ],
+                sentenceStarters: [
+                    { nl: "Ik sta op om ... uur.", en: "I get up at ... o'clock.", tr: "Saat ...'da kalkarım.", ar: "أستيقظ في الساعة ...", ps: "زه په ... بجو پاڅېږم." },
+                    { nl: "Als ontbijt eet ik ...", en: "For breakfast I eat ...", tr: "Kahvaltıda ... yerim.", ar: "آكل في الفطور ...", ps: "زه په سهارنۍ کې ... خورم." },
+                    { nl: "Ik ga naar school / werk met de ...", en: "I go to school / work by ...", tr: "Okula / işe ... ile giderim.", ar: "أذهب إلى المدرسة / العمل بـ ...", ps: "زه ښوونځي / کار ته په ... کې ځم." },
+                    { nl: "In de avond ga ik ...", en: "In the evening I ...", tr: "Akşamları ... yaparım.", ar: "في المساء أنا ...", ps: "په ماښام کې زه ... کوم." },
+                    { nl: "Ik ga slapen om ... uur.", en: "I go to sleep at ... o'clock.", tr: "Saat ...'da uyurum.", ar: "أذهب للنوم في الساعة ...", ps: "زه په ... بجو ویده کېږم." }
+                ],
+                vocabulary: [
+                    { emoji: "🌅", nl: "opstaan / de ochtend", en: "to get up / morning", tr: "kalkmak / sabah", ar: "الاستيقاظ / الصباح", ps: "پاڅېدل / سهار" },
+                    { emoji: "🚲", nl: "de fiets / de bus", en: "bicycle / bus", tr: "bisiklet / otobüs", ar: "الدراجة / الحافلة", ps: "بایسکل / بس" },
+                    { emoji: "🥣", nl: "het ontbijt / eten", en: "breakfast / food", tr: "kahvaltı / yemek", ar: "الفطور / الطعام", ps: "سهارنۍ / خواړه" },
+                    { emoji: "🌃", nl: "de avond / slapen", en: "evening / to sleep", tr: "akşam / uyumak", ar: "المساء / النوم", ps: "ماښام / ویده کېدل" },
+                    { emoji: "⏰", nl: "hoe laat / de tijd", en: "what time / time", tr: "saat kaç / zaman", ar: "كم الساعة / الوقت", ps: "څو بجې / وخت" }
+                ]
+            }
+        ];
+
+        // ── STATE VARIABLES ──
+        let speechRate = 0.75; // slow speed by default
+        let currentOpenThemeId = null;
+        let currentLang = "nl";
+
+        // ── DOM ELEMENTS ──
+        const themesContainer = document.getElementById("themes-container");
+        const screenOverview = document.getElementById("screen-overview");
+        const screenDetail = document.getElementById("screen-detail");
+
+        const activeThemeIcon = document.getElementById("active-theme-icon");
+        const activeThemeTitle = document.getElementById("active-theme-title");
+        const activeThemeDesc = document.getElementById("active-theme-desc");
+        const activeQuestionsList = document.getElementById("active-questions-list");
+        const activeDialogueContainer = document.getElementById("active-dialogue-container");
+
+        // ── TRANSLATION DICTIONARY ──
+        const translations = {
+            nl: {
+                instructionsTitle: "Hoe werkt het? (Stap voor stap)",
+                step1Title: "Kies een thema",
+                step1Desc: "Klik op een onderwerp hieronder dat je wilt oefenen.",
+                step2Title: "Maak een groepje",
+                step2Desc: "Werk samen in tweetallen (2) of drietallen (3).",
+                step3Title: "Oefen de conversatie",
+                step3Desc: "Praat samen minstens 1 minuut. Stel elkaar vragen. De vragen en de dialoog zijn een leidraad (hulp), geen interview!",
+                step4Title: "Neem op & stuur op",
+                step4Desc: "Neem jullie gesprek op met de telefoon. Stuur de opname via WhatsApp naar de docent!",
+                selectTopic: "Selecteer een onderwerp",
+                backNav: "Terug naar alle thema's",
+                roleTitle: "Wie ben jij? Klik op een rol om te focussen:",
+                roleAll: "Oefen samen (beide tonen)",
+                roleA: "🔵 Ik ben Cursist A",
+                roleB: "🟠 Ik ben Cursist B",
+                questionsHeader: "Stel deze vragen (leidraad)",
+                exampleHeader: "Voorbeeld-gesprek",
+                helperHeader: "Zinsopbouw & Woordenschat",
+                helperStarters: "Zinsopbouw (Opzet-zinnen):",
+                helperVocab: "Handige woorden (Woordenschat):",
+                whatsappHeader: "Klaar met oefenen? Neem het gesprek op!",
+                whatsappDesc: "Neem jullie gesprek op met de spraakrecorder van de telefoon. Klik daarna op de groene knop om de opname via WhatsApp naar de docent te sturen!",
+                whatsappBtn: "Open WhatsApp en stuur opname naar docent",
+                speedLabel: "Spraak-snelheid:",
+                speedSlow: "Langzaam",
+                speedNormal: "Normaal"
+            },
+            en: {
+                instructionsTitle: "How does it work? (Step by step)",
+                step1Title: "Choose a theme",
+                step1Desc: "Click on a topic below that you want to practice.",
+                step2Title: "Make a group",
+                step2Desc: "Work together in pairs (2) or groups of three (3).",
+                step3Title: "Practice the conversation",
+                step3Desc: "Talk together for at least 1 minute. Ask each other questions. The questions and example are a guide (help), not an interview!",
+                step4Title: "Record & send",
+                step4Desc: "Record your conversation on your phone. Send the recording to the teacher via WhatsApp!",
+                selectTopic: "Select a topic",
+                backNav: "Back to all themes",
+                roleTitle: "Who are you? Click on a role to focus:",
+                roleAll: "Practice together (show both)",
+                roleA: "🔵 I am Student A",
+                roleB: "🟠 I am Student B",
+                questionsHeader: "Ask these questions (guideline)",
+                exampleHeader: "Example dialogue",
+                helperHeader: "Sentence Structure & Vocabulary",
+                helperStarters: "Sentence Structure (Sentence Starters):",
+                helperVocab: "Useful Words (Vocabulary):",
+                whatsappHeader: "Finished practicing? Record the conversation!",
+                whatsappDesc: "Record your conversation using the phone's voice recorder. Then click the green button to send the recording to the teacher via WhatsApp!",
+                whatsappBtn: "Open WhatsApp and send recording to teacher",
+                speedLabel: "Speech speed:",
+                speedSlow: "Slow",
+                speedNormal: "Normal"
+            },
+            tr: {
+                instructionsTitle: "Nasıl çalışır? (Adım adım)",
+                step1Title: "Bir tema seçin",
+                step1Desc: "Pratik yapmak istediğiniz konuya tıklayın.",
+                step2Title: "Grup oluşturun",
+                step2Desc: "İkili (2) veya üçlü (3) gruplar halinde çalışın.",
+                step3Title: "Konuşma pratiği yapın",
+                step3Desc: "En az 1 dakika birlikte konuşun. Birbirinize sorular sorun. Sorular ve örnek diyaloğu sadece rehberdir (yardımcıdır), röportaj değil!",
+                step4Title: "Kaydet & gönder",
+                step4Desc: "Konuşmanızı telefona kaydedin. Kaydı WhatsApp üzerinden öğretmene gönderin!",
+                selectTopic: "Bir konu seçin",
+                backNav: "Tüm temalara geri dön",
+                roleTitle: "Sen kimsin? Odaklanmak için bir role tıklayın:",
+                roleAll: "Birlikte pratik yapın (ikisini de göster)",
+                roleA: "🔵 Ben Öğrenci A",
+                roleB: "🟠 Ben Öğrenci B",
+                questionsHeader: "Bu soruları sorun (rehber)",
+                exampleHeader: "Örnek diyalog",
+                helperHeader: "Cümle Yapısı ve Kelime Bilgisi",
+                helperStarters: "Cümle Yapısı (Başlangıç Cümleleri):",
+                helperVocab: "Faydalı Kelimeler (Kelime Hazinesi):",
+                whatsappHeader: "Pratik bitti mi? Konuşmayı kaydedin!",
+                whatsappDesc: "Konuşmanızı telefonun ses kaydedicisiyle kaydedin. Ardından kaydı WhatsApp üzerinden öğretmene göndermek için yeşil düğmeye tıklayın!",
+                whatsappBtn: "WhatsApp'ı açın ve kaydı öğretmene gönderin",
+                speedLabel: "Konuşma hızı:",
+                speedSlow: "Yavaş",
+                speedNormal: "Normal"
+            },
+            ar: {
+                instructionsTitle: "كيف يعمل؟ (خطوة بخطوة)",
+                step1Title: "اختر موضوعاً",
+                step1Desc: "انقر على الموضوع الذي تريد التدرب عليه أدناه.",
+                step2Title: "شكلوا مجموعات",
+                step2Desc: "اعملوا معاً في ثنائيات (2) أو ثلاثيات (3).",
+                step3Title: "تدربوا على المحادثة",
+                step3Desc: "تحدثوا معاً لمدة دقيقة واحدة على الأقل. اطرحوا الأسئلة على بعضكم البعض. الأسئلة والمثال أدناه هما مجرد دليل (مساعدة) وليس مقابلة!",
+                step4Title: "سجّل وأرسل",
+                step4Desc: "سجّلوا محادثتكم بالهاتف. أرسلوا التسجيل عبر الواتساب إلى المعلم!",
+                selectTopic: "اختر موضوعاً",
+                backNav: "العودة إلى جميع المواضيع",
+                roleTitle: "من أنت؟ انقر على دور للتركيز:",
+                roleAll: "تدربوا معاً (إظهار كلا الدورين)",
+                roleA: "🔵 أنا الطالب أ",
+                roleB: "🟠 أنا الطالب ب",
+                questionsHeader: "اطرح هذه الأسئلة (دليل)",
+                exampleHeader: "حوار تجريبي",
+                helperHeader: "تركيب الجمل والمفردات",
+                helperStarters: "تركيب الجمل (بدايات الجمل):",
+                helperVocab: "الكلمات المفيدة (مخزون الكلمات):",
+                whatsappHeader: "هل انتهيتم من التدريب؟ سجلوا المحادثة!",
+                whatsappDesc: "سجلوا محادثتكم باستخدام مسجل الصوت في الهاتف. ثم انقروا على الزر الأخضر لإرسال التسجيل إلى المعلم عبر الواتساب!",
+                whatsappBtn: "افتح واتساب وأرسل التسجيل للمعلم",
+                speedLabel: "سرعة الكلام:",
+                speedSlow: "بطيء",
+                speedNormal: "عادي"
+            },
+            ps: {
+                instructionsTitle: "دا څنګه کار کوي؟ (ګام په ګام)",
+                step1Title: "یو موضوع غوره کړئ",
+                step1Desc: "په لاندې موضوع باندې کلیک وکړئ چې تاسو یې تمرین کول غواړئ.",
+                step2Title: "یوه ډله جوړه کړئ",
+                step2Desc: "په جوړه (۲) یا درې کسیره ډلو (۳) کې کار وکړئ.",
+                step3Title: "خبرې اترې تمرین کړئ",
+                step3Desc: "لږترلږه ۱ دقیقه په ګډه خبرې وکړئ. یو له بل څخه پوښتنې وپوښتئ. لاندې پوښتنې او مثال یوازې یو لارښود (مرسته) ده، مرکه نه ده!",
+                step4Title: "ثبت او واستوئ",
+                step4Desc: "خپلې خبرې په تلیفون کې ثبت کړئ. ثبت شوې خبرې د واټساپ له لارې ښوونکي ته واستوئ!",
+                selectTopic: "یوه موضوع غوره کړئ",
+                backNav: "ټولو موضوعاتو ته بیرته لاړشئ",
+                roleTitle: "تاسو څوک یاست? د تمرکز لپاره په یو رول کلیک وکړئ:",
+                roleAll: "یوځای تمرین کړئ (دواړه وښایاست)",
+                roleA: "🔵 زه زده کوونکی A یم",
+                roleB: "🟠 زه زده کوونکی B یم",
+                questionsHeader: "دا پوښتنې وپوښتئ (لارښود)",
+                exampleHeader: "بېلګه خبرې",
+                helperHeader: "د جملو جوړښت او لغتونه",
+                helperStarters: "د جملې جوړښت (د پیل جملې):",
+                helperVocab: "ګټور ټکي (د کلمو ذخیره):",
+                whatsappHeader: "تمرین مو پای ته ورساوه؟ خبرې ثبت کړئ!",
+                whatsappDesc: "خپلې خبرې د تلیفون د غږ ثبتونکي سره ثبت کړئ. بیا شنه تڼۍ باندې کلیک وکړئ ترڅو ثبت شوی غږ د واټساپ له لارې ښوونکي ته واستوئ!",
+                whatsappBtn: "واټساپ خلاص کړئ او غږ ښوونکي ته واستوئ",
+                speedLabel: "د خبرو سرعت:",
+                speedSlow: "ورو",
+                speedNormal: "عادي"
+            }
+        };
+
+        // ── LANGUAGE SWITCHER FUNCTION ──
+        function switchLanguage(langCode) {
+            currentLang = langCode;
+            const t = translations[langCode];
+            if (!t) return;
+
+            // Update all button states for languages
+            document.querySelectorAll(".flag-btn").forEach(btn => {
+                if (btn.getAttribute("onclick").includes(`'${langCode}'`)) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+
+            // Update DOM texts if elements exist
+            const updateText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            };
+
+            const updateHtml = (id, html) => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = html;
+            };
+
+            updateHtml("txt-instructionsTitle", `<span>💡</span> ${t.instructionsTitle}`);
+            updateText("txt-step1Title", t.step1Title);
+            updateText("txt-step1Desc", t.step1Desc);
+            updateText("txt-step2Title", t.step2Title);
+            updateText("txt-step2Desc", t.step2Desc);
+            updateText("txt-step3Title", t.step3Title);
+            updateText("txt-step3Desc", t.step3Desc);
+            updateText("txt-step4Title", t.step4Title);
+            updateText("txt-step4Desc", t.step4Desc);
+            updateHtml("txt-selectTopic", `<span>📁</span> ${t.selectTopic}`);
+            
+            // For detail screen elements
+            updateHtml("txt-backNav", `<span>←</span> ${t.backNav}`);
+            updateHtml("txt-roleTitle", `<span>👥</span> ${t.roleTitle}`);
+            updateText("txt-roleAll", t.roleAll);
+            updateText("txt-roleA", t.roleA);
+            updateText("txt-roleB", t.roleB);
+            
+            updateHtml("txt-questionsHeader", `<span class="header-icon-circle">?</span> ${t.questionsHeader}`);
+            updateHtml("txt-exampleHeader", `<span class="header-icon-circle">👀</span> ${t.exampleHeader}`);
+            
+            // For helper card
+            updateHtml("txt-helperHeader", `<span>💬</span> ${t.helperHeader}`);
+            updateText("txt-helperStarters", t.helperStarters);
+            updateText("txt-helperVocab", t.helperVocab);
+
+            updateHtml("txt-whatsappHeader", `<span class="whatsapp-icon-circle">🎙️</span> ${t.whatsappHeader}`);
+            updateText("txt-whatsappDesc", t.whatsappDesc);
+            updateHtml("txt-whatsappBtn", `<span class="whatsapp-logo">📲</span> ${t.whatsappBtn}`);
+            
+            updateHtml("txt-speedLabel", `<span>🐢</span> ${t.speedLabel}`);
+            updateText("txt-speedSlow", t.speedSlow);
+            updateText("txt-speedNormal", t.speedNormal);
+
+            // If detail view is open, re-render questions/dialogues/helpers to update inline translations
+            if (currentOpenThemeId) {
+                const theme = themesData.find(t => t.id === currentOpenThemeId);
+                if (theme) {
+                    renderDetailElements(theme);
+                }
+            }
+        }
+
+        // ── INITIALIZATION ──
+        document.addEventListener("DOMContentLoaded", () => {
+            renderThemesGrid();
+            switchLanguage(currentLang);
+            
+            // Listen for hash changes to allow direct linking (e.g. praatplaat.html#eten-drinken)
+            window.addEventListener("hashchange", checkUrlHash);
+            checkUrlHash();
+        });
+
+        // ── RENDER THEMES GRID (MAIN MENU) ──
+        function renderThemesGrid() {
+            themesContainer.innerHTML = "";
+            themesData.forEach(theme => {
+                const card = document.createElement("div");
+                card.className = "theme-card";
+                card.onclick = () => selectTheme(theme.id);
+                
+                card.innerHTML = `
+                    <div class="theme-icon-box">${theme.icon}</div>
+                    <h3 class="theme-title">${theme.title}</h3>
+                    <p class="theme-desc">${theme.description}</p>
+                    <div class="theme-arrow">Open praatplaat <span>→</span></div>
+                `;
+                themesContainer.appendChild(card);
+            });
+        }
+
+        // ── SELECTION OF A THEME ──
+        function selectTheme(themeId) {
+            const theme = themesData.find(t => t.id === themeId);
+            if (!theme) return;
+
+            currentOpenThemeId = themeId;
+            window.location.hash = themeId; // Update URL hash
+
+            // Render all detail view sections dynamically
+            renderDetailElements(theme);
+
+            // Update WhatsApp link text dynamically
+            const whatsappLink = document.getElementById("whatsapp-link");
+            if (whatsappLink) {
+                const whatsappText = `Beste docent, hier is de opname van ons gesprek over het thema "${theme.title}".`;
+                whatsappLink.href = `https://wa.me/31626211106?text=${encodeURIComponent(whatsappText)}`;
+            }
+
+            // Apply current translation language to detail screen headers/buttons
+            switchLanguage(currentLang);
+
+            // Reset role highlight buttons to default ("all")
+            setRoleFilter("all");
+
+            // Switch Screen
+            screenOverview.style.display = "none";
+            screenDetail.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // ── RENDER DETAIL SCREEN ELEMENTS (QUESTIONS, DIALOGUE, STARTERS, VOCAB) ──
+        function renderDetailElements(theme) {
+            // Update UI elements
+            activeThemeIcon.textContent = theme.icon;
+            activeThemeTitle.textContent = theme.title;
+            activeThemeDesc.textContent = theme.description;
+
+            // Render Questions
+            activeQuestionsList.innerHTML = "";
+            theme.questions.forEach((q, idx) => {
+                const li = document.createElement("li");
+                li.className = "question-item";
+                li.id = `q-item-${idx}`;
+                li.onclick = (e) => handleAudioPlayClick(q.text, li, e);
+                
+                const translationHtml = (currentLang !== 'nl' && q.translations && q.translations[currentLang])
+                    ? `<span class="translation-text" style="display: block; font-size: 0.85rem; font-style: italic; color: #475569; margin-top: 4px;">${q.translations[currentLang]}</span>`
+                    : '';
+
+                li.innerHTML = `
+                    <div style="flex-grow: 1;">
+                        <span class="question-emoji">${q.emoji}</span>
+                        <span class="question-text">${q.text}</span>
+                        ${translationHtml}
+                    </div>
+                    <button class="audio-btn" title="Luister slow-audio">🔊</button>
+                `;
+                activeQuestionsList.appendChild(li);
+            });
+
+            // Render Dialogue Example
+            activeDialogueContainer.innerHTML = "";
+            theme.dialogue.forEach((d, idx) => {
+                const div = document.createElement("div");
+                div.className = `dialogue-line role-${d.role}`;
+                div.id = `d-item-${idx}`;
+                div.onclick = (e) => handleAudioPlayClick(d.text, div, e);
+                
+                const translationHtml = (currentLang !== 'nl' && d.translations && d.translations[currentLang])
+                    ? `<span class="translation-text" style="display: block; font-size: 0.85rem; font-style: italic; color: #64748b; margin-top: 4px; padding-left: 28px;">${d.translations[currentLang]}</span>`
+                    : '';
+
+                div.innerHTML = `
+                    <div style="flex-grow: 1;">
+                        <span class="role-badge" title="Cursist ${d.role}">${d.role}</span>
+                        <span class="dialogue-text">${d.text}</span>
+                        ${translationHtml}
+                    </div>
+                    <button class="audio-btn" title="Luister slow-audio">🔊</button>
+                `;
+                activeDialogueContainer.appendChild(div);
+            });
+
+            // Render Sentence Starters
+            const activeStartersList = document.getElementById("active-starters-list");
+            if (activeStartersList) {
+                activeStartersList.innerHTML = "";
+                theme.sentenceStarters.forEach(starter => {
+                    const li = document.createElement("li");
+                    li.className = "starter-item";
+                    
+                    const translationHtml = (currentLang !== 'nl' && starter[currentLang])
+                        ? `<span class="starter-translation">${starter[currentLang]}</span>`
+                        : '';
+                    
+                    li.innerHTML = `
+                        ${starter.nl}
+                        ${translationHtml}
+                    `;
+                    activeStartersList.appendChild(li);
+                });
+            }
+
+            // Render Vocabulary
+            const activeVocabTable = document.getElementById("active-vocab-table");
+            if (activeVocabTable) {
+                activeVocabTable.innerHTML = "";
+                theme.vocabulary.forEach(vocab => {
+                    const div = document.createElement("div");
+                    div.className = "vocab-row";
+                    
+                    const translationHtml = (currentLang !== 'nl' && vocab[currentLang])
+                        ? `<span class="vocab-translation">${vocab[currentLang]}</span>`
+                        : '';
+                    
+                    div.innerHTML = `
+                        <span class="vocab-emoji">${vocab.emoji}</span>
+                        <div class="vocab-text-box">
+                            <span class="vocab-nl">${vocab.nl}</span>
+                            ${translationHtml}
+                        </div>
+                    `;
+                    activeVocabTable.appendChild(div);
+                });
+            }
+        }
+
+        // ── RETURN TO MAIN OVERVIEW ──
+        function goBackToOverview() {
+            // Cancel any speaking audio
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            
+            currentOpenThemeId = null;
+            window.location.hash = ""; // Clear hash
+            screenDetail.style.display = "none";
+            screenOverview.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // ── CHECK URL HASH FOR DIRECT LINKING ──
+        function checkUrlHash() {
+            const hash = window.location.hash.replace("#", "");
+            if (hash) {
+                const theme = themesData.find(t => t.id === hash);
+                if (theme) {
+                    selectTheme(theme.id);
+                    return;
+                }
+            }
+            // If no valid hash, show main screen
+            if (screenDetail.style.display === "block") {
+                goBackToOverview();
+            }
+        }
+
+        // ── INTERACTIVE ROLE HIGHLIGHTING ──
+        function setRoleFilter(role) {
+            const container = document.getElementById("active-dialogue-container");
+            container.className = "dialogue-container"; // reset
+            
+            if (role === 'A') {
+                container.classList.add("filter-A");
+            } else if (role === 'B') {
+                container.classList.add("filter-B");
+            }
+
+            // Update button styles
+            document.querySelectorAll(".role-btn").forEach(btn => {
+                if (btn.getAttribute("data-role") === role) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+        }
+
+        // ── AUDIO SPEECH SPEED TOGGLE ──
+        function setSpeechSpeed(speed) {
+            speechRate = speed;
+            
+            const btnSlow = document.getElementById("txt-speedSlow");
+            const btnNormal = document.getElementById("txt-speedNormal");
+
+            if (speed < 0.85) {
+                if (btnSlow) btnSlow.classList.add("active");
+                if (btnNormal) btnNormal.classList.remove("active");
+            } else {
+                if (btnSlow) btnSlow.classList.remove("active");
+                if (btnNormal) btnNormal.classList.add("active");
+            }
+        }
+
+        // ── SPEECH SYNTHESIS IMPLEMENTATION ──
+        let activeSpeakerBtn = null;
+        let activeTextContainer = null;
+
+        function handleAudioPlayClick(text, containerElement, event) {
+            // Prevent multiple speech triggers or clicking empty space trigger
+            event.stopPropagation();
+            
+            // Find speaker button inside the container
+            const speakBtn = containerElement.querySelector(".audio-btn");
+
+            // If we are currently speaking this exact item, cancel/stop it
+            if (containerElement.classList.contains("speaking-highlight")) {
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
+                clearSpeechStyles();
+                return;
+            }
+
+            // Cancel any current speaking
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            clearSpeechStyles();
+
+            // Set speaking classes
+            activeSpeakerBtn = speakBtn;
+            activeTextContainer = containerElement;
+            
+            containerElement.classList.add("speaking-highlight");
+            if (speakBtn) {
+                speakBtn.innerHTML = "⏸️";
+                speakBtn.classList.add("speaking-active-icon");
+            }
+
+            // Build speech utterance
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "nl-NL";
+            utterance.rate = speechRate; // Slow or Normal
+
+            // Speech event handlers
+            utterance.onend = () => {
+                clearSpeechStyles();
+            };
+            
+            utterance.onerror = () => {
+                clearSpeechStyles();
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function clearSpeechStyles() {
+            if (activeTextContainer) {
+                activeTextContainer.classList.remove("speaking-highlight");
+            }
+            if (activeSpeakerBtn) {
+                activeSpeakerBtn.innerHTML = "🔊";
+                activeSpeakerBtn.classList.remove("speaking-active-icon");
+            }
+            activeSpeakerBtn = null;
+            activeTextContainer = null;
+        }
+    </script>
+</body>
+</html>
