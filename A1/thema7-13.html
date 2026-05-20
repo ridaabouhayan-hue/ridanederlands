@@ -204,6 +204,27 @@
     <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
 
     <script>
+
+// --- INJECTED FUZZY MATCH LOGIC ---
+function levenshtein(a, b) {
+    if(a.length === 0) return b.length;
+    if(b.length === 0) return a.length;
+    var matrix = [];
+    for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+    for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+    for(var i = 1; i <= b.length; i++){
+        for(var j = 1; j <= a.length; j++){
+            if(b.charAt(i-1) == a.charAt(j-1)){
+                matrix[i][j] = matrix[i-1][j-1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// ----------------------------------
+
     let VOCAB=[
         {nl:'blijven',en:'to stay',tr:'kalmak',ar:'يبقى',ps:'پاتې کېدل',ex:'Vanavond blijf ik thuis.'},
         {nl:'de chauffeur',en:'driver',tr:'şoför',ar:'سائق',ps:'چلوونکی',ex:'De chauffeur van de bus is aardig.'},
@@ -325,9 +346,49 @@ function speak(text, isSlow = false) {
         invulData.forEach((item,i)=>{
             const inp=document.getElementById(`${ulId}-${i}`);
             inp.classList.remove('correct','fout');
+            
+            let existingFz = inp.nextElementSibling;
+            if (existingFz && existingFz.className === 'fuzzy-note') existingFz.remove();
+            let existingWr = inp.nextElementSibling;
+            if (existingWr && existingWr.className === 'wrong-note') existingWr.remove();
+            
+            inp.classList.remove('correct-fuzzy');
+            inp.style.borderColor = '';
+            
             const userText = inp.value.trim().toLowerCase();
-            if(userText===item.ans){inp.classList.add('correct');g++;}else{inp.classList.add('fout');}
+            const correctText = item.ans.toLowerCase();
+            
+            let d = levenshtein(userText, correctText);
+            if (d === 0) {
+                inp.classList.add('correct');
+                g++;
+            } else if (d <= 2) {
+                inp.classList.add('correct');
+                inp.classList.add('correct-fuzzy');
+                inp.style.borderColor = '#ca8a04';
+                
+                let fz = document.createElement('span');
+                fz.className = 'fuzzy-note';
+                fz.style.color = '#ca8a04';
+                fz.style.fontSize = '0.85rem';
+                fz.style.marginLeft = '8px';
+                fz.textContent = `Goed! Let op de spelling: ${item.ans}`;
+                inp.parentNode.insertBefore(fz, inp.nextSibling);
+                g++;
+            } else {
+                inp.classList.add('fout');
+                let ansSpan = document.createElement('span');
+                ansSpan.className = 'wrong-note';
+                ansSpan.style.color = '#e63946';
+                ansSpan.style.fontSize = '0.85rem';
+                ansSpan.style.marginLeft = '8px';
+                ansSpan.innerHTML = `(Antwoord: ${item.ans}` + (item.hint ? ' — Tip: ' + item.hint : '') + ')';
+                inp.parentNode.insertBefore(ansSpan, inp.nextSibling);
+            }
         });
+        if(g===invulData.length){
+            try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+        }
         const sc=document.getElementById(scoreId);
         sc.style.display='inline-block'; sc.textContent=`${g}/${invulData.length}`;
         sc.className='score-badge '+(g===invulData.length?'score-goed':g>=(invulData.length/2)?'score-midden':'score-slecht');
@@ -371,6 +432,9 @@ function speak(text, isSlow = false) {
             if(user===b.ans){b.drop.classList.add('correct');g++;}
             else{b.drop.classList.add('fout');setTimeout(()=>{b.drop.classList.remove('fout');},400);}
         });
+        if(g===zinData.length){
+            try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+        }
         const sc=document.getElementById('zo-score');
         sc.style.display='inline-block';sc.textContent=`${g}/${zinData.length}`;
         sc.className='score-badge '+(g===zinData.length?'score-goed':g>=(zinData.length/2)?'score-midden':'score-slecht');
@@ -398,10 +462,49 @@ function speak(text, isSlow = false) {
         dicteeData.forEach((item,i)=>{
             const inp=document.getElementById(`${ulId}-${i}`);
             inp.classList.remove('correct','fout');
+            
+            let existingFz = inp.nextElementSibling;
+            if (existingFz && existingFz.className === 'fuzzy-note') existingFz.remove();
+            let existingWr = inp.nextElementSibling;
+            if (existingWr && existingWr.className === 'wrong-note') existingWr.remove();
+            
+            inp.classList.remove('correct-fuzzy');
+            inp.style.borderColor = '';
+            
             const cleanUser = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
             const cleanAns = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
-            if(cleanUser===cleanAns && cleanUser.length > 0){inp.classList.add('correct');g++;}else{inp.classList.add('fout');}
+            
+            let d = levenshtein(cleanUser, cleanAns);
+            if (d === 0 && cleanUser.length > 0) {
+                inp.classList.add('correct');
+                g++;
+            } else if (d <= 2 && cleanUser.length > 0) {
+                inp.classList.add('correct');
+                inp.classList.add('correct-fuzzy');
+                inp.style.borderColor = '#ca8a04';
+                
+                let fz = document.createElement('span');
+                fz.className = 'fuzzy-note';
+                fz.style.color = '#ca8a04';
+                fz.style.fontSize = '0.85rem';
+                fz.style.marginLeft = '8px';
+                fz.textContent = `Goed! Let op de spelling: ${item}`;
+                inp.parentNode.insertBefore(fz, inp.nextSibling);
+                g++;
+            } else {
+                inp.classList.add('fout');
+                let ansSpan = document.createElement('span');
+                ansSpan.className = 'wrong-note';
+                ansSpan.style.color = '#e63946';
+                ansSpan.style.fontSize = '0.85rem';
+                ansSpan.style.marginLeft = '8px';
+                ansSpan.innerHTML = `(Antwoord: ${item})`;
+                inp.parentNode.insertBefore(ansSpan, inp.nextSibling);
+            }
         });
+        if(g===dicteeData.length){
+            try{localStorage.setItem('completed_' + location.pathname.split('/').pop(), 'true');}catch(e){}
+        }
         const sc=document.getElementById(scoreId);
         sc.style.display='inline-block'; sc.textContent=`${g}/${dicteeData.length}`;
         sc.className='score-badge '+(g===dicteeData.length?'score-goed':g>=(dicteeData.length/2)?'score-midden':'score-slecht');
