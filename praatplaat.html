@@ -2823,6 +2823,14 @@
         document.addEventListener("DOMContentLoaded", () => {
             renderThemesGrid();
             switchLanguage(currentLang);
+
+            // Pre-warm iOS audio on very first touch anywhere on the page.
+            // This ensures voices are loading before the user taps a 🔊 button.
+            document.addEventListener("touchstart", function iosWarmup() {
+                unlockSpeechOnIOS();
+                ensureVoicesLoaded(() => {});
+                document.removeEventListener("touchstart", iosWarmup);
+            }, { once: true, passive: true });
             
             // Listen for name inputs to update notepad names
             const nameInputA = document.getElementById("notebook-name-A");
@@ -3074,24 +3082,14 @@
             if (!input) return;
             const text = input.value.trim();
             if (!text) return;
-            
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-                
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = "nl-NL";
-                utterance.rate = speechRate;
-                
-                input.classList.add("playing-active");
-                utterance.onend = () => {
-                    input.classList.remove("playing-active");
-                };
-                utterance.onerror = () => {
-                    input.classList.remove("playing-active");
-                };
-                
-                window.speechSynthesis.speak(utterance);
-            }
+
+            // Unlock iOS audio engine on this gesture
+            unlockSpeechOnIOS();
+
+            input.classList.add("playing-active");
+            speakText(text, null, () => {
+                input.classList.remove("playing-active");
+            });
         }
 
         function sendNotebookWhatsApp() {
@@ -3214,57 +3212,109 @@
             }
         }
 
-        // ── SPEECH SYNTHESIS IMPLEMENTATION ──
+        // ── SPEECH SYNTHESIS IMPLEMENTATION (iOS/Safari compatible) ──
         let activeSpeakerBtn = null;
         let activeTextContainer = null;
+        let iOSSpeechReady = false;
+
+        // iOS Safari requires voices to be loaded and speech to have been
+        // "unlocked" via a direct user gesture. We pre-warm it on first touch.
+        function unlockSpeechOnIOS() {
+            if (iOSSpeechReady) return;
+            if (!window.speechSynthesis) return;
+            // Speak a silent utterance to unlock the audio context on iOS
+            const unlock = new SpeechSynthesisUtterance("");
+            unlock.volume = 0;
+            window.speechSynthesis.speak(unlock);
+            iOSSpeechReady = true;
+        }
+
+        // Pre-load voices (required for Safari/iOS which loads them async)
+        let voicesLoaded = false;
+        function ensureVoicesLoaded(callback) {
+            if (!window.speechSynthesis) { callback([]); return; }
+            const voices = window.speechSynthesis.getVoices();
+            if (voices && voices.length > 0) {
+                voicesLoaded = true;
+                callback(voices);
+            } else {
+                // Safari fires voiceschanged when ready
+                window.speechSynthesis.addEventListener("voiceschanged", function onVoicesChanged() {
+                    window.speechSynthesis.removeEventListener("voiceschanged", onVoicesChanged);
+                    voicesLoaded = true;
+                    callback(window.speechSynthesis.getVoices());
+                }, { once: true });
+            }
+        }
+
+        // Pick the best Dutch voice available, fallback to any Dutch, fallback to default
+        function pickDutchVoice(voices) {
+            const exact = voices.find(v => v.lang === "nl-NL");
+            if (exact) return exact;
+            const loose = voices.find(v => v.lang.startsWith("nl"));
+            return loose || null;
+        }
+
+        // Core speak function — iOS-safe
+        function speakText(text, onStart, onDone) {
+            if (!window.speechSynthesis || !text) {
+                if (onDone) onDone();
+                return;
+            }
+
+            // iOS: cancel then immediately speak silently fails.
+            // Use a short delay after cancel so the engine resets cleanly.
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const cancelDelay = isIOS ? 150 : 0;
+
+            window.speechSynthesis.cancel();
+
+            setTimeout(() => {
+                ensureVoicesLoaded((voices) => {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = "nl-NL";
+                    utterance.rate = speechRate;
+
+                    const dutchVoice = pickDutchVoice(voices);
+                    if (dutchVoice) utterance.voice = dutchVoice;
+
+                    utterance.onstart = () => { if (onStart) onStart(); };
+                    utterance.onend   = () => { if (onDone) onDone(); };
+                    utterance.onerror = () => { if (onDone) onDone(); };
+
+                    window.speechSynthesis.speak(utterance);
+                });
+            }, cancelDelay);
+        }
 
         function handleAudioPlayClick(text, containerElement, event) {
-            // Prevent multiple speech triggers or clicking empty space trigger
+            // Must stay synchronous inside click handler for iOS gesture unlock
             event.stopPropagation();
-            
-            // Find speaker button inside the container
+            unlockSpeechOnIOS();
+
             const speakBtn = containerElement.querySelector(".audio-btn");
 
-            // If we are currently speaking this exact item, cancel/stop it
+            // Toggle: if already speaking this item, stop it
             if (containerElement.classList.contains("speaking-highlight")) {
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel();
-                }
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
                 clearSpeechStyles();
                 return;
             }
 
-            // Cancel any current speaking
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-            }
             clearSpeechStyles();
 
-            // Set speaking classes
+            // Set UI state immediately (before async voice loading)
             activeSpeakerBtn = speakBtn;
             activeTextContainer = containerElement;
-            
             containerElement.classList.add("speaking-highlight");
             if (speakBtn) {
                 speakBtn.innerHTML = "⏸️";
                 speakBtn.classList.add("speaking-active-icon");
             }
 
-            // Build speech utterance
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = "nl-NL";
-            utterance.rate = speechRate; // Slow or Normal
-
-            // Speech event handlers
-            utterance.onend = () => {
+            speakText(text, null, () => {
                 clearSpeechStyles();
-            };
-            
-            utterance.onerror = () => {
-                clearSpeechStyles();
-            };
-
-            window.speechSynthesis.speak(utterance);
+            });
         }
 
         function clearSpeechStyles() {
