@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjectief: +e of geen e? - NT2 A1/A2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --plus-bg: #ecfdf5; 
+            --plus-main: #059669; 
+            --plus-dark: #065f46; 
+            
+            --min-bg: #eff6ff; 
+            --min-main: #3b82f6; 
+            --min-dark: #1e40af; 
+
+            --fout-bg: #fffbeb; 
+            --fout-main: #d97706; 
+            --fout-dark: #92400e; 
+            
+            --text-main: #2c3e50;
+            --text-light: #5d6d7e;
+            --white: #ffffff;
+            --shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 0.8rem; display: flex; justify-content: center; gap: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 0.5rem 1.2rem; border-radius: 50px; transition: var(--transition); }
+        nav a:hover { background: #f1f5f9; }
+        
+        .lang-container { position: sticky; top: 70px; display: flex; justify-content: center; gap: 12px; padding: 10px; background: rgba(248, 250, 252, 0.98); backdrop-filter: blur(10px); z-index: 999; border-bottom: 2px solid #e2e8f0; }
+        .lang-btn { border: 2px solid #e2e8f0; background: white; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 800; font-size: 1rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .lang-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+        
+        .hero { padding: 4rem 1.5rem 1.5rem; text-align: center; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(90deg, var(--plus-main), var(--min-main)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; color: var(--text-light); max-width: 800px; margin: 0 auto; }
+        
+        .container { max-width: 1200px; margin: 1rem auto; padding: 0 1.5rem; }
+        .section-title { font-size: 2.2rem; margin-bottom: 1.5rem; text-align: center; font-weight: 800; }
+        
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .card { background: white; border-radius: 40px; padding: 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        
+        .emoji-header { font-size: 3.5rem; text-align: center; margin-bottom: 1.5rem; }
+        .card .word { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        .plus .word { color: var(--plus-main); }
+        .min .word { color: var(--min-main); }
+        
+        .card .definition { font-size: 1.1rem; color: var(--text-main); margin-bottom: 2rem; text-align: center; font-weight: 500; }
+        .card .example-list { margin-bottom: 2rem; }
+        .card .example-item { margin-bottom: 18px; font-size: 1.05rem; font-weight: 500; background: #f8fafc; padding: 12px 18px; border-radius: 15px; border-left: 5px solid #cbd5e1; }
+        .plus .example-item { border-left-color: var(--plus-main); }
+        .min .example-item { border-left-color: var(--min-main); }
+        
+        .translation-sub { font-size: 0.95rem; color: var(--text-light); font-style: italic; margin-top: 4px; display: block; }
+        .card .logic-box { padding: 1.5rem; border-radius: 20px; font-size: 1.1rem; font-weight: 700; margin-top: auto; }
+        .plus .logic-box { background: var(--plus-bg); color: var(--plus-dark); }
+        .min .logic-box { background: var(--min-bg); color: var(--min-dark); }
+        
+        .mistakes-section { background: var(--white); padding: 2rem; border-radius: 40px; box-shadow: var(--shadow); border: 2px dashed #cbd5e1; margin-bottom: 3rem; }
+        .mistakes-title { color: var(--fout-dark); font-size: 1.6rem; font-weight: 800; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+        .mistakes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.25rem; }
+        .mistake-box { background: var(--fout-bg); border: 2px solid #fde68a; border-radius: 25px; padding: 2rem; }
+        .mistake-box h4 { font-size: 1.3rem; color: var(--fout-dark); margin-bottom: 1rem; font-weight: 800; border-bottom: 2px solid #fcd34d; padding-bottom: 5px; }
+        .mistake-row { display: flex; flex-direction: column; gap: 12px; }
+        .mistake-row div { font-size: 1.05rem; font-weight: 600; padding: 8px 15px; border-radius: 12px; display: flex; align-items: center; gap: 8px; }
+        .mistake-row .wrong { background: #fee2e2; color: #991b1b; }
+        .mistake-row .right { background: #d1fae5; color: #065f46; }
+        
+        .exercise-section { background: white; padding: 2rem 1.5rem; border-radius: 50px; box-shadow: var(--shadow); margin: 3rem auto; max-width: 1000px; }
+        .exercise-intro { text-align: center; margin-bottom: 1.5rem; }
+        .exercise-intro p { font-size: 1.2rem; color: var(--text-light); }
+        
+        .exercise-questions { display: flex; flex-direction: column; gap: 2rem; }
+        .q-row { background: #f1f5f9; padding: 16px; border-radius: 25px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition); border: 2px solid transparent; }
+        .q-row:hover { background: #e2e8f0; }
+        .q-sentence-container { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 1.1rem; font-weight: 600; width: 100%; }
+        .q-row input { width: 140px; padding: 8px 12px; border: 3px solid #cbd5e1; border-radius: 12px; text-align: center; font-weight: 800; font-size: 1.05rem; font-family: 'Outfit', sans-serif; color: var(--text-main); outline: none; transition: var(--transition); }
+        .q-row input:focus { border-color: var(--text-main); background: #fff; }
+        
+        .feedback { font-size: 1.4rem; display: inline-flex; align-items: center; margin-left: 10px; }
+        
+        [lang]:not([lang="nl"]) { display: none; }
+        
+        footer { text-align: center; padding: 4rem 2rem 2rem; color: var(--text-light); font-weight: 800; font-size: 1.1rem; border-top: 1px solid #e2e8f0; margin-top: 6rem; background: #fff; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.8rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .mistakes-grid { grid-template-columns: 1fr; }
+            .exercise-section { padding: 3rem 1.5rem; }
+            .q-sentence-container { font-size: 1.1rem; }
+            .q-row input { width: 110px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#intro">Start</a>
+        <a href="#uitleg">💡 <span lang="nl">Regels</span><span lang="en">Rules</span><span lang="pl">Zasady</span></a>
+        <a href="#fouten">⚠️ <span lang="nl">Fouten</span><span lang="en">Mistakes</span><span lang="pl">Błędy</span></a>
+        <a href="#oefenen">✍️ <span lang="nl">Oefenen</span><span lang="en">Practice</span><span lang="pl">Ćwiczenia</span></a>
+        <a href="#spreekopdracht">🎙️ <span lang="nl">Voice Memo</span><span lang="en">Voice Memo</span><span lang="pl">Notatka głosowa</span></a>
+    </nav>
+    
+    <div class="lang-container">
+        <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+        <button class="lang-btn" id="btn-pl" onclick="setLang('pl')">🇵🇱 Polski</button>
+    </div>
+    
+    <header class="hero" id="intro">
+        <h1>
+            <span lang="nl">Adjectief: +e of geen e?</span>
+            <span lang="en">Adjective: +e or no e?</span>
+            <span lang="pl">Przymiotnik: +e czy bez e?</span>
+        </h1>
+        <p>
+            <span lang="nl">Leer wanneer je een -e toevoegt aan een bijvoeglijk naamwoord. Super handig voor op kantoor!</span>
+            <span lang="en">Learn when to add an -e to an adjective. Super useful for the office!</span>
+            <span lang="pl">Dowiedz się, kiedy dodać -e do przymiotnika. Bardzo przydatne w biurze!</span>
+        </p>
+    </header>
+    
+    <main class="container">
+        <section id="uitleg">
+            <h2 class="section-title">
+                <span lang="nl">💡 De Regels</span>
+                <span lang="en">💡 The Rules</span>
+                <span lang="pl">💡 Zasady</span>
+            </h2>
+            
+            <div class="cards-grid">
+                <!-- CARD: +E -->
+                <div class="card plus">
+                    <div class="emoji-header">✅</div>
+                    <div class="word">+E</div>
+                    <div class="definition">
+                        <span lang="nl">Gebruik +e (bijna) altijd!</span>
+                        <span lang="en">Use +e (almost) always!</span>
+                        <span lang="pl">Używaj +e (prawie) zawsze!</span>
+                    </div>
+                    
+                    <div class="example-list">
+                        <div class="example-item">
+                            <div>De <strong>mooie</strong> auto (de-woord)</div>
+                            <span class="translation-sub" lang="en">(The beautiful car)</span>
+                            <span class="translation-sub" lang="pl">(Piękny samochód)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>Een <strong>grote</strong> auto (de-woord + een)</div>
+                            <span class="translation-sub" lang="en">(A big car)</span>
+                            <span class="translation-sub" lang="pl">(Duży samochód)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>Het <strong>grote</strong> kantoor (het-woord + het)</div>
+                            <span class="translation-sub" lang="en">(The big office)</span>
+                            <span class="translation-sub" lang="pl">(Duże biuro)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="logic-box">
+                        <span lang="nl">💡 <strong>Regel:</strong> Bijna elk adjectief voor een zelfstandig naamwoord krijgt een -e.</span>
+                        <span lang="en">💡 <strong>Rule:</strong> Almost every adjective before a noun gets an -e.</span>
+                        <span lang="pl">💡 <strong>Zasada:</strong> Prawie każdy przymiotnik przed rzeczownikiem otrzymuje -e.</span>
+                    </div>
+                </div>
+
+                <!-- CARD: GEEN E -->
+                <div class="card min">
+                    <div class="emoji-header">🛑</div>
+                    <div class="word">GEEN E</div>
+                    <div class="definition">
+                        <span lang="nl">Gebruik GEEN e bij <strong>'een' + het-woord</strong> of na <strong>zijn/worden</strong>.</span>
+                        <span lang="en">Use NO e with <strong>'een' + het-word</strong> or after <strong>to be/to become</strong>.</span>
+                        <span lang="pl">NIE używaj e z <strong>'een' + słowo 'het'</strong> lub po <strong>zijn/worden (być/zostać)</strong>.</span>
+                    </div>
+                    
+                    <div class="example-list">
+                        <div class="example-item">
+                            <div>Een <strong>groot</strong> kantoor ('een' + het-woord)</div>
+                            <span class="translation-sub" lang="en">(A big office)</span>
+                            <span class="translation-sub" lang="pl">(Duże biuro)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>Vers brood (geen lidwoord + het-woord)</div>
+                            <span class="translation-sub" lang="en">(Fresh bread)</span>
+                            <span class="translation-sub" lang="pl">(Świeży chleb)</span>
+                        </div>
+                        <div class="example-item">
+                            <div>Het kantoor is <strong>groot</strong>. (na 'zijn')</div>
+                            <span class="translation-sub" lang="en">(The office is big.)</span>
+                            <span class="translation-sub" lang="pl">(Biuro jest duże.)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="logic-box">
+                        <span lang="nl">💡 <strong>Regel:</strong> Alleen GEEN -e bij: een + het-woord, of na het werkwoord zijn/worden.</span>
+                        <span lang="en">💡 <strong>Rule:</strong> Only NO -e with: een + het-word, or after the verb to be/become.</span>
+                        <span lang="pl">💡 <strong>Zasada:</strong> Tylko BEZ -e przy: een + słowo 'het', lub po czasowniku być/zostać.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mistakes-section" id="fouten">
+            <h3 class="mistakes-title">
+                <span lang="nl">⚠️ Veelgemaakte Fouten</span>
+                <span lang="en">⚠️ Common Mistakes</span>
+                <span lang="pl">⚠️ Częste Błędy</span>
+            </h3>
+            
+            <div class="mistakes-grid">
+                <div class="mistake-box">
+                    <h4 lang="nl">1. 'Een' + het-woord</h4>
+                    <h4 lang="en">1. 'Een' + het-word</h4>
+                    <h4 lang="pl">1. 'Een' + słowo 'het'</h4>
+                    <div class="mistake-row">
+                        <div class="wrong">❌ Ik heb een vaste contract.</div>
+                        <div class="right">✅ Ik heb een <strong>vast</strong> contract.</div>
+                        <span class="translation-sub" lang="nl">Uitleg: Het contract (het-woord). Dus: een + vast (geen e).</span>
+                        <span class="translation-sub" lang="en">Explanation: Het contract (het-word). So: een + vast (no e).</span>
+                        <span class="translation-sub" lang="pl">Wyjaśnienie: Het contract (słowo 'het'). Więc: een + vast (bez e).</span>
+                    </div>
+                </div>
+
+                <div class="mistake-box">
+                    <h4 lang="nl">2. 'De' woorden</h4>
+                    <h4 lang="en">2. 'De' words</h4>
+                    <h4 lang="pl">2. Słowa 'De'</h4>
+                    <div class="mistake-row">
+                        <div class="wrong">❌ De nieuw collega.</div>
+                        <div class="right">✅ De <strong>nieuwe</strong> collega.</div>
+                        <span class="translation-sub" lang="nl">Uitleg: De collega (de-woord). De-woorden krijgen ALTIJD +e voor het woord.</span>
+                        <span class="translation-sub" lang="en">Explanation: De collega (de-word). De-words ALWAYS get +e before the noun.</span>
+                        <span class="translation-sub" lang="pl">Wyjaśnienie: De collega (słowo 'de'). Słowa 'De' ZAWSZE otrzymują +e przed rzeczownikiem.</span>
+                    </div>
+                </div>
+                
+                <div class="mistake-box">
+                    <h4 lang="nl">3. Spelling: dubbele klinker/medeklinker</h4>
+                    <h4 lang="en">3. Spelling rules</h4>
+                    <h4 lang="pl">3. Zasady pisowni</h4>
+                    <div class="mistake-row">
+                        <div class="wrong">❌ De groote auto. / De dure auto.</div>
+                        <div class="right">✅ De <strong>grote</strong> auto. / De <strong>dure</strong> auto.</div>
+                        <span class="translation-sub" lang="nl">Uitleg: groot + e = grote (één o). duur + e = dure. let op de spelling!</span>
+                        <span class="translation-sub" lang="en">Explanation: groot + e = grote. Watch the Dutch spelling rules!</span>
+                        <span class="translation-sub" lang="pl">Wyjaśnienie: groot + e = grote. Uważaj na zasady pisowni!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="exercise-section" id="oefenen">
+            <div class="exercise-intro">
+                <h2 class="section-title">
+                    <span lang="nl">✍️ Oefenen</span>
+                    <span lang="en">✍️ Practice</span>
+                    <span lang="pl">✍️ Ćwiczenia</span>
+                </h2>
+                <p>
+                    <span lang="nl">Typ de juiste vorm in (met of zonder e). Let op de spelling (groot -> grote)!</span>
+                    <span lang="en">Type the correct form (with or without e). Pay attention to spelling!</span>
+                    <span lang="pl">Wpisz poprawną formę (z lub bez e). Uważaj na pisownię!</span>
+                </p>
+            </div>
+
+            <div class="exercise-questions" id="q-container">
+                <!-- Javascript will inject questions here -->
+            </div>
+        </section>
+
+        <section class="spreek-section" id="spreekopdracht" style="margin-bottom: 3rem; scroll-margin-top: 150px;">
+            <div class="card" style="padding: 3rem; border-radius: 40px; border: 3px solid var(--min-main); background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); box-shadow: var(--shadow); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -20px; right: -20px; font-size: 150px; opacity: 0.05; transform: rotate(15deg);">🎙️</div>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+                    <div style="background: var(--min-main); width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);">🎙️</div>
+                    <div>
+                        <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--min-dark); margin: 0;">
+                            <span lang="nl">Voice Memo Opdracht</span>
+                            <span lang="en">Voice Memo Task</span>
+                            <span lang="pl">Zadanie głosowe</span>
+                        </h2>
+                        <p style="font-size: 1.15rem; color: var(--text-light); margin-top: 4px;">
+                            <span lang="nl">Spreek in: Jouw ideale kantoor of werkplek!</span>
+                            <span lang="en">Speak: Your ideal office or workplace!</span>
+                            <span lang="pl">Opowiedz: Twoje idealne biuro lub miejsce pracy!</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 2.5rem; background: rgba(255,255,255,0.8); padding: 1.25rem; border-radius: 20px; border: 1px solid #bfdbfe;">
+                    <span style="font-weight: 800; color: var(--min-dark); display: flex; align-items: center; gap: 6px; width: 100%; margin-bottom: 5px;">
+                        <span lang="nl">Criteria voor je spraakbericht:</span>
+                        <span lang="en">Criteria for your voice memo:</span>
+                        <span lang="pl">Kryteria dla Twojej notatki:</span>
+                    </span>
+                    <span style="background: #e0e7ff; color: #3730a3; padding: 6px 14px; border-radius: 12px; font-weight: 800; font-size: 0.95rem;">✅ <span lang="nl">Minimaal 5 adjectieven gebruiken</span><span lang="en">Use at least 5 adjectives</span><span lang="pl">Użyj co najmniej 5 przymiotników</span></span>
+                    <span style="background: #d1fae5; color: #065f46; padding: 6px 14px; border-radius: 12px; font-weight: 800; font-size: 0.95rem;">📱 <span lang="nl">Spreek minimaal 1 minuut</span><span lang="en">Speak for at least 1 minute</span><span lang="pl">Mów przez co najmniej 1 minutę</span></span>
+                </div>
+
+                <div style="background: #ffffff; border-radius: 35px; border: 2px solid #bfdbfe; padding: 2.5rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); max-width: 850px; margin: 0 auto 3rem; position: relative;">
+                    <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--min-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                        <span lang="nl">💡 Voorbeeld:</span>
+                        <span lang="en">💡 Example:</span>
+                        <span lang="pl">💡 Przykład:</span>
+                    </h3>
+                    <p style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); line-height: 1.6; margin-bottom: 1.5rem;" lang="nl">
+                        "In mijn ideale kantoor heb ik een <span style="color:var(--plus-main)">groot</span> bureau (het bureau) en een <span style="color:var(--plus-main)">snelle</span> computer (de computer). Het kantoor is erg <span style="color:var(--min-main)">licht</span>. Ik wil <span style="color:var(--plus-main)">leuke</span> collega's..."
+                    </p>
+                    <p style="font-size: 1.1rem; font-weight: 500; color: var(--text-light); line-height: 1.6; margin: 0; font-style: italic;" lang="en">
+                        "In my ideal office I have a big desk and a fast computer. The office is very bright. I want nice colleagues..."
+                    </p>
+                    <p style="font-size: 1.1rem; font-weight: 500; color: var(--text-light); line-height: 1.6; margin: 0; margin-top: 10px; font-style: italic;" lang="pl">
+                        "W moim idealnym biurze mam duże biurko i szybki komputer. Biuro jest bardzo jasne. Chcę fajnych kolegów..."
+                    </p>
+                </div>
+
+                <div style="background: #ffffff; border-radius: 25px; padding: 1.5rem; border: 1px solid #e2e8f0; display: grid; grid-template-columns: auto 1fr; gap: 15px; align-items: center;">
+                    <div style="font-size: 2.5rem;">📱</div>
+                    <div>
+                        <h4 style="font-weight: 800; font-size: 1.2rem; margin-bottom: 4px;" lang="nl">Hoe lever je deze opdracht in?</h4>
+                        <h4 style="font-weight: 800; font-size: 1.2rem; margin-bottom: 4px;" lang="en">How to submit this assignment?</h4>
+                        <h4 style="font-weight: 800; font-size: 1.2rem; margin-bottom: 4px;" lang="pl">Jak przesłać to zadanie?</h4>
+                        <ul style="color: var(--text-light); font-size: 1.05rem; padding-left: 20px; line-height: 1.5; margin: 0;">
+                            <li lang="nl">Open de dicteer-app of spraakmemo in WhatsApp.</li>
+                            <li lang="nl">Spreek je bericht in en focus je op de adjectieven.</li>
+                            <li lang="nl">Stuur de audio direct naar de docent voor feedback!</li>
+                            <li lang="en">Open WhatsApp and record a voice message. Send it to your teacher.</li>
+                            <li lang="pl">Nagraj wiadomość głosową w WhatsApp. Wyślij do swojego nauczyciela.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        Gemaakt voor NT2 cursisten | Focus op de +e regel
+    </footer>
+
+    <script>
+        const questions = [
+            { id: 1, base: "leuk", correct: ["leuke"], q_nl: "De {input} collega (de).", hint: { en: "The nice colleague", pl: "Miły kolega" } },
+            { id: 2, base: "groot", correct: ["groot"], q_nl: "Een {input} project (het).", hint: { en: "A big project", pl: "Duży projekt" } },
+            { id: 3, base: "duur", correct: ["dure"], q_nl: "De {input} computer (de).", hint: { en: "The expensive computer", pl: "Drogi komputer" } },
+            { id: 4, base: "nieuw", correct: ["nieuwe"], q_nl: "Het {input} kantoor (het).", hint: { en: "The new office", pl: "Nowe biuro" } },
+            { id: 5, base: "snel", correct: ["snel"], q_nl: "Het internet is {input}.", hint: { en: "The internet is fast.", pl: "Internet jest szybki." } },
+            { id: 6, base: "belangrijk", correct: ["belangrijke"], q_nl: "Een {input} afspraak (de).", hint: { en: "An important meeting", pl: "Ważne spotkanie" } },
+            { id: 7, base: "klein", correct: ["klein"], q_nl: "Een {input} probleem (het).", hint: { en: "A small problem", pl: "Mały problem" } },
+            { id: 8, base: "vast", correct: ["vast"], q_nl: "Ik heb een {input} contract (het).", hint: { en: "I have a permanent contract.", pl: "Mam stały kontrakt." } },
+            { id: 9, base: "goed", correct: ["goede", "goeie"], q_nl: "Dat is een {input} idee (het idee, maar uitzondering: een goed/goede idee mag allebei, maar meestal een goed idee). Wacht, beter: De {input} baas (de).", hint: { en: "The good boss", pl: "Dobry szef" } },
+            { id: 10, base: "mooi", correct: ["mooi"], q_nl: "Een {input} salaris (het).", hint: { en: "A nice salary", pl: "Niezła pensja" } },
+            { id: 11, base: "lang", correct: ["lange"], q_nl: "De {input} vergadering (de).", hint: { en: "The long meeting", pl: "Długie spotkanie" } },
+            { id: 12, base: "vroeg", correct: ["vroege"], q_nl: "De {input} dienst (de).", hint: { en: "The early shift", pl: "Wczesna zmiana" } },
+            { id: 13, base: "moeilijk", correct: ["moeilijk"], q_nl: "Dit werk is {input}.", hint: { en: "This work is difficult.", pl: "Ta praca jest trudna." } },
+            { id: 14, base: "vriendelijk", correct: ["vriendelijke"], q_nl: "Een {input} klant (de).", hint: { en: "A friendly customer", pl: "Przyjazny klient" } },
+            { id: 15, base: "koud", correct: ["koud"], q_nl: "Een {input} drankje (het).", hint: { en: "A cold drink", pl: "Zimny napój" } },
+            { id: 16, base: "warm", correct: ["warme"], q_nl: "De {input} koffie (de).", hint: { en: "The hot coffee", pl: "Gorąca kawa" } },
+            { id: 17, base: "zwaar", correct: ["zwaar"], q_nl: "Het pakket is {input}.", hint: { en: "The package is heavy.", pl: "Paczka jest ciężka." } },
+            { id: 18, base: "kort", correct: ["korte"], q_nl: "Een {input} pauze (de).", hint: { en: "A short break", pl: "Krótka przerwa" } },
+            { id: 19, base: "gezellig", correct: ["gezellige"], q_nl: "Het {input} team (het team + het = +e).", hint: { en: "The cozy/nice team", pl: "Fajny zespół" } },
+            { id: 20, base: "saai", correct: ["saai"], q_nl: "Een {input} werk (het).", hint: { en: "A boring job", pl: "Nudna praca" } },
+        ];
+        
+        // Fix q9 text
+        questions[8].q_nl = "De {input} baas (de).";
+
+        const container = document.getElementById('q-container');
+
+        questions.forEach((q, index) => {
+            const parts = q.q_nl.split('{input}');
+            const div = document.createElement('div');
+            div.className = 'q-row';
+            div.innerHTML = `
+                <div class="q-sentence-container">
+                    <span style="color: #94a3b8; font-size: 0.9em; margin-right: 8px;">${index + 1}.</span>
+                    <span>${parts[0]}</span>
+                    <input type="text" id="q${q.id}" placeholder="${q.base}" autocomplete="off" onkeyup="checkAnswer(${q.id}, this)">
+                    <span>${parts[1]}</span>
+                    <span class="feedback" id="f${q.id}"></span>
+                </div>
+                <div class="translation-sub" lang="en">Translation: ${q.hint.en}</div>
+                <div class="translation-sub" lang="pl">Tłumaczenie: ${q.hint.pl}</div>
+            `;
+            container.appendChild(div);
+        });
+
+        function checkAnswer(id, inputEl) {
+            const val = inputEl.value.trim().toLowerCase();
+            const feedback = document.getElementById('f' + id);
+            const q = questions.find(x => x.id === id);
+            
+            if (val === '') {
+                feedback.innerHTML = '';
+                inputEl.style.borderColor = '#cbd5e1';
+                inputEl.style.backgroundColor = '#fff';
+                inputEl.style.color = 'var(--text-main)';
+                return;
+            }
+
+            if (q.correct.includes(val)) {
+                feedback.innerHTML = '✅';
+                inputEl.style.borderColor = '#10b981';
+                inputEl.style.backgroundColor = '#ecfdf5';
+                inputEl.style.color = '#047857';
+            } else {
+                feedback.innerHTML = '❌';
+                inputEl.style.borderColor = '#ef4444';
+                inputEl.style.backgroundColor = '#fef2f2';
+                inputEl.style.color = '#b91c1c';
+            }
+        }
+
+        function setLang(lang) {
+            document.querySelectorAll('[lang]').forEach(el => {
+                if(el.tagName.toLowerCase() !== 'html') {
+                    el.style.display = 'none';
+                }
+            });
+            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
+                if(el.tagName.toLowerCase() !== 'html') {
+                    if (el.classList.contains('translation-sub')) {
+                        el.style.display = 'block';
+                    } else if (el.tagName.toLowerCase() === 'span' && el.parentElement.tagName.toLowerCase() !== 'div') {
+                        el.style.display = 'inline';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+        }
+
+        // Initialize language
+        setLang('nl');
+    </script>
+</body>
+</html>
