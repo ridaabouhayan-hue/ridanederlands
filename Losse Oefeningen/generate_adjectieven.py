@@ -48,25 +48,30 @@ html_content = """<!DOCTYPE html>
         .container { max-width: 1200px; margin: 1rem auto; padding: 0 1.5rem; }
         .section-title { font-size: 2.2rem; margin-bottom: 1.5rem; text-align: center; font-weight: 800; }
         
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
         .card { background: white; border-radius: 40px; padding: 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-        
-        .emoji-header { font-size: 3.5rem; text-align: center; margin-bottom: 1.5rem; }
-        .card .word { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
-        .plus .word { color: var(--plus-main); }
-        .min .word { color: var(--min-main); }
-        
-        .card .definition { font-size: 1.1rem; color: var(--text-main); margin-bottom: 2rem; text-align: center; font-weight: 500; }
-        .card .example-list { margin-bottom: 2rem; }
-        .card .example-item { margin-bottom: 18px; font-size: 1.05rem; font-weight: 500; background: #f8fafc; padding: 12px 18px; border-radius: 15px; border-left: 5px solid #cbd5e1; }
-        .plus .example-item { border-left-color: var(--plus-main); }
-        .min .example-item { border-left-color: var(--min-main); }
-        
         .translation-sub { font-size: 0.95rem; color: var(--text-light); font-style: italic; margin-top: 4px; display: block; }
-        .card .logic-box { padding: 1.5rem; border-radius: 20px; font-size: 1.1rem; font-weight: 700; margin-top: auto; }
-        .plus .logic-box { background: var(--plus-bg); color: var(--plus-dark); }
-        .min .logic-box { background: var(--min-bg); color: var(--min-dark); }
+
+        .grammar-grid { display: grid; grid-template-columns: 140px 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .gg-header-empty { background: transparent; }
+        .gg-col-header { background: var(--text-main); color: white; padding: 1.5rem 1rem; border-radius: 20px; text-align: center; font-weight: 800; font-size: 1.3rem; display: flex; flex-direction: column; justify-content: center; }
+        .gg-row-header { background: #e2e8f0; color: var(--text-main); padding: 1.5rem 1rem; border-radius: 20px; text-align: center; font-weight: 800; display: flex; flex-direction: column; justify-content: center; font-size: 1.2rem; }
+        .gg-cell { background: white; border-radius: 25px; padding: 2rem 1rem; text-align: center; box-shadow: var(--shadow); border: 3px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; font-size: 1.3rem; font-weight: 600; transition: var(--transition); position: relative; }
+        .gg-cell:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .gg-cell.plus { border-color: var(--plus-main); background: var(--plus-bg); }
+        .gg-cell.min { border-color: var(--fout-main); background: var(--fout-bg); }
+        .gg-lidwoord { font-size: 1.1rem; color: var(--text-light); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .gg-adjectief { font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin: 5px 0; }
+        .gg-substantief { font-size: 1.4rem; color: var(--text-main); font-weight: 700; }
+        .hl-e { color: var(--plus-main); font-weight: 900; }
+        .hl-geen { color: var(--fout-main); font-weight: 900; font-size: 1.8rem; margin-left: 5px; }
+        .gg-alert { background: var(--white); color: var(--fout-dark); padding: 6px 15px; border-radius: 12px; font-size: 1rem; margin-top: 15px; font-weight: 800; border: 2px dashed var(--fout-main); }
+        
+        @media (max-width: 768px) {
+            .grammar-grid { grid-template-columns: 1fr; }
+            .gg-header-empty, .gg-col-header, .gg-row-header { display: none; }
+            .gg-cell { padding-top: 3rem; }
+            .gg-cell::before { content: attr(data-label); position: absolute; top: 15px; left: 20px; font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; font-weight: 800; background: #f1f5f9; padding: 4px 10px; border-radius: 8px; }
+        }
         
         .mistakes-section { background: var(--white); padding: 2rem; border-radius: 40px; box-shadow: var(--shadow); border: 2px dashed #cbd5e1; margin-bottom: 3rem; }
         .mistakes-title { color: var(--fout-dark); font-size: 1.6rem; font-weight: 800; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
@@ -142,76 +147,72 @@ html_content = """<!DOCTYPE html>
                 <span lang="pl">💡 Zasady</span>
             </h2>
             
-            <div class="cards-grid">
-                <!-- CARD: +E -->
-                <div class="card plus">
-                    <div class="emoji-header">✅</div>
-                    <div class="word">+E</div>
-                    <div class="definition">
-                        <span lang="nl">Gebruik +e (bijna) altijd!</span>
-                        <span lang="en">Use +e (almost) always!</span>
-                        <span lang="pl">Używaj +e (prawie) zawsze!</span>
-                    </div>
-                    
-                    <div class="example-list">
-                        <div class="example-item">
-                            <div>De <strong>mooie</strong> auto (de-woord)</div>
-                            <span class="translation-sub" lang="en">(The beautiful car)</span>
-                            <span class="translation-sub" lang="pl">(Piękny samochód)</span>
-                        </div>
-                        <div class="example-item">
-                            <div>Een <strong>grote</strong> auto (de-woord + een)</div>
-                            <span class="translation-sub" lang="en">(A big car)</span>
-                            <span class="translation-sub" lang="pl">(Duży samochód)</span>
-                        </div>
-                        <div class="example-item">
-                            <div>Het <strong>grote</strong> kantoor (het-woord + het)</div>
-                            <span class="translation-sub" lang="en">(The big office)</span>
-                            <span class="translation-sub" lang="pl">(Duże biuro)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="logic-box">
-                        <span lang="nl">💡 <strong>Regel:</strong> Bijna elk adjectief voor een zelfstandig naamwoord krijgt een -e.</span>
-                        <span lang="en">💡 <strong>Rule:</strong> Almost every adjective before a noun gets an -e.</span>
-                        <span lang="pl">💡 <strong>Zasada:</strong> Prawie każdy przymiotnik przed rzeczownikiem otrzymuje -e.</span>
-                    </div>
+            <div class="grammar-grid">
+                <!-- ROW 1: Headers -->
+                <div class="gg-header-empty"></div>
+                <div class="gg-col-header">
+                    <span lang="nl">DE-woord<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(mannelijk/vrouwelijk)</span></span>
+                    <span lang="en">DE-word<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(masculine/feminine)</span></span>
+                    <span lang="pl">Słowo DE<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(rodzaj męski/żeński)</span></span>
+                </div>
+                <div class="gg-col-header">
+                    <span lang="nl">HET-woord<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(onzijdig)</span></span>
+                    <span lang="en">HET-word<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(neuter)</span></span>
+                    <span lang="pl">Słowo HET<br><span style="font-size:0.95rem; font-weight:400; opacity:0.8;">(rodzaj nijaki)</span></span>
                 </div>
 
-                <!-- CARD: GEEN E -->
-                <div class="card min">
-                    <div class="emoji-header">🛑</div>
-                    <div class="word">GEEN E</div>
-                    <div class="definition">
-                        <span lang="nl">Gebruik GEEN e bij <strong>'een' + het-woord</strong> of na <strong>zijn/worden</strong>.</span>
-                        <span lang="en">Use NO e with <strong>'een' + het-word</strong> or after <strong>to be/to become</strong>.</span>
-                        <span lang="pl">NIE używaj e z <strong>'een' + słowo 'het'</strong> lub po <strong>zijn/worden (być/zostać)</strong>.</span>
-                    </div>
-                    
-                    <div class="example-list">
-                        <div class="example-item">
-                            <div>Een <strong>groot</strong> kantoor ('een' + het-woord)</div>
-                            <span class="translation-sub" lang="en">(A big office)</span>
-                            <span class="translation-sub" lang="pl">(Duże biuro)</span>
-                        </div>
-                        <div class="example-item">
-                            <div>Vers brood (geen lidwoord + het-woord)</div>
-                            <span class="translation-sub" lang="en">(Fresh bread)</span>
-                            <span class="translation-sub" lang="pl">(Świeży chleb)</span>
-                        </div>
-                        <div class="example-item">
-                            <div>Het kantoor is <strong>groot</strong>. (na 'zijn')</div>
-                            <span class="translation-sub" lang="en">(The office is big.)</span>
-                            <span class="translation-sub" lang="pl">(Biuro jest duże.)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="logic-box">
-                        <span lang="nl">💡 <strong>Regel:</strong> Alleen GEEN -e bij: een + het-woord, of na het werkwoord zijn/worden.</span>
-                        <span lang="en">💡 <strong>Rule:</strong> Only NO -e with: een + het-word, or after the verb to be/become.</span>
-                        <span lang="pl">💡 <strong>Zasada:</strong> Tylko BEZ -e przy: een + słowo 'het', lub po czasowniku być/zostać.</span>
-                    </div>
+                <!-- ROW 2: Bepaald -->
+                <div class="gg-row-header">
+                    <span lang="nl">Bepaald<br><span style="font-size:0.95rem; font-weight:400;">(de / het)</span></span>
+                    <span lang="en">Definite<br><span style="font-size:0.95rem; font-weight:400;">(the)</span></span>
+                    <span lang="pl">Określony<br><span style="font-size:0.95rem; font-weight:400;">(de / het)</span></span>
                 </div>
+                <div class="gg-cell plus" data-label="Bepaald | De-woord">
+                    <div class="gg-lidwoord">de</div>
+                    <div class="gg-adjectief">mooi<span class="hl-e">e</span></div>
+                    <div class="gg-substantief">auto</div>
+                    <div class="translation-sub" lang="en">(The beautiful car)</div>
+                    <div class="translation-sub" lang="pl">(Ten piękny samochód)</div>
+                </div>
+                <div class="gg-cell plus" data-label="Bepaald | Het-woord">
+                    <div class="gg-lidwoord">het</div>
+                    <div class="gg-adjectief">grot<span class="hl-e">e</span></div>
+                    <div class="gg-substantief">kantoor</div>
+                    <div class="translation-sub" lang="en">(The big office)</div>
+                    <div class="translation-sub" lang="pl">(To duże biuro)</div>
+                </div>
+
+                <!-- ROW 3: Onbepaald -->
+                <div class="gg-row-header">
+                    <span lang="nl">Onbepaald<br><span style="font-size:0.95rem; font-weight:400;">(een)</span></span>
+                    <span lang="en">Indefinite<br><span style="font-size:0.95rem; font-weight:400;">(a / an)</span></span>
+                    <span lang="pl">Nieokreślony<br><span style="font-size:0.95rem; font-weight:400;">(een)</span></span>
+                </div>
+                <div class="gg-cell plus" data-label="Onbepaald | De-woord">
+                    <div class="gg-lidwoord">een</div>
+                    <div class="gg-adjectief">mooi<span class="hl-e">e</span></div>
+                    <div class="gg-substantief">auto</div>
+                    <div class="translation-sub" lang="en">(A beautiful car)</div>
+                    <div class="translation-sub" lang="pl">(Jakiś piękny samochód)</div>
+                </div>
+                <div class="gg-cell min" data-label="Onbepaald | Het-woord">
+                    <div class="gg-lidwoord">een</div>
+                    <div class="gg-adjectief">groot<span class="hl-geen">🛑</span></div>
+                    <div class="gg-substantief">kantoor</div>
+                    <div class="gg-alert">
+                        <span lang="nl">GEEN -E! (Uitzondering)</span>
+                        <span lang="en">NO -E! (Exception)</span>
+                        <span lang="pl">BEZ -E! (Wyjątek)</span>
+                    </div>
+                    <div class="translation-sub" lang="en" style="margin-top:10px;">(A big office)</div>
+                    <div class="translation-sub" lang="pl" style="margin-top:10px;">(Jakieś duże biuro)</div>
+                </div>
+            </div>
+            
+            <div class="logic-box" style="background: var(--plus-bg); color: var(--plus-dark); padding: 1.5rem; border-radius: 20px; font-size: 1.15rem; font-weight: 700; text-align: center; margin-bottom: 2rem;">
+                <span lang="nl">💡 <strong>Regel:</strong> Altijd <b>+e</b>! Behalve bij <u>een + het-woord</u> (dan krijgt het adjectief géén -e).</span>
+                <span lang="en">💡 <strong>Rule:</strong> Always <b>+e</b>! Except with <u>een + het-word</u> (then the adjective gets no -e).</span>
+                <span lang="pl">💡 <strong>Zasada:</strong> Zawsze <b>+e</b>! Z wyjątkiem <u>een + słowo 'het'</u> (wtedy przymiotnik nie otrzymuje -e).</span>
             </div>
         </section>
 
