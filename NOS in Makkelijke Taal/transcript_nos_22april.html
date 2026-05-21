@@ -590,7 +590,7 @@
     <!-- WOORDENSCHAT OEFENING -->
     <div class="vocab-exercise-section">
         <h2>✍️ Nieuwe Woorden Oefenen</h2>
-        <p style="margin-bottom: 1.5rem; color: #64748b;">Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!</p>
+        <p style="margin-bottom: 1.5rem; color: #64748b;" id="vocab-instruction" data-nl="Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!" data-en="Write down the words you don't know, look them up and make your own sentence. Send your homework to the teacher afterwards!" data-tr="Bilmediğiniz kelimeleri yazın, araştırın ve kendi cümlenizi kurun. Ödevinizi daha sonra öğretmene gönderin!" data-ar="اكتب الكلمات التي لا تعرفها، ابحث عنها واصنع جملتك الخاصة. أرسل واجبك المنزلي إلى المعلم بعد ذلك!" data-fa="کلماتی را که نمی‌دانید بنویسید، آنها را جستجو کنید و جمله خود را بسازید. تکالیف خود را بعداً برای معلم ارسال کنید!" data-da="کلماتی را که نمی‌دانید بنویسید، آنها را جستجو کنید و جمله خود را بسازید. تکالیف خود را بعداً برای معلم ارسال کنید!" data-vi="Viết ra những từ bạn không biết, tra cứu và tạo câu của riêng bạn. Gửi bài tập về nhà cho giáo viên sau đó!" data-pl="Zapisz słowa, których nie znasz, sprawdź je i ułóż własne zdanie. Następnie wyślij zadanie domowe nauczycielowi!">Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!</p>
         
         <div class="vocab-table-wrapper">
             <table class="vocab-table" id="vocabTable">
@@ -638,6 +638,17 @@
             
             // Sluit alle open tooltips als we van taal wisselen
             vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+
+            // Vertaal de instructie tekst
+            const instr = document.getElementById('vocab-instruction');
+            if (instr) {
+                if (currentLang === 'nl') {
+                    instr.textContent = instr.getAttribute('data-nl');
+                } else {
+                    const t = instr.getAttribute('data-' + currentLang);
+                    if (t) instr.textContent = t;
+                }
+            }
         });
     });
 
@@ -737,6 +748,62 @@
         if(score===total){r.innerHTML='🎉 Super goed! Alles goed ('+score+'/'+total+').';r.style.color='#2ecc71';}
         else if(score>=total/2){r.innerHTML='👍 Goed gedaan! Score: '+score+'/'+total+'.';r.style.color='var(--primary)';}
         else{r.innerHTML='Blijf oefenen! Score: '+score+'/'+total+'.';r.style.color='#e74c3c';}
+    }
+
+    // Genereer 10 rijen in de vocabulaire tabel
+    const tbody = document.querySelector('#vocabTable tbody');
+    if (tbody) {
+        tbody.innerHTML += `
+            <tr>
+                <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">overlast</textarea></td>
+                <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">nuisance</textarea></td>
+                <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">problemen door iets of iemand</textarea></td>
+                <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">De harde muziek zorgt voor overlast.</textarea></td>
+            </tr>
+        `;
+        for (let i = 1; i < 10; i++) {
+            tbody.innerHTML += `
+                <tr>
+                    <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                </tr>
+            `;
+        }
+    }
+
+    // Stuur tabel naar WhatsApp
+    window.sendToWhatsApp = function() {
+        const studentName = document.getElementById('studentName').value.trim() || 'Onbekend';
+        let message = `Huiswerk NOS in Makkelijke Taal\nNaam: ${studentName}\n\n`;
+        
+        let hasWords = false;
+        const rows = document.querySelectorAll('#vocabTable tbody tr');
+        rows.forEach((row, index) => {
+            const word = row.querySelector('.v-word').value.trim();
+            const lang = row.querySelector('.v-lang').value.trim();
+            const easy = row.querySelector('.v-easy').value.trim();
+            const sent = row.querySelector('.v-sent').value.trim();
+            
+            if (word || lang || easy || sent) {
+                hasWords = true;
+                message += `*Woord ${index + 1}:* ${word}\n`;
+                if(lang) message += `- Mijn taal: ${lang}\n`;
+                if(easy) message += `- Uitleg: ${easy}\n`;
+                if(sent) message += `- Zin: ${sent}\n`;
+                message += `\n`;
+            }
+        });
+
+        if (!hasWords) {
+            alert('Vul eerst wat woorden in voordat je het verstuurt!');
+            return;
+        }
+
+        const encodedMsg = encodeURIComponent(message);
+        const waLink = `https://wa.me/31626211106?text=${encodedMsg}`;
+        window.open(waLink, '_blank');
     }
 </script>
 

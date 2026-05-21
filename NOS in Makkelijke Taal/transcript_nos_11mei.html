@@ -242,7 +242,7 @@
     <!-- WOORDENSCHAT OEFENING -->
     <div class="vocab-exercise-section">
         <h2>✍️ Nieuwe Woorden Oefenen</h2>
-        <p style="margin-bottom: 1.5rem; color: #64748b;">Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!</p>
+        <p style="margin-bottom: 1.5rem; color: #64748b;" id="vocab-instruction" data-nl="Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!" data-en="Write down the words you don't know, look them up and make your own sentence. Send your homework to the teacher afterwards!" data-tr="Bilmediğiniz kelimeleri yazın, araştırın ve kendi cümlenizi kurun. Ödevinizi daha sonra öğretmene gönderin!" data-ar="اكتب الكلمات التي لا تعرفها، ابحث عنها واصنع جملتك الخاصة. أرسل واجبك المنزلي إلى المعلم بعد ذلك!" data-fa="کلماتی را که نمی‌دانید بنویسید، آنها را جستجو کنید و جمله خود را بسازید. تکالیف خود را بعداً برای معلم ارسال کنید!" data-da="کلماتی را که نمی‌دانید بنویسید، آنها را جستجو کنید و جمله خود را بسازید. تکالیف خود را بعداً برای معلم ارسال کنید!" data-vi="Viết ra những từ bạn không biết, tra cứu và tạo câu của riêng bạn. Gửi bài tập về nhà cho giáo viên sau đó!" data-pl="Zapisz słowa, których nie znasz, sprawdź je i ułóż własne zdanie. Następnie wyślij zadanie domowe nauczycielowi!">Schrijf de woorden op die je niet kent, zoek ze op en maak een eigen zin. Stuur je huiswerk daarna naar de docent!</p>
         
         <div class="vocab-table-wrapper">
             <table class="vocab-table" id="vocabTable">
@@ -290,6 +290,17 @@
             
             // Sluit alle open tooltips als we van taal wisselen
             vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+
+            // Vertaal de instructie tekst
+            const instr = document.getElementById('vocab-instruction');
+            if (instr) {
+                if (currentLang === 'nl') {
+                    instr.textContent = instr.getAttribute('data-nl');
+                } else {
+                    const t = instr.getAttribute('data-' + currentLang);
+                    if (t) instr.textContent = t;
+                }
+            }
         });
     });
 
@@ -361,13 +372,21 @@
     // Genereer 10 rijen in de vocabulaire tabel
     const tbody = document.querySelector('#vocabTable tbody');
     if (tbody) {
-        for (let i = 0; i < 10; i++) {
+        tbody.innerHTML += `
+            <tr>
+                <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">spoor</textarea></td>
+                <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">railway track</textarea></td>
+                <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">de weg waar de trein op rijdt</textarea></td>
+                <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">De trein stopt op het spoor.</textarea></td>
+            </tr>
+        `;
+        for (let i = 1; i < 10; i++) {
             tbody.innerHTML += `
                 <tr>
-                    <td><input type="text" class="v-word" placeholder="Woord"></td>
-                    <td><input type="text" class="v-lang" placeholder="Vertaling"></td>
-                    <td><input type="text" class="v-easy" placeholder="Uitleg"></td>
-                    <td><input type="text" class="v-sent" placeholder="Zin"></td>
+                    <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
                 </tr>
             `;
         }
