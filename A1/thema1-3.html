@@ -17,9 +17,19 @@
         .sort-word.correct-sort{border-color:#10b981;background:rgba(16,185,129,.12);pointer-events:none}
         .sort-word.wrong-sort{border-color:#ef4444;background:rgba(239,68,68,.12)}
     </style>
+
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
 </head>
 <body>
     <nav class="language-bar">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
         <span class="label">🌐 Taal:</span>
         <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
         <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
@@ -374,6 +384,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
+
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') || 'light';
+                let newTheme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('a1-theme', newTheme);
+            });
+        })();
+    </script>
 
 </body>
 </html>

@@ -76,9 +76,19 @@
         
         .speak-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;transition:.2s;padding:4px}.speak-btn:hover{transform:scale(1.15)}
     </style>
+
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
 </head>
 <body>
     <nav class="language-bar">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
         <span class="label">🌐 Taal:</span>
         <span class="lang-btn active" onclick="setLang('nl', event)">🇳🇱 Nederlands</span>
         <span class="lang-btn" onclick="setLang('en', event)">🇬🇧 English</span>
@@ -511,6 +521,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
+
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') || 'light';
+                let newTheme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('a1-theme', newTheme);
+            });
+        })();
+    </script>
 
 </body>
 </html>

@@ -60,9 +60,19 @@
         .wa-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:#25D366;color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.92rem;font-weight:700;transition:all .2s;text-decoration:none;margin-top:8px}.wa-btn:hover{opacity:.88}
         .voice-tip{font-size:.82rem;color:var(--text-muted,#aaa);margin-top:8px;font-style:italic}
     </style>
+
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
 </head>
 <body>
     <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
         <span class="label">🌐 Taal:</span>
         <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
         <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
@@ -553,6 +563,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
+
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') || 'light';
+                let newTheme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('a1-theme', newTheme);
+            });
+        })();
+    </script>
 
 </body>
 </html>

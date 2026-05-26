@@ -125,10 +125,20 @@
         #total-score-container { display: none; text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, rgba(78,140,255,0.1), rgba(16,185,129,0.1)); border-radius: 16px; border: 2px solid rgba(255,255,255,0.1); }
         #total-score-container h2 { font-size: 2rem; margin-bottom: 10px; color: #fff; }
     </style>
+
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+
 </head>
 <body>
 
 <nav class="language-bar">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
     <span style="color:var(--text-muted); font-weight:700; font-size:0.8rem; text-transform:uppercase; margin-right:5px;">🌐 Taal:</span>
     <button class="lang-btn active" onclick="setLang('nl')">🇳🇱 NL</button>
     <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
@@ -1021,6 +1031,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
+
+
+    <!-- THEME TOGGLE SCRIPT -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') || 'light';
+                let newTheme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('a1-theme', newTheme);
+            });
+        })();
+    </script>
 
 </body>
 </html>

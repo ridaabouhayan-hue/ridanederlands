@@ -6,6 +6,39 @@
 
 /* ---------- CSS Variables ---------- */
 :root {
+  /* Light mode (NOS Makkelijke Taal style) */
+  --bg-primary: #f0f4ff;
+  --bg-secondary: #e8f0fe;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(67, 97, 238, 0.05);
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a68;
+  --text-muted: #6b7a9e;
+  --accent-blue: #4361ee;
+  --accent-blue-glow: rgba(67, 97, 238, 0.15);
+  --accent-orange: #ff8a4e;
+  --accent-orange-glow: rgba(255, 138, 78, 0.15);
+  --accent-green: #25d366;
+  --accent-green-glow: rgba(37, 211, 102, 0.15);
+  --accent-red: #e63946;
+  --accent-red-glow: rgba(230, 57, 70, 0.15);
+  --accent-purple: #7209b7;
+  --accent-purple-glow: rgba(114, 9, 183, 0.15);
+  --accent-yellow: #fbbf24;
+  --accent-yellow-glow: rgba(251, 191, 36, 0.15);
+  --border-subtle: rgba(67, 97, 238, 0.1);
+  --border-medium: rgba(67, 97, 238, 0.2);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --shadow-card: 0 4px 20px rgba(67, 97, 238, 0.08);
+  --shadow-glow: 0 0 40px rgba(67, 97, 238, 0.1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
   --bg-primary: #0f1729;
   --bg-secondary: #182040;
   --bg-card: rgba(30, 42, 74, 0.65);
@@ -27,14 +60,15 @@
   --accent-yellow-glow: rgba(251, 191, 36, 0.2);
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-medium: rgba(255, 255, 255, 0.12);
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.25);
   --shadow-glow: 0 0 40px rgba(78, 140, 255, 0.08);
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth theme transition */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ---------- Reset & Base ---------- */
@@ -44,11 +78,6 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
-
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--bg-primary);
@@ -56,6 +85,7 @@ body {
   line-height: 1.7;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Animated gradient background */
@@ -66,9 +96,9 @@ body::before {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(ellipse at 20% 50%, rgba(78, 140, 255, 0.06) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 20%, rgba(167, 139, 250, 0.05) 0%, transparent 50%),
-              radial-gradient(ellipse at 50% 80%, rgba(52, 211, 153, 0.04) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 20% 50%, var(--accent-blue-glow) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, var(--accent-purple-glow) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, var(--accent-green-glow) 0%, transparent 50%);
   animation: bgShift 20s ease-in-out infinite alternate;
   z-index: -1;
   pointer-events: none;
@@ -95,11 +125,13 @@ h1, h2, h3, h4, h5 {
   align-items: center;
   gap: 8px;
   padding: 10px 24px;
-  background: rgba(15, 23, 41, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 2px solid var(--border-subtle);
+  box-shadow: 0 2px 12px var(--shadow-card);
   flex-wrap: wrap;
+  transition: background-color 0.3s ease;
 }
 
 .language-bar .label {
@@ -182,7 +214,7 @@ h1, h2, h3, h4, h5 {
 .page-header h1 {
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
-  background: linear-gradient(135deg, #fff 0%, var(--accent-blue) 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
