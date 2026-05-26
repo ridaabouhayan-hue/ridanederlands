@@ -150,7 +150,6 @@ function sendToWhatsApp() {
     // ------------------------------------------
     let score1 = 0;
     let report1 = `*1. [Sectienaam]* (Score: {SCORE1}/[AantalVragen])\n`;
-    const cues1 = ["Cue1", "Cue2"]; // Optioneel: cues voor de vragen
     
     for (let i = 1; i <= 2; i++) { // pas de range aan naar aantal vragen
         const ans = val('q1_' + i); // of dropVal(...)
@@ -159,11 +158,11 @@ function sendToWhatsApp() {
         score1 += res.score;
         
         if (res.status === "correct") {
-            report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} ✅\n`;
+            report1 += `- Vraag ${i} = ${ans || "..."} ✅\n`;
         } else if (res.status === "half") {
-            report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
+            report1 += `- Vraag ${i} = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
         } else {
-            report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
+            report1 += `- Vraag ${i} = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
         }
     }
     report1 = report1.replace("{SCORE1}", String(score1).replace('.', ','));
