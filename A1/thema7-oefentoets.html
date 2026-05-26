@@ -677,7 +677,93 @@
             gradedPart += `*TOTAALSCORE:* ${totalScore}/35\n\n`;
             gradedPart += report1 + report2 + report3 + report4 + report5;
 
-            const finalMessage = rawPart + gradedPart;
+            // --- PART 3: FEEDBACKBRIEF ---
+            let feedback = `*--- FEEDBACKBRIEF VOOR DE CURSIST ---*\n`;
+            feedback += `_(Kopieer en plak de tekst hieronder naar de cursist)_\n\n`;
+            feedback += `Beste ${studentName},\n\n`;
+            feedback += `Je hebt de oefentoets voor Thema 7 (Reizen & Vervoer) gemaakt. Goed gedaan! Hier is jouw resultaat:\n\n`;
+            feedback += `*Jouw resultaat:*\n`;
+            feedback += `- *Score:* ${totalScore} van de 35 punten goed.\n`;
+            const passed = totalScore >= 20;
+            feedback += `- *Resultaat:* ${passed ? "Dit is een *voldoende*! Gefeliciteerd! 🎉" : "Dit is helaas nog *onvoldoende*. Geef niet op, oefen nog een keer! 💪"}\n\n`;
+
+            let goedPunten = [];
+            let oefenPunten = [];
+
+            // Helper to check correctness for feedback tips
+            const isGramCorrect = (idx) => checkAnswer(dropVal('drop' + (idx+1)), answerKeys.grammatica[idx]);
+            const isPrepCorrect = (idx) => checkAnswer(val('q3_' + (idx+1)), answerKeys.voorzetsels[idx]);
+
+            // 1. Woordenschat
+            if (score1 >= 5) {
+                goedPunten.push(`*Woordenschat (${score1}/7):* Je kent de reissymbolen en woorden over reizen en vervoer heel goed!`);
+            } else {
+                oefenPunten.push(`*Woordenschat (${score1}/7):* Oefen de Nederlandse woorden voor voertuigen (zoals auto, trein, fiets, vliegtuig, bus, boot, station).`);
+            }
+
+            // 2. Grammatica
+            if (score2 >= 5) {
+                goedPunten.push(`*Grammatica (${score2}/7):* Je weet goed wanneer je "mogen" (toestemming/regels) of "kunnen" (vaardigheid/mogelijkheid) moet gebruiken.`);
+            } else {
+                let gramTips = [];
+                if (!isGramCorrect(1) || !isGramCorrect(3)) {
+                    gramTips.push(`"kunnen" (wij kunnen, zij kunnen) gebruik je voor vaardigheden en mogelijkheden (bijv. snel fietsen).`);
+                }
+                if (!isGramCorrect(0) || !isGramCorrect(5)) {
+                    gramTips.push(`"mogen" (je mag, de kinderen mogen) gebruik je voor toestemming en regels (bijv. hier parkeren, buiten spelen).`);
+                }
+                if (!isGramCorrect(2) || !isGramCorrect(4)) {
+                    gramTips.push(`gebruik "mag ik..." voor beleefd toestemming vragen en "kan je..." om hulp te vragen.`);
+                }
+                oefenPunten.push(`*Grammatica (${score2}/7):* Let op het verschil tussen mogen en kunnen:\n  - ` + (gramTips.join('\n  - ') || `Oefen nog eens met "mag, mogen, kan, kunnen".`));
+            }
+
+            // 3. Voorzetsels
+            if (score3 >= 5) {
+                goedPunten.push(`*Voorzetsels (${score3}/7):* Je snapt de voorzetsels voor plaats en tijd (in, op, om, naast, voor, achter, onder) al goed.`);
+            } else {
+                let prepTips = [];
+                if (!isPrepCorrect(0)) prepTips.push(`gebruik *om* voor kloktijden (bijv. om kwart over drie).`);
+                if (!isPrepCorrect(1)) prepTips.push(`iets zit *in* een glas of fles.`);
+                if (!isPrepCorrect(2)) prepTips.push(`borden staan *op* de tafel.`);
+                if (!isPrepCorrect(3)) prepTips.push(`in een rij sta je *voor* iemand (niet naast).`);
+                if (!isPrepCorrect(4)) prepTips.push(`de tuin ligt *achter* het huis.`);
+                if (!isPrepCorrect(5)) prepTips.push(`in een trein zit je *naast* het raam.`);
+                if (!isPrepCorrect(6)) prepTips.push(`als iets valt, ligt het *onder* de tafel.`);
+                oefenPunten.push(`*Voorzetsels (${score3}/7):* Oefen de voorzetsels van plaats en tijd:\n  - ` + (prepTips.join('\n  - ') || `Kijk goed naar de betekenis van de zinnen.`));
+            }
+
+            // 4. Dictee
+            if (score4 >= 5) {
+                goedPunten.push(`*Dictee (${score4}/7):* Je luister- en schrijfvaardigheid is uitstekend! Je spelt de zinnen heel nauwkeurig.`);
+            } else {
+                oefenPunten.push(`*Dictee (${score4}/7):* Let goed op de klanken en spelling. Let op woorden zoals: *een* (niet "en"), *ticket* (niet "tiket"), *minuten*, *koffer*, *gepakt* en schrijf landen met een hoofdletter (*Spanje*).`);
+            }
+
+            // 5. Vraagwoorden
+            if (score5 >= 5) {
+                goedPunten.push(`*Vraagwoorden (${score5}/7):* Je weet heel goed hoe je vragen stelt met Hoe, Wat, Waar, Wie, Wanneer, Hoeveel en Waarom.`);
+            } else {
+                oefenPunten.push(`*Vraagwoorden (${score5}/7):* Oefen wanneer je welk vraagwoord gebruikt (bijvoorbeeld: *Hoe* ga je? *Waar* woon je? *Hoeveel* kost dat?).`);
+            }
+
+            feedback += `*Wat gaat al goed:*\n`;
+            if (goedPunten.length > 0) {
+                feedback += `- ` + goedPunten.join('\n- ') + `\n\n`;
+            } else {
+                feedback += `- Blijf oefenen, je bent op de goede weg!\n\n`;
+            }
+
+            feedback += `*Wat kun je nog oefenen:*\n`;
+            if (oefenPunten.length > 0) {
+                feedback += `- ` + oefenPunten.join('\n- ') + `\n\n`;
+            } else {
+                feedback += `- Geen leertips, je hebt alles onder de knie! Super!\n\n`;
+            }
+
+            feedback += `Met vriendelijke groet,\nDe docent`;
+
+            const finalMessage = rawPart + gradedPart + `\n\n` + feedback;
 
             const phone = "31626211106";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(finalMessage)}`;
