@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nederlandse Voegwoorden - NT2 A1/A2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-neven: #4a00e0;
+            --color-neven-dark: #3700b3;
+            --color-neven-bg: #f5f0ff;
+            --color-onder: #e65c00;
+            --color-onder-dark: #b33600;
+            --color-onder-bg: #fff5eb;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 0.8rem; display: flex; justify-content: center; gap: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; font-weight: 800; color: var(--text-main); font-size: 1rem; padding: 0.5rem 1.2rem; border-radius: 50px; transition: var(--transition); }
+        nav a:hover { background: #f1f5f9; }
+        
+        /* Language Bar */
+        .lang-container { position: sticky; top: 58px; display: flex; justify-content: center; gap: 8px; padding: 10px; background: rgba(248, 250, 252, 0.98); backdrop-filter: blur(10px); z-index: 999; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap; }
+        .lang-btn { border: 2px solid #e2e8f0; background: white; padding: 8px 16px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.9rem; transition: var(--transition); }
+        .lang-btn.active { background: var(--text-main); color: white; border-color: var(--text-main); }
+        
+        /* Hero Section */
+        .hero { padding: 5rem 1.5rem 1.5rem; text-align: center; }
+        .hero h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 1rem; background: linear-gradient(90deg, var(--color-neven), var(--color-onder)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; color: var(--text-light); max-width: 800px; margin: 0 auto; }
+        
+        /* Layout Grid */
+        .container { max-width: 1300px; margin: 2rem auto 4rem; padding: 0 2rem; }
+        .section-title { font-size: 2.2rem; margin-bottom: 2rem; text-align: center; font-weight: 900; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem; }
+        
+        /* Explanation Cards */
+        .card { background: white; border-radius: 30px; padding: 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: var(--transition); border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .emoji-header { font-size: 3.2rem; text-align: center; margin-bottom: 1rem; }
+        .card .word { font-size: 2.8rem; font-weight: 900; margin-bottom: 0.5rem; text-align: center; }
+        .neven .word { color: var(--color-neven); }
+        .onder .word { color: var(--color-onder); }
+        .card .definition { font-size: 1.15rem; color: var(--text-light); margin-bottom: 1.5rem; text-align: center; font-weight: 600; }
+        .card .example-list { margin-bottom: 1.5rem; }
+        .card .example-item { margin-bottom: 12px; font-size: 1.05rem; font-weight: 600; }
+        .translation-sub { font-size: 0.9rem; color: var(--text-light); margin-left: 25px; font-style: italic; margin-top: 2px; }
+        .card .logic-box { padding: 1.25rem; border-radius: 20px; font-size: 1rem; font-weight: 700; margin-top: auto; }
+        .neven .logic-box { background: var(--color-neven-bg); color: var(--color-neven-dark); }
+        .onder .logic-box { background: var(--color-onder-bg); color: var(--color-onder-dark); }
+        
+        /* Part 1: Click-to-Match Game */
+        .match-section { background: white; padding: 4rem 2rem; border-radius: 40px; box-shadow: var(--shadow); margin: 3rem auto; max-width: 900px; }
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .match-col { display: flex; flex-direction: column; gap: 12px; }
+        .match-btn { padding: 16px 20px; background: #f8fafc; border: 3px solid #e2e8f0; border-radius: 16px; cursor: pointer; font-size: 1.1rem; font-weight: 800; transition: var(--transition); text-align: center; }
+        .match-btn:hover { border-color: var(--color-neven); background: #f1f5f9; }
+        .match-btn.selected { background: #e0f2fe; border-color: #0284c7; color: #0369a1; }
+        .match-btn.matched { background: #d4edda; border-color: #28a745; color: #155724; cursor: default; pointer-events: none; }
+        .match-btn.error { background: #f8d7da; border-color: #dc3545; color: #721c24; animation: shake 0.3s; }
+        
+        /* Part 2: Context Fill-in Exercise */
+        .exercise-section { background: white; padding: 4rem 2rem; border-radius: 40px; box-shadow: var(--shadow); margin: 3rem auto; max-width: 950px; }
+        .exercise-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+        .q-row { background: #f8fafc; padding: 22px 25px; border-radius: 20px; border: 2px solid #f1f5f9; display: flex; flex-direction: column; gap: 10px; transition: var(--transition); }
+        .q-sentence-container { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 1.15rem; font-weight: 700; color: #334155; }
+        .q-row input { width: 110px; padding: 8px 12px; border: 3px solid #cbd5e1; border-radius: 12px; text-align: center; font-weight: 800; font-size: 1.1rem; font-family: 'Outfit', sans-serif; transition: var(--transition); outline: none; }
+        .q-row input:focus { border-color: var(--color-neven); }
+        .q-feedback { font-size: 1.4rem; margin-left: 8px; vertical-align: middle; }
+        .q-hint { font-size: 0.95rem; color: #b45309; background: #fffbeb; border-left: 4px solid #f59e0b; padding: 8px 12px; border-radius: 0 8px 8px 0; margin-top: 6px; font-weight: 600; display: none; }
+        
+        /* Alert Box */
+        .info-alert { background: #eff6ff; border: 2px solid #bfdbfe; color: #1e3a8a; padding: 1.5rem; border-radius: 25px; margin-bottom: 2rem; font-size: 1.05rem; }
+        .info-alert h3 { margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        /* Shaking Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        
+        [lang]:not([lang="nl"]) { display: none; }
+        .rtl-text { direction: rtl; text-align: right; }
+        @media (max-width: 768px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .match-grid { grid-template-columns: 1fr; }
+            .q-sentence-container { font-size: 1rem; }
+            .q-row input { width: 90px; padding: 6px 10px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav aria-label="Hoofdmenu">
+        <a href="#intro">Start</a>
+        <a href="#uitleg">📋 <span lang="nl">Uitleg</span><span lang="en">Explanations</span><span lang="tr">Açıklama</span><span lang="ar">الشرح</span><span lang="fa">توضیحات</span><span lang="da">توضیحات</span></a>
+        <a href="#deel1">🎯 <span lang="nl">Deel 1: Betekenis</span><span lang="en">Part 1: Meaning</span><span lang="tr">Bölüm 1: Anlam</span><span lang="ar">الجزء 1: المعنى</span><span lang="fa">بخش ۱: معنی</span><span lang="da">بخش ۱: معنی</span></a>
+        <a href="#deel2">✍️ <span lang="nl">Deel 2: Context</span><span lang="en">Part 2: Context</span><span lang="tr">Bölüm 2: Bağlam</span><span lang="ar">الجزء 2: السياق</span><span lang="fa">بخش ۲: کاربرد</span><span lang="da">بخش ۲: کاربرد</span></a>
+    </nav>
+
+    <!-- Language Selector -->
+    <div class="lang-container" aria-label="Taalkeuze">
+        <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Nederlands</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+        <button class="lang-btn" id="btn-tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+        <button class="lang-btn" id="btn-ar" onclick="setLang('ar')">🇸🇦 العربية</button>
+        <button class="lang-btn" id="btn-fa" onclick="setLang('fa')">🇮🇷 فارسی</button>
+        <button class="lang-btn" id="btn-da" onclick="setLang('da')">🇦🇫 Dari</button>
+        <button class="lang-btn" id="btn-ps" onclick="setLang('ps')">🇦🇫 Pashto</button>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="hero" id="intro">
+        <h1>
+            <span lang="nl">Voegwoorden Leren</span>
+            <span lang="en">Learn Conjunctions</span>
+            <span lang="tr">Bağlaçları Öğrenin</span>
+            <span lang="ar" class="rtl-text">تعلم الروابط (Voegwoorden)</span>
+            <span lang="fa" class="rtl-text">یادگیری حروف ربط</span>
+            <span lang="da" class="rtl-text">یادگیری حروف ربط</span>
+            <span lang="ps" class="rtl-text">د نښلوونکو وییونو زده کړه</span>
+        </h1>
+        <p>
+            <span lang="nl">Oefen de belangrijkste voegwoorden en ontdek hoe ze de zinsbouw veranderen.</span>
+            <span lang="en">Practice the most important conjunctions and discover how they change sentence structure.</span>
+            <span lang="tr">En önemli bağlaçları uygulayın ve cümle yapısını nasıl değiştirdiklerini öğrenin.</span>
+            <span lang="ar" class="rtl-text">تدرب على أهم أدوات الربط واكتشف كيف تغير ترتيب الجملة.</span>
+            <span lang="fa" class="rtl-text">مهم‌ترین حروف ربط را تمرین کنید و متوجه شوید که چگونه ساختار جمله را تغییر می‌دهند.</span>
+            <span lang="da" class="rtl-text">مهم‌ترین حروف ربط را تمرین کنید و متوجه شوید که چگونه ساختار جمله را تغییر می‌دهند.</span>
+            <span lang="ps" class="rtl-text">خورا مهم نښلوونکي وییونه تمرین کړئ او وګورئ چې هغوی څنګه د جملې جوړښت بدلوي.</span>
+        </p>
+    </header>
+
+    <!-- Conjunction Explanations -->
+    <section class="container" id="uitleg">
+        
+        <div class="info-alert">
+            <h3>⚠️ <span lang="nl">Belangrijke Regel: Zinsbouw!</span>
+                <span lang="en">Important Rule: Sentence Structure!</span>
+                <span lang="tr">Önemli Kural: Cümle Yapısı!</span>
+                <span lang="ar">قاعدة هامة: ترتيب الجملة!</span>
+                <span lang="fa">قانون مهم: ساختار جمله!</span>
+                <span lang="da">قانون مهم: ساختار جمله!</span>
+                <span lang="ps">مهمه قاعده: د جملې جوړښت!</span>
+            </h3>
+            <p>
+                <span lang="nl">Er zijn twee soorten voegwoorden:<br>
+                1. <strong>Nevengeschikt</strong> (en, maar, of, want, dus): De zinsbouw blijft normaal (Subject + Verb + rest).<br>
+                2. <strong>Ondergeschikt</strong> (omdat, als): Het werkwoord gaat helemaal naar het <strong>einde</strong> van de zin!</span>
+                <span lang="en">There are two types of conjunctions:<br>
+                1. <strong>Coordinating</strong> (en, maar, of, want, dus): Word order stays normal (Subject + Verb + rest).<br>
+                2. <strong>Subordinating</strong> (omdat, als): The verb moves completely to the <strong>end</strong> of the sentence!</span>
+                <span lang="tr">İki tür bağlaç vardır:<br>
+                1. <strong>Nevengeschikt</strong> (en, maar, of, want, dus): Cümle yapısı normal kalır (Özne + Fiil + diğerleri).<br>
+                2. <strong>Ondergeschikt</strong> (omdat, als): Fiil cümlenin en <strong>sonuna</strong> gider!</span>
+                <span lang="ar">هناك نوعان من أدوات الربط:<br>
+                1. <strong>Nevengeschikt</strong> (en, maar, of, want, dus): يبقى ترتيب الجملة طبيعياً (فاعل + فعل + التتمة).<br>
+                2. <strong>Ondergeschikt</strong> (omdat, als): ينتقل الفعل تماماً إلى <strong>نهاية</strong> الجملة!</span>
+                <span lang="fa">دو نوع حرف ربط وجود دارد:<br>
+                1. <strong>Coordinating</strong> (en, maar, of, want, dus): ساختار جمله عادی باقی می‌ماند (فاعل + فعل + بقیه).<br>
+                2. <strong>Subordinating</strong> (omdat, als): فعل به طور کامل به <strong>آخر</strong> جمله منتقل می‌شود!</span>
+                <span lang="da">دو نوع حرف ربط وجود دارد:<br>
+                1. <strong>Coordinating</strong> (en, maar, of, want, dus): ساختار جمله عادی باقی می‌ماند (فاعل + فعل + بقیه).<br>
+                2. <strong>Subordinating</strong> (omdat, als): فعل به طور کامل به <strong>آخر</strong> جمله منتقل می‌شود!</span>
+                <span lang="ps">دوه ډوله نښلوونکي شتون لري:<br>
+                1. <strong>coordinating</strong> (en, maar, of, want, dus): د جملې جوړښت نورمال پاتې کیږي (موضوع + فعل + نور).<br>
+                2. <strong>subordinating</strong> (omdat, als): فعل په بشپړ ډول د جملې <strong>پای</strong> ته ځي!</span>
+            </p>
+        </div>
+
+        <h2 class="section-title" style="color: var(--color-neven);">1. Nevengeschikte Voegwoorden (Normale Zinsbouw)</h2>
+        <div class="cards-grid" id="neven-container" style="margin-bottom: 4rem;"></div>
+
+        <h2 class="section-title" style="color: var(--color-onder);">2. Ondergeschikte Voegwoorden (Werkwoord Achteraan)</h2>
+        <div class="cards-grid" id="onder-container"></div>
+    </section>
+
+    <!-- Part 1: Click-to-Match Game -->
+    <section class="match-section" id="deel1">
+        <h2 class="section-title">🎯 Deel 1: Betekenis Onthouden</h2>
+        <p style="text-align: center; color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem;">
+            <span lang="nl">Klik eerst op een voegwoord aan de linkerkant en daarna op de juiste betekenis aan de rechterkant om ze te koppelen.</span>
+            <span lang="en">Click first on a conjunction on the left and then on the correct meaning on the right to match them.</span>
+            <span lang="tr">Eşleştirmek için önce soldaki bir bağlaca, ardından sağdaki doğru anlama tıklayın.</span>
+            <span lang="ar">انقر أولاً على أداة الربط على اليسار ثم على المعنى الصحيح على اليمين لربطهما.</span>
+            <span lang="fa">ابتدا روی یک حرف ربط در سمت چپ و سپس روی معنای صحیح آن در سمت راست کلیک کنید تا متصل شوند.</span>
+            <span lang="da">ابتدا روی یک حرف ربط در سمت چپ و سپس روی معنای صحیح آن در سمت راست کلیک کنید تا متصل شوند.</span>
+            <span lang="ps">لومړی په چپ اړخ کې په یو نښلوونکي کلیک وکړئ او بیا په ښي اړخ کې په سمه مانا کلیک وکړئ ترڅو هغه سره وصل کړئ.</span>
+        </p>
+
+        <div class="match-grid">
+            <div class="match-col" id="match-left"></div>
+            <div class="match-col" id="match-right"></div>
+        </div>
+        <div id="match-success-msg" style="display: none; text-align: center; margin-top: 2rem; padding: 1.5rem; background: #e6fffa; border: 2px solid #319795; color: #234e52; border-radius: 20px; font-weight: 800; font-size: 1.25rem;">
+            🎉 <span lang="nl">Gefeliciteerd! Je hebt alle betekenissen goed gekoppeld!</span>
+            <span lang="en">Congratulations! You have matched all meanings correctly!</span>
+            <span lang="tr">Tebrikler! Tüm anlamları doğru şekilde eşleştirdiniz!</span>
+            <span lang="ar">تهانينا! لقد قمت بربط جميع المعاني بشكل صحيح!</span>
+            <span lang="fa">تبریک می‌گویم! شما تمام معانی را به درستی متصل کردید!</span>
+            <span lang="da">تبریک می‌گویم! شما تمام معانی را به درستی متصل کردید!</span>
+            <span lang="ps">مبارک شه! تاسو ټولې ماناګانې په سمه توګه وصل کړې!</span>
+        </div>
+    </section>
+
+    <!-- Part 2: Context Fill-in Exercise -->
+    <section class="exercise-section" id="deel2">
+        <h2 class="section-title">✍️ Deel 2: Gebruiken in de Juiste Context</h2>
+        <p style="text-align: center; color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem;">
+            <span lang="nl">Vul het juiste voegwoord in (en, maar, of, want, dus, omdat, als). Let goed op de betekenis en de plek van het werkwoord!</span>
+            <span lang="en">Fill in the correct conjunction. Pay attention to the meaning and the position of the verb!</span>
+            <span lang="tr">Doğru bağlacı yazın. Anlama ve fiilin konumuna dikkat edin!</span>
+            <span lang="ar">أدخل أداة الربط الصحيحة. انتبه جيداً للمعنى وموضع الفعل!</span>
+            <span lang="fa">حرف ربط صحیح را بنویسید. به معنی و جایگاه فعل دقت کنید!</span>
+            <span lang="da">حرف ربط صحیح را بنویسید. به معنی و جایگاه فعل دقت کنید!</span>
+            <span lang="ps">سم نښلوونکی ولیکئ. مانا او د فعل ځای ته پاملرنه وکړئ!</span>
+        </p>
+
+        <div class="exercise-list" id="exercise-list-container"></div>
+    </section>
+
+    <script>
+        let currentLang = 'nl';
+        
+        const dataNevengeschikt = [
+            {
+                word: "en", emoji: "➕",
+                def: { nl: "Voegt dingen samen (extra).", en: "Adds things together (extra).", tr: "Şeyleri birleştirir (ekstra).", ar: "يجمع الأشياء معاً (إضافة).", ps: "چیزونه سره یوځای کوي (اضافه).", da: "چیزها را با هم اضافه می‌کند (و).", fa: "چیزها را با هم اضافه می‌کند (و)." },
+                ex: [
+                    { nl: "Ik drink koffie en ik eet een koekje.", en: "I drink coffee and I eat a cookie.", ar: "أنا أشرب القهوة وآكل بسكويت.", tr: "Kahve içiyorum ve kurabiye yiyorum.", ps: "زه قهوه څښم او یو بسکټ خورم.", da: "من قهوه می‌نوشم و یک بسکویت می‌خورم.", fa: "من قهوه می‌نوشم و یک بیسکویت می‌خورم." },
+                    { nl: "Ali leest een boek en zijn vrouw kijkt tv.", en: "Ali reads a book and his wife watches TV.", ar: "علي يقرأ كتاباً وزوجته تشاهد التلفاز.", tr: "Ali kitap okuyor ve eşi TV izliyor.", ps: "علي کتاب لولي او میرمن یې تلویزیون ګوري.", da: "علی کتاب می‌خواند و همسرش تلویزیون تماشا می‌کند.", fa: "علی کتاب می‌خواند و همسرش تلویزیون تماشا می‌کند." }
+                ],
+                rule: { nl: "EN = Extra informatie. Zinsbouw blijft normaal.", en: "EN = Extra information. Sentence structure stays normal.", tr: "EN = Ekstra bilgi. Cümle yapısı normal kalır.", ar: "EN = معلومات إضافية. يبقى ترتيب الجملة طبيعياً.", ps: "EN = اضافي معلومات. د جملې جوړښت نورمال پاتې کیږي.", da: "EN = اطلاعات اضافی. ساختار جمله عادی باقی می‌ماند.", fa: "EN = اطلاعات اضافی. ساختار جمله عادی باقی می‌ماند." }
+            },
+            {
+                word: "maar", emoji: "↔️",
+                def: { nl: "Geeft een tegenstelling (anders).", en: "Gives a contrast (different).", tr: "Zıtlık belirtir (ama).", ar: "يعطي تعارضاً (لكن).", ps: "تضاد ښیي (مګر).", da: "تضاد را نشان می‌دهد (اما).", fa: "تضاد را نشان می‌دهد (اما)." },
+                ex: [
+                    { nl: "Ik ben moe, maar ik moet studeren.", en: "I am tired, but I have to study.", ar: "أنا متعب، لكن يجب أن أدرس.", tr: "Yorgunum ama çalışmalıyım.", ps: "زه ستړی یم، مګr باید مطالعه وکړم.", da: "من خسته هستم، اما باید درس بخوانم.", fa: "من خسته هستم، اما باید درس بخوانم." },
+                    { nl: "Het is koud, maar de zon schijnt wel.", en: "It is cold, but the sun is shining.", ar: "الطقس بارد، لكن الشمس تشرق.", tr: "Hava soğuk ama güneş açıyor.", ps: "هوا یخه ده، مګر لمر خپریږي.", da: "هوا سرد است، اما خورشید می‌تابد.", fa: "هوا سرد است، اما خورشید می‌تابد." }
+                ],
+                rule: { nl: "MAAR = Tegenstelling. Zinsbouw blijft normaal.", en: "MAAR = Contrast. Sentence structure stays normal.", tr: "MAAR = Zıtlık. Cümle yapısı normal kalır.", ar: "MAAR = تعارض. يبقى ترتيب الجملة طبيعياً.", ps: "MAAR = تضاد. د جملې جوړښت نورمال پاتې کیږي.", da: "MAAR = تضاد. ساختار جمله عادی باقی می‌ماند.", fa: "MAAR = تضاد. ساختار جمله عادی باقی می‌ماند." }
+            },
+            {
+                word: "of", emoji: "⚡",
+                def: { nl: "Geeft een keuze (dit of dat).", en: "Gives a choice (this or that).", tr: "Seçenek sunar (veya).", ar: "يعطي خياراً (أو).", ps: "انتخاب ښیي (یا).", da: "گزینه را نشان می‌دهد (یا).", fa: "گزینه را نشان می‌دهد (یا)." },
+                ex: [
+                    { nl: "Wil je koffie of wil je thee drinken?", en: "Do you want coffee or do you want to drink tea?", ar: "هل تريد قهوة أم تريد شرب الشاي؟", tr: "Kahve mi istersin yoksa çay mı içmek istersin?", ps: "ایا قهوه غواړې که غواړې چای وڅښې؟", da: "قهوه می‌خواهی یا می‌خواهی چای بنوشی؟", fa: "قهوه می‌خواهی یا می‌خواهی چای بنوشی؟" },
+                    { nl: "Gaan we met de bus of gaan we lopen?", en: "Are we going by bus or are we going to walk?", ar: "هل سنذهب بالحافلة أم سنمشي؟", tr: "Otobüsle mi gideceğiz yoksa yürüyecek miyiz?", ps: "ایا موږ په بس کې ځو که موږ پلي ځو؟", da: "با اتوبوس می‌رویم یا پیاده می‌رویم؟", fa: "با اتوبوس می‌رویم یا پیاده می‌رویم؟" }
+                ],
+                rule: { nl: "OF = Keuze. Zinsbouw blijft normaal.", en: "OF = Choice. Sentence structure stays normal.", tr: "OF = Seçenek. Cümle yapısı normal kalır.", ar: "OF = خيار. يبقى ترتيب الجملة طبيعياً.", ps: "OF = انتخاب. د جملې جوړښت نورمال پاتې کیږي.", da: "OF = گزینه. ساختار جمله عادی باقی می‌ماند.", fa: "OF = گزینه. ساختار جمله عادی باقی می‌ماند." }
+            },
+            {
+                word: "want", emoji: "❓",
+                def: { nl: "Geeft een reden: waarom? (Normale zinsbouw).", en: "Gives a reason: why? (Normal word order).", tr: "Neden belirtir (Normal cümle yapısı).", ar: "يعطي سبباً (ترتيب طبيعي للجملة).", ps: "دلیل ښیي (د جملې نورمال جوړښت).", da: "دلیل را نشان می‌دهد (ساختار جمله عادی).", fa: "دلیل را نشان می‌دهد (ساختار جمله عادی)." },
+                ex: [
+                    { nl: "Ik blijf thuis, want ik ben vandaag erg ziek.", en: "I stay home, because I am very sick today.", ar: "أنا أبقى في المنزل، لأنني مريض جداً اليوم.", tr: "Evde kalıyorum çünkü bugün çok hastayım.", ps: "زه په کور کې پاتې کیږم، ځکه چې زه نن ډیر ناروغ یم.", da: "من در خانه می‌مانم، زیرا امروز خیلی بیمار هستم.", fa: "من در خانه می‌مانم، زیرا امروز خیلی بیمار هستم." },
+                    { nl: "Hij koopt brood, want hij heeft honger.", en: "He buys bread, because he is hungry.", ar: "هو يشتري خبزاً، لأنه جائع.", tr: "Ekmek alıyor çünkü aç.", ps: "هغه ډوډۍ اخلي، ځکه چې هغه وږی دی.", da: "او نان می‌خرد، زیرا گرسنه است.", fa: "او نان می‌خرد، زیرا گرسنه است." }
+                ],
+                rule: { nl: "WANT = Reden. Zinsbouw: Subject + Verb + Rest (normaal).", en: "WANT = Reason. Word order: Subject + Verb + Rest (normal).", tr: "WANT = Neden. Cümle yapısı: Özne + Fiil + Diğerleri (normal).", ar: "WANT = سبب. ترتيب الجملة: فاعل + فعل + تتمة (طبيعي).", ps: "WANT = دلیل. د جملې جوړښت: موضوع + فعل + نور (نورمال).", da: "WANT = دلیل. ساختار: فاعل + فعل + بقیه (عادی).", fa: "WANT = دلیل. ساختار: فاعل + فعل + بقیه (عادی)." }
+            },
+            {
+                word: "dus", emoji: "➡️",
+                def: { nl: "Geeft een gevolg of resultaat.", en: "Gives a consequence or result.", tr: "Sonuç belirtir (dolayısıyla).", ar: "يعطي نتيجة أو عاقبة (لذلك).", ps: "پایله ښیي (نو).", da: "نتیجه یا پی‌آمد را نشان می‌دهد (بنابراین).", fa: "نتیجه یا پی‌آمد را نشان می‌دهد (بنابراین)." },
+                ex: [
+                    { nl: "Het regent hard, dus ik neem een paraplu mee.", en: "It is raining hard, so I am bringing an umbrella.", ar: "إنها تمطر بغزارة، لذلك سآخذ مظلة معي.", tr: "Çok yağmur yağıyor, bu yüzden yanıma şemsiye alıyorum.", ps: "باران په زوره وریږي، نو زه له ځان سره یو چترۍ اخلم.", da: "باران شدیدی می‌بارد، بنابراین یک چتر با خود می‌آورم.", fa: "باران شدیدی می‌بارد، بنابراین یک چتر با خود می‌آورم." },
+                    { nl: "Ik ben erg moe, dus ik ga nu lekker slapen.", en: "I am very tired, so I am going to sleep well now.", ar: "أنا متعب جداً، لذلك سأذهب للنوم الآن.", tr: "Çok yorgunum, bu yüzden şimdi uyumaya gidiyorum.", ps: "زه ډیر ستړی یم، نو زه اوس ښه ویده کیږم.", da: "من خیلی خسته هستم، بنابراین اکنون می‌روم بخوابم.", fa: "من خیلی خسته هستم، بنابراین اکنون می‌روم بخوابم." }
+                ],
+                rule: { nl: "DUS = Resultaat. Zinsbouw blijft normaal.", en: "DUS = Result. Sentence structure stays normal.", tr: "DUS = Sonuç. Cümle yapısı normal kalır.", ar: "DUS = نتيجة. يبقى ترتيب الجملة طبيعياً.", ps: "DUS = پایله. د جملې جوړښت نورمال پاتې کیږي.", da: "DUS = نتیجه. ساختار جمله عادی باقی می‌ماند.", fa: "DUS = نتیجه. ساختار جمله عادی باقی می‌ماند." }
+            }
+        ];
+
+        const dataOndergeschikt = [
+            {
+                word: "omdat", emoji: "🧠",
+                def: { nl: "Geeft een reden (Werkwoord gaat naar het einde!).", en: "Gives a reason (Verb goes to the end!).", tr: "Neden belirtir (Fiil en sona gider!).", ar: "يعطي سبباً (الفعل يذهب إلى نهاية الجملة!).", ps: "دلیل ښیي (فعل پاې ته ځي!).", da: "دلیل را نشان می‌دهد (فعل به آخر جمله می‌رود!).", fa: "دلیل را نشان می‌دهد (فعل به آخر جمله می‌رود!)." },
+                ex: [
+                    { nl: "Ik blijf thuis, omdat ik vandaag erg ziek ben.", en: "I stay home, because I am very sick today.", ar: "أنا أبقى في المنزل، لأنني مريض جداً اليوم.", tr: "Evde kalıyorum çünkü bugün çok hastayım.", ps: "زه په کور کې پاتې کیږم، ځکه چې زه نن ډیر ناروغ یم.", da: "من در خانه می‌مانم، زیرا vandaag خیلی بیمار هستم.", fa: "من در خانه می‌مانم، زیرا امروز خیلی بیمار هستم." },
+                    { nl: "Hij koopt brood, omdat hij honger heeft.", en: "He buys bread, because he is hungry.", ar: "هو يشتري خبزاً، لأنه جائع.", tr: "Ekmek alıyor çünkü aç.", ps: "هغه ډوډۍ اخلي، ځکه چې هغه وږی دی.", da: "او نان می‌خرد، زیرا گرسنه است.", fa: "او نان می‌خرد، زیرا گرسنه است." }
+                ],
+                rule: { nl: "OMDAT = Reden. Zinsbouw: Subject + Rest + Verb (werkwoord achteraan!).", en: "OMDAT = Reason. Word order: Subject + Rest + Verb (verb at the end!).", tr: "OMDAT = Neden. Cümle yapısı: Özne + Diğerleri + Fiil (fiil sonda!).", ar: "OMDAT = سبب. ترتيب الجملة: فاعل + تتمة + فعل (الفعل في النهاية!).", ps: "OMDAT = دلیل. د جملې جوړښت: موضوع + نور + فعل (فعل په پای کې!).", da: "OMDAT = دلیل. ساختار: فاعل + بقیه + فعل (فعل در آخر!).", fa: "OMDAT = دلیل. ساختار: فاعل + بقیه + فعل (فعل در آخر!)." }
+            },
+            {
+                word: "als", emoji: "📅",
+                def: { nl: "Geeft een voorwaarde of tijd aan (Werkwoord achteraan!).", en: "Gives a condition or time (Verb goes to the end!).", tr: "Koşul veya zaman belirtir (Fiil en sona gider!).", ar: "يعطي شرطاً أو وقتاً (الفعل يذهب إلى نهاية الجملة!).", ps: "شرط یا وخت ښیي (فعل پاې ته ځي!).", da: "شرط یا زمان را نشان می‌دهد (فعل به آخر جمله می‌رود!).", fa: "شرط یا زمان را نشان می‌دهد (فعل به آخر جمله می‌رود!)." },
+                ex: [
+                    { nl: "Je krijgt een boete als je hier parkeert.", en: "You get a fine if you park here.", ar: "سوف تحصل على غرامة إذا ركنت هنا.", tr: "Buraya park edersen para cezası alırsın.", ps: "تاسو جریمه ترلاسه کوئ که تاسو دلته موټر ودروئ.", da: "اگر اینجا پارک کنید جریمه می‌شوید.", fa: "اگر اینجا پارک کنید جریمه می‌شوید." },
+                    { nl: "We gaan wandelen als het weer mooi is.", en: "We are going to walk if the weather is nice.", ar: "سنذهب للمشي إذا كان الطقس جميلاً.", tr: "Hava güzel olursa yürüyüşe çıkacağız.", ps: "موږ د پیدل سفر لپاره ځو که هوا ښه وي.", da: "اگر هوا خوب باشد به پیاده‌روی می‌رویم.", fa: "اگر هوا خوب باشد به پیاده‌روی می‌رویم." }
+                ],
+                rule: { nl: "ALS = Voorwaarde of Tijd. Zinsbouw: Subject + Rest + Verb (werkwoord achteraan!).", en: "ALS = Condition or Time. Word order: Subject + Rest + Verb (verb at the end!).", tr: "ALS = Koşul veya Zaman. Cümle yapısı: Özne + Diğerleri + Fiil (fiil sonda!).", ar: "ALS = شرط أو وقت. ترتيب الجملة: فاعل + تتمة + فعل (الفعل في النهاية!).", ps: "ALS = شرط یا وخت. د جملې جوړښت: موضوع + نور + فعل (فعل په پای کې!).", da: "ALS = شرط یا زمان. ساختار: فاعل + بقیه + فعل (فعل در آخر!).", fa: "ALS = شرط یا زمان. ساختار: فاعل + بقیه + فعل (فعل در آخر!)." }
+            }
+        ];
+
+        const definitionsData = [
+            { word: "en", def: { nl: "Voegt dingen samen (extra)", en: "Adds things together (extra)", tr: "Şeyleri birleştirir (ekstra)", ar: "يجمع الأشياء معاً (إضافة)", ps: "چیزونه سره یوځای کوي (اضافه)", da: "چیزها را با هم اضافه می‌کند", fa: "چیزها را با هم اضافه می‌کند" } },
+            { word: "maar", def: { nl: "Geeft een tegenstelling (anders)", en: "Gives a contrast (different)", tr: "Zıtlık belirtir (ama)", ar: "يعطي تعارضاً (لكن)", ps: "تضاد ښیي (مګر)", da: "تضاد را نشان می‌دهد (اما)", fa: "تضاد را نشان می‌دهد (اما)" } },
+            { word: "of", def: { nl: "Geeft een keuze (dit of dat)", en: "Gives a choice (this or that)", tr: "Seçenek sunar (veya)", ar: "يعطي خياراً (أو)", ps: "انتخاب ښیي (یا)", da: "گزینه را نشان می‌دهد (یا)", fa: "گزینه را نشان می‌دهد (یا)" } },
+            { word: "want", def: { nl: "Geeft een reden (normale zinsbouw)", en: "Gives a reason (normal word order)", tr: "Neden belirtir (normal cümle yapısı)", ar: "يعطي سبباً (ترتيب طبيعي للجملة)", ps: "دلیل ښیي (د جملې نورمال جوړښت)", da: "دلیل را نشان می‌دهد (ساختار عادی)", fa: "دلیل را نشان می‌دهد (ساختار عادی)" } },
+            { word: "dus", def: { nl: "Geeft een gevolg of resultaat", en: "Gives a consequence or result", tr: "Sonuç belirtir (dolayısıyla)", ar: "يعطي نتيجة أو عاقبة (لذلك)", ps: "پایله ښیي (نو)", da: "نتیجه یا پی‌آمد را نشان می‌دهد", fa: "نتیجه یا پی‌آمد را نشان می‌دهد" } },
+            { word: "omdat", def: { nl: "Geeft een reden (werkwoord achteraan)", en: "Gives a reason (verb at the end)", tr: "Neden belirtir (fiil sonda)", ar: "يعطي سبباً (الفعل في النهاية)", ps: "دلیل ښیي (فعل په پای کې)", da: "دلیل را نشان می‌دهد (فعل در آخر)", fa: "دلیل را نشان می‌دهد (فعل در آخر)" } },
+            { word: "als", def: { nl: "Geeft een voorwaarde (als dit gebeurt)", en: "Gives a condition (if this happens)", tr: "Koşul belirtir (eğer olursa)", ar: "يعطي شرطاً (إذا حدث هذا)", ps: "شرط ښیي (که دا پیښ شي)", da: "شرط را نشان می‌دهد (اگر این اتفاق بیفتد)", fa: "شرط را نشان می‌دهد (اگر این اتفاق بیفتد)" } }
+        ];
+
+        const sentenceExercises = [
+            {
+                parts: ["Ik blijf vandaag binnen, ", " het regent heel hard."],
+                ans: "want",
+                hint: {
+                    nl: "'het regent' is normale zinsbouw (verb staat op positie 2). Gebruik 'want'.",
+                    en: "'het regent' is normal word order. Use 'want'.",
+                    ar: "الترتيب طبيعي للجملة (الفعل في الموضع الثاني). استخدم 'want'.",
+                    tr: "Normal cümle yapısı. 'want' kullanın.",
+                    fa: "ترتیب جمله عادی است. از 'want' استفاده کنید.",
+                    da: "ترتیب جمله عادی است. از 'want' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik blijf vandaag binnen, ", " het heel hard regent."],
+                ans: "omdat",
+                hint: {
+                    nl: "'regent' staat helemaal achteraan. Gebruik 'omdat' voor de bijzin.",
+                    en: "'regent' is at the very end. Use 'omdat' for the subordinate clause.",
+                    ar: "الفعل 'regent' في النهاية. استخدم 'omdat'.",
+                    tr: "Fiil 'regent' en sonda. 'omdat' kullanın.",
+                    fa: "فعل در آخر جمله است. از 'omdat' استفاده کنید.",
+                    da: "فعل در آخر جمله است. از 'omdat' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Het regent heel hard, ", " ik neem een paraplu mee."],
+                ans: "dus",
+                hint: {
+                    nl: "Dit geeft het resultaat of gevolg aan. Gebruik 'dus'.",
+                    en: "This indicates the result or consequence. Use 'dus'.",
+                    ar: "هذا يشير إلى النتيجة أو العاقبة. استخدم 'dus'.",
+                    tr: "Bu sonucu belirtir. 'dus' kullanın.",
+                    fa: "این نشان‌دهنده نتیجه است. از 'dus' استفاده کنید.",
+                    da: "این نشان‌دهنده نتیجه است. از 'dus' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Wil je vandaag koffie ", " thee drinken?"],
+                ans: "of",
+                hint: {
+                    nl: "Dit is een keuze tussen twee dranken. Gebruik 'of'.",
+                    en: "This is a choice between two drinks. Use 'of'.",
+                    ar: "هذا خيار بين مشروبين. استخدم 'of'.",
+                    tr: "İki içecek arasında bir seçim. 'of' kullanın.",
+                    fa: "این یک انتخاب بین دو نوشیدنی است. از 'of' استفاده کنید.",
+                    da: "این یک انتخاب بین دو نوشیدنی است. از 'of' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik wil graag komen, ", " ik moet helaas werken."],
+                ans: "maar",
+                hint: {
+                    nl: "Dit is een tegenstelling: ik wil komen, maar kan niet. Gebruik 'maar'.",
+                    en: "This is a contrast: I want to come, but cannot. Use 'maar'.",
+                    ar: "هذا تعارض: أريد الحضور لكن لا أستطيع. استخدم 'maar'.",
+                    tr: "Bu bir zıtlıktır. 'maar' kullanın.",
+                    fa: "این یک تضاد را نشان می‌دهد. از 'maar' استفاده کنید.",
+                    da: "این یک تضاد را نشان می‌دهد. از 'maar' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ali leest een boek ", " zijn vrouw luistert naar muziek."],
+                ans: "en",
+                hint: {
+                    nl: "Twee dingen gebeuren samen (extra informatie). Gebruik 'en'.",
+                    en: "Two things happen together. Use 'en'.",
+                    ar: "يحدث شيئان معاً (معلومات إضافية). استخدم 'en'.",
+                    tr: "İki şey birlikte gerçekleşiyor. 'en' kullanın.",
+                    fa: "دو کار با هم انجام می‌شوند. از 'en' استفاده کنید.",
+                    da: "دو کار با هم انجام می‌شوند. از 'en' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik eet een appel, ", " ik honger heb."],
+                ans: "omdat",
+                hint: {
+                    nl: "'heb' (het werkwoord) staat aan het einde van de zin. Gebruik 'omdat'.",
+                    en: "'heb' (the verb) is at the end of the sentence. Use 'omdat'.",
+                    ar: "الفعل 'heb' في نهاية الجملة. استخدم 'omdat'.",
+                    tr: "Fiil 'heb' cümlenin sonunda. 'omdat' kullanın.",
+                    fa: "فعل 'heb' در آخر جمله است. از 'omdat' استفاده کنید.",
+                    da: "فعل 'heb' در آخر جمله است. از 'omdat' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik eet een appel, ", " ik heb honger."],
+                ans: "want",
+                hint: {
+                    nl: "'heb' staat op positie 2 (normale zinsbouw). Gebruik 'want'.",
+                    en: "'heb' is in position 2. Use 'want'.",
+                    ar: "الفعل في الموضع الثاني (ترتيب طبيعي). استخدم 'want'.",
+                    tr: "Fiil ikinci sırada. 'want' kullanın.",
+                    fa: "فعل در جایگاه دوم است. از 'want' استفاده کنید.",
+                    da: "فعل در جایگاه دوم است. از 'want' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Je krijgt een boete ", " je hier je auto parkeert."],
+                ans: "als",
+                hint: {
+                    nl: "Dit geeft een voorwaarde aan (werkwoord 'parkeert' staat achteraan). Gebruik 'als'.",
+                    en: "This indicates a condition (verb is at the end). Use 'als'.",
+                    ar: "هذا يشير إلى شرط (الفعل في النهاية). استخدم 'als'.",
+                    tr: "Bu bir koşul belirtir. 'als' kullanın.",
+                    fa: "این نشان‌دهنده شرط است. از 'als' استفاده کنید.",
+                    da: "این نشان‌دهنده شرط است. از 'als' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik ga slapen, ", " ik erg moe ben."],
+                ans: "omdat",
+                hint: {
+                    nl: "Het werkwoord 'ben' staat aan het einde van de bijzin. Gebruik 'omdat'.",
+                    en: "The verb 'ben' is at the end. Use 'omdat'.",
+                    ar: "الفعل 'ben' في نهاية الجملة التابعة. استخدم 'omdat'.",
+                    tr: "Fiil 'ben' sonda. 'omdat' kullanın.",
+                    fa: "فعل در آخر جمله است. از 'omdat' استفاده کنید.",
+                    da: "فعل در آخر جمله است. از 'omdat' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik ben erg moe, ", " ik ga nu slapen."],
+                ans: "dus",
+                hint: {
+                    nl: "Dit is het gevolg: ik ben moe, daarom ga ik slapen. Gebruik 'dus'.",
+                    en: "This is the result. Use 'dus'.",
+                    ar: "هذه هي النتيجة. استخدم 'dus'.",
+                    tr: "Bu sonuçtur. 'dus' kullanın.",
+                    fa: "این یک نتیجه است. از 'dus' استفاده کنید.",
+                    da: "این یک نتیجه است. از 'dus' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Zij kan heel goed zingen ", " zij kan ook mooi dansen."],
+                ans: "en",
+                hint: {
+                    nl: "Dit voegt twee vaardigheden samen. Gebruik 'en'.",
+                    en: "This adds two skills together. Use 'en'.",
+                    ar: "هذا يجمع بين مهاراتين. استخدم 'en'.",
+                    tr: "İki yeteneği birleştirir. 'en' kullanın.",
+                    fa: "این دو مهارت را جمع می‌کند. از 'en' استفاده کنید.",
+                    da: "این دو مهارت را جمع می‌کند. از 'en' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Zij wil een auto kopen, ", " zij heeft nog geen geld."],
+                ans: "maar",
+                hint: {
+                    nl: "Dit is een tegenstelling: ze wil kopen, maar heeft geen geld. Gebruik 'maar'.",
+                    en: "This is a contrast. Use 'maar'.",
+                    ar: "هذا تعارض. استخدم 'maar'.",
+                    tr: "Bu bir zıtlıktır. 'maar' kullanın.",
+                    fa: "این یک تضاد است. از 'maar' استفاده کنید.",
+                    da: "این یک تضاد است. از 'maar' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ga je vanmiddag met de bus ", " ga je met de fiets?"],
+                ans: "of",
+                hint: {
+                    nl: "Dit is een keuzevraag tussen bus of fiets. Gebruik 'of'.",
+                    en: "This is a choice between bus or bike. Use 'of'.",
+                    ar: "هذا سؤال اختيار بين الحافلة أو الدراجة. استخدم 'of'.",
+                    tr: "Bus veya bisiklet arasında seçim. 'of' kullanın.",
+                    fa: "این یک سوال انتخابی است. از 'of' استفاده کنید.",
+                    da: "این یک سوال انتخابی است. از 'of' استفاده کنید."
+                }
+            },
+            {
+                parts: ["Ik neem een paracetamol, ", " ik vreselijke hoofdpijn heb."],
+                ans: "omdat",
+                hint: {
+                    nl: "Dit geeft de reden aan en het werkwoord 'heb' staat achteraan. Gebruik 'omdat'.",
+                    en: "This gives the reason and the verb 'heb' is at the end. Use 'omdat'.",
+                    ar: "هذا يعطي السبب والفعل 'heb' في النهاية. استخدم 'omdat'.",
+                    tr: "Bu nedeni belirtir ve fiil 'heb' sondadır. 'omdat' kullanın.",
+                    fa: "این نشان‌دهنده دلیل با فعل در آخر است. از 'omdat' استفاده کنید.",
+                    da: "این نشان‌دهنده دلیل با فعل در آخر است. از 'omdat' استفاده کنید."
+                }
+            }
+        ];
+
+        // Set Language
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('body [lang]').forEach(el => {
+                const isMatch = el.getAttribute('lang') === lang;
+                if (el.tagName === 'SPAN') { el.style.display = isMatch ? 'inline' : 'none'; }
+                else { el.style.display = isMatch ? 'block' : 'none'; }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.id === 'btn-' + lang);
+            });
+            renderCards();
+            renderMatcher();
+            renderExercises();
+        }
+
+        // Render cards
+        function renderCards() {
+            const labels = { nl: "Logische regel", en: "Logic rule", tr: "Mantıksal kural", ar: "قاعدة منطقية", ps: "منطقي قاعده", da: "قانون منطقی", fa: "قانون منطقی" };
+            const nCont = document.getElementById('neven-container');
+            const oCont = document.getElementById('onder-container');
+            
+            const createCard = (item, type) => `
+                <div class="card ${type}">
+                    <div class="emoji-header">${item.emoji}</div>
+                    <div class="word">${item.word}</div>
+                    <div class="definition">${item.def[currentLang] || item.def['nl']}</div>
+                    <div class="example-list">
+                        ${item.ex.map(e => `
+                            <div class="example-item">
+                                <div>✅ ${e.nl}</div>
+                                ${currentLang !== 'nl' ? `<div class="translation-sub">(${e[currentLang] || e['en']})</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="logic-box">💡 <strong>${labels[currentLang] || labels['nl']}:</strong><br>${item.rule[currentLang] || item.rule['nl']}</div>
+                </div>`;
+
+            if (nCont) nCont.innerHTML = dataNevengeschikt.map(i => createCard(i, 'neven')).join('');
+            if (oCont) oCont.innerHTML = dataOndergeschikt.map(i => createCard(i, 'onder')).join('');
+        }
+
+        // Part 1: Click-to-Match Game Logic
+        let selectedLeft = null;
+        let selectedRight = null;
+        let matchedPairs = 0;
+
+        function renderMatcher() {
+            const leftCol = document.getElementById('match-left');
+            const rightCol = document.getElementById('match-right');
+            const successMsg = document.getElementById('match-success-msg');
+            
+            if (!leftCol || !rightCol) return;
+            
+            leftCol.innerHTML = '';
+            rightCol.innerHTML = '';
+            successMsg.style.display = 'none';
+            matchedPairs = 0;
+            selectedLeft = null;
+            selectedRight = null;
+
+            // Generate left columns (conjunctions)
+            const conjunctions = [...definitionsData].sort(() => Math.random() - 0.5);
+            conjunctions.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'match-btn';
+                btn.textContent = c.word;
+                btn.dataset.word = c.word;
+                btn.onclick = () => selectLeftItem(btn);
+                leftCol.appendChild(btn);
+            });
+
+            // Generate right columns (definitions)
+            const definitions = [...definitionsData].sort(() => Math.random() - 0.5);
+            definitions.forEach(d => {
+                const btn = document.createElement('button');
+                btn.className = 'match-btn';
+                btn.textContent = d.def[currentLang] || d.def['nl'];
+                btn.dataset.word = d.word;
+                btn.onclick = () => selectRightItem(btn);
+                rightCol.appendChild(btn);
+            });
+        }
+
+        function selectLeftItem(btn) {
+            if (btn.classList.contains('matched')) return;
+            
+            document.querySelectorAll('#match-left .match-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedLeft = btn;
+            
+            checkMatch();
+        }
+
+        function selectRightItem(btn) {
+            if (btn.classList.contains('matched')) return;
+            
+            document.querySelectorAll('#match-right .match-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedRight = btn;
+            
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (!selectedLeft || !selectedRight) return;
+
+            const wordL = selectedLeft.dataset.word;
+            const wordR = selectedRight.dataset.word;
+
+            if (wordL === wordR) {
+                // Correct match
+                selectedLeft.classList.remove('selected');
+                selectedLeft.classList.add('matched');
+                selectedRight.classList.remove('selected');
+                selectedRight.classList.add('matched');
+                
+                selectedLeft = null;
+                selectedRight = null;
+                matchedPairs++;
+                
+                if (matchedPairs === definitionsData.length) {
+                    document.getElementById('match-success-msg').style.display = 'block';
+                }
+            } else {
+                // Incorrect match
+                const l = selectedLeft;
+                const r = selectedRight;
+                l.classList.remove('selected');
+                r.classList.remove('selected');
+                l.classList.add('error');
+                r.classList.add('error');
+                
+                selectedLeft = null;
+                selectedRight = null;
+                
+                setTimeout(() => {
+                    l.classList.remove('error');
+                    r.classList.remove('error');
+                }, 400);
+            }
+        }
+
+        // Part 2: Context Exercises
+        function renderExercises() {
+            const container = document.getElementById('exercise-list-container');
+            if (!container) return;
+
+            container.innerHTML = sentenceExercises.map((ex, idx) => `
+                <div class="q-row">
+                    <div class="q-sentence-container">
+                        <span>${idx + 1}. ${ex.parts[0]}</span>
+                        <input type="text" oninput="checkAnswer(this, '${ex.ans}', ${idx})" placeholder="...">
+                        <span>${ex.parts[1]}</span>
+                        <span class="q-feedback"></span>
+                    </div>
+                    <div class="q-hint" id="hint-${idx}">${ex.hint[currentLang] || ex.hint['nl']}</div>
+                </div>
+            `).join('');
+        }
+
+        function checkAnswer(input, answer, idx) {
+            const val = input.value.trim().toLowerCase();
+            const feedback = input.nextElementSibling.nextElementSibling;
+            const hint = document.getElementById(`hint-${idx}`);
+            
+            if (val === answer.toLowerCase()) {
+                feedback.textContent = "✅";
+                input.style.borderColor = "green";
+                if (hint) hint.style.display = "none";
+            } else if (val.length > 0) {
+                feedback.textContent = "❌";
+                input.style.borderColor = "red";
+                if (hint) hint.style.display = "block";
+            } else {
+                feedback.textContent = "";
+                input.style.borderColor = "#cbd5e1";
+                if (hint) hint.style.display = "none";
+            }
+        }
+
+        // Initialise
+        document.addEventListener('DOMContentLoaded', () => {
+            setLang('nl');
+        });
+    </script>
+
+    <!-- SPEECH SYNTHESIS INJECTION -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function speakNative(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'nl-NL';
+            u.rate = 0.85; // Slightly slower for better NT2 understanding
+            window.speechSynthesis.speak(u);
+        }
+        
+        function createSpeakBtn(text) {
+            let btn = document.createElement('button');
+            btn.innerHTML = '🔊';
+            btn.className = 'native-speak-btn';
+            btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.15rem;margin-left:8px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+            btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+            btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+            btn.onmouseout = () => btn.style.transform = 'scale(1)';
+            return btn;
+        }
+
+        // Add speak buttons to example items in cards
+        document.querySelectorAll('.example-item').forEach(el => {
+            let sentence = el.querySelector('div').textContent.replace('✅', '').trim();
+            el.appendChild(createSpeakBtn(sentence));
+        });
+
+        // Add speak buttons to questions in Part 2
+        document.querySelectorAll('.q-sentence-container').forEach(el => {
+            // Reconstruct the sentence for TTS by removing inputs
+            let text = el.textContent.replace('...', '').replace(/[0-9]+\.\s*/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        });
+    });
+    </script>
+
+</body>
+</html>
