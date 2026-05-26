@@ -526,9 +526,68 @@
                 .trim();
         }
 
-        function checkAnswer(studentAns, correctList) {
+        function getLevenshteinDistance(a, b) {
+            if (a.length === 0) return b.length;
+            if (b.length === 0) return a.length;
+            const matrix = [];
+            for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1, // substitution
+                            Math.min(
+                                matrix[i][j - 1] + 1, // insertion
+                                matrix[i - 1][j] + 1  // deletion
+                            )
+                        );
+                    }
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+
+        function gradeAnswer(studentAns, correctList, isSentence = false) {
             const studentNorm = normalize(studentAns);
-            return correctList.some(ans => normalize(ans) === studentNorm);
+            // Check exact match
+            if (correctList.some(ans => normalize(ans) === studentNorm)) {
+                return { status: "correct", score: 1.0 };
+            }
+            
+            // Check half correct (spelling error) using Levenshtein distance
+            if (studentNorm.length > 0) {
+                let minDistance = Infinity;
+                for (let ans of correctList) {
+                    const ansNorm = normalize(ans);
+                    const dist = getLevenshteinDistance(studentNorm, ansNorm);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                    }
+                }
+                
+                let threshold = 2; // default for words
+                if (isSentence) {
+                    threshold = 5; // for sentences (dictation)
+                } else {
+                    const primaryLen = normalize(correctList[0]).length;
+                    if (primaryLen <= 4) {
+                        threshold = 1; // very short words
+                    }
+                }
+                
+                if (minDistance <= threshold) {
+                    return { status: "half", score: 0.5 };
+                }
+            }
+            
+            return { status: "incorrect", score: 0.0 };
         }
 
         function sendToWhatsApp() {
@@ -544,138 +603,114 @@
             const val = (id) => (document.getElementById(id).value || "").trim();
             const dropVal = (id) => document.getElementById(id).getAttribute('data-answer') || "";
 
-            // --- PART 1: RAW STUDENT ANSWERS ---
-            let rawPart = `*OEFENTOETS THEMA 7 (A1)*\n`;
-            rawPart += `*Naam:* ${studentName}\n\n`;
-            rawPart += `*--- INGEVULDE ANTWOORDEN ---*\n\n`;
-
-            // 1. Woordenschat
-            rawPart += `*1. Woordenschat*\n`;
-            for (let i = 1; i <= 7; i++) {
-                rawPart += `- Vraag ${i} = ${val('q1_' + i) || "..."}\n`;
-            }
-            rawPart += `\n`;
-
-            // 2. Grammatica
-            rawPart += `*2. Grammatica*\n`;
-            for (let i = 1; i <= 7; i++) {
-                rawPart += `- Vraag ${i} = ${dropVal('drop' + i) || "..."}\n`;
-            }
-            rawPart += `\n`;
-
-            // 3. Voorzetsels
-            rawPart += `*3. Voorzetsels*\n`;
-            for (let i = 1; i <= 7; i++) {
-                rawPart += `- Vraag ${i} = ${val('q3_' + i) || "..."}\n`;
-            }
-            rawPart += `\n`;
-
-            // 4. Dictee
-            rawPart += `*4. Dictee*\n`;
-            for (let i = 1; i <= 7; i++) {
-                rawPart += `- Zin ${i} = ${val('q4_' + i) || "..."}\n`;
-            }
-            rawPart += `\n`;
-
-            // 5. Vraagwoorden
-            rawPart += `*5. Vraagwoorden*\n`;
-            for (let i = 1; i <= 7; i++) {
-                rawPart += `- Vraag ${i} = ${val('q5_' + i) || "..."}\n`;
-            }
-            rawPart += `\n\n`;
-
-            // --- PART 2: AUTOMATIC GRADING ---
             let totalScore = 0;
-            let gradedPart = `*--- AUTOMATISCH NAGEKEKEN ---*\n\n`;
+            let report = `*RESULTAAT OEFENTOETS THEMA 7 (A1)*\n`;
+            report += `*Naam:* ${studentName}\n\n`;
 
             // 1. Woordenschat
             let score1 = 0;
-            let report1 = `*1. Woordenschat*\n`;
+            let report1 = `*1. Woordenschat* (Score: {SCORE1}/7)\n`;
             const cues1 = ["Car", "Train", "Bicycle", "Airplane", "Bus", "Boat", "Station"];
             for (let i = 1; i <= 7; i++) {
                 const ans = val('q1_' + i);
                 const correctList = answerKeys.woordenschat[i - 1];
-                const isCorrect = checkAnswer(ans, correctList);
-                if (isCorrect) {
-                    score1++;
-                    report1 += `- Vraag ${i} (${cues1[i - 1]}): ${ans || "..."} (✅)\n`;
+                const res = gradeAnswer(ans, correctList);
+                score1 += res.score;
+                if (res.status === "correct") {
+                    report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} ✅\n`;
+                } else if (res.status === "half") {
+                    report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
                 } else {
-                    report1 += `- Vraag ${i} (${cues1[i - 1]}): ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                    report1 += `- Vraag ${i} (${cues1[i - 1]}) = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
                 }
             }
+            report1 = report1.replace("{SCORE1}", String(score1).replace('.', ','));
             totalScore += score1;
-            report1 += `Subtotaal: ${score1}/7\n\n`;
+            report1 += `\n`;
 
             // 2. Grammatica
             let score2 = 0;
-            let report2 = `*2. Grammatica*\n`;
+            let report2 = `*2. Grammatica* (Score: {SCORE2}/7)\n`;
             for (let i = 1; i <= 7; i++) {
                 const ans = dropVal('drop' + i);
                 const correctList = answerKeys.grammatica[i - 1];
-                const isCorrect = checkAnswer(ans, correctList);
-                if (isCorrect) {
-                    score2++;
-                    report2 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                const res = gradeAnswer(ans, correctList);
+                score2 += res.score;
+                if (res.status === "correct") {
+                    report2 += `- Vraag ${i} = ${ans || "..."} ✅\n`;
+                } else if (res.status === "half") {
+                    report2 += `- Vraag ${i} = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
                 } else {
-                    report2 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                    report2 += `- Vraag ${i} = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
                 }
             }
+            report2 = report2.replace("{SCORE2}", String(score2).replace('.', ','));
             totalScore += score2;
-            report2 += `Subtotaal: ${score2}/7\n\n`;
+            report2 += `\n`;
 
             // 3. Voorzetsels
             let score3 = 0;
-            let report3 = `*3. Voorzetsels*\n`;
+            let report3 = `*3. Voorzetsels* (Score: {SCORE3}/7)\n`;
             for (let i = 1; i <= 7; i++) {
                 const ans = val('q3_' + i);
                 const correctList = answerKeys.voorzetsels[i - 1];
-                const isCorrect = checkAnswer(ans, correctList);
-                if (isCorrect) {
-                    score3++;
-                    report3 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                const res = gradeAnswer(ans, correctList);
+                score3 += res.score;
+                if (res.status === "correct") {
+                    report3 += `- Vraag ${i} = ${ans || "..."} ✅\n`;
+                } else if (res.status === "half") {
+                    report3 += `- Vraag ${i} = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
                 } else {
-                    report3 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                    report3 += `- Vraag ${i} = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
                 }
             }
+            report3 = report3.replace("{SCORE3}", String(score3).replace('.', ','));
             totalScore += score3;
-            report3 += `Subtotaal: ${score3}/7\n\n`;
+            report3 += `\n`;
 
             // 4. Dictee
             let score4 = 0;
-            let report4 = `*4. Dictee*\n`;
+            let report4 = `*4. Dictee* (Score: {SCORE4}/7)\n`;
             for (let i = 1; i <= 7; i++) {
                 const ans = val('q4_' + i);
                 const correctList = answerKeys.dictee[i - 1];
-                const isCorrect = checkAnswer(ans, correctList);
-                if (isCorrect) {
-                    score4++;
-                    report4 += `- Zin ${i}: ${ans || "..."} (✅)\n`;
+                const res = gradeAnswer(ans, correctList, true);
+                score4 += res.score;
+                if (res.status === "correct") {
+                    report4 += `- Zin ${i} = ${ans || "..."} ✅\n`;
+                } else if (res.status === "half") {
+                    report4 += `- Zin ${i} = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
                 } else {
-                    report4 += `- Zin ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                    report4 += `- Zin ${i} = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
                 }
             }
+            report4 = report4.replace("{SCORE4}", String(score4).replace('.', ','));
             totalScore += score4;
-            report4 += `Subtotaal: ${score4}/7\n\n`;
+            report4 += `\n`;
 
             // 5. Vraagwoorden
             let score5 = 0;
-            let report5 = `*5. Vraagwoorden*\n`;
+            let report5 = `*5. Vraagwoorden* (Score: {SCORE5}/7)\n`;
             for (let i = 1; i <= 7; i++) {
                 const ans = val('q5_' + i);
                 const correctList = answerKeys.vraagwoorden[i - 1];
-                const isCorrect = checkAnswer(ans, correctList);
-                if (isCorrect) {
-                    score5++;
-                    report5 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                const res = gradeAnswer(ans, correctList);
+                score5 += res.score;
+                if (res.status === "correct") {
+                    report5 += `- Vraag ${i} = ${ans || "..."} ✅\n`;
+                } else if (res.status === "half") {
+                    report5 += `- Vraag ${i} = ${ans || "..."} 🟠 (spelling, moet zijn: ${correctList[0]})\n`;
                 } else {
-                    report5 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                    report5 += `- Vraag ${i} = ${ans || "..."} ❌ (moet zijn: ${correctList[0]})\n`;
                 }
             }
+            report5 = report5.replace("{SCORE5}", String(score5).replace('.', ','));
             totalScore += score5;
-            report5 += `Subtotaal: ${score5}/7\n\n`;
+            report5 += `\n`;
 
-            gradedPart += `*TOTAALSCORE:* ${totalScore}/35\n\n`;
-            gradedPart += report1 + report2 + report3 + report4 + report5;
+            let formattedTotalScore = String(totalScore).replace('.', ',');
+            report += `*TOTAALSCORE:* ${formattedTotalScore}/35\n\n`;
+            report += report1 + report2 + report3 + report4 + report5;
 
             // --- PART 3: FEEDBACKBRIEF ---
             let feedback = `*--- FEEDBACKBRIEF VOOR DE CURSIST ---*\n`;
@@ -683,7 +718,7 @@
             feedback += `Beste ${studentName},\n\n`;
             feedback += `Je hebt de oefentoets voor Thema 7 (Reizen & Vervoer) gemaakt. Goed gedaan! Hier is jouw resultaat:\n\n`;
             feedback += `*Jouw resultaat:*\n`;
-            feedback += `- *Score:* ${totalScore} van de 35 punten goed.\n`;
+            feedback += `- *Score:* ${formattedTotalScore} van de 35 punten goed.\n`;
             const passed = totalScore >= 20;
             feedback += `- *Resultaat:* ${passed ? "Dit is een *voldoende*! Gefeliciteerd! 🎉" : "Dit is helaas nog *onvoldoende*. Geef niet op, oefen nog een keer! 💪"}\n\n`;
 
@@ -691,19 +726,19 @@
             let oefenPunten = [];
 
             // Helper to check correctness for feedback tips
-            const isGramCorrect = (idx) => checkAnswer(dropVal('drop' + (idx+1)), answerKeys.grammatica[idx]);
-            const isPrepCorrect = (idx) => checkAnswer(val('q3_' + (idx+1)), answerKeys.voorzetsels[idx]);
+            const isGramCorrect = (idx) => gradeAnswer(dropVal('drop' + (idx+1)), answerKeys.grammatica[idx]).status === "correct";
+            const isPrepCorrect = (idx) => gradeAnswer(val('q3_' + (idx+1)), answerKeys.voorzetsels[idx]).status === "correct";
 
             // 1. Woordenschat
             if (score1 >= 5) {
-                goedPunten.push(`*Woordenschat (${score1}/7):* Je kent de reissymbolen en woorden over reizen en vervoer heel goed!`);
+                goedPunten.push(`*Woordenschat (${String(score1).replace('.', ',')}/7):* Je kent de reissymbolen en woorden over reizen en vervoer heel goed!`);
             } else {
-                oefenPunten.push(`*Woordenschat (${score1}/7):* Oefen de Nederlandse woorden voor voertuigen (zoals auto, trein, fiets, vliegtuig, bus, boot, station).`);
+                oefenPunten.push(`*Woordenschat (${String(score1).replace('.', ',')}/7):* Oefen de Nederlandse woorden voor voertuigen (zoals auto, trein, fiets, vliegtuig, bus, boot, station).`);
             }
 
             // 2. Grammatica
             if (score2 >= 7) {
-                goedPunten.push(`*Grammatica (${score2}/7):* Je weet goed wanneer je "mogen" (toestemming/regels) of "kunnen" (vaardigheid/mogelijkheid) moet gebruiken.`);
+                goedPunten.push(`*Grammatica (${String(score2).replace('.', ',')}/7):* Je weet goed wanneer je "mogen" (toestemming/regels) of "kunnen" (vaardigheid/mogelijkheid) moet gebruiken.`);
             } else {
                 let gramTips = [];
                 if (!isGramCorrect(1) || !isGramCorrect(3)) {
@@ -720,12 +755,12 @@
                 ruleExpl += `  - *Kunnen* = wat je kunt/hebt geleerd (vaardigheid) of wat mogelijk is. (bijv. Ik *kan* zwemmen).\n`;
                 ruleExpl += `  - *Mogen* = wat is toegestaan (toestemming) of wat een regel is. (bijv. Je *mag* hier niet roken van de baas).`;
                 
-                oefenPunten.push(`*Grammatica (${score2}/7):* Let op het verschil tussen mogen en kunnen:\n  - ` + gramTips.join('\n  - ') + ruleExpl);
+                oefenPunten.push(`*Grammatica (${String(score2).replace('.', ',')}/7):* Let op het verschil tussen mogen en kunnen:\n  - ` + gramTips.join('\n  - ') + ruleExpl);
             }
 
             // 3. Voorzetsels
             if (score3 >= 7) {
-                goedPunten.push(`*Voorzetsels (${score3}/7):* Je snapt de voorzetsels voor plaats en tijd (in, op, om, naast, voor, achter, onder) al goed.`);
+                goedPunten.push(`*Voorzetsels (${String(score3).replace('.', ',')}/7):* Je snapt de voorzetsels voor plaats en tijd (in, op, om, naast, voor, achter, onder) al goed.`);
             } else {
                 let prepTips = [];
                 if (!isPrepCorrect(0)) prepTips.push(`*Tijd (om):* De trein vertrekt precies *om* kwart over drie (gebruik 'om' voor kloktijden).`);
@@ -740,22 +775,22 @@
                 ruleExpl += `  - Gebruik *om* voor specifieke kloktijden.\n`;
                 ruleExpl += `  - Gebruik voorzetsels van plaats (*in, op, naast, voor, achter, onder*) om de precieze positie van objecten te beschrijven.`;
 
-                oefenPunten.push(`*Voorzetsels (${score3}/7):* Oefen de voorzetsels van plaats en tijd:\n  - ` + prepTips.join('\n  - ') + ruleExpl);
+                oefenPunten.push(`*Voorzetsels (${String(score3).replace('.', ',')}/7):* Oefen de voorzetsels van plaats en tijd:\n  - ` + prepTips.join('\n  - ') + ruleExpl);
             }
 
             // 4. Dictee
             if (score4 >= 5) {
-                goedPunten.push(`*Dictee (${score4}/7):* Je luister- en schrijfvaardigheid is uitstekend! Je spelt de zinnen heel nauwkeurig.`);
+                goedPunten.push(`*Dictee (${String(score4).replace('.', ',')}/7):* Je luister- en schrijfvaardigheid is uitstekend! Je spelt de zinnen heel nauwkeurig.`);
             } else {
-                oefenPunten.push(`*Dictee (${score4}/7):* Let goed op de klanken en spelling. Let op woorden zoals: *een* (niet "en"), *ticket* (niet "tiket"), *minuten* (niet "muneten"), *koffer* (niet "koofer"), *gepakt* (niet "gebakt") en schrijf landen altijd met een hoofdletter (*Spanje*, niet "espanya").`);
+                oefenPunten.push(`*Dictee (${String(score4).replace('.', ',')}/7):* Let goed op de klanken en spelling. Let op woorden zoals: *een* (niet "en"), *ticket* (niet "tiket"), *minuten* (niet "muneten"), *koffer* (niet "koofer"), *gepakt* (niet "gebakt") en schrijf landen altijd met een hoofdletter (*Spanje*, niet "espanya").`);
             }
 
             // 5. Vraagwoorden
             if (score5 >= 7) {
-                goedPunten.push(`*Vraagwoorden (${score5}/7):* Je weet heel goed hoe je vragen stelt met Hoe, Wat, Waar, Wie, Wanneer, Hoeveel en Waarom.`);
+                goedPunten.push(`*Vraagwoorden (${String(score5).replace('.', ',')}/7):* Je weet heel goed hoe je vragen stelt met Hoe, Wat, Waar, Wie, Wanneer, Hoeveel en Waarom.`);
             } else {
                 let questionTips = [];
-                const isQWordCorrect = (idx) => checkAnswer(val('q5_' + (idx+1)), answerKeys.vraagwoorden[idx]);
+                const isQWordCorrect = (idx) => gradeAnswer(val('q5_' + (idx+1)), answerKeys.vraagwoorden[idx]).status === "correct";
                 if (!isQWordCorrect(0)) questionTips.push(`*Waar* woon jij? (locatie -> in Amsterdam)`);
                 if (!isQWordCorrect(1)) questionTips.push(`*Hoe* ga jij? (manier/vervoer -> met de trein)`);
                 if (!isQWordCorrect(2)) questionTips.push(`*Wie* is dat? (persoon -> mijn broer)`);
@@ -767,7 +802,7 @@
                 let ruleExpl = `\n  _Vraagwoorden overzicht:_\n`;
                 ruleExpl += `  - *Waar* (plaats), *Hoe* (vervoer/manier), *Wie* (persoon), *Wanneer* (tijd), *Hoeveel* (prijs/aantal), *Waarom* (reden), *Wat* (ding/actie).`;
 
-                oefenPunten.push(`*Vraagwoorden (${score5}/7):* Oefen welke vraagwoorden bij de antwoorden horen:\n  - ` + questionTips.join('\n  - ') + ruleExpl);
+                oefenPunten.push(`*Vraagwoorden (${String(score5).replace('.', ',')}/7):* Oefen welke vraagwoorden bij de antwoorden horen:\n  - ` + questionTips.join('\n  - ') + ruleExpl);
             }
 
             feedback += `*Wat gaat al goed:*\n`;
@@ -786,7 +821,7 @@
 
             feedback += `Met vriendelijke groet,\nDe docent`;
 
-            const finalMessage = rawPart + gradedPart + `\n\n` + feedback;
+            const finalMessage = report + `\n\n` + feedback;
 
             const phone = "31626211106";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(finalMessage)}`;
