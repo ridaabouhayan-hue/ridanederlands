@@ -107,6 +107,22 @@
             <p class="subtitle">Maak de toets. Klik helemaal onderaan op de knop om je antwoorden via WhatsApp naar je docent te sturen.</p>
         </header>
 
+        <!-- Naam invullen -->
+        <div class="quiz-card">
+            <h3 style="margin-top: 0;">👤 Jouw Naam</h3>
+            <span class="instruction-text" 
+                data-nl="Vul hier je voor- en achternaam in voor de docent."
+                data-en="Enter your first and last name here for the teacher."
+                data-ar="أدخل اسمك الأول والأخير هنا للمعلم."
+                data-tr="Öğretmen için buraya adınızı ve soyadınızı girin."
+                data-fa="نام و نام خانوادگی خود را در اینجا برای معلم وارد کنید."
+                data-da="نام و تخلص خود را در اینجا برای معلم وارد کنید."
+                data-ps="خپل نوم او تخلص دلته د استاد لپاره ولیکئ.">
+                Vul hier je voor- en achternaam in voor de docent.
+            </span>
+            <input type="text" class="test-input" id="student-name" placeholder="Typ je naam...">
+        </div>
+
         <!-- Sectie 1: Woordenschat -->
         <div class="quiz-card">
             <h3>1. Woordenschat (Vertalen)</h3>
@@ -454,34 +470,171 @@
         }
 
         // WhatsApp Submission
+        const answerKeys = {
+            woordenschat: [
+                ["auto", "de auto"],
+                ["trein", "de trein"],
+                ["fiets", "de fiets"],
+                ["vliegtuig", "het vliegtuig"],
+                ["bus", "de bus"],
+                ["boot", "de boot", "schip", "het schip"],
+                ["station", "het station"]
+            ],
+            grammatica: [
+                ["mag"],
+                ["kunnen"],
+                ["mag"],
+                ["kunnen"],
+                ["kan"],
+                ["mogen"],
+                ["kan"]
+            ],
+            voorzetsels: [
+                ["om"],
+                ["in"],
+                ["op"],
+                ["voor"],
+                ["achter"],
+                ["naast"],
+                ["onder"]
+            ],
+            dictee: [
+                ["Waar is het station?", "Waar is het station"],
+                ["Ik ga met de bus naar school.", "Ik ga met de bus naar school"],
+                ["Hoe laat vertrekt de trein?", "Hoe laat vertrekt de trein"],
+                ["Mag ik een ticket naar Amsterdam?", "Mag ik een ticket naar Amsterdam", "Mag ik een ticket naar amsterdam", "Mag ik een ticket naar amsterdam?"],
+                ["De reis duurt dertig minuten.", "De reis duurt dertig minuten"],
+                ["Wij gaan op vakantie naar Spanje.", "Wij gaan op vakantie naar Spanje", "Wij gaan op vakantie naar spanje", "Wij gaan op vakantie naar spanje."],
+                ["Ik heb mijn koffer gepakt.", "Ik heb mijn koffer gepakt"]
+            ],
+            vraagwoorden: [
+                ["Waar"],
+                ["Hoe"],
+                ["Wie"],
+                ["Wanneer", "Hoe laat"],
+                ["Hoeveel"],
+                ["Waarom"],
+                ["Wat"]
+            ]
+        };
+
+        function normalize(str) {
+            if (!str) return "";
+            return str.toLowerCase()
+                .replace(/[\.\?\!\,\;]/g, '') // remove punctuation
+                .replace(/\s+/g, ' ')         // normalize whitespace
+                .trim();
+        }
+
+        function checkAnswer(studentAns, correctList) {
+            const studentNorm = normalize(studentAns);
+            return correctList.some(ans => normalize(ans) === studentNorm);
+        }
+
         function sendToWhatsApp() {
-            // Collect answers helper
-            const val = (id) => document.getElementById(id).value.trim() || "...";
-            const dropVal = (id) => document.getElementById(id).getAttribute('data-answer') || "...";
+            const nameInput = document.getElementById('student-name');
+            const studentName = nameInput ? nameInput.value.trim() : "";
+            if (!studentName) {
+                alert("Vul alstublieft eerst je naam in.");
+                if (nameInput) nameInput.focus();
+                return;
+            }
 
-            let message = `*OEFENTOETS THEMA 7 (A1)*\n\n`;
-            
-            message += `*1. Woordenschat*\n`;
-            for(let i=1; i<=7; i++) message += `- Vraag ${i} = ${val('q1_'+i)}\n`;
-            message += `\n`;
+            let totalScore = 0;
+            let report = `*RESULTAAT OEFENTOETS THEMA 7 (A1)*\n`;
+            report += `*Naam:* ${studentName}\n\n`;
 
-            message += `*2. Grammatica*\n`;
-            for(let i=1; i<=7; i++) message += `- Vraag ${i} = ${dropVal('drop'+i)}\n`;
-            message += `\n`;
+            // 1. Woordenschat
+            let score1 = 0;
+            let report1 = `*1. Woordenschat*\n`;
+            const cues1 = ["Car", "Train", "Bicycle", "Airplane", "Bus", "Boat", "Station"];
+            for (let i = 1; i <= 7; i++) {
+                const ans = (document.getElementById('q1_' + i).value || "").trim();
+                const correctList = answerKeys.woordenschat[i - 1];
+                const isCorrect = checkAnswer(ans, correctList);
+                if (isCorrect) {
+                    score1++;
+                    report1 += `- Vraag ${i} (${cues1[i - 1]}): ${ans || "..."} (✅)\n`;
+                } else {
+                    report1 += `- Vraag ${i} (${cues1[i - 1]}): ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                }
+            }
+            totalScore += score1;
+            report1 += `Subtotaal: ${score1}/7\n\n`;
 
-            message += `*3. Voorzetsels*\n`;
-            for(let i=1; i<=7; i++) message += `- Vraag ${i} = ${val('q3_'+i)}\n`;
-            message += `\n`;
+            // 2. Grammatica
+            let score2 = 0;
+            let report2 = `*2. Grammatica*\n`;
+            for (let i = 1; i <= 7; i++) {
+                const ans = document.getElementById('drop' + i).getAttribute('data-answer') || "";
+                const correctList = answerKeys.grammatica[i - 1];
+                const isCorrect = checkAnswer(ans, correctList);
+                if (isCorrect) {
+                    score2++;
+                    report2 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                } else {
+                    report2 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                }
+            }
+            totalScore += score2;
+            report2 += `Subtotaal: ${score2}/7\n\n`;
 
-            message += `*4. Dictee*\n`;
-            for(let i=1; i<=7; i++) message += `- Zin ${i} = ${val('q4_'+i)}\n`;
-            message += `\n`;
+            // 3. Voorzetsels
+            let score3 = 0;
+            let report3 = `*3. Voorzetsels*\n`;
+            for (let i = 1; i <= 7; i++) {
+                const ans = (document.getElementById('q3_' + i).value || "").trim();
+                const correctList = answerKeys.voorzetsels[i - 1];
+                const isCorrect = checkAnswer(ans, correctList);
+                if (isCorrect) {
+                    score3++;
+                    report3 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                } else {
+                    report3 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                }
+            }
+            totalScore += score3;
+            report3 += `Subtotaal: ${score3}/7\n\n`;
 
-            message += `*5. Vraagwoorden*\n`;
-            for(let i=1; i<=7; i++) message += `- Vraag ${i} = ${val('q5_'+i)}\n`;
+            // 4. Dictee
+            let score4 = 0;
+            let report4 = `*4. Dictee*\n`;
+            for (let i = 1; i <= 7; i++) {
+                const ans = (document.getElementById('q4_' + i).value || "").trim();
+                const correctList = answerKeys.dictee[i - 1];
+                const isCorrect = checkAnswer(ans, correctList);
+                if (isCorrect) {
+                    score4++;
+                    report4 += `- Zin ${i}: ${ans || "..."} (✅)\n`;
+                } else {
+                    report4 += `- Zin ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                }
+            }
+            totalScore += score4;
+            report4 += `Subtotaal: ${score4}/7\n\n`;
+
+            // 5. Vraagwoorden
+            let score5 = 0;
+            let report5 = `*5. Vraagwoorden*\n`;
+            for (let i = 1; i <= 7; i++) {
+                const ans = (document.getElementById('q5_' + i).value || "").trim();
+                const correctList = answerKeys.vraagwoorden[i - 1];
+                const isCorrect = checkAnswer(ans, correctList);
+                if (isCorrect) {
+                    score5++;
+                    report5 += `- Vraag ${i}: ${ans || "..."} (✅)\n`;
+                } else {
+                    report5 += `- Vraag ${i}: ${ans || "..."} (❌ correct: ${correctList[0]})\n`;
+                }
+            }
+            totalScore += score5;
+            report5 += `Subtotaal: ${score5}/7\n\n`;
+
+            report += `*TOTAALSCORE:* ${totalScore}/35\n\n`;
+            report += report1 + report2 + report3 + report4 + report5;
 
             const phone = "31626211106";
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
             window.open(url, '_blank');
         }
     </script>
