@@ -92,7 +92,8 @@
     <nav class="language-bar" aria-label="Taalkeuze">
         <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
         <span class="label">🌐 Vertaal de vragen:</span>
-        <span class="lang-btn active" data-lang="en">🇬🇧 English</span>
+        <span class="lang-btn active" data-lang="nl">🇳🇱 Nederlands</span>
+        <span class="lang-btn" data-lang="en">🇬🇧 English</span>
         <span class="lang-btn" data-lang="ar">🇸🇦 العربية</span>
         <span class="lang-btn" data-lang="tr">🇹🇷 Türkçe</span>
         <span class="lang-btn" data-lang="fa">🇮🇷 Farsi</span>
@@ -382,7 +383,9 @@
                 
                 // Update vocabulary words
                 document.querySelectorAll('.vocab-word').forEach(word => {
-                    if (word.hasAttribute('data-' + lang)) {
+                    if (lang === 'nl') {
+                        word.textContent = "❓ (Kies taal / Choose language)";
+                    } else if (word.hasAttribute('data-' + lang)) {
                         word.textContent = word.getAttribute('data-' + lang);
                     }
                 });
@@ -400,14 +403,12 @@
             });
         });
 
-        // Initialize with default (English)
+        // Initialize with default (Nederlands)
         document.querySelectorAll('.vocab-word').forEach(word => {
-            word.textContent = word.getAttribute('data-en');
+            word.textContent = "❓ (Kies taal / Choose language)";
         });
         document.querySelectorAll('.instruction-text').forEach(inst => {
-            const nlText = inst.getAttribute('data-nl');
-            const enText = inst.getAttribute('data-en');
-            inst.textContent = nlText + " / " + enText;
+            inst.textContent = inst.getAttribute('data-nl');
         });
 
         // Mobile-friendly Drag and Drop Logic
