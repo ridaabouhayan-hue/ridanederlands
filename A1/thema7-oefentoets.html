@@ -540,16 +540,60 @@
                 return;
             }
 
+            // Helpers to get student inputs
+            const val = (id) => (document.getElementById(id).value || "").trim();
+            const dropVal = (id) => document.getElementById(id).getAttribute('data-answer') || "";
+
+            // --- PART 1: RAW STUDENT ANSWERS ---
+            let rawPart = `*OEFENTOETS THEMA 7 (A1)*\n`;
+            rawPart += `*Naam:* ${studentName}\n\n`;
+            rawPart += `*--- INGEVULDE ANTWOORDEN ---*\n\n`;
+
+            // 1. Woordenschat
+            rawPart += `*1. Woordenschat*\n`;
+            for (let i = 1; i <= 7; i++) {
+                rawPart += `- Vraag ${i} = ${val('q1_' + i) || "..."}\n`;
+            }
+            rawPart += `\n`;
+
+            // 2. Grammatica
+            rawPart += `*2. Grammatica*\n`;
+            for (let i = 1; i <= 7; i++) {
+                rawPart += `- Vraag ${i} = ${dropVal('drop' + i) || "..."}\n`;
+            }
+            rawPart += `\n`;
+
+            // 3. Voorzetsels
+            rawPart += `*3. Voorzetsels*\n`;
+            for (let i = 1; i <= 7; i++) {
+                rawPart += `- Vraag ${i} = ${val('q3_' + i) || "..."}\n`;
+            }
+            rawPart += `\n`;
+
+            // 4. Dictee
+            rawPart += `*4. Dictee*\n`;
+            for (let i = 1; i <= 7; i++) {
+                rawPart += `- Zin ${i} = ${val('q4_' + i) || "..."}\n`;
+            }
+            rawPart += `\n`;
+
+            // 5. Vraagwoorden
+            rawPart += `*5. Vraagwoorden*\n`;
+            for (let i = 1; i <= 7; i++) {
+                rawPart += `- Vraag ${i} = ${val('q5_' + i) || "..."}\n`;
+            }
+            rawPart += `\n\n`;
+
+            // --- PART 2: AUTOMATIC GRADING ---
             let totalScore = 0;
-            let report = `*RESULTAAT OEFENTOETS THEMA 7 (A1)*\n`;
-            report += `*Naam:* ${studentName}\n\n`;
+            let gradedPart = `*--- AUTOMATISCH NAGEKEKEN ---*\n\n`;
 
             // 1. Woordenschat
             let score1 = 0;
             let report1 = `*1. Woordenschat*\n`;
             const cues1 = ["Car", "Train", "Bicycle", "Airplane", "Bus", "Boat", "Station"];
             for (let i = 1; i <= 7; i++) {
-                const ans = (document.getElementById('q1_' + i).value || "").trim();
+                const ans = val('q1_' + i);
                 const correctList = answerKeys.woordenschat[i - 1];
                 const isCorrect = checkAnswer(ans, correctList);
                 if (isCorrect) {
@@ -566,7 +610,7 @@
             let score2 = 0;
             let report2 = `*2. Grammatica*\n`;
             for (let i = 1; i <= 7; i++) {
-                const ans = document.getElementById('drop' + i).getAttribute('data-answer') || "";
+                const ans = dropVal('drop' + i);
                 const correctList = answerKeys.grammatica[i - 1];
                 const isCorrect = checkAnswer(ans, correctList);
                 if (isCorrect) {
@@ -583,7 +627,7 @@
             let score3 = 0;
             let report3 = `*3. Voorzetsels*\n`;
             for (let i = 1; i <= 7; i++) {
-                const ans = (document.getElementById('q3_' + i).value || "").trim();
+                const ans = val('q3_' + i);
                 const correctList = answerKeys.voorzetsels[i - 1];
                 const isCorrect = checkAnswer(ans, correctList);
                 if (isCorrect) {
@@ -600,7 +644,7 @@
             let score4 = 0;
             let report4 = `*4. Dictee*\n`;
             for (let i = 1; i <= 7; i++) {
-                const ans = (document.getElementById('q4_' + i).value || "").trim();
+                const ans = val('q4_' + i);
                 const correctList = answerKeys.dictee[i - 1];
                 const isCorrect = checkAnswer(ans, correctList);
                 if (isCorrect) {
@@ -617,7 +661,7 @@
             let score5 = 0;
             let report5 = `*5. Vraagwoorden*\n`;
             for (let i = 1; i <= 7; i++) {
-                const ans = (document.getElementById('q5_' + i).value || "").trim();
+                const ans = val('q5_' + i);
                 const correctList = answerKeys.vraagwoorden[i - 1];
                 const isCorrect = checkAnswer(ans, correctList);
                 if (isCorrect) {
@@ -630,11 +674,13 @@
             totalScore += score5;
             report5 += `Subtotaal: ${score5}/7\n\n`;
 
-            report += `*TOTAALSCORE:* ${totalScore}/35\n\n`;
-            report += report1 + report2 + report3 + report4 + report5;
+            gradedPart += `*TOTAALSCORE:* ${totalScore}/35\n\n`;
+            gradedPart += report1 + report2 + report3 + report4 + report5;
+
+            const finalMessage = rawPart + gradedPart;
 
             const phone = "31626211106";
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(finalMessage)}`;
             window.open(url, '_blank');
         }
     </script>
