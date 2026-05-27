@@ -533,22 +533,22 @@
         }
 
         function renderCards() {
-            const label = { nl: "💡 Regel", en: "💡 Rule", tr: "💡 Kural", ar: "💡 قاعدة", ps: "💡 قاعده", da: "💡 قانون", fa: "💡 قانون", vi: "💡 Quy tắc" }[currentLang];
+            const label = { nl: "💡 Regel", en: "💡 Rule", tr: "💡 Kural", ar: "💡 قاعدة", ps: "💡 قاعده", da: "💡 قانون", fa: "💡 قانون", vi: "💡 Quy tắc" }[currentLang] || "💡 Rule";
             const render = (data, containerId) => {
                 const cont = document.getElementById(containerId);
                 cont.innerHTML = data.map(item => `
                     <div class="card">
                         <div class="emoji-header">${item.emoji}</div>
                         <div class="word">${item.word}</div>
-                        <div class="definition">${item.def[currentLang]}</div>
+                        <div class="definition">${item.def[currentLang] || item.def.en}</div>
                         <div class="example-list">
                             ${item.ex.map(e => `
                                 <div class="example-item">
                                     <div>✅ ${e.nl}</div>
-                                    ${currentLang !== 'nl' ? `<div class="translation-sub">(${e[currentLang]})</div>` : ''}
+                                    ${currentLang !== 'nl' ? `<div class="translation-sub">(${e[currentLang] || e.en})</div>` : ''}
                                 </div>`).join('')}
                         </div>
-                        <div class="logic-box">${label}: ${item.rule[currentLang]}</div>
+                        <div class="logic-box">${label}: ${item.rule[currentLang] || item.rule.en}</div>
                     </div>`).join('');
             };
             render(dataKloktijd, 'kloktijd-cards');
@@ -562,17 +562,17 @@
             const cont = document.getElementById('contrast-cards');
             cont.innerHTML = dataContrast.map(c => `
                 <div class="contrast-card">
-                    <div class="contrast-title">${c.title[currentLang]}</div>
-                    <div class="contrast-subtitle">${c.subtitle[currentLang]}</div>
+                    <div class="contrast-title">${c.title[currentLang] || c.title.en}</div>
+                    <div class="contrast-subtitle">${c.subtitle[currentLang] || c.subtitle.en}</div>
                     <div class="contrast-table">
                         <div class="contrast-col left">
                             <h4>${c.left.word}</h4>
-                            <div class="meaning">${c.left.meaning[currentLang]}</div>
+                            <div class="meaning">${c.left.meaning[currentLang] || c.left.meaning.en}</div>
                             <ul>${c.left.items.map(i => `<li>• ${i}</li>`).join('')}</ul>
                         </div>
                         <div class="contrast-col right">
                             <h4>${c.right.word}</h4>
-                            <div class="meaning">${c.right.meaning[currentLang]}</div>
+                            <div class="meaning">${c.right.meaning[currentLang] || c.right.meaning.en}</div>
                             <ul>${c.right.items.map(i => `<li>• ${i}</li>`).join('')}</ul>
                         </div>
                     </div>
@@ -581,7 +581,7 @@
                     </div>
                     <div class="check-list" style="background: #fef2f2; border-left-color: var(--error); margin-top: 8px;">
                         <div class="item">${c.bad[currentLang] || c.bad.nl}</div>
-                        <div class="item" style="opacity: 0.8; font-style: italic; margin-top: 6px;">→ ${c.badNote[currentLang]}</div>
+                        <div class="item" style="opacity: 0.8; font-style: italic; margin-top: 6px;">→ ${c.badNote[currentLang] || c.badNote.en}</div>
                     </div>
                 </div>`).join('');
         }
