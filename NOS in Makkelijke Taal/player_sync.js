@@ -2,7 +2,7 @@
  * Interactive Transcript Audio Synchronizer for "NOS in Makkelijke Taal"
  * Supports both HTML5 <audio> elements and YouTube Iframe API.
  */
-document.addEventListener("DOMContentLoaded", () => {
+(function() {
     let mediaType = null; // 'audio' or 'youtube'
     let audioEl = null;
     let ytPlayer = null;
@@ -15,15 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize word spans
     function initWordSpans() {
         wordSpans = Array.from(document.querySelectorAll("span.w"));
+        console.log(`Word highlighter: found ${wordSpans.length} spans`);
         
         // Add click listener to seek to the start time of the word
         wordSpans.forEach(span => {
-            span.addEventListener("click", () => {
+            // Remove existing event listener if any (by replacing node or resetting property)
+            // Using onclick to easily reset and avoid duplicates
+            span.onclick = () => {
                 const start = parseFloat(span.getAttribute("data-start"));
                 if (!isNaN(start)) {
                     seekToTime(start);
                 }
-            });
+            };
         });
     }
 
@@ -71,24 +74,21 @@ document.addEventListener("DOMContentLoaded", () => {
         audioEl = document.querySelector("audio");
         if (audioEl) {
             mediaType = "audio";
-            console.log("Local audio player detected");
+            console.log("Local audio player detected:", audioEl.src);
             
-            // Use requestAnimationFrame for smooth updates
-            function pollTime() {
-                if (!audioEl.paused && !audioEl.ended) {
-                    updateHighlights(audioEl.currentTime);
-                }
-                requestAnimationFrame(pollTime);
-            }
-            
-            audioEl.addEventListener("play", () => {
-                requestAnimationFrame(pollTime);
-            });
+            // Remove old listener if any and add again
+            audioEl.removeEventListener("timeupdate", onAudioTimeUpdate);
+            audioEl.addEventListener("timeupdate", onAudioTimeUpdate);
             
             // Fallback for seeking when paused
-            audioEl.addEventListener("seeked", () => {
-                updateHighlights(audioEl.currentTime);
-            });
+            audioEl.removeEventListener("seeked", onAudioTimeUpdate);
+            audioEl.addEventListener("seeked", onAudioTimeUpdate);
+        }
+    }
+    
+    function onAudioTimeUpdate() {
+        if (audioEl) {
+            updateHighlights(audioEl.currentTime);
         }
     }
 
@@ -150,10 +150,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Initialize all
-    initWordSpans();
-    setupLocalAudio();
-    if (!audioEl) {
-        setupYouTube();
-    }
-});
+    // Expose public method to re-initialize sync logic dynamically
+    window.initPlayerSync = function() {
+        initWordSpans();
+        setupLocalAudio();
+        if (!audioEl) {
+            setupYouTube();
+        }
+    };
+
+    // Auto-run on DOM load
+    document.addEventListener("DOMContentLoaded", () => {
+        window.initPlayerSync();
+    });
+})();

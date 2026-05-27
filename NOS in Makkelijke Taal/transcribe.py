@@ -12,7 +12,7 @@ else:
     print(f"Waarschuwing: ffmpeg map niet gevonden op {ffmpeg_path}. Zorg dat ffmpeg is geïnstalleerd en in je PATH staat.")
 
 # Zet hier de naam van je audiobestand
-audiobestand = "nos_fragment.mp3"
+audiobestand = "nos_26mei.mp3"
 
 # Controleer of het bestand bestaat
 if not os.path.exists(audiobestand):
