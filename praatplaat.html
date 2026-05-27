@@ -1442,34 +1442,6 @@
 
                 </div>
 
-                <!-- SIDEBAR COLUMN (Right: Sentence Builders & Vocabulary) -->
-                <div class="praatplaat-sidebar-col">
-                    
-                    <!-- HULPMIDDELEN CARD (BLUE CARD) -->
-                    <div class="helper-card">
-                        <h3 class="helper-header" id="txt-helperHeader">
-                            <span class="header-icon-circle">💬</span>
-                            Zinsopbouw & Woordenschat
-                        </h3>
-                        
-                        <div class="helper-section">
-                            <h4 class="helper-subheading" id="txt-helperStarters">Zinsopbouw (Opzet-zinnen):</h4>
-                            <ul class="starter-list" id="active-starters-list">
-                                <!-- Sentence starters will be injected here -->
-                            </ul>
-                        </div>
-                        
-                        <div class="helper-section" style="margin-top: 20px;">
-                            <h4 class="helper-subheading" id="txt-helperVocab">Handige woorden (Woordenschat):</h4>
-                            <div class="vocab-table" id="active-vocab-table">
-                                <!-- Vocabulary will be injected here -->
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
             <!-- WHATSAPP RECORDING BOX -->
@@ -3134,8 +3106,14 @@
                 div.id = `d-item-${idx}`;
                 div.onclick = (e) => handleAudioPlayClick(d.text, div, e);
                 
-                const translationHtml = (currentLang !== 'nl' && d.translations && d.translations[currentLang])
-                    ? `<span class="translation-text" style="display: block; font-size: 0.85rem; font-style: italic; color: #64748b; margin-top: 4px; padding-left: 28px;">${d.translations[currentLang]}</span>`
+                const hasTransl = (currentLang !== 'nl' && d.translations && d.translations[currentLang]);
+                const dirAttr = (currentLang === 'da' || currentLang === 'fa' || currentLang === 'ar' || currentLang === 'ps') ? 'dir="rtl"' : 'dir="auto"';
+                const translationHtml = hasTransl
+                    ? `<span class="translation-text" ${dirAttr} style="display: block; font-size: 0.85rem; font-style: italic; color: #64748b; margin-top: 4px; padding-left: 28px;">${d.translations[currentLang]}</span>`
+                    : '';
+
+                const starterHtml = d.starter
+                    ? `<div class="dialogue-line-starter" onclick="event.stopPropagation()"><span dir="auto">✍️ Opzetje: ${d.starter}</span></div>`
                     : '';
 
                 div.innerHTML = `
@@ -3143,54 +3121,12 @@
                         <span class="role-badge" title="Cursist ${d.role}">${d.role}</span>
                         <span class="dialogue-text">${d.text}</span>
                         ${translationHtml}
+                        ${starterHtml}
                     </div>
                     <button class="audio-btn" title="Luister slow-audio">🔊</button>
                 `;
                 activeDialogueContainer.appendChild(div);
             });
-
-            // Render Sentence Starters
-            const activeStartersList = document.getElementById("active-starters-list");
-            if (activeStartersList) {
-                activeStartersList.innerHTML = "";
-                theme.sentenceStarters.forEach(starter => {
-                    const li = document.createElement("li");
-                    li.className = "starter-item";
-                    
-                    const translationHtml = (currentLang !== 'nl' && starter[currentLang])
-                        ? `<span class="starter-translation">${starter[currentLang]}</span>`
-                        : '';
-                    
-                    li.innerHTML = `
-                        ${starter.nl}
-                        ${translationHtml}
-                    `;
-                    activeStartersList.appendChild(li);
-                });
-            }
-
-            // Render Vocabulary
-            const activeVocabTable = document.getElementById("active-vocab-table");
-            if (activeVocabTable) {
-                activeVocabTable.innerHTML = "";
-                theme.vocabulary.forEach(vocab => {
-                    const div = document.createElement("div");
-                    div.className = "vocab-row";
-                    
-                    const translationHtml = (currentLang !== 'nl' && vocab[currentLang])
-                        ? `<span class="vocab-translation">${vocab[currentLang]}</span>`
-                        : '';
-                    
-                    div.innerHTML = `
-                        <span class="vocab-emoji">${vocab.emoji}</span>
-                        <div class="vocab-text-box">
-                            <span class="vocab-nl">${vocab.nl}</span>
-                            ${translationHtml}
-                        </div>
-                    `;
-                    activeVocabTable.appendChild(div);
-                });
-            }
 
             // Render notebook chips
             renderNotebookChips(theme);
