@@ -456,6 +456,38 @@
             overflow: hidden;
         }
 
+        .transcript-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .t-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .t-tab:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .t-tab.active {
+            color: #a855f7;
+            border-bottom-color: #a855f7;
+            background: rgba(168, 85, 247, 0.05);
+        }
+
         .transcript-header {
             background: rgba(255, 255, 255, 0.02);
             border-bottom: 1px solid var(--border);
@@ -631,8 +663,13 @@
                     </div>
 
                     <div class="transcript-card">
+                        <div class="transcript-tabs">
+                            <button class="t-tab active" id="tab-verbatim" onclick="switchTranscriptTab('verbatim')">🗣️ Letterlijk</button>
+                            <button class="t-tab" id="tab-uitspraak" onclick="switchTranscriptTab('uitspraak')">✍️ Woorden corrigeren</button>
+                            <button class="t-tab" id="tab-volledig" onclick="switchTranscriptTab('volledig')">✅ Volledig corrigeren</button>
+                        </div>
                         <div class="transcript-header">
-                            📝 Letterlijke transcriptie (Whisper AI)
+                            🗣️ Letterlijke uitspraak (Whisper AI)
                         </div>
                         <div class="transcript-body" id="transcriptText">
                             Hier komt de transcriptie...
@@ -852,13 +889,48 @@
             console.log("Autoplay was blocked or audio failed: ", e);
         });
         
-        // Populate transcript
-        const transcriptText = document.getElementById("transcriptText");
-        transcriptText.textContent = selectedFile.transcript || "(Dit bestand heeft geen transcriptie tekst)";
+        // Populate transcript based on current tab
+        updateTranscriptView();
+    }
+
+    let currentTranscriptTab = 'verbatim'; // 'verbatim' | 'uitspraak' | 'volledig'
+
+    function switchTranscriptTab(tabName) {
+        currentTranscriptTab = tabName;
+        updateTranscriptView();
         
         // Reset copy button text
         const copyBtn = document.getElementById("copyBtn");
-        copyBtn.innerHTML = "📋 Kopieer transcript";
+        if (copyBtn) copyBtn.innerHTML = "📋 Kopieer transcript";
+    }
+
+    function updateTranscriptView() {
+        const files = groepenAudioData[activeGroup] || [];
+        const selectedFile = files[activeFileIndex];
+        if (!selectedFile) return;
+
+        const transcriptText = document.getElementById("transcriptText");
+        const headerText = document.querySelector(".transcript-header");
+        
+        // Remove active class from all transcript tabs
+        document.querySelectorAll(".t-tab").forEach(tab => tab.classList.remove("active"));
+
+        if (currentTranscriptTab === 'verbatim') {
+            const btn = document.getElementById("tab-verbatim");
+            if (btn) btn.classList.add("active");
+            transcriptText.textContent = selectedFile.transcript || "(Geen transcript)";
+            headerText.innerHTML = "🗣️ Letterlijke uitspraak (Whisper AI)";
+        } else if (currentTranscriptTab === 'uitspraak') {
+            const btn = document.getElementById("tab-uitspraak");
+            if (btn) btn.classList.add("active");
+            transcriptText.textContent = selectedFile.transcript_uitspraak || "Geen uitspraakcorrectie beschikbaar. Deze opname is nog niet verwerkt met de Claude API.";
+            headerText.innerHTML = "✍️ Correcte uitspraak (Grammatica noch fout)";
+        } else if (currentTranscriptTab === 'volledig') {
+            const btn = document.getElementById("tab-volledig");
+            if (btn) btn.classList.add("active");
+            transcriptText.textContent = selectedFile.transcript_volledig || "Geen grammatica-correctie beschikbaar. Deze opname is nog niet verwerkt met de Claude API.";
+            headerText.innerHTML = "✅ Perfect Nederlands (Uitspraak & Grammatica correct)";
+        }
     }
 
     // Reset viewer to empty state
@@ -912,8 +984,13 @@
                     </div>
 
                     <div class="transcript-card">
+                        <div class="transcript-tabs">
+                            <button class="t-tab active" id="tab-verbatim" onclick="switchTranscriptTab('verbatim')">🗣️ Letterlijk</button>
+                            <button class="t-tab" id="tab-uitspraak" onclick="switchTranscriptTab('uitspraak')">✍️ Woorden corrigeren</button>
+                            <button class="t-tab" id="tab-volledig" onclick="switchTranscriptTab('volledig')">✅ Volledig corrigeren</button>
+                        </div>
                         <div class="transcript-header">
-                            📝 Letterlijke transcriptie (Whisper AI)
+                            🗣️ Letterlijke uitspraak (Whisper AI)
                         </div>
                         <div class="transcript-body" id="transcriptText">
                             Hier komt de transcriptie...
