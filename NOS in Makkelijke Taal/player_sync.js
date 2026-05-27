@@ -7,6 +7,7 @@
     let audioEl = null;
     let ytPlayer = null;
     let wordSpans = [];
+    let pollActive = false;
     
     // Auto-scroll configuration
     const autoScrollEnabled = true;
@@ -19,36 +20,43 @@
         
         // Add click listener to seek to the start time of the word
         wordSpans.forEach(span => {
-            // Remove existing event listener if any (by replacing node or resetting property)
-            // Using onclick to easily reset and avoid duplicates
             span.onclick = () => {
                 const start = parseFloat(span.getAttribute("data-start"));
                 if (!isNaN(start)) {
-                    seekToTime(start);
+                    // Apply offset to seek time so clicking a word jumps to the correct audio position
+                    const offset = window.currentAudioOffset || 0;
+                    seekToTime(start + offset);
                 }
             };
         });
     }
 
     function seekToTime(seconds) {
+        // Ensure time doesn't go below 0
+        const targetTime = Math.max(0, seconds);
         if (mediaType === "audio" && audioEl) {
-            audioEl.currentTime = seconds;
+            audioEl.currentTime = targetTime;
             audioEl.play().catch(() => {});
         } else if (mediaType === "youtube" && ytPlayer && typeof ytPlayer.seekTo === "function") {
-            ytPlayer.seekTo(seconds, true);
+            ytPlayer.seekTo(targetTime, true);
             ytPlayer.playVideo();
         }
     }
 
     // High frequency time updates
     function updateHighlights(currentTime) {
+        // Read offset dynamically from window.currentAudioOffset
+        // If audio runs ahead of highlights, offset should be negative (e.g. -8.5s)
+        const offset = window.currentAudioOffset || 0;
+        const adjustedTime = currentTime - offset;
+        
         let activeSpan = null;
         
         wordSpans.forEach(span => {
             const start = parseFloat(span.getAttribute("data-start"));
             const end = parseFloat(span.getAttribute("data-end"));
             
-            if (!isNaN(start) && !isNaN(end) && currentTime >= start && currentTime <= end) {
+            if (!isNaN(start) && !isNaN(end) && adjustedTime >= start && adjustedTime <= end) {
                 span.classList.add("highlight");
                 activeSpan = span;
             } else {
@@ -76,17 +84,47 @@
             mediaType = "audio";
             console.log("Local audio player detected:", audioEl.src);
             
-            // Remove old listener if any and add again
-            audioEl.removeEventListener("timeupdate", onAudioTimeUpdate);
-            audioEl.addEventListener("timeupdate", onAudioTimeUpdate);
+            // Remove old listeners
+            audioEl.removeEventListener("play", startPolling);
+            audioEl.removeEventListener("pause", stopPolling);
+            audioEl.removeEventListener("ended", stopPolling);
+            audioEl.removeEventListener("seeked", onSeeked);
             
-            // Fallback for seeking when paused
-            audioEl.removeEventListener("seeked", onAudioTimeUpdate);
-            audioEl.addEventListener("seeked", onAudioTimeUpdate);
+            // Add new listeners
+            audioEl.addEventListener("play", startPolling);
+            audioEl.addEventListener("pause", stopPolling);
+            audioEl.addEventListener("ended", stopPolling);
+            audioEl.addEventListener("seeked", onSeeked);
+            
+            // Start polling if already playing
+            if (!audioEl.paused && !audioEl.ended) {
+                startPolling();
+            } else {
+                // Initial highlight update
+                updateHighlights(audioEl.currentTime);
+            }
         }
     }
     
-    function onAudioTimeUpdate() {
+    function startPolling() {
+        if (pollActive) return;
+        pollActive = true;
+        
+        function poll() {
+            if (!pollActive) return;
+            if (audioEl) {
+                updateHighlights(audioEl.currentTime);
+                requestAnimationFrame(poll);
+            }
+        }
+        requestAnimationFrame(poll);
+    }
+    
+    function stopPolling() {
+        pollActive = false;
+    }
+    
+    function onSeeked() {
         if (audioEl) {
             updateHighlights(audioEl.currentTime);
         }
@@ -97,7 +135,6 @@
         const iframe = document.querySelector(".video-thumbnail iframe");
         if (!iframe) return;
         
-        // Get YouTube Video ID from iframe src
         const src = iframe.getAttribute("src");
         const match = src.match(/\/embed\/([^?#]+)/);
         if (!match) return;
@@ -106,12 +143,10 @@
         mediaType = "youtube";
         console.log("YouTube iframe detected, Video ID:", videoId);
         
-        // Add ID to iframe if missing
         if (!iframe.id) {
             iframe.id = "yt-player-iframe";
         }
         
-        // Load YouTube Iframe API if not loaded
         if (!window.YT) {
             const tag = document.createElement("script");
             tag.src = "https://www.youtube.com/iframe_api";
@@ -119,12 +154,10 @@
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
         
-        // Create player when API is ready
         window.onYouTubeIframeAPIReady = window.onYouTubeIframeAPIReady || function() {
             createYTPlayer(iframe.id);
         };
         
-        // If API is already loaded
         if (window.YT && window.YT.Player) {
             createYTPlayer(iframe.id);
         }
@@ -152,6 +185,7 @@
 
     // Expose public method to re-initialize sync logic dynamically
     window.initPlayerSync = function() {
+        stopPolling();
         initWordSpans();
         setupLocalAudio();
         if (!audioEl) {

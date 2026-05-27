@@ -266,6 +266,15 @@ def build_meelezen():
                     <span style="font-size: 1.2rem;">🎙️</span>
                 </div>
                 <audio id="meelezen-audio" class="meelezen-player" controls></audio>
+                <!-- Sync Adjuster -->
+                <div class="sync-adjuster" style="margin-top: 15px; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                    <span style="font-weight: 700; color: var(--text-gray); display: flex; align-items: center; gap: 6px;">⏱️ Verschuiving: <span id="sync-offset-val" style="color: var(--primary); font-weight: 800;">-8.8s</span></span>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="lang-btn" style="padding: 4px 10px; font-size: 0.8rem; margin: 0;" onclick="adjustSync(-0.5)">-0.5s</button>
+                        <button class="lang-btn" style="padding: 4px 10px; font-size: 0.8rem; margin: 0;" onclick="adjustSync(0.5)">+0.5s</button>
+                        <button class="lang-btn" style="padding: 4px 10px; font-size: 0.8rem; margin: 0; border-color: #cbd5e1; color: #64748b;" onclick="resetSync()">Reset</button>
+                    </div>
+                </div>
             </div>
             
             <!-- Dynamic Transcript Container -->
@@ -289,6 +298,26 @@ def build_meelezen():
 <script src="player_sync.js"></script>
 <script>
     let currentLang = 'nl';
+    window.currentAudioOffset = -8.8; // Standaard verschuiving voor 26 mei
+
+    window.adjustSync = function(amount) {{
+        window.currentAudioOffset = parseFloat((window.currentAudioOffset + amount).toFixed(1));
+        document.getElementById('sync-offset-val').textContent = window.currentAudioOffset + 's';
+        // Re-align highlights immediately
+        const audio = document.getElementById('meelezen-audio');
+        if (audio && window.initPlayerSync) {{
+            window.initPlayerSync();
+        }}
+    }};
+
+    window.resetSync = function() {{
+        window.currentAudioOffset = -8.8;
+        document.getElementById('sync-offset-val').textContent = window.currentAudioOffset + 's';
+        const audio = document.getElementById('meelezen-audio');
+        if (audio && window.initPlayerSync) {{
+            window.initPlayerSync();
+        }}
+    }};
 
     function selectDate(dateKey, audioSrc) {{
         // Set active button
