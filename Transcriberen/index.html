@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Transcriber Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ── AUTH MODAL ── */
+        #authOverlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .auth-card {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 40px; border-radius: var(--radius-lg); width: 100%; max-width: 400px;
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .auth-card h2 { margin-bottom: 24px; background: var(--accent-gradient); -webkit-background-clip: text; color: transparent; }
+        .auth-input {
+            width: 100%; padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem; margin-bottom: 16px; text-align: center;
+        }
+        .auth-btn {
+            width: 100%; padding: 14px; border: none; border-radius: var(--radius-md);
+            background: var(--accent-gradient); color: #fff; font-weight: 700; cursor: pointer; transition: var(--transition);
+        }
+        .auth-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 16px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .brand { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .brand-icon { background: var(--accent-gradient); -webkit-background-clip: text; color: transparent; }
+        .logout-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+        /* ── TABS ── */
+        .tabs { display: flex; overflow-x: auto; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; scrollbar-width: none; }
+        .tab { padding: 16px 20px; color: var(--text-muted); font-weight: 600; cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; white-space: nowrap; transition: var(--transition); }
+        .tab:hover { color: var(--text); }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* ── LAYOUT ── */
+        .container { display: grid; grid-template-columns: 320px 1fr; gap: 24px; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1; height: calc(100vh - 130px); }
+        
+        /* ── LEFT PANEL (LIST) ── */
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; overflow: hidden; }
+        .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .file-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
+        .file-item { padding: 12px; border-radius: var(--radius-md); margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: var(--transition); border: 1px solid transparent; }
+        .file-item:hover { background: rgba(255,255,255,0.05); }
+        .file-item.active { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); }
+        .file-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .file-item.active .file-icon { background: var(--accent-gradient); color: #fff; }
+        .file-name { font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* ── RIGHT PANEL (VIEWER) ── */
+        .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: 24px; overflow: hidden; position: relative; }
+        .empty-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); }
+        .empty-state h3 { color: var(--text); margin: 16px 0 8px; }
+        
+        .viewer-content { display: none; flex-direction: column; height: 100%; }
+        .viewer-content.active { display: flex; }
+        .viewer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .viewer-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+        .viewer-group { color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .copy-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
+        .audio-player { width: 100%; margin-bottom: 24px; outline: none; border-radius: 30px; }
+        
+        /* ── SUB-TABS (ANALYSIS) ── */
+        .sub-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; gap: 10px; overflow-x: auto; scrollbar-width: none;}
+        .sub-tab { padding: 10px 20px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; font-weight: 600; transition: var(--transition); white-space: nowrap;}
+        .sub-tab:hover { color: var(--text); }
+        .sub-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .pane { display: none; flex: 1; overflow-y: auto; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; font-size: 1.05rem; line-height: 1.7; white-space: pre-wrap;}
+        .pane.active { display: block; }
+        
+        .chat-container { display: flex; flex-direction: column; gap: 20px; }
+        .chat-bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; padding: 16px; position: relative; }
+        .chat-bubble.speaker-a { border-left: 4px solid var(--accent); }
+        .chat-bubble.speaker-b { border-left: 4px solid #10b981; }
+        .chat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-muted); }
+        .chat-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 12px; font-style: italic;}
+        .chat-correct { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; }
+        .analysis-box { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 12px; font-size: 0.95rem; margin-top: 10px; border-left: 2px solid rgba(255,255,255,0.1); }
+        .analysis-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start;}
+        .analysis-item:last-child { margin-bottom: 0; }
+        .icon-goed { color: #10b981; font-weight: bold; }
+        .icon-fout { color: #ef4444; font-weight: bold; }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH MODAL -->
+    <div id="authOverlay">
+        <div class="auth-card">
+            <h2>✨ Gemini Transcriber</h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Voer je toegangscode in om door te gaan.</p>
+            <input type="password" id="pwdInput" class="auth-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter') checkAuth()">
+            <button class="auth-btn" onclick="checkAuth()">Inloggen</button>
+            <p id="authError" style="color: #ef4444; margin-top: 16px; font-size: 0.9rem; display: none;">Foutieve code, probeer het opnieuw.</p>
+        </div>
+    </div>
+
+    <!-- APP CONTENT -->
+    <div id="appContent" style="display: none; flex-direction: column; height: 100vh;">
+        <div class="topbar">
+            <div class="brand">
+                <span class="brand-icon">✨</span> Gemini Transcriber
+            </div>
+            <button class="logout-btn" onclick="logout()">Uitloggen</button>
+        </div>
+
+        <div class="tabs" id="tabsWrap"></div>
+
+        <div class="container">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <span>Opnames</span>
+                    <span id="fileCount" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px; font-size: 0.8rem;">0</span>
+                </div>
+                <ul class="file-list" id="fileList"></ul>
+            </div>
+
+            <div class="viewer">
+                <div class="empty-state" id="emptyState">
+                    <div style="font-size: 4rem; opacity: 0.5;">📂</div>
+                    <h3>Geen bestand geselecteerd</h3>
+                    <p>Klik links op een audiobestand om het transcript te lezen.</p>
+                </div>
+
+                <div class="viewer-content" id="viewerContent">
+                    <div class="viewer-header">
+                        <div>
+                            <div class="viewer-group" id="vGroup">Groep</div>
+                            <div class="viewer-title" id="vTitle">bestand.mp3</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyText()">📋 Kopieer tekst</button>
+                    </div>
+                    
+                    <audio id="vAudio" class="audio-player" controls></audio>
+                    
+                    <div class="sub-tabs">
+                        <div class="sub-tab active" onclick="switchPane('pane-gesprek', this)">💬 Gesprek</div>
+                        <div class="sub-tab" onclick="switchPane('pane-feedback', this)">📝 Feedbackbrieven</div>
+                    </div>
+
+                    <div id="pane-gesprek" class="pane active"></div>
+                    <div id="pane-feedback" class="pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Import -->
+    <script src="data.js"></script>
+
+    <script>
+        // ── AUTHENTICATION ──
+        function checkAuth() {
+            const pwd = document.getElementById('pwdInput').value;
+            if (pwd === 'qwerty') {
+                sessionStorage.setItem('gemini_auth', '1');
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').style.display = 'flex';
+                initApp();
+            } else {
+                document.getElementById('authError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('gemini_auth');
+            location.reload();
+        }
+
+        // Check if already logged in
+        if (sessionStorage.getItem('gemini_auth') === '1') {
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('appContent').style.display = 'flex';
+            initApp();
+        } else {
+            document.getElementById('pwdInput').focus();
+        }
+
+        // ── APP LOGIC ──
+        const groepen = [
+            "Microsoft", "KPN", "Westport", "VDL", "Neways", "Shell", 
+            "Coca-Cola", "NS", "B-A1", "B-A2", "B-Alfa", "B-Z-route", "B-ONA"
+        ];
+        
+        let activeGroup = groepen[0];
+        let db = window.geminiData || {};
+
+        function initApp() {
+            renderTabs();
+            renderList();
+        }
+
+        function renderTabs() {
+            const wrap = document.getElementById('tabsWrap');
+            wrap.innerHTML = '';
+            groepen.forEach(grp => {
+                const count = (db[grp] || []).length;
+                const btn = document.createElement('button');
+                btn.className = `tab ${grp === activeGroup ? 'active' : ''}`;
+                btn.onclick = () => { activeGroup = grp; renderTabs(); renderList(); hideViewer(); };
+                btn.innerHTML = `${grp} <span style="opacity:0.5; font-size:0.8em; margin-left:4px;">(${count})</span>`;
+                wrap.appendChild(btn);
+            });
+        }
+
+        function renderList() {
+            const list = document.getElementById('fileList');
+            const files = db[activeGroup] || [];
+            document.getElementById('fileCount').textContent = files.length;
+            list.innerHTML = '';
+
+            if (files.length === 0) {
+                list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">Geen transcripties gevonden in deze groep. Voeg audio toe en run transcribe.py</div>`;
+                return;
+            }
+
+            files.forEach((file, idx) => {
+                const li = document.createElement('li');
+                li.className = 'file-item';
+                li.innerHTML = `
+                    <div class="file-icon">🎙️</div>
+                    <div class="file-name">${file.filename}</div>
+                `;
+                li.onclick = () => {
+                    document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
+                    li.classList.add('active');
+                    showViewer(file);
+                };
+                list.appendChild(li);
+            });
+        }
+
+        function showViewer(file) {
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('viewerContent').classList.add('active');
+            
+            document.getElementById('vGroup').textContent = activeGroup;
+            document.getElementById('vTitle').textContent = file.filename;
+            
+            const a = file.analyse || {};
+            
+            // Render Gesprek
+            let gHtml = '<div class="chat-container">';
+            if(a.gesprek && a.gesprek.length > 0) {
+                let knownSpeakers = {};
+                a.gesprek.forEach((lijn) => {
+                    if (!knownSpeakers[lijn.spreker]) {
+                        knownSpeakers[lijn.spreker] = Object.keys(knownSpeakers).length % 2 === 0 ? 'speaker-a' : 'speaker-b';
+                    }
+                    const sClass = knownSpeakers[lijn.spreker];
+                    
+                    gHtml += `<div class="chat-bubble ${sClass}">`;
+                    gHtml += `<div class="chat-name">${lijn.spreker}</div>`;
+                    gHtml += `<div class="chat-text">"${lijn.zin_fonetisch}"</div>`;
+                    gHtml += `<div class="chat-correct">Doel: ${lijn.zin_correct}</div>`;
+                    
+                    let uAnalyse = lijn.uitspraak_analyse || {};
+                    let gAnalyse = lijn.grammatica_analyse || {};
+                    
+                    if(uAnalyse.fout) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-fout">🗣️ ❌</span> <div><strong>Uitspraak:</strong> ${uAnalyse.fout}<br><span style="color:#94a3b8">${uAnalyse.uitleg}</span></div></div>`;
+                        gHtml += `</div>`;
+                    } else if(uAnalyse.goed) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-goed">🗣️ ✅</span> <div><strong>Uitspraak perfect!</strong></div></div>`;
+                        gHtml += `</div>`;
+                    }
+                    
+                    if(gAnalyse.fout) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-fout">📚 ❌</span> <div><strong>Grammatica:</strong> ${gAnalyse.fout}<br><span style="color:#94a3b8">${gAnalyse.uitleg}</span></div></div>`;
+                        gHtml += `</div>`;
+                    } else if(gAnalyse.goed) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-goed">📚 ✅</span> <div><strong>Grammatica perfect!</strong></div></div>`;
+                        gHtml += `</div>`;
+                    }
+                    
+                    gHtml += `</div>`;
+                });
+            } else {
+                gHtml += '<div style="color:var(--text-muted);">Geen gespreksanalyse beschikbaar. (Mogelijk een oud transcript of ruwe tekst: ' + (a.letterlijk_transcript || file.transcript) + ')</div>';
+            }
+            gHtml += '</div>';
+            document.getElementById('pane-gesprek').innerHTML = gHtml;
+            
+            let fHtml = '';
+            if(a.feedback_brieven && a.feedback_brieven.length > 0) {
+                a.feedback_brieven.forEach((fb, i) => {
+                    fHtml += `<div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--border);">`;
+                    fHtml += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">`;
+                    fHtml += `<strong style="color: var(--accent); font-size: 1.1rem;">Voor: ${fb.naam}</strong>`;
+                    fHtml += `<button class="copy-btn" onclick="copyFeedback('fb-text-${i}', this)" style="padding: 4px 10px; font-size: 0.8rem;">📋 Kopieer</button>`;
+                    fHtml += `</div>`;
+                    fHtml += `<div id="fb-text-${i}" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #e2e8f0;">${fb.brief}</div>`;
+                    fHtml += `</div>`;
+                });
+            } else {
+                fHtml = 'Geen feedbackbrieven beschikbaar.';
+            }
+            document.getElementById('pane-feedback').innerHTML = fHtml;
+            
+            // Audio player update
+            const player = document.getElementById('vAudio');
+            player.src = file.path;
+            player.load();
+        }
+
+        function hideViewer() {
+            document.getElementById('emptyState').style.display = 'flex';
+            document.getElementById('viewerContent').classList.remove('active');
+            document.getElementById('vAudio').pause();
+        }
+
+        function switchPane(id, el) {
+            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function copyText() {
+            const txt = document.getElementById('pane-gesprek').innerText;
+            navigator.clipboard.writeText(txt).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const old = btn.innerHTML;
+                btn.innerHTML = '✅ Gekopieerd!';
+                setTimeout(() => btn.innerHTML = old, 2000);
+            });
+        }
+
+        function copyFeedback(elementId, btn) {
+            const txt = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(txt).then(() => {
+                const old = btn.innerHTML;
+                btn.innerHTML = '✅ Gekopieerd!';
+                setTimeout(() => btn.innerHTML = old, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

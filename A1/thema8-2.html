@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 8.2: Woorden leren. Leerstrategieën en woordenschat uitbreiden.">
+    <title>8.2 Woorden leren — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4361ee; --theme-bg: rgba(67,97,238,0.08); }
+        .theme-groen  { --theme: #10b981; --theme-bg: rgba(16,185,129,0.08); }
+        .theme-oranje { --theme: #f59e0b; --theme-bg: rgba(245,158,11,0.08); }
+        .theme-paars  { --theme: #7209b7; --theme-bg: rgba(114,9,183,0.08); }
+        .theme-cyaan  { --theme: #06b6d4; --theme-bg: rgba(6,182,212,0.08); }
+        .theme-rood   { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.08); }
+        .theme-roze   { --theme: #ec4899; --theme-bg: rgba(236,72,153,0.08); }
+
+        /* Woordenschat-strategiekaartjes */
+        .strategie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .strategie-card {
+            background: var(--white);
+            border: 2px solid var(--border-med);
+            border-radius: var(--radius-md);
+            padding: 18px 16px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: default;
+        }
+        .strategie-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(67,97,238,0.12); }
+        .strategie-card .icon { font-size: 2rem; margin-bottom: 8px; }
+        .strategie-card .title { font-weight: 800; color: var(--primary); font-size: .95rem; margin-bottom: 6px; }
+        .strategie-card .desc { font-size: .82rem; color: var(--text-gray); line-height: 1.5; }
+
+        /* Flashcard widget */
+        .flashcard-wrap { perspective: 800px; margin: 20px 0; }
+        .flashcard {
+            width: 100%;
+            height: 160px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+        }
+        .flashcard-back {
+            background: var(--white);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            transform: rotateY(180deg);
+        }
+        .flashcard-front .fc-word { font-size: 1.5rem; font-weight: 800; }
+        .flashcard-front .fc-hint { font-size: .83rem; opacity: .8; margin-top: 6px; }
+        .flashcard-back .fc-trans { font-size: 1.3rem; font-weight: 700; }
+        .flashcard-back .fc-ex { font-size: .82rem; color: var(--text-gray); margin-top: 8px; font-style: italic; }
+        .fc-nav { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+    </style>
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="border-color:var(--secondary);color:var(--secondary);">🌓</button>
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema8.html" class="back-link">← Terug naar Thema 8</a>
+        <header class="page-header">
+            <div class="breadcrumb">
+                <a href="index.html">Thema's</a><span>›</span>
+                <a href="thema8.html">Thema 8</a><span>›</span>
+                <span>8.2</span>
+            </div>
+            <h1>📖 Woorden leren</h1>
+            <p class="subtitle" data-translate="subtitle">Leer slimme manieren om nieuwe woorden te onthouden. En oefen de woorden van thema 8!</p>
+        </header>
+
+        <!-- UITLEG: HOE WOORDEN LEREN -->
+        <section class="content-section animate-in">
+            <span class="section-label blue">💡 Hoe leer jij woorden?</span>
+            <h2 data-translate="stratTitle">Slimme leerstrategieën</h2>
+            <p>In de klas leer je nieuwe woorden. Maar hoe onthoud je ze thuis? Hier zijn goede manieren:</p>
+            <div class="strategie-grid">
+                <div class="strategie-card">
+                    <div class="icon">📒</div>
+                    <div class="title">Woordenschriftje</div>
+                    <div class="desc">Schrijf nieuwe woorden op in een schriftje. Gebruik het alfabet: bij <strong>a</strong> schrijf je <em>appel</em>, bij <strong>b</strong> schrijf je <em>boek</em>. Schrijf ook een vertaling of tekening erbij!</div>
+                </div>
+                <div class="strategie-card">
+                    <div class="icon">🃏</div>
+                    <div class="title">Flashcards</div>
+                    <div class="desc">Schrijf het Nederlandse woord op één kant van een kaartje. De vertaling of een tekening op de andere kant. Oefen elke dag!</div>
+                </div>
+                <div class="strategie-card">
+                    <div class="icon">🖼️</div>
+                    <div class="title">Tekening maken</div>
+                    <div class="desc">Teken een plaatje bij het woord. Je hoeft niet goed te kunnen tekenen! Een simpele tekening helpt je het woord te onthouden.</div>
+                </div>
+                <div class="strategie-card">
+                    <div class="icon">🔊</div>
+                    <div class="title">Hardop zeggen</div>
+                    <div class="desc">Zeg het woord hardop! Schrijf het op, spreek het uit, herhaal het 3 keer. Samen met een ander is nog leuker.</div>
+                </div>
+                <div class="strategie-card">
+                    <div class="icon">💻</div>
+                    <div class="title">Online oefenen</div>
+                    <div class="desc">Gebruik <strong>quizlet.com</strong> of <strong>wrts.nl</strong>. Maak een eigen woordenlijst en oefen digitaal. Gratis en makkelijk!</div>
+                </div>
+                <div class="strategie-card">
+                    <div class="icon">📱</div>
+                    <div class="title">Label dingen thuis</div>
+                    <div class="desc">Plak briefjes met Nederlandse namen op voorwerpen in je huis: <em>de tafel, de stoel, de koelkast</em>. Zo zie je ze elke dag!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLASHCARD WIDGET -->
+        <section class="content-section animate-in">
+            <span class="section-label purple">🃏 Flashcard oefening</span>
+            <h2>Oefen de woorden van thema 8.1</h2>
+            <p>Klik op de kaart om de vertaling te zien. Navigeer met de pijltjes.</p>
+            <div class="flashcard-wrap">
+                <div class="flashcard" id="fc-card" onclick="flipCard()">
+                    <div class="flashcard-front">
+                        <div class="fc-word" id="fc-word">de koe</div>
+                        <div class="fc-hint">Klik om te draaien! 👆</div>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="fc-trans" id="fc-trans">cow</div>
+                        <div class="fc-ex" id="fc-ex">De koe geeft melk.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fc-nav">
+                <button class="reset-btn" style="margin:0;" onclick="fcPrev()">← Vorige</button>
+                <span id="fc-counter" style="padding:8px 16px;font-weight:700;color:var(--text-gray);font-size:.9rem;">1 / 17</span>
+                <button class="reset-btn" style="margin:0;" onclick="fcNext()">Volgende →</button>
+            </div>
+        </section>
+
+        <!-- WOORDENLIJST -->
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden om te leren — thema 8</h2>
+            <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">🔊</th>
+                            <th>🇳🇱 Nederlands</th>
+                            <th id="th-lang">🇳🇱 Nederlands</th>
+                            <th data-translate="thExample">Voorbeeldzin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- OPDRACHTEN -->
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2>Oefeningen</h2>
+
+            <!-- 1: Sorteren op alfabet (kernactiviteit 8.2) -->
+            <div class="opdracht-card theme-blauw">
+                <h3>📒 Woordenschriftje — Op alfabet</h3>
+                <p class="instructie" data-translate="instrAlfabet">Dit is de kern van paragraaf 8.2! Schrijf elk woord in de goede alfabetische categorie. Kies de juiste letter.</p>
+                <div class="voorbeeld-blok" style="margin-bottom:14px;"><strong>Hoe werkt het?</strong><br>Elk woord hoort bij een letter van het alfabet. <em>boerderij</em> → <strong>b</strong> | <em>koe</em> → <strong>k</strong> | <em>varken</em> → <strong>v</strong></div>
+                <ul class="mc-list" id="mc-alfabet"></ul>
+                <span id="mc-alfabet-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMCAlfabet()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 2: Tekening raden (raadspel variant lesidee 8.2) -->
+            <div class="opdracht-card theme-groen">
+                <h3>🎨 Raad het woord!</h3>
+                <p class="instructie" data-translate="instrRaad">Lees de omschrijving en raad het woord. (Als in het klasspel: een cursist tekent, jij raadt!)</p>
+                <div class="puzzel-grid" id="puzzel-raad"></div>
+                <button class="check-btn" onclick="checkRaad()">Controleer</button>
+                <span id="raad-score" class="score-badge" style="display:none"></span>
+                <div class="puzzel-geheim" id="raad-geheim"></div>
+                <button class="reset-btn" onclick="resetRaad()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 3: MC leerstrategieën -->
+            <div class="opdracht-card theme-oranje">
+                <h3>💡 Wat is een goede strategie?</h3>
+                <p class="instructie" data-translate="instrStrategie">Lees de situatie en kies de beste leerstrategie.</p>
+                <ul class="mc-list" id="mc-strat"></ul>
+                <span id="mc-strat-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMCStrat()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 4: Invuloefening (woorden thema 8) -->
+            <div class="opdracht-card theme-paars">
+                <h3>Vul het goede woord in</h3>
+                <p class="instructie" data-translate="instrInvul">Kies het juiste woord en schrijf het in de zin. (Oefen de woordenschat van thema 8!)</p>
+                <ul class="invul-list" id="invul-list"></ul>
+                <button class="check-btn" onclick="checkInvul()">Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 5: Zin ordenen -->
+            <div class="opdracht-card theme-cyaan">
+                <h3>Zet de woorden in de juiste volgorde</h3>
+                <p class="instructie" data-translate="instrZO">Klik op de woorden in de goede volgorde. (herhaling zinsvolgorde + werkwoorden)</p>
+                <div id="zo-container"></div>
+                <button class="check-btn" onclick="checkZO()">Controleer</button>
+                <span id="zo-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetZO()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 6: Schrijfopdracht - eigen woordenschriftje -->
+            <div class="opdracht-card theme-rood">
+                <h3>📒 Maak jouw eigen woordenlijst</h3>
+                <p class="instructie" data-translate="instrSchrijf">Schrijf 5 nieuwe woorden die jij moeilijk vindt. Schrijf bij elk woord: de Nederlandse zin, de vertaling in jouw taal, en een tekening (beschrijf je tekening in woorden).</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="wa-btn" onclick="saveSchrijf()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Stuur naar docent via WhatsApp
+                </button>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 7: Spreken — Omschrijven -->
+            <div class="opdracht-card theme-roze">
+                <h3>🎤 Omschrijf een woord! (Dingesspel)</h3>
+                <div class="wa-section">
+                    <h4>📋 Opdracht (variant op lesidee 8.2 "Dinges")</h4>
+                    <p data-translate="sprekTekst">Kies een woord uit deze les. Omschrijf het woord in het Nederlands <em>zonder</em> het woord zelf te zeggen. Neem je beschrijving op!</p>
+                    <div class="voorbeeld-blok">
+                        <strong>Voorbeeld — woord: "koe"</strong><br>
+                        "Het is een groot dier. Het leeft op een boerderij. Het heeft vier poten. Het is zwart en wit. Het geeft melk. Wat is het?"
+                    </div>
+                    <div class="audio-recorder" style="margin-top:14px;">
+                        <div style="display:flex;gap:10px;margin-bottom:10px;">
+                            <button id="btn-record" class="reset-btn" style="margin:0;background:rgba(239,68,68,0.08);border-color:#ef4444;color:#ef4444;" onclick="startRecording()">🔴 Opnemen</button>
+                            <button id="btn-stop" class="reset-btn" style="margin:0;display:none;" onclick="stopRecording()">⏹ Stop</button>
+                        </div>
+                        <audio id="audio-playback" controls style="display:none;width:100%;height:40px;"></audio>
+                        <p id="rec-status" style="font-size:0.84rem;color:#ef4444;margin-top:5px;display:none;font-weight:700;">Opnemen...</p>
+                    </div>
+                    <a class="wa-btn" href="https://wa.me/31626211106?text=Thema%208.2%20%E2%80%94%20Spreken%20%F0%9F%8E%A4" target="_blank" rel="noopener">💬 Open WhatsApp</a>
+                    <p class="voice-tip">Tip: houd het microfoontje 🎙️ ingedrukt in WhatsApp en spreek je antwoord in!</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <a href="thema8-1.html" class="nav-btn">⬅️ Vorige (8.1)</a>
+            <a href="thema8-3.html" class="nav-btn">Volgende (8.3) ➡️</a>
+        </div>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+<script>
+function levenshtein(a,b){if(a.length===0)return b.length;if(b.length===0)return a.length;var m=[];for(var i=0;i<=b.length;i++){m[i]=[i];}for(var j=0;j<=a.length;j++){m[0][j]=j;}for(var i=1;i<=b.length;i++){for(var j=1;j<=a.length;j++){if(b[i-1]==a[j-1]){m[i][j]=m[i-1][j-1];}else{m[i][j]=Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);}}}return m[b.length][a.length];}
+
+// ── VOCAB + FLASHCARDS ──
+const VOCAB = [
+    {nl:'woorden leren',       en:'learning words',         tr:'kelime öğrenmek',        ar:'تعلم الكلمات',        ps:'کلمې زده کول',       ex:'Ik leer elke dag nieuwe woorden.'},
+    {nl:'het woord (woorden)', en:'word (words)',            tr:'kelime (kelimeler)',      ar:'الكلمة (الكلمات)',    ps:'کلمه (کلمې)',         ex:'Dit woord is moeilijk voor mij.'},
+    {nl:'onthouden',           en:'to remember',            tr:'hatırlamak',             ar:'يتذكر',               ps:'یادول',               ex:'Ik kan dit woord niet onthouden.'},
+    {nl:'herhalen',            en:'to repeat / revise',     tr:'tekrarlamak',            ar:'يكرر',                ps:'تکرارول',             ex:'Herhaal de woorden elke dag!'},
+    {nl:'opschrijven',         en:'to write down',          tr:'yazmak',                 ar:'يكتب',                ps:'لیکل',                ex:'Schrijf het woord op in je schriftje.'},
+    {nl:'het schriftje',       en:'notebook',               tr:'defter',                 ar:'الدفتر الصغير',       ps:'کوچنی کتابچه',        ex:'Ik heb een schriftje voor woorden.'},
+    {nl:'de tekening',         en:'drawing',                tr:'çizim',                  ar:'الرسم',               ps:'رسم',                 ex:'Maak een tekening bij het woord.'},
+    {nl:'de vertaling',        en:'translation',            tr:'çeviri',                 ar:'الترجمة',             ps:'ژباړه',               ex:'Schrijf de vertaling erbij.'},
+    {nl:'de categorie',        en:'category',               tr:'kategori',               ar:'الفئة',               ps:'کټګورۍ',              ex:'Zet woorden in categorieën.'},
+    {nl:'alfabetisch',         en:'alphabetical',           tr:'alfabetik',              ar:'أبجدي',               ps:'الفبایي',             ex:'Zet de woorden op alfabetische volgorde.'},
+    {nl:'de hobby',            en:'hobby',                  tr:'hobi',                   ar:'الهواية',             ps:'مشغله',               ex:'Mijn hobby is lezen.'},
+    {nl:'de sport',            en:'sport',                  tr:'spor',                   ar:'الرياضة',             ps:'سپورت',               ex:'Voetbal is een populaire sport.'},
+    {nl:'het spel (spellen)',  en:'game (games)',           tr:'oyun (oyunlar)',         ar:'اللعبة (الألعاب)',    ps:'لوبه (لوبې)',          ex:'Dit is een leuk spel!'},
+    {nl:'raden',               en:'to guess',               tr:'tahmin etmek',           ar:'يخمن',                ps:'اټکل کول',            ex:'Kun jij raden wat het woord is?'},
+    {nl:'omschrijven',         en:'to describe',            tr:'tanımlamak',             ar:'يصف',                 ps:'بیانول',              ex:'Omschrijf het woord zonder het te zeggen.'},
+];
+
+const UI = {
+    nl:{subtitle:'Leer slimme manieren om nieuwe woorden te onthouden.',vocabTitle:'Woorden om te leren — thema 8',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',stratTitle:'Slimme leerstrategieën',instrAlfabet:'Schrijf elk woord in de goede alfabetische categorie. Kies de juiste letter.',instrRaad:'Lees de omschrijving en raad het woord.',instrStrategie:'Lees de situatie en kies de beste leerstrategie.',instrInvul:'Kies het juiste woord en schrijf het in de zin.',instrZO:'Klik op de woorden in de goede volgorde.',instrSchrijf:'Schrijf 5 nieuwe woorden die jij moeilijk vindt.',sprekTekst:'Kies een woord. Omschrijf het zonder het woord te zeggen. Neem op!'},
+    en:{subtitle:'Learn smart ways to remember new words.',vocabTitle:'Words to learn — theme 8',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English',stratTitle:'Smart learning strategies',instrAlfabet:'Write each word in the right alphabetical category.',instrRaad:'Read the description and guess the word.',instrStrategie:'Read the situation and choose the best learning strategy.',instrInvul:'Choose the right word and write it in the sentence.',instrZO:'Click the words in the right order.',instrSchrijf:'Write 5 new words you find difficult.',sprekTekst:'Choose a word. Describe it without saying the word itself. Record yourself!'},
+    ar:{subtitle:'تعلم طرقاً ذكية لتذكر الكلمات الجديدة.',vocabTitle:'كلمات للتعلم — الموضوع 8',vocabIntro:'انقر على لغة أعلاه.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',stratTitle:'استراتيجيات تعلم ذكية',instrAlfabet:'اكتب كل كلمة في الفئة الأبجدية الصحيحة.',instrRaad:'اقرأ الوصف وخمن الكلمة.',instrStrategie:'اقرأ الوضع واختر أفضل استراتيجية تعلم.',instrInvul:'اختر الكلمة الصحيحة واكتبها في الجملة.',instrZO:'انقر على الكلمات بالترتيب الصحيح.',instrSchrijf:'اكتب 5 كلمات جديدة تجدها صعبة.',sprekTekst:'اختر كلمة. صفها دون قول الكلمة نفسها. سجل نفسك!'},
+    tr:{subtitle:'Yeni kelimeleri hatırlamak için akıllı yollar öğrenin.',vocabTitle:'Öğrenilecek kelimeler — konu 8',vocabIntro:'Çeviriyi görmek için bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',stratTitle:'Akıllı öğrenme stratejileri',instrAlfabet:'Her kelimeyi doğru alfabetik kategoriye yazın.',instrRaad:'Açıklamayı okuyun ve kelimeyi tahmin edin.',instrStrategie:'Durumu okuyun ve en iyi öğrenme stratejisini seçin.',instrInvul:'Doğru kelimeyi seçin ve cümleye yazın.',instrZO:'Kelimelere doğru sırayla tıklayın.',instrSchrijf:'Zor bulduğunuz 5 yeni kelime yazın.',sprekTekst:'Bir kelime seçin. Kelimeyi söylemeden açıklayın. Kaydedin!'},
+    ps:{subtitle:'د نوو کلمو د یادولو ذکي لارې زده کړئ.',vocabTitle:'د زده کولو لپاره کلمې — موضوع 8',vocabIntro:'د ژباړې لپاره پورته ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',stratTitle:'ذکي د زده کړې ستراتیژۍ',instrAlfabet:'هره کلمه د سم الفبایي کټګورۍ کې ولیکئ.',instrRaad:'توضیح ولولئ او کلمه اټکل کړئ.',instrStrategie:'وضعیت ولولئ او غوره د زده کړې ستراتیژي غوره کړئ.',instrInvul:'سمه کلمه غوره کړئ او جمله ته یې ولیکئ.',instrZO:'پر کلمو د سمې ترتیب سره کلیک وکړئ.',instrSchrijf:'5 نوې کلمې ولیکئ چې تاسو ستونزمنې موندئ.',sprekTekst:'یوه کلمه غوره کړئ. هغه پرته له کلمې ویلو بیانه کړئ.'},
+};
+
+// ── TTS ──
+let _ttsAudio=null;
+function speak(text){if(!text)return;if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}_ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+text)}`);_ttsAudio.play().catch(()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='nl-NL';u.rate=0.9;window.speechSynthesis.speak(u);}});}
+
+function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);});buildTable(l);}
+
+// ── FLASHCARDS ──
+const fcCards = [
+    {nl:'de koe',       en:'cow',         ex:'De koe geeft melk.'},
+    {nl:'het varken',   en:'pig',         ex:'Het varken knort.'},
+    {nl:'de kip',       en:'chicken',     ex:'De kip legt eieren.'},
+    {nl:'het schaap',   en:'sheep',       ex:'Het schaap heeft wol.'},
+    {nl:'het paard',    en:'horse',       ex:'Het paard loopt snel.'},
+    {nl:'de geit',      en:'goat',        ex:'De geit eet gras.'},
+    {nl:'de eend',      en:'duck',        ex:'De eend zwemt.'},
+    {nl:'het ei',       en:'egg',         ex:'De kip legt een ei.'},
+    {nl:'de melk',      en:'milk',        ex:'Ik drink melk.'},
+    {nl:'de stal',      en:'stable',      ex:'De paarden zijn in de stal.'},
+    {nl:'de boer',      en:'farmer',      ex:'De boer werkt hard.'},
+    {nl:'het veld',     en:'field',       ex:'De koeien staan op het veld.'},
+    {nl:'de boerderij', en:'farm',        ex:'Op de boerderij zijn veel dieren.'},
+    {nl:'het dier',     en:'animal',      ex:'Welk dier is dit?'},
+    {nl:'groot',        en:'big / large', ex:'Een koe is groot.'},
+    {nl:'klein',        en:'small',       ex:'Een kip is klein.'},
+    {nl:'hoeveel',      en:'how many',    ex:'Hoeveel koeien zie jij?'},
+];
+let fcIdx=0, fcFlipped=false;
+function showCard(){const c=fcCards[fcIdx];document.getElementById('fc-word').textContent=c.nl;document.getElementById('fc-trans').textContent=c.en;document.getElementById('fc-ex').textContent=c.ex;document.getElementById('fc-counter').textContent=`${fcIdx+1} / ${fcCards.length}`;const card=document.getElementById('fc-card');card.classList.remove('flipped');fcFlipped=false;}
+function flipCard(){const card=document.getElementById('fc-card');fcFlipped=!fcFlipped;card.classList.toggle('flipped',fcFlipped);}
+function fcNext(){fcIdx=(fcIdx+1)%fcCards.length;showCard();}
+function fcPrev(){fcIdx=(fcIdx-1+fcCards.length)%fcCards.length;showCard();}
+
+// ── OPDRACHT 1: MC ALFABET ──
+const mcAlfabetData=[
+    {vraag:'Onder welke letter schrijf jij "boerderij" in je woordenschriftje?', ant:'a', opties:{a:'b',b:'d',c:'r'}},
+    {vraag:'Onder welke letter schrijf jij "koe" in je woordenschriftje?',       ant:'b', opties:{a:'c',b:'k',c:'o'}},
+    {vraag:'Onder welke letter schrijf jij "varken" in je woordenschriftje?',    ant:'c', opties:{a:'a',b:'k',c:'v'}},
+    {vraag:'Onder welke letter schrijf jij "schaap" in je woordenschriftje?',    ant:'b', opties:{a:'a',b:'s',c:'p'}},
+    {vraag:'Onder welke letter schrijf jij "paard" in je woordenschriftje?',     ant:'c', opties:{a:'a',b:'d',c:'p'}},
+    {vraag:'Onder welke letter schrijf jij "eend" in je woordenschriftje?',      ant:'a', opties:{a:'e',b:'n',c:'d'}},
+    {vraag:'Welke van deze woorden komt het EERSTE in het alfabet?',             ant:'b', opties:{a:'varken',b:'boerderij',c:'kip'}},
+    {vraag:'Welke van deze woorden komt het LAATSTE in het alfabet?',            ant:'c', opties:{a:'koe',b:'paard',c:'schaap'}},
+];
+const mcAlfC={};
+function buildMCAlfabet(){const ul=document.getElementById('mc-alfabet');ul.innerHTML='';mcAlfabetData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" onclick="checkMCItem(this,'${k}','${item.ant}','mc-alfabet','mc-alfabet-score',${mcAlfabetData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCItem(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcAlfC[key])mcAlfC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcAlfC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.onclick&&b.onclick.toString().includes(`'${ant}'`))b.classList.add('correct');});}mcAlfC[key].done++;if(mcAlfC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcAlfC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMCAlfabet(){delete mcAlfC['mc-alfabet'];buildMCAlfabet();document.getElementById('mc-alfabet-score').style.display='none';}
+
+// ── OPDRACHT 2: RAAD HET WOORD ──
+const raadData=[
+    {hint:'Je schrijft nieuwe woorden hierin op. Elke letter heeft een eigen bladzijde.',    ans:'schriftje'},
+    {hint:'Dit doe je als je een woord wil verstaan in een andere taal.',                   ans:'vertaling'},
+    {hint:'Je schrijft het woord op een kaartje. Op de andere kant staat de betekenis.',    ans:'flashcard'},
+    {hint:'Dit doe je als je een woord wil onthouden: je zegt het drie keer!',             ans:'herhalen'},
+    {hint:'Je zet de woorden van A tot Z in volgorde.',                                    ans:'alfabetisch'},
+    {hint:'Je omschrijft een woord zonder het te zeggen. De anderen raden het!',           ans:'omschrijven'},
+];
+function buildRaad(){const g=document.getElementById('puzzel-raad');g.innerHTML='';raadData.forEach((item,i)=>{g.innerHTML+=`<div class="puzzel-row"><span class="puzzel-nr">${i+1}.</span><input type="text" id="raad-${i}" placeholder="…" autocomplete="off"><span class="puzzel-hint">${item.hint}</span></div>`;});}
+function checkRaad(){let good=0;raadData.forEach((item,i)=>{const inp=document.getElementById('raad-'+i);inp.classList.remove('correct','fout');const note=inp.parentNode.querySelector('.fz-note');if(note)note.remove();const d=levenshtein(inp.value.trim().toLowerCase(),item.ans);if(d===0){inp.classList.add('correct');good++;}else if(d<=2){inp.classList.add('correct');good++;const fz=document.createElement('span');fz.className='fz-note';fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;';fz.textContent=`Let op: ${item.ans}`;inp.parentNode.appendChild(fz);}else{inp.classList.add('fout');const wr=document.createElement('span');wr.className='fz-note';wr.style.cssText='color:#dc2626;font-size:0.82rem;margin-left:8px;';wr.textContent=`Antwoord: ${item.ans}`;inp.parentNode.appendChild(wr);}});const sc=document.getElementById('raad-score');sc.style.display='inline-block';sc.textContent=`${good}/${raadData.length}`;sc.className='score-badge '+(good===raadData.length?'score-goed':good>=4?'score-midden':'score-slecht');if(good===raadData.length){const gh=document.getElementById('raad-geheim');gh.style.display='block';gh.textContent='🎉 Geweldig! Je kent alle leerstrategieën!';}}
+function resetRaad(){buildRaad();document.getElementById('raad-score').style.display='none';document.getElementById('raad-geheim').style.display='none';}
+
+// ── OPDRACHT 3: MC STRATEGIE ──
+const mcStratData=[
+    {vraag:'Je wil het woord "boerderij" onthouden. Wat doe jij?',                           ant:'a', opties:{a:'Schrijf het op in je schriftje bij de letter B.',b:'Sla de les over.',c:'Kijk naar de televisie.'}},
+    {vraag:'Je kan het woord "koe" niet onthouden. Wat helpt?',                              ant:'b', opties:{a:'Stoppen met studeren.',b:'Maak een tekening van een koe bij het woord!',c:'Wachten tot de docent het zegt.'}},
+    {vraag:'Je wil weten hoe je een woord uitspreekt. Wat doe jij?',                        ant:'c', opties:{a:'Niets doen.',b:'De vertaling opzoeken.',c:'Klik op de 🔊 knop of zeg het hardop!'}},
+    {vraag:'Je wil thuis woorden oefenen. Welke website gebruik je? (Tip: lesidee 8.2)',    ant:'a', opties:{a:'quizlet.com of wrts.nl',b:'facebook.com',c:'youtube.com'}},
+    {vraag:'Je hebt een nieuw woord geleerd. Wanneer herhaal jij het?',                     ant:'b', opties:{a:'Nooit meer.',b:'Elke dag, een beetje!',c:'Alleen bij de toets.'}},
+];
+const mcStratC={};
+function buildMCStrat(){const ul=document.getElementById('mc-strat');ul.innerHTML='';mcStratData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" onclick="checkMCStrat(this,'${k}','${item.ant}','mc-strat','mc-strat-score',${mcStratData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCStrat(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcStratC[key])mcStratC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcStratC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.onclick&&b.onclick.toString().includes(`'${ant}'`))b.classList.add('correct');});}mcStratC[key].done++;if(mcStratC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcStratC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMCStrat(){delete mcStratC['mc-strat'];buildMCStrat();document.getElementById('mc-strat-score').style.display='none';}
+
+// ── OPDRACHT 4: INVUL ──
+const invulData=[
+    {zin:'Ik schrijf nieuwe woorden op in mijn ___.',                           voor:'schriftje', ant:'schriftje'},
+    {zin:'Om een woord te onthouden, kan je het elke dag ___.',                 voor:'herhalen',  ant:'herhalen'},
+    {zin:'Maak een ___ bij het woord — je hoeft niet goed te tekenen!',        voor:'tekening',  ant:'tekening'},
+    {zin:'Schrijf ook de ___ in jouw taal erbij.',                             voor:'vertaling', ant:'vertaling'},
+    {zin:'Je kunt woorden digitaal leren op quizlet.com met eigen ___.',        voor:'flashcards',ant:'flashcards'},
+    {zin:'Hoeveel nieuwe ___ heb jij vandaag geleerd?',                        voor:'woorden',   ant:'woorden'},
+];
+function buildInvul(){const ul=document.getElementById('invul-list');ul.innerHTML='';invulData.forEach((item,i)=>{ul.innerHTML+=`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="inv-${i}" autocomplete="off" placeholder="${item.voor}">`)} <em style="font-size:.82rem;color:var(--text-muted);">(${item.voor})</em></li>`;});}
+function checkInvul(){let good=0;invulData.forEach((item,i)=>{const inp=document.getElementById('inv-'+i);inp.classList.remove('correct','fout');const d=levenshtein(inp.value.trim().toLowerCase(),item.ant.toLowerCase());if(d<=1){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('invul-score');sc.style.display='inline-block';sc.textContent=`${good}/${invulData.length}`;sc.className='score-badge '+(good===invulData.length?'score-goed':good>=4?'score-midden':'score-slecht');}
+function resetInvul(){buildInvul();document.getElementById('invul-score').style.display='none';}
+
+// ── OPDRACHT 5: ZIN ORDENEN ──
+const zoData=[
+    {woorden:['Ik','leer','elke','dag','nieuwe','woorden','.'], correct:'Ik leer elke dag nieuwe woorden .'},
+    {woorden:['Schrijf','het','woord','op','in','je','schriftje','!'], correct:'Schrijf het woord op in je schriftje !'},
+    {woorden:['Kun','jij','dit','woord','raden','?'], correct:'Kun jij dit woord raden ?'},
+    {woorden:['Hij','herhaalt','de','woorden','elke','avond','.'], correct:'Hij herhaalt de woorden elke avond .'},
+];
+let zoPlaced=[];
+function buildZO(){const c=document.getElementById('zo-container');c.innerHTML='';zoPlaced=[];zoData.forEach((item,zi)=>{const sh=[...item.woorden].sort(()=>Math.random()-.5);zoPlaced[zi]=[];c.innerHTML+=`<div class="zo-container"><div class="zo-zin-nr">Zin ${zi+1}:</div><div class="zo-chips" id="zo-chips-${zi}">${sh.map(w=>`<span class="zo-chip" onclick="addZO(this,${zi})" data-w="${w}">${w}</span>`).join('')}</div><div class="zo-answer" id="zo-ans-${zi}"></div></div>`;});}
+function addZO(chip,zi){if(chip.classList.contains('used'))return;chip.classList.add('used');zoPlaced[zi].push(chip.dataset.w);const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const pl=document.createElement('span');pl.className='zo-placed';pl.textContent=chip.dataset.w;pl.onclick=()=>{const idx=zoPlaced[zi].lastIndexOf(chip.dataset.w);if(idx!==-1)zoPlaced[zi].splice(idx,1);chip.classList.remove('used');pl.remove();};ans.appendChild(pl);}
+function checkZO(){let good=0;zoData.forEach((item,zi)=>{const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');if(zoPlaced[zi].join(' ')===item.correct){ans.classList.add('correct-ans');good++;}else{ans.classList.add('fout-ans');}});const sc=document.getElementById('zo-score');sc.style.display='inline-block';sc.textContent=`${good}/${zoData.length}`;sc.className='score-badge '+(good===zoData.length?'score-goed':good>=2?'score-midden':'score-slecht');}
+function resetZO(){buildZO();document.getElementById('zo-score').style.display='none';}
+
+// ── OPDRACHT 6: SCHRIJVEN ──
+const schrijfVragen=[
+    'Woord 1: schrijf het Nederlandse woord, de vertaling in jouw taal, en een voorbeeldzin.',
+    'Woord 2: schrijf het Nederlandse woord, de vertaling in jouw taal, en een voorbeeldzin.',
+    'Woord 3: schrijf het Nederlandse woord, de vertaling in jouw taal, en een voorbeeldzin.',
+    'Woord 4: schrijf het Nederlandse woord, de vertaling in jouw taal, en een voorbeeldzin.',
+    'Woord 5: schrijf het Nederlandse woord, de vertaling in jouw taal, en een voorbeeldzin.',
+];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='';schrijfVragen.forEach((v,i)=>{ul.innerHTML+=`<li><label>${v}</label><textarea id="schrijf-${i}" placeholder="Bijv: koe | بقرة / inek | De koe geeft melk."></textarea></li>`;});}
+function saveSchrijf(){let msg=`*Thema 8.2 — Mijn woordenlijst*\n`;schrijfVragen.forEach((v,i)=>{const val=document.getElementById('schrijf-'+i).value.trim();msg+=`\n*${v}*\n${val||'(geen antwoord)'}`;});window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');}
+function resetSchrijf(){buildSchrijf();}
+
+// ── RECORDING ──
+let mediaRecorder=null,audioChunks=[];
+async function startRecording(){try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(stream);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:'audio/webm'});document.getElementById('audio-playback').src=URL.createObjectURL(blob);document.getElementById('audio-playback').style.display='block';};mediaRecorder.start();document.getElementById('btn-record').style.display='none';document.getElementById('btn-stop').style.display='inline-flex';document.getElementById('rec-status').style.display='block';}catch(e){alert('Geen toegang tot microfoon.');}}
+function stopRecording(){if(mediaRecorder)mediaRecorder.stop();document.getElementById('btn-record').style.display='inline-flex';document.getElementById('btn-stop').style.display='none';document.getElementById('rec-status').style.display='none';}
+
+// ── THEME ──
+(function(){const t=document.getElementById('theme-toggle');if(!t)return;t.addEventListener('click',()=>{let th=document.documentElement.getAttribute('data-theme')||'light';let nt=th==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',nt);localStorage.setItem('a1-theme',nt);});})();
+
+// ── INIT ──
+buildTable('nl');
+showCard();
+buildMCAlfabet();
+buildRaad();
+buildMCStrat();
+buildInvul();
+buildZO();
+buildSchrijf();
+</script>
+</body>
+</html>

@@ -100,23 +100,35 @@ def transcribe_audio(audio_path, model_name="medium"):
         print("Fallback naar 'base' model...")
         model = whisper.load_model("base")
 
-    # NT2 Prompt optimalisatie voor uitspraakfouten en grammaticafouten
-    # We geven Whisper de specifieke instructie om letterlijk te transcriberen en geen fouten te corrigeren!
+    # NT2 Prompt optimalisatie voor uitspraakfouten en grammaticafouten.
+    # Concrete voorbeelden van fouten helpen Whisper te begrijpen dat hij NIET mag corrigeren.
+    # Hoe specifieker de prompt, hoe meer Whisper de fouten letterlijk overneemt.
     nt2_prompt = (
-        "Dit is een geluidsopname van een buitenlandse cursist die Nederlands leert praten. "
-        "De cursist spreekt met een zwaar accent en maakt grammaticafouten, uitspraakfouten en zinsbouwfouten. "
-        "Transcribeer exact en letterlijk wat er wordt gezegd. Corrigeer de grammatica en de spelling NIET. "
-        "Behoud aarzelingen en herhalingen zoals 'eh', 'uh', 'ik drinken', 'de groene auto'."
+        "Dit is een geluidsopname van een buitenlandse cursist die Nederlands leert. "
+        "De cursist spreekt met een zwaar accent en maakt uitspraak- en grammaticafouten. "
+        "Transcribeer EXACT en LETTERLIJK wat er wordt gezegd, inclusief alle fouten. "
+        "Corrigeer NOOIT de grammatica, zinsbouw of woordkeuze van de spreker. "
+        "Voorbeelden van hoe de cursist spreekt: "
+        "'ik woon in een huis groot', 'hij hebben een auto', 'de tuin is groot niet klein', "
+        "'ik drinken koffie elke dag', 'mijn vader werken in fabriek'. "
+        "Behoud aarzelingen, herhalingen en stopwoorden zoals 'eh', 'uh', 'ja nee'. "
+        "Schrijf op wat je hoort, ook als het grammaticaal fout is."
     )
 
     print(f"Transcriberen van: {os.path.basename(audio_path)}")
     try:
-        # We zetten no_speech_threshold en logprob_threshold op None om te voorkomen dat Whisper zinnen skipt!
+        # condition_on_previous_text=False is CRUCIAAL: voorkomt dat Whisper vorige segmenten
+        # gebruikt om de volgende te 'verbeteren' (autocorrect gedrag over zinsgrenzen).
+        # beam_size=10 evalueert meer kandidaten voor nauwkeurigere woordinschatting.
+        # temperature=0 = volledig deterministisch, geen 'gok' woorden invullen.
+        # no_speech_threshold/logprob_threshold/compression_ratio_threshold=None = nooit segmenten overslaan.
         result = model.transcribe(
             audio_path,
             language="nl",
             initial_prompt=nt2_prompt,
-            temperature=0.2, # Laag genoeg voor stabiliteit, hoog genoeg om fouten niet weg te poetsen
+            temperature=0,
+            beam_size=10,
+            condition_on_previous_text=False,
             word_timestamps=False,
             no_speech_threshold=None,
             logprob_threshold=None,

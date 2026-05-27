@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 8.3: Voetbalclub Groen Gras. Lezen 2: een eenvoudig rooster lezen en vragen beantwoorden.">
+    <title>8.3 Voetbalclub Groen Gras — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4361ee; --theme-bg: rgba(67,97,238,0.08); }
+        .theme-groen  { --theme: #10b981; --theme-bg: rgba(16,185,129,0.08); }
+        .theme-oranje { --theme: #f59e0b; --theme-bg: rgba(245,158,11,0.08); }
+        .theme-paars  { --theme: #7209b7; --theme-bg: rgba(114,9,183,0.08); }
+        .theme-cyaan  { --theme: #06b6d4; --theme-bg: rgba(6,182,212,0.08); }
+        .theme-rood   { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.08); }
+        .theme-roze   { --theme: #ec4899; --theme-bg: rgba(236,72,153,0.08); }
+
+        /* Rooster tabel stijl */
+        .rooster-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 12px rgba(67,97,238,0.10);
+            margin: 18px 0;
+        }
+        .rooster-tabel {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .9rem;
+            min-width: 460px;
+        }
+        .rooster-tabel th {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: .03em;
+        }
+        .rooster-tabel td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dark);
+        }
+        .rooster-tabel tr:nth-child(even) td { background: var(--primary-light); }
+        .rooster-tabel tr:hover td { background: rgba(67,97,238,0.08); }
+        .rooster-tabel .dag-badge {
+            background: var(--primary);
+            color: #fff;
+            padding: 2px 9px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: .8rem;
+        }
+        .rooster-tabel .cat-sport { color: #10b981; font-weight: 700; }
+        .rooster-tabel .cat-jeugd { color: #f59e0b; font-weight: 700; }
+        .rooster-tabel .cat-senior { color: #4361ee; font-weight: 700; }
+        .rooster-tabel .cat-vrij { color: #7209b7; font-weight: 700; }
+    </style>
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="border-color:var(--secondary);color:var(--secondary);">🌓</button>
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema8.html" class="back-link">← Terug naar Thema 8</a>
+        <header class="page-header">
+            <div class="breadcrumb">
+                <a href="index.html">Thema's</a><span>›</span>
+                <a href="thema8.html">Thema 8</a><span>›</span>
+                <span>8.3</span>
+            </div>
+            <h1>⚽ Voetbalclub Groen Gras</h1>
+            <p class="subtitle" data-translate="subtitle">Leer een rooster lezen en vragen beantwoorden over tijden, dagen en activiteiten. (Lezen 2)</p>
+        </header>
+
+        <!-- WOORDENLIJST -->
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 8.3</h2>
+            <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">🔊</th>
+                            <th>🇳🇱 Nederlands</th>
+                            <th id="th-lang">🇳🇱 Nederlands</th>
+                            <th data-translate="thExample">Voorbeeldzin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- UITLEG -->
+        <section class="content-section animate-in">
+            <div id="uitleg-content"></div>
+        </section>
+
+        <!-- HET ROOSTER — VOETBALCLUB GROEN GRAS -->
+        <section class="content-section animate-in">
+            <span class="section-label green">📋 Het rooster — Voetbalclub Groen Gras</span>
+            <h2>Trainingstijden van de week</h2>
+            <p style="margin-bottom:12px;color:var(--text-gray);font-size:.9rem;">Lees het rooster goed. Je hebt dit nodig voor de opdrachten!</p>
+            <div class="rooster-wrap">
+                <table class="rooster-tabel" aria-label="Trainingsrooster Voetbalclub Groen Gras">
+                    <thead>
+                        <tr>
+                            <th>📅 Dag</th>
+                            <th>⏰ Tijd</th>
+                            <th>👥 Groep</th>
+                            <th>📍 Locatie</th>
+                            <th>👨‍🏫 Trainer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="dag-badge">Ma</span></td><td>17:00 – 18:30</td><td class="cat-jeugd">Jeugd (8-12 jaar)</td><td>Veld 1</td><td>Kees de Vries</td></tr>
+                        <tr><td><span class="dag-badge">Ma</span></td><td>19:00 – 20:30</td><td class="cat-senior">Senioren A</td><td>Veld 2</td><td>Ahmed Bakr</td></tr>
+                        <tr><td><span class="dag-badge">Di</span></td><td>17:30 – 19:00</td><td class="cat-jeugd">Jeugd (12-16 jaar)</td><td>Veld 1</td><td>Mia Jansen</td></tr>
+                        <tr><td><span class="dag-badge">Wo</span></td><td>10:00 – 11:30</td><td class="cat-vrij">Vrouwen team</td><td>Veld 3</td><td>Sara El Amine</td></tr>
+                        <tr><td><span class="dag-badge">Wo</span></td><td>19:30 – 21:00</td><td class="cat-senior">Senioren B</td><td>Veld 2</td><td>Jan Smit</td></tr>
+                        <tr><td><span class="dag-badge">Do</span></td><td>17:00 – 18:30</td><td class="cat-jeugd">Jeugd (6-8 jaar)</td><td>Veld 4</td><td>Kees de Vries</td></tr>
+                        <tr><td><span class="dag-badge">Za</span></td><td>10:00 – 12:00</td><td class="cat-senior">Senioren A</td><td>Veld 1</td><td>Ahmed Bakr</td></tr>
+                        <tr><td><span class="dag-badge">Za</span></td><td>14:00 – 16:00</td><td class="cat-vrij">Vrouwen team</td><td>Veld 3</td><td>Sara El Amine</td></tr>
+                        <tr><td><span class="dag-badge">Zo</span></td><td>11:00 – 13:00</td><td class="cat-senior">Senioren B</td><td>Veld 2</td><td>Jan Smit</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tip-blok"><strong>Let op!</strong> "17:00 – 18:30" = van vijf uur tot half zeven. Weet je nog hoe je de klok leest? (Zie thema 6.10-6.12)</div>
+        </section>
+
+        <!-- OPDRACHTEN -->
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2>Oefeningen</h2>
+
+            <!-- 1: MC begrip rooster -->
+            <div class="opdracht-card theme-blauw">
+                <h3>Vragen over het rooster (Lezen 2)</h3>
+                <p class="instructie" data-translate="instrMCRooster">Lees het rooster hierboven en kies het goede antwoord. Let goed op de dag, tijd en groep!</p>
+                <ul class="mc-list" id="mc-rooster"></ul>
+                <span id="mc-rooster-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMCRooster()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 2: Waar / niet waar -->
+            <div class="opdracht-card theme-groen">
+                <h3>Waar of niet waar?</h3>
+                <p class="instructie" data-translate="instrWNW">Lees de zin. Klopt het met het rooster? Klik op ✅ (waar) of ❌ (niet waar).</p>
+                <div id="wnw-container"></div>
+                <span id="wnw-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetWNW()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 3: Invuloefening rooster -->
+            <div class="opdracht-card theme-oranje">
+                <h3>Vul aan — gebruik het rooster</h3>
+                <p class="instructie" data-translate="instrInvulRooster">Lees het rooster en vul de ontbrekende informatie in.</p>
+                <ul class="invul-list" id="invul-rooster"></ul>
+                <button class="check-btn" onclick="checkInvulRooster()">Controleer</button>
+                <span id="invul-rooster-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvulRooster()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 4: MC woordenschat sport -->
+            <div class="opdracht-card theme-paars">
+                <h3>Sportwoordenschat — kies het goede antwoord</h3>
+                <p class="instructie" data-translate="instrMCSport">Kies de juiste betekenis of het juiste woord.</p>
+                <ul class="mc-list" id="mc-sport"></ul>
+                <span id="mc-sport-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMCSport()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 5: Zin ordenen -->
+            <div class="opdracht-card theme-cyaan">
+                <h3>Zet de woorden in de juiste volgorde</h3>
+                <p class="instructie" data-translate="instrZO">Klik op de woorden in de goede volgorde. (herhaling zinsvolgorde + kan/mag/wil)</p>
+                <div id="zo-container"></div>
+                <button class="check-btn" onclick="checkZO()">Controleer</button>
+                <span id="zo-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetZO()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 6: Schrijfopdracht -->
+            <div class="opdracht-card theme-rood">
+                <h3>Schrijf over sport en activiteiten</h3>
+                <p class="instructie" data-translate="instrSchrijf">Beantwoord de vragen over jouw eigen hobby's en sport. Gebruik het rooster als voorbeeld!</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="wa-btn" onclick="saveSchrijf()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Stuur naar docent via WhatsApp
+                </button>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 7: Spreken -->
+            <div class="opdracht-card theme-roze">
+                <h3>🎤 Vertel over je hobby of sport!</h3>
+                <div class="wa-section">
+                    <h4>📋 Opdracht (Spreken 1 — monoloog)</h4>
+                    <p data-translate="sprekTekst">Vertel over een sport of hobby. Beantwoord: Welke sport doe jij? Hoe vaak? Wanneer? Met wie? Hoe lang? Waarom vind jij het leuk?</p>
+                    <div class="voorbeeld-blok">
+                        <strong>Voorbeeld:</strong><br>
+                        "Ik doe graag aan voetbal. Ik train twee keer per week: op maandag en op woensdag. De training begint om zeven uur en duurt anderhalf uur. Ik speel met mijn vrienden. Ik vind voetbal leuk omdat ik van bewegen hou."
+                    </div>
+                    <div class="audio-recorder" style="margin-top:14px;">
+                        <div style="display:flex;gap:10px;margin-bottom:10px;">
+                            <button id="btn-record" class="reset-btn" style="margin:0;background:rgba(239,68,68,0.08);border-color:#ef4444;color:#ef4444;" onclick="startRecording()">🔴 Opnemen</button>
+                            <button id="btn-stop" class="reset-btn" style="margin:0;display:none;" onclick="stopRecording()">⏹ Stop</button>
+                        </div>
+                        <audio id="audio-playback" controls style="display:none;width:100%;height:40px;"></audio>
+                        <p id="rec-status" style="font-size:0.84rem;color:#ef4444;margin-top:5px;display:none;font-weight:700;">Opnemen...</p>
+                    </div>
+                    <a class="wa-btn" href="https://wa.me/31626211106?text=Thema%208.3%20%E2%80%94%20Spreken%20%F0%9F%8E%A4" target="_blank" rel="noopener">💬 Open WhatsApp</a>
+                    <p class="voice-tip">Tip: houd het microfoontje 🎙️ ingedrukt in WhatsApp en spreek je antwoord in!</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <a href="thema8-2.html" class="nav-btn">⬅️ Vorige (8.2)</a>
+            <span></span>
+        </div>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+<script>
+function levenshtein(a,b){if(a.length===0)return b.length;if(b.length===0)return a.length;var m=[];for(var i=0;i<=b.length;i++){m[i]=[i];}for(var j=0;j<=a.length;j++){m[0][j]=j;}for(var i=1;i<=b.length;i++){for(var j=1;j<=a.length;j++){if(b[i-1]==a[j-1]){m[i][j]=m[i-1][j-1];}else{m[i][j]=Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);}}}return m[b.length][a.length];}
+
+// ── VOCAB ──
+const VOCAB = [
+    {nl:'de voetbalclub',          en:'football club',         tr:'futbol kulübü',         ar:'نادي كرة القدم',     ps:'د فوتبال کلب',          ex:'Groen Gras is een voetbalclub.'},
+    {nl:'de training (trainingen)',en:'training session',      tr:'antrenman (antrenmanlar)',ar:'التدريب',           ps:'تمرین',                  ex:'De training is op maandag.'},
+    {nl:'de trainer',              en:'trainer / coach',       tr:'antrenör',              ar:'المدرب',             ps:'روزونکی',                ex:'Ahmed Bakr is de trainer.'},
+    {nl:'het veld (velden)',       en:'field (fields)',        tr:'saha (sahalar)',         ar:'الملعب',             ps:'ډګر',                    ex:'We spelen op veld 2.'},
+    {nl:'het rooster',             en:'schedule / timetable',  tr:'program / çizelge',     ar:'الجدول الزمني',      ps:'مهالویش',                ex:'Kijk op het rooster voor de tijden.'},
+    {nl:'de groep (groepen)',      en:'group (groups)',        tr:'grup (gruplar)',         ar:'المجموعة',           ps:'ډله',                    ex:'De jeugdgroep traint op donderdag.'},
+    {nl:'de jeugd',                en:'youth',                 tr:'gençlik',               ar:'الشباب',             ps:'ځوانان',                 ex:'De jeugd traint op donderdag.'},
+    {nl:'de senioren',             en:'seniors / adults',      tr:'yetişkinler / büyükler', ar:'البالغون / كبار السن',ps:'مشران',                  ex:'De senioren trainen op woensdag avond.'},
+    {nl:'het vrouwenteam',         en:'women\'s team',         tr:'kadınlar takımı',        ar:'فريق السيدات',       ps:'د میرمنو ټیم',           ex:'Het vrouwenteam speelt op zaterdag.'},
+    {nl:'hoelang',                 en:'how long',              tr:'ne kadar süre',          ar:'كم من الوقت',        ps:'د اوږدوالي',             ex:'Hoelang duurt de training?'},
+    {nl:'hoe vaak',                en:'how often',             tr:'ne sıklıkla',            ar:'كم مرة',             ps:'د ډیروالي',              ex:'Hoe vaak train jij per week?'},
+    {nl:'per week',                en:'per week',              tr:'haftada / hafta başına', ar:'في الأسبوع',         ps:'اونۍ کې',                ex:'Ik train twee keer per week.'},
+    {nl:'beginnen',                en:'to start',              tr:'başlamak',               ar:'يبدأ',               ps:'پیلیدل',                 ex:'De training begint om vijf uur.'},
+    {nl:'eindigen',                en:'to finish / end',       tr:'bitmek',                 ar:'ينتهي',              ps:'پای ته رسیدل',           ex:'De training eindigt om half zeven.'},
+    {nl:'kunnen (ik kan)',         en:'can / to be able to',   tr:'yapabilmek',             ar:'يستطيع',             ps:'کولی شول',               ex:'Ik kan op maandag trainen.'},
+    {nl:'mogen (ik mag)',          en:'may / to be allowed to',tr:'olabilmek / izin almak', ar:'يُسمح له',           ps:'اجازه لرل',              ex:'De jeugd mag op veld 4 spelen.'},
+];
+
+const UI = {
+    nl:{subtitle:'Leer een rooster lezen en vragen beantwoorden.',vocabTitle:'Woorden van paragraaf 8.3',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands',instrMCRooster:'Lees het rooster hierboven en kies het goede antwoord.',instrWNW:'Lees de zin. Klopt het met het rooster?',instrInvulRooster:'Lees het rooster en vul de ontbrekende informatie in.',instrMCSport:'Kies de juiste betekenis of het juiste woord.',instrZO:'Klik op de woorden in de goede volgorde.',instrSchrijf:'Beantwoord de vragen over jouw eigen hobby\'s en sport.',sprekTekst:'Vertel over een sport of hobby. Beantwoord: Welke sport? Hoe vaak? Wanneer? Met wie? Waarom?'},
+    en:{subtitle:'Learn to read a schedule and answer questions.',vocabTitle:'Words of paragraph 8.3',vocabIntro:'Click a language above.',thExample:'Example sentence',thLang:'🇬🇧 English',instrMCRooster:'Read the schedule above and choose the right answer.',instrWNW:'Read the sentence. Does it match the schedule?',instrInvulRooster:'Read the schedule and fill in the missing information.',instrMCSport:'Choose the correct meaning or word.',instrZO:'Click the words in the right order.',instrSchrijf:'Answer questions about your own hobbies and sport.',sprekTekst:'Tell about a sport or hobby. Answer: What sport? How often? When? With whom? Why?'},
+    ar:{subtitle:'تعلم قراءة جدول والإجابة على الأسئلة.',vocabTitle:'كلمات الفقرة 8.3',vocabIntro:'انقر على لغة أعلاه.',thExample:'جملة مثال',thLang:'🇸🇦 العربية',instrMCRooster:'اقرأ الجدول أعلاه واختر الإجابة الصحيحة.',instrWNW:'اقرأ الجملة. هل تتطابق مع الجدول؟',instrInvulRooster:'اقرأ الجدول واملأ المعلومات الناقصة.',instrMCSport:'اختر المعنى الصحيح أو الكلمة الصحيحة.',instrZO:'انقر على الكلمات بالترتيب الصحيح.',instrSchrijf:'أجب على أسئلة حول هواياتك ورياضتك.',sprekTekst:'أخبر عن رياضة أو هواية. أجب: ما الرياضة؟ كم مرة؟ متى؟ مع من؟ لماذا؟'},
+    tr:{subtitle:'Bir programı okumayı ve sorulara cevap vermeyi öğrenin.',vocabTitle:'Paragraf 8.3\'ün kelimeleri',vocabIntro:'Çeviri için bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe',instrMCRooster:'Yukarıdaki programı okuyun ve doğru cevabı seçin.',instrWNW:'Cümleyi okuyun. Programla uyuşuyor mu?',instrInvulRooster:'Programı okuyun ve eksik bilgileri doldurun.',instrMCSport:'Doğru anlamı veya kelimeyi seçin.',instrZO:'Kelimelere doğru sırayla tıklayın.',instrSchrijf:'Kendi hobi ve spor hakkında sorulara yanıtlayın.',sprekTekst:'Bir spor veya hobi hakkında anlatın. Yanıtlayın: Hangi spor? Ne sıklıkla? Ne zaman? Kiminle? Neden?'},
+    ps:{subtitle:'د مهالویش لوستل او د پوښتنو ځوابول زده کړئ.',vocabTitle:'د پراګراف 8.3 کلمې',vocabIntro:'د ژباړې لپاره پورته ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو',instrMCRooster:'پورته مهالویش ولولئ او سم ځواب غوره کړئ.',instrWNW:'جمله ولولئ. ایا دا د مهالویش سره سمون خوري؟',instrInvulRooster:'مهالویش ولولئ او ورک شوي معلومات ډک کړئ.',instrMCSport:'سمه مانا یا کلمه غوره کړئ.',instrZO:'پر کلمو د سمې ترتیب سره کلیک وکړئ.',instrSchrijf:'د خپل مشغلو او سپورت باندې پوښتنو ته ځواب ورکړئ.',sprekTekst:'د یوه سپورت یا مشغلې باندې خبرې وکړئ.'},
+};
+
+const UITLEG = {
+    nl:`<div class="uitleg-box"><h3>⚽ Een rooster lezen (Lezen 2)</h3><p>Een <strong>rooster</strong> geeft informatie over tijden, dagen en activiteiten. Je vindt roosters bij sportclubs, scholen, winkels en het openbaar vervoer.</p><p style="margin-top:8px;">Als je een rooster leest, stel je jezelf deze vragen:</p><ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2"><li>📅 <strong>Wanneer?</strong> Op welke dag? Om hoe laat?</li><li>👥 <strong>Wie?</strong> Welke groep? Welke trainer?</li><li>📍 <strong>Waar?</strong> Op welk veld / in welke zaal?</li><li>⏱️ <strong>Hoe lang?</strong> Van … uur tot … uur.</li></ul></div><div class="voorbeeld-blok"><strong>Herhaling — kunnen, mogen, willen (thema 7.4 + 6.9):</strong><br>✅ <strong>kunnen</strong> = in staat zijn: <em>Ik kan op maandag.</em><br>✅ <strong>mogen</strong> = toestemming hebben: <em>De kinderen mogen op veld 4.</em><br>✅ <strong>willen</strong> = wensen: <em>Ik wil graag bij de voetbalclub.</em></div><div class="tip-blok"><strong>Let op!</strong> In een rooster staat de tijd als "17:00 – 18:30". Dit spreek je uit als <em>vijf uur tot half zeven</em>. Onthoud: half X = 30 minuten vóór X!</div>`,
+    en:`<div class="uitleg-box"><h3>⚽ Reading a schedule (Lezen 2)</h3><p>A <strong>rooster</strong> (schedule) gives information about times, days and activities. You find schedules at sports clubs, schools, shops and public transport.</p><p style="margin-top:8px;">When you read a schedule, ask yourself:</p><ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2"><li>📅 <strong>When?</strong> Which day? What time?</li><li>👥 <strong>Who?</strong> Which group? Which trainer?</li><li>📍 <strong>Where?</strong> Which field / room?</li><li>⏱️ <strong>How long?</strong> From … to …</li></ul></div><div class="voorbeeld-blok"><strong>Reminder — kunnen/mogen/willen:</strong><br>✅ <strong>kunnen</strong> = to be able to: <em>I can on Monday.</em><br>✅ <strong>mogen</strong> = to be allowed: <em>Children may play on field 4.</em><br>✅ <strong>willen</strong> = to want: <em>I want to join the club.</em></div>`,
+    ar:`<div class="uitleg-box" dir="rtl"><h3>⚽ قراءة جدول (Lezen 2)</h3><p>يعطي <strong>الجدول</strong> معلومات عن الأوقات والأيام والأنشطة. ستجد الجداول في الأندية الرياضية والمدارس والمحلات والنقل العام.</p><p style="margin-top:8px;">عندما تقرأ جدولاً، اسأل نفسك:</p><ul style="margin:.6rem 0;padding-right:1.3em;font-size:.93rem;line-height:2.2"><li>📅 <strong>متى؟</strong> أي يوم؟ في أي وقت؟</li><li>👥 <strong>من؟</strong> أي مجموعة؟ أي مدرب؟</li><li>📍 <strong>أين؟</strong> أي ملعب؟</li></ul></div>`,
+    tr:`<div class="uitleg-box"><h3>⚽ Program okuma (Lezen 2)</h3><p>Bir <strong>rooster</strong> (program), zamanlar, günler ve aktiviteler hakkında bilgi verir. Spor kulüplerinde, okullarda, mağazalarda ve toplu taşımada programlar bulursunuz.</p><p style="margin-top:8px;">Bir programı okurken kendinize şunu sorun:</p><ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2"><li>📅 <strong>Ne zaman?</strong> Hangi gün? Saat kaçta?</li><li>👥 <strong>Kim?</strong> Hangi grup? Hangi antrenör?</li><li>📍 <strong>Nerede?</strong> Hangi saha?</li></ul></div>`,
+    ps:`<div class="uitleg-box" dir="rtl"><h3>⚽ د مهالویش لوستل (Lezen 2)</h3><p>یو <strong>مهالویش</strong> د وخت، ورځو او فعالیتونو معلومات ورکوي. تاسو مهالویشونه د سپورت کلبونو، ښوونځیو، دکانونو او عامه ترانسپورت کې موندلی شئ.</p></div>`,
+};
+
+// ── TTS ──
+let _ttsAudio=null;
+function speak(text){if(!text)return;if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}_ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+text)}`);_ttsAudio.play().catch(()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='nl-NL';u.rate=0.9;window.speechSynthesis.speak(u);}});}
+
+function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);});buildTable(l);document.getElementById('uitleg-content').innerHTML=l==='nl'?UITLEG.nl:(UITLEG[l]?UITLEG.nl+'<div style="margin-top:18px;padding-top:14px;border-top:2px dashed rgba(67,97,238,0.2);">'+UITLEG[l]+'</div>':UITLEG.nl);}
+
+// ── OPDRACHT 1: MC ROOSTER ──
+const mcRoosterData=[
+    {vraag:'Op welke dag trainen de Senioren A?',                                     ant:'c', opties:{a:'Dinsdag en donderdag',b:'Maandag en dinsdag',c:'Maandag en zaterdag'}},
+    {vraag:'Hoe laat begint de jeugdtraining voor 8-12 jaar?',                       ant:'a', opties:{a:'Om 17:00 (vijf uur)',b:'Om 17:30 (half zes)',c:'Om 19:00 (zeven uur)'}},
+    {vraag:'Wie is de trainer van het vrouwenteam?',                                  ant:'b', opties:{a:'Jan Smit',b:'Sara El Amine',c:'Kees de Vries'}},
+    {vraag:'Op welk veld trainen de Senioren B?',                                    ant:'c', opties:{a:'Veld 1',b:'Veld 3',c:'Veld 2'}},
+    {vraag:'Hoe laat eindigt de training van de Senioren A op zaterdag?',            ant:'b', opties:{a:'Om 10:00',b:'Om 12:00',c:'Om 14:00'}},
+    {vraag:'Hoe lang duurt de training van de jeugd (6-8 jaar) op donderdag?',      ant:'a', opties:{a:'Anderhalf uur (1,5 uur)',b:'Twee uur',c:'Één uur'}},
+    {vraag:'Op welke dag kan het vrouwenteam TWEE keer trainen?',                    ant:'c', opties:{a:'Dinsdag',b:'Donderdag',c:'Woensdag en zaterdag'}},
+    {vraag:'Welke groep traint op dinsdag?',                                         ant:'b', opties:{a:'Senioren A',b:'Jeugd 12-16 jaar',c:'Vrouwenteam'}},
+];
+const mcRC={};
+function buildMCRooster(){const ul=document.getElementById('mc-rooster');ul.innerHTML='';mcRoosterData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" onclick="checkMCItem(this,'${k}','${item.ant}','mc-rooster','mc-rooster-score',${mcRoosterData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCItem(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcRC[key])mcRC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcRC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.onclick&&b.onclick.toString().includes(`'${ant}'`))b.classList.add('correct');});}mcRC[key].done++;if(mcRC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcRC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMCRooster(){delete mcRC['mc-rooster'];buildMCRooster();document.getElementById('mc-rooster-score').style.display='none';}
+
+// ── OPDRACHT 2: WAAR / NIET WAAR ──
+const wnwData=[
+    {zin:'De training van Senioren A begint op maandagavond om 19:00.',    ans:true},
+    {zin:'Het vrouwenteam traint op dinsdag.',                              ans:false},
+    {zin:'Kees de Vries is de trainer van de jeugd (6-8 jaar).',           ans:true},
+    {zin:'De Senioren B trainen op zaterdag.',                              ans:false},
+    {zin:'De jeugd (8-12 jaar) traint op veld 1.',                         ans:true},
+    {zin:'De training op woensdag voor het vrouwenteam begint om 14:00.', ans:false},
+    {zin:'Ahmed Bakr is de trainer van Senioren A.',                       ans:true},
+    {zin:'Er is een training op vrijdag.',                                  ans:false},
+];
+function buildWNW(){const c=document.getElementById('wnw-container');c.innerHTML='';wnwData.forEach((item,i)=>{c.innerHTML+=`<div class="wnw-item" id="wnw-item-${i}" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;background:var(--white);"><span style="flex:1;font-size:.9rem;">${i+1}. ${item.zin}</span><button class="mc-btn" style="min-width:50px;" onclick="answerWNW(${i},true,this)">✅ Waar</button><button class="mc-btn" style="min-width:80px;" onclick="answerWNW(${i},false,this)">❌ Niet waar</button></div>`;});}
+const wnwC={done:0,score:0};
+function answerWNW(i,keuze,btn){const item=wnwData[i];const row=document.getElementById('wnw-item-'+i);if(row.dataset.done)return;row.dataset.done='1';const btns=row.querySelectorAll('button');btns.forEach(b=>b.disabled=true);if(!wnwC.score&&wnwC.score!==0)wnwC.score=0;if(keuze===item.ans){btn.style.background='rgba(16,185,129,0.15)';btn.style.borderColor='#10b981';btn.style.color='#059669';wnwC.score++;}else{btn.style.background='rgba(239,68,68,0.1)';btn.style.borderColor='#ef4444';btn.style.color='#dc2626';btns.forEach(b=>{if((b.textContent.includes('Waar')&&item.ans)||(b.textContent.includes('Niet waar')&&!item.ans)){b.style.background='rgba(16,185,129,0.15)';b.style.borderColor='#10b981';b.style.color='#059669';}});}wnwC.done++;if(wnwC.done===wnwData.length){const sc=document.getElementById('wnw-score');sc.style.display='inline-block';sc.textContent=`${wnwC.score}/${wnwData.length}`;sc.className='score-badge '+(wnwC.score===wnwData.length?'score-goed':wnwC.score>=5?'score-midden':'score-slecht');}}
+function resetWNW(){wnwC.done=0;wnwC.score=0;buildWNW();document.getElementById('wnw-score').style.display='none';}
+
+// ── OPDRACHT 3: INVUL ROOSTER ──
+const invulRoosterData=[
+    {zin:'De jeugd (8-12 jaar) traint op maandag van 17:00 tot ___.', ans:'18:30', alts:['18:30','half zeven']},
+    {zin:'De trainer van Senioren B is ___.',                          ans:'Jan Smit', alts:['jan smit','jan']},
+    {zin:'Het vrouwenteam traint op woensdag op veld ___.',           ans:'3', alts:['3','drie']},
+    {zin:'De training van de jeugd (6-8 jaar) is op ___ dag.',       ans:'donderdag', alts:['donderdag']},
+    {zin:'De Senioren B trainen op zaterdag van 11:00 tot ___.',      ans:'13:00', alts:['13:00','één uur','een uur']},
+    {zin:'Ahmed Bakr is de trainer van Senioren ___.',                ans:'A', alts:['a','A']},
+];
+function buildInvulRooster(){const ul=document.getElementById('invul-rooster');ul.innerHTML='';invulRoosterData.forEach((item,i)=>{ul.innerHTML+=`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="invr-${i}" autocomplete="off" placeholder="…">`)}</li>`;});}
+function checkInvulRooster(){let good=0;invulRoosterData.forEach((item,i)=>{const inp=document.getElementById('invr-'+i);inp.classList.remove('correct','fout');const val=inp.value.trim().toLowerCase();const match=item.alts.some(a=>levenshtein(val,a.toLowerCase())<=1);if(match){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('invul-rooster-score');sc.style.display='inline-block';sc.textContent=`${good}/${invulRoosterData.length}`;sc.className='score-badge '+(good===invulRoosterData.length?'score-goed':good>=4?'score-midden':'score-slecht');}
+function resetInvulRooster(){buildInvulRooster();document.getElementById('invul-rooster-score').style.display='none';}
+
+// ── OPDRACHT 4: MC SPORT ──
+const mcSportData=[
+    {vraag:'Wat betekent "de training"?',                                   ant:'b', opties:{a:'De wedstrijd',b:'De oefensessie bij een club',c:'Het rooster'}},
+    {vraag:'Wat betekent "hoe vaak"?',                                      ant:'c', opties:{a:'Hoe lang',b:'Wanneer',c:'Hoeveel keer'}},
+    {vraag:'Wat betekent "per week"?',                                      ant:'a', opties:{a:'In één week',b:'Per maand',c:'Elke dag'}},
+    {vraag:'"Ik kan op maandag." — Wat betekent kunnen hier?',             ant:'b', opties:{a:'Ik wil.',b:'Ik ben in staat / ik heb tijd.',c:'Ik moet.'}},
+    {vraag:'"De kinderen mogen op veld 4 spelen." — Wat is het subject?',  ant:'a', opties:{a:'De kinderen',b:'Veld 4',c:'Spelen'}},
+    {vraag:'Welke twee woorden uit de woordenlijst zijn tegengesteld?',     ant:'c', opties:{a:'rooster — veld',b:'trainer — groep',c:'beginnen — eindigen'}},
+];
+const mcSC={};
+function buildMCSport(){const ul=document.getElementById('mc-sport');ul.innerHTML='';mcSportData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" onclick="checkMCSport(this,'${k}','${item.ant}','mc-sport','mc-sport-score',${mcSportData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCSport(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcSC[key])mcSC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcSC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.onclick&&b.onclick.toString().includes(`'${ant}'`))b.classList.add('correct');});}mcSC[key].done++;if(mcSC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcSC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMCSport(){delete mcSC['mc-sport'];buildMCSport();document.getElementById('mc-sport-score').style.display='none';}
+
+// ── OPDRACHT 5: ZIN ORDENEN ──
+const zoData=[
+    {woorden:['De','training','begint','op','maandag','om','vijf','uur','.'], correct:'De training begint op maandag om vijf uur .'},
+    {woorden:['Ik','kan','twee','keer','per','week','trainen','.'],           correct:'Ik kan twee keer per week trainen .'},
+    {woorden:['Mogen','de','kinderen','op','veld','4','spelen','?'],         correct:'Mogen de kinderen op veld 4 spelen ?'},
+    {woorden:['Wij','willen','graag','lid','worden','van','de','club','.'],  correct:'Wij willen graag lid worden van de club .'},
+];
+let zoPlaced=[];
+function buildZO(){const c=document.getElementById('zo-container');c.innerHTML='';zoPlaced=[];zoData.forEach((item,zi)=>{const sh=[...item.woorden].sort(()=>Math.random()-.5);zoPlaced[zi]=[];c.innerHTML+=`<div class="zo-container"><div class="zo-zin-nr">Zin ${zi+1}:</div><div class="zo-chips" id="zo-chips-${zi}">${sh.map(w=>`<span class="zo-chip" onclick="addZO(this,${zi})" data-w="${w}">${w}</span>`).join('')}</div><div class="zo-answer" id="zo-ans-${zi}"></div></div>`;});}
+function addZO(chip,zi){if(chip.classList.contains('used'))return;chip.classList.add('used');zoPlaced[zi].push(chip.dataset.w);const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const pl=document.createElement('span');pl.className='zo-placed';pl.textContent=chip.dataset.w;pl.onclick=()=>{const idx=zoPlaced[zi].lastIndexOf(chip.dataset.w);if(idx!==-1)zoPlaced[zi].splice(idx,1);chip.classList.remove('used');pl.remove();};ans.appendChild(pl);}
+function checkZO(){let good=0;zoData.forEach((item,zi)=>{const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');if(zoPlaced[zi].join(' ')===item.correct){ans.classList.add('correct-ans');good++;}else{ans.classList.add('fout-ans');}});const sc=document.getElementById('zo-score');sc.style.display='inline-block';sc.textContent=`${good}/${zoData.length}`;sc.className='score-badge '+(good===zoData.length?'score-goed':good>=2?'score-midden':'score-slecht');}
+function resetZO(){buildZO();document.getElementById('zo-score').style.display='none';}
+
+// ── OPDRACHT 6: SCHRIJVEN ──
+const schrijfVragen=['Welke sport of hobby doe jij? Beschrijf het in 2-3 zinnen.','Hoe vaak per week doe je dit? Op welke dag en hoe laat?','Doe je het alleen of met anderen? Met wie?','Wil jij lid worden van een sportclub? Welke? Waarom (niet)?'];
+function buildSchrijf(){const ul=document.getElementById('schrijf1');ul.innerHTML='';schrijfVragen.forEach((v,i)=>{ul.innerHTML+=`<li><label>${i+1}. ${v}</label><textarea id="schrijf-${i}" placeholder="Schrijf hier je antwoord…"></textarea></li>`;});}
+function saveSchrijf(){let msg=`*Thema 8.3 — Schrijfopdracht*\n`;schrijfVragen.forEach((v,i)=>{const val=document.getElementById('schrijf-'+i).value.trim();msg+=`\n*${i+1}. ${v}*\n${val||'(geen antwoord)'}`;});window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');}
+function resetSchrijf(){buildSchrijf();}
+
+// ── RECORDING ──
+let mediaRecorder=null,audioChunks=[];
+async function startRecording(){try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(stream);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{const blob=new Blob(audioChunks,{type:'audio/webm'});document.getElementById('audio-playback').src=URL.createObjectURL(blob);document.getElementById('audio-playback').style.display='block';};mediaRecorder.start();document.getElementById('btn-record').style.display='none';document.getElementById('btn-stop').style.display='inline-flex';document.getElementById('rec-status').style.display='block';}catch(e){alert('Geen toegang tot microfoon.');}}
+function stopRecording(){if(mediaRecorder)mediaRecorder.stop();document.getElementById('btn-record').style.display='inline-flex';document.getElementById('btn-stop').style.display='none';document.getElementById('rec-status').style.display='none';}
+
+// ── THEME ──
+(function(){const t=document.getElementById('theme-toggle');if(!t)return;t.addEventListener('click',()=>{let th=document.documentElement.getAttribute('data-theme')||'light';let nt=th==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',nt);localStorage.setItem('a1-theme',nt);});})();
+
+// ── INIT ──
+buildTable('nl');
+document.getElementById('uitleg-content').innerHTML=UITLEG.nl;
+buildMCRooster();
+buildWNW();
+buildInvulRooster();
+buildMCSport();
+buildZO();
+buildSchrijf();
+</script>
+</body>
+</html>

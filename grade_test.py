@@ -327,6 +327,30 @@ def run_grading(student_name, answers, test_config, lang="nl"):
     return report + "\n\n" + feedback_brief
 
 # =====================================================================
+# 3b. NAKIJKBLAD (puur antwoorden, geen scores/feedback)
+# =====================================================================
+def generate_nakijkblad(student_name, answers, test_config):
+    """Genereert een overzicht met puur de antwoorden van de cursist,
+    per sectie genummerd, zonder scores, emoji's of feedbackbrief.
+    Bedoeld voor handmatig nakijken door de docent."""
+    test_title = test_config["title_nl"]
+    lines = []
+    lines.append(f"NAKIJKBLAD – {test_title.upper()}")
+    lines.append(f"Naam: {student_name}")
+    lines.append("=" * 50)
+
+    for sec_key, sec_data in test_config["sections"].items():
+        sec_title = sec_data["title_nl"]
+        prefix = "Zin" if sec_data["is_sentence"] else "Vraag"
+        lines.append(f"\n--- {sec_title} ---")
+        for i, ans in enumerate(answers[sec_key]):
+            display = ans if ans.strip() else "(geen antwoord)"
+            lines.append(f"  {prefix} {i+1}: {display}")
+
+    lines.append("\n" + "=" * 50)
+    return "\n".join(lines)
+
+# =====================================================================
 # 4. CLI FLOW
 # =====================================================================
 def get_paste_input():
@@ -387,6 +411,7 @@ def main():
     parser.add_argument("--paste", action="store_true", help="Start de plak-modus om een tekstblok te scannen.")
     parser.add_argument("--name", type=str, default=None, help="Naam van de cursist (indien niet interactief).")
     parser.add_argument("--lang", type=str, default="nl", choices=["nl", "ar"], help="Taal van de feedbackbrief (nl of ar). Standaard: nl.")
+    parser.add_argument("--nakijk", action="store_true", help="Toon alleen de antwoorden van de cursist (geen scores, geen feedback). Handig voor handmatig nakijken.")
     
     args = parser.parse_args()
     
@@ -425,13 +450,16 @@ def main():
         student_name, answers = run_interactive(test_config, args.lang)
         
     # Generate report
-    result_text = run_grading(student_name, answers, test_config, args.lang)
-    
-    print("\n" + "=" * 60)
-    print("GEFORMATTEERD NAKIJKBLAD & FEEDBACKBRIEF:")
-    print("=" * 60)
-    print(result_text)
-    print("=" * 60)
+    if args.nakijk:
+        result_text = generate_nakijkblad(student_name, answers, test_config)
+        print("\n" + result_text)
+    else:
+        result_text = run_grading(student_name, answers, test_config, args.lang)
+        print("\n" + "=" * 60)
+        print("GEFORMATTEERD NAKIJKBLAD & FEEDBACKBRIEF:")
+        print("=" * 60)
+        print(result_text)
+        print("=" * 60)
 
 if __name__ == "__main__":
     main()
