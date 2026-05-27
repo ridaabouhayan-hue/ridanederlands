@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groepen — Transcripten & Uitspraak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #090d16;
+            --surface: #111827;
+            --surface-card: #1f2937;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(99, 102, 241, 0.4);
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --green: #10b981;
+            --green-bg: rgba(16, 185, 129, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-md);
+            padding: 8px 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #ef4444;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        /* ── TABS BAR ── */
+        .tabs-container {
+            background: #111827;
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .tab {
+            padding: 16px 20px;
+            border: none;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .tab.active {
+            color: #a855f7;
+            border-bottom-color: #a855f7;
+        }
+
+        /* ── CONTAINER ── */
+        .dashboard-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        @media (max-width: 960px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── LEFT COLUMN: RECORDINGS LIST ── */
+        .panel-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px 12px 40px;
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .recordings-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+            max-height: calc(100vh - 220px);
+        }
+
+        .recordings-card h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recordings-count {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .recordings-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+            margin-right: -10px;
+            padding-right: 10px;
+        }
+
+        /* Custom Scrollbar for list */
+        .recordings-list::-webkit-scrollbar,
+        .transcript-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .recordings-list::-webkit-scrollbar-track,
+        .transcript-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .recordings-list::-webkit-scrollbar-thumb,
+        .transcript-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .recordings-list::-webkit-scrollbar-thumb:hover,
+        .transcript-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .recording-item {
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .recording-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: var(--border-hover);
+            transform: translateX(2px);
+        }
+
+        .recording-item.active {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--accent);
+        }
+
+        .recording-icon {
+            font-size: 1.3rem;
+            color: var(--accent);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+        }
+
+        .recording-item.active .recording-icon {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .recording-details {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .recording-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .recording-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ── RIGHT COLUMN: VIEWER ── */
+        .panel-viewer {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewer-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 480px;
+            position: relative;
+        }
+
+        .viewer-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px;
+        }
+
+        .viewer-empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.4;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.05); opacity: 0.6; }
+        }
+
+        .viewer-empty p {
+            font-size: 1rem;
+            font-weight: 700;
+            max-width: 320px;
+            line-height: 1.5;
+        }
+
+        .viewer-content {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+        }
+
+        .viewer-content.active {
+            display: flex;
+        }
+
+        .viewer-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .active-title-wrap {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .active-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .active-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 8px 14px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        /* ── AUDIO PLAYER CONTAINER ── */
+        .player-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Styling default audio player controls slightly */
+        audio {
+            width: 100%;
+            height: 40px;
+            outline: none;
+        }
+
+        /* ── TRANSCRIPT AREA ── */
+        .transcript-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: rgba(9, 13, 22, 0.5);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .transcript-header {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #a855f7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .transcript-body {
+            padding: 20px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 600;
+            color: #f3f4f6;
+            overflow-y: auto;
+            flex: 1;
+            max-height: calc(100vh - 460px);
+            white-space: pre-wrap; /* Behoudt regeleinden van Whisper */
+        }
+
+        .transcript-warning {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: rgba(217, 119, 6, 0.08);
+            border-left: 3px solid #d97706;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #fbbf24;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        /* ── EMPTY STATE FOR AUDIO/GROEPEN/ ── */
+        .group-empty-state {
+            background: rgba(255, 255, 255, 0.01);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px 24px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .group-empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+        .group-empty-state h4 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .group-empty-state p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            line-height: 1.6;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #38bdf8;
+            width: 100%;
+            max-width: 460px;
+            text-align: left;
+            overflow-x: auto;
+            margin-top: 10px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+
+        .code-block span {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<!-- AUTH CHECK -->
+<script>
+    if (sessionStorage.getItem('transcripts_auth') !== '1') {
+        window.location.replace('../index.html');
+    }
+    history.pushState(null, null, location.href);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, location.href);
+    });
+</script>
+
+<!-- TOPBAR -->
+<div class="topbar">
+    <div class="topbar-brand">
+        <span>🎙️ Transcripten & Uitspraak Dashboard</span>
+    </div>
+    <button class="btn-logout" onclick="logout()">🔒 Afsluiten</button>
+</div>
+
+<!-- TABS -->
+<div class="tabs-container" id="tabsWrap">
+    <!-- Will be filled dynamically -->
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="dashboard-container">
+    <div class="dashboard-grid" id="mainDashboardGrid">
+
+        <!-- LEFT PANEL: RECORDINGS -->
+        <div class="panel-sidebar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchBar" class="search-input" placeholder="Zoek audiobestand..." oninput="filterRecordings()">
+            </div>
+
+            <div class="recordings-card">
+                <h3>
+                    <span>Opnames</span>
+                    <span class="recordings-count" id="recCount">0</span>
+                </h3>
+                <ul class="recordings-list" id="recordingsList">
+                    <!-- Loaded dynamically -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: VIEWER -->
+        <div class="panel-viewer">
+            <div class="viewer-card" id="viewerCard">
+                
+                <!-- Empty State (No file selected) -->
+                <div class="viewer-empty" id="viewerEmpty">
+                    <div class="viewer-empty-icon">📁</div>
+                    <p id="viewerEmptyMsg">Selecteer een opname aan de linkerkant om de afspeler te laden en het transcript te lezen.</p>
+                </div>
+
+                <!-- Active Content Viewer -->
+                <div class="viewer-content" id="viewerContent">
+                    <div class="viewer-header">
+                        <div class="active-title-wrap">
+                            <div class="active-title" id="activeTitle">Bestandsnaam.mp3</div>
+                            <div class="active-subtitle">
+                                <span>Groep:</span> <strong id="activeGroupBadge" style="color: #a855f7;">Groepsnaam</strong>
+                            </div>
+                        </div>
+                        <button class="btn-copy" onclick="copyTranscript()" id="copyBtn">
+                            📋 Kopieer transcript
+                        </button>
+                    </div>
+
+                    <div class="player-container">
+                        <audio id="audioPlayer" controls></audio>
+                    </div>
+
+                    <div class="transcript-card">
+                        <div class="transcript-header">
+                            📝 Letterlijke transcriptie (Whisper AI)
+                        </div>
+                        <div class="transcript-body" id="transcriptText">
+                            Hier komt de transcriptie...
+                        </div>
+                    </div>
+
+                    <div class="transcript-warning">
+                        ⚠️ <strong>Docent informatie:</strong> Dit transcript is letterlijk en phonetisch uitgeschreven door Whisper. Het bevat de grammaticale fouten, uitspraakfouten en twijfels (zoals "eh/uh") van de student, zodat je precies kunt nakijken hoe ze praten.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Load window.groepenAudioData from the index.js written by transcribe_groepen.py -->
+<script src="../audio/groepen/index.js"></script>
+
+<script>
+    // Configured groups list (matching the transcribe_groepen.py script)
+    const groups = [
+        "Microsoft", "KPN", "Westport", "VDL", "Neways", "Shell", 
+        "Coca-Cola", "NS", "B-A1", "B-A2", "B-Alfa", "B-Z-route", "B-ONA"
+    ];
+
+    // Read the loaded data, fallback to empty object if not found
+    const groepenAudioData = window.groepenAudioData || {};
+    
+    let activeGroup = "Microsoft";
+    let activeFileIndex = null;
+    let filteredFiles = [];
+
+    // Initialize tabs
+    function initTabs() {
+        const tabsWrap = document.getElementById("tabsWrap");
+        tabsWrap.innerHTML = "";
+        
+        groups.forEach((grp, idx) => {
+            const btn = document.createElement("button");
+            btn.className = `tab ${grp === activeGroup ? 'active' : ''}`;
+            btn.onclick = () => selectGroup(grp);
+            
+            // Check if there are any recordings to show a counts indicator
+            const fileCount = (groepenAudioData[grp] && groepenAudioData[grp].length) || 0;
+            const countBadge = fileCount > 0 ? ` (${fileCount})` : "";
+            
+            btn.innerHTML = `🏢 ${grp}${countBadge}`;
+            tabsWrap.appendChild(btn);
+        });
+    }
+
+    // Switch groups
+    function selectGroup(grpName) {
+        activeGroup = grpName;
+        activeFileIndex = null;
+        
+        // Update active tab styling
+        const tabs = document.querySelectorAll(".tab");
+        groups.forEach((grp, idx) => {
+            if (tabs[idx]) {
+                if (grp === grpName) {
+                    tabs[idx].classList.add("active");
+                } else {
+                    tabs[idx].classList.remove("active");
+                }
+            }
+        });
+        
+        // Reset search bar
+        document.getElementById("searchBar").value = "";
+        
+        // Reload list
+        renderGroupRecordings();
+        resetViewer();
+    }
+
+    // Render list of recordings for current group
+    function renderGroupRecordings() {
+        const listContainer = document.getElementById("recordingsList");
+        const countBadge = document.getElementById("recCount");
+        const dashboardGrid = document.getElementById("mainDashboardGrid");
+        const viewerCard = document.getElementById("viewerCard");
+        
+        listContainer.innerHTML = "";
+        
+        const files = groepenAudioData[activeGroup] || [];
+        filteredFiles = [...files]; // initially unfiltered
+        
+        countBadge.textContent = filteredFiles.length;
+
+        // If this group is completely empty (no recordings folder files)
+        if (files.length === 0) {
+            // Show empty state for the group
+            listContainer.innerHTML = `<li style="color: var(--text-muted); font-size: 0.85rem; padding: 20px 10px; text-align: center; font-weight:600;">Geen opnames gevonden</li>`;
+            
+            // Replace the dashboard layout view or the viewer panel with a detailed setup state
+            viewerCard.innerHTML = `
+                <div class="group-empty-state">
+                    <div class="group-empty-icon">🎙️</div>
+                    <h4>Geen opnames in groep "${activeGroup}"</h4>
+                    <p>Er zijn momenteel geen audio-opnamen geüpload voor deze groep. Om transcripts te maken:</p>
+                    <p style="text-align: left; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; font-size: 0.85rem; border: 1px solid var(--border);">
+                        1. Sleep de audiobestanden (.mp3, .wav, .m4a) van je cursisten naar de map:<br>
+                        <strong style="color: var(--accent); font-family: monospace;">audio/groepen/${activeGroup}/</strong><br><br>
+                        2. Voer het transcriptiescript uit op je computer (in de terminal):
+                    </p>
+                    <div class="code-block">
+                        python transcribe_groepen.py
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        // Restore viewer template if it was overridden by empty state
+        restoreViewerTemplate();
+
+        // Render each file
+        filteredFiles.forEach((file, index) => {
+            const li = document.createElement("li");
+            li.className = `recording-item ${index === activeFileIndex ? 'active' : ''}`;
+            li.onclick = () => selectRecording(index);
+            
+            li.innerHTML = `
+                <div class="recording-icon">▶</div>
+                <div class="recording-details">
+                    <div class="recording-name" title="${file.filename}">${file.filename}</div>
+                    <div class="recording-meta">Klik om af te spelen</div>
+                </div>
+            `;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // Filter recordings by search term
+    function filterRecordings() {
+        const query = document.getElementById("searchBar").value.toLowerCase().trim();
+        const listContainer = document.getElementById("recordingsList");
+        const countBadge = document.getElementById("recCount");
+        
+        listContainer.innerHTML = "";
+        
+        const files = groepenAudioData[activeGroup] || [];
+        filteredFiles = files.filter(f => f.filename.toLowerCase().includes(query));
+        
+        countBadge.textContent = filteredFiles.length;
+        
+        if (filteredFiles.length === 0) {
+            listContainer.innerHTML = `<li style="color: var(--text-muted); font-size: 0.85rem; padding: 20px 10px; text-align: center;">Geen overeenkomsten</li>`;
+            return;
+        }
+
+        filteredFiles.forEach((file, index) => {
+            // Find its index in the original array to load it correctly
+            const originalIndex = files.findIndex(f => f.filename === file.filename);
+            
+            const li = document.createElement("li");
+            li.className = `recording-item ${originalIndex === activeFileIndex ? 'active' : ''}`;
+            li.onclick = () => selectRecording(originalIndex);
+            
+            li.innerHTML = `
+                <div class="recording-icon">▶</div>
+                <div class="recording-details">
+                    <div class="recording-name" title="${file.filename}">${file.filename}</div>
+                    <div class="recording-meta">Klik om te laden</div>
+                </div>
+            `;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // Select a recording and load it in the viewer
+    function selectRecording(index) {
+        activeFileIndex = index;
+        
+        // Highlight active item in list
+        const items = document.querySelectorAll(".recording-item");
+        // Re-render recordings list to maintain active states cleanly
+        const files = groepenAudioData[activeGroup] || [];
+        const selectedFile = files[index];
+        
+        // Update selection styling in UI
+        const renderedItems = document.getElementById("recordingsList").children;
+        const query = document.getElementById("searchBar").value.toLowerCase().trim();
+        
+        // Quick update without full re-render
+        for (let i = 0; i < renderedItems.length; i++) {
+            const item = renderedItems[i];
+            const nameEl = item.querySelector(".recording-name");
+            if (nameEl && nameEl.textContent === selectedFile.filename) {
+                item.classList.add("active");
+                item.querySelector(".recording-icon").textContent = "⏸";
+            } else {
+                item.classList.remove("active");
+                const icon = item.querySelector(".recording-icon");
+                if (icon) icon.textContent = "▶";
+            }
+        }
+        
+        // Show viewer content
+        document.getElementById("viewerEmpty").style.display = "none";
+        const viewerContent = document.getElementById("viewerContent");
+        viewerContent.classList.add("active");
+        
+        // Populate viewer details
+        document.getElementById("activeTitle").textContent = selectedFile.filename;
+        document.getElementById("activeTitle").title = selectedFile.filename;
+        document.getElementById("activeGroupBadge").textContent = activeGroup;
+        
+        // Load audio source and play
+        const audioPlayer = document.getElementById("audioPlayer");
+        audioPlayer.src = selectedFile.path;
+        audioPlayer.load();
+        audioPlayer.play().catch(e => {
+            console.log("Autoplay was blocked or audio failed: ", e);
+        });
+        
+        // Populate transcript
+        const transcriptText = document.getElementById("transcriptText");
+        transcriptText.textContent = selectedFile.transcript || "(Dit bestand heeft geen transcriptie tekst)";
+        
+        // Reset copy button text
+        const copyBtn = document.getElementById("copyBtn");
+        copyBtn.innerHTML = "📋 Kopieer transcript";
+    }
+
+    // Reset viewer to empty state
+    function resetViewer() {
+        const audioPlayer = document.getElementById("audioPlayer");
+        if (audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.src = "";
+        }
+        
+        const viewerEmpty = document.getElementById("viewerEmpty");
+        const viewerContent = document.getElementById("viewerContent");
+        
+        if (viewerEmpty) viewerEmpty.style.display = "flex";
+        if (viewerContent) viewerContent.classList.remove("active");
+        
+        const emptyMsg = document.getElementById("viewerEmptyMsg");
+        if (emptyMsg) {
+            emptyMsg.innerHTML = `Selecteer een opname aan de linkerkant om de afspeler te laden en het transcript te lezen.`;
+        }
+    }
+
+    // Restore viewer template html after empty state overrode it
+    function restoreViewerTemplate() {
+        const viewerCard = document.getElementById("viewerCard");
+        // Check if viewer empty element exists, if not, recreate the template layout
+        if (!document.getElementById("viewerEmpty")) {
+            viewerCard.innerHTML = `
+                <!-- Empty State (No file selected) -->
+                <div class="viewer-empty" id="viewerEmpty">
+                    <div class="viewer-empty-icon">📁</div>
+                    <p id="viewerEmptyMsg">Selecteer een opname aan de linkerkant om de afspeler te laden en het transcript te lezen.</p>
+                </div>
+
+                <!-- Active Content Viewer -->
+                <div class="viewer-content" id="viewerContent">
+                    <div class="viewer-header">
+                        <div class="active-title-wrap">
+                            <div class="active-title" id="activeTitle">Bestandsnaam.mp3</div>
+                            <div class="active-subtitle">
+                                <span>Groep:</span> <strong id="activeGroupBadge" style="color: #a855f7;">Groepsnaam</strong>
+                            </div>
+                        </div>
+                        <button class="btn-copy" onclick="copyTranscript()" id="copyBtn">
+                            📋 Kopieer transcript
+                        </button>
+                    </div>
+
+                    <div class="player-container">
+                        <audio id="audioPlayer" controls></audio>
+                    </div>
+
+                    <div class="transcript-card">
+                        <div class="transcript-header">
+                            📝 Letterlijke transcriptie (Whisper AI)
+                        </div>
+                        <div class="transcript-body" id="transcriptText">
+                            Hier komt de transcriptie...
+                        </div>
+                    </div>
+
+                    <div class="transcript-warning">
+                        ⚠️ <strong>Docent informatie:</strong> Dit transcript is letterlijk en phonetisch uitgeschreven door Whisper. Het bevat de grammaticale fouten, uitspraakfouten en twijfels (zoals "eh/uh") van de student, zodat je precies kunt nakijken hoe ze praten.
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Copy active transcript to clipboard
+    function copyTranscript() {
+        const text = document.getElementById("transcriptText").textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            const copyBtn = document.getElementById("copyBtn");
+            copyBtn.innerHTML = "✅ Gekopieerd!";
+            setTimeout(() => {
+                copyBtn.innerHTML = "📋 Kopieer transcript";
+            }, 2000);
+        }).catch(err => {
+            alert("Kopiëren mislukt: " + err);
+        });
+    }
+
+    // Logout
+    function logout() {
+        sessionStorage.removeItem('transcripts_auth');
+        window.location.replace('../index.html');
+    }
+
+    // App entry
+    document.addEventListener("DOMContentLoaded", () => {
+        initTabs();
+        renderGroupRecordings();
+    });
+</script>
+
+</body>
+</html>
