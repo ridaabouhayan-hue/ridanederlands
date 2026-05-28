@@ -347,6 +347,37 @@ def build_meelezen():
         if (stored) {{
             display.innerHTML = stored.innerHTML;
         }}
+
+        // Genereer de vocabulaire tabel rijen dynamically
+        const tbody = document.querySelector('#vocabTable tbody');
+        if (tbody) {{
+            tbody.innerHTML = `
+                <tr>
+                    <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">regering</textarea></td>
+                    <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">de mensen die het land besturen</textarea></td>
+                    <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'">De regering maakt wetten.</textarea></td>
+                </tr>
+            `;
+            for (let i = 1; i < 10; i++) {{
+                tbody.innerHTML += `
+                    <tr>
+                        <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                        <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                        <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                        <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                    </tr>
+                `;
+            }}
+            setTimeout(() => {{
+                document.querySelectorAll('#vocabTable textarea').forEach(ta => {{
+                    if(ta.value) {{
+                        ta.style.height = 'auto';
+                        ta.style.height = ta.scrollHeight + 'px';
+                    }}
+                }});
+            }}, 100);
+        }}
         
         // Re-initialize dynamic tooltips and quiz logic in the newly injected HTML
         initDynamicLogic();
@@ -461,6 +492,52 @@ def build_meelezen():
     window.checkAnswers1 = function() {{ checkAnswers('quiz-result-1', {{ q1:'b', q2:'b', q3:'b' }}); }};
     window.checkAnswers2 = function() {{ checkAnswers('quiz-result-2', {{ q4:'b', q5:'a', q6:'b' }}); }};
     window.checkAnswers3 = function() {{ checkAnswers('quiz-result-3', {{ q7:'b', q8:'b', q9:'c' }}); }};
+
+    window.addVocabRow = function() {{
+        const tb = document.querySelector('#vocabTable tbody');
+        if (tb) {{
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><textarea class="v-word" placeholder="Woord" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                <td><textarea class="v-lang" placeholder="Vertaling" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                <td><textarea class="v-easy" placeholder="Uitleg" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+                <td><textarea class="v-sent" placeholder="Zin" rows="1" oninput="this.style.height='';this.style.height=this.scrollHeight+'px'"></textarea></td>
+            `;
+            tb.appendChild(tr);
+        }}
+    }};
+
+    window.sendToWhatsApp = function() {{
+        const studentName = document.getElementById('studentName').value.trim() || 'Onbekend';
+        let message = `Huiswerk NOS in Makkelijke Taal\nNaam: ${{studentName}}\n\n`;
+        
+        let hasWords = false;
+        const rows = document.querySelectorAll('#vocabTable tbody tr');
+        rows.forEach((row, index) => {{
+            const word = row.querySelector('.v-word').value.trim();
+            const lang = row.querySelector('.v-lang').value.trim();
+            const easy = row.querySelector('.v-easy').value.trim();
+            const sent = row.querySelector('.v-sent').value.trim();
+            
+            if (word || lang || easy || sent) {{
+                hasWords = true;
+                message += `*Woord ${{index + 1}}:* ${{word}}\n`;
+                if(lang) message += `- Mijn taal: ${{lang}}\n`;
+                if(easy) message += `- Uitleg: ${{easy}}\n`;
+                if(sent) message += `- Zin: ${{sent}}\n`;
+                message += `\n`;
+            }}
+        }});
+
+        if (!hasWords) {{
+            alert('Vul eerst wat woorden in voordat je het verstuurt!');
+            return;
+        }}
+
+        const encodedMsg = encodeURIComponent(message);
+        const waLink = `https://wa.me/31626211106?text=${{encodedMsg}}`;
+        window.open(waLink, '_blank');
+    }};
 </script>
 
 </body>
