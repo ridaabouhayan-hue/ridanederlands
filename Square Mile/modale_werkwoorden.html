@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Square Mile — Praktijkopdrachten Modale Werkwoorden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #131a26;
+      --primary: #b45309;
+      --primary-hover: #d97706;
+      --primary-light: rgba(180, 83, 9, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dark: #0f172a;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-blue-light: rgba(59, 130, 246, 0.1);
+      --accent-emerald: #10b981;
+      --accent-emerald-light: rgba(16, 185, 129, 0.1);
+      --accent-rose: #f43f5e;
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(180, 83, 9, 0.08) 0, transparent 40%),
+        radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.08) 0, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0, transparent 50%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 5rem;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(180deg, rgba(19, 26, 38, 0.8) 0%, rgba(11, 15, 25, 0) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-logo span {
+      color: var(--primary);
+    }
+
+    .header h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    /* ── REFERENCE CHEAT SHEET ── */
+    .cheat-sheet-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .cheat-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-hover);
+    }
+
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .cheat-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .cheat-item:hover {
+      background: var(--primary-light);
+      border-color: rgba(180, 83, 9, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .cheat-verb {
+      font-weight: 800;
+      color: var(--text-main);
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cheat-verb span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--primary-hover);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cheat-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── TABS ── */
+    .role-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .role-tab {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .role-tab:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .role-tab.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(180, 83, 9, 0.15);
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .role-tab.active .avatar {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .role-tab h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .role-tab span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .role-tab.active span {
+      color: #fbd38d;
+    }
+
+    /* ── MAIN CONTENT CARD ── */
+    .content-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .role-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .role-badge {
+      background: var(--primary-light);
+      color: #fbd38d;
+      border: 1px solid var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .duration-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .situation-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .team-box {
+      background: rgba(59, 130, 246, 0.03);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .team-member {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .member-name {
+      font-weight: 700;
+      color: var(--accent-blue);
+      font-size: 0.95rem;
+    }
+
+    .member-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .assignment-box {
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-left: 5px solid var(--accent-emerald);
+      padding: 1.5rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .verb-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .verb-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    /* ── POLISH TRANSLATION DRAWER ── */
+    .trans-toggle-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--border-color);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .trans-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-main);
+    }
+
+    .polish-container {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .polish-container.show {
+      max-height: 800px;
+      opacity: 1;
+      margin-bottom: 2rem;
+    }
+
+    .polish-box {
+      background: rgba(244, 63, 94, 0.02);
+      border: 1px solid rgba(244, 63, 94, 0.1);
+      border-left: 4px solid var(--accent-rose);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      color: #cbd5e1;
+    }
+
+    .polish-box h4 {
+      color: #fda4af;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .polish-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .polish-text:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist-container {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .checklist-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .checklist-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .checklist-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .checklist-item input {
+      display: none;
+    }
+
+    .checklist-item.checked {
+      background: var(--accent-emerald-light);
+      border-color: var(--accent-emerald);
+      color: #6ee7b7;
+    }
+
+    .checklist-item .checkbox-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .checklist-item.checked .checkbox-icon {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      color: var(--text-dark);
+    }
+
+    /* ── RECORDER & SUBMIT SECTION ── */
+    .recorder-panel {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 768px) {
+      .recorder-panel {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .role-tabs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .recorder-left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .recorder-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .record-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 5px;
+    }
+
+    .record-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent-rose);
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .record-btn:hover {
+      background: #f43f5e;
+      transform: scale(1.05);
+    }
+
+    .record-btn.recording {
+      background: #1e293b;
+      color: var(--accent-rose);
+      border: 3px solid var(--accent-rose);
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
+      animation: pulseRecord 1.5s infinite;
+    }
+
+    @keyframes pulseRecord {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(244, 63, 94, 0.5); }
+      100% { transform: scale(1); }
+    }
+
+    .timer {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-main);
+      font-family: monospace;
+    }
+
+    .wave-container {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      height: 30px;
+    }
+
+    .wave-container.active {
+      display: flex;
+    }
+
+    .wave-bar {
+      width: 4px;
+      height: 10px;
+      background: var(--accent-rose);
+      border-radius: 4px;
+      animation: wave 1.2s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(2) { height: 18px; animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { height: 26px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { height: 16px; animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { height: 22px; animation-delay: 0.6s; }
+    .wave-bar:nth-child(6) { height: 8px; animation-delay: 0.75s; }
+
+    @keyframes wave {
+      0% { transform: scaleY(0.4); }
+      100% { transform: scaleY(1); }
+    }
+
+    .recorder-right {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .wa-button {
+      background: #25d366;
+      color: white;
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .wa-button:hover {
+      background: #20ba5a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+
+    .wa-button svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .submit-tip {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-logo">
+      <span>Square</span> Mile
+    </div>
+    <h1>Praktijkopdrachten: Modale Werkwoorden</h1>
+    <p>Bereid je toespraak of briefing voor en oefen met de hulpwerkwoorden <strong>moeten, kunnen, willen, mogen</strong> en <strong>zullen</strong>.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- 🔍 QUICK REFERENCE -->
+    <div class="cheat-sheet-card">
+      <div class="cheat-title">
+        <span>📖 Spiekbriefje: Hulpwerkwoorden</span>
+      </div>
+      <div class="cheat-grid">
+        <div class="cheat-item">
+          <div class="cheat-verb">moeten <span>verplichting</span></div>
+          <div class="cheat-desc">ik moet · jij moet · wij moeten</div>
+        </div>
+        <div class="cheat-item">
+          <div class="cheat-verb">kunnen <span>mogelijkheid</span></div>
+          <div class="cheat-desc">ik kan · jij kunt / kan · wij kunnen</div>
+        </div>
+        <div class="cheat-item">
+          <div class="cheat-verb">willen <span>wens</span></div>
+          <div class="cheat-desc">ik wil · jij wilt / wil · wij willen</div>
+        </div>
+        <div class="cheat-item">
+          <div class="cheat-verb">mogen <span>toestemming</span></div>
+          <div class="cheat-desc">ik mag · jij mag · wij mogen</div>
+        </div>
+        <div class="cheat-item">
+          <div class="cheat-verb">zullen <span>toekomst</span></div>
+          <div class="cheat-desc">ik zal · jij zult / zal · wij zullen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 👥 ROLE SELECTOR -->
+    <div class="role-tabs">
+      <div class="role-tab active" onclick="switchRole('malwina')" id="tab-malwina">
+        <div class="avatar">👩‍💼</div>
+        <h3>Malwina</h3>
+        <span>Overleg leiden</span>
+      </div>
+      <div class="role-tab" onclick="switchRole('ariel')" id="tab-ariel">
+        <div class="avatar">👨‍🔧</div>
+        <h3>Ariel</h3>
+        <span>Briefing geven</span>
+      </div>
+      <div class="role-tab" onclick="switchRole('dorota')" id="tab-dorota">
+        <div class="avatar">👩‍🏫</div>
+        <h3>Dorota</h3>
+        <span>Werk uitleggen</span>
+      </div>
+    </div>
+
+    <!-- 📝 ROLE CONTAINER -->
+    <div class="content-card" id="role-content">
+      <!-- Generated dynamically in JS -->
+    </div>
+
+  </div>
+
+  <script>
+    // ════════════════════════════════════════
+    //  DATA STRUCTS
+    // ════════════════════════════════════════
+    const ROLES = {
+      malwina: {
+        name: "Malwina",
+        title: "Malwina — Jij leidt het overleg",
+        badge: "Crisis overleg",
+        duration: "2-3 minuten",
+        whatsappMsg: "Hallo docent, hier is de voice memo voor de opdracht van Malwina (overleg leiden)!",
+        verbs: ["moeten", "kunnen", "willen", "zullen", "mogen"],
+        situation: `<strong>Het is maandagochtend 8.15 uur.</strong> De productieafdeling belt in paniek: de lijn staat stil. Er zijn 200 LPG-injectors besteld, maar er is het verkeerde artikelnummer geleverd: <strong>VSI-KO3NFN5</strong> in plaats van <strong>VSI-KO32DFN</strong>. De onderdelen passen niet. De klant in Duitsland verwacht de systemen vrijdag. Het is nu maandag.<br><br>Jouw manager, je collega van productie en een inkoopcollega wachten op jou. Jij opent het overleg.`,
+        assignment: `Bereid een korte toespraak van <strong>2-3 minuten</strong> voor. Jij spreekt, de anderen luisteren. Leg uit wat er is misgegaan, wat er vandaag <strong>moet</strong> gebeuren, wat jullie <strong>kunnen</strong> doen en hoe je het gaat oplossen. Gebruik de hulpwerkwoorden: <strong>moeten, kunnen, willen, zullen, mogen</strong>.`,
+        pl: {
+          situationTitle: "Sytuacja (mały kryzys w poniedziałek rano)",
+          situation: "Jest poniedziałek rano, godzina 8:15. Dział produkcji dzwoni w panice: linia produkcyjna stoi. Zamówiono 200 wtryskiwaczy LPG, ale dostarczono niewłaściwy numer artykułu: VSI-KO3NFN5 zamiast VSI-KO32DFN. Części nie pasują. Klient w Niemczech spodziewa się gotowych systemów w piątek. Dziś jest poniedziałek. Twój menedżer, kolega z produkcji i kolega z działu zakupów czekają na Ciebie. Ty otwierasz spotkanie.",
+          assignmentTitle: "Twoje zadanie",
+          assignment: "Przygotuj krótkie przemówienie trwające 2-3 minuty. Ty mówisz, inni słuchają. Wyjaśnij, co poszło nie tak, co musi się wydarzyć dzisiaj, co możecie zrobić i jak to rozwiążesz. Użyj czasowników modalnych: <strong>moeten</strong> (musieć), <strong>kunnen</strong> (móc/potrafić), <strong>willen</strong> (chcieć), <strong>zullen</strong> (mieć zamiar/zrobić coś w przyszłości), <strong>mogen</strong> (mieć pozwolenie). Wyślij swoją wiadomość głosową do nauczyciela przez WhatsApp lub przedstaw ją na żywo w klasie."
+        }
+      },
+      ariel: {
+        name: "Ariel",
+        title: "Ariel — Jij geeft de briefing",
+        badge: "Team briefing",
+        duration: "3-4 minuten",
+        whatsappMsg: "Hallo docent, hier is de voice memo voor de opdracht van Ariel (team briefing)!",
+        verbs: ["moeten", "mogen", "kunnen", "willen", "zullen"],
+        situation: `<strong>Het is dinsdag 6.45 uur.</strong> Jouw supervisor is ziek. Jij staat alleen voor je team van 5 mensen. Er is een probleem: gisteren zijn 30 VSI-2.0 systemen met het verkeerde label verstuurd naar een klant in België. Die moeten vandaag terug, opnieuw verpakt en opnieuw verstuurd. De rest van het werk gaat ook gewoon door.`,
+        team: [
+          { name: "Tomasz", desc: "Ervaren, kent het magazijn heel goed" },
+          { name: "Kevin", desc: "Slechts 3 weken in dienst, nog in opleiding" },
+          { name: "Fatima", desc: "Kwaliteitscontrole" },
+          { name: "Piotr", desc: "Heftruckchauffeur (let op: zijn certificaat verloopt deze week!)" },
+          { name: "Sandra", desc: "Administratie en scannen" }
+        ],
+        assignment: `Geef je team een briefing van <strong>3-4 minuten</strong>. Jij spreekt, zij luisteren. Zeg per persoon wat hij of zij vandaag <strong>moet</strong> doen, <strong>mag</strong> doen of absoluut <strong>niet mag</strong> doen. Sluit af met een motiverende boodschap aan het hele team. Gebruik: <strong>moeten, mogen, kunnen, willen, zullen</strong>.`,
+        pl: {
+          situationTitle: "Sytuacja (wtorkowa odprawa i chory kierownik)",
+          situation: "Jest wtorek, godzina 6:45. Twój przełożony jest chory. Stoisz sam na czele 5-osobowego zespołu. Jest problem: wczoraj wysłano 30 systemów VSI-2.0 z błędną etykietą do klienta w Belgii. Muszą one dzisiaj wrócić, zostać przepakowane i ponownie wysłane. Reszta pracy również toczy się normalnie.",
+          teamTitle: "Twój zespół (przydziel zadania)",
+          team: [
+            { name: "Tomasz", desc: "doświadczony, zna magazyn" },
+            { name: "Kevin", desc: "3 tygodnie w firmie, wciąż się szkoli" },
+            { name: "Fatima", desc: "kontrola jakości" },
+            { name: "Piotr", desc: "wózek widłowy, ale jego certyfikat wygasa w tym tygodniu" },
+            { name: "Sandra", desc: "administracja i skanowanie" }
+          ],
+          assignmentTitle: "Twoje zadanie",
+          assignment: "Przeprowadź 3-4 minutową odprawę (briefing) dla swojego zespołu. Ty mówisz, oni słuchają. Powiedz każdej osobie, co musi dzisiaj zrobić, co może zrobić, a czego nie wolno jej robić. Zakończ wiadomością skierowaną do całego zespołu. Użyj czasowników modalnych: <strong>moeten</strong>, <strong>mogen</strong>, <strong>kunnen</strong>, <strong>willen</strong>, <strong>zullen</strong>. Wyślij swoją wiadomość głosową przez WhatsApp lub przedstaw ją na żywo w klasie."
+        }
+      },
+      dorota: {
+        name: "Dorota",
+        title: "Dorota — Jij legt het uit",
+        badge: "Inwerken nieuwe collega",
+        duration: "2 minuten",
+        whatsappMsg: "Hallo docent, hier is de voice memo voor de opdracht van Dorota (werk uitleggen)!",
+        verbs: ["moeten", "mogen", "kunnen", "willen"],
+        situation: `<strong>Er begint vandaag een nieuwe collega: Agnieszka.</strong> Ze is nieuw in Nederland, spreekt nog geen Nederlands en is erg nerveus. De teamleider zegt tegen jou: <em>"Dorota, jij kent het werk hier al jaren. Leg jij het even uit?"</em> Jij bent nu de expert.`,
+        assignment: `Vertel Agnieszka in het Nederlands alles wat zij moet weten. Spreek ongeveer <strong>2 minuten</strong>. Leg uit:<br>
+        1. Wat <strong>moet</strong> je elke dag doen?<br>
+        2. Wat <strong>mag</strong> je absoluut <strong>niet</strong> doen?<br>
+        3. Wat <strong>kun</strong> je doen als je iets niet begrijpt?<br>
+        4. Wat is het plan/de wens voor vandaag? (<strong>willen</strong>)<br><br>
+        Jij spreekt rustig, Agnieszka luistert. Gebruik de hulpwerkwoorden: <strong>moeten, mogen, kunnen, willen</strong>.`,
+        pl: {
+          situationTitle: "Sytuacja (wdrażanie nowej pracownicy)",
+          situation: "Dzisiaj pracę rozpoczyna nowa koleżanka: Agnieszka. Jest nowa w Holandii, nie mówi po holendersku i jest zdenerwowana. Lider zespołu mówi do Ciebie: „Dorota, znasz tę pracę od lat. Wyjaśnij jej to szybko”. Jesteś teraz ekspertem.",
+          assignmentTitle: "Twoje zadanie",
+          assignment: "Opowiedz Agnieszce po holendersku o wszystkim, co musi wiedzieć. Mów przez około 2 minuty. Wyjaśnij: co trzeba robić każdego dnia (<strong>moeten</strong>), czego absolutnie nie wolno robić (<strong>niet mogen</strong>), co możesz zrobić, jeśli czegoś nie rozumiesz (<strong>kunnen</strong>) oraz jaki jest plan na dzisiaj (<strong>willen</strong>). Ty mówisz, Agnieszka słucha. Wyślij wiadomość głosową przez WhatsApp lub zrób to na żywo."
+        }
+      }
+    };
+
+    let activeRoleId = 'malwina';
+    let isRecording = false;
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // ════════════════════════════════════════
+    //  RENDER ACTIVE CARD
+    // ════════════════════════════════════════
+    function renderCard() {
+      const role = ROLES[activeRoleId];
+      const container = document.getElementById('role-content');
+      
+      let teamHtml = '';
+      if (role.team) {
+        teamHtml = `
+          <div class="team-box">
+            <div class="section-title">👥 Je teamleden</div>
+            <div class="team-grid">
+              ${role.team.map(m => `
+                <div class="team-member">
+                  <span class="member-name">${m.name}</span>
+                  <span class="member-desc">${m.desc}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      let plTeamHtml = '';
+      if (role.pl.team) {
+        plTeamHtml = `
+          <h4 style="margin-top: 15px; color: #fda4af;">👥 Przydział zespołu:</h4>
+          <div class="team-grid" style="margin-top: 5px; margin-bottom: 15px;">
+            ${role.pl.team.map(m => `
+              <div class="team-member" style="background: rgba(0,0,0,0.2);">
+                <span class="member-name" style="color: #fda4af;">${m.name}</span>
+                <span class="member-desc">${m.desc}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="role-meta">
+          <span class="role-badge">${role.badge}</span>
+          <span class="duration-badge">⏱️ Richttijd: ${role.duration}</span>
+        </div>
+
+        <h2 style="font-size: 1.7rem; margin-bottom: 1.5rem; color: #fbd38d;">${role.title}</h2>
+
+        <div class="section-title">💼 De Situatie</div>
+        <div class="situation-box">${role.situation}</div>
+
+        ${teamHtml}
+
+        <div class="section-title">⚡ Jouw Opdracht</div>
+        <div class="assignment-box">
+          ${role.assignment}
+          <div class="verb-tags">
+            ${role.verbs.map(v => `<span class="verb-tag"># ${v}</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- TRANSLATION TOGGLE -->
+        <button class="trans-toggle-btn" onclick="toggleTranslation()">
+          🇵🇱 Pokaż polskie tłumaczenie / Pokaż instrukcje po polsku
+        </button>
+
+        <div class="polish-container" id="polish-translation">
+          <div class="polish-box">
+            <h4>${role.pl.situationTitle}</h4>
+            <div class="polish-text">${role.pl.situation}</div>
+            
+            ${plTeamHtml}
+
+            <h4>${role.pl.assignmentTitle}</h4>
+            <div class="polish-text">${role.pl.assignment}</div>
+          </div>
+        </div>
+
+        <div class="checklist-container">
+          <div class="checklist-title">Hulpwerkwoorden checklist:</div>
+          <div class="checklist-items">
+            ${role.verbs.map(v => `
+              <div class="checklist-item" onclick="toggleChecklist(this)">
+                <span class="checkbox-icon">✓</span>
+                ${v}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- PRACTICE & RECORDER PANEL -->
+        <div class="recorder-panel">
+          <div class="recorder-left">
+            <div class="recorder-title">🎙️ Oefen-timer</div>
+            <p style="font-size:0.9rem; color:var(--text-muted);">Start de timer om te oefenen en je spreektijd bij te houden.</p>
+            <div class="record-controls">
+              <button class="record-btn" id="record-action-btn" onclick="toggleTimer()">▶</button>
+              <div class="timer" id="timer-display">00:00</div>
+              <div class="wave-container" id="wave-display">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="recorder-right">
+            <a href="https://wa.me/31626211106?text=${encodeURIComponent(role.whatsappMsg)}" target="_blank" class="wa-button" id="wa-link">
+              <svg viewBox="0 0 24 24">
+                <path d="M12.012 2c-5.506 0-9.988 4.479-9.988 9.984 0 1.761.46 3.473 1.336 4.985l-1.42 5.187 5.31-1.391c1.465.798 3.11 1.218 4.764 1.219h.004c5.505 0 9.986-4.479 9.986-9.985 0-2.67-1.037-5.178-2.923-7.062a9.922 9.922 0 0 0-7.073-2.938zm.003 1.602c2.239 0 4.34.872 5.922 2.451 1.581 1.579 2.454 3.68 2.454 5.931 0 4.629-3.771 8.397-8.406 8.397-1.481 0-2.932-.39-4.204-1.127l-.302-.179-3.13.82.836-3.05-.198-.314a8.349 8.349 0 0 1-1.28-4.548c0-4.63 3.773-8.397 8.408-8.397zm-3.663 3.197c-.201 0-.435.076-.66.326-.226.251-.863.844-.863 2.06s.885 2.391.986 2.528c.1.137 1.742 2.656 4.22 3.726 2.478 1.07 2.478.713 2.93.667.452-.046 1.455-.595 1.66-1.171.205-.576.205-1.07.143-1.171-.061-.1-.226-.16-.475-.285-.25-.126-1.455-.718-1.68-.8-.226-.081-.39-.126-.554.126-.164.251-.637.8-.78 1.037-.143.237-.287.266-.537.14-.25-.125-1.054-.389-2.008-1.24-.741-.662-1.242-1.48-1.387-1.73-.146-.251-.016-.387.11-.512.112-.113.25-.292.375-.438.125-.146.166-.251.25-.42.083-.169.042-.319-.021-.444-.063-.126-.554-1.336-.76-1.831-.205-.494-.41-.426-.554-.426z"/>
+              </svg>
+              Stuur voice memo via WhatsApp
+            </a>
+            <div class="submit-tip">Klik om direct WhatsApp te openen. Stuur je memo naar de docent of neem hem live op in het chatvenster.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ════════════════════════════════════════
+    //  INTERACTIVE ACTIONS
+    // ════════════════════════════════════════
+    function switchRole(roleId) {
+      if (isRecording) {
+        toggleTimer(); // Stop timer if switching roles
+      }
+      activeRoleId = roleId;
+      document.querySelectorAll('.role-tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById('tab-' + roleId).classList.add('active');
+      renderCard();
+    }
+
+    function toggleTranslation() {
+      const panel = document.getElementById('polish-translation');
+      panel.classList.toggle('show');
+    }
+
+    function toggleChecklist(el) {
+      el.classList.toggle('checked');
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('record-action-btn');
+      const timerDisp = document.getElementById('timer-display');
+      const waveDisp = document.getElementById('wave-display');
+
+      if (!isRecording) {
+        // Start Recording Simulation
+        isRecording = true;
+        btn.textContent = '■';
+        btn.classList.add('recording');
+        waveDisp.classList.add('active');
+        secondsElapsed = 0;
+        timerDisp.textContent = '00:00';
+
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+          const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+          timerDisp.textContent = `${mins}:${secs}`;
+        }, 1000);
+      } else {
+        // Stop Recording Simulation
+        isRecording = false;
+        btn.textContent = '▶';
+        btn.classList.remove('recording');
+        waveDisp.classList.remove('active');
+        clearInterval(timerInterval);
+      }
+    }
+
+    // Initial load
+    renderCard();
+  </script>
+</body>
+</html>
