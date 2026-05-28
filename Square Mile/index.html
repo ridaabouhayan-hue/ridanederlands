@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Square Mile — Cursisten Portaal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #131a26;
+      --primary: #b45309;
+      --primary-hover: #d97706;
+      --primary-light: rgba(180, 83, 9, 0.12);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(180, 83, 9, 0.1) 0, transparent 40%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0, transparent 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ── LOGIN CARD ── */
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      transition: var(--transition);
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      outline: none;
+      text-align: center;
+      letter-spacing: 3px;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180, 83, 9, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+
+    .error-text {
+      color: #ef4444;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 0.75rem;
+      min-height: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .error-text.show {
+      opacity: 1;
+    }
+
+    /* ── DASHBOARD CONTAINER ── */
+    .dashboard-container {
+      display: none;
+      width: 100%;
+      max-width: 900px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      width: 100%;
+      position: relative;
+    }
+
+    .back-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: var(--transition);
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+    }
+
+    .back-btn:hover {
+      color: var(--text-main);
+      border-color: var(--primary);
+      transform: translateX(-3px);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+
+    .portal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
+    .portal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .card-category {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin: 5px 0;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: gap 0.2s;
+    }
+
+    .portal-card:hover .card-footer {
+      gap: 8px;
+    }
+
+    /* SPECIFIC ACCENTS */
+    .westport-accent::before {
+      background: #0d9488;
+    }
+    .westport-accent:hover {
+      border-color: #0d9488;
+    }
+    .westport-accent .card-category {
+      color: #0d9488;
+    }
+    .westport-accent .card-footer {
+      color: #0d9488;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        margin-top: 3rem;
+      }
+      .back-nav {
+        position: static;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN CONTAINER -->
+  <div class="login-container" id="login-section">
+    <div class="logo"><span>Square</span> Mile</div>
+    <div class="subtitle">Voer je groepscode in voor toegang tot het portaal</div>
+    
+    <div class="input-group">
+      <label class="input-label" for="password">Groepscode</label>
+      <input type="password" id="password" class="input-field" placeholder="••••" autocomplete="off" autofocus>
+    </div>
+
+    <button class="btn" onclick="submitPassword()">Inloggen</button>
+    <div class="error-text" id="error-msg">Onjuiste groepscode. Probeer het opnieuw.</div>
+
+    <a href="../index.html" class="btn btn-secondary">Terug naar Hoofdmenu</a>
+  </div>
+
+  <!-- DASHBOARD CONTAINER -->
+  <div class="dashboard-container" id="dashboard-section">
+    <div class="dashboard-header">
+      <div class="back-nav">
+        <a href="../index.html" class="back-btn">← Hoofdmenu</a>
+      </div>
+      <div class="logo"><span>Square</span> Mile</div>
+      <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: 500; margin-top: 5px;">Taaltrainingen — Cursisten Portaal</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- GENERAL EXERCISES -->
+      <a href="modale_werkwoorden.html" class="portal-card">
+        <span class="card-category">Algemene Oefening</span>
+        <div class="card-icon">📖</div>
+        <h3 class="card-title">Modale Werkwoorden</h3>
+        <p class="card-desc">Oefen met de hulpwerkwoorden kunnen, moeten, willen, mogen en zullen en de juiste woordvolgorde.</p>
+        <span class="card-footer">Open oefening →</span>
+      </a>
+
+      <!-- WESTPORT GROEP -->
+      <a href="../Westport/index.html" class="portal-card westport-accent">
+        <span class="card-category">Groep · Beveiligd</span>
+        <div class="card-icon">🏭</div>
+        <h3 class="card-title">Westport Groep</h3>
+        <p class="card-desc">Specifieke praktijkopdrachten en rollenspelen voor de medewerkers van Westport (Malwina, Ariel & Dorota).</p>
+        <span class="card-footer" style="color: #0d9488;">Naar groepspagina →</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const errorMsg = document.getElementById('error-msg');
+    
+    // Auth Check
+    if (sessionStorage.getItem('square_mile_auth') === '1') {
+      showDashboard();
+    }
+
+    function submitPassword() {
+      const entered = passwordInput.value.trim().toLowerCase();
+      if (entered === 'square') {
+        sessionStorage.setItem('square_mile_auth', '1');
+        showDashboard();
+      } else {
+        passwordInput.classList.add('error');
+        errorMsg.classList.add('show');
+        setTimeout(() => {
+          passwordInput.value = '';
+          errorMsg.classList.remove('show');
+          passwordInput.focus();
+        }, 1500);
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('dashboard-section').style.display = 'block';
+    }
+
+    // Support enter key
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitPassword();
+    });
+  </script>
+</body>
+</html>
