@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONA - Portaal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0f1729;
+            --card-bg: #182040;
+            --text-dark: #f0f2f8;
+            --text-muted: #a0aac4;
+            --card-accent: #f39c12;
+            --radius: 20px;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 40px 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .section {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 24px;
+        }
+        .section-label {
+            margin: 0 0 40px;
+            text-align: center;
+        }
+        .section-label h1 {
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .section-label p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .topic-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+            border-color: var(--card-accent);
+        }
+        .topic-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 6px;
+            background: var(--card-accent);
+        }
+        .card-icon { font-size: 3rem; line-height: 1; }
+        .card-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--card-accent);
+            background: color-mix(in srgb, var(--card-accent) 20%, transparent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 5px;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            line-height: 1.25;
+        }
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+        .card-arrow {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--card-accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+        .topic-card:hover .card-arrow { gap: 10px; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--text-dark); }
+    </style>
+    <script>
+        function promptOna(targetUrl) {
+            if (sessionStorage.getItem('ona_auth') === '1') {
+                window.location.href = targetUrl;
+                return;
+            }
+            const code = prompt("🔒 Voer het wachtwoord in om toegang te krijgen:");
+            if (!code) return;
+            if (code.trim().toUpperCase() === "ONA") {
+                sessionStorage.setItem('ona_auth', '1');
+                window.location.href = targetUrl;
+            } else {
+                alert("❌ Onjuist wachtwoord.");
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="section">
+        <a href="../index.html" class="back-link">← Terug naar home</a>
+        
+        <div class="section-label">
+            <h1>💼 ONA Portaal</h1>
+            <p>Oriëntatie op de Nederlandse Arbeidsmarkt</p>
+        </div>
+
+        <div class="topics-grid">
+            
+            <!-- ONA CURSIST -->
+            <a class="topic-card" onclick="promptOna('ona_cursist.html')" style="--card-accent:#f39c12">
+                <div class="card-tag">🔒 Wachtwoord vereist</div>
+                <div class="card-icon">🎓</div>
+                <div class="card-title">Studentengids</div>
+                <div class="card-desc">
+                    De interactieve gids voor cursisten. Uitleg over alle 8 resultaatkaarten, documenten en de checklist.
+                </div>
+                <div class="card-arrow">Open gids →</div>
+            </a>
+
+            <!-- ONA DOCENT -->
+            <a class="topic-card" onclick="promptOna('ona_docent.html')" style="--card-accent:#e67e22; border: 2px solid rgba(230, 126, 34, 0.2);">
+                <div class="card-tag" style="color:#e67e22; background: rgba(230, 126, 34, 0.15);">🔒 Wachtwoord vereist</div>
+                <div class="card-icon">👨‍🏫</div>
+                <div class="card-title">Docenten Dashboard</div>
+                <div class="card-desc">
+                    Het overzicht voor docenten om de voortgang van alle cursisten in te zien en goed te keuren.
+                </div>
+                <div class="card-arrow" style="color:#e67e22;">Open dashboard →</div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
