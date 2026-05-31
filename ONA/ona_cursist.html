@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jouw ONA Portfolio</title>
+    <link rel="stylesheet" href="ona_style.css">
+    <style>
+        /* Extra interactieve styling voor cursistenpagina */
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .toolbar button {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary-light);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .toolbar button:hover {
+            background: var(--primary-light);
+        }
+
+        /* Interactieve checklist */
+        .checklist-group-title {
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+            margin-top: 20px;
+            font-size: 1.05em;
+        }
+        .checklist-group-title:first-child { margin-top: 0; }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            font-weight: 600;
+        }
+        .check-item:hover {
+            background: var(--primary-light);
+        }
+        .check-item.checked {
+            background: var(--success-light);
+            border-color: #c9f5ec;
+            text-decoration: line-through;
+            color: var(--text-gray);
+        }
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--neutral);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .check-item.checked .check-box {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        /* Subsectie headers binnen accordions */
+        .sub-section {
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+        .sub-section h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        /* Lesrooster tabel */
+        .lesson-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .lesson-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 800;
+        }
+        .lesson-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--bg);
+        }
+        .lesson-table tr:nth-child(even) {
+            background: var(--primary-light);
+        }
+
+        /* Document eisen tabel */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .doc-table th {
+            background: var(--secondary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 800;
+        }
+        .doc-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--bg);
+            vertical-align: top;
+        }
+        .doc-table tr:nth-child(even) {
+            background: rgba(114, 9, 183, 0.05);
+        }
+
+        /* Stappen flow */
+        .steps-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            align-items: center;
+        }
+        .step-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9em;
+        }
+        .step-arrow {
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        /* Dark mode extras */
+        body.dark-mode .lesson-table th { background: var(--primary); }
+        body.dark-mode .lesson-table tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+        body.dark-mode .doc-table th { background: #333; color: var(--white); }
+        body.dark-mode .doc-table tr:nth-child(even) { background: #2a2a2a; }
+        body.dark-mode .sub-section { background: #1a1a1a; }
+        body.dark-mode .check-item:hover { background: rgba(255,255,255,0.05); }
+        body.dark-mode .check-item.checked { background: rgba(46, 196, 182, 0.1); }
+        body.dark-mode .step-badge { background: rgba(255,255,255,0.05); }
+        body.dark-mode .toolbar button { background: var(--white); border-color: #333; }
+
+        /* Afvink stijlen */
+        tr.is-completed { background-color: rgba(46, 196, 182, 0.15) !important; }
+        details.is-completed > summary { background-color: rgba(46, 196, 182, 0.15); border-left-color: var(--success) !important; }
+        body.dark-mode tr.is-completed { background-color: rgba(46, 196, 182, 0.25) !important; }
+        body.dark-mode details.is-completed > summary { background-color: rgba(46, 196, 182, 0.25); }
+    </style>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('onaDarkMode', document.body.classList.contains('dark-mode') ? 'true' : 'false');
+        }
+        
+        function toggleLang() {
+            const btn = document.getElementById('lang-btn');
+            if (btn.dataset.lang === 'nl') {
+                document.querySelectorAll('.lang-nl').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = '');
+                btn.dataset.lang = 'en';
+                btn.innerText = '🇳🇱 Nederlands';
+            } else {
+                document.querySelectorAll('.lang-nl').forEach(el => el.style.display = '');
+                document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+                btn.dataset.lang = 'nl';
+                btn.innerText = '🇬🇧 English';
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('details.student-accordion').forEach(d => d.open = true);
+        }
+        function collapseAll() {
+            document.querySelectorAll('details.student-accordion').forEach(d => d.open = false);
+        }
+
+        // Checklist logica voor de nieuwe native checkboxes
+        function saveCardCheckboxes() {
+            const states = {};
+            document.querySelectorAll('.card-checkbox').forEach((el, i) => {
+                states[i] = el.checked;
+                // Add green styling to parent accordion or row
+                const row = el.closest('tr');
+                const details = el.closest('details');
+                if (row) {
+                    if (el.checked) row.classList.add('is-completed');
+                    else row.classList.remove('is-completed');
+                } else if (details) {
+                    if (el.checked) details.classList.add('is-completed');
+                    else details.classList.remove('is-completed');
+                }
+            });
+            localStorage.setItem('onaCardChecklist', JSON.stringify(states));
+        }
+
+        function loadCardCheckboxes() {
+            const data = localStorage.getItem('onaCardChecklist');
+            if (data) {
+                const states = JSON.parse(data);
+                document.querySelectorAll('.card-checkbox').forEach((el, i) => {
+                    if (states[i]) el.checked = true;
+                });
+            }
+            saveCardCheckboxes(); // trigger styling
+        }
+        
+        // Checklist logica voor de checklist onderaan (behoud)
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            saveChecklist();
+        }
+
+        function saveChecklist() {
+            const states = {};
+            document.querySelectorAll('.check-item').forEach((el, i) => {
+                states[i] = el.classList.contains('checked');
+            });
+            localStorage.setItem('onaChecklist', JSON.stringify(states));
+        }
+
+        function loadChecklist() {
+            const data = localStorage.getItem('onaChecklist');
+            if (data) {
+                const states = JSON.parse(data);
+                document.querySelectorAll('.check-item').forEach((el, i) => {
+                    if (states[i]) el.classList.add('checked');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('onaDarkMode') === 'true') document.body.classList.add('dark-mode');
+            document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+            loadChecklist();
+            loadCardCheckboxes();
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- HEADER -->
+    <div class="header">
+        <h1 class="lang-nl">🎓 ONA Studentengids</h1>
+        <h1 class="lang-en">🎓 ONA Student Guide</h1>
+        <p class="lang-nl">Oriëntatie op de Nederlandse Arbeidsmarkt</p>
+        <p class="lang-en">Orientation on the Dutch Labour Market</p>
+        <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <button id="lang-btn" data-lang="nl" class="tab-btn active" style="padding: 8px 15px; font-size: 1em;" onclick="toggleLang()">🇬🇧 English</button>
+            <button class="dark-mode-toggle" style="position: static;" onclick="toggleDarkMode()">🌙 / ☀️</button>
+        </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <button onclick="expandAll()">📂 Alles uitklappen</button>
+        <button onclick="collapseAll()">📁 Alles inklappen</button>
+    </div>
+
+
+
+    <!-- ============================================ -->
+    <!-- 1. WAT IS ONA? -->
+    <!-- ============================================ -->
+    <details class="student-accordion" open>
+        <summary class="accordion-header">
+            <span class="lang-nl">1. Wat is ONA?</span>
+            <span class="lang-en">1. What is ONA?</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>Welkom bij de ONA-cursus. ONA staat voor Oriëntatie op de Nederlandse Arbeidsmarkt en is een verplicht onderdeel van jouw inburgeringstraject. Het doel is dat jij de Nederlandse arbeidsmarkt leert kennen: welk beroep past bij jou, hoe zoek je werk, en wat verwachten werkgevers in Nederland?</p>
+            <br>
+            <p>Aan het einde van de cursus lever jij een portfolio in bij DUO. Dat portfolio is jouw examen. Er is geen mondeling gesprek.</p>
+            <br>
+            <div class="sub-section">
+                <p><strong>Jouw ONA:</strong> 24 uur les + 40 uur werkervaring = 64 uur totaal</p>
+                <p><strong>Eindresultaat:</strong> een goedgekeurd portfolio bij DUO = jouw 64 uur zijn officieel</p>
+                <p><strong>Geen interview.</strong> Jouw portfolio is het examen.</p>
+            </div>
+            <p>Je ontvangt jouw 64 uur pas officieel zodra DUO jouw portfolio heeft goedgekeurd én jouw werkovereenkomst en urenschema heeft verwerkt. Dit kan een paar weken duren na het insturen, maar dat is normaal.</p>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>Welcome to the ONA course. ONA stands for Oriëntatie op de Nederlandse Arbeidsmarkt, which means Orientation on the Dutch Labour Market. It is a compulsory part of your integration programme. You will learn about the Dutch labour market, explore which profession suits you, and build a portfolio. That portfolio is your exam. There is no oral interview.</p>
+            <br>
+            <div class="sub-section">
+                <p><strong>Your ONA:</strong> 24 hours of lessons + 40 hours of work experience = 64 hours total</p>
+                <p><strong>End result:</strong> an approved portfolio at DUO = your 64 hours are officially confirmed</p>
+                <p><strong>No interview.</strong> Your portfolio is the exam.</p>
+            </div>
+            <p>You will only officially receive your 64 hours once DUO has approved your portfolio and processed your employment contract and timesheet. This can take a few weeks after submission, but that is normal.</p>
+        </div>
+    </details>
+
+    <!-- ============================================ -->
+    <!-- 2. HOE WERKT DE CURSUS? -->
+    <!-- ============================================ -->
+    <details class="student-accordion">
+        <summary class="accordion-header">
+            <span class="lang-nl">2. Hoe werkt de cursus?</span>
+            <span class="lang-en">2. How does the course work?</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>De cursus bestaat uit precies 16 lessen van elk 1,5 uur, online via Teams of Zoom. De lessen volgen altijd hetzelfde ritme.</p>
+
+            <table class="lesson-table">
+                <tr><th>Les</th><th>Wat doen we?</th></tr>
+                <tr><td><strong>Les 1 – Introductie</strong></td><td>Kennismaking met de cursus. Je docent legt uit wat ONA is, hoe de lessen werken en wat je portfolio moet bevatten. Je ontvangt alle documenten via de gedeelde Google Drive map. Je hoeft niets voor te bereiden.</td></tr>
+                <tr><td><strong>Les 2 t/m 14 – Resultaatkaarten</strong></td><td>Dit is het grootste deel van de cursus. De lessen wisselen altijd af: Les A is een <em>instructieles</em> waarbij je docent de resultaatkaart uitlegt en jij direct begint met invullen. Les B is een <em>werkles</em> waarbij jij zelfstandig verder werkt en de docent één op één met elke cursist zit om te helpen en je werk te bekijken. Ben je vroeg klaar met een kaart? Dan mag je alvast aan de volgende beginnen, maar houd er rekening mee dat je dan tijdens de overige lessen gewoon moet wachten. Er is geen voordeel aan snel gaan. De cursus heeft zijn eigen tempo.</td></tr>
+                <tr><td><strong>Les 15 – Voorbereiding</strong></td><td>We doen een grondige check van alles: zijn alle kaarten volledig ingevuld, zijn alle documenten geüpload op de juiste plek op inburgeren.nl? We lossen fouten op en zorgen dat alles klaarstaat voor les 16.</td></tr>
+                <tr><td><strong>Les 16 – Portfolio insturen</strong></td><td>In de laatste les sturen we het portfolio definitief op naar DUO, samen met je docent. Het portfolio kan niet eerder worden ingestuurd: ONA controleert jouw officiële start- en einddatum. Na het insturen wacht je 2 tot 6 weken op de beoordeling van DUO.</td></tr>
+            </table>
+
+            <p><strong>Google Drive:</strong> alle documenten staan in een gedeelde map. Je werkt daarin en je docent kan meekijken en feedback geven via opmerkingen.</p>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>The course consists of exactly 16 lessons of 1.5 hours each, online via Teams or Zoom.</p>
+
+            <table class="lesson-table">
+                <tr><th>Lesson</th><th>What do we do?</th></tr>
+                <tr><td><strong>Lesson 1 – Introduction</strong></td><td>Introduction to the course. Your teacher explains what ONA is, how the lessons work and what your portfolio must contain. You receive all documents via the shared Google Drive folder. You do not need to prepare anything.</td></tr>
+                <tr><td><strong>Lessons 2–14 – Result cards</strong></td><td>The largest part of the course. The lessons always alternate: Lesson A is an instruction lesson where your teacher explains the result card and you start filling it in straight away. Lesson B is a working lesson where you work independently and the teacher sits one-on-one with each student to help. Finished a card early? You can start the next one, but keep in mind that you will simply have to wait during the remaining lessons. There is no advantage to rushing. The course has its own pace.</td></tr>
+                <tr><td><strong>Lesson 15 – Preparation</strong></td><td>A thorough check of everything: are all cards fully filled in, are all documents uploaded in the right place on inburgeren.nl? We fix any remaining issues and make sure everything is ready for lesson 16.</td></tr>
+                <tr><td><strong>Lesson 16 – Submit portfolio</strong></td><td>In the final lesson we submit the portfolio to DUO together. The portfolio cannot be submitted earlier: ONA checks your official start and end date. After submitting, you wait 2 to 6 weeks for DUO's assessment.</td></tr>
+            </table>
+
+            <p><strong>Google Drive:</strong> all documents are in a shared folder. You work in it and your teacher can see your work and give feedback via comments.</p>
+        </div>
+    </details>
+
+    <!-- ============================================ -->
+    <!-- 3. HET PORTFOLIO -->
+    <!-- ============================================ -->
+    <details class="student-accordion" open>
+        <summary class="accordion-header">
+            <span class="lang-nl">3. Het portfolio: 3 delen</span>
+            <span class="lang-en">3. The portfolio: 3 parts</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>Het portfolio bestaat uit drie delen. Je werkt aan alle drie tegelijkertijd: de lessen helpen je bij Deel A en B, terwijl je Deel C zelfstandig organiseert naast de lessen.</p>
+            <div class="steps-flow">
+                <span class="step-badge">Deel A: 8 resultaatkaarten</span>
+                <span class="step-arrow">→</span>
+                <span class="step-badge">Deel B: 6 documenten</span>
+                <span class="step-arrow">→</span>
+                <span class="step-badge">Deel C: 40 uur werkervaring</span>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>The portfolio consists of three parts. You work on all three at the same time: the lessons help you with Part A and B, while you arrange Part C independently alongside the lessons.</p>
+            <div class="steps-flow">
+                <span class="step-badge">Part A: 8 result cards</span>
+                <span class="step-arrow">→</span>
+                <span class="step-badge">Part B: 6 documents</span>
+                <span class="step-arrow">→</span>
+                <span class="step-badge">Part C: 40 hrs work exp.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- DEEL A: Resultaatkaarten -->
+    <details class="student-accordion">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Deel A: de 8 resultaatkaarten</span>
+            <span class="lang-en">Part A: the 8 result cards</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>De resultaatkaarten zijn het hart van het portfolio. Je vult ze in op www.inburgeren.nl in het ONA-portfolioportaal. Elke kaart gaat over een ander aspect van jouw beroepsoriëntatie.</p>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>The result cards are the heart of the portfolio. You fill them in on www.inburgeren.nl in the ONA portfolio portal.</p>
+        </div>
+    </details>
+
+    <!-- Kaart 1 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 1: Beroepenoriëntatie</span><span class="lang-en">Card 1: Career orientation</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Welke drie beroepen kies ik?</strong></p>
+            <ul>
+                <li>Kies beroepen die jou aanspreken of die jij zou kunnen doen.</li>
+                <li>Mag ik al gedaan hebben of nog willen doen. Beide is prima.</li>
+                <li>Er is geen fout antwoord. Kies iets waar je makkelijk over kunt praten.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Kies een makkelijk, herkenbaar beroep. Dit beroep komt terug in alle andere kaarten.</p>
+            </div>
+            <br>
+            <p><strong>Hoe kies ik mijn gewenste beroep?</strong></p>
+            <ul>
+                <li>Kies het beroep van de drie dat het beste bij jou past.</li>
+                <li>Dit beroep staat centraal in alle 8 resultaatkaarten.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Kies iets concreet en eenvoudig, zoals schoonmaker, magazijnmedewerker of keukenhulp.</p>
+            </div>
+            <br>
+            <p><strong>Wat is een branche of sector?</strong></p>
+            <ul>
+                <li>Een sector is een groep bedrijven die hetzelfde soort werk doen.</li>
+                <li>Voorbeelden: gezondheidszorg, onderwijs, horeca, retail (winkels), bouw, logistiek.</li>
+                <li>Past jouw beroep in meerdere sectoren? Vink de eerste optie aan en geef voorbeelden.</li>
+                <li>Past het maar in één sector? Vink de tweede optie aan.</li>
+            </ul>
+            <br>
+            <p><strong>Welke vakjes vink ik aan bij diploma en ervaring?</strong></p>
+            <ul>
+                <li>Kijk alleen naar jouw gewenste beroep, niet naar werk in het algemeen.</li>
+                <li>Heb je een relevant diploma? Vink dat aan.</li>
+                <li>Heb je werkervaring in dit beroep? Vink dat aan.</li>
+                <li>Geen diploma en geen relevante ervaring? Vink de laatste optie aan.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Kies alleen wat echt van toepassing is. ION en EVC zijn voor de meeste cursisten niet van toepassing.</p>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>Which three professions do I choose?</strong></p>
+            <ul>
+                <li>Choose professions that appeal to you or that you could do.</li>
+                <li>Can be something you have done or want to do. Both are fine.</li>
+                <li>There is no wrong answer. Choose something easy to talk about.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Choose an easy, recognizable profession. This profession will return in all other cards.</p>
+            </div>
+            <br>
+            <p><strong>How do I choose my desired profession?</strong></p>
+            <ul>
+                <li>Choose the profession of the three that suits you best.</li>
+                <li>This profession is central to all 8 result cards.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Choose something concrete and simple, such as cleaner, warehouse worker or kitchen assistant.</p>
+            </div>
+            <br>
+            <p><strong>What is a branch or sector?</strong></p>
+            <ul>
+                <li>A sector is a group of companies doing the same kind of work.</li>
+                <li>Examples: healthcare, education, hospitality, retail (shops), construction, logistics.</li>
+                <li>Does your profession fit in multiple sectors? Tick the first option and give examples.</li>
+                <li>Does it fit in only one sector? Tick the second option.</li>
+            </ul>
+            <br>
+            <p><strong>Which boxes do I tick for diploma and experience?</strong></p>
+            <ul>
+                <li>Only look at your desired profession, not work in general.</li>
+                <li>Do you have a relevant diploma? Tick that.</li>
+                <li>Do you have work experience in this profession? Tick that.</li>
+                <li>No diploma and no relevant experience? Tick the last option.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Choose only what truly applies. ION and EVC are not applicable to most students.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 2 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 2: Realistisch beroepsbeeld</span><span class="lang-en">Card 2: Realistic job profile</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Hoe specifiek schrijf ik de taken op?</strong></p>
+            <ul>
+                <li>Schrijf de dagelijkse, concrete taken op die echt bij jouw beroep horen.</li>
+                <li>Niet één algemeen woord, maar 2 à 3 concrete acties.</li>
+                <li>3 tot 5 taken is genoeg.</li>
+                <li><span style="color:var(--danger)">✗</span> 'schoonmaken' &rarr; <span style="color:var(--success)">✓</span> 'vloeren dweilen, toiletten schoonmaken, prullenbakken legen'</li>
+            </ul>
+            <br>
+            <p><strong>Welke werkomstandigheden vink ik aan?</strong></p>
+            <ul>
+                <li>Vink aan wat logisch en realistisch is voor jouw gewenste beroep.</li>
+                <li>Je mag meerdere vakjes aanvinken.</li>
+                <li>Klik daarna gewoon 'ja' bij 'passen deze omstandigheden bij mij?'</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> 'Nee' aanvinken maakt het alleen maar moeilijker. Kies 'ja'.</p>
+            </div>
+            <br>
+            <p><strong>Wat doe ik met speciale eisen?</strong></p>
+            <ul>
+                <li>Kijk of er voor jouw beroep écht een wettelijke eis is.</li>
+                <li>Voorbeelden: rijbewijs voor chauffeur, voedselveiligheidscertificaat in de keuken.</li>
+                <li>Geen speciale eisen voor jouw beroep? Dan vink je niets aan of schrijf je dat er geen zijn.</li>
+            </ul>
+            <br>
+            <p><strong>Vraag 4 over persoonlijke omstandigheden voelt erg persoonlijk. Wat schrijf ik?</strong></p>
+            <ul>
+                <li>Geef aan of jouw situatie het toelaat dat je dit werk kunt doen.</li>
+                <li>Voor de meeste mensen geldt: alles past, ik hoef niets te veranderen.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Alleen als er een concreet obstakel is vermeld je dat kort. Anders: alles is goed.</p>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>How specifically do I write down the tasks?</strong></p>
+            <ul>
+                <li>Write down the daily, concrete tasks that really belong to your profession.</li>
+                <li>Not one general word, but 2 to 3 concrete actions.</li>
+                <li>3 to 5 tasks is enough.</li>
+                <li><span style="color:var(--danger)">✗</span> 'cleaning' &rarr; <span style="color:var(--success)">✓</span> 'mopping floors, cleaning toilets, emptying bins'</li>
+            </ul>
+            <br>
+            <p><strong>Which working conditions do I tick?</strong></p>
+            <ul>
+                <li>Tick what is logical and realistic for your desired profession.</li>
+                <li>You may tick multiple boxes.</li>
+                <li>Then just click 'yes' for 'do these conditions suit me?'</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Ticking 'no' only makes it more difficult. Choose 'yes'.</p>
+            </div>
+            <br>
+            <p><strong>What do I do with special requirements?</strong></p>
+            <ul>
+                <li>Check if there is really a legal requirement for your profession.</li>
+                <li>Examples: driving license for a driver, food safety certificate in the kitchen.</li>
+                <li>No special requirements for your profession? Then tick nothing or write that there are none.</li>
+            </ul>
+            <br>
+            <p><strong>Question 4 about personal circumstances feels very personal. What do I write?</strong></p>
+            <ul>
+                <li>Indicate whether your situation allows you to do this work.</li>
+                <li>For most people: everything fits, I don't need to change anything.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Only if there is a concrete obstacle, mention it briefly. Otherwise: everything is fine.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 3 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 3: Eigenschappen kennen</span><span class="lang-en">Card 3: Know your qualities</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Welke drie algemene eigenschappen schrijf ik op?</strong></p>
+            <ul>
+                <li>Eigenschappen die voor élke werknemer in Nederland belangrijk zijn.</li>
+                <li>Denk aan heel basale dingen: op tijd komen, betrouwbaar zijn, goed samenwerken.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Houd het simpel en herkenbaar. Dat is precies wat DUO verwacht.</p>
+            </div>
+            <br>
+            <p><strong>Wat is het verschil tussen een eigenschap en een vaardigheid?</strong></p>
+            <ul>
+                <li>Een <strong>eigenschap</strong> zegt iets over wie jij bent: nauwkeurig, punctueel, zelfstandig.</li>
+                <li>Een <strong>vaardigheid</strong> is iets wat je kunt doen: autorijden, een computer gebruiken.</li>
+                <li>Bij kaart 3 gaat het om eigenschappen, niet om vaardigheden.</li>
+            </ul>
+            <br>
+            <p><strong>Hoe geef ik een goed voorbeeld bij vraag 2?</strong></p>
+            <ul>
+                <li>Koppel de eigenschap aan een concrete situatie in jouw gewenste beroep.</li>
+                <li>Leg kort uit waarom die eigenschap nodig is. 1 à 2 zinnen is genoeg.</li>
+                <li><span style="color:var(--danger)">✗</span> 'ik ben nauwkeurig' &rarr; <span style="color:var(--success)">✓</span> 'ik ben nauwkeurig want een schoonmaker mag niets vergeten te reinigen'</li>
+            </ul>
+            <br>
+            <p><strong>Mag ik 'nee' aanvinken bij 'heb ik deze eigenschap'?</strong></p>
+            <ul>
+                <li>Technisch gezien mag het, maar het is niet verstandig.</li>
+                <li>Kies eigenschappen waarvan jij eerlijk kunt zeggen dat je ze hebt.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Kies eigenschappen die bij jou passen en vink altijd 'ja' aan.</p>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>Which three general qualities do I write down?</strong></p>
+            <ul>
+                <li>Qualities that are important for every employee in the Netherlands.</li>
+                <li>Think of very basic things: arriving on time, being reliable, working well together.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Keep it simple and recognizable. That is exactly what DUO expects.</p>
+            </div>
+            <br>
+            <p><strong>What is the difference between a quality and a skill?</strong></p>
+            <ul>
+                <li>A <strong>quality</strong> says something about who you are: accurate, punctual, independent.</li>
+                <li>A <strong>skill</strong> is something you can do: driving a car, using a computer.</li>
+                <li>Card 3 is about qualities, not skills.</li>
+            </ul>
+            <br>
+            <p><strong>How do I give a good example at question 2?</strong></p>
+            <ul>
+                <li>Link the quality to a concrete situation in your desired profession.</li>
+                <li>Briefly explain why that quality is needed. 1 or 2 sentences is enough.</li>
+                <li><span style="color:var(--danger)">✗</span> 'I am accurate' &rarr; <span style="color:var(--success)">✓</span> 'I am accurate because a cleaner must not forget to clean anything'</li>
+            </ul>
+            <br>
+            <p><strong>May I tick 'no' at 'do I have this quality'?</strong></p>
+            <ul>
+                <li>Technically you may, but it is not wise.</li>
+                <li>Choose qualities that you can honestly say you have.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Choose qualities that suit you and always tick 'yes'.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 4 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header" style="color: var(--warning);">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">⚠️ Kaart 4: Beroepskansen + 2 vacatures uploaden</span><span class="lang-en">⚠️ Card 4: Job opportunities + upload 2 vacancies</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Waar zoek ik vacatures?</strong></p>
+            <ul>
+                <li>Gebruik altijd <strong>werk.nl</strong>. Dit is de officiële site van de overheid.</li>
+                <li>Je mag ook andere plekken noemen, zoals een uitzendbureau of bedrijfswebsite.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> werk.nl is verplicht. Andere sites zijn aanvulling, geen vervanging.</p>
+            </div>
+            <br>
+            <p><strong>Hoe weet ik of de kans op werk groot, redelijk of klein is?</strong></p>
+            <ul>
+                <li>Zoek op werk.nl op jouw gewenste beroep en kijk hoeveel resultaten er zijn.</li>
+                <li>Minder dan 20 vacatures: <strong>klein</strong>.</li>
+                <li>Tot ongeveer 100: <strong>redelijk</strong>.</li>
+                <li>Meer dan 100: <strong>groot</strong>.</li>
+            </ul>
+            <br>
+            <p><strong>Hoe sla ik een vacature op als PDF?</strong></p>
+            <ol>
+                <li>Open de vacature op werk.nl.</li>
+                <li>Klik op de <strong>downloadknop</strong> die werk.nl aanbiedt.</li>
+                <li>Sla het bestand op in jouw Google Drive map.</li>
+                <li>Geef het een duidelijke naam, bijv. 'Vacature_schoonmaker_Rotterdam'.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--danger); margin-top: 5px;">
+                <p>⚠️ <strong>Let op:</strong> Geen screenshots en geen vacatures van Indeed. Die worden vaak afgewezen door DUO.</p>
+            </div>
+            <br>
+            <p><strong>Hoe beoordeel ik of een vacature geschikt is?</strong></p>
+            <ul>
+                <li>Kijk of de locatie, de uren en de eisen bij jouw situatie passen.</li>
+                <li>Past alles redelijk? Vink 'ja' aan en leg kort uit waarom.</li>
+                <li>Klopt er iets echt niet? Vink 'nee' aan en leg dat uit.</li>
+            </ul>
+            
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <h4 style="color: var(--warning);">⚠️ Documenten uploaden bij deze kaart:</h4>
+                <ul>
+                    <li><strong>Vacature 1 (werk.nl):</strong> Download als PDF via de downloadknop op werk.nl (geen screenshot, geen Indeed)</li>
+                    <li><strong>Vacature 2 (werk.nl):</strong> Download als PDF via de downloadknop op werk.nl (geen screenshot, geen Indeed)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>Where do I search for vacancies?</strong></p>
+            <ul>
+                <li>Always use <strong>werk.nl</strong>. This is the official government site.</li>
+                <li>You may also mention other places, such as an employment agency or company website.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> werk.nl is mandatory. Other sites are an addition, not a replacement.</p>
+            </div>
+            <br>
+            <p><strong>How do I know if the chance of work is large, reasonable or small?</strong></p>
+            <ul>
+                <li>Search werk.nl for your desired profession and see how many results there are.</li>
+                <li>Less than 20 vacancies: <strong>small</strong>.</li>
+                <li>Up to about 100: <strong>reasonable</strong>.</li>
+                <li>More than 100: <strong>large</strong>.</li>
+            </ul>
+            <br>
+            <p><strong>How do I save a vacancy as a PDF?</strong></p>
+            <ol>
+                <li>Open the vacancy on werk.nl.</li>
+                <li>Click the <strong>download button</strong> provided by werk.nl.</li>
+                <li>Save the file in your Google Drive folder.</li>
+                <li>Give it a clear name, e.g. 'Vacancy_cleaner_Rotterdam'.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--danger); margin-top: 5px;">
+                <p>⚠️ <strong>Note:</strong> No screenshots and no Indeed vacancies. These are often rejected by DUO.</p>
+            </div>
+            <br>
+            <p><strong>How do I assess whether a vacancy is suitable?</strong></p>
+            <ul>
+                <li>Check if the location, hours and requirements suit your situation.</li>
+                <li>Does everything fit reasonably well? Tick 'yes' and briefly explain why.</li>
+                <li>Is something really not right? Tick 'no' and explain that.</li>
+            </ul>
+            
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <h4 style="color: var(--warning);">⚠️ Documents to upload with this card:</h4>
+                <ul>
+                    <li><strong>Job vacancy 1 (werk.nl):</strong> Download as PDF using the download button on werk.nl (no screenshots, no Indeed)</li>
+                    <li><strong>Job vacancy 2 (werk.nl):</strong> Download as PDF using the download button on werk.nl (no screenshots, no Indeed)</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 5 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 5: Beroepscompetenties</span><span class="lang-en">Card 5: Professional competencies</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Welke vakjes vink ik aan bij vraag 1?</strong></p>
+            <ul>
+                <li>Vink alles aan wat bij jouw situatie past. Je mag meerdere vakjes aanvinken.</li>
+                <li>Denk aan: wanneer wil je studeren, hoe lang, overdag of 's avonds?</li>
+            </ul>
+            <br>
+            <p><strong>Hoe vind ik een passende opleiding?</strong></p>
+            <ol>
+                <li>Ga naar www.opleiding.nl.</li>
+                <li>Zoek op jouw gewenste beroep of een relevant vakgebied.</li>
+                <li>Kies een opleiding die logisch aansluit.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Het hoeft niet perfect te matchen. Een keukenhulp die een hygiënecursus kiest is prima. Een schoonmaker die een Excel-cursus kiest is minder logisch.</p>
+            </div>
+            <br>
+            <p><strong>Wat doe ik als ik de kosten niet weet?</strong></p>
+            <ul>
+                <li>Klik door naar de aanbieder via de link op opleiding.nl.</li>
+                <li>De kosten staan bijna altijd ergens op de website.</li>
+                <li>Kun je ze echt niet vinden? Vraag je docent om te helpen.</li>
+            </ul>
+            <br>
+            <p><strong>Welk taalniveau heb ik nodig?</strong></p>
+            <ul>
+                <li>De meeste praktijkgerichte opleidingen vragen minimaal A2 of B1.</li>
+                <li>Hogere opleidingen vragen B2 of C1.</li>
+                <li>Staat het niet duidelijk op de website? Ga ervan uit dat B1 nodig is.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Twijfel je over jouw niveau? Vraag je docent.</p>
+            </div>
+            <br>
+            <p><strong>Is het taaltraject bij vraag 8 hetzelfde als de ONA-cursus?</strong></p>
+            <ul>
+                <li>Nee. Het taaltraject is jouw eigen plan voor buiten de ONA-lessen.</li>
+                <li>Denk aan een taalschool, zelfstudie of een taalapp.</li>
+            </ul>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>Which boxes do I tick at question 1?</strong></p>
+            <ul>
+                <li>Tick everything that suits your situation. You may tick multiple boxes.</li>
+                <li>Think about: when do you want to study, for how long, during the day or evening?</li>
+            </ul>
+            <br>
+            <p><strong>How do I find a suitable training course?</strong></p>
+            <ol>
+                <li>Go to www.opleiding.nl.</li>
+                <li>Search for your desired profession or a relevant field.</li>
+                <li>Choose a course that logically matches.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> It doesn't have to match perfectly. A kitchen assistant choosing a hygiene course is fine. A cleaner choosing an Excel course is less logical.</p>
+            </div>
+            <br>
+            <p><strong>What do I do if I don't know the costs?</strong></p>
+            <ul>
+                <li>Click through to the provider via the link on opleiding.nl.</li>
+                <li>The costs are almost always somewhere on the website.</li>
+                <li>Can't find them? Ask your teacher to help.</li>
+            </ul>
+            <br>
+            <p><strong>Which language level do I need?</strong></p>
+            <ul>
+                <li>Most practical courses require at least A2 or B1.</li>
+                <li>Higher education courses require B2 or C1.</li>
+                <li>Is it not clearly stated on the website? Assume B1 is required.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Are you unsure about your level? Ask your teacher.</p>
+            </div>
+            <br>
+            <p><strong>Is the language trajectory at question 8 the same as the ONA course?</strong></p>
+            <ul>
+                <li>No. The language trajectory is your own plan for outside the ONA lessons.</li>
+                <li>Think of a language school, self-study or a language app.</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- Kaart 6 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 6: Netwerk opbouwen</span><span class="lang-en">Card 6: Building your network</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Wat is een netwerk in deze context?</strong></p>
+            <ul>
+                <li>Alle mensen die jou zouden kunnen helpen werk te vinden.</li>
+                <li>Denk aan: oud-collega's, buren, familie, kennissen, vrienden, klantmanager.</li>
+                <li>Het hoeven geen mensen te zijn die direct in jouw vakgebied werken.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Iedereen telt mee. Hoe groter jouw netwerk, hoe meer kansen.</p>
+            </div>
+            <br>
+            <p><strong>Moet ik echte namen opschrijven?</strong></p>
+            <ul>
+                <li>Ja. Schrijf de voornaam en achternaam op van mensen die jou kunnen helpen.</li>
+                <li>Het hoeft niet formeel te zijn. Het laat gewoon zien dat je er al over nagedacht hebt.</li>
+            </ul>
+            <br>
+            <p><strong>Wat als ik niemand ken die mij kan helpen?</strong></p>
+            <ul>
+                <li>Vink dan 'nee' aan bij vraag 2.</li>
+                <li>Schrijf bij vraag 3 een concreet plan: hoe en wanneer ga je meer mensen zoeken?</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Een plan is voldoende. Je hoeft al die mensen nu nog niet te kennen.</p>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>What is a network in this context?</strong></p>
+            <ul>
+                <li>All the people who could help you find work.</li>
+                <li>Think of: former colleagues, neighbors, family, acquaintances, friends, case manager.</li>
+                <li>They do not have to be people working directly in your field.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Everyone counts. The larger your network, the more opportunities.</p>
+            </div>
+            <br>
+            <p><strong>Do I have to write down real names?</strong></p>
+            <ul>
+                <li>Yes. Write down the first and last name of people who can help you.</li>
+                <li>It doesn't have to be formal. It just shows that you have already thought about it.</li>
+            </ul>
+            <br>
+            <p><strong>What if I don't know anyone who can help me?</strong></p>
+            <ul>
+                <li>Then tick 'no' at question 2.</li>
+                <li>Write a concrete plan at question 3: how and when will you find more people?</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> A plan is sufficient. You don't have to know all those people right now.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 7 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header" style="color: var(--warning);">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">⚠️ Kaart 7: Werk vinden + CV, brief en 2 formulieren uploaden</span><span class="lang-en">⚠️ Card 7: Finding work + upload CV, letter and 2 forms</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Hoe zoek ik werk in Nederland?</strong></p>
+            <ul>
+                <li>Noem de manieren die jij zelf zou gebruiken:</li>
+                <li>werk.nl, uitzendbureau, LinkedIn, direct bij een bedrijf langsgaan.</li>
+                <li>Er is geen voorkeur vanuit DUO. Kies wat realistisch is voor jou.</li>
+            </ul>
+            <br>
+            <p><strong>Telt mijn 40 uur werkervaring mee bij vraag 3?</strong></p>
+            <ul>
+                <li>Ja. Als je al een werkplek hebt, vul die dan in.</li>
+                <li>Nog op zoek? Schrijf op hoe je dat gaat doen en wanneer.</li>
+            </ul>
+            <br>
+            <p><strong>Vraag 4 voelt als een schoolvraag. Wat schrijf ik?</strong></p>
+            <ul>
+                <li>Dat klopt, en dat is ook de bedoeling.</li>
+                <li>Veel vragen in het ONA-portfolio zijn bewust simpel en basaal.</li>
+                <li>DUO wil zien dat je het concept begrijpt, niet dat je een essay schrijft.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Schrijf drie simpele, herkenbare redenen en leg elk kort uit. Dat is genoeg.</p>
+            </div>
+            <br>
+            <p><strong>Wanneer upload ik mijn documenten?</strong></p>
+            <ol>
+                <li>Werk eerst alles af in de gedeelde Google Drive map.</li>
+                <li>Wacht op goedkeuring van je docent.</li>
+                <li>Geef elk document een korte, duidelijke naam.</li>
+                <li>Download alles in één keer en upload op inburgeren.nl.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--danger); margin-top: 5px;">
+                <p>⚠️ <strong>Let op:</strong> Upload pas als alles klaar is. Tussentijds uploaden en weer aanpassen veroorzaakt verwarring met meerdere versies.</p>
+            </div>
+            <br>
+            <p><strong>Wat schrijf ik bij vraag 7 over het sollicitatiegesprek?</strong></p>
+            <ul>
+                <li>Noem drie concrete punten waarop jij jezelf kunt verbeteren.</li>
+                <li>Voorbeelden: op tijd komen, goed gekleed gaan, rustig en duidelijk antwoorden.</li>
+                <li>Schrijf per punt op hoe jij daaraan gaat werken.</li>
+            </ul>
+            
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <h4 style="color: var(--warning);">⚠️ Documenten uploaden bij deze kaart:</h4>
+                <ul>
+                    <li><strong>CV:</strong> Calibri 11, zwarte tekst, professionele opmaak, geen spelfouten</li>
+                    <li><strong>Sollicitatiebrief:</strong> Correct Nederlands, formele briefopmaak, maximaal 1 pagina</li>
+                    <li><strong>Sollicitatieformulier 1:</strong> Volledig ingevuld met jouw eigen, correcte gegevens</li>
+                    <li><strong>Sollicitatieformulier 2:</strong> Volledig ingevuld met jouw eigen, correcte gegevens</li>
+                </ul>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>How do I look for work in the Netherlands?</strong></p>
+            <ul>
+                <li>Mention the ways you would use yourself:</li>
+                <li>werk.nl, employment agency, LinkedIn, visiting a company directly.</li>
+                <li>There is no preference from DUO. Choose what is realistic for you.</li>
+            </ul>
+            <br>
+            <p><strong>Does my 40 hours of work experience count at question 3?</strong></p>
+            <ul>
+                <li>Yes. If you already have a workplace, fill that in.</li>
+                <li>Still looking? Write down how you are going to do that and when.</li>
+            </ul>
+            <br>
+            <p><strong>Question 4 feels like a school question. What do I write?</strong></p>
+            <ul>
+                <li>That's right, and that is also the intention.</li>
+                <li>Many questions in the ONA portfolio are deliberately simple and basic.</li>
+                <li>DUO wants to see that you understand the concept, not that you write an essay.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Write three simple, recognizable reasons and explain each briefly. That is enough.</p>
+            </div>
+            <br>
+            <p><strong>When do I upload my documents?</strong></p>
+            <ol>
+                <li>First finish everything in the shared Google Drive folder.</li>
+                <li>Wait for approval from your teacher.</li>
+                <li>Give each document a short, clear name.</li>
+                <li>Download everything at once and upload on inburgeren.nl.</li>
+            </ol>
+            <div class="sub-section" style="border-left: 4px solid var(--danger); margin-top: 5px;">
+                <p>⚠️ <strong>Note:</strong> Only upload when everything is ready. Uploading and changing in between causes confusion with multiple versions.</p>
+            </div>
+            <br>
+            <p><strong>What do I write at question 7 about the job interview?</strong></p>
+            <ul>
+                <li>Mention three concrete points on which you can improve yourself.</li>
+                <li>Examples: arriving on time, dressing well, answering calmly and clearly.</li>
+                <li>Write down per point how you are going to work on that.</li>
+            </ul>
+            
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <h4 style="color: var(--warning);">⚠️ Documents to upload with this card:</h4>
+                <ul>
+                    <li><strong>CV / Resume:</strong> Calibri 11, black text, professional layout, no spelling errors</li>
+                    <li><strong>Motivation letter:</strong> Correct Dutch, formal letter layout, maximum 1 page</li>
+                    <li><strong>Application form 1:</strong> Completely filled in with your own, correct details</li>
+                    <li><strong>Application form 2:</strong> Completely filled in with your own, correct details</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- Kaart 8 -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Kaart 8: Werkcultuur</span><span class="lang-en">Card 8: Work culture</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Hoe specifiek moet ik de verschillen beschrijven?</strong></p>
+            <ul>
+                <li>Een korte, heldere beschrijving per verschil is genoeg.</li>
+                <li>Schrijf voor elk verschil: wat is de situatie in jouw land, en wat is anders in Nederland?</li>
+                <li>1 à 2 zinnen per kant is prima.</li>
+            </ul>
+            <br>
+            <p><strong>Moet het uit eigen ervaring komen?</strong></p>
+            <ul>
+                <li>Nee. Je mag ook schrijven over dingen die je hebt gehoord of weet.</li>
+                <li>Zolang het herkenbaar en realistisch is, is het een goed antwoord.</li>
+            </ul>
+            <br>
+            <p><strong>Over welke onderwerpen kan ik schrijven?</strong></p>
+            <ul>
+                <li>Omgang met de leidinggevende: formeel vs. informeel.</li>
+                <li>Werktijden en pauzes: vast vs. flexibel.</li>
+                <li>Directheid: Nederlanders zijn direct, in veel landen is dat anders.</li>
+                <li>Hiërarchie op de werkvloer: vlak vs. strak.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Kies drie onderwerpen die jij het best kunt beschrijven.</p>
+            </div>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>How specifically should I describe the differences?</strong></p>
+            <ul>
+                <li>A short, clear description per difference is enough.</li>
+                <li>Write for each difference: what is the situation in your country, and what is different in the Netherlands?</li>
+                <li>1 or 2 sentences per side is fine.</li>
+            </ul>
+            <br>
+            <p><strong>Does it have to come from personal experience?</strong></p>
+            <ul>
+                <li>No. You can also write about things you have heard or know.</li>
+                <li>As long as it is recognizable and realistic, it is a good answer.</li>
+            </ul>
+            <br>
+            <p><strong>Which topics can I write about?</strong></p>
+            <ul>
+                <li>Interaction with the manager: formal vs. informal.</li>
+                <li>Working hours and breaks: fixed vs. flexible.</li>
+                <li>Directness: Dutch people are direct, in many countries that is different.</li>
+                <li>Hierarchy in the workplace: flat vs. strict.</li>
+            </ul>
+            <div class="sub-section" style="border-left: 4px solid var(--secondary); margin-top: 5px;">
+                <p>💡 <strong>Tip:</strong> Choose three topics that you can describe best.</p>
+            </div>
+        </div>
+    </details>
+
+    <!-- DEEL B -->
+    <details class="student-accordion">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Deel B: 6 documenten maken</span>
+            <span class="lang-en">Part B: 6 documents to create</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>Naast de kaarten lever je zes documenten in. Je maakt ze tijdens de lessen via de sjablonen in de Google Drive map.</p>
+            <table class="doc-table">
+                <tr><th>Document</th><th>Eisen</th><th>Uploaden bij</th></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Vacature 1 (werk.nl)</td><td>Download als PDF via de downloadknop op werk.nl (geen screenshot, geen Indeed)</td><td>Kaart 4</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Vacature 2 (werk.nl)</td><td>Download als PDF via de downloadknop op werk.nl (geen screenshot, geen Indeed)</td><td>Kaart 4</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> CV</td><td>Calibri 11, zwarte tekst, professionele opmaak, geen spelfouten</td><td>Kaart 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Sollicitatiebrief</td><td>Correct Nederlands, formele briefopmaak, maximaal 1 pagina</td><td>Kaart 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Sollicitatieformulier 1</td><td>Volledig ingevuld met jouw eigen, correcte gegevens</td><td>Kaart 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Sollicitatieformulier 2</td><td>Volledig ingevuld met jouw eigen, correcte gegevens</td><td>Kaart 7</td></tr>
+            </table>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>In addition to the cards, you submit six documents. You create them during the lessons using the templates in the Google Drive folder.</p>
+            <table class="doc-table">
+                <tr><th>Document</th><th>Requirements</th><th>Upload at</th></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Job vacancy 1 (werk.nl)</td><td>Download as PDF using the download button on werk.nl (no screenshots, no Indeed)</td><td>Card 4</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Job vacancy 2 (werk.nl)</td><td>Download as PDF using the download button on werk.nl (no screenshots, no Indeed)</td><td>Card 4</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> CV / Resume</td><td>Calibri 11, black text, professional layout, no spelling errors</td><td>Card 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Motivation letter</td><td>Correct Dutch, formal letter layout, maximum 1 page</td><td>Card 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Application form 1</td><td>Completely filled in with your own, correct details</td><td>Card 7</td></tr>
+                <tr><td><input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 8px; cursor: pointer;" onclick="saveCardCheckboxes()"> Application form 2</td><td>Completely filled in with your own, correct details</td><td>Card 7</td></tr>
+            </table>
+        </div>
+    </details>
+
+    <!-- Sub-accordions per document met gedetailleerde instructies -->
+
+    <!-- CV Instructies -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">📄 Instructies: CV</span>
+            <span class="lang-en">📄 Instructions: CV / Resume</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Wat staat er in een CV?</strong></p>
+            <ul>
+                <li>Persoonlijke gegevens (naam, adres, telefoonnummer, e-mail)</li>
+                <li>Werkervaring – meest recente baan bovenaan</li>
+                <li>Opleiding – meest recente opleiding bovenaan</li>
+                <li>Vaardigheden (computer, rijbewijs, overig)</li>
+                <li>Talen (met niveau: basis / goed / vloeiend)</li>
+            </ul>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ Maximaal 1 à 2 pagina's. Geen foto tenzij gevraagd.</p>
+            </div>
+            <br>
+            <p><strong>Lettertype en opmaak</strong></p>
+            <ul>
+                <li>Calibri, lettergrootte 11, zwarte tekst op witte achtergrond</li>
+                <li>Één lettertype, één grootte door het hele document</li>
+                <li>Tekst kopiëren? Gebruik Ctrl+Shift+V (Plakken zonder opmaak)</li>
+            </ul>
+            <br>
+            <p><strong>Hoofdletters</strong></p>
+            <ul>
+                <li>Begin elke zin met een hoofdletter</li>
+                <li>Namen van personen, plaatsen en bedrijven: altijd met een hoofdletter</li>
+                <li>Functietitels en beroepen: altijd met een kleine letter. Bijv. 'magazijnmedewerker', niet 'Magazijnmedewerker'</li>
+                <li>Maanden en dagen: altijd met een kleine letter. Bijv. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaties en leestekens</strong></p>
+            <ul>
+                <li>Nooit een spatie vóór een komma, punt of dubbele punt</li>
+                <li>Altijd één spatie na een leesteken, nooit twee</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+            <br>
+            <p><strong>Extra voor het CV</strong></p>
+            <ul>
+                <li>Kopjes mogen vetgedrukt, maar zelfde lettertype en grootte</li>
+                <li>Links uitlijnen, niet uitvullen</li>
+                <li>Geen kleuren, geen decoratieve elementen</li>
+            </ul>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>What goes in a CV?</strong></p>
+            <ul>
+                <li>Personal details (name, address, phone number, email)</li>
+                <li>Work experience – most recent job first</li>
+                <li>Education – most recent qualification first</li>
+                <li>Skills (computer, driving licence, other)</li>
+                <li>Languages (with level: basic / good / fluent)</li>
+            </ul>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ Maximum 1 to 2 pages. No photo unless requested.</p>
+            </div>
+            <br>
+            <p><strong>Font and layout</strong></p>
+            <ul>
+                <li>Calibri, font size 11, black text on a white background</li>
+                <li>One font, one size throughout the entire document</li>
+                <li>Copying text? Use Ctrl+Shift+V (Paste without formatting)</li>
+            </ul>
+            <br>
+            <p><strong>Capital letters</strong></p>
+            <ul>
+                <li>Start every sentence with a capital letter</li>
+                <li>Names of people, places and companies: always with a capital letter</li>
+                <li>Job titles and professions: always lowercase. E.g. 'magazijnmedewerker', not 'Magazijnmedewerker'</li>
+                <li>Months and days: always lowercase. E.g. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaces and punctuation</strong></p>
+            <ul>
+                <li>Never a space before a comma, full stop or colon</li>
+                <li>Always one space after a punctuation mark, never two</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+            <br>
+            <p><strong>Extra for the CV</strong></p>
+            <ul>
+                <li>Headings may be bold, but same font and size</li>
+                <li>Left-aligned, not justified</li>
+                <li>No colours, no decorative elements</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- Sollicitatiebrief Instructies -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">📄 Instructies: Sollicitatiebrief</span>
+            <span class="lang-en">📄 Instructions: Motivation letter</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Opbouw van de brief – stap voor stap</strong></p>
+            <ol>
+                <li><strong>Jouw gegevens linksboven:</strong> naam, adres, postcode en woonplaats, telefoonnummer of e-mail</li>
+                <li><strong>Bedrijfsgegevens eronder:</strong> naam bedrijf, adres, postcode en plaats</li>
+                <li><strong>Datum:</strong> schrijf voluit. Bijv. '31 mei 2026'</li>
+                <li><strong>Onderwerp:</strong> 'Betreft: sollicitatie voor de functie van [functienaam]'</li>
+                <li><strong>Aanhef:</strong> 'Geachte heer/mevrouw,' – let op de komma</li>
+                <li><strong>Alinea 1 – Inleiding:</strong> voor welke functie solliciteer je en waar zag je de vacature?</li>
+                <li><strong>Alinea 2 – Jij en het beroep:</strong> waarom ben jij geschikt? Wat heb je eerder gedaan?</li>
+                <li><strong>Alinea 3 – Afsluiting:</strong> bedank de lezer en vraag om een gesprek</li>
+                <li><strong>Ondertekening:</strong> 'Met vriendelijke groet,' – komma – dan jouw naam</li>
+            </ol>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ Maximaal 1 pagina. Schrijf in de u-vorm als je de lezer niet kent.</p>
+            </div>
+            <br>
+            <p><strong>Haakjes verwijderen</strong></p>
+            <ul>
+                <li>Alles tussen [haakjes] vervang je door jouw eigen informatie</li>
+                <li>Verwijder ook de haakjes zelf. Ze mogen niet in je definitieve brief staan</li>
+                <li>✗ 'functie van [Functienaam]' → ✓ 'functie van schoonmaker'</li>
+            </ul>
+            <br>
+            <p><strong>Komma's – veelgemaakte fouten</strong></p>
+            <ul>
+                <li>Na aanhef en afsluiting staat altijd een komma, nooit een punt</li>
+                <li>Verbind nooit twee zinnen met alleen een komma</li>
+                <li>✗ 'Ik heb ervaring, ik werkte 3 jaar.' → ✓ 'Ik heb ervaring. Ik werkte 3 jaar.'</li>
+            </ul>
+            <br>
+            <p><strong>Lettertype en opmaak</strong></p>
+            <ul>
+                <li>Calibri, lettergrootte 11, zwarte tekst op witte achtergrond</li>
+                <li>Één lettertype, één grootte door het hele document</li>
+                <li>Tekst kopiëren? Gebruik Ctrl+Shift+V (Plakken zonder opmaak)</li>
+            </ul>
+            <br>
+            <p><strong>Hoofdletters</strong></p>
+            <ul>
+                <li>Begin elke zin met een hoofdletter</li>
+                <li>Namen van personen, plaatsen en bedrijven: altijd met een hoofdletter</li>
+                <li>Functietitels en beroepen: altijd met een kleine letter. Bijv. 'magazijnmedewerker', niet 'Magazijnmedewerker'</li>
+                <li>Maanden en dagen: altijd met een kleine letter. Bijv. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaties en leestekens</strong></p>
+            <ul>
+                <li>Nooit een spatie vóór een komma, punt of dubbele punt</li>
+                <li>Altijd één spatie na een leesteken, nooit twee</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>Structure of the letter – step by step</strong></p>
+            <ol>
+                <li><strong>Your details top left:</strong> name, address, postcode and city, phone or email</li>
+                <li><strong>Company details below:</strong> company name, address, postcode and city</li>
+                <li><strong>Date:</strong> write out in full. E.g. '31 mei 2026'</li>
+                <li><strong>Subject:</strong> 'Betreft: sollicitatie voor de functie van [job title]'</li>
+                <li><strong>Salutation:</strong> 'Geachte heer/mevrouw,' – note the comma</li>
+                <li><strong>Paragraph 1 – Introduction:</strong> which position and where did you see the vacancy?</li>
+                <li><strong>Paragraph 2 – Why you:</strong> why are you suitable? What have you done before?</li>
+                <li><strong>Paragraph 3 – Closing:</strong> thank the reader and ask for an interview</li>
+                <li><strong>Sign-off:</strong> 'Met vriendelijke groet,' – comma – then your name</li>
+            </ol>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ Maximum 1 page. Use the formal 'u' form when you don't know the reader.</p>
+            </div>
+            <br>
+            <p><strong>Removing the brackets</strong></p>
+            <ul>
+                <li>Everything between [brackets] must be replaced with your own information</li>
+                <li>Remove the brackets too. They must not appear in your final letter</li>
+                <li>✗ 'functie van [Functienaam]' → ✓ 'functie van schoonmaker'</li>
+            </ul>
+            <br>
+            <p><strong>Commas – common mistakes</strong></p>
+            <ul>
+                <li>After the salutation and sign-off: always a comma, never a full stop</li>
+                <li>Never connect two sentences with only a comma</li>
+                <li>✗ 'Ik heb ervaring, ik werkte 3 jaar.' → ✓ 'Ik heb ervaring. Ik werkte 3 jaar.'</li>
+            </ul>
+            <br>
+            <p><strong>Font and layout</strong></p>
+            <ul>
+                <li>Calibri, font size 11, black text on a white background</li>
+                <li>One font, one size throughout the entire document</li>
+                <li>Copying text? Use Ctrl+Shift+V (Paste without formatting)</li>
+            </ul>
+            <br>
+            <p><strong>Capital letters</strong></p>
+            <ul>
+                <li>Start every sentence with a capital letter</li>
+                <li>Names of people, places and companies: always with a capital letter</li>
+                <li>Job titles and professions: always lowercase. E.g. 'magazijnmedewerker', not 'Magazijnmedewerker'</li>
+                <li>Months and days: always lowercase. E.g. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaces and punctuation</strong></p>
+            <ul>
+                <li>Never a space before a comma, full stop or colon</li>
+                <li>Always one space after a punctuation mark, never two</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- Sollicitatieformulier Instructies -->
+    <details class="student-accordion" style="margin-left: 20px;">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">📄 Instructies: Sollicitatieformulier</span>
+            <span class="lang-en">📄 Instructions: Application Form</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p><strong>Hoe vul je dit formulier in?</strong></p>
+            <ol>
+                <li><strong>Vul elk veld in</strong> met jouw echte, correcte gegevens</li>
+                <li><strong>Niets leeg laten.</strong> Als een vraag niet van toepassing is: schrijf 'n.v.t.'</li>
+                <li><strong>Gebruik jouw naam</strong> precies zoals in je identiteitsbewijs</li>
+                <li><strong>Kies één datumnotatie</strong> en houd die aan door het hele formulier</li>
+            </ol>
+            <ul>
+                <li>✗ afwisselend '31-05-26' en '31 mei 2026'</li>
+                <li>✓ altijd '31-05-2026' of altijd '31 mei 2026'</li>
+            </ul>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ DUO controleert of de informatie klopt. Vul nooit verzonnen gegevens in.</p>
+            </div>
+            <br>
+            <p><strong>Namen en plaatsen – hoofdletters</strong></p>
+            <ul>
+                <li>Namen van personen: altijd met een hoofdletter</li>
+                <li>Plaatsnamen: altijd met een hoofdletter</li>
+                <li>✗ 'jan jansen' of 'amsterdam' → ✓ 'Jan Jansen' en 'Amsterdam'</li>
+            </ul>
+            <br>
+            <p><strong>Lettertype en opmaak</strong></p>
+            <ul>
+                <li>Calibri, lettergrootte 11, zwarte tekst op witte achtergrond</li>
+                <li>Één lettertype, één grootte door het hele document</li>
+                <li>Tekst kopiëren? Gebruik Ctrl+Shift+V (Plakken zonder opmaak)</li>
+            </ul>
+            <br>
+            <p><strong>Hoofdletters</strong></p>
+            <ul>
+                <li>Begin elke zin met een hoofdletter</li>
+                <li>Namen van personen, plaatsen en bedrijven: altijd met een hoofdletter</li>
+                <li>Functietitels en beroepen: altijd met een kleine letter. Bijv. 'magazijnmedewerker', niet 'Magazijnmedewerker'</li>
+                <li>Maanden en dagen: altijd met een kleine letter. Bijv. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaties en leestekens</strong></p>
+            <ul>
+                <li>Nooit een spatie vóór een komma, punt of dubbele punt</li>
+                <li>Altijd één spatie na een leesteken, nooit twee</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+        </div>
+        <div class="accordion-content lang-en">
+            <p><strong>How to fill in this form?</strong></p>
+            <ol>
+                <li><strong>Fill in every field</strong> with your real, correct details</li>
+                <li><strong>Leave nothing empty.</strong> If a question does not apply: write 'n.v.t.'</li>
+                <li><strong>Use your name</strong> exactly as it appears on your identity document</li>
+                <li><strong>Choose one date format</strong> and use it throughout the whole form</li>
+            </ol>
+            <ul>
+                <li>✗ mixing '31-05-26' and '31 mei 2026'</li>
+                <li>✓ always '31-05-2026' or always '31 mei 2026'</li>
+            </ul>
+            <br>
+            <div class="sub-section" style="border-left: 4px solid var(--warning);">
+                <p>⚠️ DUO checks whether the information is correct. Never fill in invented details.</p>
+            </div>
+            <br>
+            <p><strong>Names and places – capital letters</strong></p>
+            <ul>
+                <li>Names of people: always with a capital letter</li>
+                <li>Place names: always with a capital letter</li>
+                <li>✗ 'jan jansen' or 'amsterdam' → ✓ 'Jan Jansen' and 'Amsterdam'</li>
+            </ul>
+            <br>
+            <p><strong>Font and layout</strong></p>
+            <ul>
+                <li>Calibri, font size 11, black text on a white background</li>
+                <li>One font, one size throughout the entire document</li>
+                <li>Copying text? Use Ctrl+Shift+V (Paste without formatting)</li>
+            </ul>
+            <br>
+            <p><strong>Capital letters</strong></p>
+            <ul>
+                <li>Start every sentence with a capital letter</li>
+                <li>Names of people, places and companies: always with a capital letter</li>
+                <li>Job titles and professions: always lowercase. E.g. 'magazijnmedewerker', not 'Magazijnmedewerker'</li>
+                <li>Months and days: always lowercase. E.g. 'mei', 'maandag'</li>
+            </ul>
+            <br>
+            <p><strong>Spaces and punctuation</strong></p>
+            <ul>
+                <li>Never a space before a comma, full stop or colon</li>
+                <li>Always one space after a punctuation mark, never two</li>
+                <li>✗ 'Ik werk graag , maar ...' → ✓ 'Ik werk graag, maar ...'</li>
+            </ul>
+        </div>
+    </details>
+
+    <!-- DEEL C -->
+    <details class="student-accordion">
+        <summary class="accordion-header">
+            <input type="checkbox" class="card-checkbox" style="transform: scale(1.3); margin-right: 12px; cursor: pointer;" onclick="event.stopPropagation(); saveCardCheckboxes()">
+            <span class="lang-nl">Deel C: 40 uur werkervaring</span>
+            <span class="lang-en">Part C: 40 hours of work experience</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>De werkervaring organiseer jij zelf, naast de lessen. Het is het enige onderdeel dat je buiten de les om regelt.</p><br>
+            <ul>
+                <li><strong>Waar:</strong> overal. Winkel, bedrijf, school, kantine, magazijn. Het maakt niet uit. De werkervaring hoeft niets te maken te hebben met jouw resultaatkaarten.</li>
+                <li><strong>Hoeveel:</strong> 40 uur in totaal. Je mag dit verdelen over meerdere weken of maanden.</li>
+                <li><strong>Contract:</strong> vul de werkovereenkomst in en laat die ondertekenen door jou én de werkgever.</li>
+                <li><strong>Urenschema:</strong> vul elke dag in: datum en aantal uren. Laat de werkgever het schema ondertekenen.</li>
+                <li><strong>Inleveren bij Monique:</strong> doe het contract én het urenschema in een envelop met jouw naam. Lever het persoonlijk af of stuur het aangetekend op naar: <em>Daumierstraat 5, 5623 EW Eindhoven</em></li>
+            </ul><br>
+            <p><strong>Let op:</strong> de werkurenverwerking bij DUO kan later binnenkomen dan het portfolio. Dat is normaal. Jij krijgt je 64 uur pas officieel zodra alles is ontvangen én goedgekeurd.</p>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>You organise the work experience yourself, alongside the lessons.</p><br>
+            <ul>
+                <li><strong>Where:</strong> anywhere. Shop, company, school, canteen, warehouse. It does not matter. The work experience does not need to be related to your result cards.</li>
+                <li><strong>How many:</strong> 40 hours in total. You can spread this over several weeks or months.</li>
+                <li><strong>Contract:</strong> fill in the employment contract and have it signed by you and the employer.</li>
+                <li><strong>Timesheet:</strong> fill in every day: date and number of hours. Have the employer sign it.</li>
+                <li><strong>Hand in to Monique:</strong> put the contract and timesheet in an envelope with your name and hand it in personally, or send it by registered post to: <em>Daumierstraat 5, 5623 EW Eindhoven</em></li>
+            </ul><br>
+            <p><strong>Note:</strong> the work hours may arrive at DUO later than the portfolio. This is normal. You will only officially receive your 64 hours once everything has been received and approved.</p>
+        </div>
+    </details>
+
+    <!-- ============================================ -->
+    <!-- 4. PORTFOLIO INDIENEN -->
+    <!-- ============================================ -->
+    <details class="student-accordion">
+        <summary class="accordion-header">
+            <span class="lang-nl">4. Portfolio indienen</span>
+            <span class="lang-en">4. Submitting the portfolio</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>In les 16 stuur je het portfolio op naar DUO. Je doet dit samen met je docent.</p>
+            <div class="steps-flow">
+                <span class="step-badge">① Inloggen</span><span class="step-arrow">→</span>
+                <span class="step-badge">② Kaarten invullen</span><span class="step-arrow">→</span>
+                <span class="step-badge">③ Uploaden</span><span class="step-arrow">→</span>
+                <span class="step-badge">④ Controleren</span><span class="step-arrow">→</span>
+                <span class="step-badge">⑤ Versturen</span><span class="step-arrow">→</span>
+                <span class="step-badge">⑥ Wachten</span>
+            </div>
+            <table class="lesson-table">
+                <tr><th>Stap</th><th>Wat doe je?</th></tr>
+                <tr><td><strong>①</strong></td><td>Ga naar www.inburgeren.nl en log in met jouw DigiD. Open het ONA-portfolioportaal.</td></tr>
+                <tr><td><strong>②</strong></td><td>Vul alle 8 resultaatkaarten volledig in.</td></tr>
+                <tr><td><strong>③</strong></td><td>Upload de 2 vacatures bij kaart 4. Upload CV, sollicitatiebrief en beide formulieren bij kaart 7.</td></tr>
+                <tr><td><strong>④</strong></td><td>Controleer: zijn alle onderdelen groen? Is er niets vergeten?</td></tr>
+                <tr><td><strong>⑤</strong></td><td>Klik op Versturen. Maak een screenshot van de bevestiging en bewaar die.</td></tr>
+                <tr><td><strong>⑥</strong></td><td>Wacht 2 tot 6 weken. DUO controleert jouw portfolio en stuurt een bericht met de uitslag.</td></tr>
+            </table>
+        </div>
+        <div class="accordion-content lang-en">
+            <p>In lesson 16 you submit the portfolio to DUO, together with your teacher.</p>
+            <div class="steps-flow">
+                <span class="step-badge">① Log in</span><span class="step-arrow">→</span>
+                <span class="step-badge">② Fill in cards</span><span class="step-arrow">→</span>
+                <span class="step-badge">③ Upload</span><span class="step-arrow">→</span>
+                <span class="step-badge">④ Check</span><span class="step-arrow">→</span>
+                <span class="step-badge">⑤ Submit</span><span class="step-arrow">→</span>
+                <span class="step-badge">⑥ Wait</span>
+            </div>
+            <table class="lesson-table">
+                <tr><th>Step</th><th>What do you do?</th></tr>
+                <tr><td><strong>①</strong></td><td>Go to www.inburgeren.nl and log in with your DigiD. Open the ONA portfolio portal.</td></tr>
+                <tr><td><strong>②</strong></td><td>Fill in all 8 result cards completely.</td></tr>
+                <tr><td><strong>③</strong></td><td>Upload the 2 vacancies at card 4. Upload CV, motivation letter and both forms at card 7.</td></tr>
+                <tr><td><strong>④</strong></td><td>Check: are all sections green? Is anything missing?</td></tr>
+                <tr><td><strong>⑤</strong></td><td>Click Submit. Take a screenshot of the confirmation and save it.</td></tr>
+                <tr><td><strong>⑥</strong></td><td>Wait 2 to 6 weeks. DUO checks your portfolio and sends a message with the result.</td></tr>
+            </table>
+        </div>
+    </details>
+
+    <!-- ============================================ -->
+    <!-- 5. JOUW CHECKLIST (INTERACTIEF!) -->
+    <!-- ============================================ -->
+    <details class="student-accordion" open>
+        <summary class="accordion-header">
+            <span class="lang-nl">5. ✅ Jouw checklist (klik om af te vinken!)</span>
+            <span class="lang-en">5. ✅ Your checklist (click to check off!)</span>
+        </summary>
+        <div class="accordion-content lang-nl">
+            <p>Vink elk onderdeel af zodra het klaar is.</p><br>
+
+            <div class="checklist-group-title">Deel A: de 8 resultaatkaarten (invullen op inburgeren.nl)</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 1: Beroepenoriëntatie</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 2: Realistisch beroepsbeeld</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 3: Eigenschappen kennen</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 4: Beroepskansen + 2 vacatures als PDF uploaden</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 5: Beroepscompetenties</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 6: Netwerk opbouwen</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 7: Werk vinden + CV, brief en 2 formulieren uploaden</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Kaart 8: Werkcultuur</div>
+
+            <div class="checklist-group-title">Deel B: 6 documenten (maken in Google Drive map)</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>CV: Calibri 11, zwarte tekst, professionele opmaak, geen spelfouten</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Sollicitatiebrief: correct Nederlands, formele opmaak, maximaal 1 pagina</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Sollicitatieformulier 1: volledig ingevuld met eigen gegevens</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Sollicitatieformulier 2: volledig ingevuld met eigen gegevens</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Vacature 1: gedownload als PDF van werk.nl</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Vacature 2: gedownload als PDF van werk.nl</div>
+
+            <div class="checklist-group-title">Deel C: 40 uur werkervaring (zelf regelen)</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Werkplek gevonden</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Werkovereenkomst ingevuld en ondertekend (jij + werkgever)</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>40 uur gewerkt in totaal</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Urenschema volledig ingevuld: alle data en uren per dag</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Urenschema ondertekend door werkgever</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Contract + urenschema persoonlijk of aangetekend bij Monique ingeleverd</div>
+
+            <div class="checklist-group-title">Deel D: portfolio indienen (les 16)</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Ingelogd op www.inburgeren.nl met DigiD</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Alle 8 kaarten volledig ingevuld</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Beide vacatures geüpload bij kaart 4</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>CV, brief en beide formulieren geüpload bij kaart 7</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Alles gecontroleerd: alle onderdelen groen</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Op Versturen geklikt</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div>Bevestiging ontvangen en bewaard</div>
+        </div>
+    </details>
+
+</div>
+
+</body>
+</html>
