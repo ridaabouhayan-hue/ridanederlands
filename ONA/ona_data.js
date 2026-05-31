@@ -28,17 +28,24 @@ function createEmptyItems() {
 }
 
 const defaultData = {
-    "groep-42": [
-        { id: "42-1", name: "Ahmed", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "42-2", name: "Fatima", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "42-3", name: "Hassan", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false }
-    ],
-    "groep-43": [
-        { id: "43-1", name: "Sarah", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false }
+    "ona-35": [],
+    "ona-36": [],
+    "ona-37": [],
+    "ona-38": [],
+    "ona-39": [],
+    "ona-40": [],
+    "ona-41": [],
+    "ona-42": [],
+    "ona-43": [
+        { id: "43-1", name: "Andrea", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
+        { id: "43-2", name: "Neeraj", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
+        { id: "43-3", name: "Zohreh", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
+        { id: "43-4", name: "Hiba", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
+        { id: "43-5", name: "Seetha", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false }
     ]
 };
 
-let activeGroup = "groep-43";
+let activeGroup = "ona-43";
 let onaData = defaultData; // Start met default, wordt overschreven door cloud
 let isLoaded = false;
 
@@ -50,6 +57,11 @@ async function loadFromCloud() {
         
         if (json && json.data && json.data.onaData) {
             onaData = json.data.onaData;
+            // Migreer of reset als de oude groepsstructuur er nog is of als we nieuwe groepen missen
+            if (onaData["groep-42"] || !onaData["ona-43"]) {
+                onaData = defaultData;
+                saveToCloud();
+            }
         } else {
             // Eerste keer? Gebruik defaultData en sla direct op
             onaData = defaultData;
@@ -85,8 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('dark-mode');
     }
 
-    document.getElementById('btn-groep-42').addEventListener('click', () => switchGroup('groep-42'));
-    document.getElementById('btn-groep-43').addEventListener('click', () => switchGroup('groep-43'));
+    // Voeg dynamisch event listeners toe aan alle groepsselectie knoppen
+    document.querySelectorAll('.group-tabs .tab-btn').forEach(btn => {
+        const groupId = btn.id.replace('btn-', '');
+        btn.addEventListener('click', () => switchGroup(groupId));
+    });
     
     // Haal data op uit de cloud!
     loadFromCloud();
