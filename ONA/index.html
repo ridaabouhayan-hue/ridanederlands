@@ -1,169 +1,408 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONA - Portaal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg: #0f1729;
-            --card-bg: #182040;
-            --text-dark: #f0f2f8;
-            --text-muted: #a0aac4;
-            --card-accent: #f39c12;
-            --radius: 20px;
-        }
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            padding: 40px 0 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .section {
-            max-width: 800px;
-            width: 100%;
-            padding: 0 24px;
-        }
-        .section-label {
-            margin: 0 0 40px;
-            text-align: center;
-        }
-        .section-label h1 {
-            font-size: 2.3rem;
-            font-weight: 900;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-        .section-label p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-        .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .topic-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 30px;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.22s ease, box-shadow 0.22s ease;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-        .topic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
-            border-color: var(--card-accent);
-        }
-        .topic-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 6px;
-            background: var(--card-accent);
-        }
-        .card-icon { font-size: 3rem; line-height: 1; }
-        .card-tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--card-accent);
-            background: color-mix(in srgb, var(--card-accent) 20%, transparent);
-            padding: 6px 14px;
-            border-radius: 20px;
-            width: fit-content;
-            margin-bottom: 5px;
-        }
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--text-dark);
-            line-height: 1.25;
-        }
-        .card-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-weight: 600;
-            flex-grow: 1;
-        }
-        .card-arrow {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: var(--card-accent);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: gap 0.2s;
-        }
-        .topic-card:hover .card-arrow { gap: 10px; }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.2s;
-        }
-        .back-link:hover { color: var(--text-dark); }
-    </style>
-    <script>
-        // Geen aparte prompt nodig, de beveiliging gebeurt op de hoofdpagina.
-        // Als iemand de directe link raadt, is dat prima, dit is vergelijkbaar met de andere modules.
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONA — Portaal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #131a26;
+      --primary: #f39c12;
+      --primary-hover: #e67e22;
+      --primary-light: rgba(243, 156, 18, 0.12);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(243, 156, 18, 0.1) 0, transparent 40%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0, transparent 40%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ── LOGIN CARD ── */
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      transition: var(--transition);
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      outline: none;
+      text-align: center;
+      letter-spacing: 3px;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+
+    .error-text {
+      color: #ef4444;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 0.75rem;
+      min-height: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .error-text.show {
+      opacity: 1;
+    }
+
+    /* ── DASHBOARD CONTAINER ── */
+    .dashboard-container {
+      display: none;
+      width: 100%;
+      max-width: 900px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      width: 100%;
+      position: relative;
+    }
+
+    .back-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: var(--transition);
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+    }
+
+    .back-btn:hover {
+      color: var(--text-main);
+      border-color: var(--primary);
+      transform: translateX(-3px);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+
+    .portal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
+    .portal-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .card-category {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin: 5px 0;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: gap 0.2s;
+    }
+
+    .portal-card:hover .card-footer {
+      gap: 8px;
+    }
+
+    /* SPECIFIC ACCENTS */
+    .docent-accent::before {
+      background: #e67e22;
+    }
+    .docent-accent:hover {
+      border-color: #e67e22;
+    }
+    .docent-accent .card-category {
+      color: #e67e22;
+    }
+    .docent-accent .card-footer {
+      color: #e67e22;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        margin-top: 3rem;
+      }
+      .back-nav {
+        position: static;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="section">
-        <a href="../index.html" class="back-link">← Terug naar home</a>
-        
-        <div class="section-label">
-            <h1>💼 ONA Portaal</h1>
-            <p>Oriëntatie op de Nederlandse Arbeidsmarkt</p>
-        </div>
-
-        <div class="topics-grid">
-            
-            <!-- ONA CURSIST -->
-            <a class="topic-card" href="ona_cursist.html" style="--card-accent:#f39c12">
-                <div class="card-tag">Inburgering</div>
-                <div class="card-icon">🎓</div>
-                <div class="card-title">Studentengids</div>
-                <div class="card-desc">
-                    De interactieve gids voor cursisten. Uitleg over alle 8 resultaatkaarten, documenten en de checklist.
-                </div>
-                <div class="card-arrow">Open gids →</div>
-            </a>
-
-            <!-- ONA DOCENT -->
-            <a class="topic-card" href="ona_dashboard.html" style="--card-accent:#e67e22; border: 2px solid rgba(230, 126, 34, 0.2);">
-                <div class="card-tag" style="color:#e67e22; background: rgba(230, 126, 34, 0.15);">Docent</div>
-                <div class="card-icon">👨‍🏫</div>
-                <div class="card-title">Docenten Dashboard</div>
-                <div class="card-desc">
-                    Het overzicht voor docenten om de voortgang van alle cursisten in te zien en goed te keuren.
-                </div>
-                <div class="card-arrow" style="color:#e67e22;">Open dashboard →</div>
-            </a>
-
-        </div>
+  <!-- LOGIN CONTAINER -->
+  <div class="login-container" id="login-section">
+    <div class="logo"><span>ONA</span> Portaal</div>
+    <div class="subtitle">Voer het wachtwoord in voor toegang tot het portaal</div>
+    
+    <div class="input-group">
+      <label class="input-label" for="password">Toegangscode</label>
+      <input type="password" id="password" class="input-field" placeholder="••••" autocomplete="off" autofocus>
     </div>
 
+    <button class="btn" onclick="submitPassword()">Inloggen</button>
+    <div class="error-text" id="error-msg">Onjuiste toegangscode. Probeer het opnieuw.</div>
+
+    <a href="../index.html" class="btn btn-secondary" style="display: block; text-decoration: none;">Terug naar Hoofdmenu</a>
+  </div>
+
+  <!-- DASHBOARD CONTAINER -->
+  <div class="dashboard-container" id="dashboard-section">
+    <div class="dashboard-header">
+      <div class="back-nav">
+        <a href="../index.html" class="back-btn">← Hoofdmenu</a>
+      </div>
+      <div class="logo"><span>ONA</span> Portaal</div>
+      <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: 500; margin-top: 5px;">Oriëntatie op de Nederlandse Arbeidsmarkt</p>
+    </div>
+
+    <div class="dashboard-grid">
+      
+      <!-- ONA CURSIST -->
+      <a href="ona_cursist.html" class="portal-card">
+        <span class="card-category">Cursist</span>
+        <div class="card-icon">🎓</div>
+        <h3 class="card-title">Studentengids</h3>
+        <p class="card-desc">De interactieve gids voor cursisten. Uitleg over alle 8 resultaatkaarten, documenten en de checklist.</p>
+        <span class="card-footer">Open gids →</span>
+      </a>
+      
+      <!-- ONA DOCENT -->
+      <a href="ona_dashboard.html" class="portal-card docent-accent">
+        <span class="card-category">Docent · Beveiligd</span>
+        <div class="card-icon">👨‍🏫</div>
+        <h3 class="card-title">Docenten Dashboard</h3>
+        <p class="card-desc">Het overzicht voor docenten om de voortgang van alle cursisten in te zien en goed te keuren.</p>
+        <span class="card-footer" style="color: #e67e22;">Naar dashboard →</span>
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const errorMsg = document.getElementById('error-msg');
+    
+    // Auth Check
+    if (sessionStorage.getItem('ona_auth') === '1') {
+      showDashboard();
+    }
+
+    function submitPassword() {
+      const entered = passwordInput.value.trim().toLowerCase();
+      if (entered === 'ona') {
+        sessionStorage.setItem('ona_auth', '1');
+        showDashboard();
+      } else {
+        passwordInput.classList.add('error');
+        errorMsg.classList.add('show');
+        setTimeout(() => {
+          passwordInput.value = '';
+          errorMsg.classList.remove('show');
+          passwordInput.focus();
+        }, 1500);
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('dashboard-section').style.display = 'block';
+    }
+
+    // Support enter key
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitPassword();
+    });
+  </script>
 </body>
 </html>
