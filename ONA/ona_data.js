@@ -37,11 +37,11 @@ const defaultData = {
     "ona-41": [],
     "ona-42": [],
     "ona-43": [
-        { id: "43-1", name: "Andrea", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "43-2", name: "Neeraj", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "43-3", name: "Zohreh", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "43-4", name: "Hiba", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false },
-        { id: "43-5", name: "Seetha", driveLink: "https://drive.google.com/", items: createEmptyItems(), submitted: false }
+        { id: "43-1", name: "Andrea", driveLink: "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH", items: createEmptyItems(), submitted: false },
+        { id: "43-2", name: "Neeraj", driveLink: "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH", items: createEmptyItems(), submitted: false },
+        { id: "43-3", name: "Zohreh", driveLink: "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH", items: createEmptyItems(), submitted: false },
+        { id: "43-4", name: "Hiba", driveLink: "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH", items: createEmptyItems(), submitted: false },
+        { id: "43-5", name: "Seetha", driveLink: "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH", items: createEmptyItems(), submitted: false }
     ]
 };
 
@@ -61,6 +61,22 @@ async function loadFromCloud() {
             if (onaData["groep-42"] || !onaData["ona-43"]) {
                 onaData = defaultData;
                 saveToCloud();
+            } else {
+                // Update bestaande studenten driveLink als deze de oude standaard is
+                let updated = false;
+                for (const group in onaData) {
+                    if (Array.isArray(onaData[group])) {
+                        onaData[group].forEach(student => {
+                            if (student.driveLink === "https://drive.google.com/") {
+                                student.driveLink = "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH";
+                                updated = true;
+                            }
+                        });
+                    }
+                }
+                if (updated) {
+                    saveToCloud();
+                }
             }
         } else {
             // Eerste keer? Gebruik defaultData en sla direct op
@@ -178,7 +194,7 @@ function addNewStudent() {
     const name = prompt("Naam van de cursist:");
     if (!name) return;
     
-    const driveLink = prompt("Link naar Google Drive map (optioneel):", "https://drive.google.com/");
+    const driveLink = prompt("Link naar Google Drive map (optioneel):", "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH");
     
     const newStudent = {
         id: Date.now().toString(),
