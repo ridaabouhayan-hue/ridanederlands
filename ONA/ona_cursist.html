@@ -173,6 +173,16 @@
         body.dark-mode details.is-completed > summary { background-color: rgba(46, 196, 182, 0.25); }
     </style>
     <script>
+        // Direct blokkeren als geen sessie
+        if (sessionStorage.getItem('ona_auth_v2') !== '1') {
+            window.location.replace('index.html');
+        }
+
+        function logoutOna() {
+            sessionStorage.removeItem('ona_auth_v2');
+            window.location.replace('index.html');
+        }
+
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('onaDarkMode', document.body.classList.contains('dark-mode') ? 'true' : 'false');
@@ -280,8 +290,10 @@
 
     <!-- TOOLBAR -->
     <div class="toolbar">
+        <button onclick="window.location.href='index.html'">← Portaal</button>
         <button onclick="expandAll()">📂 Alles uitklappen</button>
         <button onclick="collapseAll()">📁 Alles inklappen</button>
+        <button onclick="logoutOna()">🔒 Uitloggen</button>
     </div>
 
 

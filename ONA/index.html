@@ -339,8 +339,9 @@
   <!-- DASHBOARD CONTAINER -->
   <div class="dashboard-container" id="dashboard-section">
     <div class="dashboard-header">
-      <div class="back-nav">
+      <div class="back-nav" style="display: flex; gap: 10px;">
         <a href="../index.html" class="back-btn">← Hoofdmenu</a>
+        <button onclick="logoutOna()" class="back-btn" style="cursor: pointer; background: var(--card-bg); font-family: inherit;">🔒 Uitloggen</button>
       </div>
       <div class="logo"><span>ONA</span> Portaal</div>
       <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: 500; margin-top: 5px;">Oriëntatie op de Nederlandse Arbeidsmarkt</p>
@@ -374,14 +375,14 @@
     const errorMsg = document.getElementById('error-msg');
     
     // Auth Check
-    if (sessionStorage.getItem('ona_auth') === '1') {
+    if (sessionStorage.getItem('ona_auth_v2') === '1') {
       showDashboard();
     }
 
     function submitPassword() {
       const entered = passwordInput.value.trim().toLowerCase();
       if (entered === 'ona') {
-        sessionStorage.setItem('ona_auth', '1');
+        sessionStorage.setItem('ona_auth_v2', '1');
         showDashboard();
       } else {
         passwordInput.classList.add('error');
@@ -397,6 +398,11 @@
     function showDashboard() {
       document.getElementById('login-section').style.display = 'none';
       document.getElementById('dashboard-section').style.display = 'block';
+    }
+
+    function logoutOna() {
+      sessionStorage.removeItem('ona_auth_v2');
+      window.location.reload();
     }
 
     // Support enter key
