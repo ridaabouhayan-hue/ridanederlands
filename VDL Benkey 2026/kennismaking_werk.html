@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VDL Benkey 2026 — Kennismaking & Werkcontext (Rollenspel)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0f0f23;
+      --card-bg: #161632;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
+      --primary-light: rgba(6, 182, 212, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dark: #0f172a;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-emerald-light: rgba(16, 185, 129, 0.1);
+      --accent-rose: #f43f5e;
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.1) 0, transparent 40%),
+        radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0, transparent 50%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 5rem;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(180deg, rgba(22, 22, 50, 0.8) 0%, rgba(15, 15, 35, 0) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-logo span {
+      color: var(--primary);
+    }
+
+    .header h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2.5rem auto 0;
+      padding: 0 1.5rem;
+    }
+
+    /* ── CURSIST SELECTOR TABS ── */
+    .student-selector-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .student-selector-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .student-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .student-tab {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .student-tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .student-tab.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--text-main);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+    }
+
+    .student-tab-subtitle {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .student-tab.active .student-tab-subtitle {
+      color: #a5f3fc;
+    }
+
+    @media (max-width: 640px) {
+      .student-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ── ROLE CARDS (TOP OF THE ROLEPLAY) ── */
+    .role-cards-container {
+      margin-bottom: 2rem;
+    }
+
+    .role-cards-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .role-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .role-tab {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .role-tab.active-character {
+      border-color: var(--primary);
+      background: rgba(6, 182, 212, 0.04);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .role-tab.active-character::after {
+      content: 'JIJ BENT DIT';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: var(--text-dark);
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      box-shadow: 0 2px 8px rgba(6, 182, 212, 0.4);
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .role-tab.active-character .avatar {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .role-tab h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .role-tab span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .role-tab.active-character span {
+      color: #a5f3fc;
+    }
+
+    @media (max-width: 768px) {
+      .role-tabs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── MAIN CONTENT CARD ── */
+    .content-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: fadeIn 0.4s ease-out;
+      margin-bottom: 2rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .role-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .role-badge {
+      background: var(--primary-light);
+      color: #a5f3fc;
+      border: 1px solid var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .duration-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .situation-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .assignment-box {
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-left: 5px solid var(--accent-emerald);
+      padding: 1.5rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .verb-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .verb-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    /* ── TRANSLATION DRAWER ── */
+    .trans-toggle-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--border-color);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .trans-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-main);
+    }
+
+    .english-container {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .english-container.show {
+      max-height: 800px;
+      opacity: 1;
+      margin-bottom: 2rem;
+    }
+
+    .english-box {
+      background: rgba(6, 182, 212, 0.02);
+      border: 1px solid rgba(6, 182, 212, 0.1);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      color: #cbd5e1;
+    }
+
+    .english-box h4 {
+      color: #a5f3fc;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .english-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .english-text:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist-container {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .checklist-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .checklist-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .checklist-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .checklist-item.checked {
+      background: var(--accent-emerald-light);
+      border-color: var(--accent-emerald);
+      color: #6ee7b7;
+    }
+
+    .checklist-item .checkbox-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .checklist-item.checked .checkbox-icon {
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+      color: var(--text-dark);
+    }
+
+    /* ── RECORDER & SUBMIT SECTION ── */
+    .recorder-panel {
+      background: linear-gradient(135deg, #161632 0%, #0f0f23 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 768px) {
+      .recorder-panel {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    .recorder-left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .recorder-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .record-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 5px;
+    }
+
+    .record-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent-rose);
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .record-btn:hover {
+      background: #f43f5e;
+      transform: scale(1.05);
+    }
+
+    .record-btn.recording {
+      background: #161632;
+      color: var(--accent-rose);
+      border: 3px solid var(--accent-rose);
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
+      animation: pulseRecord 1.5s infinite;
+    }
+
+    @keyframes pulseRecord {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(244, 63, 94, 0.5); }
+      100% { transform: scale(1); }
+    }
+
+    .timer {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-main);
+      font-family: monospace;
+    }
+
+    .wave-container {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      height: 30px;
+    }
+
+    .wave-container.active {
+      display: flex;
+    }
+
+    .wave-bar {
+      width: 4px;
+      height: 10px;
+      background: var(--accent-rose);
+      border-radius: 4px;
+      animation: wave 1.2s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(2) { height: 18px; animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { height: 26px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { height: 16px; animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { height: 22px; animation-delay: 0.6s; }
+    .wave-bar:nth-child(6) { height: 8px; animation-delay: 0.75s; }
+
+    @keyframes wave {
+      0% { transform: scaleY(0.4); }
+      100% { transform: scaleY(1); }
+    }
+
+    .recorder-right {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .wa-button {
+      background: #25d366;
+      color: white;
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .wa-button:hover {
+      background: #20ba5a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+
+    .wa-button svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .submit-tip {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-logo">
+      VDL <span>Benkey</span> 2026
+    </div>
+    <h1>Spreekopdrachten: Kennismaking &amp; Werkcontext</h1>
+    <p>Oefen met gesprekken en briefings die specifiek passen bij jouw dagelijkse werkzaamheden op de werkvloer van VDL.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- 👥 STUDENT SELECTOR -->
+    <div class="student-selector-card">
+      <div class="student-selector-title">Kies je naam om je persoonlijke opdracht te bekijken:</div>
+      <div class="student-tabs">
+        <div class="student-tab active" onclick="switchStudent('pawankumar')" id="stab-pawankumar">
+          Pawankumar
+          <span class="student-tab-subtitle">Software (ETG)</span>
+        </div>
+        <div class="student-tab" onclick="switchStudent('neeraja')" id="stab-neeraja">
+          Neeraja
+          <span class="student-tab-subtitle">Inkoop (TIM)</span>
+        </div>
+        <div class="student-tab" onclick="switchStudent('cihan')" id="stab-cihan">
+          Cihan
+          <span class="student-tab-subtitle">Software (VDL)</span>
+        </div>
+        <div class="student-tab" onclick="switchStudent('alexandros')" id="stab-alexandros">
+          Alexandros
+          <span class="student-tab-subtitle">Mechanical/QC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 👥 ROLE CARDS IN SCENARIO -->
+    <div class="role-cards-container">
+      <div class="role-cards-title">👥 Deelnemers in dit rollenspel:</div>
+      <div class="role-tabs" id="character-tabs">
+        <!-- Rendered dynamically in JS -->
+      </div>
+    </div>
+
+    <!-- 📝 SCENARIO DETAILS CARD -->
+    <div class="content-card" id="role-content">
+      <!-- Rendered dynamically in JS -->
+    </div>
+
+  </div>
+
+  <script>
+    // Security Check
+    if (sessionStorage.getItem('vdl_benkey_auth') !== '1') {
+      window.location.replace('index.html');
+    }
+
+    // ════════════════════════════════════════
+    const STUDENTS = {
+      pawankumar: {
+        name: "Pawankumar",
+        subtitle: "Software Engineer, VDL ETG",
+        activeTitle: "Pawankumar — Stel jezelf voor aan het team (Monoloog)",
+        badge: "Teampresentatie",
+        duration: "2-3 minuten",
+        label: "MONOLOOG: PRESENTATIE",
+        whatsappMsg: "Hallo docent, hier is de voice memo voor de voorstelopdracht van Pawankumar (VDL Benkey 2026)!",
+        verbs: ["ik heet / ik ben", "inversie", "ontkenning (niet/geen)", "bezittelijk pronomen", "hoofdzin (SVO)"],
+        characters: [
+          { name: "Pawankumar", role: "Zichzelf presenteren", emoji: "🙋‍♂️", active: true },
+          { name: "Collega Thomas", role: "Luisteren & noteren", emoji: "👨‍💼", active: false },
+          { name: "Teamleden", role: "Feedback geven", emoji: "👥", active: false }
+        ],
+        situation: `<strong>Het is maandagochtend en je hebt je eerste teamvergadering bij VDL ETG.</strong> Omdat er meerdere nieuwe collega's zijn gestart, begint de vergadering met een voorstelronde. Je staat voor de groep en stelt jezelf in een doorlopende monoloog van 2-3 minuten voor. Je vertelt niet alleen je naam en functie, maar legt ook uit waar je vandaan komt, wat je achtergrond is en hoe je werkweek eruitziet.`,
+        assignment: `Geef een presentatie aan het team. Zorg ervoor dat je de volgende punten in je monoloog behandelt:
+          <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <li><strong>Persoonlijke details:</strong> Vertel hoe je heet, waar je vandaan komt en welke talen je spreekt (jouw moedertaal).</li>
+            <li><strong>Jouw functie en team:</strong> Leg uit wat jouw specifieke rol is als software engineer bij VDL ETG en in welk subteam je werkt.</li>
+            <li><strong>Planning en werkdagen:</strong> Vertel op welke dagen je deze week op kantoor bent, wanneer je thuiswerkt en wanneer je overleg (meetings) hebt.</li>
+            <li><strong>Grammatica-uitdaging:</strong> 
+              <ul style="margin-left: 20px; margin-top: 5px; list-style-type: circle;">
+                <li>Gebruik bezittelijke voornaamwoorden (<em>mijn functie, onze afdeling</em>).</li>
+                <li>Pas <strong>inversie</strong> toe door minstens twee zinnen te starten met een tijd of plaats (bijv. <em>"Op maandag werk ik..."</em> of <em>"In India studeerde ik..."</em>).</li>
+                <li>Gebruik de ontkenning <em>niet/geen</em> om te vertellen wat je deze week (nog) niet doet.</li>
+              </ul>
+            </li>
+          </ul>`,
+        en: {
+          situationTitle: "The Situation (Presentation Monologue)",
+          situation: "It is Monday morning and you have your first team meeting at VDL ETG. Since several new colleagues have started, the meeting begins with an introduction round. You stand in front of the group and introduce yourself in a continuous 2-3 minute monologue. You share not only your name and function, but also explain where you are from, your background, and what your workweek looks like.",
+          assignmentTitle: "Your Assignment",
+          assignment: `Give an introductory presentation to the team. Make sure to cover the following points in your monologue:
+            <ul style='margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;'>
+              <li><strong>Personal details:</strong> State your name, where you are from, and which languages you speak (your mother tongue).</li>
+              <li><strong>Your role and team:</strong> Explain your specific role as a software engineer at VDL ETG and which subteam you work in.</li>
+              <li><strong>Schedule and workdays:</strong> Explain on which days you are in the office this week, when you work from home, and when you have meetings.</li>
+              <li><strong>Grammar Challenge:</strong>
+                <ul style='margin-left: 20px; margin-top: 5px; list-style-type: circle;'>
+                  <li>Use possessive pronouns (e.g., <em>mijn functie, onze afdeling</em>).</li>
+                  <li>Apply <strong>inversion</strong> by starting at least two sentences with a time or place (e.g., <em>"Op maandag werk ik..."</em> or <em>"In India studeerde ik..."</em>).</li>
+                  <li>Use negation (<em>niet/geen</em>) to describe what you are (not) doing yet this week.</li>
+                </ul>
+              </li>
+            </ul>`
+        }
+      },
+      neeraja: {
+        name: "Neeraja",
+        subtitle: "Inkoop, VDL TIM",
+        activeTitle: "Neeraja — Spreek een voicemail in (Monoloog)",
+        badge: "Inkoop voicemail",
+        duration: "3-4 minuten",
+        label: "MONOLOOG: VOICEMAIL",
+        whatsappMsg: "Hallo docent, hier is de voicemail inkoopopdracht van Neeraja (VDL Benkey 2026)!",
+        verbs: ["modale verba (willen/kunnen)", "inversie", "adjectieven", "formele zinnen", "ontkenning (niet/geen)"],
+        characters: [
+          { name: "Neeraja", role: "Voicemail inspreken", emoji: "🙋‍♀️", active: true },
+          { name: "Herr Schmidt", role: "Ontvanger (luistert later)", emoji: "👨‍💼", active: false },
+          { name: "Staalbedrijf TIM", role: "Leverancier", emoji: "🏢", active: false }
+        ],
+        situation: `<strong>Er is een probleem met een nieuwe offerte voor stalen buizen.</strong> Je probeert de leverancier, Herr Schmidt van staalbedrijf TIM, telefonisch te bereiken. Hij neemt echter niet op. Je besluit een duidelijke, zakelijke voicemail (monoloog) achter te laten waarin je het probleem uitlegt en aangeeft welke aanpassingen nodig zijn voor een akkoord.`,
+        assignment: `Spreek een professionele voicemail in voor Herr Schmidt. Behandel de volgende punten:
+          <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <li><strong>Introductie:</strong> Begroet hem formeel, vertel je naam en dat je namens VDL TIM belt over offerte-nummer <strong>ST-2026-99</strong>.</li>
+            <li><strong>Het prijs-probleem:</strong> Leg uit dat de prijs op de offerte te hoog is (15% boven budget). Vraag of er een korting mogelijk is en welke prijs hij kan aanbieden.</li>
+            <li><strong>Het tijd-probleem:</strong> Vertel dat een levertijd van 6 weken te lang is. De productieafdeling heeft de buizen al over 3 weken nodig. Vraag of een snellere levering mogelijk is.</li>
+            <li><strong>Vervolgactie:</strong> Vraag hem om je vandaag nog terug te bellen met een herziene offerte, en noem duidelijk jouw telefoonnummer.</li>
+            <li><strong>Grammatica-uitdaging:</strong>
+              <ul style="margin-left: 20px; margin-top: 5px; list-style-type: circle;">
+                <li>Gebruik de modale hulpwerkwoorden <em>willen, kunnen, moeten</em> om je wensen te formuleren.</li>
+                <li>Gebruik bijvoeglijke naamwoorden met de juiste buigings-e (bijv. <em>snelle levering, hoge prijzen, het nieuwe project</em>).</li>
+                <li>Pas <strong>inversie</strong> toe (bijv. <em>"Voor dit project hebben wij..."</em> of <em>"Vandaag bel ik u..."</em>).</li>
+              </ul>
+            </li>
+          </ul>`,
+        en: {
+          situationTitle: "The Situation (Voicemail Monologue)",
+          situation: "There is an issue with a new quotation for steel tubes. You attempt to reach the supplier, Herr Schmidt from steel company TIM, by phone. However, he does not answer. You decide to leave a clear, professional voicemail (monologue) explaining the problem and detailing the changes needed for an agreement.",
+          assignmentTitle: "Your Assignment",
+          assignment: `Record a professional voicemail for Herr Schmidt. Cover the following points:
+            <ul style='margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;'>
+              <li><strong>Introduction:</strong> Greet him formally, state your name, and mention you are calling on behalf of VDL TIM regarding quotation number <strong>ST-2026-99</strong>.</li>
+              <li><strong>The price issue:</strong> Explain that the quoted price is too high (15% over budget). Ask if a discount is possible and what price he can offer.</li>
+              <li><strong>The time issue:</strong> Explain that the 6-week delivery time is too long. The production department needs the tubes in 3 weeks. Ask if a faster delivery is possible.</li>
+              <li><strong>Follow-up:</strong> Ask him to call you back today with a revised quotation, and state your phone number clearly.</li>
+              <li><strong>Grammar Challenge:</strong>
+                <ul style='margin-left: 20px; margin-top: 5px; list-style-type: circle;'>
+                  <li>Use the modal verbs <em>willen, kunnen, moeten</em> to express your requirements.</li>
+                  <li>Use adjectives with the correct ending (e.g., <em>snelle levering, hoge prijzen, het nieuwe project</em>).</li>
+                  <li>Apply <strong>inversion</strong> (e.g., <em>"Voor dit project hebben wij..."</em> or <em>"Vandaag bel ik u..."</em>).</li>
+                </ul>
+              </li>
+            </ul>`
+        }
+      },
+      cihan: {
+        name: "Cihan",
+        subtitle: "Software Developer, VDL",
+        activeTitle: "Cihan — Geef je standup-update aan het team (Monoloog)",
+        badge: "Daily Standup",
+        duration: "2-3 minuten",
+        label: "MONOLOOG: STANDUP",
+        whatsappMsg: "Hallo docent, hier is de daily standup voice memo van Cihan (VDL Benkey 2026)!",
+        verbs: ["verleden tijd (presens perfectum)", "inversie", "ontkenning (niet/geen)", "object pronomen (hem/haar)", "hulpwerkwoorden"],
+        characters: [
+          { name: "Cihan", role: "Standup status-update geven", emoji: "👨‍💻", active: true },
+          { name: "Scrum Master", role: "Luisteren & timen", emoji: "👩‍💼", active: false },
+          { name: "Ontwikkelteam", role: "Blockers noteren", emoji: "👥", active: false }
+        ],
+        situation: `<strong>Het is 9.00 uur 's ochtends.</strong> Tijdens de dagelijkse standup-vergadering van het softwareteam geef je een gedetailleerde update over de database-bug waar je aan werkt. Je spreekt tegen het hele team in een lopend verhaal (monoloog) en legt uit wat de status is, welke problemen je tegenkwam en wat je planning is.`,
+        assignment: `Geef je standup status-update. Behandel de volgende punten in je monoloog:
+          <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <li><strong>Gisteravond/Gisteren:</strong> Vertel wat je gisteren hebt gedaan (de database-bug onderzocht, code geschreven) en wat er al gelukt is.</li>
+            <li><strong>Het huidige probleem (Blocker):</strong> Leg uit dat de bug bijna is opgelost, maar dat de database na de update erg traag is geworden. Vertel dat je dit probleem niet alleen kunt oplossen.</li>
+            <li><strong>Planning voor vandaag:</strong> Vertel wat je vandaag gaat doen en wanneer de database weer online moet zijn.</li>
+            <li><strong>Hulp vragen:</strong> Vraag of een specifieke collega (gebruik <em>hem/haar</em>) vanmiddag tijd heeft om de code samen te controleren.</li>
+            <li><strong>Grammatica-uitdaging:</strong>
+              <ul style="margin-left: 20px; margin-top: 5px; list-style-type: circle;">
+                <li>Gebruik de <strong>verleden tijd</strong> (perfectum) om over gisteren te vertellen (bijv. <em>"Gisteren heb ik gewerkt aan..."</em>).</li>
+                <li>Pas <strong>inversie</strong> toe om je zinnen af te wisselen.</li>
+                <li>Gebruik de ontkenning <em>niet/geen</em> (bijv. <em>"Ik heb nog geen oplossing gevonden"</em>).</li>
+              </ul>
+            </li>
+          </ul>`,
+        en: {
+          situationTitle: "The Situation (Standup Monologue)",
+          situation: "It is 9:00 AM. During the daily standup meeting of the software team, you give a detailed update on the database bug you are working on. You present a continuous status update (monologue) to the entire team, explaining the progress, the issues you encountered, and your plan.",
+          assignmentTitle: "Your Assignment",
+          assignment: `Give your standup status update. Cover the following points in your monologue:
+            <ul style='margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;'>
+              <li><strong>Yesterday:</strong> Explain what you did yesterday (investigated the database bug, wrote code) and what was successful.</li>
+              <li><strong>Current issue (Blocker):</strong> Explain that the bug is almost fixed, but the database has become very slow after the update. State that you cannot solve this issue alone.</li>
+              <li><strong>Today's plan:</strong> Share what you will do today and when the database must be online.</li>
+              <li><strong>Request help:</strong> Ask if a specific colleague (use object pronouns <em>hem/haar</em> - him/her) has time this afternoon to review the code together.</li>
+              <li><strong>Grammar Challenge:</strong>
+                <ul style='margin-left: 20px; margin-top: 5px; list-style-type: circle;'>
+                  <li>Use the <strong>past tense</strong> (perfectum) to describe yesterday's actions (e.g., <em>"Gisteren heb ik gewerkt aan..."</em>).</li>
+                  <li>Apply <strong>inversion</strong> to vary your sentence structures.</li>
+                  <li>Use negation (<em>niet/geen</em>) (e.g., <em>"Ik heb nog geen oplossing gevonden"</em>).</li>
+                </ul>
+              </li>
+            </ul>`
+        }
+      },
+      alexandros: {
+        name: "Alexandros",
+        subtitle: "Mechanical / QC, VDL ETG",
+        activeTitle: "Alexandros — Geef QC-instructies & uitleg (Monoloog)",
+        badge: "QC walkthrough",
+        duration: "3-4 minuten",
+        label: "MONOLOOG: INSTRUCTIE",
+        whatsappMsg: "Hallo docent, hier is de QC-instructie voice memo van Alexandros (VDL Benkey 2026)!",
+        verbs: ["voorzetsels (plaats/richting)", "de / het substantieven", "inversie", "modale verba", "ontkenning (niet/geen)"],
+        characters: [
+          { name: "Alexandros", role: "QC-instructie geven", emoji: "👨‍🔧", active: true },
+          { name: "Nieuwe Operator", role: "Luisteren & leren", emoji: "👨&zwj;💼", active: false },
+          { name: "QC Supervisor", role: "Rapport controleren", emoji: "👩&zwj;💼", active: false }
+        ],
+        situation: `<strong>Een nieuwe operator loopt vandaag met je mee op de afdeling Kwaliteitscontrole (QC) bij VDL ETG.</strong> Omdat het erg druk en luidruchtig is in de fabriekshal, neem je hem mee naar de inspectietafel. Je geeft hem in een doorlopende monoloog van 3-4 minuten een duidelijke stap-voor-stap uitleg over hoe hij de visuele en handmatige controle van een mechanisch onderdeel moet uitvoeren.`,
+        assignment: `Geef de instructies en leg de QC-procedure uit. Behandel de volgende punten:
+          <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+            <li><strong>Rondleiding en materialen:</strong> Wijs de weg en vertel waar de schroevendraaier, de zaklamp, de technische tekeningen, de blauwe bakken voor goede onderdelen en de rode bakken voor afkeur liggen. Let goed op het gebruik van <em>de</em> en <em>het</em>!</li>
+            <li><strong>Stappenplan kwaliteitscontrole:</strong> Leg uit wat de operator achtereenvolgens moet doen (eerst de technische tekeningen bekijken, daarna het onderdeel visueel controleren met de zaklamp op krassen of montagefouten, en eventueel een schroef aandraaien met de schroevendraaier).</li>
+            <li><strong>Fouten en acties:</strong> Vertel wat hij moet doen als een onderdeel een afwijking heeft (wanneer mag hij het herstellen en wanneer moet hij het weggooien?).</li>
+            <li><strong>Rapportage:</strong> Leg uit waar en hoe hij de resultaten in het Excel-bestand (op de computer) moet registreren aan het einde van zijn dienst.</li>
+            <li><strong>Grammatica-uitdaging:</strong>
+              <ul style="margin-left: 20px; margin-top: 5px; list-style-type: circle;">
+                <li>Gebruik voorzetsels van plaats en richting (<em>op de tafel, naast de computer, in de bak, naar de machine lopen</em>).</li>
+                <li>Start zinnen met een plaats of handeling om <strong>inversie</strong> te oefenen (bijv. <em>"Op de tafel ligt de schroevendraaier"</em> of <em>"Daarna controleer je het onderdeel..."</em>).</li>
+                <li>Gebruik modale verba (<em>moeten, mogen, kunnen</em>) om verplichtingen en regels uit te leggen.</li>
+              </ul>
+            </li>
+          </ul>`,
+        en: {
+          situationTitle: "The Situation (Instruction Monologue)",
+          situation: "A new operator is shadowing you today in the Quality Control (QC) department at VDL ETG. Since the factory floor is very busy and noisy, you take him to the inspection table. In a continuous 3-4 minute monologue, you give him a clear step-by-step explanation of how to perform the visual and manual inspection of a mechanical component.",
+          assignmentTitle: "Your Assignment",
+          assignment: `Give the instructions and explain the QC procedure. Cover the following points:
+            <ul style='margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;'>
+              <li><strong>Tour and materials:</strong> Guide him and explain where the screwdriver, the flashlight, the technical drawings, the blue bins for good parts, and the reject bins (red bins) are located. Pay close attention to using <em>de</em> and <em>het</em>!</li>
+              <li><strong>Quality control steps:</strong> Explain step-by-step what the operator needs to do (first review the technical drawings, then visually check the part for scratches or assembly errors using the flashlight, and adjust screws with the screwdriver if necessary).</li>
+              <li><strong>Defects and actions:</strong> Explain what to do if a part has a deviation (when is he allowed to repair it and when must he discard it?).</li>
+              <li><strong>Reporting:</strong> Explain where and how he must log the results in the Excel file (on the computer) at the end of his shift.</li>
+              <li><strong>Grammar Challenge:</strong>
+                <ul style='margin-left: 20px; margin-top: 5px; list-style-type: circle;'>
+                  <li>Use prepositions of place and direction (e.g., <em>op de tafel, naast de computer, in de bak, naar de machine lopen</em>).</li>
+                  <li>Start sentences with a place or action to practice <strong>inversion</strong> (e.g., <em>"Op de tafel ligt de schroevendraaier"</em> or <em>"Daarna controleer je het onderdeel..."</em>).</li>
+                  <li>Use modal verbs (<em>moeten, mogen, kunnen</em>) to clarify rules and obligations.</li>
+                </ul>
+              </li>
+            </ul>`
+        }
+      }
+    };
+
+    
+let activeStudentId = 'pawankumar';
+    let isRecording = false;
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // ════════════════════════════════════════
+    //  RENDER INTERFACE
+    // ════════════════════════════════════════
+    function renderScreen() {
+      const student = STUDENTS[activeStudentId];
+      
+      // 1. Render Character Cards at the top
+      const charContainer = document.getElementById('character-tabs');
+      charContainer.innerHTML = student.characters.map(c => `
+        <div class="role-tab ${c.active ? 'active-character' : ''}">
+          <div class="avatar">${c.emoji}</div>
+          <h3>${c.name}</h3>
+          <span>${c.role}</span>
+        </div>
+      `).join('');
+
+      // 2. Render Main Content Card
+      const contentContainer = document.getElementById('role-content');
+      contentContainer.innerHTML = `
+        <div class="role-meta">
+          <span class="role-badge">${student.badge}</span>
+          <span class="duration-badge">⏱️ Richttijd: ${student.duration}</span>
+        </div>
+
+        <h2 style="font-size: 1.7rem; margin-bottom: 1.5rem; color: #a5f3fc; text-shadow: 0 0 10px rgba(6,182,212,0.2);">${student.activeTitle}</h2>
+
+        <div class="section-title">💼 De Situatie</div>
+        <div class="situation-box">${student.situation}</div>
+
+        <div class="section-title">⚡ Jouw Opdracht</div>
+        <div class="assignment-box">
+          ${student.assignment}
+          <div class="verb-tags">
+            ${student.verbs.map(v => `<span class="verb-tag">#${v}</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- ENGLISH TRANSLATION DRAWER -->
+        <button class="trans-toggle-btn" onclick="toggleTranslation()">
+          🇬🇧 Show English translation / Show instructions in English
+        </button>
+
+        <div class="english-container" id="english-translation">
+          <div class="english-box">
+            <h4>${student.en.situationTitle}</h4>
+            <div class="english-text">${student.en.situation}</div>
+            
+            <h4>${student.en.assignmentTitle}</h4>
+            <div class="english-text">${student.en.assignment}</div>
+          </div>
+        </div>
+
+        <!-- GRAMMAR CHECKLIST -->
+        <div class="checklist-container">
+          <div class="checklist-title">Grammatica &amp; Woordenschat checklist:</div>
+          <div class="checklist-items">
+            ${student.verbs.map(v => `
+              <div class="checklist-item" onclick="toggleChecklist(this)">
+                <span class="checkbox-icon">✓</span>
+                #${v}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- PRACTICE & RECORDER PANEL -->
+        <div class="recorder-panel">
+          <div class="recorder-left">
+            <div class="recorder-title">🎙️ Oefen-timer</div>
+            <p style="font-size:0.9rem; color:var(--text-muted);">Start de timer om je spreektijd bij te houden en te oefenen.</p>
+            <div class="record-controls">
+              <button class="record-btn" id="record-action-btn" onclick="toggleTimer()">▶</button>
+              <div class="timer" id="timer-display">00:00</div>
+              <div class="wave-container" id="wave-display">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="recorder-right">
+            <a href="https://wa.me/31626211106?text=${encodeURIComponent(student.whatsappMsg)}" target="_blank" class="wa-button" id="wa-link">
+              <svg viewBox="0 0 24 24">
+                <path d="M12.012 2c-5.506 0-9.988 4.479-9.988 9.984 0 1.761.46 3.473 1.336 4.985l-1.42 5.187 5.31-1.391c1.465.798 3.11 1.218 4.764 1.219h.004c5.505 0 9.986-4.479 9.986-9.985 0-2.67-1.037-5.178-2.923-7.062a9.922 9.922 0 0 0-7.073-2.938zm.003 1.602c2.239 0 4.34.872 5.922 2.451 1.581 1.579 2.454 3.68 2.454 5.931 0 4.629-3.771 8.397-8.406 8.397-1.481 0-2.932-.39-4.204-1.127l-.302-.179-3.13.82.836-3.05-.198-.314a8.349 8.349 0 0 1-1.28-4.548c0-4.63 3.773-8.397 8.408-8.397zm-3.663 3.197c-.201 0-.435.076-.66.326-.226.251-.863.844-.863 2.06s.885 2.391.986 2.528c.1.137 1.742 2.656 4.22 3.726 2.478 1.07 2.478.713 2.93.667.452-.046 1.455-.595 1.66-1.171.205-.576.205-1.07.143-1.171-.061-.1-.226-.16-.475-.285-.25-.126-1.455-.718-1.68-.8-.226-.081-.39-.126-.554.126-.164.251-.637.8-.78 1.037-.143.237-.287.266-.537.14-.25-.125-1.054-.389-2.008-1.24-.741-.662-1.242-1.48-1.387-1.73-.146-.251-.016-.387.11-.512.112-.113.25-.292.375-.438.125-.146.166-.251.25-.42.083-.169.042-.319-.021-.444-.063-.126-.554-1.336-.76-1.831-.205-.494-.41-.426-.554-.426z"/>
+              </svg>
+              Stuur voice memo via WhatsApp
+            </a>
+            <div class="submit-tip">Klik om direct WhatsApp te openen. Stuur je ingesproken memo naar de docent of spreek hem direct in.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ════════════════════════════════════════
+    //  INTERACTIVE ACTIONS
+    // ════════════════════════════════════════
+    function switchStudent(studentId) {
+      if (isRecording) {
+        toggleTimer();
+      }
+      activeStudentId = studentId;
+      document.querySelectorAll('.student-tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById('stab-' + studentId).classList.add('active');
+      renderScreen();
+    }
+
+    function toggleTranslation() {
+      const panel = document.getElementById('english-translation');
+      panel.classList.toggle('show');
+    }
+
+    function toggleChecklist(el) {
+      el.classList.toggle('checked');
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('record-action-btn');
+      const timerDisp = document.getElementById('timer-display');
+      const waveDisp = document.getElementById('wave-display');
+
+      if (!isRecording) {
+        isRecording = true;
+        btn.textContent = '■';
+        btn.classList.add('recording');
+        waveDisp.classList.add('active');
+        secondsElapsed = 0;
+        timerDisp.textContent = '00:00';
+
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+          const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+          timerDisp.textContent = `${mins}:${secs}`;
+        }, 1000);
+      } else {
+        isRecording = false;
+        btn.textContent = '▶';
+        btn.classList.remove('recording');
+        waveDisp.classList.remove('active');
+        clearInterval(timerInterval);
+      }
+    }
+
+    // Initial render
+    renderScreen();
+  </script>
+</body>
+</html>
