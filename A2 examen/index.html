@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inburgeringsexamen A2 - Oefenomgeving</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gov-blue: #002d62;
+            --gov-blue-light: #1f3d65;
+            --gov-gold: #ffd500;
+            --bg-light: #f3f6f9;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        body {
+            font-family: 'Nunito', 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── HEADER ── */
+        .gov-header {
+            background-color: var(--gov-blue);
+            border-bottom: 5px solid var(--gov-gold);
+            color: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-logo-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gov-crest {
+            width: 45px;
+            height: 45px;
+            fill: #ffffff;
+        }
+
+        .header-titles h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header-titles p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-close-exam {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-close-exam:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .timer-display {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: 'Inter', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── DASHBOARD VIEW ── */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .welcome-card {
+            background-color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .welcome-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--gov-blue);
+        }
+
+        .welcome-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        /* ── ACCORDION ── */
+        .accordion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .accordion-item {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: border-color 0.2s;
+        }
+
+        .accordion-item.active {
+            border-color: var(--gov-blue);
+        }
+
+        .accordion-header {
+            padding: 18px 24px;
+            background-color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .accordion-header:hover {
+            background-color: #f8fafc;
+        }
+
+        .accordion-title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .accordion-icon {
+            font-size: 1.4rem;
+        }
+
+        .accordion-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--gov-blue);
+        }
+
+        .accordion-chevron {
+            font-size: 0.9rem;
+            color: var(--gov-blue);
+            transition: transform 0.2s;
+            font-weight: 800;
+        }
+
+        .accordion-item.open .accordion-chevron {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 20px 24px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .accordion-item.open .accordion-content {
+            display: block;
+        }
+
+        /* ── EXAM CARDS INSIDE ACCORDION ── */
+        .exams-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exam-card-item {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .exam-card-item.enabled:hover {
+            transform: translateY(-2px);
+            border-color: var(--gov-blue);
+            box-shadow: 0 4px 12px rgba(0, 45, 98, 0.06);
+        }
+
+        .exam-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .exam-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .exam-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .exam-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.completed {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+        }
+
+        .status-badge.not-started {
+            background-color: #e2e8f0;
+            color: var(--text-muted);
+        }
+
+        .status-badge.locked {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+
+        .btn-start-exam {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-start-exam:hover {
+            background-color: var(--gov-blue-light);
+        }
+
+        .btn-start-exam.locked {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-whatsapp-small {
+            background-color: #25D366;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: filter 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.15);
+        }
+
+        .btn-whatsapp-small:hover {
+            filter: brightness(0.92);
+        }
+
+        .btn-start-exam-secondary {
+            background-color: transparent;
+            color: var(--gov-blue);
+            border: 1px solid var(--gov-blue);
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-start-exam-secondary:hover {
+            background-color: rgba(0, 45, 98, 0.05);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: filter 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-whatsapp:hover {
+            filter: brightness(0.95);
+        }
+
+        /* ── SIDEBAR CARDS ── */
+        .sidebar-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background-color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--gov-blue);
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+            font-weight: 600;
+        }
+
+        .form-input:focus {
+            border-color: var(--gov-blue);
+        }
+
+        .whatsapp-summary-list {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .whatsapp-summary-item {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ── EXAM PLAYER VIEW ── */
+        .exam-player-container {
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 15px;
+        }
+
+        .exam-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex-grow: 1;
+            align-items: stretch;
+            height: calc(100vh - 220px);
+        }
+
+        @media (max-width: 850px) {
+            .exam-workspace {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .workspace-panel {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--gov-blue);
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 8px;
+        }
+
+        /* ── WRITING / FORM FIELDS ── */
+        .exam-instruction {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .exam-instruction ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .exam-instruction li {
+            margin-bottom: 6px;
+        }
+
+        /* Email UI mockup */
+        .email-composer {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .email-header {
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #d1d5db;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .email-header-row {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .email-header-label {
+            width: 80px;
+            font-weight: 700;
+        }
+
+        .email-header-value {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .email-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .email-salutation {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .email-textarea {
+            width: 100%;
+            min-height: 200px;
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #111827;
+            outline: none;
+            resize: none;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .email-textarea:focus {
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .email-signature {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 12px;
+        }
+
+        /* Form styling for exams */
+        .official-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-section-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gov-blue);
+            background-color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .official-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .official-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 600px) {
+            .field-group.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        .field-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .field-input {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            outline: none;
+            background-color: #ffffff;
+        }
+
+        .field-input:focus {
+            border-color: var(--gov-blue);
+        }
+
+        .field-radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            cursor: pointer;
+        }
+
+        /* Image Display Grid */
+        .exam-images-grid {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .exam-image-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 140px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .exam-image-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .exam-image-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ef4444;
+            text-transform: uppercase;
+        }
+
+        /* ── MULTIPLE CHOICE / OPTIONS ── */
+        .mc-question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mc-option {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            user-select: none;
+            background-color: #ffffff;
+        }
+
+        .mc-option:hover {
+            border-color: var(--gov-blue);
+            background-color: #f8fafc;
+            transform: translateX(4px);
+        }
+
+        .mc-option.selected {
+            border-color: var(--gov-blue);
+            background-color: rgba(0, 45, 98, 0.04);
+            box-shadow: inset 0 0 0 1px var(--gov-blue);
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            background-color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .mc-option:hover .option-letter {
+            border-color: var(--gov-blue);
+            color: var(--gov-blue);
+        }
+
+        .mc-option.selected .option-letter {
+            border-color: var(--gov-blue);
+            background-color: var(--gov-blue);
+            color: #ffffff;
+        }
+
+        .option-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* ── BOTTOM EXAM NAV ── */
+        .exam-bottom-nav {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 15px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-buttons-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background-color: #e2e8f0;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-nav-primary {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-nav-primary:hover:not(:disabled) {
+            background-color: var(--gov-blue-light);
+        }
+
+        .btn-finish-exam {
+            background-color: #25D366;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: filter 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+        }
+
+        .btn-finish-exam:hover {
+            filter: brightness(0.92);
+        }
+
+        /* Questions Grid pagination */
+        .questions-grid-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            overflow-x: auto;
+            max-width: 60%;
+            padding: 2px;
+        }
+
+        .question-grid-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            background-color: #ffffff;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .question-grid-dot:hover {
+            border-color: var(--gov-blue);
+            color: var(--gov-blue);
+        }
+
+        .question-grid-dot.current {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            border-color: var(--gov-blue);
+        }
+
+        .question-grid-dot.answered {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+            border-color: #cbd5e1;
+        }
+
+        .question-grid-dot.current.answered {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            border-color: var(--gov-blue);
+        }
+
+        /* ── FOOTER ── */
+        .gov-footer {
+            background-color: var(--gov-blue);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 40px;
+            border-top: 4px solid var(--gov-gold);
+        }
+
+        .gov-footer a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* ── NEW VISUAL STYLES FOR WRITING PROMPTS ── */
+        .received-email {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .received-email-header {
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .received-email-header span strong {
+            color: var(--text-dark);
+        }
+
+        .received-email-body {
+            padding: 20px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .newspaper-clipping {
+            background-color: #fffdf5;
+            border: 1px solid #e9e5d9;
+            border-left: 5px solid #d97706;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+            font-family: 'Georgia', serif;
+        }
+
+        .newspaper-header {
+            text-align: center;
+            border-bottom: 2px double #e9e5d9;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #78350f;
+        }
+
+        .newspaper-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .newspaper-body {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .promo-brochure {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .promo-badge {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .promo-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--gov-blue);
+            margin-bottom: 10px;
+        }
+
+        .promo-body {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .auto-save-banner {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px dashed var(--success-color);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: var(--success-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── HEADER ── -->
+    <header class="gov-header">
+        <div class="header-logo-title">
+            <!-- Dutch Crown Crest SVG Icon -->
+            <svg class="gov-crest" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,15 L78,35 L68,75 L32,75 L22,35 Z" fill="none" stroke="#ffffff" stroke-width="6"/>
+                <path d="M50,15 L50,75 M32,75 L68,75 M22,35 L78,35" stroke="#ffffff" stroke-width="3"/>
+                <circle cx="50" cy="15" r="5" fill="#ffffff"/>
+                <circle cx="22" cy="35" r="5" fill="#ffffff"/>
+                <circle cx="78" cy="35" r="5" fill="#ffffff"/>
+                <rect x="42" y="45" width="16" height="16" fill="none" stroke="#ffffff" stroke-width="4"/>
+                <line x1="35" y1="65" x2="65" y2="65" stroke="#ffffff" stroke-width="5"/>
+            </svg>
+            <div class="header-titles">
+                <h1 id="header-main-title">Examenportaal A2 - Inburgering</h1>
+                <p id="header-subtitle">Ministerie van Sociale Zaken en Werkgelegenheid</p>
+            </div>
+        </div>
+        <div class="header-actions" id="header-exam-actions" style="display: none;">
+            <div class="timer-display">
+                <span>⏱️</span>
+                <span id="timer-clock">45:00</span>
+            </div>
+            <button class="btn-close-exam" onclick="exitExam()">Sluiten & Opslaan</button>
+        </div>
+    </header>
+
+    <!-- ── CONTENT CONTAINER ── -->
+    <div class="container">
+
+        <!-- ═══ DASHBOARD VIEW ═══ -->
+        <div id="dashboard-view" class="dashboard-grid">
+            
+            <!-- LEFT PANEL: ACCORDIONS -->
+            <div class="dashboard-main">
+                
+                <div class="welcome-card">
+                    <h2>Officiële Oefenomgeving A2</h2>
+                    <p>
+                        Welkom op de digitale oefenomgeving voor het inburgeringsexamen A2. Klik op een van de onderstaande examenonderdelen om een oefenexamen te starten. 
+                        Tijdens het examen ziet u niet of uw antwoorden goed of fout zijn. Uw antwoorden worden direct <strong>automatisch tussentijds opgeslagen</strong>. 
+                        Voor de schrijfexamens stuurt u <strong>elke opgave direct los via WhatsApp</strong> naar de docent tijdens het maken. Voor het leesexamen stuurt u alle resultaten gebundeld aan het einde.
+                    </p>
+                    <div class="auto-save-banner" style="margin-top: 15px; margin-bottom: 0;">
+                        <span>💾</span>
+                        <span>Voortgangsbewaking: al uw antwoorden worden continu opgeslagen. U verliest uw werk niet bij afsluiten of opnieuw laden!</span>
+                    </div>
+                </div>
+
+                <div class="accordion-container">
+                    
+                    <!-- Schrijven Accordion -->
+                    <div class="accordion-item" id="accordion-schrijven">
+                        <div class="accordion-header" onclick="toggleAccordion('schrijven')">
+                            <div class="accordion-title-container">
+                                <span class="accordion-icon">📝</span>
+                                <span class="accordion-title">Schrijven</span>
+                            </div>
+                            <span class="accordion-chevron">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="exams-list">
+                                <!-- Exam 1 -->
+                                <div class="exam-card-item enabled">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Schrijven 1</span>
+                                        <span class="exam-meta">4 opgaven · 40 minuten · E-mails & Formulieren</span>
+                                    </div>
+                                    <div class="exam-status" id="status-container-schrijven-1">
+                                        <span class="status-badge not-started">Niet gestart</span>
+                                        <button class="btn-start-exam" onclick="startExam('schrijven', 1)">Starten</button>
+                                    </div>
+                                </div>
+                                <!-- Exam 2 -->
+                                <div class="exam-card-item enabled">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Schrijven 2</span>
+                                        <span class="exam-meta">4 opgaven · 40 minuten · E-mails & Schadeclaim</span>
+                                    </div>
+                                    <div class="exam-status" id="status-container-schrijven-2">
+                                        <span class="status-badge not-started">Niet gestart</span>
+                                        <button class="btn-start-exam" onclick="startExam('schrijven', 2)">Starten</button>
+                                    </div>
+                                </div>
+                                <!-- Exam 3 -->
+                                <div class="exam-card-item enabled">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Schrijven 3</span>
+                                        <span class="exam-meta">4 opgaven · 40 minuten · E-mails & Gemeentemelding</span>
+                                    </div>
+                                    <div class="exam-status" id="status-container-schrijven-3">
+                                        <span class="status-badge not-started">Niet gestart</span>
+                                        <button class="btn-start-exam" onclick="startExam('schrijven', 3)">Starten</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spreken Accordion -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion('spreken')">
+                            <div class="accordion-title-container">
+                                <span class="accordion-icon">🗣️</span>
+                                <span class="accordion-title">Spreken</span>
+                            </div>
+                            <span class="accordion-chevron">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="exams-list">
+                                <div class="exam-card-item">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Spreken 1</span>
+                                        <span class="exam-meta">Binnenkort beschikbaar</span>
+                                    </div>
+                                    <div class="exam-status">
+                                        <span class="status-badge locked">Vergrendeld</span>
+                                        <button class="btn-start-exam locked" disabled>Starten</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Luisteren Accordion -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion('luisteren')">
+                            <div class="accordion-title-container">
+                                <span class="accordion-icon">🎧</span>
+                                <span class="accordion-title">Luisteren</span>
+                            </div>
+                            <span class="accordion-chevron">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="exams-list">
+                                <div class="exam-card-item">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Luisteren 1</span>
+                                        <span class="exam-meta">Binnenkort beschikbaar</span>
+                                    </div>
+                                    <div class="exam-status">
+                                        <span class="status-badge locked">Vergrendeld</span>
+                                        <button class="btn-start-exam locked" disabled>Starten</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lezen Accordion -->
+                    <div class="accordion-item" id="accordion-lezen">
+                        <div class="accordion-header" onclick="toggleAccordion('lezen')">
+                            <div class="accordion-title-container">
+                                <span class="accordion-icon">📖</span>
+                                <span class="accordion-title">Lezen</span>
+                            </div>
+                            <span class="accordion-chevron">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="exams-list">
+                                <div class="exam-card-item enabled">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen Lezen 1</span>
+                                        <span class="exam-meta">25 vragen · 45 minuten · Teksten met meerkeuze</span>
+                                    </div>
+                                    <div class="exam-status" id="status-container-lezen-1">
+                                        <span class="status-badge not-started">Niet gestart</span>
+                                        <button class="btn-start-exam" onclick="startExam('lezen', 1)">Starten</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KNM Accordion -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion('knm')">
+                            <div class="accordion-title-container">
+                                <span class="accordion-icon">🇳🇱</span>
+                                <span class="accordion-title">Kennis van de Nederlandse Maatschappij (KNM)</span>
+                            </div>
+                            <span class="accordion-chevron">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="exams-list">
+                                <div class="exam-card-item">
+                                    <div class="exam-info">
+                                        <span class="exam-name">Oefenexamen KNM 1</span>
+                                        <span class="exam-meta">Binnenkort beschikbaar</span>
+                                    </div>
+                                    <div class="exam-status">
+                                        <span class="status-badge locked">Vergrendeld</span>
+                                        <button class="btn-start-exam locked" disabled>Starten</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: CANDIDATE INFO & WHATSAPP EXPORT -->
+            <div class="sidebar-panel">
+                
+                <div class="sidebar-card">
+                    <h3>Kandidaatgegevens</h3>
+                    <div class="form-group">
+                        <label for="kandidaat-naam">Voor- en achternaam</label>
+                        <input type="text" id="kandidaat-naam" class="form-input" placeholder="Bijv. Ali Yilmaz" oninput="saveKandidaatNaam()">
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3>Overzicht Resultaten</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; font-weight:600;">
+                        Vul uw naam hierboven in. Voor schrijfexamens stuurt u de opdrachten los per vraag naar de docent tijdens het examen. Voor het leesexamen kunt u de resultaten verzenden zodra u klaar bent.
+                    </p>
+                    
+                    <div class="whatsapp-summary-list">
+                        <div class="whatsapp-summary-item">
+                            <span>Schrijven Examen 1:</span>
+                            <strong id="summary-schrijven-1">Niet gestart</strong>
+                        </div>
+                        <div class="whatsapp-summary-item">
+                            <span>Schrijven Examen 2:</span>
+                            <strong id="summary-schrijven-2">Niet gestart</strong>
+                        </div>
+                        <div class="whatsapp-summary-item">
+                            <span>Schrijven Examen 3:</span>
+                            <strong id="summary-schrijven-3">Niet gestart</strong>
+                        </div>
+                        <div class="whatsapp-summary-item">
+                            <span>Lezen Examen 1:</span>
+                            <strong id="summary-lezen-1">Niet gestart</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ═══ EXAM PLAYER VIEW ═══ -->
+        <div id="exam-player-view" class="exam-player-container">
+            
+            <div class="auto-save-banner">
+                <span>💾</span>
+                <span><strong>Automatische opslag actief:</strong> Uw voortgang en antwoorden worden bij elke klik bewaard. U kunt de pagina gerust verlaten en later weer openen.</span>
+            </div>
+
+            <div class="exam-workspace">
+                
+                <!-- Left Panel: Text/Prompt -->
+                <div class="workspace-panel" id="panel-left">
+                    <h3 class="panel-title" id="panel-left-title">Leestekst / Opgave</h3>
+                    <div id="panel-left-content" style="flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
+                        <!-- Will be dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Right Panel: Questions / Inputs -->
+                <div class="workspace-panel" id="panel-right">
+                    <h3 class="panel-title" id="panel-right-title">Vraag / Invoer</h3>
+                    <div id="panel-right-content" style="flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
+                        <!-- Will be dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="exam-bottom-nav">
+                <div class="nav-buttons-left">
+                    <button class="btn-nav" id="btn-prev" onclick="prevQuestion()">Vorige</button>
+                    <button class="btn-nav btn-nav-primary" id="btn-next" onclick="nextQuestion()">Volgende</button>
+                </div>
+
+                <div class="questions-grid-container" id="questions-grid">
+                    <!-- Nav dots will be rendered here -->
+                </div>
+
+                <button class="btn-finish-exam" onclick="finishExamPrompt()">💬 Stuur naar docent</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="gov-footer">
+        <p>Inburgeringsexamen A2 Oefenomgeving &copy; 2026 | <a href="../">Terug naar Hoofdmenu</a></p>
+    </footer>
+
+    <!-- ── SCRIPTS ── -->
+    <script>
+        // ── GOOGLE APPS SCRIPT CONFIGURATION ──
+        // Pas deze URL aan naar de Web App URL van jouw Google Apps Script om antwoorden ook in je e-mail te ontvangen.
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_YOUR-SCRIPT-ID-HERE/exec"; 
+
+        // ── EXAM DATA DATABASE ──
+        const EXAM_DATA = {
+            schrijven: {
+                1: {
+                    title: "Schrijven A2 Oefenexamen 1",
+                    timeLimit: 40 * 60, // 40 minutes in seconds
+                    opgaven: [
+                        {
+                            type: "email",
+                            title: "Opgave 1: Afspraak verzetten",
+                            instructions: `
+                                <div class="received-email">
+                                    <div class="received-email-header">
+                                        <span><strong>Van:</strong> Amber de Groot &lt;amberdegroot@mail.nl&gt;</span>
+                                        <span><strong>Aan:</strong> U (Kandidaat)</span>
+                                        <span><strong>Onderwerp:</strong> Afspraak morgen</span>
+                                    </div>
+                                    <div class="received-email-body">
+                                        Beste,<br><br>
+                                        We hebben morgen een afspraak om samen te studeren voor de opleiding. Gaat dat nog door? Laat het me even weten.<br><br>
+                                        Groeten,<br>
+                                        Amber
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U kunt morgen niet en wilt een andere afspraak maken. Schrijf een e-mail terug aan Amber.
+                                    <ul>
+                                        <li>Schrijf dat u de afspraak wilt verzetten.</li>
+                                        <li>Schrijf waarom u dat wilt. Bedenk zelf een reden.</li>
+                                        <li>Stel een nieuwe datum en tijd voor.</li>
+                                    </ul>
+                                    <em>Schrijf de e-mail op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            emailTo: "amberdegroot@mail.nl",
+                            emailSubject: "Afspraak",
+                            emailSalutation: "Beste Amber,",
+                            emailClosing: "Vriendelijke groet,"
+                        },
+                        {
+                            type: "text",
+                            title: "Opgave 2: Feest",
+                            instructions: `
+                                <div class="newspaper-clipping">
+                                    <div class="newspaper-header">📰 De Wijkkrant · Oproep</div>
+                                    <div class="newspaper-title">Vertel over jouw favoriete feest!</div>
+                                    <div class="newspaper-body">
+                                        Elke week publiceren we in onze wijkkrant verhalen van buurtbewoners. Deze week is het thema: <strong>Mijn Jaarlijkse Feest</strong>. Viert u elk jaar een bijzonder feest met familie of vrienden? Wij zijn erg benieuwd naar uw verhaal! Deel het met de buurt.
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Schrijf een korte tekst voor de wijkkrant over een feest dat u elk jaar viert.
+                                    <ul>
+                                        <li>Schrijf minimaal drie zinnen op.</li>
+                                        <li>Vertel waarom u het feest viert.</li>
+                                        <li>Vertel wie er op het feest komen.</li>
+                                        <li>Vertel wat u doet op het feest.</li>
+                                    </ul>
+                                    <em>Schrijf de tekst op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            promptText: "Dit is mijn tekst over het feest dat ik elk jaar vier:"
+                        },
+                        {
+                            type: "form",
+                            title: "Opgave 3: Inschrijven sportschool",
+                            instructions: `
+                                <div class="promo-brochure">
+                                    <div class="promo-badge">🏋️ Sportclub SPRINT</div>
+                                    <div class="promo-title">Word nu lid van de gezelligste sportschool!</div>
+                                    <div class="promo-body">
+                                        Klaar om fit te worden? Wij bieden fitness, yoga en hardlopen onder professionele begeleiding. Vul het onderstaande inschrijfformulier in om direct uw proefperiode te starten. Bedenk zelf uw gegevens.
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Vul het inschrijfformulier op de rechterpagina in. Bedenk zelf uw persoonsgegevens. 
+                                    Geef ook aan welke sport u wilt doen, hoe vaak u wilt komen en vul de open vragen in over uw motivatie en gezondheid.
+                                </div>
+                            `,
+                            formType: "sportschool",
+                            fields: [
+                                { type: "section", title: "Inschrijfformulier Sportclub SPRINT" },
+                                { type: "section", title: "Persoonsgegevens" },
+                                { type: "text", name: "naam", label: "Voor- en achternaam" },
+                                { type: "text", name: "adres", label: "Adres" },
+                                { type: "text", name: "postcode", label: "Postcode" },
+                                { type: "text", name: "woonplaats", label: "Woonplaats" },
+                                { type: "text", name: "tel", label: "Telefoonnummer" },
+                                { type: "radio", name: "geslacht", label: "Geslacht", options: ["man", "vrouw"] },
+                                { type: "text", name: "geboortedatum", label: "Geboortedatum (DD-MM-JJJJ)" },
+                                { type: "section", title: "Welke groepsles wilt u nu gaan doen?" },
+                                { type: "radio", name: "groepsles", label: "Kies een groepsles", options: ["Fitness", "Yoga", "Hardlopen"] },
+                                { type: "section", title: "Hoe vaak wilt u komen?" },
+                                { type: "radio", name: "frequentie", label: "Kies frequentie", options: ["1x per week", "2x per week", "meer dan 2x per week"] },
+                                { type: "section", title: "Motivatie & Gezondheid" },
+                                { type: "textarea", name: "waarom", label: "Waarom kiest u voor deze groepsles?" },
+                                { type: "textarea", name: "gezondheid", label: "Hoe is uw gezondheid?" }
+                            ]
+                        },
+                        {
+                            type: "email",
+                            title: "Opgave 4: Dienst ruilen",
+                            instructions: `
+                                <div class="received-email">
+                                    <div class="received-email-header">
+                                        <span><strong>Systeem:</strong> Werkrooster Supermarkt Plus</span>
+                                        <span><strong>Dienst:</strong> Komende zondag (09:00 - 17:00 uur)</span>
+                                        <span><strong>Status:</strong> Ingepland (U bent ingeroosterd)</span>
+                                    </div>
+                                    <div class="received-email-body">
+                                        Beste medewerker,<br><br>
+                                        U bent ingepland voor de dienst van komende zondag. Indien u verhinderd bent, dient u zelf vervanging te regelen met een collega en dit schriftelijk door te geven.<br><br>
+                                        Met vriendelijke groet,<br>
+                                        Planningsafdeling
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U moet zondag werken maar u wilt graag vrij. U besluit een e-mail te sturen naar uw collega Farida om te vragen of zij met u wil ruilen.
+                                    <ul>
+                                        <li>Schrijf op waarom u mailt.</li>
+                                        <li>Schrijf waarom u wilt ruilen. Bedenk zelf een reden.</li>
+                                        <li>Schrijf op welke dag u in plaats daarvan wel kunt werken.</li>
+                                    </ul>
+                                    <em>Schrijf de e-mail op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            emailTo: "farida@hmail.com",
+                            emailSubject: "Dienst ruilen",
+                            emailSalutation: "Hallo Farida,",
+                            emailClosing: "Groetjes,"
+                        }
+                    ]
+                },
+                2: {
+                    title: "Schrijven A2 Oefenexamen 2",
+                    timeLimit: 40 * 60,
+                    opgaven: [
+                        {
+                            type: "text",
+                            title: "Opgave 1: Mooiste kleren",
+                            instructions: `
+                                <div class="newspaper-clipping">
+                                    <div class="newspaper-header">📰 De Wijkkrant · Rubriek Mode</div>
+                                    <div class="newspaper-title">Wat draagt u het liefst?</div>
+                                    <div class="newspaper-body">
+                                        Elke week schrijven buurtbewoners over hun kledingkast. Wat zijn uw favoriete kleren? Hoe zien ze eruit en wanneer draagt u ze? Deel uw verhaal met de buurt!
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Schrijf een korte tekst voor de wijkkrant over de kleren die u het liefst draagt.
+                                    <ul>
+                                        <li>Schrijf minimaal drie zinnen op.</li>
+                                        <li>Vertel wat u het liefst draagt.</li>
+                                        <li>Vertel hoe de kleren eruitzien (kleur, stijl).</li>
+                                        <li>Vertel wanneer u deze kleren draagt.</li>
+                                    </ul>
+                                    <em>Schrijf in hele zinnen op de rechterpagina.</em>
+                                </div>
+                            `,
+                            promptText: "Dit is mijn tekst over de kleren die ik het liefst draag:"
+                        },
+                        {
+                            type: "email",
+                            title: "Opgave 2: Boek lenen",
+                            instructions: `
+                                <div class="received-email">
+                                    <div class="received-email-header">
+                                        <span><strong>Van:</strong> Wilma de Jong &lt;wilma@email.nl&gt;</span>
+                                        <span><strong>Aan:</strong> U (Kandidaat)</span>
+                                        <span><strong>Onderwerp:</strong> Lesboek Natuurkunde 1</span>
+                                    </div>
+                                    <div class="received-email-body">
+                                        Hoi! Ik hoorde dat je op zoek bent naar het boek 'Natuurkunde 1' voor de opleiding Techniek. Ik heb het boek hier thuis liggen en gebruik het nu toch niet. Laat maar weten of je het wilt lenen.<br><br>
+                                        Groetjes,<br>
+                                        Wilma
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U heeft het boek 'Natuurkunde 1' snel nodig voor uw opleiding Techniek. Het boek is niet in de bibliotheek. U besluit Wilma een e-mail te sturen om het boek van haar te lenen.
+                                    <ul>
+                                        <li>U schrijft welk boek u wilt lenen.</li>
+                                        <li>U schrijft waarom u het boek van haar wilt lenen.</li>
+                                        <li>U schrijft wanneer ze het boek weer terugkrijgt. Bedenk zelf een datum of termijn.</li>
+                                    </ul>
+                                    <em>Schrijf de e-mail op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            emailTo: "wilma@email.nl",
+                            emailSubject: "boek",
+                            emailSalutation: "Beste Wilma,",
+                            emailClosing: "Groetjes,"
+                        },
+                        {
+                            type: "form",
+                            title: "Opgave 3: Ingebroken (Schadeformulier)",
+                            instructions: `
+                                <div class="promo-brochure" style="border-left: 5px solid #ef4444;">
+                                    <div class="promo-badge" style="background-color:#ef4444;">🚨 PolisDirect Verzekeringen</div>
+                                    <div class="promo-title">Schademelding Inbraak</div>
+                                    <div class="promo-body">
+                                        Heeft u een inbraak gehad in uw woning? Meld de diefstal en schade zo snel mogelijk bij ons via dit schadeformulier. Zorg ervoor dat u alle gestolen en kapotte spullen duidelijk omschrijft, met de datum van de inbraak.
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Er is ingebroken in uw huis. Dieven hebben spullen meegenomen en er is schade. Vul het schadeformulier op de rechterpagina in.
+                                    <ul>
+                                        <li>Bedenk zelf de persoonsgegevens en de datum van de inbraak.</li>
+                                        <li>Kijk naar de afbeeldingen hieronder om de schade en gestolen spullen (Punt 1, 2 en 3) te omschrijven op het formulier.</li>
+                                    </ul>
+                                </div>
+                            `,
+                            formType: "inbraak",
+                            images: [
+                                { src: "images/inbraak_laptop.png", label: "gestolen" },
+                                { src: "images/inbraak_horloge.png", label: "gestolen" },
+                                { src: "images/inbraak_raam.png", label: "kapot" }
+                            ],
+                            fields: [
+                                { type: "section", title: "Schadeformulier inboedelverzekering" },
+                                { type: "section", title: "Persoonsgegevens" },
+                                { type: "text", name: "achternaam", label: "Achternaam" },
+                                { type: "text", name: "voorletters", label: "Voorletters" },
+                                { type: "text", name: "adres", label: "Adres" },
+                                { type: "text", name: "tel", label: "Telefoonnummer" },
+                                { type: "text", name: "email", label: "E-mail" },
+                                { type: "text", name: "datum_schade", label: "Datum van de schade (DD-MM-JJJJ)" },
+                                { type: "section", title: "Omschrijving gestolen spullen en schade" },
+                                { type: "text", name: "schade_1", label: "Punt 1 (Gestolen laptop)" },
+                                { type: "text", name: "schade_2", label: "Punt 2 (Gestolen horloge)" },
+                                { type: "text", name: "schade_3", label: "Punt 3 (Kapotte ruit)" }
+                            ]
+                        },
+                        {
+                            type: "email",
+                            title: "Opgave 4: Vrije dag aanvragen",
+                            instructions: `
+                                <div class="received-email">
+                                    <div class="received-email-header">
+                                        <span><strong>Van:</strong> Meneer Jansen &lt;jjansen@werk.nl&gt;</span>
+                                        <span><strong>Aan:</strong> U (Kandidaat)</span>
+                                        <span><strong>Onderwerp:</strong> Rooster en Verlof aanvragen</span>
+                                    </div>
+                                    <div class="received-email-body">
+                                        Beste medewerker,<br><br>
+                                        Als je volgende week of de komende periode een dag vrij wilt vragen, dien je dit schriftelijk via e-mail bij mij aan te vragen met vermelding van de datum en de reden van je verlof.<br><br>
+                                        Vriendelijke groet,<br>
+                                        Jansen (Afdelingschef)
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U wilt volgende week een dag vrij vragen. Schrijf een e-mail aan uw chef, meneer Jansen.
+                                    <ul>
+                                        <li>Schrijf wanneer u vrij wilt hebben. Bedenk zelf een dag en datum.</li>
+                                        <li>Schrijf waarom u vrij wilt hebben. Bedenk zelf een reden.</li>
+                                    </ul>
+                                    <em>Schrijf de e-mail op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            emailTo: "jjansen@werk.nl",
+                            emailSubject: "vrij",
+                            emailSalutation: "Beste meneer Jansen,",
+                            emailClosing: "Vriendelijke groet,"
+                        }
+                    ]
+                },
+                3: {
+                    title: "Schrijven A2 Oefenexamen 3",
+                    timeLimit: 40 * 60,
+                    opgaven: [
+                        {
+                            type: "email",
+                            title: "Opgave 1: E-mail aan docent",
+                            instructions: `
+                                <div class="received-email">
+                                    <div class="received-email-header">
+                                        <span><strong>Van:</strong> Meneer Bakker &lt;mijndocent@mail.nl&gt;</span>
+                                        <span><strong>Aan:</strong> U (Kandidaat)</span>
+                                        <span><strong>Onderwerp:</strong> Computercursus - Toets morgen</span>
+                                    </div>
+                                    <div class="received-email-body">
+                                        Beste cursisten,<br><br>
+                                        Denk eraan dat morgen de afsluitende computertoets plaatsvindt op school. Aanwezigheid is verplicht. Mocht u wegens ziekte of overmacht niet kunnen komen, stuur mij dan vooraf een bericht.<br><br>
+                                        Vriendelijke groet,<br>
+                                        Meneer Bakker
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U kunt morgen niet naar school komen voor de computertoets. U schrijft een e-mail aan uw docent, meneer Bakker.
+                                    <ul>
+                                        <li>Schrijf waarom u de e-mail stuurt.</li>
+                                        <li>Schrijf waarom u niet kunt komen. Bedenk zelf een reden.</li>
+                                        <li>Bied uw excuses aan.</li>
+                                        <li>Vraag wanneer u de toets kunt inhalen.</li>
+                                    </ul>
+                                    <em>Schrijf de e-mail op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            emailTo: "mijndocent@mail.nl",
+                            emailSubject: "De toets morgen",
+                            emailSalutation: "Beste meneer Bakker,",
+                            emailClosing: "Groeten,"
+                        },
+                        {
+                            type: "form",
+                            title: "Opgave 2: Problemen in de straat",
+                            instructions: `
+                                <div class="promo-brochure">
+                                    <div class="promo-badge">🏛️ Gemeenteportaal</div>
+                                    <div class="promo-title">Melding openbare ruimte</div>
+                                    <div class="promo-body">
+                                        Ziet u vuilnis op straat, kapotte stoeptegels of andere problemen in uw buurt? Meld dit direct bij de gemeente via het onderstaande meldingsformulier zodat onze buitendienst dit kan oplossen.
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Er zijn twee problemen in uw straat. Meld de problemen bij de gemeente. Vul het meldingsformulier op de rechterpagina in.
+                                    <ul>
+                                        <li>Bedenk zelf uw persoonsgegevens en de straatnaam.</li>
+                                        <li>Kijk naar de afbeeldingen hieronder om de twee problemen (vuilnis en kapot wegdek) te omschrijven.</li>
+                                    </ul>
+                                </div>
+                            `,
+                            formType: "straat",
+                            images: [
+                                { src: "images/straat_vuilnis.png", label: "vuilnis op straat" },
+                                { src: "images/straat_tegels.png", label: "kapot wegdek / stoep" }
+                            ],
+                            fields: [
+                                { type: "section", title: "Meldingsformulier Gemeente" },
+                                { type: "section", title: "Persoonsgegevens" },
+                                { type: "text", name: "naam", label: "Voor- en achternaam" },
+                                { type: "text", name: "adres", label: "Adres" },
+                                { type: "text", name: "postcode", label: "Postcode" },
+                                { type: "text", name: "woonplaats", label: "Woonplaats" },
+                                { type: "text", name: "tel", label: "Telefoonnummer" },
+                                { type: "text", name: "email", label: "E-mail" },
+                                { type: "section", title: "Melding Details" },
+                                { type: "text", name: "straat_probleem", label: "In welke straat zijn er problemen?" },
+                                { type: "textarea", name: "problemen_omschrijving", label: "Wat zijn de problemen precies? (Omschrijf de vuilniszakken en de kapotte tegels)" }
+                            ]
+                        },
+                        {
+                            type: "text",
+                            title: "Opgave 3: Weekend",
+                            instructions: `
+                                <div class="newspaper-clipping">
+                                    <div class="newspaper-header">📰 De Wijkkrant · Vrije Tijd</div>
+                                    <div class="newspaper-title">Hoe viert u uw weekend?</div>
+                                    <div class="newspaper-body">
+                                        Het weekend is voor velen de fijnste tijd van de week. Wat doet u graag in het weekend? Met wie brengt u uw tijd door en waar gaat u naartoe? Schrijf een kort stukje en deel uw weekendactiviteiten met onze lezers!
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> Schrijf een korte tekst voor de wijkkrant over uw weekend.
+                                    <ul>
+                                        <li>Schrijf minimaal drie zinnen op.</li>
+                                        <li>Vertel wat u graag doet in het weekend.</li>
+                                        <li>Vertel met wie u dat doet.</li>
+                                        <li>Vertel waar u dat doet.</li>
+                                    </ul>
+                                    <em>Schrijf in hele zinnen op de rechterpagina.</em>
+                                </div>
+                            `,
+                            promptText: "Dit is mijn tekst over mijn weekend:"
+                        },
+                        {
+                            type: "note",
+                            title: "Opgave 4: Bericht collega",
+                            instructions: `
+                                <div class="promo-brochure" style="background:#fffbeb; border:1px solid #fef3c7;">
+                                    <div class="promo-badge" style="background-color:#d97706;">📌 Bericht voor collega's</div>
+                                    <div class="promo-title">Kledingzaak 'Moda & Zo'</div>
+                                    <div class="promo-body">
+                                        Beste team, let erop dat aan het einde van de middagdienst de winkel netjes wordt achtergelaten en goed wordt afgesloten. Volg de stappen op de afbeeldingen hieronder.
+                                    </div>
+                                </div>
+                                <div class="exam-instruction">
+                                    <strong>Opdracht:</strong> U werkt in een kledingzaak. Straks komt uw collega Fariha voor haar dienst. Zij moet een paar dingen doen. Schrijf een briefje voor Fariha.
+                                    <ul>
+                                        <li>Kijk naar de afbeeldingen hieronder om te zien wat zij moet doen (stofzuigen, kleding opruimen/ophangen, deur op slot doen).</li>
+                                        <li>Vertel wat zij moet doen en schrijf drie dingen op.</li>
+                                    </ul>
+                                    <em>Schrijf het briefje op de rechterpagina. Schrijf in hele zinnen.</em>
+                                </div>
+                            `,
+                            formType: "collega",
+                            images: [
+                                { src: "images/collega_stofzuiger.png", label: "stofzuigen" },
+                                { src: "images/collega_rommel_kleding.png", label: "rommel kleding" },
+                                { src: "images/collega_netjes_kleding.png", label: "kleding netjes" },
+                                { src: "images/collega_sleutel.png", label: "deur sluiten" }
+                            ],
+                            salutation: "Hallo Fariha,",
+                            closing: "Alvast bedankt!\nGroeten,"
+                        }
+                    ]
+                }
+            },
+            lezen: {
+                1: {
+                    title: "Lezen A2 Oefenexamen 1",
+                    timeLimit: 45 * 60, // 45 minutes
+                    correctKeys: {
+                        1: "B", 2: "D", 3: "D",
+                        4: "B", 5: "B", 6: "B",
+                        7: "A", 8: "C", 9: "A",
+                        10: "B", 11: "A", 12: "C",
+                        13: "B", 14: "C",
+                        15: "A", 16: "B", 17: "C",
+                        18: "C", 19: "B",
+                        20: "A", 21: "B", 22: "C",
+                        23: "C", 24: "A", 25: "B"
+                    },
+                    questions: [
+                        // Text 1
+                        {
+                            textTitle: "Tips om goed te leren",
+                            textContent: `In een opleidingsgids staan tips om te leren.
+                            <br><br>
+                            Lees eerst de vraag.<br>
+                            Lees daarna de tekst.<br>
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Tips om goed te leren</strong><br><br>
+                            Iedereen leert op zijn eigen manier. Toch geven we u een paar tips om beter te kunnen leren.<br><br>
+                            1. Begin met het maken van een planning: wat gaat u wanneer doen?<br>
+                            Elke dag een beetje leren is beter dan alles op één dag leren.<br>
+                            Lees op verschillende dagen dezelfde bladzijdes een paar keer opnieuw. U onthoudt de informatie dan beter.<br><br>
+                            2. Zoek uit wanneer u het beste kan leren: 's morgens, 's middags of 's avonds.<br><br>
+                            3. Leer niet langer dan een half uur. Neem daarna een pauze of ga even iets heel anders doen.<br><br>
+                            4. Leer in een rustige omgeving. Denk niet teveel aan andere dingen.<br><br>
+                            5. Lees eerst een stuk tekst. Denk daarna even na over de inhoud.<br>
+                            Lees dan een nieuw stuk tekst en denk weer na over die inhoud. Ga zo verder tot het einde van de tekst.<br><br>
+                            6. Leg aan iemand anders uit wat u hebt gelezen. Als u dat kunt, weet u zeker dat u het hebt begrepen.<br>
+                            U onthoudt informatie beter als u het aan iemand hebt verteld.`,
+                            questionText: "Jamie heeft volgende week een belangrijk examen. Wat moet hij volgens de tekst het eerste doen?",
+                            options: {
+                                A: "nadenken over de inhoud",
+                                B: "een planning maken",
+                                C: "een rustige plek zoeken"
+                            }
+                        },
+                        {
+                            textTitle: "Tips om goed te leren",
+                            textContent: `(Zie vorige tekst: Tips om goed te leren)`,
+                            usePreviousText: 0, // points to index 0 textContent
+                            questionText: "Wanneer kan je volgens de tekst het beste leren?",
+                            options: {
+                                A: "'s ochtends",
+                                B: "'s middags",
+                                C: "'s avonds",
+                                D: "Dat moet je zelf bepalen."
+                            }
+                        },
+                        {
+                            textTitle: "Tips om goed te leren",
+                            textContent: `(Zie vorige tekst: Tips om goed te leren)`,
+                            usePreviousText: 0,
+                            questionText: "Noa weet niet hoe hij het beste kan leren. Welk advies kan je hem geven?",
+                            options: {
+                                A: "Leer lang achter elkaar door en lees elk stuk tekst twee keer.",
+                                B: "Leer met andere mensen en lees elke dag samen hetzelfde stuk tekst.",
+                                C: "Leer eerst de hele tekst en lees daarna elk stukje opnieuw.",
+                                D: "Leer elke dag een beetje en vertel aan iemand wat je hebt gelezen."
+                            }
+                        },
+                        // Text 2
+                        {
+                            textTitle: "Aan de bewoners van het dorp",
+                            textContent: `Alle bewoners van een dorp krijgen een brief.
+                            <br><br>
+                            Lees eerst de vraag.<br>
+                            Lees daarna de tekst.<br>
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Aan de bewoners van het dorp</strong><br><br>
+                            Onderwerp: Jaarlijkse hardloopwedstrijd<br><br>
+                            Wij willen u met deze brief informatie geven over de jaarlijkse hardloopwedstrijd in ons dorp. Ook willen wij u vertellen wat er die dag anders is voor het verkeer. We willen dat alles zo goed mogelijk gaat en we hopen dat u weinig last hebt van de wedstrijd.<br><br>
+                            Ongeveer 500 hardlopers doen mee aan de hardloopwedstrijd. De start en de finish zijn op het Dorpsplein. U kunt naar de hardlopers komen kijken, als u daar zin in heeft.<br><br>
+                            Datum: zaterdag 13 juni<br>
+                            Tijd: van 11.00 uur tot 16.00 uur<br>
+                            Route: Dorpsplein - Dorpsstraat - Bergsebaan - Flamingostraat - Dorpsplein<br><br>
+                            We willen dat alles veilig is voor de hardlopers, het verkeer en het publiek. Daarom sluiten wij een aantal straten en wegen af. Op de route mogen tot 17.00 uur geen auto's staan. Wij vragen u daarom uw auto vóór zaterdagmorgen 13 juni 10.00 uur weg te halen. Auto's die er daarna nog staan zal de politie wegslepen.<br><br>
+                            Wij bieden u onze excuses aan voor de overlast en wij danken u voor uw medewerking.<br><br>
+                            Met vriendelijke groet,<br><br>
+                            Piet Jansen`,
+                            questionText: "Waarom krijgen de dorpsbewoners deze brief van Piet Jansen?",
+                            options: {
+                                A: "Hij wil ze oproepen met z'n allen naar de hardlopers te komen kijken.",
+                                B: "Hij wil ze informatie geven over alles rondom de hardloopwedstrijd.",
+                                C: "Hij wil ze uitnodigen om mee te doen aan de hardloopwedstrijd."
+                            }
+                        },
+                        {
+                            textTitle: "Aan de bewoners van het dorp",
+                            textContent: `(Zie vorige tekst: Aan de bewoners van het dorp)`,
+                            usePreviousText: 3,
+                            questionText: "Hoe laat begint de hardloopwedstrijd?",
+                            options: {
+                                A: "10.00 uur",
+                                B: "11.00 uur",
+                                C: "16.00 uur",
+                                D: "17.00 uur"
+                            }
+                        },
+                        {
+                            textTitle: "Aan de bewoners van het dorp",
+                            textContent: `(Zie vorige tekst: Aan de bewoners van het dorp)`,
+                            usePreviousText: 3,
+                            questionText: "Wat gebeurt er als je auto op zaterdag om 12.00 uur nog op de route staat?",
+                            options: {
+                                A: "Je krijgt een boete.",
+                                B: "De auto wordt weggesleept.",
+                                C: "Je mag niet wegrijden."
+                            }
+                        },
+                        // Text 3
+                        {
+                            textTitle: "Computercursus voor senioren",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Computercursus voor senioren</strong><br><br>
+                            Wilt u leren internetten, e-mailen of foto's versturen? Meld u dan aan voor onze computercursus!<br>
+                            De cursus is speciaal bedoeld voor senioren (55+) die nog geen of weinig ervaring hebben met de computer.<br><br>
+                            <strong>Wanneer:</strong> elke dinsdagavond van 19:30 tot 21:00 uur.<br>
+                            <strong>Waar:</strong> Buurtcentrum De Linde, Lindestraat 12.<br>
+                            <strong>Kosten:</strong> De cursus is gratis. U betaalt alleen 5 euro voor het lesboek.<br>
+                            <strong>Aanmelden:</strong> Stuur een e-mail naar info@buurtcentrumdelinde.nl of bel naar 06-12345678.`,
+                            questionText: "Voor wie is deze cursus bedoeld?",
+                            options: {
+                                A: "Voor senioren met weinig computerervaring.",
+                                B: "Voor studenten die IT studeren.",
+                                C: "Voor mensen die een computer willen kopen."
+                            }
+                        },
+                        {
+                            textTitle: "Computercursus voor senioren",
+                            textContent: `(Zie vorige tekst: Computercursus voor senioren)`,
+                            usePreviousText: 6,
+                            questionText: "Wanneer is de cursus?",
+                            options: {
+                                A: "Elke dinsdagochtend.",
+                                B: "Elke donderdagavond.",
+                                C: "Elke dinsdagavond."
+                            }
+                        },
+                        {
+                            textTitle: "Computercursus voor senioren",
+                            textContent: `(Zie vorige tekst: Computercursus voor senioren)`,
+                            usePreviousText: 6,
+                            questionText: "Hoeveel kost de cursus zelf?",
+                            options: {
+                                A: "Niets, de cursus is gratis.",
+                                B: "5 euro per les.",
+                                C: "55 euro in totaal."
+                            }
+                        },
+                        // Text 4
+                        {
+                            textTitle: "Huisregels 'De Parkflat'",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Huisregels appartementencomplex 'De Parkflat'</strong><br><br>
+                            Welkom in ons appartementencomplex. Om het wonen voor iedereen prettig te houden, gelden de volgende regels:<br><br>
+                            1. <strong>Rust:</strong> Geluidsoverlast is niet toegestaan. Tussen 22:00 uur 's avonds en 07:00 uur 's ochtends moet het stil zijn in het gebouw.<br>
+                            2. <strong>Vuilnis:</strong> Huisvuil mag uitsluitend in de daarvoor bestemde ondergrondse containers worden gegooid. Het is verboden vuilniszakken in de gang of de lift te plaatsen.<br>
+                            3. <strong>Huisdieren:</strong> Honden moeten in de gemeenschappelijke ruimtes (zoals de hal en lift) altijd aangelijnd zijn.<br>
+                            4. <strong>Vragen:</strong> Bij problemen of vragen kunt u contact opnemen met de huismeester, meneer De Vries (kantoor op de begane grond).`,
+                            questionText: "Wat staat er in de tekst over rust?",
+                            options: {
+                                A: "Je mag overdag geen muziek luisteren.",
+                                B: "Het moet stil zijn in het gebouw tussen 22:00 en 07:00 uur.",
+                                C: "Je mag na 22:00 uur niet meer praten."
+                            }
+                        },
+                        {
+                            textTitle: "Huisregels 'De Parkflat'",
+                            textContent: `(Zie vorige tekst: Huisregels 'De Parkflat')`,
+                            usePreviousText: 9,
+                            questionText: "Waar moet je naartoe als je een vraag of probleem hebt?",
+                            options: {
+                                A: "Naar de huismeester op de begane grond.",
+                                B: "Naar de politie.",
+                                C: "Naar de gemeente."
+                            }
+                        },
+                        {
+                            textTitle: "Huisregels 'De Parkflat'",
+                            textContent: `(Zie vorige tekst: Huisregels 'De Parkflat')`,
+                            usePreviousText: 9,
+                            questionText: "Waar moet je je vuilnis weggooien?",
+                            options: {
+                                A: "In de lift.",
+                                B: "In de gang.",
+                                C: "In de ondergrondse containers."
+                            }
+                        },
+                        // Text 5
+                        {
+                            textTitle: "Wijziging in het werkschema",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Beste collega's,</strong><br><br>
+                            Vanwege een tekort aan personeel moeten we het werkschema voor volgende week aanpassen. Mo is helaas ziek geworden.<br>
+                            Sarah zal zijn diensten op maandag en woensdag overnemen.<br><br>
+                            Als je hierdoor problemen hebt met je eigen rooster, meld dit dan uiterlijk vrijdag vóór 17:00 uur bij mij.<br><br>
+                            Met vriendelijke groet,<br>
+                            Jan de Manager`,
+                            questionText: "Waarom wordt het werkschema aangepast?",
+                            options: {
+                                A: "Omdat Jan op vakantie gaat.",
+                                B: "Omdat Mo ziek is.",
+                                C: "Omdat Sarah een andere baan heeft."
+                            }
+                        },
+                        {
+                            textTitle: "Wijziging in het werkschema",
+                            textContent: `(Zie vorige tekst: Wijziging in het werkschema)`,
+                            usePreviousText: 12,
+                            questionText: "Wanneer moet je het melden als je problemen hebt met je rooster?",
+                            options: {
+                                A: "Maandag of woensdag.",
+                                B: "Volgende week.",
+                                C: "Uiterlijk vrijdag vóór 17:00 uur."
+                            }
+                        },
+                        // Text 6
+                        {
+                            textTitle: "Retourvoorwaarden Webshop Snel",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Retourvoorwaarden Webshop Snel</strong><br><br>
+                            Bent u niet tevreden met uw aankoop? U kunt uw artikelen retourneren onder de volgende voorwaarden:<br><br>
+                            1. <strong>Termijn:</strong> U moet de producten binnen 14 dagen na ontvangst terugsturen.<br>
+                            2. <strong>Staat:</strong> Het product mag niet gebruikt zijn en moet in de originele verpakking zitten.<br>
+                            3. <strong>Kosten:</strong> De kosten voor het terugsturen via PostNL of DHL zijn voor de klant.<br>
+                            4. <strong>Terugbetaling:</strong> Zodra wij het product in goede staat hebben ontvangen, storten wij het geld binnen 5 werkdagen terug op uw rekening.`,
+                            questionText: "Binnen hoeveel dagen moet je het product retourneren?",
+                            options: {
+                                A: "Binnen 14 dagen.",
+                                B: "Binnen 5 dagen.",
+                                C: "Binnen 30 dagen."
+                            }
+                        },
+                        {
+                            textTitle: "Retourvoorwaarden Webshop Snel",
+                            textContent: `(Zie vorige tekst: Retourvoorwaarden Webshop Snel)`,
+                            usePreviousText: 14,
+                            questionText: "Wie betaalt de verzendkosten voor het retourneren?",
+                            options: {
+                                A: "Webshop Snel betaalt alles.",
+                                B: "De klant betaalt de kosten zelf.",
+                                C: "De bezorger (PostNL/DHL) betaalt de kosten."
+                            }
+                        },
+                        {
+                            textTitle: "Retourvoorwaarden Webshop Snel",
+                            textContent: `(Zie vorige tekst: Retourvoorwaarden Webshop Snel)`,
+                            usePreviousText: 14,
+                            questionText: "In welke staat moet het retourproduct zijn?",
+                            options: {
+                                A: "Het mag gedragen of gebruikt zijn.",
+                                B: "Het mag in een andere doos zitten.",
+                                C: "Het moet ongebruikt zijn en in de originele verpakking zitten."
+                            }
+                        },
+                        // Text 7
+                        {
+                            textTitle: "Nieuwe Openingstijden Gemeentehuis",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Gemeentehuis Aa en Hunze - Nieuwe Openingstijden</strong><br><br>
+                            Vanaf 1 juli veranderen de openingstijden van het gemeentehuis.<br><br>
+                            - Maandag t/m woensdag: 09:00 - 12:00 uur (vrije inloop)<br>
+                            - Donderdag: 13:00 - 20:00 uur (alleen op afspraak)<br>
+                            - Vrijdag: 09:00 - 12:00 uur (alleen op afspraak)<br><br>
+                            Let op: voor paspoorten en rijbewijzen moet u altijd vooraf een afspraak maken via onze website.`,
+                            questionText: "Wanneer is het gemeentehuis 's avonds geopend?",
+                            options: {
+                                A: "Op woensdagavond.",
+                                B: "Op vrijdagavond.",
+                                C: "Op donderdagavond."
+                            }
+                        },
+                        {
+                            textTitle: "Nieuwe Openingstijden Gemeentehuis",
+                            textContent: `(Zie vorige tekst: Nieuwe Openingstijden Gemeentehuis)`,
+                            usePreviousText: 17,
+                            questionText: "Hoe kun je op vrijdag langskomen?",
+                            options: {
+                                A: "Je kunt gewoon binnenlopen zonder afspraak.",
+                                B: "Alleen als je van tevoren een afspraak hebt gemaakt.",
+                                C: "Het gemeentehuis is op vrijdag gesloten."
+                            }
+                        },
+                        // Text 8
+                        {
+                            textTitle: "Uitnodiging Buurtfeest",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Beste buurtbewoners,</strong><br><br>
+                            Het is weer tijd voor ons jaarlijkse buurtfeest! We willen dit vieren op zaterdag 22 augustus in het Wilhelminapark.<br><br>
+                            We beginnen om 14:00 uur met spelletjes voor de kinderen. Vanaf 17:30 uur starten we met de barbecue.<br>
+                            De buurtvereniging zorgt voor vlees en vegetarische opties. Wij vragen iedereen om zelf drinken en een salade mee te nemen.<br><br>
+                            Meld u aan vóór 10 augustus door een mail te sturen naar buurtfeest@gmail.com.<br>
+                            Bij slecht weer (regen) gaat het feest helaas niet door.`,
+                            questionText: "Waar is het buurtfeest?",
+                            options: {
+                                A: "In het Wilhelminapark.",
+                                B: "In het buurthuis.",
+                                C: "In de tuin van de buren."
+                            }
+                        },
+                        {
+                            textTitle: "Uitnodiging Buurtfeest",
+                            textContent: `(Zie vorige tekst: Uitnodiging Buurtfeest)`,
+                            usePreviousText: 19,
+                            questionText: "Wie regelt het vlees voor de barbecue?",
+                            options: {
+                                A: "Iedereen moet zijn eigen vlees meenemen.",
+                                B: "De buurtvereniging zorgt hiervoor.",
+                                C: "De kinderen regelen dat."
+                            }
+                        },
+                        {
+                            textTitle: "Uitnodiging Buurtfeest",
+                            textContent: `(Zie vorige tekst: Uitnodiging Buurtfeest)`,
+                            usePreviousText: 19,
+                            questionText: "Wat gebeurt er bij slecht weer op 22 augustus?",
+                            options: {
+                                A: "Dan vieren we het feest in het buurthuis.",
+                                B: "Dan gaat het feest gewoon door in het park.",
+                                C: "Dan wordt het feest geannuleerd (gaat niet door)."
+                            }
+                        },
+                        // Text 9
+                        {
+                            textTitle: "Vacature: Schoonmaker gezocht",
+                            textContent: `Lees eerst de vraag. Lees daarna de tekst.
+                            <hr style="margin:12px 0; border:0; border-top:1px solid #cbd5e1;">
+                            <strong>Schoonmaker gezocht (m/v)</strong><br><br>
+                            Schoonmaakbedrijf 'Fris & Schoon' zoekt een enthousiaste collega voor het schoonmaken van kantoren in Groningen.<br><br>
+                            <strong>Wat bieden wij?</strong><br>
+                            - Een contract van 20 uur per week.<br>
+                            - Werktijden: maandag t/m vrijdag van 17:00 tot 21:00 uur.<br>
+                            - Salaris volgens de cao schoonmaak.<br><br>
+                            <strong>Wat vragen wij?</strong><br>
+                            - Je werkt nauwkeurig en zelfstandig.<br>
+                            - Ervaring is handig, maar niet verplicht. Je krijgt een korte training.<br><br>
+                            Interesse? Stuur je CV naar sollicitatie@frisenschoon.nl.`,
+                            questionText: "Moet je ervaring hebben om te solliciteren?",
+                            options: {
+                                A: "Ja, je moet minimaal 2 jaar ervaring hebben.",
+                                B: "Ja, zonder ervaring word je niet aangenomen.",
+                                C: "Nee, ervaring is handig maar niet verplicht."
+                            }
+                        },
+                        {
+                            textTitle: "Vacature: Schoonmaker gezocht",
+                            textContent: `(Zie vorige tekst: Vacature: Schoonmaker gezocht)`,
+                            usePreviousText: 22,
+                            questionText: "Hoeveel uur per week werk je bij deze baan?",
+                            options: {
+                                A: "20 uur per week.",
+                                B: "4 uur per week.",
+                                C: "Fulltime (40 uur)."
+                            }
+                        },
+                        {
+                            textTitle: "Vacature: Schoonmaker gezocht",
+                            textContent: `(Zie vorige tekst: Vacature: Schoonmaker gezocht)`,
+                            usePreviousText: 22,
+                            questionText: "Hoe kun je solliciteren?",
+                            options: {
+                                A: "Door te bellen naar Groningen.",
+                                B: "Door een e-mail te sturen met je CV.",
+                                C: "Door langs te gaan bij het kantoor om 17:00 uur."
+                            }
+                        }
+                    ]
+                }
+            }
+        };
+
+        // ── STATE VARIABLES ──
+        let currentExam = null; // { type: 'schrijven'|'lezen', id: 1|2|3 }
+        let currentQuestionIndex = 0;
+        let examTimer = null;
+        let timeLeft = 0; // seconds
+
+        // ── INITIALIZATION ──
+        document.addEventListener('DOMContentLoaded', () => {
+            loadKandidaatNaam();
+            updateDashboardStatus();
+        });
+
+        // ── ACCORDION FUNCTIONALITY ──
+        function toggleAccordion(id) {
+            const items = document.querySelectorAll('.accordion-item');
+            items.forEach(item => {
+                if (item.id === 'accordion-' + id) {
+                    item.classList.toggle('open');
+                    item.classList.toggle('active');
+                } else {
+                    item.classList.remove('open');
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // ── LOCALSTORAGE HELPERS ──
+        function saveKandidaatNaam() {
+            const nameInput = document.getElementById('kandidaat-naam');
+            localStorage.setItem('a2_kandidaat_naam', nameInput.value.trim());
+        }
+
+        function loadKandidaatNaam() {
+            const nameInput = document.getElementById('kandidaat-naam');
+            const savedName = localStorage.getItem('a2_kandidaat_naam');
+            if (savedName) {
+                nameInput.value = savedName;
+            }
+        }
+
+        function getAnswers(type, id) {
+            const key = `a2_exam_answers_${type}_${id}`;
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        function saveAnswers(type, id, answers) {
+            const key = `a2_exam_answers_${type}_${id}`;
+            localStorage.setItem(key, JSON.stringify(answers));
+            updateDashboardStatus();
+        }
+
+        // We check if a specific task was sent to WhatsApp
+        function isOpgaveSent(id, opgaveIndex) {
+            return localStorage.getItem(`a2_schrijven_${id}_opgave_${opgaveIndex}_sent`) === 'true';
+        }
+
+        function markOpgaveSent(id, opgaveIndex) {
+            localStorage.setItem(`a2_schrijven_${id}_opgave_${opgaveIndex}_sent`, 'true');
+        }
+
+        function getExamStatus(type, id) {
+            const key = `a2_exam_status_${type}_${id}`;
+            return localStorage.getItem(key) || 'not-started'; // 'not-started', 'completed'
+        }
+
+        function setExamStatus(type, id, status) {
+            const key = `a2_exam_status_${type}_${id}`;
+            localStorage.setItem(key, status);
+            updateDashboardStatus();
+        }
+
+        // ── DASHBOARD UI UPDATES ──
+        function updateDashboardStatus() {
+            const exams = [
+                { type: 'schrijven', id: 1, label: 'Schrijven 1' },
+                { type: 'schrijven', id: 2, label: 'Schrijven 2' },
+                { type: 'schrijven', id: 3, label: 'Schrijven 3' },
+                { type: 'lezen', id: 1, label: 'Lezen 1' }
+            ];
+
+            exams.forEach(ex => {
+                const status = getExamStatus(ex.type, ex.id);
+                const container = document.getElementById(`status-container-${ex.type}-${ex.id}`);
+                
+                if (!container) return;
+
+                if (status === 'completed') {
+                    if (ex.type === 'lezen') {
+                        const score = calculateLezenScore(ex.id);
+                        container.innerHTML = `
+                            <span class="status-badge completed" style="margin-right:8px;">Voltooid (${score}/25)</span>
+                            <button class="btn-whatsapp-small" onclick="sendSingleExamReportToWhatsApp('${ex.type}', ${ex.id})">💬 Stuur via WhatsApp</button>
+                            <button class="btn-start-exam-secondary" onclick="startExam('${ex.type}', ${ex.id})">Opnieuw</button>
+                        `;
+                    } else {
+                        // For Schrijven, they send per task, but we allow full exam resend as a backup
+                        container.innerHTML = `
+                            <span class="status-badge completed" style="margin-right:8px;">Voltooid</span>
+                            <button class="btn-whatsapp-small" onclick="sendSingleExamReportToWhatsApp('${ex.type}', ${ex.id})">💬 Stuur alles opnieuw</button>
+                            <button class="btn-start-exam-secondary" onclick="startExam('${ex.type}', ${ex.id})">Opnieuw</button>
+                        `;
+                    }
+                } else {
+                    container.innerHTML = `
+                        <span class="status-badge not-started" style="margin-right:8px;">Niet gestart</span>
+                        <button class="btn-start-exam" onclick="startExam('${ex.type}', ${ex.id})">Starten</button>
+                    `;
+                }
+
+                // Update sidebar list
+                const sidebarItem = document.getElementById(`summary-${ex.type}-${ex.id}`);
+                if (sidebarItem) {
+                    if (status === 'completed') {
+                        if (ex.type === 'lezen') {
+                            const score = calculateLezenScore(ex.id);
+                            sidebarItem.innerHTML = `<span style="color:var(--success-color)">✅ Voltooid (${score}/25)</span>`;
+                        } else {
+                            sidebarItem.innerHTML = `<span style="color:var(--success-color)">✅ Voltooid</span>`;
+                        }
+                    } else {
+                        sidebarItem.innerHTML = `<span style="color:var(--text-muted)">⏳ Niet gestart</span>`;
+                    }
+                }
+            });
+        }
+
+        function calculateLezenScore(id) {
+            const answers = getAnswers('lezen', id);
+            const correctKeys = EXAM_DATA.lezen[id].correctKeys;
+            let score = 0;
+            for (let q in correctKeys) {
+                if (answers[q] === correctKeys[q]) {
+                    score++;
+                }
+            }
+            return score;
+        }
+
+        // ── TIMER FUNCTIONS ──
+        function startTimer(duration) {
+            clearInterval(examTimer);
+            timeLeft = duration;
+            updateTimerDisplay();
+
+            examTimer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(examTimer);
+                    alert("De tijd is om! Het examen wordt nu automatisch opgeslagen en afgerond.");
+                    finishExam(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = document.getElementById('timer-clock');
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft < 5 * 60) {
+                display.style.color = '#ef4444'; // Red if less than 5 mins
+            } else {
+                display.style.color = '#ffffff';
+            }
+        }
+
+        // ── EXAM PLAYER ACTIONS ──
+        function startExam(type, id) {
+            const kandidaatNaam = localStorage.getItem('a2_kandidaat_naam');
+            if (!kandidaatNaam || kandidaatNaam.trim() === '') {
+                alert("Vul alstublieft eerst uw voor- en achternaam in op het dashboard om te kunnen starten.");
+                document.getElementById('kandidaat-naam').focus();
+                return;
+            }
+
+            const status = getExamStatus(type, id);
+            if (status === 'completed') {
+                if (confirm("Weet u zeker dat u dit examen opnieuw wilt starten? Dit wist al uw eerdere antwoorden en verzendstatussen voor dit examen.")) {
+                    // Clear answers
+                    const answersKey = `a2_exam_answers_${type}_${id}`;
+                    localStorage.removeItem(answersKey);
+                    
+                    // Clear sent status for schrijven opgaven
+                    if (type === 'schrijven') {
+                        const total = EXAM_DATA.schrijven[id].opgaven.length;
+                        for (let i = 1; i <= total; i++) {
+                            localStorage.removeItem(`a2_schrijven_${id}_opgave_${i}_sent`);
+                        }
+                    }
+                    
+                    // Reset status
+                    setExamStatus(type, id, 'not-started');
+                } else {
+                    return; // Cancel starting the exam
+                }
+            }
+
+            currentExam = { type, id };
+            currentQuestionIndex = 0;
+            
+            const examConfig = EXAM_DATA[type][id];
+            
+            // Adjust headers
+            document.getElementById('header-main-title').textContent = examConfig.title;
+            document.getElementById('header-subtitle').textContent = "Nederlandse Overheid - Officieel Oefenexamen A2";
+            document.getElementById('header-exam-actions').style.display = 'flex';
+
+            // Show timer
+            startTimer(examConfig.timeLimit);
+
+            // Toggle screens
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('exam-player-view').style.display = 'flex';
+
+            // Render current question
+            renderWorkspace();
+        }
+
+        function exitExam() {
+            if (confirm("Weet u zeker dat u het examen wilt verlaten? Uw voortgang blijft bewaard, maar het examen wordt nog niet als 'Voltooid' gemarkeerd.")) {
+                clearInterval(examTimer);
+                currentExam = null;
+                
+                // Restore headers
+                document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
+                document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
+                document.getElementById('header-exam-actions').style.display = 'none';
+
+                // Toggle screens
+                document.getElementById('exam-player-view').style.display = 'none';
+                document.getElementById('dashboard-view').style.display = 'flex';
+                
+                updateDashboardStatus();
+            }
+        }
+
+        function renderWorkspace() {
+            const type = currentExam.type;
+            const id = currentExam.id;
+            const index = currentQuestionIndex;
+            const config = EXAM_DATA[type][id];
+
+            const answers = getAnswers(type, id);
+
+            // Render question dot grid
+            renderQuestionsGrid(config, answers);
+
+            // Enable/Disable buttons
+            document.getElementById('btn-prev').disabled = (index === 0);
+            const totalQuestions = (type === 'lezen') ? config.questions.length : config.opgaven.length;
+            document.getElementById('btn-next').disabled = (index === totalQuestions - 1);
+
+            // Customize the finish button based on exam type
+            const finishBtn = document.querySelector('.btn-finish-exam');
+            if (finishBtn) {
+                if (type === 'lezen') {
+                    finishBtn.textContent = '💬 Stuur naar docent';
+                    finishBtn.style.backgroundColor = '#25D366';
+                    finishBtn.style.color = '#ffffff';
+                    finishBtn.style.border = 'none';
+                    finishBtn.style.boxShadow = '0 4px 10px rgba(37, 211, 102, 0.2)';
+                    finishBtn.onclick = finishExamPrompt;
+                } else {
+                    const isLast = (index === totalQuestions - 1);
+                    const isSent = isOpgaveSent(id, index + 1);
+                    
+                    let btnText = '💬 Stuur naar docent';
+                    if (isSent) {
+                        btnText = isLast ? '💬 Stuur opnieuw & Rond af' : '💬 Stuur opnieuw';
+                    } else {
+                        btnText = isLast ? '💬 Stuur & Rond af' : '💬 Stuur naar docent';
+                    }
+                    
+                    finishBtn.textContent = btnText;
+                    finishBtn.style.backgroundColor = '#25D366';
+                    finishBtn.style.color = '#ffffff';
+                    finishBtn.style.border = 'none';
+                    finishBtn.style.boxShadow = '0 4px 10px rgba(37, 211, 102, 0.2)';
+                    finishBtn.onclick = () => sendSingleTaskReport(id, index + 1);
+                }
+            }
+
+            // Populate contents
+            if (type === 'lezen') {
+                const q = config.questions[index];
+                
+                // Left Panel: Text Title & Content
+                document.getElementById('panel-left-title').textContent = q.textTitle;
+                
+                let textHtml = q.textContent;
+                if (q.usePreviousText !== undefined) {
+                    textHtml = config.questions[q.usePreviousText].textContent;
+                }
+                
+                document.getElementById('panel-left-content').innerHTML = `
+                    <div style="font-size: 0.95rem; line-height: 1.6; max-width: 100%; font-family:'Inter', sans-serif;">
+                        ${textHtml}
+                    </div>
+                `;
+
+                // Right Panel: Multiple Choice Question
+                document.getElementById('panel-right-title').textContent = `Vraag ${index + 1} van ${totalQuestions}`;
+                
+                let optionsHtml = '';
+                const selectedVal = answers[index + 1] || null;
+                
+                for (let key in q.options) {
+                    const isSelected = (selectedVal === key) ? 'selected' : '';
+                    optionsHtml += `
+                        <div class="mc-option ${isSelected}" onclick="selectMcOption('${key}')">
+                            <div class="option-letter">${key}</div>
+                            <div class="option-text">${q.options[key]}</div>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('panel-right-content').innerHTML = `
+                    <div class="mc-question-text">${q.questionText}</div>
+                    <div class="mc-options">
+                        ${optionsHtml}
+                    </div>
+                `;
+            } else if (type === 'schrijven') {
+                const opgave = config.opgaven[index];
+                
+                document.getElementById('panel-left-title').textContent = opgave.title;
+                
+                let leftHtml = `
+                    <div style="font-family:'Inter', sans-serif; display:flex; flex-direction:column; gap:10px;">
+                        ${opgave.instructions}
+                    </div>
+                `;
+
+                // Add images if prompt contains images
+                if (opgave.images) {
+                    leftHtml += `<div class="exam-images-grid">`;
+                    opgave.images.forEach(img => {
+                        leftHtml += `
+                            <div class="exam-image-card">
+                                <img src="${img.src}" alt="${img.label}">
+                                <span class="exam-image-label">${img.label}</span>
+                            </div>
+                        `;
+                    });
+                    leftHtml += `</div>`;
+                }
+
+                document.getElementById('panel-left-content').innerHTML = leftHtml;
+
+                // Right Panel: Input Composer
+                document.getElementById('panel-right-title').textContent = `Invoer - Opgave ${index + 1} van ${totalQuestions}`;
+                
+                let rightHtml = '';
+                if (opgave.type === 'email') {
+                    const currentVal = answers[index + 1] || '';
+                    rightHtml = `
+                        <div class="email-composer" style="flex-grow: 1;">
+                            <div class="email-header">
+                                <div class="email-header-row">
+                                    <span class="email-header-label">Aan:</span>
+                                    <span class="email-header-value">${opgave.emailTo}</span>
+                                </div>
+                                <div class="email-header-row">
+                                    <span class="email-header-label">CC:</span>
+                                    <span class="email-header-value"></span>
+                                </div>
+                                <div class="email-header-row">
+                                    <span class="email-header-label">Onderwerp:</span>
+                                    <span class="email-header-value">${opgave.emailSubject}</span>
+                                </div>
+                            </div>
+                            <div class="email-body">
+                                <div class="email-salutation">${opgave.emailSalutation}</div>
+                                <textarea class="email-textarea" placeholder="Typ hier uw e-mail..." oninput="saveWritingAnswer(this.value)">${currentVal}</textarea>
+                                <div class="email-signature">${opgave.emailClosing}<br><span style="color:#64748b; font-weight:600;">[Uw naam]</span></div>
+                            </div>
+                        </div>
+                    `;
+                } else if (opgave.type === 'text') {
+                    const currentVal = answers[index + 1] || '';
+                    rightHtml = `
+                        <div style="display:flex; flex-direction:column; gap:10px; flex-grow:1;">
+                            <label style="font-size:0.9rem; font-weight:800; color:var(--text-dark);">${opgave.promptText}</label>
+                            <textarea class="form-input" style="flex-grow:1; min-height:220px; font-family:inherit; font-size:0.95rem; resize:none; line-height:1.6;" placeholder="Typ hier uw tekst..." oninput="saveWritingAnswer(this.value)">${currentVal}</textarea>
+                        </div>
+                    `;
+                } else if (opgave.type === 'note') {
+                    const currentVal = answers[index + 1] || '';
+                    rightHtml = `
+                        <div class="email-composer" style="flex-grow:1;">
+                            <div class="email-body">
+                                <div class="email-salutation">${opgave.salutation}</div>
+                                <textarea class="email-textarea" placeholder="Typ hier uw bericht voor uw collega..." oninput="saveWritingAnswer(this.value)">${currentVal}</textarea>
+                                <div class="email-signature">${opgave.closing.replace('\n', '<br>')}<br><span style="color:#64748b; font-weight:600;">[Uw naam]</span></div>
+                            </div>
+                        </div>
+                    `;
+                } else if (opgave.type === 'form') {
+                    const formAnswers = answers[index + 1] || {};
+                    let fieldsHtml = '';
+                    opgave.fields.forEach(field => {
+                        if (field.type === 'section') {
+                            fieldsHtml += `<div class="form-section-title" style="grid-column: span 2;">${field.title}</div>`;
+                        } else if (field.type === 'text') {
+                            const val = formAnswers[field.name] || '';
+                            fieldsHtml += `
+                                <div class="field-group">
+                                    <label>${field.label}</label>
+                                    <input type="text" class="field-input" value="${val}" oninput="saveFormField('${field.name}', this.value)">
+                                </div>
+                            `;
+                        } else if (field.type === 'radio') {
+                            const val = formAnswers[field.name] || '';
+                            let radioHtml = '';
+                            field.options.forEach(opt => {
+                                const checked = (val === opt) ? 'checked' : '';
+                                radioHtml += `
+                                    <label class="radio-option">
+                                        <input type="radio" name="${field.name}" value="${opt}" ${checked} onchange="saveFormField('${field.name}', this.value)">
+                                        <span>${opt}</span>
+                                    </label>
+                                `;
+                            });
+                            fieldsHtml += `
+                                <div class="field-group">
+                                    <label>${field.label}</label>
+                                    <div class="field-radio-group">${radioHtml}</div>
+                                </div>
+                            `;
+                        } else if (field.type === 'textarea') {
+                            const val = formAnswers[field.name] || '';
+                            fieldsHtml += `
+                                <div class="field-group full-width">
+                                    <label>${field.label}</label>
+                                    <textarea class="field-input" style="min-height:90px; resize:none;" oninput="saveFormField('${field.name}', this.value)">${val}</textarea>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    rightHtml = `
+                        <form class="official-form" onsubmit="event.preventDefault();" style="flex-grow:1; overflow-y:auto; margin-bottom:10px;">
+                            <div class="official-form-grid">
+                                ${fieldsHtml}
+                            </div>
+                        </form>
+                    `;
+                }
+
+                // Add visual sending status
+                const isSent = isOpgaveSent(id, index + 1);
+                const statusHtml = isSent 
+                    ? `<div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:15px; padding:12px; background-color:rgba(16,185,129,0.1); border:1px solid var(--success-color); border-radius:6px; color:var(--success-color); font-weight:800; font-size:0.85rem;">
+                         <span>✅ Deze opgave is verstuurd naar de docent via WhatsApp.</span>
+                       </div>`
+                    : `<div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:15px; padding:12px; background-color:rgba(245,158,11,0.1); border:1px solid var(--warning-color); border-radius:6px; color:var(--warning-color); font-weight:800; font-size:0.85rem;">
+                         <span>⏳ Deze opgave is nog niet verstuurd. Klik onderin op 'Stuur naar docent'.</span>
+                       </div>`;
+
+                rightHtml += `
+                    ${statusHtml}
+                    <p style="font-size:0.72rem; color:var(--text-muted); margin-top:10px; text-align:center; font-weight:600;">
+                        💾 Automatische opslag actief. Uw invoer wordt direct bewaard.
+                    </p>
+                `;
+
+                document.getElementById('panel-right-content').innerHTML = rightHtml;
+            }
+        }
+
+        // ── NAVIGATION CONTROLS ──
+        function renderQuestionsGrid(config, answers) {
+            const container = document.getElementById('questions-grid');
+            container.innerHTML = '';
+
+            const isLezen = (currentExam.type === 'lezen');
+            const total = isLezen ? config.questions.length : config.opgaven.length;
+
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'question-grid-dot';
+                dot.textContent = i + 1;
+                
+                if (i === currentQuestionIndex) {
+                    dot.classList.add('current');
+                }
+
+                // Check if answered
+                const isAnswered = isLezen 
+                    ? (answers[i + 1] !== undefined)
+                    : (answers[i + 1] !== undefined && (typeof answers[i + 1] === 'string' ? answers[i + 1].trim() !== '' : Object.keys(answers[i + 1]).length > 0));
+
+                if (isAnswered) {
+                    dot.classList.add('answered');
+                }
+
+                dot.onclick = () => {
+                    currentQuestionIndex = i;
+                    renderWorkspace();
+                };
+
+                container.appendChild(dot);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderWorkspace();
+            }
+        }
+
+        function nextQuestion() {
+            const total = (currentExam.type === 'lezen') 
+                ? EXAM_DATA.lezen[currentExam.id].questions.length 
+                : EXAM_DATA.schrijven[currentExam.id].opgaven.length;
+
+            if (currentQuestionIndex < total - 1) {
+                currentQuestionIndex++;
+                renderWorkspace();
+            }
+        }
+
+        // ── RECORDING ANSWERS ──
+        function selectMcOption(letter) {
+            const answers = getAnswers(currentExam.type, currentExam.id);
+            answers[currentQuestionIndex + 1] = letter;
+            saveAnswers(currentExam.type, currentExam.id, answers);
+            
+            // Re-render only options list to preserve scroll state
+            const options = document.querySelectorAll('.mc-option');
+            options.forEach(opt => {
+                const optLetter = opt.querySelector('.option-letter').textContent;
+                if (optLetter === letter) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+
+            // Update dot
+            const dots = document.querySelectorAll('.question-grid-dot');
+            if (dots[currentQuestionIndex]) {
+                dots[currentQuestionIndex].classList.add('answered');
+            }
+        }
+
+        function saveWritingAnswer(val) {
+            const answers = getAnswers(currentExam.type, currentExam.id);
+            answers[currentQuestionIndex + 1] = val;
+            saveAnswers(currentExam.type, currentExam.id, answers);
+
+            // Update dot
+            const dots = document.querySelectorAll('.question-grid-dot');
+            if (dots[currentQuestionIndex]) {
+                if (val.trim() !== '') {
+                    dots[currentQuestionIndex].classList.add('answered');
+                } else {
+                    dots[currentQuestionIndex].classList.remove('answered');
+                }
+            }
+        }
+
+        // Save fields for forms
+        function saveFormField(fieldName, val) {
+            const answers = getAnswers(currentExam.type, currentExam.id);
+            if (!answers[currentQuestionIndex + 1]) {
+                answers[currentQuestionIndex + 1] = {};
+            }
+            answers[currentQuestionIndex + 1][fieldName] = val;
+            saveAnswers(currentExam.type, currentExam.id, answers);
+
+            // Check if form is partially filled
+            const hasData = Object.values(answers[currentQuestionIndex + 1]).some(v => v && v.trim() !== '');
+            const dots = document.querySelectorAll('.question-grid-dot');
+            if (dots[currentQuestionIndex]) {
+                if (hasData) {
+                    dots[currentQuestionIndex].classList.add('answered');
+                } else {
+                    dots[currentQuestionIndex].classList.remove('answered');
+                }
+            }
+        }
+
+        // ── COMPLETING EXAM ──
+        function finishExamPrompt() {
+            const type = currentExam.type;
+            const id = currentExam.id;
+            const config = EXAM_DATA[type][id];
+            const answers = getAnswers(type, id);
+
+            const total = (type === 'lezen') ? config.questions.length : config.opgaven.length;
+            let answeredCount = 0;
+
+            for (let i = 1; i <= total; i++) {
+                const ans = answers[i];
+                if (ans !== undefined) {
+                    if (typeof ans === 'string') {
+                        if (ans.trim() !== '') answeredCount++;
+                    } else if (typeof ans === 'object') {
+                        if (Object.values(ans).some(v => v && v.trim() !== '')) answeredCount++;
+                    }
+                }
+            }
+
+            const unanswered = total - answeredCount;
+            
+            let warningText = "";
+            if (type === 'lezen') {
+                warningText = `Weet u zeker dat u dit examen wilt afronden en uw resultaten naar de docent wilt sturen via WhatsApp? U heeft ${answeredCount} van de ${total} opgaven ingevuld.`;
+            } else {
+                warningText = `Weet u zeker dat u het schrijfexamen wilt afronden? Zorg ervoor dat u alle gemaakte opgaven individueel via de WhatsApp-knop naar de docent heeft gestuurd.`;
+            }
+
+            if (unanswered > 0) {
+                warningText += `\nLet op: er zijn nog ${unanswered} opgaven niet beantwoord!`;
+            }
+
+            if (confirm(warningText)) {
+                finishExam(false);
+            }
+        }
+
+        function finishExam(auto = false) {
+            clearInterval(examTimer);
+            const type = currentExam.type;
+            const id = currentExam.id;
+
+            setExamStatus(type, id, 'completed');
+            currentExam = null;
+
+            // Restore headers
+            document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
+            document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
+            document.getElementById('header-exam-actions').style.display = 'none';
+
+            // Toggle screens
+            document.getElementById('exam-player-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'flex';
+
+            updateDashboardStatus();
+
+            if (!auto) {
+                if (type === 'lezen') {
+                    sendSingleExamReportToWhatsApp(type, id);
+                } else {
+                    alert("Examen afgerond! Alle opgeslagen antwoorden zijn geregistreerd op het dashboard.");
+                }
+            }
+        }
+
+        // ── GOOGLE APPS SCRIPT BACKGROUND EMAIL DISPATCH ──
+        function sendBackgroundEmail(payload) {
+            if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL.includes("YOUR-SCRIPT-ID-HERE")) {
+                console.log("Apps Script URL is niet ingesteld. E-mail verzenden overgeslagen.");
+                return;
+            }
+
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors", // Cruciaal om CORS issues met Google redirect te omzeilen
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => console.log("Achtergrond e-mail succesvol verzonden."))
+            .catch(err => console.error("Fout bij achtergrond e-mail verzenden:", err));
+        }
+
+        // ── WHATSAPP EXPORT LOGIC (SINGLE TASK FOR WRITING) ──
+        function sendSingleTaskReport(id, opgaveIndex) {
+            const kandidaatNaam = localStorage.getItem('a2_kandidaat_naam') || "Onbekend";
+            const answers = getAnswers('schrijven', id);
+            const config = EXAM_DATA.schrijven[id];
+            const opg = config.opgaven[opgaveIndex - 1];
+            const ans = answers[opgaveIndex];
+
+            // Form validatie
+            let hasContent = false;
+            if (ans !== undefined) {
+                if (typeof ans === 'string' && ans.trim() !== '') hasContent = true;
+                else if (typeof ans === 'object' && Object.values(ans).some(v => v && v.trim() !== '')) hasContent = true;
+            }
+
+            if (!hasContent) {
+                alert("Typ of vul eerst uw antwoord in voor deze opgave.");
+                return;
+            }
+
+            let reportText = `🇳🇱 *A2 SCHRIJVEN - OPGAVE INGESTUURD* 🇳🇱\n\n`;
+            reportText += `👤 *Kandidaat:* ${kandidaatNaam}\n`;
+            reportText += `📅 *Datum:* ${new Date().toLocaleDateString('nl-NL')}\n`;
+            reportText += `📝 *Examen:* Schrijven ${id}\n`;
+            reportText += `📌 *Onderdeel:* ${opg.title}\n`;
+            reportText += `===============================\n\n`;
+
+            if (typeof ans === 'string') {
+                reportText += `\`\`\`\n${ans.trim()}\n\`\`\`\n`;
+            } else if (typeof ans === 'object') {
+                for (let key in ans) {
+                    if (ans[key] && ans[key].trim() !== '') {
+                        let label = key;
+                        if (key === 'naam') label = 'Naam';
+                        else if (key === 'adres') label = 'Adres';
+                        else if (key === 'postcode') label = 'Postcode';
+                        else if (key === 'woonplaats') label = 'Woonplaats';
+                        else if (key === 'tel') label = 'Telefoon';
+                        else if (key === 'email') label = 'E-mail';
+                        else if (key === 'geslacht') label = 'Geslacht';
+                        else if (key === 'geboortedatum') label = 'Geboortedatum';
+                        else if (key === 'groepsles') label = 'Groepsles';
+                        else if (key === 'frequentie') label = 'Frequentie';
+                        else if (key === 'waarom') label = 'Waarom';
+                        else if (key === 'gezondheid') label = 'Gezondheid';
+                        else if (key === 'achternaam') label = 'Achternaam';
+                        else if (key === 'voorletters') label = 'Voorletters';
+                        else if (key === 'datum_schade') label = 'Datum schade';
+                        else if (key === 'schade_1') label = 'Schade 1 (Laptop)';
+                        else if (key === 'schade_2') label = 'Schade 2 (Horloge)';
+                        else if (key === 'schade_3') label = 'Schade 3 (Ruit)';
+                        else if (key === 'straat_probleem') label = 'Straat';
+                        else if (key === 'problemen_omschrijving') label = 'Problemen';
+
+                        reportText += `• _${label}:_ ${ans[key].trim()}\n`;
+                    }
+                }
+            }
+            reportText += `\n===============================\n`;
+
+            // Mark task as sent in local storage
+            markOpgaveSent(id, opgaveIndex);
+
+            // Send background email
+            sendBackgroundEmail({
+                kandidaat: kandidaatNaam,
+                examType: "schrijven",
+                examId: id,
+                opgaveIndex: opgaveIndex,
+                opgaveTitle: opg.title,
+                reportText: reportText
+            });
+
+            // Encode for WhatsApp
+            const encodedText = encodeURIComponent(reportText);
+            const phoneNumber = "31626211106";
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+            
+            // Open WhatsApp
+            window.open(waUrl, '_blank');
+
+            // Refresh UI to show updated button state
+            renderWorkspace();
+
+            // Auto-advance logic
+            const total = config.opgaven.length;
+            if (opgaveIndex < total) {
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1200);
+            } else {
+                setTimeout(() => {
+                    finishExam(true); // Complete automatically
+                    alert("Dit was de laatste opgave. Het schrijfexamen is voltooid en geregistreerd!");
+                }, 1200);
+            }
+        }
+
+        // ── WHATSAPP EXPORT LOGIC (FULL EXAM FOR LEZEN / BACKUP FOR SCHRIJVEN) ──
+        function sendSingleExamReportToWhatsApp(type, id) {
+            const kandidaatNaam = localStorage.getItem('a2_kandidaat_naam');
+            if (!kandidaatNaam || kandidaatNaam.trim() === '') {
+                alert("Vul alstublieft eerst uw voor- en achternaam in op het dashboard.");
+                document.getElementById('kandidaat-naam').focus();
+                return;
+            }
+
+            const status = getExamStatus(type, id);
+            if (status !== 'completed') {
+                alert("Dit examen is nog niet voltooid.");
+                return;
+            }
+
+            const answers = getAnswers(type, id);
+            let reportText = `🇳🇱 *RESULTATEN A2 INBURGERINGSEXAMEN* 🇳🇱\n\n`;
+            reportText += `👤 *Kandidaat:* ${kandidaatNaam}\n`;
+            reportText += `📅 *Datum:* ${new Date().toLocaleDateString('nl-NL')}\n`;
+            reportText += `===============================\n\n`;
+
+            if (type === 'lezen') {
+                const score = calculateLezenScore(id);
+                reportText += `📖 *LEZEN OEFENEXAMEN ${id}*\n`;
+                reportText += `-------------------------------\n`;
+                reportText += `📊 *Score:* ${score} van de 25 goed\n\n`;
+                reportText += `*Gekozen Antwoorden:*\n`;
+                
+                const config = EXAM_DATA.lezen[id];
+                for (let i = 1; i <= 25; i++) {
+                    const ans = answers[i] || '-';
+                    const correct = config.correctKeys[i];
+                    const checkEmoji = (ans === correct) ? '✅' : '❌';
+                    reportText += `${i}: [${ans}] ${checkEmoji} (Juist: ${correct})\n`;
+                }
+            } else if (type === 'schrijven') {
+                const config = EXAM_DATA.schrijven[id];
+                reportText += `📝 *SCHRIJVEN OEFENEXAMEN ${id} (COMPLEET)*\n`;
+                reportText += `-------------------------------\n\n`;
+                
+                config.opgaven.forEach((opg, i) => {
+                    reportText += `*${opg.title}*\n`;
+                    const ans = answers[i + 1];
+                    
+                    if (!ans) {
+                        reportText += `_Niet ingevuld_\n`;
+                    } else if (typeof ans === 'string') {
+                        reportText += `\`\`\`\n${ans.trim()}\n\`\`\`\n`;
+                    } else if (typeof ans === 'object') {
+                        for (let key in ans) {
+                            if (ans[key] && ans[key].trim() !== '') {
+                                let label = key;
+                                if (key === 'naam') label = 'Naam';
+                                else if (key === 'adres') label = 'Adres';
+                                else if (key === 'postcode') label = 'Postcode';
+                                else if (key === 'woonplaats') label = 'Woonplaats';
+                                else if (key === 'tel') label = 'Telefoon';
+                                else if (key === 'email') label = 'E-mail';
+                                else if (key === 'geslacht') label = 'Geslacht';
+                                else if (key === 'geboortedatum') label = 'Geboortedatum';
+                                else if (key === 'groepsles') label = 'Groepsles';
+                                else if (key === 'frequentie') label = 'Frequentie';
+                                else if (key === 'waarom') label = 'Waarom';
+                                else if (key === 'gezondheid') label = 'Gezondheid';
+                                else if (key === 'achternaam') label = 'Achternaam';
+                                else if (key === 'voorletters') label = 'Voorletters';
+                                else if (key === 'datum_schade') label = 'Datum schade';
+                                else if (key === 'schade_1') label = 'Schade 1 (Laptop)';
+                                else if (key === 'schade_2') label = 'Schade 2 (Horloge)';
+                                else if (key === 'schade_3') label = 'Schade 3 (Ruit)';
+                                else if (key === 'straat_probleem') label = 'Straat';
+                                else if (key === 'problemen_omschrijving') label = 'Problemen';
+
+                                reportText += `• _${label}:_ ${ans[key].trim()}\n`;
+                            }
+                        }
+                    }
+                    reportText += `\n`;
+                });
+            }
+
+            reportText += `===============================\n`;
+
+            // Send background email
+            sendBackgroundEmail({
+                kandidaat: kandidaatNaam,
+                examType: type,
+                examId: id,
+                reportText: reportText
+            });
+
+            // Encode for WhatsApp
+            const encodedText = encodeURIComponent(reportText);
+            const phoneNumber = "31626211106";
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+            
+            // Open WhatsApp
+            window.open(waUrl, '_blank');
+        }
+    </script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // 1. .vocab spans
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+
+    // 2. Conjugation tables (.conj-table, .ww-tabel)
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            // If the target cell already has a button, skip
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+
+    // 3. Example sentences (.example)
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+<!-- /SPEECH SYNTHESIS INJECTION -->
+
+</body>
+</html>

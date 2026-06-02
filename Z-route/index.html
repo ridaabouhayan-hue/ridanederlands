@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-route - Woordvolgorde (T-O-P)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f1729;
+            --card-bg: #182040;
+            --text-dark: #f0f2f8;
+            --text-muted: #a0aac4;
+            --accent: #4e8cff;
+            --accent-success: #10b981;
+            --accent-error: #ef4444;
+            --card-accent: #f9a825;
+            --radius: 20px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 40px 0 60px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 30%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ── EXPLANATION CARD ── */
+        .explanation-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(249, 168, 37, 0.15);
+            position: relative;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .explanation-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--card-accent);
+        }
+
+        .lang-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+        }
+
+        .lang-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+        }
+
+        .lang-tab.active {
+            background: var(--card-accent);
+            color: #0f1729;
+        }
+
+        .lang-content {
+            display: none;
+            line-height: 1.7;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        .lang-content.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .formula-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--card-accent);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .formula-sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ── EXERCISES CARD ── */
+        .exercise-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(78, 140, 255, 0.15);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .exercise-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .score-badge {
+            background: rgba(78, 140, 255, 0.15);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .exercise-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 30px;
+        }
+
+        .exercise-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .exercise-number {
+            font-weight: 900;
+            color: var(--card-accent);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .words-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .word-token {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-family: inherit;
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(78, 140, 255, 0.25);
+        }
+
+        .input-field.correct {
+            border-color: var(--accent-success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .input-field.incorrect {
+            border-color: var(--accent-error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .feedback-message {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: none;
+            margin-top: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+
+        .feedback-message.correct {
+            display: block;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-success);
+            color: #a7f3d0;
+        }
+
+        .feedback-message.incorrect {
+            display: block;
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid var(--accent-error);
+            color: #fca5a5;
+        }
+
+        .token-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 6px;
+            margin-top: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .token-badge.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--accent-success);
+            color: #10b981;
+        }
+
+        .token-badge.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--accent-error);
+            color: #ef4444;
+        }
+
+        .token-badge.missing {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+        }
+
+        .global-actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.05);
+            padding-top: 25px;
+            gap: 15px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-action.primary {
+            background: var(--card-accent);
+            color: #0f1729;
+            border: none;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-action.primary:hover {
+            background: #ffbd4f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(249, 168, 37, 0.2);
+        }
+
+        .btn-action.primary:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .lang-tabs {
+                flex-wrap: wrap;
+            }
+
+            .global-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .btn-action.primary {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Terug naar Hoofdmenu</a>
+
+        <header>
+            <h1>📂 Z-route: Woordvolgorde</h1>
+            <p>Leer en oefen de volgorde van de Nederlandse zin</p>
+        </header>
+
+        <!-- ══ EXPLANATION CARD ══ -->
+        <div class="explanation-card">
+            <div class="lang-tabs">
+                <button class="lang-tab active" onclick="switchLang('nl')">🇳🇱 Nederlands</button>
+                <button class="lang-tab" onclick="switchLang('en')">🇬🇧 English</button>
+                <button class="lang-tab" onclick="switchLang('ar')">🇸🇦 العربية</button>
+            </div>
+
+            <!-- Dutch Explanation -->
+            <div id="lang-nl" class="lang-content active">
+                <h2 style="font-weight: 900; margin-bottom: 12px;">Het TOP Systeem in het Nederlands</h2>
+                <p>In het Nederlands is de volgorde van de woorden erg belangrijk. Een handige regel om te onthouden is de <strong>T-O-P regel</strong>:</p>
+                <ul style="margin: 12px 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <li><strong>T - Tijd</strong> (Wanneer? Bijv. <em>elke dag, 's ochtends, op vrijdag, morgen</em>)</li>
+                    <li><strong>O - Object</strong> (Wat of Wie? Bijv. <em>de trein, boodschappen, haar kleren</em>)</li>
+                    <li><strong>P - Plaats</strong> (Waar? Bijv. <em>naar school, in de supermarkt, thuis</em>)</li>
+                </ul>
+
+                <div class="formula-box">
+                    <div class="formula">Onderwerp + Werkwoord + TIJD + OBJECT + PLAATS</div>
+                    <div class="formula-sub">Dit is de standaardvolgorde in een normale zin.</div>
+                </div>
+
+                <h3 style="font-weight: 800; margin-bottom: 8px; color: var(--card-accent);">Voorbeelden:</h3>
+                <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px;">
+                    <div><span class="vocab" style="font-weight: 700; color: #fff;">Ik ga elke dag naar school.</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(Tijd: <em>elke dag</em> · Plaats: <em>naar school</em>)</span></div>
+                    
+                    <div><span class="vocab" style="font-weight: 700; color: #fff;">Fatima wast elke week haar kleren in de badkamer.</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(Tijd: <em>elke week</em> · Object: <em>haar kleren</em> · Plaats: <em>in de badkamer</em>)</span></div>
+                </div>
+            </div>
+
+            <!-- English Explanation -->
+            <div id="lang-en" class="lang-content">
+                <h2 style="font-weight: 900; margin-bottom: 12px;">The TOP System in Dutch</h2>
+                <p>In Dutch, the order of words in a sentence is very important. A useful rule to remember is the <strong>T-O-P rule</strong>:</p>
+                <ul style="margin: 12px 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <li><strong>T - Time</strong> (When? E.g., <em>every day, in the morning, on Friday, tomorrow</em>)</li>
+                    <li><strong>O - Object</strong> (What or Whom? E.g., <em>the train, groceries, her clothes</em>)</li>
+                    <li><strong>P - Place</strong> (Where? E.g., <em>to school, in the supermarket, at home</em>)</li>
+                </ul>
+
+                <div class="formula-box">
+                    <div class="formula">Subject + Verb + TIME + OBJECT + PLACE</div>
+                    <div class="formula-sub">This is the standard word order in a normal sentence.</div>
+                </div>
+
+                <h3 style="font-weight: 800; margin-bottom: 8px; color: var(--card-accent);">Examples:</h3>
+                <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px;">
+                    <div><span style="font-weight: 700; color: #fff;">Ik ga elke dag naar school.</span> <span style="color: var(--text-muted); font-size: 0.9rem;">(I go to school every day)</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(Time: <em>elke dag</em> · Place: <em>naar school</em>)</span></div>
+                    
+                    <div><span style="font-weight: 700; color: #fff;">Fatima wast elke week haar kleren in de badkamer.</span> <span style="color: var(--text-muted); font-size: 0.9rem;">(Fatima washes her clothes in the bathroom every week)</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(Time: <em>elke week</em> · Object: <em>haar kleren</em> · Place: <em>in de badkamer</em>)</span></div>
+                </div>
+            </div>
+
+            <!-- Arabic Explanation -->
+            <div id="lang-ar" class="lang-content rtl">
+                <h2 style="font-weight: 900; margin-bottom: 12px;">نظام TOP في اللغة الهولندية</h2>
+                <p>في اللغة الهولندية، يعد ترتيب الكلمات في الجملة أمراً بالغ الأهمية. هناك قاعدة سهلة لتذكر هذا الترتيب وهي قاعدة <strong>T-O-P</strong>:</p>
+                <ul style="margin: 12px 20px; display: flex; flex-direction: column; gap: 8px; padding-right: 20px;">
+                    <li><strong>T - الوقت/الزمن (Tijd)</strong>: متى؟ (مثل: <em>كل يوم، في الصباح، في يوم الجمعة، غداً</em>)</li>
+                    <li><strong>O - المفعول به (Object)</strong>: ماذا أو من؟ (مثل: <em>القطار، المشتريات، ملابسها</em>)</li>
+                    <li><strong>P - المكان (Plaats)</strong>: أين؟ (مثل: <em>إلى المدرسة، في السوبرماركت، في البيت</em>)</li>
+                </ul>
+
+                <div class="formula-box">
+                    <div class="formula" style="direction: ltr;">Subject + Verb + TIME + OBJECT + PLACE</div>
+                    <div class="formula-sub">هذا هو الترتيب القياسي للكلمات في الجملة العادية.</div>
+                </div>
+
+                <h3 style="font-weight: 800; margin-bottom: 8px; color: var(--card-accent);">أمثلة:</h3>
+                <div style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; direction: ltr; text-align: left;">
+                    <div><span style="font-weight: 700; color: #fff;">Ik ga elke dag naar school.</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(الوقت: <em>elke dag</em> · المكان: <em>naar school</em>)</span></div>
+                    
+                    <div><span style="font-weight: 700; color: #fff;">Fatima wast elke week haar kleren in de badkamer.</span><br>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">(الوقت: <em>elke week</em> · المفعول: <em>haar kleren</em> · المكان: <em>in de badkamer</em>)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ EXERCISES CARD ══ -->
+        <div class="exercise-section">
+            <div class="exercise-header">
+                <h2>Schrijf de zin goed op</h2>
+                <div class="score-badge">Score: <span id="current-score">0</span> / 30</div>
+            </div>
+
+            <p style="color: var(--text-muted); font-weight: 600; margin-bottom: 25px; line-height: 1.5;">
+                <em>Kies uit: Zet de woorden in de goede volgorde. Schrijf de hele zin op. Let op hoofdletters en punten. Vul eerst alle antwoorden in en klik onderaan op "Alles nakijken".</em>
+            </p>
+
+            <div class="exercise-list" id="questions-list">
+                <!-- Questions will be dynamically loaded here by JS -->
+            </div>
+
+            <div class="global-actions">
+                <button class="btn-action" onclick="resetAll()">Opnieuw beginnen</button>
+                <button class="btn-action primary" onclick="checkAll()">Alles nakijken</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const exercises = [
+            {
+                tokens: ["naar school", "Ik", "elke dag", "ga"],
+                correctTokens: ["Ik", "ga", "elke dag", "naar school"],
+                answers: ["Ik ga elke dag naar school.", "ik ga elke dag naar school"]
+            },
+            {
+                tokens: ["de trein", "neemt", "'s ochtends", "Hij"],
+                correctTokens: ["Hij", "neemt", "'s ochtends", "de trein"],
+                answers: ["Hij neemt 's ochtends de trein.", "hij neemt 's ochtends de trein"]
+            },
+            {
+                tokens: ["in de supermarkt", "doet", "Zij", "boodschappen", "op vrijdag"],
+                correctTokens: ["Zij", "doet", "op vrijdag", "boodschappen", "in de supermarkt"],
+                answers: ["Zij doet op vrijdag boodschappen in de supermarkt.", "zij doet op vrijdag boodschappen in de supermarkt"]
+            },
+            {
+                tokens: ["naar de dokter", "moet", "morgen", "Hij"],
+                correctTokens: ["Hij", "moet", "morgen", "naar de dokter"],
+                answers: ["Hij moet morgen naar de dokter.", "hij moet morgen naar de dokter"]
+            },
+            {
+                tokens: ["op dinsdag", "koffie", "Wij", "in de pauze", "drinken"],
+                correctTokens: ["Wij", "drinken", "op dinsdag", "in de pauze", "koffie"],
+                answers: [
+                    "Wij drinken op dinsdag in de pauze koffie.", 
+                    "wij drinken op dinsdag in de pauze koffie",
+                    "Wij drinken op dinsdag koffie in de pauze.",
+                    "wij drinken op dinsdag koffie in de pauze"
+                ]
+            },
+            {
+                tokens: ["in de klas", "zitten", "De cursisten", "elke ochtend"],
+                correctTokens: ["De cursisten", "zitten", "elke ochtend", "in de klas"],
+                answers: ["De cursisten zitten elke ochtend in de klas.", "de cursisten zitten elke ochtend in de klas"]
+            },
+            {
+                tokens: ["haar kleren", "wast", "elke week", "Fatima", "in de badkamer"],
+                correctTokens: ["Fatima", "wast", "elke week", "haar kleren", "in de badkamer"],
+                answers: ["Fatima wast elke week haar kleren in de badkamer.", "fatima wast elke week haar kleren in de badkamer"]
+            },
+            {
+                tokens: ["op woensdag", "rijdt", "naar zijn werk", "Hij", "met de fiets"],
+                correctTokens: ["Hij", "rijdt", "op woensdag", "met de fiets", "naar zijn werk"],
+                answers: [
+                    "Hij rijdt op woensdag met de fiets naar zijn werk.",
+                    "hij rijdt op woensdag met de fiets naar zijn werk"
+                ]
+            },
+            {
+                tokens: ["in het park", "loopt", "'s avonds", "Ze"],
+                correctTokens: ["Ze", "loopt", "'s avonds", "in het park"],
+                answers: ["Ze loopt 's avonds in het park.", "ze loopt 's avonds in het park"]
+            },
+            {
+                tokens: ["de medicijnen", "haalt", "bij de apotheek", "Hij", "elke maand"],
+                correctTokens: ["Hij", "haalt", "elke maand", "de medicijnen", "bij de apotheek"],
+                answers: [
+                    "Hij haalt elke maand de medicijnen bij de apotheek.",
+                    "hij haalt elke maand de medicijnen bij de apotheek"
+                ]
+            },
+            {
+                tokens: ["op de markt", "koopt", "Ze", "groente", "elke zaterdag"],
+                correctTokens: ["Ze", "koopt", "elke zaterdag", "groente", "op de markt"],
+                answers: ["Ze koopt elke zaterdag groente op de markt.", "ze koopt elke zaterdag groente op de markt"]
+            },
+            {
+                tokens: ["naar de tandarts", "gaat", "Babs", "op donderdag"],
+                correctTokens: ["Babs", "gaat", "op donderdag", "naar de tandarts"],
+                answers: ["Babs gaat op donderdag naar de tandarts.", "babs gaat op donderdag naar de tandarts"]
+            },
+            {
+                tokens: ["op station Alkmaar", "wacht", "Ze", "nu"],
+                correctTokens: ["Ze", "wacht", "nu", "op station Alkmaar"],
+                answers: ["Ze wacht nu op station Alkmaar.", "ze wacht nu op station Alkmaar"]
+            },
+            {
+                tokens: ["thuis", "werkt", "'s middags", "De docent"],
+                correctTokens: ["De docent", "werkt", "'s middags", "thuis"],
+                answers: ["De docent werkt 's middags thuis.", "de docent werkt 's middags thuis"]
+            },
+            {
+                tokens: ["een brood", "koopt", "bij de bakker", "Hij", "elke ochtend"],
+                correctTokens: ["Hij", "koopt", "elke ochtend", "een brood", "bij de bakker"],
+                answers: ["Hij koopt elke ochtend een brood bij de bakker.", "hij koopt elke ochtend een brood bij de bakker"]
+            },
+            {
+                tokens: ["op zaterdag", "voetbalt", "Vartan", "in het park"],
+                correctTokens: ["Vartan", "voetbalt", "op zaterdag", "in het park"],
+                answers: ["Vartan voetbalt op zaterdag in het park.", "vartan voetbalt op zaterdag in het park"]
+            },
+            {
+                tokens: ["naar het strand", "gaan", "We", "in de zomer"],
+                correctTokens: ["We", "gaan", "in de zomer", "naar het strand"],
+                answers: ["We gaan in de zomer naar het strand.", "we gaan in de zomer naar het strand"]
+            },
+            {
+                tokens: ["zijn horloge", "vergeet", "altijd", "Mahmoud", "thuis"],
+                correctTokens: ["Mahmoud", "vergeet", "altijd", "zijn horloge", "thuis"],
+                answers: ["Mahmoud vergeet altijd zijn horloge thuis.", "mahmoud vergeet altijd zijn horloge thuis"]
+            },
+            {
+                tokens: ["in de woonkamer", "kijkt", "'s avonds", "Ze", "televisie"],
+                correctTokens: ["Ze", "kijkt", "'s avonds", "televisie", "in de woonkamer"],
+                answers: [
+                    "Ze kijkt 's avonds televisie in de woonkamer.",
+                    "ze kijkt 's avonds televisie in de woonkamer",
+                    "Ze kijkt 's avonds in de woonkamer televisie.",
+                    "ze kijkt 's avonds in de woonkamer televisie"
+                ]
+            },
+            {
+                tokens: ["op vrijdag", "de bus", "nemen", "De kinderen", "naar school"],
+                correctTokens: ["De kinderen", "nemen", "op vrijdag", "de bus", "naar school"],
+                answers: ["De kinderen nemen op vrijdag de bus naar school.", "de kinderen nemen op vrijdag de bus naar school"]
+            },
+            {
+                tokens: ["bij de slager", "koopt", "Ze", "kip", "op maandag"],
+                correctTokens: ["Ze", "koopt", "op maandag", "kip", "bij de slager"],
+                answers: ["Ze koopt op maandag kip bij de slager.", "ze koopt op maandag kip bij de slager"]
+            },
+            {
+                tokens: ["naar zijn opa", "rijdt", "Hij", "elke zomer", "in Friesland"],
+                correctTokens: ["Hij", "rijdt", "elke zomer", "naar zijn opa", "in Friesland"],
+                answers: [
+                    "Hij rijdt elke zomer naar zijn opa in Friesland.",
+                    "hij rijdt elke zomer naar zijn opa in Friesland",
+                    "Hij rijdt elke zomer in Friesland naar zijn opa.",
+                    "hij rijdt elke zomer in Friesland naar zijn opa"
+                ]
+            },
+            {
+                tokens: ["de opdracht", "maakt", "in de klas", "Ze", "elke les"],
+                correctTokens: ["Ze", "maakt", "elke les", "de opdracht", "in de klas"],
+                answers: ["Ze maakt elke les de opdracht in de klas.", "ze maakt elke les de opdracht in de klas"]
+            },
+            {
+                tokens: ["op het station", "wacht", "Hij", "vanavond", "op zijn vrouw"],
+                correctTokens: ["Hij", "wacht", "vanavond", "op het station", "op zijn vrouw"],
+                answers: [
+                    "Hij wacht vanavond op het station op zijn vrouw.",
+                    "hij wacht vanavond op het station op zijn vrouw",
+                    "Hij wacht vanavond op zijn vrouw op het station.",
+                    "hij wacht vanavond op zijn vrouw op het station"
+                ]
+            },
+            {
+                tokens: ["haar moeder", "belt", "elke zondag", "Ze"],
+                correctTokens: ["Ze", "belt", "elke zondag", "haar moeder"],
+                answers: ["Ze belt elke zondag haar moeder.", "ze belt elke zondag haar moeder"]
+            },
+            {
+                tokens: ["in de gang", "staat", "zijn fiets", "altijd"],
+                correctTokens: ["Zijn fiets", "staat", "altijd", "in de gang"],
+                answers: ["Zijn fiets staat altijd in de gang.", "zijn fiets staat altijd in de gang"]
+            },
+            {
+                tokens: ["naar Utrecht", "reizen", "We", "volgende week", "met de trein"],
+                correctTokens: ["We", "reizen", "volgende week", "met de trein", "naar Utrecht"],
+                answers: [
+                    "We reizen volgende week met de trein naar Utrecht.",
+                    "we reizen volgende week met de trein naar Utrecht"
+                ]
+            },
+            {
+                tokens: ["soep", "kookt", "in de keuken", "Ze", "vanavond"],
+                correctTokens: ["Ze", "kookt", "vanavond", "soep", "in de keuken"],
+                answers: [
+                    "Ze kookt vanavond soep in de keuken.",
+                    "ze kookt vanavond soep in de keuken",
+                    "Ze kookt vanavond in de keuken soep.",
+                    "ze kookt vanavond in de keuken soep"
+                ]
+            },
+            {
+                tokens: ["bij de kassa", "betaalt", "hij", "altijd", "met pin"],
+                correctTokens: ["hij", "betaalt", "altijd", "met pin", "bij de kassa"],
+                answers: [
+                    "Hij betaalt altijd met pin bij de kassa.",
+                    "hij betaalt altijd met pin bij de kassa",
+                    "Hij betaalt altijd bij de kassa met pin.",
+                    "hij betaalt altijd bij de kassa met pin"
+                ]
+            },
+            {
+                tokens: ["op school", "spreekt", "Nederlands", "Ze", "elke dag"],
+                correctTokens: ["Ze", "spreekt", "elke dag", "Nederlands", "op school"],
+                answers: ["Ze spreekt elke dag Nederlands op school.", "ze spreekt elke dag Nederlands op school"]
+            }
+        ];
+
+        let scoresState = new Array(exercises.length).fill(false);
+
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.lang-content').forEach(content => content.classList.remove('active'));
+            
+            // Find tab button that matches and add active
+            const btn = Array.from(document.querySelectorAll('.lang-tab')).find(b => b.textContent.toLowerCase().includes(lang === 'nl' ? 'nederlands' : lang === 'en' ? 'english' : 'العربية'));
+            if (btn) btn.classList.add('active');
+            
+            document.getElementById('lang-' + lang).classList.add('active');
+        }
+
+        function buildQuestions() {
+            const listEl = document.getElementById('questions-list');
+            listEl.innerHTML = '';
+
+            exercises.forEach((ex, idx) => {
+                const item = document.createElement('div');
+                item.className = 'exercise-item';
+                item.id = `exercise-${idx}`;
+
+                item.innerHTML = `
+                    <div class="exercise-number">Opdracht ${idx + 1}</div>
+                    <div class="words-container">
+                        ${ex.tokens.map(t => `<span class="word-token">${t}</span>`).join('')}
+                    </div>
+                    <div class="input-row">
+                        <input type="text" class="input-field" id="input-${idx}" 
+                               placeholder="Typ hier de correcte zin..." 
+                               onkeydown="if(event.key === 'Enter') checkAll()">
+                    </div>
+                    <div class="feedback-message" id="feedback-${idx}"></div>
+                `;
+
+                listEl.appendChild(item);
+            });
+        }
+
+        function generateTokenFeedback(idx, typedText) {
+            const ex = exercises[idx];
+            const correctTokens = ex.correctTokens;
+            
+            // Normalize and clean typedText for searching
+            const cleanText = typedText.toLowerCase().replace(/[.,?!]$/, '').trim();
+            
+            // Find where each correct token starts in the clean text
+            const foundTokens = [];
+            correctTokens.forEach((token) => {
+                const cleanToken = token.toLowerCase().replace(/[.,?!]$/, '').trim();
+                const index = cleanText.indexOf(cleanToken);
+                if (index !== -1) {
+                    foundTokens.push({ token, index });
+                } else {
+                    foundTokens.push({ token, index: -1 });
+                }
+            });
+            
+            // Tokens that were found in the student's input, sorted by their position in their input
+            const studentTokens = foundTokens
+                .filter(t => t.index !== -1)
+                .sort((a, b) => a.index - b.index)
+                .map(t => t.token);
+                
+            let html = '<div style="margin-bottom: 6px; font-weight: 800; font-size: 0.95rem;">Jouw volgorde:</div>';
+            html += '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; margin-bottom: 12px;">';
+            
+            studentTokens.forEach((token, studentIdx) => {
+                const correctIdx = correctTokens.indexOf(token);
+                const isCorrectPosition = (correctIdx === studentIdx);
+                
+                const badgeClass = isCorrectPosition ? 'token-badge correct' : 'token-badge incorrect';
+                html += `<span class="${badgeClass}">${token}</span>`;
+            });
+            
+            // Also show missing tokens
+            const missingTokens = correctTokens.filter(t => !studentTokens.includes(t));
+            missingTokens.forEach((token) => {
+                html += `<span class="token-badge missing">${token} (gemist)</span>`;
+            });
+            
+            html += '</div>';
+            
+            // Add the correct answer below
+            html += `<div style="font-size: 0.95rem; color: #ffc87c; font-weight: 700; margin-top: 8px;">Correcte zin: <span>${ex.answers[0]}</span></div>`;
+            
+            return html;
+        }
+
+        function checkAll() {
+            let correctCount = 0;
+            
+            exercises.forEach((ex, idx) => {
+                const inputEl = document.getElementById(`input-${idx}`);
+                const feedbackEl = document.getElementById(`feedback-${idx}`);
+                const val = inputEl.value.trim().replace(/\s+/g, ' '); // normalise spacing
+
+                feedbackEl.classList.remove('correct', 'incorrect');
+                inputEl.classList.remove('correct', 'incorrect');
+                feedbackEl.style.display = 'none';
+
+                if (!val) {
+                    feedbackEl.innerHTML = '<span>⚠️</span> Geen antwoord ingevuld.';
+                    feedbackEl.className = 'feedback-message incorrect';
+                    feedbackEl.style.display = 'block';
+                    inputEl.classList.add('incorrect');
+                    scoresState[idx] = false;
+                    return;
+                }
+
+                // Normalize user response and check answers
+                const cleanVal = val.toLowerCase().replace(/[.,?!]$/, '').trim();
+                
+                let isCorrect = false;
+                for (let ans of ex.answers) {
+                    const cleanAns = ans.toLowerCase().replace(/[.,?!]$/, '').trim();
+                    if (cleanVal === cleanAns) {
+                        isCorrect = true;
+                        break;
+                    }
+                }
+
+                if (isCorrect) {
+                    feedbackEl.innerHTML = '<span>✅</span> Correct!';
+                    feedbackEl.className = 'feedback-message correct';
+                    feedbackEl.style.display = 'block';
+                    inputEl.classList.add('correct');
+                    scoresState[idx] = true;
+                    correctCount++;
+                } else {
+                    // Generate token feedback showing green and red
+                    const feedbackHTML = generateTokenFeedback(idx, val);
+                    feedbackEl.innerHTML = '<span>❌</span> ' + feedbackHTML;
+                    feedbackEl.className = 'feedback-message incorrect';
+                    feedbackEl.style.display = 'block';
+                    inputEl.classList.add('incorrect');
+                    scoresState[idx] = false;
+                }
+            });
+
+            updateScore();
+        }
+
+        function updateScore() {
+            const correctCount = scoresState.filter(Boolean).length;
+            document.getElementById('current-score').textContent = correctCount;
+            if (correctCount === exercises.length) {
+                try {
+                    localStorage.setItem('completed_index.html', 'true');
+                } catch(e) {}
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Weet je zeker dat je alle antwoorden wilt wissen?')) {
+                scoresState.fill(false);
+                updateScore();
+                
+                exercises.forEach((ex, idx) => {
+                    const inputEl = document.getElementById(`input-${idx}`);
+                    const feedbackEl = document.getElementById(`feedback-${idx}`);
+                    
+                    inputEl.value = '';
+                    inputEl.classList.remove('correct', 'incorrect');
+                    feedbackEl.className = 'feedback-message';
+                    feedbackEl.innerHTML = '';
+                    feedbackEl.style.display = 'none';
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            buildQuestions();
+        });
+    </script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // 1. .vocab spans
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+
+    // 2. Conjugation tables (.conj-table, .ww-tabel)
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            // If the target cell already has a button, skip
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+
+    // 3. Example sentences (.example)
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+<!-- /SPEECH SYNTHESIS INJECTION -->
+
+</body>
+</html>
