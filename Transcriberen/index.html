@@ -202,6 +202,9 @@
         let db = {};
         let activeGroup = groepen[0];
         let isDataLoaded = false;
+        let currentFeedbackBrieven = [];
+        let activeStudentIdx = 0;
+        let activeFeedbackLang = 'nl';
 
         // ── AUTHENTICATION ──
         function checkAuth() {
@@ -353,6 +356,7 @@
                     
                     let uAnalyse = lijn.uitspraak_analyse || {};
                     let gAnalyse = lijn.grammatica_analyse || {};
+                    let lAnalyse = lijn.logica_analyse || {};
                     
                     if(uAnalyse.fout) {
                         gHtml += `<div class="analysis-box">`;
@@ -360,7 +364,7 @@
                         gHtml += `</div>`;
                     } else if(uAnalyse.goed) {
                         gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-goed">🗣️ ✅</span> <div><strong>Uitspraak perfect!</strong></div></div>`;
+                        gHtml += `<div class="analysis-item"><span class="icon-goed">🗣️ ✅</span> <div><strong>Uitspraak is goed</strong></div></div>`;
                         gHtml += `</div>`;
                     }
                     
@@ -370,7 +374,17 @@
                         gHtml += `</div>`;
                     } else if(gAnalyse.goed) {
                         gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-goed">📚 ✅</span> <div><strong>Grammatica perfect!</strong></div></div>`;
+                        gHtml += `<div class="analysis-item"><span class="icon-goed">📚 ✅</span> <div><strong>Grammatica is goed</strong></div></div>`;
+                        gHtml += `</div>`;
+                    }
+
+                    if(lAnalyse.fout) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-fout">🧠 ❌</span> <div><strong>Logica / Samenhang:</strong> ${lAnalyse.fout}<br><span style="color:#94a3b8">${lAnalyse.uitleg}</span></div></div>`;
+                        gHtml += `</div>`;
+                    } else if(lAnalyse.goed) {
+                        gHtml += `<div class="analysis-box">`;
+                        gHtml += `<div class="analysis-item"><span class="icon-goed">🧠 ✅</span> <div><strong>Samenhang is goed</strong></div></div>`;
                         gHtml += `</div>`;
                     }
                     
@@ -382,26 +396,95 @@
             gHtml += '</div>';
             document.getElementById('pane-gesprek').innerHTML = gHtml;
             
-            let fHtml = '';
-            if(a.feedback_brieven && a.feedback_brieven.length > 0) {
-                a.feedback_brieven.forEach((fb, i) => {
-                    fHtml += `<div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--border);">`;
-                    fHtml += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">`;
-                    fHtml += `<strong style="color: var(--accent); font-size: 1.1rem;">Voor: ${fb.naam}</strong>`;
-                    fHtml += `<button class="copy-btn" onclick="copyFeedback('fb-text-${i}', this)" style="padding: 4px 10px; font-size: 0.8rem;">📋 Kopieer</button>`;
-                    fHtml += `</div>`;
-                    fHtml += `<div id="fb-text-${i}" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #e2e8f0;">${fb.brief}</div>`;
-                    fHtml += `</div>`;
-                });
-            } else {
-                fHtml = 'Geen feedbackbrieven beschikbaar.';
-            }
-            document.getElementById('pane-feedback').innerHTML = fHtml;
+            // Render Feedbackbrieven
+            currentFeedbackBrieven = a.feedback_brieven || [];
+            activeStudentIdx = 0;
+            activeFeedbackLang = 'nl';
+            renderFeedbackPane();
             
             // Audio player update
             const player = document.getElementById('vAudio');
             player.src = encodeURI(file.path);
             player.load();
+        }
+
+        function renderFeedbackPane() {
+            const pane = document.getElementById('pane-feedback');
+            if (!currentFeedbackBrieven || currentFeedbackBrieven.length === 0) {
+                pane.innerHTML = '<div style="color:var(--text-muted); padding: 20px; text-align: center;">Geen feedbackbrieven beschikbaar.</div>';
+                return;
+            }
+
+            let html = '';
+
+            // 1. Als er meerdere cursisten zijn, toon studenten-tabs
+            if (currentFeedbackBrieven.length > 1) {
+                html += `<div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; overflow-x: auto; scrollbar-width: none;">`;
+                currentFeedbackBrieven.forEach((fb, idx) => {
+                    const isActive = idx === activeStudentIdx;
+                    html += `
+                        <button onclick="activeStudentIdx = ${idx}; renderFeedbackPane();" 
+                                style="padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; border: 1px solid ${isActive ? 'var(--accent)' : 'var(--border)'}; background: ${isActive ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255,255,255,0.02)'}; color: ${isActive ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                            👤 ${fb.naam}
+                        </button>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            // 2. Toon taal-tabs (Nederlands / Engels) en kopieerknop
+            const activeFb = currentFeedbackBrieven[activeStudentIdx];
+            const hasEnglish = !!activeFb.brief_en;
+
+            html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">`;
+            html += `<div style="display: flex; gap: 8px;">`;
+            
+            // NL Tab
+            const isNl = activeFeedbackLang === 'nl';
+            html += `
+                <button onclick="activeFeedbackLang = 'nl'; renderFeedbackPane();" 
+                        style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isNl ? 'var(--accent)' : 'var(--border)'}; background: ${isNl ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isNl ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                    🇳🇱 Nederlands
+                </button>
+            `;
+
+            // EN Tab
+            if (hasEnglish) {
+                const isEn = activeFeedbackLang === 'en';
+                html += `
+                    <button onclick="activeFeedbackLang = 'en'; renderFeedbackPane();" 
+                            style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                        🇬🇧 English Translation
+                    </button>
+                `;
+            }
+            html += `</div>`;
+
+            // Kopieerknop rechts
+            html += `
+                <button class="copy-btn" onclick="copyFeedbackText(this)" style="padding: 6px 14px; font-size: 0.85rem; border-radius: 8px; font-weight: 700; background: var(--accent-gradient); color: #fff; border: none; cursor: pointer; transition: var(--transition);">
+                    📋 Kopieer voor WhatsApp
+                </button>
+            `;
+            html += `</div>`;
+
+            // 3. Toon de brief zelf
+            const briefContent = activeFeedbackLang === 'nl' ? activeFb.brief : (activeFb.brief_en || 'English translation not available for this legacy entry.');
+            
+            html += `
+                <div id="active-fb-text" style="white-space: pre-wrap; font-size: 1rem; line-height: 1.7; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; max-height: 480px; overflow-y: auto;">${briefContent}</div>
+            `;
+
+            pane.innerHTML = html;
+        }
+
+        function copyFeedbackText(btn) {
+            const txt = document.getElementById('active-fb-text').textContent;
+            navigator.clipboard.writeText(txt).then(() => {
+                const old = btn.innerHTML;
+                btn.innerHTML = '✅ Gekopieerd!';
+                setTimeout(() => btn.innerHTML = old, 2000);
+            });
         }
 
         function hideViewer() {
@@ -421,15 +504,6 @@
             const txt = document.getElementById('pane-gesprek').innerText;
             navigator.clipboard.writeText(txt).then(() => {
                 const btn = document.querySelector('.copy-btn');
-                const old = btn.innerHTML;
-                btn.innerHTML = '✅ Gekopieerd!';
-                setTimeout(() => btn.innerHTML = old, 2000);
-            });
-        }
-
-        function copyFeedback(elementId, btn) {
-            const txt = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(txt).then(() => {
                 const old = btn.innerHTML;
                 btn.innerHTML = '✅ Gekopieerd!';
                 setTimeout(() => btn.innerHTML = old, 2000);
