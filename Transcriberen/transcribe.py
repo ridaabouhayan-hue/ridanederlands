@@ -5,10 +5,24 @@ from google import genai
 
 # ================================================
 # 1. API KEY INSTELLEN
-GEMINI_API_KEY = "AIzaSyCsTsvbfmMQJQm4g0IBjCdw4VlG1fRA0Qk"
+root_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(root_dir)
+api_key_path = os.path.join(parent_dir, "API.txt")
+
+GEMINI_API_KEY = None
+if os.path.exists(api_key_path):
+    with open(api_key_path, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("GEMINI_API_KEY="):
+                GEMINI_API_KEY = line.split("=", 1)[1].strip()
+                break
+
+if not GEMINI_API_KEY:
+    print("❌ Kan GEMINI_API_KEY niet vinden in API.txt in de hoofdmap.")
+    sys.exit(1)
+
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
-root_dir = os.path.dirname(os.path.abspath(__file__))
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm')
 
 groepen = [
