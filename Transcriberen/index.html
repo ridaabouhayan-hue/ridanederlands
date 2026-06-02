@@ -193,7 +193,11 @@
     </div>
 
     <!-- Data Import -->
-    <script src="data.js"></script>
+    <script>
+        // Fallback als data.js niet laadt
+        window.geminiData = window.geminiData || {};
+    </script>
+    <script src="data.js" onerror="console.error('data.js kon niet worden geladen!'); document.getElementById('fileList') && (document.getElementById('fileList').innerHTML = '<div style=\"padding:20px;text-align:center;color:#ef4444;\">⚠️ Fout: data.js kon niet worden geladen. Controleer of het bestand bestaat.</div>');"></script>
 
     <script>
         // ── AUTHENTICATION ──
@@ -229,8 +233,9 @@
             "Coca-Cola", "NS", "B-A1", "B-A2", "B-Alfa", "B-Z-route", "B-ONA"
         ];
         
-        let activeGroup = groepen[0];
         let db = window.geminiData || {};
+        // Start bij de eerste groep die data heeft, anders de eerste groep
+        let activeGroup = groepen.find(g => (db[g] || []).length > 0) || groepen[0];
 
         function initApp() {
             renderTabs();
