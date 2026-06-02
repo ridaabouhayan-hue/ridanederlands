@@ -218,6 +218,27 @@
             margin-bottom: 8px;
         }
 
+        .exercise-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .formula-reminder {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 700;
+            background: rgba(78, 140, 255, 0.08);
+            border: 1px solid rgba(78, 140, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
         .words-container {
             background: rgba(255, 255, 255, 0.03);
             padding: 12px 18px;
@@ -758,8 +779,15 @@
         ];
 
         let scoresState = new Array(exercises.length).fill(false);
+        let currentLang = 'nl';
+        const formulas = {
+            nl: 'Onderwerp + Werkwoord + Tijd + Object + Plaats',
+            en: 'Subject + Verb + Time + Object + Place',
+            ar: 'الفاعل + الفعل + الزمن + المفعول به + المكان'
+        };
 
         function switchLang(lang) {
+            currentLang = lang;
             document.querySelectorAll('.lang-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.lang-content').forEach(content => content.classList.remove('active'));
             
@@ -768,6 +796,22 @@
             if (btn) btn.classList.add('active');
             
             document.getElementById('lang-' + lang).classList.add('active');
+
+            // Update formula reminders
+            updateFormulaReminders();
+        }
+
+        function updateFormulaReminders() {
+            document.querySelectorAll('.formula-reminder').forEach(el => {
+                el.textContent = formulas[currentLang];
+                if (currentLang === 'ar') {
+                    el.style.direction = 'rtl';
+                    el.style.textAlign = 'right';
+                } else {
+                    el.style.direction = 'ltr';
+                    el.style.textAlign = 'left';
+                }
+            });
         }
 
         function buildQuestions() {
@@ -780,7 +824,10 @@
                 item.id = `exercise-${idx}`;
 
                 item.innerHTML = `
-                    <div class="exercise-number">Opdracht ${idx + 1}</div>
+                    <div class="exercise-header-row">
+                        <div class="exercise-number" style="margin-bottom: 0;">Opdracht ${idx + 1}</div>
+                        <div class="formula-reminder"></div>
+                    </div>
                     <div class="words-container">
                         ${ex.tokens.map(t => `<span class="word-token">${t}</span>`).join('')}
                     </div>
@@ -794,6 +841,9 @@
 
                 listEl.appendChild(item);
             });
+
+            // Initial render of reminders
+            updateFormulaReminders();
         }
 
         function generateTokenFeedback(idx, typedText) {
