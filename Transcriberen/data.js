@@ -3531,8 +3531,254 @@ window.geminiData = {
       "path": "VDL/Alexandros negation.ogg",
       "date": "02-06-2026",
       "analyse": {
-        "gesprek": [],
-        "feedback_brieven": []
+        "gesprek": [
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Vandaag is een moeilijke dag.",
+            "zin_correct": "Vandaag is een moeilijke dag.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'moeilijke' wordt wat langzaam en met lichte aarzeling uitgesproken. De 'g' in 'dag' klinkt meer als een 'ch' (tach).",
+              "uitleg": "Let op de vloeiendheid van langere woorden en de correcte uitspraak van de 'g'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Niets gaat goed.",
+            "zin_correct": "Niets gaat goed.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De 'ie' in 'Niets' klinkt meer als een korte 'i' (Nits). De 'oe' in 'goed' klinkt meer als een 'oe' in 'hoet'.",
+              "uitleg": "Oefen de lange 'ie' en 'oe' klanken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Mijn auto start niet en ik ga naar werk bij fiets.",
+            "zin_correct": "Mijn auto start niet en ik ga met de fiets naar mijn werk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'werk' klinkt een beetje als 'verrk'.",
+              "uitleg": "Let op de 'w' klank en de 'e' in 'werk'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd voorzetsel en ontbrekend lidwoord/bezittelijk voornaamwoord. 'bij fiets' is incorrect.",
+              "uitleg": "Gebruik 'met de fiets' voor het vervoermiddel en 'naar mijn werk' voor de bestemming. De correcte constructie is 'met de fiets naar mijn werk'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Daarna er is geen café bij werk.",
+            "zin_correct": "Daarnaast is er geen café op het werk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'werk' klinkt een beetje als 'verrk'.",
+              "uitleg": "Let op de 'w' klank en de 'e' in 'werk'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Inversie ontbreekt en verkeerd voorzetsel/lidwoord.",
+              "uitleg": "Na 'Daarna' of 'Daarnaast' volgt inversie (werkwoord voor onderwerp): 'Daarnaast is er'. Gebruik 'op het werk' in plaats van 'bij werk'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Wat een dag.",
+            "zin_correct": "Wat een dag!",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De 'g' in 'dag' klinkt meer als een 'ch' (tach).",
+              "uitleg": "Let op de correcte uitspraak van de 'g'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik ga de clean room in en ik zie dat mijn computer niet werk.",
+            "zin_correct": "Ik ga de cleanroom in en ik zie dat mijn computer niet werkt.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'werk' (als werkwoord) klinkt een beetje als 'verrk'.",
+              "uitleg": "Let op de 'w' klank en de 'e' in 'werk'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde werkwoordsvorm.",
+              "uitleg": "Het werkwoord 'werken' in de derde persoon enkelvoud (mijn computer) krijgt een 't' aan het einde: 'werkt'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Daarna ik bel IT en ze geven geen antwoord.",
+            "zin_correct": "Daarna bel ik IT en ze geven geen antwoord.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Inversie ontbreekt.",
+              "uitleg": "Na 'Daarna' volgt inversie (werkwoord voor onderwerp): 'Daarna bel ik'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Nou, ik heb geen computer, maar ik heb veel werk te doen.",
+            "zin_correct": "Nou, ik heb geen computer, maar ik heb veel werk te doen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'werk' klinkt een beetje als 'verrk'.",
+              "uitleg": "Let op de 'w' klank en de 'e' in 'werk'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik wil pauze nemen.",
+            "zin_correct": "Ik wil pauze nemen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik ga naar mijn tas, maar mijn eten is er niet.",
+            "zin_correct": "Ik ga naar mijn tas, maar mijn eten is er niet.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik ben het vergeten.",
+            "zin_correct": "Ik ben het vergeten.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "De kantine is niet open.",
+            "zin_correct": "De kantine is niet open.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "En nou, ik heb geen eten en ik heb honger.",
+            "zin_correct": "En nu heb ik geen eten en ik heb honger.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Inversie ontbreekt en 'nou' is informeel.",
+              "uitleg": "Na 'nu' volgt inversie (werkwoord voor onderwerp): 'En nu heb ik'. 'Nu' is formeler dan 'nou'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik wil naar huis gaan, maar ik heb geen extra tijd.",
+            "zin_correct": "Ik wil naar huis gaan, maar ik heb geen extra tijd.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Dat is helaas.",
+            "zin_correct": "Dat is helaas.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Ik wijn het niet leuk.",
+            "zin_correct": "Ik vind het niet leuk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'vind' wordt uitgesproken als 'wijn'. Dit is een veelvoorkomende verwarring tussen de 'v' en 'w' klanken.",
+              "uitleg": "Oefen het verschil tussen de 'v' (stemhebbend, tanden op onderlip) en 'w' (lippen rond) klanken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd werkwoord gebruikt.",
+              "uitleg": "'Wijn' is een zelfstandig naamwoord (drank), terwijl het werkwoord 'vinden' (to find/think) bedoeld is."
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Alexandros",
+            "brief": "Hallo Alexandros! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er supergoed ging, en wat nog beter kan.\n\n🔍 **Zin-voor-Zin Analyse:**\n\n**Zin 1:** \"Vandaag is een moeilijke dag.\"\n👍 Wat was goed: De zinsopbouw is correct.\n💡 Correctie: \"Vandaag is een moeilijke dag.\"\n🧠 Waarom: Let op de vloeiendheid van langere woorden zoals 'moeilijke' en de correcte uitspraak van de 'g'-klank in 'dag'.\n\n**Zin 2:** \"Niets gaat goed.\"\n👍 Wat was goed: De zinsopbouw is correct.\n💡 Correctie: \"Niets gaat goed.\"\n🧠 Waarom: Oefen de lange 'ie' klank in 'Niets' en de lange 'oe' klank in 'goed'.\n\n**Zin 3:** \"Mijn auto start niet en ik ga naar werk bij fiets.\"\n👍 Wat was goed: De eerste deelzin is correct.\n💡 Correctie: \"Mijn auto start niet en ik ga met de fiets naar mijn werk.\"\n🧠 Waarom: Gebruik 'met de fiets' voor het vervoermiddel en 'naar mijn werk' voor de bestemming. Let ook op de uitspraak van de 'w' in 'werk'.\n\n**Zin 4:** \"Daarna er is geen café bij werk.\"\n👍 Wat was goed: De woorden zijn herkenbaar.\n💡 Correctie: \"Daarnaast is er geen café op het werk.\"\n🧠 Waarom: Na 'Daarna' of 'Daarnaast' volgt inversie (werkwoord voor onderwerp): 'Daarnaast is er'. Gebruik 'op het werk' in plaats van 'bij werk'. Let ook op de uitspraak van de 'w' in 'werk'.\n\n**Zin 5:** \"Wat een dag.\"\n👍 Wat was goed: De zinsopbouw is correct.\n💡 Correctie: \"Wat een dag!\"\n🧠 Waarom: Let op de correcte uitspraak van de 'g'-klank in 'dag'.\n\n**Zin 6:** \"Ik ga de clean room in en ik zie dat mijn computer niet werk.\"\n👍 Wat was goed: De eerste deelzin is correct en 'clean room' is goed uitgesproken.\n💡 Correctie: \"Ik ga de cleanroom in en ik zie dat mijn computer niet werkt.\"\n🧠 Waarom: Het werkwoord 'werken' in de derde persoon enkelvoud (mijn computer) krijgt een 't' aan het einde: 'werkt'. Let ook op de uitspraak van de 'w' in 'werk'.\n\n**Zin 7:** \"Daarna ik bel IT en ze geven geen antwoord.\"\n👍 Wat was goed: De uitspraak van 'IT' en 'antwoord' is goed.\n💡 Correctie: \"Daarna bel ik IT en ze geven geen antwoord.\"\n🧠 Waarom: Na 'Daarna' volgt inversie (werkwoord voor onderwerp): 'Daarna bel ik'.\n\n**Zin 8:** \"Nou, ik heb geen computer, maar ik heb veel werk te doen.\"\n👍 Wat was goed: De zinsopbouw is correct.\n💡 Correctie: \"Nou, ik heb geen computer, maar ik heb veel werk te doen.\"\n🧠 Waarom: Let op de uitspraak van de 'w' in 'werk'.\n\n**Zin 9:** \"Ik wil pauze nemen.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"Ik wil pauze nemen.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 10:** \"Ik ga naar mijn tas, maar mijn eten is er niet.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"Ik ga naar mijn tas, maar mijn eten is er niet.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 11:** \"Ik ben het vergeten.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"Ik ben het vergeten.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 12:** \"De kantine is niet open.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"De kantine is niet open.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 13:** \"En nou, ik heb geen eten en ik heb honger.\"\n👍 Wat was goed: De woorden zijn duidelijk verstaanbaar.\n💡 Correctie: \"En nu heb ik geen eten en ik heb honger.\"\n🧠 Waarom: Na 'nu' volgt inversie (werkwoord voor onderwerp): 'En nu heb ik'. 'Nu' is ook formeler dan 'nou'.\n\n**Zin 14:** \"Ik wil naar huis gaan, maar ik heb geen extra tijd.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"Ik wil naar huis gaan, maar ik heb geen extra tijd.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 15:** \"Dat is helaas.\"\n👍 Wat was goed: Deze zin is perfect uitgesproken en grammaticaal correct!\n💡 Correctie: \"Dat is helaas.\"\n🧠 Waarom: Ga zo door!\n\n**Zin 16:** \"Ik wijn het niet leuk.\"\n👍 Wat was goed: De intentie van de zin is duidelijk.\n💡 Correctie: \"Ik vind het niet leuk.\"\n🧠 Waarom: Oefen het verschil tussen de 'v' en 'w' klanken. Het werkwoord is 'vinden', niet 'wijn'.\n\n🏁 **Samenvatting & Jouw volgende stap:**\nAlexandros, je hebt een goed verhaal verteld en veel zinnen zijn al heel goed! Je belangrijkste aandachtspunten zijn de inversie na bepaalde bijwoorden (zoals 'Daarna' en 'Nu'), het correcte gebruik van voorzetsels ('met de fiets', 'op het werk') en de uitspraak van de 'w' en 'g' klanken, en het verschil tussen 'v' en 'w'. Blijf oefenen met deze punten, dan zul je snel vooruitgang boeken! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
       }
     }
   ],

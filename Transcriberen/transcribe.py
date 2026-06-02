@@ -76,9 +76,22 @@ def main():
             
         for entry in os.scandir(grp_dir):
             if entry.is_file() and entry.name.lower().endswith(audio_extensies):
-                # Check of dit bestand al in data.js staat
-                already_done = any(item["filename"] == entry.name for item in data[grp])
+                # Check of dit bestand al in data.js staat met een succesvolle analyse
+                already_done = False
+                existing_item = None
+                for item in data[grp]:
+                    if item["filename"] == entry.name:
+                        existing_item = item
+                        analyse = item.get("analyse", {})
+                        if isinstance(analyse, dict) and (analyse.get("gesprek") or analyse.get("feedback_brieven")):
+                            already_done = True
+                        break
+                
                 if not already_done:
+                    # Als het bestand al in data.js staat maar de analyse mislukt of leeg was,
+                    # verwijderen we de oude entry zodat we hem opnieuw schoon kunnen toevoegen.
+                    if existing_item:
+                        data[grp].remove(existing_item)
                     to_process.append((grp, entry.name, entry.path))
                     
     if not to_process:

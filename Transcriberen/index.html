@@ -192,14 +192,17 @@
         </div>
     </div>
 
-    <!-- Data Import -->
+    <!-- Data Import & App Logic -->
     <script>
-        // Fallback als data.js niet laadt
-        window.geminiData = window.geminiData || {};
-    </script>
-    <script src="data.js" onerror="console.error('data.js kon niet worden geladen!'); document.getElementById('fileList') && (document.getElementById('fileList').innerHTML = '<div style=\"padding:20px;text-align:center;color:#ef4444;\">⚠️ Fout: data.js kon niet worden geladen. Controleer of het bestand bestaat.</div>');"></script>
+        const groepen = [
+            "Microsoft", "KPN", "Westport", "VDL", "Neways", "Shell", 
+            "Coca-Cola", "NS", "B-A1", "B-A2", "B-Alfa", "B-Z-route", "B-ONA"
+        ];
+        
+        let db = {};
+        let activeGroup = groepen[0];
+        let isDataLoaded = false;
 
-    <script>
         // ── AUTHENTICATION ──
         function checkAuth() {
             const pwd = document.getElementById('pwdInput').value;
@@ -207,7 +210,11 @@
                 sessionStorage.setItem('gemini_auth', '1');
                 document.getElementById('authOverlay').style.display = 'none';
                 document.getElementById('appContent').style.display = 'flex';
-                initApp();
+                if (isDataLoaded) {
+                    initApp();
+                } else {
+                    showLoadingState();
+                }
             } else {
                 document.getElementById('authError').style.display = 'block';
             }
@@ -218,24 +225,58 @@
             location.reload();
         }
 
+        function showLoadingState() {
+            const list = document.getElementById('fileList');
+            if (list) {
+                list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">⏳ Gegevens laden...</div>`;
+            }
+        }
+
+        // Dynamisch data.js laden met cache-buster
+        function loadDataScript() {
+            showLoadingState();
+            const script = document.createElement('script');
+            // Cache-buster met timestamp om Netlify caching te omzeilen
+            script.src = 'data.js?t=' + Date.now();
+            
+            script.onload = () => {
+                isDataLoaded = true;
+                db = window.geminiData || {};
+                
+                // Start bij de eerste groep die data heeft, anders de eerste groep
+                activeGroup = groepen.find(g => (db[g] || []).length > 0) || groepen[0];
+                
+                // Als ingelogd, direct initialiseren
+                if (sessionStorage.getItem('gemini_auth') === '1') {
+                    initApp();
+                }
+            };
+            
+            script.onerror = () => {
+                console.error('data.js kon niet worden geladen!');
+                const list = document.getElementById('fileList');
+                if (list) {
+                    list.innerHTML = `<div style="padding:20px;text-align:center;color:#ef4444;">⚠️ Fout: data.js kon niet worden geladen. Controleer of het bestand bestaat en probeer de pagina te verversen.</div>`;
+                }
+            };
+            
+            document.body.appendChild(script);
+        }
+
+        // Start het laadproces
+        loadDataScript();
+
         // Check if already logged in
         if (sessionStorage.getItem('gemini_auth') === '1') {
             document.getElementById('authOverlay').style.display = 'none';
             document.getElementById('appContent').style.display = 'flex';
-            initApp();
         } else {
-            document.getElementById('pwdInput').focus();
+            // Wacht heel even tot de DOM er is, dan focus
+            setTimeout(() => {
+                const pwdInput = document.getElementById('pwdInput');
+                if (pwdInput) pwdInput.focus();
+            }, 100);
         }
-
-        // ── APP LOGIC ──
-        const groepen = [
-            "Microsoft", "KPN", "Westport", "VDL", "Neways", "Shell", 
-            "Coca-Cola", "NS", "B-A1", "B-A2", "B-Alfa", "B-Z-route", "B-ONA"
-        ];
-        
-        let db = window.geminiData || {};
-        // Start bij de eerste groep die data heeft, anders de eerste groep
-        let activeGroup = groepen.find(g => (db[g] || []).length > 0) || groepen[0];
 
         function initApp() {
             renderTabs();
