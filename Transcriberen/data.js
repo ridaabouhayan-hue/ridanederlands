@@ -3525,6 +3525,15 @@ window.geminiData = {
           }
         ]
       }
+    },
+    {
+      "filename": "Alexandros negation.ogg",
+      "path": "VDL/Alexandros negation.ogg",
+      "date": "02-06-2026",
+      "analyse": {
+        "gesprek": [],
+        "feedback_brieven": []
+      }
     }
   ],
   "Neways": [],
