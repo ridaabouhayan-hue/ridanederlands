@@ -132,7 +132,7 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
   "feedback_brieven": [
     {{
       "naam": "Naam van de cursist",
-      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! [Korte intro over logica/context]. 🎈\\n\\n👍 Wat ging er al heel goed?\\n[Noem iets positiefs over een woord, klank of grammatica] 🌟\\n\\n💡 Tips voor de volgende keer:\\n\\nTip 1: [Titel van tip 1] ❌\\nWat je zei: \\"[Foute zin/woord]\\"\\nHoe het moet: \\"[Correcte zin/woord]\\"\\nUitleg: [Waarom is dit de regel?]\\n\\nOefen nu hardop:\\n\\"[Voorbeeldzin 1]\\" 🗣️\\n\\"[Voorbeeldzin 2]\\" 🗣️\\n\\nTip 2: [Titel van tip 2] 🏡\\nWat je zei: \\"[Foute zin/woord]\\"\\nHoe het moet: \\"[Correcte zin/woord]\\"\\nUitleg: [Korte uitleg]\\n\\nOefen nu hardop:\\n\\"[Voorbeeldzin 3]\\" 🗣️\\n\\n🏁 Persoonlijk slotwoord\\n[Korte aanmoediging]. Je volgende stap is... Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er supergoed ging, en wat nog beter kan.\\n\\n🔍 **Zin-voor-Zin Analyse:**\\n\\n**Zin 1:** \\"[Fonetische zin van cursist]\\"\\n👍 Wat was goed: [Compliment over uitspraak of woordkeuze]\\n💡 Correctie: \\"[Correcte zin]\\"\\n🧠 Waarom: [Uitleg over de grammaticaregel of klank]\\n\\n**Zin 2:** \\"[Fonetische zin 2]\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 **Samenvatting & Jouw volgende stap:**\\n[Korte samenvatting van de belangrijkste valkuil en een aanmoediging]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
     }}
   ]
 }}
@@ -142,7 +142,7 @@ Geef ALLEEN deze JSON terug. Zorg dat de JSON valide is. Geef geen extra tekst b
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.
                 response = client.models.generate_content(
-                    model='gemini-3.5-flash',
+                    model='gemini-2.5-flash',
                     contents=[audio_file, prompt],
                     config={'temperature': 0.1, 'response_mime_type': 'application/json'}
                 )
@@ -157,9 +157,14 @@ Geef ALLEEN deze JSON terug. Zorg dat de JSON valide is. Geef geen extra tekst b
                         "feedback_brieven": []
                     }
                 
+                # Haal bestandsdatum op (laatst gewijzigd)
+                mtime = os.path.getmtime(filepath)
+                file_date = time.strftime('%d-%m-%Y', time.localtime(mtime))
+
                 data[grp].append({
                     "filename": filename,
                     "path": f"{grp}/{filename}",
+                    "date": file_date,
                     "analyse": result
                 })
                 
@@ -173,6 +178,7 @@ Geef ALLEEN deze JSON terug. Zorg dat de JSON valide is. Geef geen extra tekst b
                 
             except Exception as e:
                 err_str = str(e)
+                print(f"❌ EXACT ERROR: {err_str}")
                 if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "503" in err_str or "UNAVAILABLE" in err_str or "11001" in err_str or "getaddrinfo" in err_str or "Connection" in err_str:
                     print(f"⏳ API-limiet, netwerkfout of drukte op server bereikt. Even pauze (60 seconden) voordat we onbeperkt doorgaan...")
                     time.sleep(60)

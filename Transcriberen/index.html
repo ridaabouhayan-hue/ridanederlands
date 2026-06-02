@@ -264,9 +264,13 @@
             files.forEach((file, idx) => {
                 const li = document.createElement('li');
                 li.className = 'file-item';
+                let dateHtml = file.date ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">📅 ${file.date}</div>` : '';
                 li.innerHTML = `
                     <div class="file-icon">🎙️</div>
-                    <div class="file-name">${file.filename}</div>
+                    <div style="display:flex; flex-direction:column; overflow:hidden;">
+                        <div class="file-name">${file.filename}</div>
+                        ${dateHtml}
+                    </div>
                 `;
                 li.onclick = () => {
                     document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
@@ -350,7 +354,7 @@
             
             // Audio player update
             const player = document.getElementById('vAudio');
-            player.src = file.path;
+            player.src = encodeURI(file.path);
             player.load();
         }
 
