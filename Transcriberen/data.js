@@ -2604,35 +2604,89 @@ window.geminiData = {
   ],
   "VDL": [
     {
-      "filename": "Alexandros meervoud.ogg",
-      "path": "VDL/Alexandros meervoud.ogg",
-      "date": "26-05-2026",
+      "filename": "WhatsApp Ptt 2026-03-16 at 16.25.49.ogg",
+      "path": "VDL/WhatsApp Ptt 2026-03-16 at 16.25.49.ogg",
       "analyse": {
         "gesprek": [
           {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "We gaan naar VDL bij Autos of Fitzen.",
-            "zin_correct": "We gaan naar VDL bij Autos of Fitzen.",
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik ben Pawan, ik kam out van India",
+            "zin_correct": "Ik ben Pawan, ik kom uit India.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kam out",
+              "uitleg": "De klinkers in 'kom' (o-klank) en 'uit' (ui-klank) werden verkeerd uitgesproken als 'kam' en 'out'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "van India",
+              "uitleg": "Bij landen en steden gebruiken we het vaste voorzetsel 'uit' na het werkwoord 'komen', dus 'ik kom uit India'."
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik nu woon in Eindhoven",
+            "zin_correct": "Ik woon nu in Eindhoven.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
             },
             "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik nu woon",
+              "uitleg": "In een standaard Nederlandse hoofdzin staat de persoonsvorm (het werkwoord 'woon') altijd op de tweede positie. Het bijwoord 'nu' komt daarna."
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik ben acht-en-dertig jaar",
+            "zin_correct": "Ik ben 38 jaar oud.",
+            "uitspraak_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
             },
-            "logica_analyse": {
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik ben 38 jaar",
+              "uitleg": "In het Nederlands zeg je 'Ik ben 38 jaar oud' of simpelweg 'Ik ben 38'. Alleen 'jaar' is grammaticaal incompleet."
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik ben getrouwd",
+            "zin_correct": "Ik ben getrouwd.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
             }
           },
           {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "We klokken in om 6 uur.",
-            "zin_correct": "We klokken in om 06:00 uur.",
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik ben we we hebben geen kinderen",
+            "zin_correct": "We hebben geen kinderen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik ben we we hebben",
+              "uitleg": "Je begint de zin met 'Ik ben', maar corrigeert jezelf halverwege naar 'we hebben'. Dit zorgt voor een dubbel onderwerp en een incorrecte zinsstart."
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik spreek Engels en een beetje Nederlands",
+            "zin_correct": "Ik spreek Engels en een beetje Nederlands.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2642,8 +2696,77 @@ window.geminiData = {
               "goed": true,
               "fout": "",
               "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik werk bij VDL, ik ben engineer",
+            "zin_correct": "Ik werk bij VDL, ik ben ingenieur.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
             },
-            "logica_analyse": {
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "engineer",
+              "uitleg": "Hoewel 'engineer' in de tech-sector veel gebruikt wordt, is het Nederlandse woord 'ingenieur'."
+            }
+          },
+          {
+            "spreker": "Pawan",
+            "zin_fonetisch": "Ik leer Nederlands dus ik wil spreek beter met mijn collega's",
+            "zin_correct": "Ik leer Nederlands, dus ik wil beter spreken met mijn collega's.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik wil spreek beter",
+              "uitleg": "Na het hulpwerkwoord 'willen' (wil) moet het hoofdwerkwoord als infinitief (hele werkwoord: 'spreken') gebruikt worden. Dit infinitief staat meestal achteraan de zin."
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Pawan",
+            "brief": "Hallo Pawan! 👋\n\nWat goed dat je deze audio hebt opgenomen om jezelf voor te stellen! Je deelt al heel veel persoonlijke informatie over je werk, je gezin en je doelen. Dat is een fantastische start! 🎈\n\n👍 Wat ging er al heel goed?\nJe uitspraak van woorden zoals 'getrouwd' en 'Eindhoven' is heel duidelijk. Ook gebruik je al mooie, relevante woorden zoals 'collega's'. 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: De plaats van het werkwoord (SVO-structuur) 🏡\nWat je zei: \"Ik nu woon in Eindhoven\"\nHoe het moet: \"Ik woon nu in Eindhoven\"\nUitleg: In een normale Nederlandse zin staat het werkwoord (de actie) ALTIJD op de tweede plaats. Je kunt 'nu' niet tussen het onderwerp (Ik) en het werkwoord (woon) zetten.\n\nOefen nu hardop:\n\"Ik woon nu in Eindhoven.\" 🗣️\n\"Ik leer nu Nederlands.\" 🗣️\n\nTip 2: Hulpwerkwoord + Hele werkwoord ❌\nWat je zei: \"...dus ik wil spreek beter...\"\nHoe het moet: \"...dus ik wil beter spreken...\"\nUitleg: Als je het werkwoord 'willen' (wil) gebruikt, moet het tweede werkwoord een heel werkwoord (infinitief) zijn: 'spreken'. Dit hele werkwoord staat aan het einde van de zin.\n\nOefen nu hardop:\n\"Ik wil beter Nederlands spreken.\" 🗣️\n\"Ik wil met mijn collega's praten.\" 🗣️\n\nTip 3: Komen uit 🇮🇳\nWat je zei: \"Ik kam out van India\"\nHoe het moet: \"Ik kom uit India\"\nUitleg: Let op de uitspraak van de 'o' in 'kom' en de 'ui' in 'uit'. Daarnaast gebruiken we in het Nederlands altijd 'komen uit' als we praten over ons geboorteland.\n\n🏁 Persoonlijk slotwoord\nJe bent al heel goed op weg en je motivatie om met je collega's te praten is fantastisch! Blijf letten op de positie van je werkwoorden. Je volgende stap is het oefenen van de zinnen met 'wil'. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Alexandros meervoud.ogg",
+      "path": "VDL/Alexandros meervoud.ogg",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "We gaan naar VDL bij auto's of fietsen.",
+            "zin_correct": "We gaan naar VDL met de auto of de fiets.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "bij auto's of fietsen",
+              "uitleg": "Voor transportmiddelen gebruiken we het voorzetsel 'met' (met de auto, met de fiets). Daarnaast is het gebruik van het enkelvoud ('de auto of de fiets') hier veel natuurlijker dan het meervoud."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "We klokken in om zes uur.",
+            "zin_correct": "We klokken in om zes uur.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
@@ -2652,7 +2775,7 @@ window.geminiData = {
           {
             "spreker": "Alexandros",
             "zin_fonetisch": "We zijn kwaliteit controleurs en we werken in cleanrooms.",
-            "zin_correct": "Wij zijn kwaliteitscontroleurs en wij werken in cleanrooms.",
+            "zin_correct": "We zijn kwaliteitscontroleurs en we werken in cleanrooms.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2661,12 +2784,7 @@ window.geminiData = {
             "grammatica_analyse": {
               "goed": false,
               "fout": "kwaliteit controleurs",
-              "uitleg": "Samenstellingen schrijf je in het Nederlands aan elkaar: kwaliteitscontroleurs."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "uitleg": "Dit is een samenstelling en moet als één woord geschreven en uitgesproken worden, met een tussen-s: 'kwaliteitscontroleurs'."
             }
           },
           {
@@ -2681,595 +2799,118 @@ window.geminiData = {
             "grammatica_analyse": {
               "goed": false,
               "fout": "elke team",
-              "uitleg": "Het is 'elk team' omdat 'team' een het-woord is."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "uitleg": "'Team' is een het-woord (het team), dus we gebruiken 'elk team' in plaats van 'elke team'."
             }
           },
           {
             "spreker": "Alexandros",
             "zin_fonetisch": "Elke dag we beginnen onze dagen in onze kantoors met plannen lezen.",
-            "zin_correct": "Elke dag beginnen we onze dag op kantoor met het lezen van de planning.",
+            "zin_correct": "Elke dag beginnen we onze dag in ons kantoor met het lezen van plannen.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "we beginnen",
-              "uitleg": "Na een tijdsbepaling (Elke dag) moet inversie plaatsvinden: 'beginnen we'."
-            },
-            "logica_analyse": {
               "goed": false,
               "fout": "kantoors",
-              "uitleg": "Het meervoud van kantoor is kantoren. Daarnaast is 'met plannen lezen' minder natuurlijk dan 'met het lezen van de planning'."
-            }
-          }
-        ],
-        "feedback_brieven": [
-          {
-            "naam": "Alexandros",
-            "brief": "Hallo Alexandros! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"We gaan naar VDL bij Autos of Fitzen.\"\n👍 *Wat was goed:* Je spreekt de zin duidelijk uit.\n💡 *Correctie:* \"We gaan naar VDL bij Autos of Fitzen.\"\n\n*Zin 2:* \"We klokken in om 6 uur.\"\n👍 *Wat was goed:* Goede zinsopbouw.\n💡 *Correctie:* \"We klokken in om 06:00 uur.\"\n\n*Zin 3:* \"We zijn kwaliteit controleurs en we werken in cleanrooms.\"\n👍 *Wat was goed:* Goede woordkeuze.\n💡 *Correctie:* \"Wij zijn kwaliteitscontroleurs en wij werken in cleanrooms.\"\n🧠 *Waarom:* Samenstellingen schrijf je in het Nederlands aan elkaar: kwaliteitscontroleurs.\n\n*Zin 4:* \"Onze teams zijn klein, vier personen in elke team.\"\n👍 *Wat was goed:* Duidelijke structuur.\n💡 *Correctie:* \"Onze teams zijn klein, vier personen in elk team.\"\n🧠 *Waarom:* Het is 'elk team' omdat 'team' een het-woord is.\n\n*Zin 5:* \"Elke dag we beginnen onze dagen in onze kantoors met plannen lezen.\"\n👍 *Wat was goed:* Je probeert een complexe zin te maken.\n💡 *Correctie:* \"Elke dag beginnen we onze dag op kantoor met het lezen van de planning.\"\n🧠 *Waarom:* Na een tijdsbepaling (Elke dag) moet inversie plaatsvinden: 'beginnen we'.\n🤔 *Logica:* Het meervoud van kantoor is kantoren. Daarnaast is 'met plannen lezen' minder natuurlijk dan 'met het lezen van de planning'.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op de inversie na tijdsbepalingen en het gebruik van het juiste lidwoord bij samenstellingen.\n• *Uitspraak:* Je uitspraak is over het algemeen goed en verstaanbaar.\n• *Samenhang & Logica:* Probeer meer natuurlijke woordcombinaties te gebruiken in plaats van letterlijke vertalingen.\n\n🧠 *Jouw volgende stap & advies:*\nFocus de komende tijd op de zinsvolgorde (inversie) na tijdsbepalingen. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Alexandros! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"We gaan naar VDL bij Autos of Fitzen.\"\n👍 *What was good:* You pronounce the sentence clearly.\n💡 *Correction:* \"We gaan naar VDL bij Autos of Fitzen.\"\n\n*Sentence 2:* \"We klokken in om 6 uur.\"\n👍 *What was good:* Good sentence structure.\n💡 *Correction:* \"We klokken in om 06:00 uur.\"\n\n*Sentence 3:* \"We zijn kwaliteit controleurs en we werken in cleanrooms.\"\n👍 *What was good:* Good word choice.\n💡 *Correction:* \"Wij zijn kwaliteitscontroleurs en wij werken in cleanrooms.\"\n🧠 *Why:* Compound words are written as one word in Dutch: kwaliteitscontroleurs.\n\n*Sentence 4:* \"Onze teams zijn klein, vier personen in elke team.\"\n👍 *What was good:* Clear structure.\n💡 *Correction:* \"Onze teams zijn klein, vier personen in elk team.\"\n🧠 *Why:* It is 'elk team' because 'team' is a neuter noun (het-word).\n\n*Sentence 5:* \"Elke dag we beginnen onze dagen in onze kantoors met plannen lezen.\"\n👍 *What was good:* You are trying to construct complex sentences.\n💡 *Correction:* \"Elke dag beginnen we onze dag op kantoor met het lezen van de planning.\"\n🧠 *Why:* After a time expression (Elke dag), inversion must occur: 'beginnen we'.\n🤔 *Logic:* The plural of kantoor is kantoren. Also, 'met plannen lezen' is less natural than 'met het lezen van de planning'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to inversion after time expressions and using the correct article for compound words.\n• *Pronunciation:* Your pronunciation is generally good and understandable.\n• *Coherence & Logic:* Try to use more natural word combinations instead of literal translations.\n\n🧠 *Your next step & advice:*\nFocus on sentence order (inversion) after time expressions in the coming period. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-          }
-        ]
-      }
-    },
-    {
-      "filename": "Pawan Neeraja 1-6.ogg",
-      "path": "VDL/Pawan Neeraja 1-6.ogg",
-      "date": "01-06-2026",
-      "analyse": {
-        "gesprek": [
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "uh what your work do jij in de VDL?",
-            "zin_correct": "Wat is jouw werk bij VDL?",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "jij",
-              "uitleg": "De cursist gebruikt 'jij' op een onnatuurlijke plek in de vraagstelling."
+              "uitleg": "De cursist zegt 'kantoors', maar het meervoud van kantoor is 'kantoren'. In deze context is het enkelvoud 'ons kantoor' echter logischer."
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "what your work do",
-              "uitleg": "Dit is een letterlijke vertaling uit het Engels. De juiste zinsbouw is 'Wat is jouw werk'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "fout": "Elke dag we beginnen ... onze kantoors ... met plannen lezen",
+              "uitleg": "1. Inversiefout: na 'Elke dag' moet de persoonsvorm eerst ('beginnen we'). 2. Bezittelijk voornaamwoord: 'kantoor' is een het-woord, dus het is 'ons kantoor', niet 'onze'. 3. 'met plannen lezen' moet zijn 'met het lezen van plannen' of 'met plannen te lezen'."
             }
           },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "ik werk als operational in koper in VDL en jij?",
-            "zin_correct": "Ik werk als operationeel medewerker bij VDL, en jij?",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "operational in koper",
-              "uitleg": "De cursist bedoelt waarschijnlijk 'operationeel medewerker'. 'Koper' is hier onduidelijk."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "in koper",
-              "uitleg": "Het voorzetsel 'bij' is correct voor een bedrijf, niet 'in'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "uh ik werk als software engineer in VDL.",
-            "zin_correct": "Ik werk als software engineer bij VDL.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "in VDL",
-              "uitleg": "Gebruik 'bij' voor een bedrijf."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "hoe veel uur werk jij elke dag?",
-            "zin_correct": "Hoeveel uur werk je elke dag?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik werk elke dag negen uur.",
-            "zin_correct": "Ik werk elke dag negen uur.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "wat zijn jouw taken in jouw kantoor?",
-            "zin_correct": "Wat zijn jouw taken op kantoor?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik doe emails controleren, de leveringsbonnen bestellingen plaatsen en doe order bevestigen.",
-            "zin_correct": "Ik controleer e-mails, plaats bestellingen voor leveringsbonnen en bevestig orders.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "ik doe emails controleren",
-              "uitleg": "Gebruik de persoonsvorm: 'Ik controleer e-mails'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "wat vind jij leuk bij jouw werk?",
-            "zin_correct": "Wat vind je leuk aan je werk?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "bij jouw werk",
-              "uitleg": "Het voorzetsel 'aan' is hier correct."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik vind mijn werk interessant.",
-            "zin_correct": "Ik vind mijn werk interessant.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "hoe vaak ga naar kantoor?",
-            "zin_correct": "Hoe vaak ga je naar kantoor?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "ga naar",
-              "uitleg": "Het onderwerp 'je' ontbreekt."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik ga naar mijn kantoor elke dag, ik werk zesendertig uur elke week en ik ben vrij op woensdagmiddags.",
-            "zin_correct": "Ik ga elke dag naar kantoor, ik werk zesendertig uur per week en ik ben vrij op woensdagmiddag.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "woensdagmiddags",
-              "uitleg": "Het meervoud is hier niet nodig, 'woensdagmiddag' is voldoende."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "kun jij thuiswerken elke dag?",
-            "zin_correct": "Kun je elke dag thuiswerken?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "nee, ik kun niet thuiswerken.",
-            "zin_correct": "Nee, ik kan niet thuiswerken.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "ik kun",
-              "uitleg": "Bij 'ik' is de vorm 'kan'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "hoe groot jouw team is?",
-            "zin_correct": "Hoe groot is jouw team?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "jouw team is",
-              "uitleg": "In een vraag moet de persoonsvorm voor het onderwerp staan: 'is jouw team'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "mijn team heeft vijf collega's.",
-            "zin_correct": "Mijn team heeft vijf collega's.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "en jouw team?",
-            "zin_correct": "En jouw team?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik werk alleen.",
-            "zin_correct": "Ik werk alleen.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "hoe laat jouw werk in kantoor?",
-            "zin_correct": "Hoe laat begin je op kantoor?",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "hoe laat jouw werk",
-              "uitleg": "De zin is onvolledig en mist een werkwoord."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "hoe laat jouw werk",
-              "uitleg": "Je vraagt naar een tijdstip, dus gebruik 'Hoe laat begin je'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik werk tot vier uur, vier uur.",
-            "zin_correct": "Ik werk tot vier uur.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "reist u met de auto of met de bus naar kantoor?",
-            "zin_correct": "Reis je met de auto of met de bus naar kantoor?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik reis met de auto naar kantoor.",
-            "zin_correct": "Ik reis met de auto naar kantoor.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "welke VDL jij werk bij?",
-            "zin_correct": "Bij welk VDL-bedrijf werk je?",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "welke VDL jij werk bij",
-              "uitleg": "De zinsbouw is onjuist."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "welke VDL jij werk bij",
-              "uitleg": "Vraagstelling: 'Bij welk bedrijf werk je?'"
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik werk bij VDL VDL team in Hapert.",
-            "zin_correct": "Ik werk bij VDL in Hapert.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Neeraja",
-            "zin_fonetisch": "hoe veel jaar werk jij in VDL?",
-            "zin_correct": "Hoeveel jaar werk je bij VDL?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "in VDL",
-              "uitleg": "Gebruik 'bij' voor een bedrijf."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Pawan",
-            "zin_fonetisch": "ik werk al zes jaar in de VDL.",
-            "zin_correct": "Ik werk al zes jaar bij VDL.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "in de VDL",
-              "uitleg": "Gebruik 'bij' en laat het lidwoord 'de' weg bij bedrijfsnamen."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          }
-        ],
-        "feedback_brieven": [
-          {
-            "naam": "Pawan",
-            "brief": "Hallo Pawan! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"uh what your work do jij in de VDL?\"\n👍 *Wat was goed:* Je probeert een vraag te stellen over werk.\n💡 *Correctie:* \"Wat is jouw werk bij VDL?\"\n🧠 *Waarom:* In het Nederlands gebruiken we 'Wat is jouw werk' in plaats van een letterlijke vertaling uit het Engels.\n\n*Zin 2:* \"uh ik werk als software engineer in VDL.\"\n👍 *Wat was goed:* Duidelijke beroepsomschrijving.\n💡 *Correctie:* \"Ik werk als software engineer bij VDL.\"\n🧠 *Waarom:* Gebruik 'bij' voor een bedrijf.\n\n*Zin 3:* \"ik werk elke dag negen uur.\"\n👍 *Wat was goed:* Goede en duidelijke zin.\n\n*Zin 4:* \"ik doe emails controleren, de leveringsbonnen bestellingen plaatsen en doe order bevestigen.\"\n👍 *Wat was goed:* Je noemt veel taken op.\n💡 *Correctie:* \"Ik controleer e-mails, plaats bestellingen voor leveringsbonnen en bevestig orders.\"\n🧠 *Waarom:* Gebruik de persoonsvorm (ik controleer) in plaats van 'ik doe... controleren'.\n\n*Zin 5:* \"ik vind mijn werk interessant.\"\n👍 *Wat was goed:* Goede en duidelijke zin.\n\n*Zin 6:* \"ik ga naar mijn kantoor elke dag, ik werk zesendertig uur elke week en ik ben vrij op woensdagmiddags.\"\n👍 *Wat was goed:* Goede zinsbouw.\n💡 *Correctie:* \"Ik ga elke dag naar kantoor, ik werk zesendertig uur per week en ik ben vrij op woensdagmiddag.\"\n🧠 *Waarom:* 'Woensdagmiddag' is in het enkelvoud voldoende.\n\n*Zin 7:* \"nee, ik kun niet thuiswerken.\"\n👍 *Wat was goed:* Duidelijk antwoord.\n💡 *Correctie:* \"Nee, ik kan niet thuiswerken.\"\n🧠 *Waarom:* Bij 'ik' is de vorm 'kan'.\n\n*Zin 8:* \"mijn team heeft vijf collega's.\"\n👍 *Wat was goed:* Goede en duidelijke zin.\n\n*Zin 9:* \"ik werk alleen.\"\n👍 *Wat was goed:* Goede en duidelijke zin.\n\n*Zin 10:* \"ik werk tot vier uur, vier uur.\"\n👍 *Wat was goed:* Duidelijk antwoord.\n\n*Zin 11:* \"ik reis met de auto naar kantoor.\"\n👍 *Wat was goed:* Goede en duidelijke zin.\n\n*Zin 12:* \"ik werk bij VDL VDL team in Hapert.\"\n👍 *Wat was goed:* Duidelijke locatie.\n\n*Zin 13:* \"ik werk al zes jaar in de VDL.\"\n👍 *Wat was goed:* Goede zinsbouw.\n💡 *Correctie:* \"Ik werk al zes jaar bij VDL.\"\n🧠 *Waarom:* Gebruik 'bij' en laat het lidwoord 'de' weg bij bedrijfsnamen.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op het gebruik van 'bij' voor bedrijven en vermijd het gebruik van 'de' voor bedrijfsnamen. Oefen met de persoonsvorm in plaats van 'ik doe...'.\n• *Uitspraak:* Je spreekt duidelijk, blijf oefenen met de zinsvolgorde in vragen.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer in je volgende gesprek meer te variëren met werkwoorden en let op de voorzetsels. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Pawan! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"uh what your work do jij in de VDL?\"\n👍 *What was good:* You are trying to ask a question about work.\n💡 *Correction:* \"Wat is jouw werk bij VDL?\"\n🧠 *Why:* In Dutch, we use 'Wat is jouw werk' instead of a literal translation from English.\n\n*Sentence 2:* \"uh ik werk als software engineer in VDL.\"\n👍 *What was good:* Clear job description.\n💡 *Correction:* \"Ik werk als software engineer bij VDL.\"\n🧠 *Why:* Use 'bij' for a company.\n\n*Sentence 3:* \"ik werk elke dag negen uur.\"\n👍 *What was good:* Good and clear sentence.\n\n*Sentence 4:* \"ik doe emails controleren, de leveringsbonnen bestellingen plaatsen en doe order bevestigen.\"\n👍 *What was good:* You listed many tasks.\n💡 *Correction:* \"Ik controleer e-mails, plaats bestellingen voor leveringsbonnen en bevestig orders.\"\n🧠 *Why:* Use the conjugated verb (ik controleer) instead of 'ik doe... controleren'.\n\n*Sentence 5:* \"ik vind mijn werk interessant.\"\n👍 *What was good:* Good and clear sentence.\n\n*Sentence 6:* \"ik ga naar mijn kantoor elke dag, ik werk zesendertig uur elke week en ik ben vrij op woensdagmiddags.\"\n👍 *What was good:* Good sentence structure.\n💡 *Correction:* \"Ik ga elke dag naar kantoor, ik werk zesendertig uur per week en ik ben vrij op woensdagmiddag.\"\n🧠 *Why:* 'Woensdagmiddag' is sufficient in the singular.\n\n*Sentence 7:* \"nee, ik kun niet thuiswerken.\"\n👍 *What was good:* Clear answer.\n💡 *Correction:* \"Nee, ik kan niet thuiswerken.\"\n🧠 *Why:* For 'ik', the form is 'kan'.\n\n*Sentence 8:* \"mijn team heeft vijf collega's.\"\n👍 *What was good:* Good and clear sentence.\n\n*Sentence 9:* \"ik werk alleen.\"\n👍 *What was good:* Good and clear sentence.\n\n*Sentence 10:* \"ik werk tot vier uur, vier uur.\"\n👍 *What was good:* Clear answer.\n\n*Sentence 11:* \"ik reis met de auto naar kantoor.\"\n👍 *What was good:* Good and clear sentence.\n\n*Sentence 12:* \"ik werk bij VDL VDL team in Hapert.\"\n👍 *What was good:* Clear location.\n\n*Sentence 13:* \"ik werk al zes jaar in de VDL.\"\n👍 *What was good:* Good sentence structure.\n💡 *Correction:* \"Ik werk al zes jaar bij VDL.\"\n🧠 *Why:* Use 'bij' and omit the article 'de' for company names.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to using 'bij' for companies and avoid using 'de' before company names. Practice using the conjugated verb instead of 'ik doe...'.\n• *Pronunciation:* You speak clearly, keep practicing sentence order in questions.\n\n🧠 *Your next step & advice:*\nTry to vary your verbs in your next conversation and pay attention to prepositions. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-          },
-          {
-            "naam": "Neeraja",
-            "brief": "Hallo Neeraja! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"ik werk als operational in koper in VDL en jij?\"\n👍 *Wat was goed:* Je geeft een duidelijk antwoord over je werk.\n💡 *Correctie:* \"Ik werk als operationeel medewerker bij VDL, en jij?\"\n🧠 *Waarom:* 'Operationeel medewerker' is de juiste term. Gebruik 'bij' voor een bedrijf.\n\n*Zin 2:* \"hoe veel uur werk jij elke dag?\"\n👍 *Wat was goed:* Goede vraagstelling.\n\n*Zin 3:* \"wat zijn jouw taken in jouw kantoor?\"\n👍 *Wat was goed:* Goede vraagstelling.\n💡 *Correctie:* \"Wat zijn jouw taken op kantoor?\"\n🧠 *Waarom:* 'Op kantoor' is natuurlijker dan 'in jouw kantoor'.\n\n*Zin 4:* \"wat vind jij leuk bij jouw werk?\"\n👍 *Wat was goed:* Goede vraagstelling.\n💡 *Correctie:* \"Wat vind je leuk aan je werk?\"\n🧠 *Waarom:* 'Aan je werk' is de juiste uitdrukking.\n\n*Zin 5:* \"hoe vaak ga naar kantoor?\"\n👍 *Wat was goed:* Duidelijke vraag.\n💡 *Correctie:* \"Hoe vaak ga je naar kantoor?\"\n🧠 *Waarom:* Vergeet het onderwerp 'je' niet.\n\n*Zin 6:* \"kun jij thuiswerken elke dag?\"\n👍 *Wat was goed:* Goede vraagstelling.\n\n*Zin 7:* \"hoe groot jouw team is?\"\n👍 *Wat was goed:* Duidelijke vraag.\n💡 *Correctie:* \"Hoe groot is jouw team?\"\n🧠 *Waarom:* In een vraag komt de persoonsvorm voor het onderwerp.\n\n*Zin 8:* \"en jouw team?\"\n👍 *Wat was goed:* Goede en duidelijke vraag.\n\n*Zin 9:* \"hoe laat jouw werk in kantoor?\"\n👍 *Wat was goed:* Je probeert een vraag te stellen.\n💡 *Correctie:* \"Hoe laat begin je op kantoor?\"\n🧠 *Waarom:* De zin was onvolledig; voeg een werkwoord toe.\n\n*Zin 10:* \"reist u met de auto of met de bus naar kantoor?\"\n👍 *Wat was goed:* Goede en duidelijke vraag.\n\n*Zin 11:* \"welke VDL jij werk bij?\"\n👍 *Wat was goed:* Je probeert door te vragen.\n💡 *Correctie:* \"Bij welk VDL-bedrijf werk je?\"\n🧠 *Waarom:* De zinsbouw in een vraag is belangrijk.\n\n*Zin 12:* \"hoe veel jaar werk jij in VDL?\"\n👍 *Wat was goed:* Goede vraag.\n💡 *Correctie:* \"Hoeveel jaar werk je bij VDL?\"\n🧠 *Waarom:* Gebruik 'bij' voor een bedrijf.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op het gebruik van 'bij' voor bedrijven en de zinsvolgorde in vragen (persoonsvorm voor onderwerp).\n• *Uitspraak:* Je spreekt duidelijk en stelt goede vragen.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer in je volgende gesprek meer te letten op de zinsvolgorde in vragen. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Neeraja! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"ik werk als operational in koper in VDL en jij?\"\n👍 *What was good:* You give a clear answer about your work.\n💡 *Correction:* \"Ik werk als operationeel medewerker bij VDL, en jij?\"\n🧠 *Why:* 'Operationeel medewerker' is the correct term. Use 'bij' for a company.\n\n*Sentence 2:* \"hoe veel uur werk jij elke dag?\"\n👍 *What was good:* Good questioning.\n\n*Sentence 3:* \"wat zijn jouw taken in jouw kantoor?\"\n👍 *What was good:* Good questioning.\n💡 *Correction:* \"Wat zijn jouw taken op kantoor?\"\n🧠 *Why:* 'Op kantoor' is more natural than 'in jouw kantoor'.\n\n*Sentence 4:* \"wat vind jij leuk bij jouw werk?\"\n👍 *What was good:* Good questioning.\n💡 *Correction:* \"Wat vind je leuk aan je werk?\"\n🧠 *Why:* 'Aan je werk' is the correct expression.\n\n*Sentence 5:* \"hoe vaak ga naar kantoor?\"\n👍 *What was good:* Clear question.\n💡 *Correction:* \"Hoe vaak ga je naar kantoor?\"\n🧠 *Why:* Don't forget the subject 'je'.\n\n*Sentence 6:* \"kun jij thuiswerken elke dag?\"\n👍 *What was good:* Good questioning.\n\n*Sentence 7:* \"hoe groot jouw team is?\"\n👍 *What was good:* Clear question.\n💡 *Correction:* \"Hoe groot is jouw team?\"\n🧠 *Why:* In a question, the conjugated verb comes before the subject.\n\n*Sentence 8:* \"en jouw team?\"\n👍 *What was good:* Good and clear question.\n\n*Sentence 9:* \"hoe laat jouw werk in kantoor?\"\n👍 *What was good:* You are trying to ask a question.\n💡 *Correction:* \"Hoe laat begin je op kantoor?\"\n🧠 *Why:* The sentence was incomplete; add a verb.\n\n*Sentence 10:* \"reist u met de auto of met de bus naar kantoor?\"\n👍 *What was good:* Good and clear question.\n\n*Sentence 11:* \"welke VDL jij werk bij?\"\n👍 *What was good:* You are trying to ask follow-up questions.\n💡 *Correction:* \"Bij welk VDL-bedrijf werk je?\"\n🧠 *Why:* Sentence structure in a question is important.\n\n*Sentence 12:* \"hoe veel jaar werk jij in VDL?\"\n👍 *What was good:* Good question.\n💡 *Correction:* \"Hoeveel jaar werk je bij VDL?\"\n🧠 *Why:* Use 'bij' for a company.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to using 'bij' for companies and the sentence order in questions (conjugated verb before subject).\n• *Pronunciation:* You speak clearly and ask good questions.\n\n🧠 *Your next step & advice:*\nTry to pay more attention to sentence order in questions in your next conversation. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-          }
-        ]
-      }
-    },
-    {
-      "filename": "Alexandros Cihan 1-6.ogg",
-      "path": "VDL/Alexandros Cihan 1-6.ogg",
-      "date": "01-06-2026",
-      "analyse": {
-        "gesprek": [
           {
             "spreker": "Alexandros",
-            "zin_fonetisch": "Wat is jouw beroep in video?",
-            "zin_correct": "Wat is jouw beroep?",
+            "zin_fonetisch": "Daarna we beginnen met machines controls.",
+            "zin_correct": "Daarna beginnen we met de controle van de machines.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "controls",
+              "uitleg": "De cursist gebruikt het Engelse woord 'controls' met een Engelse uitspraak."
             },
             "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
               "goed": false,
-              "fout": "in video",
-              "uitleg": "De toevoeging 'in video' is onlogisch in deze context. Het is beter om alleen te vragen naar het beroep."
+              "fout": "Daarna we beginnen met machines controls",
+              "uitleg": "1. Inversiefout: na 'Daarna' moet de persoonsvorm eerst ('beginnen we'). 2. Woordkeuze: 'machines controls' is Engels. In het Nederlands zeggen we 'machinecontroles' of 'de controle van de machines'."
             }
           },
           {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Ik werk als software engineer en jij?",
-            "zin_correct": "Ik werk als software engineer, en jij?",
+            "spreker": "Alexandros",
+            "zin_fonetisch": "We zoeken voor fouten en we schrijven alles in de checklist.",
+            "zin_correct": "We zoeken naar fouten en we schrijven alles op de checklist.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "zoeken voor ... in de checklist",
+              "uitleg": "1. Het vaste voorzetsel bij zoeken is 'naar' (zoeken naar), niet 'voor' (dit is een letterlijke vertaling van 'search for'). 2. We schrijven dingen 'op' een checklist, niet 'in'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Om half zeven we hebben onze eerste pauze.",
+            "zin_correct": "Om half zeven hebben we onze eerste pauze.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Om half zeven we hebben",
+              "uitleg": "Inversiefout: na de tijdsbepaling 'Om half zeven' moet de persoonsvorm eerst komen ('hebben we')."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "We drinken cafés of drinken teen.",
+            "zin_correct": "We drinken koffie of we drinken thee.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "cafés, teen",
+              "uitleg": "De cursist spreekt 'koffie' uit als 'cafés' (Franse/Engelse verwarring) en 'thee' klinkt als 'teen'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "drinken cafés",
+              "uitleg": "Een 'café' is de locatie (de kroeg). Het drankje heet 'koffie'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Daarna we gaan terug in onze cleanrooms.",
+            "zin_correct": "Daarna gaan we terug naar onze cleanrooms.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Daarna we gaan terug in",
+              "uitleg": "1. Inversiefout: na 'Daarna' moet de persoonsvorm eerst ('gaan we'). 2. Richting: we gaan 'naar' onze cleanrooms (beweging naar een bestemming), niet 'in'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Soms we hebben veel machines en soms we hebben geen machines.",
+            "zin_correct": "Soms hebben we veel machines en soms hebben we geen machines.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Soms we hebben ... soms we hebben",
+              "uitleg": "Inversiefout: na het bijwoord 'Soms' moet de persoonsvorm voor het onderwerp staan ('Soms hebben we'). Dit gebeurt twee keer in deze zin."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Nadat we de checklist hebben afgerond, versturen we de e-mails.",
+            "zin_correct": "Nadat we de checklist hebben afgerond, versturen we de e-mails.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -3278,9 +2919,34 @@ window.geminiData = {
             "grammatica_analyse": {
               "goed": true,
               "fout": "",
+              "uitleg": "Perfecte zin! De bijzin met 'nadat' heeft de juiste werkwoordvolgorde aan het eind, en de hoofdzin begint correct met inversie ('versturen we')."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Voor onze tweede pauze we gaan naar kantines en eten ons eten.",
+            "zin_correct": "Voor onze tweede pauze gaan we naar de kantine en eten we ons eten op.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
               "uitleg": ""
             },
-            "logica_analyse": {
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Voor onze tweede pauze we gaan naar kantines en eten ons eten",
+              "uitleg": "1. Inversiefout: na 'Voor onze tweede pauze' moet de persoonsvorm eerst ('gaan we'). 2. Getal: 'kantines' (meervoud) is onlogisch, gebruik 'de kantine' (enkelvoud). 3. 'eten ons eten' mist het scheidbare deel 'op' (opeten) of kan beter vervangen worden door 'eten we onze lunch'."
+            }
+          },
+          {
+            "spreker": "Alexandros",
+            "zin_fonetisch": "We zijn met vier collega's in het team en we zijn altijd samen.",
+            "zin_correct": "We zijn met vier collega's in het team en we zijn altijd samen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
@@ -3288,8 +2954,8 @@ window.geminiData = {
           },
           {
             "spreker": "Alexandros",
-            "zin_fonetisch": "Ik werk als kwaliteit controleur.",
-            "zin_correct": "Ik werk als kwaliteitscontroleur.",
+            "zin_fonetisch": "Elke maand we hebben een ontmoeting met alle de mensen van de teams.",
+            "zin_correct": "Elke maand hebben we een vergadering met alle mensen van de teams.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -3297,210 +2963,50 @@ window.geminiData = {
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "kwaliteit controleur",
-              "uitleg": "Samenstellingen schrijf je in het Nederlands aan elkaar, en vaak met een tussen-s."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Wanneer begin jij jouw werk?",
-            "zin_correct": "Wanneer begin jij met werken?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "fout": "Elke maand we hebben een ontmoeting met alle de mensen",
+              "uitleg": "1. Inversiefout: na 'Elke maand' moet de persoonsvorm eerst ('hebben we'). 2. Woordkeuze: op het werk spreken we meestal van een 'vergadering' of 'bijeenkomst' in plaats van 'ontmoeting'. 3. 'alle de mensen' is dubbelop; het moet 'alle mensen' zijn."
             }
           },
           {
             "spreker": "Alexandros",
-            "zin_fonetisch": "Elke dag begin ik mijn werk om 6 uur en jij?",
-            "zin_correct": "Elke dag begin ik om 6 uur met werken, en jij?",
+            "zin_fonetisch": "We praten voor nieuw updates voor de teams.",
+            "zin_correct": "We praten over nieuwe updates voor de teams.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Ik werk ook 6 uur.",
-            "zin_correct": "Ik werk ook vanaf 6 uur.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
               "goed": false,
-              "fout": "Ik werk ook 6 uur",
-              "uitleg": "Dit klinkt alsof je in totaal 6 uur werkt. Bedoeld wordt waarschijnlijk dat je ook om 6 uur begint."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ga jij naar werk bij auto of fiets?",
-            "zin_correct": "Ga jij met de auto of met de fiets naar je werk?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "fout": "nieuw",
+              "uitleg": "De cursist spreekt de buigings-e in 'nieuwe' niet uit."
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "bij auto",
-              "uitleg": "Gebruik 'met de' voor vervoersmiddelen."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "fout": "praten voor nieuw updates",
+              "uitleg": "1. Het vaste voorzetsel is 'praten over', niet 'voor'. 2. Adjectiefinflectie: 'updates' is meervoud, dus het bijvoeglijk naamwoord krijgt een -e: 'nieuwe updates'."
             }
           },
           {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Ik ga naar werk bij auto.",
-            "zin_correct": "Ik ga met de auto naar mijn werk.",
+            "spreker": "Alexandros",
+            "zin_fonetisch": "Wanneer het tijd is om naar huis te gaan, we nemen onze computers in de clouds.",
+            "zin_correct": "Wanneer het tijd is om naar huis te gaan, slaan we onze computers op in de cloud.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "clouds",
+              "uitleg": "De cursist gebruikt het Engelse meervoud 'clouds' met een Engelse uitspraak."
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "bij auto",
-              "uitleg": "Gebruik 'met de' voor vervoersmiddelen."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "fout": "Wanneer het tijd is ... we nemen ... in de clouds",
+              "uitleg": "1. Inversiefout: de hoofdzin begint na een bijzin ('Wanneer het tijd is...'), dus de persoonsvorm moet direct na de komma staan ('nemen we'). 2. Woordkeuze/idioom: 'nemen in de clouds' is geen correct Nederlands. We zeggen 'opslaan in de cloud' (enkelvoud)."
             }
           },
           {
             "spreker": "Alexandros",
-            "zin_fonetisch": "En jij?",
-            "zin_correct": "En jij?",
+            "zin_fonetisch": "We vinden ons werk leuk.",
+            "zin_correct": "We vinden ons werk leuk.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
             },
             "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Ik ga bij auto.",
-            "zin_correct": "Ik ga met de auto.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "bij auto",
-              "uitleg": "Gebruik 'met de' voor vervoersmiddelen."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Hoeveel mensen werken in jouw kantoor?",
-            "zin_correct": "Hoeveel mensen werken er op jouw kantoor?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Cihan",
-            "zin_fonetisch": "Er zijn vier collega's in mijn kantoor en jij?",
-            "zin_correct": "Er zijn vier collega's op mijn kantoor, en jij?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Er zijn 10 collega's in mijn kantoor.",
-            "zin_correct": "Er zijn 10 collega's op mijn kantoor.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
               "goed": true,
               "fout": "",
               "uitleg": ""
@@ -3510,279 +3016,7 @@ window.geminiData = {
         "feedback_brieven": [
           {
             "naam": "Alexandros",
-            "brief": "Hallo Alexandros! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat is jouw beroep in video?\"\n👍 *Wat was goed:* Je stelt een duidelijke vraag.\n💡 *Correctie:* \"Wat is jouw beroep?\"\n🧠 *Waarom:* De toevoeging 'in video' is niet nodig en maakt de zin onnatuurlijk.\n\n*Zin 2:* \"Ik werk als kwaliteit controleur.\"\n👍 *Wat was goed:* Je geeft een duidelijk antwoord over je werk.\n💡 *Correctie:* \"Ik werk als kwaliteitscontroleur.\"\n🧠 *Waarom:* In het Nederlands schrijven we samenstellingen aan elkaar, vaak met een tussen-s.\n\n*Zin 3:* \"Elke dag begin ik mijn werk om 6 uur en jij?\"\n👍 *Wat was goed:* De zinsopbouw is goed en begrijpelijk.\n💡 *Correctie:* \"Elke dag begin ik om 6 uur met werken, en jij?\"\n🧠 *Waarom:* Dit klinkt net iets natuurlijker in het Nederlands.\n\n*Zin 4:* \"Ga jij naar werk bij auto of fiets?\"\n👍 *Wat was goed:* Je stelt een goede vraag over vervoer.\n💡 *Correctie:* \"Ga jij met de auto of met de fiets naar je werk?\"\n🧠 *Waarom:* Gebruik 'met de' voor vervoersmiddelen.\n\n*Zin 5:* \"Hoeveel mensen werken in jouw kantoor?\"\n👍 *Wat was goed:* Een prima vraag.\n💡 *Correctie:* \"Hoeveel mensen werken er op jouw kantoor?\"\n🧠 *Waarom:* 'Op kantoor' is de juiste voorzetselcombinatie.\n\n*Zin 6:* \"Er zijn 10 collega's in mijn kantoor.\"\n👍 *Wat was goed:* Duidelijk antwoord.\n💡 *Correctie:* \"Er zijn 10 collega's op mijn kantoor.\"\n🧠 *Waarom:* Gebruik 'op' in plaats van 'in' voor kantoor.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op het gebruik van voorzetsels (met de auto, op kantoor) en het aan elkaar schrijven van woorden.\n• *Uitspraak:* Je spreekt duidelijk, ga zo door!\n\n🧠 *Jouw volgende stap & advies:*\nProbeer meer te letten op vaste voorzetsels bij vervoersmiddelen en locaties. Je bent goed op weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Alexandros! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat is jouw beroep in video?\"\n👍 *What was good:* You ask a clear question.\n💡 *Correction:* \"Wat is jouw beroep?\"\n🧠 *Why:* The addition 'in video' is unnecessary and makes the sentence unnatural.\n\n*Sentence 2:* \"Ik werk als kwaliteit controleur.\"\n👍 *What was good:* You give a clear answer about your job.\n💡 *Correction:* \"Ik werk als kwaliteitscontroleur.\"\n🧠 *Why:* In Dutch, compound words are written together, often with a connecting 's'.\n\n*Sentence 3:* \"Elke dag begin ik mijn werk om 6 uur en jij?\"\n👍 *What was good:* The sentence structure is good and understandable.\n💡 *Correction:* \"Elke dag begin ik om 6 uur met werken, en jij?\"\n🧠 *Why:* This sounds slightly more natural in Dutch.\n\n*Sentence 4:* \"Ga jij naar werk bij auto of fiets?\"\n👍 *What was good:* You ask a good question about transport.\n💡 *Correction:* \"Ga jij met de auto of met de fiets naar je werk?\"\n🧠 *Why:* Use 'met de' for means of transport.\n\n*Sentence 5:* \"Hoeveel mensen werken in jouw kantoor?\"\n👍 *What was good:* A fine question.\n💡 *Correction:* \"Hoeveel mensen werken er op jouw kantoor?\"\n🧠 *Why:* 'Op kantoor' is the correct preposition combination.\n\n*Sentence 6:* \"Er zijn 10 collega's in mijn kantoor.\"\n👍 *What was good:* Clear answer.\n💡 *Correction:* \"Er zijn 10 collega's op mijn kantoor.\"\n🧠 *Why:* Use 'op' instead of 'in' for office.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to the use of prepositions (met de auto, op kantoor) and writing compound words together.\n• *Pronunciation:* You speak clearly, keep it up!\n\n🧠 *Your next step & advice:*\nTry to pay more attention to fixed prepositions for transport and locations. You are on the right track! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-          },
-          {
-            "naam": "Cihan",
-            "brief": "Hallo Cihan! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik werk als software engineer en jij?\"\n👍 *Wat was goed:* Een prima zin.\n💡 *Correctie:* \"Ik werk als software engineer, en jij?\"\n🧠 *Waarom:* Een komma voor 'en' maakt de zin leesbaarder.\n\n*Zin 2:* \"Wanneer begin jij jouw werk?\"\n👍 *Wat was goed:* Duidelijke vraag.\n💡 *Correctie:* \"Wanneer begin jij met werken?\"\n🧠 *Waarom:* Dit is de meest gebruikelijke manier om dit te vragen.\n\n*Zin 3:* \"Ik werk ook 6 uur.\"\n👍 *Wat was goed:* Je bent goed verstaanbaar.\n💡 *Correctie:* \"Ik werk ook vanaf 6 uur.\"\n🧠 *Waarom:* 'Ik werk 6 uur' betekent dat je 6 uur lang werkt. Je bedoelde waarschijnlijk het tijdstip.\n\n*Zin 4:* \"Ik ga naar werk bij auto.\"\n👍 *Wat was goed:* Je maakt jezelf duidelijk.\n💡 *Correctie:* \"Ik ga met de auto naar mijn werk.\"\n🧠 *Waarom:* Gebruik 'met de' voor vervoersmiddelen.\n\n*Zin 5:* \"Ik ga bij auto.\"\n👍 *Wat was goed:* Kort en krachtig.\n💡 *Correctie:* \"Ik ga met de auto.\"\n🧠 *Waarom:* Gebruik 'met de' voor vervoersmiddelen.\n\n*Zin 6:* \"Er zijn vier collega's in mijn kantoor en jij?\"\n👍 *Wat was goed:* Goede zinsbouw.\n💡 *Correctie:* \"Er zijn vier collega's op mijn kantoor, en jij?\"\n🧠 *Waarom:* 'Op kantoor' is de juiste uitdrukking.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op het gebruik van 'met de' bij vervoersmiddelen en 'op' bij kantoor.\n• *Uitspraak:* Je spreekt duidelijk en rustig.\n\n🧠 *Jouw volgende stap & advies:*\nFocus op de juiste voorzetsels. Je bent goed bezig, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Cihan! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik werk als software engineer en jij?\"\n👍 *What was good:* A fine sentence.\n💡 *Correction:* \"Ik werk als software engineer, en jij?\"\n🧠 *Why:* A comma before 'en' makes the sentence more readable.\n\n*Sentence 2:* \"Wanneer begin jij jouw werk?\"\n👍 *What was good:* Clear question.\n💡 *Correction:* \"Wanneer begin jij met werken?\"\n🧠 *Why:* This is the most common way to ask this.\n\n*Sentence 3:* \"Ik werk ook 6 uur.\"\n👍 *What was good:* You are easy to understand.\n💡 *Correction:* \"Ik werk ook vanaf 6 uur.\"\n🧠 *Why:* 'Ik werk 6 uur' means you work for 6 hours. You probably meant the time.\n\n*Sentence 4:* \"Ik ga naar werk bij auto.\"\n👍 *What was good:* You make yourself clear.\n💡 *Correction:* \"Ik ga met de auto naar mijn werk.\"\n🧠 *Why:* Use 'met de' for means of transport.\n\n*Sentence 5:* \"Ik ga bij auto.\"\n👍 *What was good:* Short and concise.\n💡 *Correction:* \"Ik ga met de auto.\"\n🧠 *Why:* Use 'met de' for means of transport.\n\n*Sentence 6:* \"Er zijn vier collega's in mijn kantoor en jij?\"\n👍 *What was good:* Good sentence structure.\n💡 *Correction:* \"Er zijn vier collega's op mijn kantoor, en jij?\"\n🧠 *Why:* 'Op kantoor' is the correct expression.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to the use of 'met de' for transport and 'op' for office.\n• *Pronunciation:* You speak clearly and calmly.\n\n🧠 *Your next step & advice:*\nFocus on the correct prepositions. You are doing well, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-          }
-        ]
-      }
-    },
-    {
-      "filename": "Alexandros negation.ogg",
-      "path": "VDL/Alexandros negation.ogg",
-      "date": "02-06-2026",
-      "analyse": {
-        "gesprek": [
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Vandaag is een mooi lijk dag.",
-            "zin_correct": "Vandaag is een mooie dag.",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "mooi lijk",
-              "uitleg": "Je zegt 'mooi lijk', maar het moet 'mooie' zijn. 'Lijk' betekent 'corpse', wat hier niet de bedoeling is."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "mooi lijk",
-              "uitleg": "Bijvoeglijk naamwoord bij een 'de-woord' (dag) krijgt een -e."
-            },
-            "logica_analyse": {
-              "goed": false,
-              "fout": "mooi lijk dag",
-              "uitleg": "Het woord 'lijk' is hier onlogisch en ongepast. Gebruik gewoon 'mooie dag'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Niets gaat goed.",
-            "zin_correct": "Niets gaat goed.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Mijn auto start niet en ik ga naar werk bij fiets.",
-            "zin_correct": "Mijn auto start niet en ik ga met de fiets naar mijn werk.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "bij fiets",
-              "uitleg": "Het is 'met de fiets'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Daarna er is geen café bij werk.",
-            "zin_correct": "Daarna is er geen café bij mijn werk.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "er is",
-              "uitleg": "In een bijzin of na een tijdsbepaling moet de persoonsvorm voor het onderwerp staan: 'is er'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Wat een dag.",
-            "zin_correct": "Wat een dag.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik ga de cleanroom in en ik zie dat mijn computer niet werk.",
-            "zin_correct": "Ik ga de cleanroom in en ik zie dat mijn computer niet werkt.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "niet werk",
-              "uitleg": "Computer is enkelvoud, dus 'werkt' met een t."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Daarna ik bel IT en ze geven geen antwoord.",
-            "zin_correct": "Daarna bel ik IT en ze geven geen antwoord.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "Daarna ik bel",
-              "uitleg": "Na een tijdsbepaling moet inversie plaatsvinden: 'Daarna bel ik'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Nu ik heb geen computer maar ik heb veel werk te doen.",
-            "zin_correct": "Nu heb ik geen computer, maar ik heb veel werk te doen.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "Nu ik heb",
-              "uitleg": "Inversie na 'Nu': 'Nu heb ik'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik wil pauze nemen.",
-            "zin_correct": "Ik wil pauze nemen.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik ga naar mijn tas maar mijn eten is er niet.",
-            "zin_correct": "Ik ga naar mijn tas, maar mijn eten is er niet.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik ben het vergeten.",
-            "zin_correct": "Ik ben het vergeten.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "De kantine is niet open.",
-            "zin_correct": "De kantine is niet open.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "En nu ik heb geen eten en ik heb honger.",
-            "zin_correct": "En nu heb ik geen eten en heb ik honger.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "nu ik heb",
-              "uitleg": "Inversie na 'nu': 'nu heb ik'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik wil naar huis gaan maar ik heb geen extra tijd.",
-            "zin_correct": "Ik wil naar huis gaan, maar ik heb geen tijd meer.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": false,
-              "fout": "geen extra tijd",
-              "uitleg": "Het is logischer om te zeggen 'geen tijd meer' of 'geen tijd over' in deze context."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Dat is helaas.",
-            "zin_correct": "Dat is helaas jammer.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "Dat is helaas",
-              "uitleg": "Helaas is een bijwoord, je hebt een zelfstandig naamwoord of bijvoeglijk naamwoord nodig zoals 'Dat is jammer'."
-            }
-          },
-          {
-            "spreker": "Alexandros",
-            "zin_fonetisch": "Ik wein het niet leuk.",
-            "zin_correct": "Ik vind het niet leuk.",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "wein",
-              "uitleg": "Je zegt 'wein', maar het moet 'vind' zijn."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "wein",
-              "uitleg": "Het werkwoord is 'vinden', dus 'ik vind'."
-            }
-          }
-        ],
-        "feedback_brieven": [
-          {
-            "naam": "Alexandros",
-            "brief": "Hallo Alexandros! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Vandaag is een mooi lijk dag.\"\n👍 *Wat was goed:* Je gebruikt de juiste zinsstructuur voor een beginzin.\n💡 *Correctie:* \"Vandaag is een mooie dag.\"\n🧠 *Waarom:* Bijvoeglijk naamwoord bij een 'de-woord' krijgt een -e. 'Lijk' is hier onjuist.\n🤔 *Logica:* Het woord 'lijk' is hier onlogisch en ongepast. Gebruik gewoon 'mooie dag'.\n\n*Zin 3:* \"Mijn auto start niet en ik ga naar werk bij fiets.\"\n👍 *Wat was goed:* Duidelijke zinsopbouw.\n💡 *Correctie:* \"Mijn auto start niet en ik ga met de fiets naar mijn werk.\"\n🧠 *Waarom:* Het is 'met de fiets' en 'naar mijn werk'.\n\n*Zin 7:* \"Daarna ik bel IT en ze geven geen antwoord.\"\n👍 *Wat was goed:* Goede woordkeuze.\n💡 *Correctie:* \"Daarna bel ik IT en ze geven geen antwoord.\"\n🧠 *Waarom:* Na een tijdsbepaling (daarna) moet de persoonsvorm voor het onderwerp staan (inversie).\n\n*Zin 14:* \"Ik wil naar huis gaan maar ik heb geen extra tijd.\"\n👍 *Wat was goed:* Goede zinsstructuur.\n💡 *Correctie:* \"Ik wil naar huis gaan, maar ik heb geen tijd meer.\"\n🤔 *Logica:* Het is logischer om te zeggen 'geen tijd meer' of 'geen tijd over' in deze context.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op de inversie na tijdsbepalingen (zoals 'daarna', 'nu'). Ook de vervoeging van werkwoorden (computer werkt) en het gebruik van lidwoorden/bijvoeglijke naamwoorden (mooie dag) zijn belangrijk.\n• *Uitspraak:* Let op de uitspraak van 'vind' (niet 'wein').\n• *Samenhang & Logica:* Je verhaal is heel begrijpelijk, maar let op woordkeuze zoals 'lijk' en 'extra tijd'.\n\n🧠 *Jouw volgende stap & advies:*\nOefen meer met inversie in zinnen die beginnen met een tijdsbepaling. Je bent goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hello Alexandros! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Vandaag is een mooi lijk dag.\"\n👍 *What was good:* You used the correct sentence structure for an opening sentence.\n💡 *Correction:* \"Vandaag is een mooie dag.\"\n🧠 *Why:* Adjectives for 'de-words' get an -e. 'Lijk' is incorrect here.\n🤔 *Logic:* The word 'lijk' is illogical and inappropriate here. Just use 'mooie dag'.\n\n*Sentence 3:* \"Mijn auto start niet en ik ga naar werk bij fiets.\"\n👍 *What was good:* Clear sentence structure.\n💡 *Correction:* \"Mijn auto start niet en ik ga met de fiets naar mijn werk.\"\n🧠 *Why:* It is 'met de fiets' and 'naar mijn werk'.\n\n*Sentence 7:* \"Daarna ik bel IT en ze geven geen antwoord.\"\n👍 *What was good:* Good word choice.\n💡 *Correction:* \"Daarna bel ik IT en ze geven geen antwoord.\"\n🧠 *Why:* After a time indicator (daarna), the verb must come before the subject (inversion).\n\n*Sentence 14:* \"Ik wil naar huis gaan maar ik heb geen extra tijd.\"\n👍 *What was good:* Good sentence structure.\n💡 *Correction:* \"Ik wil naar huis gaan, maar ik heb geen tijd meer.\"\n🤔 *Logic:* It is more logical to say 'geen tijd meer' or 'geen tijd over' in this context.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to inversion after time indicators (like 'daarna', 'nu'). Also, verb conjugation (computer werkt) and the use of articles/adjectives (mooie dag) are important.\n• *Pronunciation:* Pay attention to the pronunciation of 'vind' (not 'wein').\n• *Coherence & Logic:* Your story is very understandable, but watch out for word choices like 'lijk' and 'extra tijd'.\n\n🧠 *Your next step & advice:*\nPractice more with inversion in sentences starting with time indicators. You are on the right track! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+            "brief": "Hallo Alexandros! 👋\n\nWat goed dat je hebt geoefend! Je hebt een heel duidelijk en gestructureerd verhaal verteld over je werkdag als kwaliteitscontroleur bij VDL. Het is erg interessant om te horen hoe jullie dag verloopt! 🎈\n\n👍 Wat ging er al heel goed?\nJe hebt een fantastische zin gemaakt: \"Nadat we de checklist hebben afgerond, versturen we de e-mails.\" Deze zin is grammaticaal 100% correct! Je gebruikt de bijzin met 'nadat' perfect en past daarna direct de juiste inversie toe. Heel knap! 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: Let op de woordvolgorde (Inversie) ❌\nAls een zin begint met een tijd of plaats (zoals *Elke dag*, *Daarna*, *Soms*, *Om half zeven*), moet het werkwoord direct daarna komen. Het onderwerp (we) komt pas op de derde plaats.\nWat je zei: \"Elke dag we beginnen...\" / \"Daarna we gaan...\"\nHoe het moet: \"Elke dag beginnen we...\" / \"Daarna gaan we...\"\nUitleg: Dit noemen we inversie. Het werkwoord wil in een normale hoofdzin altijd op de tweede positie staan.\n\nOefen nu hardop:\n\"Elke dag beginnen we om zes uur.\" 🗣️\n\"Daarna gaan we naar de cleanroom.\" 🗣️\n\nTip 2: Vaste voorzetsels en woordkeuze 🏡\nIn het Nederlands gebruiken we specifieke voorzetsels bij bepaalde werkwoorden. Ook moeten we oppassen met Engelse woorden.\nWat je zei: \"We zoeken voor fouten\" / \"We praten voor updates\" / \"We drinken cafés\"\nHoe het moet: \"We zoeken naar fouten\" / \"We praten over updates\" / \"We drinken koffie\"\nUitleg: We zoeken *naar* iets en praten *over* iets. Daarnaast is een 'café' de plek waar je bier of koffie drinkt, maar het drankje zelf noemen we 'koffie'.\n\nOefen nu hardop:\n\"We zoeken naar fouten op de checklist.\" 🗣️\n\"We drinken koffie in de pauze.\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe hebt al een hele mooie woordenschat en je durft vloeiend te spreken. Als je de komende tijd extra let op de inversie na tijdsbepalingen, zal je Nederlands nóg professioneler klinken op de werkvloer! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           }
         ]
       }
@@ -4791,6 +4025,544 @@ window.geminiData = {
           {
             "naam": "Tang",
             "brief": "Hallo Tang! 👋\n\nWat goed dat je deze opname hebt gemaakt en jezelf zo uitgebreid hebt voorgesteld! Je durft al veel te vertellen over je huis, je familie en je school. Dat is een heel mooi begin. 🎈\n\n👍 Wat ging er al heel goed?\nJe kunt jezelf al heel netjes introduceren! De zinnen \"Ik heet Tang\" en \"Ik kom uit China\" waren grammaticaal helemaal correct en heel duidelijk uitgesproken. 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: Pas op met het werkwoord 'heten' ❌\nWat je zei: \"Ik heet vier kamers\" / \"Ik heet acht maanden in Nederlands\"\nHoe het moet: \"Ik heb vier kamers\" / \"Ik ben acht maanden in Nederland\"\nUitleg: Je gebruikt heel vaak het werkwoord 'heten'. Let op: 'heten' gebruik je alleen voor je naam. Voor bezit gebruik je 'hebben' en voor tijd/locatie gebruik je 'zijn' (ik ben).\n\nOefen nu hardop:\n\"Ik heb een grote kamer.\" 🗣️\n\"Ik ben al een jaar in Nederland.\" 🗣️\n\nTip 2: Let op lidwoorden en meervoud 🏡\nWat je zei: \"Ik heb een kindern\"\nHoe het moet: \"Ik heb kinderen\" of \"Ik heb een kind\"\nUitleg: Het woord 'een' gebruik je alleen voor één ding of persoon (enkelvoud). 'Kinderen' is meervoud, dus daar hoort geen 'een' voor.\n\nOefen nu hardop:\n\"Ik heb twee kinderen.\" 🗣️\n\"Ik woon in een huis.\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe hebt al een goede basis, Tang! Als je extra let op het kiezen van het juiste werkwoord (hebben, zijn, wonen), worden je zinnen direct veel begrijpelijker. Veel succes met oefenen! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abohayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Hailan 1.ogg",
+      "path": "B-A1/Hailan 1.ogg",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik het Hailan.",
+            "zin_correct": "Ik heet Hailan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik kong oud Tsina.",
+            "zin_correct": "Ik kom uit China.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kong, oud, Tsina",
+              "uitleg": "De 'm' aan het einde van 'kom' wordt uitgesproken als een 'ng'-klank. De tweeklank 'ui' in 'uit' klinkt als 'ou'. De 'Ch' in 'China' wordt uitgesproken als 'Ts'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik wong in Veldtofen.",
+            "zin_correct": "Ik woon in Veldhoven.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "wong, Veldtofen",
+              "uitleg": "De 'n' aan het einde van 'woon' wordt uitgesproken als een 'ng'-klank. In 'Veldhoven' valt de 'h' weg en wordt de 'v' uitgesproken als een stemloze 'f'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik hep in hois.",
+            "zin_correct": "Ik heb een huis.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "hep, in, hois",
+              "uitleg": "De eindmedeklinker 'b' in 'heb' klinkt als een 'p' (eindontstemming, dit is correct), maar 'een' klinkt te veel als 'in'. De tweeklank 'ui' in 'huis' wordt uitgesproken als 'oi'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik hep dili kamers.",
+            "zin_correct": "Ik heb drie kamers.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "dili",
+              "uitleg": "De medeklinkercombinatie 'dr' in 'drie' is moeilijk; er wordt een extra klinker tussen gevoegd en de 'r' wordt een 'l'-klank ('dili')."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Mai hois is kolin.",
+            "zin_correct": "Mijn huis is klein.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mai, hois, kolin",
+              "uitleg": "De 'n' aan het einde van 'mijn' ontbreekt. 'huis' klinkt als 'hois'. Bij 'klein' wordt de 'kl'-combinatie opgeknipt met een extra klinker en klinkt de 'ei' als 'i'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik hep twee kindelen.",
+            "zin_correct": "Ik heb twee kinderen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kindelen",
+              "uitleg": "De 'r' in 'kinderen' wordt vervangen door een 'l'-klank ('kindelen')."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Mai man het Min.",
+            "zin_correct": "Mijn man heet Min.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mai, het",
+              "uitleg": "De 'n' aan het einde van 'mijn' ontbreekt. De lange klinker 'ee' in 'heet' klinkt te kort als een 'e'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Mai familileden wonen in Nedolant.",
+            "zin_correct": "Mijn familieleden wonen in Nederland.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mai, familileden, Nedolant",
+              "uitleg": "De 'n' in 'mijn' ontbreekt. De lange 'ie' in 'familieleden' klinkt als een korte 'i'. De 'r' in 'Nederland' wordt weggelaten of vervangen door een 'o'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik... bleef... in... tois.",
+            "zin_correct": "Ik blijf thuis.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "bleef, tois",
+              "uitleg": "De tweeklank 'ij' in 'blijf' klinkt als 'ee'. De 'th' in 'thuis' klinkt als 't' (dit is correct), maar de 'ui' klinkt als 'oi'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "bleef in tois",
+              "uitleg": "Het werkwoord moet in de tegenwoordige tijd staan ('blijf' in plaats van 'bleef'). Daarnaast gebruiken we in het Nederlands geen voorzetsel 'in' voor het woord 'thuis'. Het is simpelweg: 'Ik blijf thuis'."
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik lene Nedelans op schol.",
+            "zin_correct": "Ik leer Nederlands op school.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "lene, Nedelans, schol",
+              "uitleg": "Het werkwoord 'leer' wordt uitgesproken met een extra lettergreep ('lene'). De 'r' in 'Nederlands' ontbreekt. De lange 'oo' in 'school' klinkt te kort als een 'o'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik ha ong nehen i nade schol.",
+            "zin_correct": "Ik ga ook online naar school.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "ha, ong nehen, nade schol",
+              "uitleg": "De zachte 'g' in 'ga' klinkt als een 'h'. De woorden 'ook online' zijn erg onduidelijk en vervormd tot 'ong nehen'. 'naar de school' klinkt gehaast als 'nade schol'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "naar de school",
+              "uitleg": "In deze context laten we het lidwoord 'de' weg. Het is 'naar school gaan', niet 'naar de school gaan'."
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik kaik afons... afons... telefis.",
+            "zin_correct": "Ik kijk 's avonds televisie.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kaik, afons, telefis",
+              "uitleg": "De 'ij' in 'kijk' klinkt als 'ai'. De 's' aan het begin van ''s avonds' ontbreekt en de 'v' klinkt als een 'f'. In 'televisie' worden de stemhebbende 'v' en 'z' stemloos uitgesproken als 'f' en 's'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik lere elefe manten na schol.",
+            "zin_correct": "Ik leer elke middag na school.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "lere, elefe manten, schol",
+              "uitleg": "'leer' klinkt als 'lere'. De woorden 'elke middag' zijn erg onduidelijk uitgesproken en klinken als 'elefe manten'. 'school' heeft een te korte klinker."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik fints leien laik.",
+            "zin_correct": "Ik vind lezen leuk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "fints, leien, laik",
+              "uitleg": "'vind' krijgt een extra 's'-klank aan het einde. In 'lezen' valt de 'z' weg en klinkt het als 'leien'. De tweeklank 'eu' in 'leuk' wordt uitgesproken als 'ai'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Folaistelen Nedelans is moilik for mai.",
+            "zin_correct": "Voorlezen in het Nederlands is moeilijk voor mij.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "folaistelen, Nedelans, moilik, for, mai",
+              "uitleg": "'voorlezen' klinkt als 'folaistelen' (de 'r' ontbreekt en de 'ee' klinkt als 'ai'). 'moeilijk' klinkt als 'moilik' (de 'ui' klinkt als 'oi'). 'voor' klinkt als 'for' met een korte klinker."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Voorlezen Nederlands",
+              "uitleg": "Er ontbreekt een voorzetsel en lidwoord. Het moet zijn: 'Voorlezen in het Nederlands is moeilijk voor mij'."
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Hailan",
+            "brief": "Hallo Hailan! 👋\n\nWat goed dat je deze spreekopdracht hebt ingestuurd! Je vertelt heel veel over jezelf, je gezin en hoe je Nederlands leert. Dat is ontzettend leuk om te horen en heel dapper van je! 🎈\n\n👍 Wat ging er al heel goed?\nJe spreekt al in mooie, volledige zinnen en je durft moeilijke woorden te gebruiken zoals 'familieleden' en 'voorlezen'. Je zinsstructuur is over het algemeen heel logisch! 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: Let op de tweeklanken (ui, eu, ij) ❌\nWat je zei: \"Ik hep in hois\" / \"leien laik\"\nHoe het moet: \"Ik heb een huis\" / \"lezen leuk\"\nUitleg: In het Nederlands zijn de klanken 'ui' (in huis) en 'eu' (in leuk) heel belangrijk. Probeer je lippen goed te ronden bij de 'eu'. De 'ui' begint achter in je mond en eindigt voorin. Maak er geen 'oi' of 'ai' van.\n\nOefen nu hardop:\n\"Het huis is klein.\" 🗣️\n\"Ik vind Nederlands leuk!\" 🗣️\n\nTip 2: De 'r' en de 'l' klank 🏡\nWat je zei: \"twee kindelen\" / \"Nedelans\"\nHoe het moet: \"twee kinderen\" / \"Nederlands\"\nUitleg: Soms vervang je de 'r' door een 'l'. Probeer de 'r' goed te laten trillen met de punt van je tong tegen je gehemelte, of achter in je keel. Laat de 'r' niet wegvallen.\n\nOefen nu hardop:\n\"Mijn kinderen leren op school.\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe bent al heel goed op weg, Hailan! Door extra te letten op de uitspraak van de klinkers en de 'r', zul je nog beter verstaanbaar worden. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Kojo 1.ogg",
+      "path": "B-A1/Kojo 1.ogg",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Okay, ik heet Kojo Aka.",
+            "zin_correct": "Oké, ik heet Kojo Aka.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik kom uit Ghana.",
+            "zin_correct": "Ik kom uit Ghana.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik woon in Eindhoven.",
+            "zin_correct": "Ik woon in Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik heb een huis.",
+            "zin_correct": "Ik heb een huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik heb three kamers.",
+            "zin_correct": "Ik heb drie kamers.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "three",
+              "uitleg": "De cursist gebruikt het Engelse woord 'three' in plaats van het Nederlandse 'drie'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "three",
+              "uitleg": "Code-switching naar het Engels. Gebruik het Nederlandse telwoord 'drie'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "My house is klein.",
+            "zin_correct": "Mijn huis is klein.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "My house",
+              "uitleg": "De cursist spreekt 'My house' uit op zijn Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "My house",
+              "uitleg": "De cursist gebruikt het Engelse bezittelijk voornaamwoord 'My' en het Engelse zelfstandig naamwoord 'house' in plaats van 'Mijn huis'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik heb twee kinderen, meisje, twee meisje.",
+            "zin_correct": "Ik heb twee kinderen, twee meisjes.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "twee meisje",
+              "uitleg": "Na het telwoord 'twee' moet het zelfstandig naamwoord in het meervoud staan: 'meisjes' in plaats van het enkelvoud 'meisje'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "En een partner.",
+            "zin_correct": "En een partner.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "My family is in Nederlands.",
+            "zin_correct": "Mijn familie is in Nederland.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "My family, Nederlands",
+              "uitleg": "De cursist spreekt 'My family' uit op zijn Engels. Hij voegt een 's' toe aan 'Nederland', waardoor het klinkt als de taal 'Nederlands' in plaats van het land."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "My family, Nederlands",
+              "uitleg": "Engelse woorden 'My family' gebruikt in plaats van 'Mijn familie'. Daarnaast gebruikt hij de naam van de taal ('Nederlands') in plaats van de naam van het land ('Nederland')."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik ga naar werk.",
+            "zin_correct": "Ik ga naar mijn werk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "naar werk",
+              "uitleg": "In het Nederlands is een lidwoord of bezittelijk voornaamwoord nodig: 'naar het werk' of 'naar mijn werk'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "En ik ga ook school en buiten.",
+            "zin_correct": "En ik ga ook naar school en naar buiten.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ga ook school en buiten",
+              "uitleg": "De prepositie 'naar' ontbreekt voor zowel 'school' als 'buiten'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "And then...",
+            "zin_correct": "En dan...",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "And then",
+              "uitleg": "Engelse uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "And then",
+              "uitleg": "De cursist gebruikt de Engelse verbindingswoorden 'And then' in plaats van het Nederlandse 'En dan'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "I start the course six.",
+            "zin_correct": "Ik begin de cursus om zes uur.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "I start the course six",
+              "uitleg": "Volledig Engelse uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "I start the course six",
+              "uitleg": "De cursist schakelt volledig over naar het Engels om te vertellen hoe laat zijn cursus begint."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik ga naar werk.",
+            "zin_correct": "Ik ga naar mijn werk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "naar werk",
+              "uitleg": "Er ontbreekt een lidwoord of bezittelijk voornaamwoord: 'naar mijn werk' of 'naar het werk'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik leer six month.",
+            "zin_correct": "Ik leer al zes maanden.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "six month",
+              "uitleg": "Engelse uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "six month",
+              "uitleg": "De cursist gebruikt Engelse woorden 'six month' in plaats van het Nederlandse 'zes maanden'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "And then ik land in Nederlands eight months.",
+            "zin_correct": "En ik ben nu acht maanden in Nederland.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "And then, land, Nederlands, eight months",
+              "uitleg": "Veel Engelse klanken en verkeerde uitspraak van 'Nederland' (met een -s)."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "And then ik land in Nederlands eight months",
+              "uitleg": "Dit is een mengsel van Engels en Nederlands met een incorrecte zinsbouw. 'Land' is letterlijk vertaald uit het Engels. Het moet zijn: 'En ik ben nu acht maanden in Nederland'."
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Ik vind schrijven leuk.",
+            "zin_correct": "Ik vind schrijven leuk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "En spreken is mooi... is moeilijk voor mij.",
+            "zin_correct": "En spreken is moeilijk voor mij.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De cursist corrigeert zichzelf goed van 'mooi' naar 'moeilijk'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Kojo",
+            "brief": "Hallo Kojo! 👋\n\nWat goed dat je jezelf zo uitgebreid hebt voorgesteld in het Nederlands! Je vertelt heel duidelijk over je gezin, je werk en je cursus. Je hebt al een goede basis en je uitspraak van zinnen zoals \"Ik vind schrijven leuk\" is erg goed. 🎈\n\n👍 Wat ging er al heel goed?\nJe corrigeerde jezelf heel mooi aan het einde van het gesprek toen je \"mooi\" zei maar eigenlijk \"moeilijk\" bedoelde. Dat laat zien dat je goed oplet tijdens het spreken! 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: Voorkom Engels praten (code-switching) ❌\nWat je zei: \"Ik heb three kamers\" / \"My house is klein\"\nHoe het moet: \"Ik heb drie kamers\" / \"Mijn huis is klein\"\nUitleg: Soms gebruik je nog Engelse woorden zoals 'three', 'my', 'family' of 'six'. Probeer deze woorden echt in het Nederlands te vertalen. Oefen de getallen en bezittelijke voornaamwoorden goed.\n\nOefen nu hardop:\n\"Ik heb drie kamers.\" 🗣️\n\"Mijn huis is klein.\" 🗣️\n\nTip 2: Gebruik voorzetsels en lidwoorden 🏡\nWat je zei: \"Ik ga naar werk\" / \"Ik ga ook school\"\nHoe het moet: \"Ik ga naar mijn werk\" / \"Ik ga ook naar school\"\nUitleg: In het Nederlands hebben we bijna altijd het voorzetsel 'naar' nodig als we ergens naartoe gaan. Vergeet ook het lidwoord of bezittelijk voornaamwoord ('het' of 'mijn') niet bij het woord 'werk'.\n\nOefen nu hardop:\n\"Ik ga naar mijn werk.\" 🗣️\n\"Ik ga ook naar school.\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe bent al heel goed op weg, Kojo! Probeer de komende tijd extra te letten op het vermijden van Engelse woorden als je Nederlands praat. Je volgende stap is om vaker de Nederlandse getallen en voorzetsels te gebruiken. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           }
         ]
       }

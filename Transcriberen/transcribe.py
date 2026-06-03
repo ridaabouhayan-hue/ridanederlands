@@ -23,6 +23,10 @@ if not GEMINI_API_KEY:
 
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
+# Model selectie: gebruik Pro model voor maximale nauwkeurigheid en perfecte naleving van instructies.
+# Fallback is ingesteld op gemini-1.5-pro als gemini-2.5-pro niet beschikbaar is op dit API-key tier.
+GEMINI_MODEL = "gemini-2.5-pro"
+
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm')
 
 groepen = [
@@ -161,15 +165,28 @@ Geef ALLEEN deze JSON terug. Zorg dat de JSON valide is. Geef geen extra tekst b
 BELANGRIJK:
 1. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
 2. Zeg bij een uitspraak of grammatica die correct is NOOIT dat het 'perfect' of 'foutloos' is (dit niveau is voor B2/C1). Zeg in plaats daarvan dat het 'goed', 'duidelijk' of 'begrijpelijk' is.
-3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is."""
+3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
+4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Als een cursist bijvoorbeeld 16 zinnen uitspreekt in het "gesprek" array, dan MOETEN er exact 16 zinsanalyses (*Zin 1:* t/m *Zin 16:*) in de 'brief' en 'brief_en' staan. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin helemaal goed was en geen fouten bevatte, noteer dit dan ook in de brief (bijv. "👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit. 💡 *Correctie:* [schrijf hier de originele zin]")."""
                 
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.
-                response = client.models.generate_content(
-                    model='gemini-3.1-flash-lite',
-                    contents=[audio_file, prompt],
-                    config={'temperature': 0.1, 'response_mime_type': 'application/json'}
-                )
+                try:
+                    response = client.models.generate_content(
+                        model=GEMINI_MODEL,
+                        contents=[audio_file, prompt],
+                        config={'temperature': 0.1, 'response_mime_type': 'application/json'}
+                    )
+                except Exception as model_err:
+                    err_lower = str(model_err).lower()
+                    if "404" in err_lower or "not found" in err_lower or "not_found" in err_lower:
+                        print(f"⚠️ Model '{GEMINI_MODEL}' niet ondersteund of niet gevonden op deze API-sleutel tier. Fallback naar 'gemini-1.5-pro'...")
+                        response = client.models.generate_content(
+                            model='gemini-1.5-pro',
+                            contents=[audio_file, prompt],
+                            config={'temperature': 0.1, 'response_mime_type': 'application/json'}
+                        )
+                    else:
+                        raise model_err
                 
                 # Parse the JSON response
                 if not response.text or not response.text.strip():
