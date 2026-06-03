@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaste Voorzetselcombinaties - NT2</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4EFE6;
+    --bg-card: #FFFFFF;
+    --text: #1C1B17;
+    --text-mid: #5F5C54;
+    --text-light: #908C81;
+    --accent: #2D5F4E;
+    --accent-soft: #E5EEEA;
+    --prep: #B23A1B;
+    --prep-soft: #FAEBE3;
+    --en-bg: #EDF2EE;
+    --en-text: #2D5F4E;
+    --border: #E2DDD0;
+    --border-soft: #EDE8DC;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem 4rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .title-block h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .title-block h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .title-block p {
+    font-size: 0.86rem;
+    color: var(--text-mid);
+    letter-spacing: 0.01em;
+  }
+
+  .meta {
+    text-align: right;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .meta strong {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+
+  .search-row {
+    max-width: 1100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  .search-row svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45, 95, 78, 0.08);
+  }
+
+  input[type="text"]::placeholder { color: var(--text-light); }
+
+  .count-row {
+    max-width: 1100px;
+    margin: 0 auto 1.25rem;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    letter-spacing: 0.04em;
+  }
+
+  .grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px 16px;
+    position: relative;
+    transition: border-color .15s;
+  }
+
+  .card:hover {
+    border-color: var(--text-light);
+  }
+
+  .card.linked-top {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .card.linked-bottom {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-top: -8px;
+    position: relative;
+  }
+
+  .card.linked-bottom::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: -1px;
+    width: 32px;
+    height: 1px;
+    background: var(--prep);
+    opacity: 0.4;
+  }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .verb {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .prep {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--prep);
+    font-style: italic;
+  }
+
+  .en-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--en-bg);
+    color: var(--en-text);
+    margin-left: auto;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .meaning {
+    font-size: 0.86rem;
+    color: var(--text-mid);
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+
+  .meaning .en-m {
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .examples {
+    border-top: 1px dashed var(--border);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .ex {
+    line-height: 1.4;
+  }
+
+  .ex .nl {
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .ex .nl .hl {
+    color: var(--prep);
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .ex .en-ex {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 1px;
+  }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 1.5rem 1rem 3rem; }
+    .grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; }
+    .meta { text-align: left; }
+    .card.linked-bottom { margin-top: -6px; }
+  }
+
+  mark {
+    background: #FFF3C9;
+    color: inherit;
+    padding: 0 1px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1>Vaste werkwoorden met <em>voorzetsels</em></h1>
+    <p>NT2 referentielijst: 60 meest gebruikte combinaties met Engelse vertaling</p>
+  </div>
+  <div class="meta">
+    <strong>60</strong>
+    combinaties
+  </div>
+</header>
+
+<div class="search-row">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <input type="text" id="search" placeholder="Zoek een werkwoord of voorzetsel..." oninput="render()">
+</div>
+
+<div class="count-row" id="count"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const data = [
+  { v: "afhankelijk zijn", p: "van", en: "to depend on",
+    nl: "iemand of iets nodig hebben om te functioneren",
+    en_m: "to need someone or something to function",
+    ex: [
+      { nl: "Hij is afhankelijk <span class='hl'>van</span> zijn ouders.", en: "He depends on his parents." },
+      { nl: "Wij zijn afhankelijk <span class='hl'>van</span> de bus.", en: "We depend on the bus." }
+    ]
+  },
+  { v: "bang zijn", p: "voor", en: "to be afraid of",
+    nl: "iets of iemand griezelig of eng vinden",
+    en_m: "to feel fear about something",
+    ex: [
+      { nl: "Ik ben bang <span class='hl'>voor</span> honden.", en: "I am afraid of dogs." },
+      { nl: "Zij is bang <span class='hl'>voor</span> de toets.", en: "She is afraid of the test." }
+    ]
+  },
+  { v: "bedanken", p: "voor", en: "to thank for",
+    nl: "iemand dankbaarheid laten zien voor iets",
+    en_m: "to express gratitude for something",
+    ex: [
+      { nl: "Ik bedank je <span class='hl'>voor</span> je hulp.", en: "I thank you for your help." },
+      { nl: "Bedankt <span class='hl'>voor</span> het eten!", en: "Thanks for the food!" }
+    ]
+  },
+  { v: "beginnen", p: "met", en: "to start with",
+    nl: "starten met een activiteit",
+    en_m: "to begin doing something",
+    ex: [
+      { nl: "Ik begin <span class='hl'>met</span> de les.", en: "I start with the lesson." },
+      { nl: "Wij beginnen <span class='hl'>met</span> koffie.", en: "We start with coffee." }
+    ]
+  },
+  { v: "blij zijn", p: "met", en: "to be happy with",
+    nl: "tevreden of vrolijk zijn over iets",
+    en_m: "to feel pleased about something",
+    ex: [
+      { nl: "Ik ben blij <span class='hl'>met</span> mijn cadeau.", en: "I am happy with my gift." },
+      { nl: "Ze is blij <span class='hl'>met</span> haar nieuwe baan.", en: "She is happy with her new job." }
+    ]
+  },
+  { v: "boos zijn", p: "op", en: "to be angry at",
+    nl: "kwaad zijn op een persoon",
+    en_m: "to feel anger toward a person",
+    ex: [
+      { nl: "Hij is boos <span class='hl'>op</span> zijn broer.", en: "He is angry at his brother." },
+      { nl: "Wees niet boos <span class='hl'>op</span> mij!", en: "Don't be angry at me!" }
+    ]
+  },
+  { v: "concentreren", p: "op", en: "to concentrate on",
+    nl: "je aandacht volledig richten op iets",
+    en_m: "to focus your attention on something",
+    ex: [
+      { nl: "Ik concentreer me <span class='hl'>op</span> mijn werk.", en: "I concentrate on my work." },
+      { nl: "Concentreer je <span class='hl'>op</span> de vraag.", en: "Concentrate on the question." }
+    ]
+  },
+  { v: "deelnemen", p: "aan", en: "to participate in",
+    nl: "meedoen met een activiteit of groep",
+    en_m: "to take part in an activity",
+    ex: [
+      { nl: "Ik neem deel <span class='hl'>aan</span> de cursus.", en: "I participate in the course." },
+      { nl: "Veel mensen nemen deel <span class='hl'>aan</span> het examen.", en: "Many people take part in the exam." }
+    ]
+  },
+  { v: "denken", p: "aan", en: "to think of",
+    nl: "iemand of iets in je gedachten hebben",
+    en_m: "to have someone or something in mind",
+    ex: [
+      { nl: "Ik denk <span class='hl'>aan</span> mijn familie.", en: "I think of my family." },
+      { nl: "Denk <span class='hl'>aan</span> je paraplu!", en: "Remember (think of) your umbrella!" }
+    ]
+  },
+  { v: "denken", p: "over", en: "to think about",
+    nl: "nadenken of overwegen van een plan of probleem",
+    en_m: "to consider or reflect on something",
+    ex: [
+      { nl: "Ik denk <span class='hl'>over</span> een nieuwe baan.", en: "I am thinking about a new job." },
+      { nl: "Wat denk jij <span class='hl'>over</span> dit idee?", en: "What do you think about this idea?" }
+    ]
+  },
+  { v: "dromen", p: "van", en: "to dream of",
+    nl: "iets heel graag willen, een wens hebben",
+    en_m: "to wish for something strongly",
+    ex: [
+      { nl: "Ik droom <span class='hl'>van</span> een huis in Spanje.", en: "I dream of a house in Spain." },
+      { nl: "Zij droomt <span class='hl'>van</span> een eigen bedrijf.", en: "She dreams of her own business." }
+    ]
+  },
+  { v: "feliciteren", p: "met", en: "to congratulate on",
+    nl: "iemand gelukwensen bij een speciale dag",
+    en_m: "to wish someone well on a special occasion",
+    ex: [
+      { nl: "Ik feliciteer jou <span class='hl'>met</span> je verjaardag.", en: "I congratulate you on your birthday." },
+      { nl: "Gefeliciteerd <span class='hl'>met</span> je diploma!", en: "Congratulations on your diploma!" }
+    ]
+  },
+  { v: "genieten", p: "van", en: "to enjoy",
+    nl: "iets fijn vinden en ervan profiteren",
+    en_m: "to take pleasure in something",
+    ex: [
+      { nl: "Ik geniet <span class='hl'>van</span> de zon.", en: "I enjoy the sun." },
+      { nl: "Wij genieten <span class='hl'>van</span> het eten.", en: "We enjoy the food." }
+    ]
+  },
+  { v: "geven", p: "aan", en: "to give to",
+    nl: "iets overdragen aan een persoon",
+    en_m: "to hand something over to someone",
+    ex: [
+      { nl: "Ik geef de pen <span class='hl'>aan</span> jou.", en: "I give the pen to you." },
+      { nl: "Hij geeft het cadeau <span class='hl'>aan</span> zijn moeder.", en: "He gives the gift to his mother." }
+    ]
+  },
+  { v: "geloven", p: "in", en: "to believe in",
+    nl: "vertrouwen hebben in iets of iemand",
+    en_m: "to have faith in something or someone",
+    ex: [
+      { nl: "Ik geloof <span class='hl'>in</span> jou.", en: "I believe in you." },
+      { nl: "Hij gelooft <span class='hl'>in</span> God.", en: "He believes in God." }
+    ]
+  },
+  { v: "geïnteresseerd zijn", p: "in", en: "to be interested in",
+    nl: "belangstelling hebben voor een onderwerp",
+    en_m: "to have interest in a topic",
+    ex: [
+      { nl: "Ik ben geïnteresseerd <span class='hl'>in</span> politiek.", en: "I am interested in politics." },
+      { nl: "Ben jij geïnteresseerd <span class='hl'>in</span> kunst?", en: "Are you interested in art?" }
+    ]
+  },
+  { v: "helpen", p: "met", en: "to help with",
+    nl: "iemand ondersteunen bij een taak",
+    en_m: "to assist someone with a task",
+    ex: [
+      { nl: "Ik help mijn moeder <span class='hl'>met</span> koken.", en: "I help my mother with cooking." },
+      { nl: "Help je mij <span class='hl'>met</span> dit formulier?", en: "Will you help me with this form?" }
+    ]
+  },
+  { v: "herinneren", p: "aan", en: "to remind of",
+    nl: "iemand iets niet laten vergeten",
+    en_m: "to make someone remember something",
+    ex: [
+      { nl: "Dit nummer herinnert mij <span class='hl'>aan</span> vroeger.", en: "This song reminds me of the past." },
+      { nl: "Herinner me <span class='hl'>aan</span> de afspraak.", en: "Remind me of the appointment." }
+    ]
+  },
+  { v: "hopen", p: "op", en: "to hope for",
+    nl: "wensen dat iets gaat gebeuren",
+    en_m: "to want something to happen",
+    ex: [
+      { nl: "Ik hoop <span class='hl'>op</span> goed weer.", en: "I hope for good weather." },
+      { nl: "Wij hopen <span class='hl'>op</span> een snel antwoord.", en: "We hope for a quick reply." }
+    ]
+  },
+  { v: "houden", p: "van", en: "to love / to like",
+    nl: "iets of iemand fijn vinden",
+    en_m: "to love or like something",
+    ex: [
+      { nl: "Ik hou <span class='hl'>van</span> koffie.", en: "I love coffee." },
+      { nl: "Zij houdt <span class='hl'>van</span> haar man.", en: "She loves her husband." }
+    ]
+  },
+  { v: "informeren", p: "naar", en: "to inquire about",
+    nl: "iets vragen om informatie te krijgen",
+    en_m: "to ask for information",
+    ex: [
+      { nl: "Ik informeer <span class='hl'>naar</span> de prijs.", en: "I am inquiring about the price." },
+      { nl: "Hij informeert <span class='hl'>naar</span> haar gezondheid.", en: "He is asking about her health." }
+    ]
+  },
+  { v: "kiezen", p: "voor", en: "to choose / opt for",
+    nl: "een keuze maken voor iets",
+    en_m: "to decide in favor of something",
+    ex: [
+      { nl: "Ik kies <span class='hl'>voor</span> de rode jas.", en: "I choose the red coat." },
+      { nl: "Hij koos <span class='hl'>voor</span> een nieuwe baan.", en: "He opted for a new job." }
+    ]
+  },
+  { v: "kijken", p: "naar", en: "to watch / look at",
+    nl: "je ogen op iets richten, iets bekijken",
+    en_m: "to direct your eyes at something",
+    ex: [
+      { nl: "Ik kijk <span class='hl'>naar</span> de televisie.", en: "I watch television." },
+      { nl: "Kijk <span class='hl'>naar</span> het bord!", en: "Look at the board!" }
+    ]
+  },
+  { v: "klaar zijn", p: "met", en: "to be done with",
+    nl: "iets afgemaakt hebben",
+    en_m: "to have finished something",
+    ex: [
+      { nl: "Ik ben klaar <span class='hl'>met</span> mijn werk.", en: "I am done with my work." },
+      { nl: "Ben je klaar <span class='hl'>met</span> eten?", en: "Are you done with eating?" }
+    ]
+  },
+  { v: "lachen", p: "om", en: "to laugh at",
+    nl: "iets grappig vinden",
+    en_m: "to find something funny",
+    ex: [
+      { nl: "Ik lach <span class='hl'>om</span> de grap.", en: "I laugh at the joke." },
+      { nl: "Wij lachen <span class='hl'>om</span> de film.", en: "We laugh at the film." }
+    ]
+  },
+  { v: "letten", p: "op", en: "to pay attention to",
+    nl: "goed opletten of voorzichtig zijn met iets",
+    en_m: "to be careful or watchful about something",
+    ex: [
+      { nl: "Let <span class='hl'>op</span> het verkeer!", en: "Pay attention to the traffic!" },
+      { nl: "Ik let <span class='hl'>op</span> mijn portemonnee.", en: "I watch over my wallet." }
+    ]
+  },
+  { v: "lijden", p: "aan", en: "to suffer from",
+    nl: "een ziekte of probleem hebben",
+    en_m: "to have an illness or problem",
+    ex: [
+      { nl: "Hij lijdt <span class='hl'>aan</span> diabetes.", en: "He suffers from diabetes." },
+      { nl: "Ze lijdt <span class='hl'>aan</span> hoofdpijn.", en: "She suffers from headaches." }
+    ]
+  },
+  { v: "lijken", p: "op", en: "to look like / resemble",
+    nl: "er hetzelfde uitzien als iemand of iets",
+    en_m: "to have the same appearance as",
+    ex: [
+      { nl: "Hij lijkt <span class='hl'>op</span> zijn vader.", en: "He looks like his father." },
+      { nl: "Dat lijkt <span class='hl'>op</span> een goed plan.", en: "That looks like a good plan." }
+    ]
+  },
+  { v: "luisteren", p: "naar", en: "to listen to",
+    nl: "bewust je oren gebruiken voor iets",
+    en_m: "to consciously hear something",
+    ex: [
+      { nl: "Ik luister <span class='hl'>naar</span> muziek.", en: "I listen to music." },
+      { nl: "Luister goed <span class='hl'>naar</span> de leraar.", en: "Listen carefully to the teacher." }
+    ]
+  },
+  { v: "nadenken", p: "over", en: "to think about",
+    nl: "grondig overwegen, lang nadenken",
+    en_m: "to consider something carefully",
+    ex: [
+      { nl: "Ik denk na <span class='hl'>over</span> de toekomst.", en: "I am thinking about the future." },
+      { nl: "Denk goed na <span class='hl'>over</span> je antwoord.", en: "Think carefully about your answer." }
+    ]
+  },
+  { v: "omgaan", p: "met", en: "to deal with",
+    nl: "een relatie hebben of werken met iets",
+    en_m: "to handle or interact with something",
+    ex: [
+      { nl: "Hij gaat goed <span class='hl'>met</span> kinderen om.", en: "He deals well with children." },
+      { nl: "Ik ga om <span class='hl'>met</span> nieuwe collega's.", en: "I socialise with new colleagues." }
+    ]
+  },
+  { v: "passen", p: "op", en: "to look after / mind",
+    nl: "zorgen voor iets of iemand tijdelijk",
+    en_m: "to take care of temporarily",
+    ex: [
+      { nl: "Ik pas <span class='hl'>op</span> de kinderen.", en: "I look after the children." },
+      { nl: "Pas <span class='hl'>op</span>! Een auto!", en: "Watch out! A car!" }
+    ]
+  },
+  { v: "praten", p: "met", en: "to talk with",
+    nl: "een gesprek voeren met een persoon",
+    en_m: "to have a conversation with someone",
+    ex: [
+      { nl: "Ik praat <span class='hl'>met</span> mijn vriend.", en: "I talk with my friend." },
+      { nl: "Praat jij <span class='hl'>met</span> de dokter?", en: "Do you talk with the doctor?" }
+    ]
+  },
+  { v: "praten", p: "over", en: "to talk about",
+    nl: "een onderwerp bespreken",
+    en_m: "to discuss a topic",
+    ex: [
+      { nl: "Wij praten <span class='hl'>over</span> het nieuws.", en: "We talk about the news." },
+      { nl: "Praat niet <span class='hl'>over</span> politiek aan tafel.", en: "Don't talk about politics at the table." }
+    ]
+  },
+  { v: "profiteren", p: "van", en: "to benefit from",
+    nl: "voordeel halen uit iets",
+    en_m: "to gain advantage from something",
+    ex: [
+      { nl: "Ik profiteer <span class='hl'>van</span> de korting.", en: "I benefit from the discount." },
+      { nl: "Wij profiteren <span class='hl'>van</span> het mooie weer.", en: "We benefit from the nice weather." }
+    ]
+  },
+  { v: "reageren", p: "op", en: "to respond to",
+    nl: "antwoorden of een reactie geven op iets",
+    en_m: "to give a reply or reaction",
+    ex: [
+      { nl: "Ik reageer <span class='hl'>op</span> de mail.", en: "I respond to the email." },
+      { nl: "Hij reageert niet <span class='hl'>op</span> mijn berichten.", en: "He doesn't respond to my messages." }
+    ]
+  },
+  { v: "rekenen", p: "op", en: "to count on",
+    nl: "vertrouwen dat iemand iets zal doen",
+    en_m: "to trust that someone will do something",
+    ex: [
+      { nl: "Ik reken <span class='hl'>op</span> jou.", en: "I count on you." },
+      { nl: "Je kunt rekenen <span class='hl'>op</span> mijn hulp.", en: "You can count on my help." }
+    ]
+  },
+  { v: "ruilen", p: "voor", en: "to exchange for",
+    nl: "iets geven en iets anders terugkrijgen",
+    en_m: "to give one thing and receive another",
+    ex: [
+      { nl: "Ik ruil mijn appel <span class='hl'>voor</span> jouw banaan.", en: "I trade my apple for your banana." },
+      { nl: "Kan ik dit shirt ruilen <span class='hl'>voor</span> een grotere maat?", en: "Can I exchange this shirt for a larger size?" }
+    ]
+  },
+  { v: "samenwerken", p: "met", en: "to cooperate with",
+    nl: "samen met iemand iets doen",
+    en_m: "to work together with someone",
+    ex: [
+      { nl: "Ik werk samen <span class='hl'>met</span> mijn collega.", en: "I work together with my colleague." },
+      { nl: "Onze school werkt samen <span class='hl'>met</span> de gemeente.", en: "Our school cooperates with the municipality." }
+    ]
+  },
+  { v: "schrijven", p: "aan", en: "to write to",
+    nl: "een brief of bericht sturen naar iemand",
+    en_m: "to send a letter or message to someone",
+    ex: [
+      { nl: "Ik schrijf een brief <span class='hl'>aan</span> mijn oma.", en: "I write a letter to my grandmother." },
+      { nl: "Hij schrijft <span class='hl'>aan</span> de minister.", en: "He writes to the minister." }
+    ]
+  },
+  { v: "schrijven", p: "over", en: "to write about",
+    nl: "een onderwerp beschrijven in tekst",
+    en_m: "to describe a topic in writing",
+    ex: [
+      { nl: "Ik schrijf <span class='hl'>over</span> mijn dag.", en: "I write about my day." },
+      { nl: "Zij schrijft <span class='hl'>over</span> haar reis.", en: "She writes about her trip." }
+    ]
+  },
+  { v: "solliciteren", p: "naar", en: "to apply for",
+    nl: "vragen om een functie of baan",
+    en_m: "to apply for a position",
+    ex: [
+      { nl: "Ik solliciteer <span class='hl'>naar</span> een baan als leraar.", en: "I apply for a job as a teacher." },
+      { nl: "Zij solliciteert <span class='hl'>naar</span> de functie van manager.", en: "She applies for the manager position." }
+    ]
+  },
+  { v: "spelen", p: "met", en: "to play with",
+    nl: "samen iets doen voor het plezier",
+    en_m: "to do something for fun together",
+    ex: [
+      { nl: "De kinderen spelen <span class='hl'>met</span> de bal.", en: "The children play with the ball." },
+      { nl: "Hij speelt <span class='hl'>met</span> zijn hond.", en: "He plays with his dog." }
+    ]
+  },
+  { v: "stoppen", p: "met", en: "to stop / quit",
+    nl: "niet meer doorgaan met een activiteit",
+    en_m: "to discontinue an activity",
+    ex: [
+      { nl: "Ik stop <span class='hl'>met</span> roken.", en: "I quit smoking." },
+      { nl: "Stop <span class='hl'>met</span> praten!", en: "Stop talking!" }
+    ]
+  },
+  { v: "studeren", p: "aan", en: "to study at",
+    nl: "leerling zijn aan een hogeschool of universiteit",
+    en_m: "to be a student at a university",
+    ex: [
+      { nl: "Ik studeer <span class='hl'>aan</span> de universiteit van Tilburg.", en: "I study at the University of Tilburg." },
+      { nl: "Hij studeerde <span class='hl'>aan</span> Avans Hogeschool.", en: "He studied at Avans University." }
+    ]
+  },
+  { v: "tevreden zijn", p: "met", en: "to be satisfied with",
+    nl: "blij of content zijn met iets",
+    en_m: "to feel content with something",
+    ex: [
+      { nl: "Ik ben tevreden <span class='hl'>met</span> mijn cijfer.", en: "I am satisfied with my grade." },
+      { nl: "Zij is tevreden <span class='hl'>met</span> het resultaat.", en: "She is satisfied with the result." }
+    ]
+  },
+  { v: "trots zijn", p: "op", en: "to be proud of",
+    nl: "een goed gevoel hebben over iets of iemand",
+    en_m: "to feel good about something or someone",
+    ex: [
+      { nl: "Ik ben trots <span class='hl'>op</span> mijn dochter.", en: "I am proud of my daughter." },
+      { nl: "Wij zijn trots <span class='hl'>op</span> ons werk.", en: "We are proud of our work." }
+    ]
+  },
+  { v: "trouwen", p: "met", en: "to marry",
+    nl: "officieel een huwelijk aangaan met iemand",
+    en_m: "to enter into marriage with someone",
+    ex: [
+      { nl: "Hij trouwt <span class='hl'>met</span> Lisa.", en: "He is marrying Lisa." },
+      { nl: "Wil je <span class='hl'>met</span> mij trouwen?", en: "Will you marry me?" }
+    ]
+  },
+  { v: "uitkijken", p: "naar", en: "to look forward to",
+    nl: "verheugd zijn op iets dat komt",
+    en_m: "to anticipate something with pleasure",
+    ex: [
+      { nl: "Ik kijk uit <span class='hl'>naar</span> de vakantie.", en: "I look forward to the holiday." },
+      { nl: "Wij kijken uit <span class='hl'>naar</span> jouw bezoek.", en: "We look forward to your visit." }
+    ]
+  },
+  { v: "uitnodigen", p: "voor", en: "to invite to / for",
+    nl: "iemand vragen om te komen",
+    en_m: "to ask someone to come",
+    ex: [
+      { nl: "Ik nodig je uit <span class='hl'>voor</span> mijn verjaardag.", en: "I invite you to my birthday." },
+      { nl: "Wij zijn uitgenodigd <span class='hl'>voor</span> het feest.", en: "We are invited to the party." }
+    ]
+  },
+  { v: "verliefd zijn", p: "op", en: "to be in love with",
+    nl: "romantische gevoelens hebben voor iemand",
+    en_m: "to have romantic feelings for someone",
+    ex: [
+      { nl: "Hij is verliefd <span class='hl'>op</span> Maria.", en: "He is in love with Maria." },
+      { nl: "Ben jij verliefd <span class='hl'>op</span> iemand?", en: "Are you in love with someone?" }
+    ]
+  },
+  { v: "vragen", p: "aan", en: "to ask (a person)",
+    nl: "een vraag stellen aan een persoon",
+    en_m: "to direct a question at someone",
+    ex: [
+      { nl: "Ik vraag het <span class='hl'>aan</span> mijn leraar.", en: "I ask my teacher." },
+      { nl: "Vraag het <span class='hl'>aan</span> je moeder.", en: "Ask your mother." }
+    ]
+  },
+  { v: "vragen", p: "om", en: "to ask for",
+    nl: "verzoeken om iets te krijgen",
+    en_m: "to request something",
+    ex: [
+      { nl: "Ik vraag <span class='hl'>om</span> hulp.", en: "I ask for help." },
+      { nl: "Hij vraagt <span class='hl'>om</span> de rekening.", en: "He asks for the bill." }
+    ]
+  },
+  { v: "wachten", p: "op", en: "to wait for",
+    nl: "niet weggaan totdat iemand of iets er is",
+    en_m: "to stay until something or someone arrives",
+    ex: [
+      { nl: "Ik wacht <span class='hl'>op</span> de bus.", en: "I am waiting for the bus." },
+      { nl: "Zij wacht <span class='hl'>op</span> haar man.", en: "She is waiting for her husband." }
+    ]
+  },
+  { v: "wennen", p: "aan", en: "to get used to",
+    nl: "iets gewoon gaan vinden na een tijdje",
+    en_m: "to become accustomed to something",
+    ex: [
+      { nl: "Ik wen <span class='hl'>aan</span> het Nederlandse weer.", en: "I am getting used to the Dutch weather." },
+      { nl: "Wen je al <span class='hl'>aan</span> je nieuwe huis?", en: "Are you getting used to your new house yet?" }
+    ]
+  },
+  { v: "werken", p: "aan", en: "to work on",
+    nl: "bezig zijn met een taak of project",
+    en_m: "to be occupied with a project",
+    ex: [
+      { nl: "Ik werk <span class='hl'>aan</span> mijn huiswerk.", en: "I am working on my homework." },
+      { nl: "Wij werken <span class='hl'>aan</span> een nieuw plan.", en: "We are working on a new plan." }
+    ]
+  },
+  { v: "werken", p: "bij", en: "to work at / for",
+    nl: "in dienst zijn van een bedrijf",
+    en_m: "to be employed by a company",
+    ex: [
+      { nl: "Ik werk <span class='hl'>bij</span> een supermarkt.", en: "I work at a supermarket." },
+      { nl: "Zij werkt <span class='hl'>bij</span> de gemeente.", en: "She works for the municipality." }
+    ]
+  },
+  { v: "wisselen", p: "van", en: "to switch / change",
+    nl: "iets veranderen voor iets anders",
+    en_m: "to change one thing for another",
+    ex: [
+      { nl: "Ik wissel <span class='hl'>van</span> baan.", en: "I am switching jobs." },
+      { nl: "Hij wisselt <span class='hl'>van</span> trein in Utrecht.", en: "He switches trains in Utrecht." }
+    ]
+  },
+  { v: "zoeken", p: "naar", en: "to look for",
+    nl: "proberen iets te vinden",
+    en_m: "to try to find something",
+    ex: [
+      { nl: "Ik zoek <span class='hl'>naar</span> mijn sleutels.", en: "I am looking for my keys." },
+      { nl: "Hij zoekt <span class='hl'>naar</span> een baan.", en: "He is looking for a job." }
+    ]
+  },
+  { v: "zorgen", p: "voor", en: "to take care of",
+    nl: "aandacht en hulp geven aan iemand",
+    en_m: "to look after someone or something",
+    ex: [
+      { nl: "Zij zorgt <span class='hl'>voor</span> haar moeder.", en: "She takes care of her mother." },
+      { nl: "Ik zorg <span class='hl'>voor</span> de kinderen.", en: "I take care of the children." }
+    ]
+  }
+];
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  const filtered = data.filter(d => {
+    if (!q) return true;
+    return d.v.toLowerCase().includes(q) ||
+           d.p.includes(q) ||
+           d.en.toLowerCase().includes(q) ||
+           d.nl.toLowerCase().includes(q) ||
+           d.en_m.toLowerCase().includes(q);
+  });
+
+  document.getElementById("count").textContent =
+    filtered.length + (filtered.length === 1 ? " combinatie zichtbaar" : " combinaties zichtbaar");
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Geen resultaten gevonden. Probeer een ander woord.</div>';
+    return;
+  }
+
+  filtered.forEach((d, i) => {
+    const prev = filtered[i - 1];
+    const next = filtered[i + 1];
+    const linkedTop = next && next.v === d.v;
+    const linkedBottom = prev && prev.v === d.v;
+
+    const classes = ["card"];
+    if (linkedTop) classes.push("linked-top");
+    if (linkedBottom) classes.push("linked-bottom");
+
+    const card = document.createElement("div");
+    card.className = classes.join(" ");
+    card.innerHTML = `
+      <div class="head">
+        <span class="verb">${d.v}</span>
+        <span class="prep">${d.p}</span>
+        <span class="en-tag">${d.en}</span>
+      </div>
+      <div class="meaning">
+        ${d.nl}
+        <span class="en-m">${d.en_m}</span>
+      </div>
+      <div class="examples">
+        ${d.ex.map(e => `
+          <div class="ex">
+            <div class="nl">${e.nl}</div>
+            <div class="en-ex">${e.en}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
