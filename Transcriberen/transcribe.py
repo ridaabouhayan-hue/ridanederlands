@@ -25,9 +25,9 @@ os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
 # Model selectie: gebruik Pro model voor maximale nauwkeurigheid en perfecte naleving van instructies.
 # Fallback is ingesteld op gemini-1.5-pro als gemini-2.5-pro niet beschikbaar is op dit API-key tier.
-GEMINI_MODEL = "gemini-2.5-pro"
+GEMINI_MODEL = "gemini-2.5-flash"
 
-audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm')
+audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm', '.mp4')
 
 groepen = [
     "Microsoft", "KPN", "Westport", "VDL", "Neways", "Shell", 
@@ -83,8 +83,10 @@ def main():
                 # Check of dit bestand al in data.js staat met een succesvolle analyse
                 already_done = False
                 existing_item = None
+                entry_basename = os.path.splitext(entry.name)[0]
                 for item in data[grp]:
-                    if item["filename"] == entry.name:
+                    item_basename = os.path.splitext(item["filename"])[0]
+                    if item_basename == entry_basename:
                         existing_item = item
                         analyse = item.get("analyse", {})
                         if isinstance(analyse, dict) and (analyse.get("gesprek") or analyse.get("feedback_brieven")):
@@ -121,6 +123,15 @@ def main():
                 if not audio_file:
                     print("   Uploaden...")
                     audio_file = client.files.upload(file=filepath)
+                
+                # Wacht tot het bestand verwerkt is
+                print("   Wachten tot het bestand actief is...")
+                while audio_file.state.name == "PROCESSING":
+                    time.sleep(2)
+                    audio_file = client.files.get(name=audio_file.name)
+                
+                if audio_file.state.name != "ACTIVE":
+                    raise Exception(f"Bestand uploaden mislukt (status: {audio_file.state.name})")
                 
                 print("   Transcriberen...")
                 # NT2-specifieke prompt voor Zin-voor-Zin analyse (in JSON)

@@ -4566,6 +4566,1584 @@ window.geminiData = {
           }
         ]
       }
+    },
+    {
+      "filename": "Kojo Emad 4-6.ogg",
+      "path": "B-A1/Kojo Emad 4-6.ogg",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Wat is jouw naam?",
+            "zin_correct": "Wat is jouw naam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Mijn naam is Suleiman.",
+            "zin_correct": "Mijn naam is Suleiman.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "En wat is jouw achternaam?",
+            "zin_correct": "En wat is jouw achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Achternaam eh Suleiman.",
+            "zin_correct": "Mijn achternaam is Suleiman.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ontbrekend bezittelijk voornaamwoord en werkwoord",
+              "uitleg": "De zin mist het bezittelijk voornaamwoord 'Mijn' en het werkwoord 'is'. De correcte formulering is 'Mijn achternaam is Suleiman'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Wat is jouw adres?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Het is mijn adres, Bonistraat 289.",
+            "zin_correct": "Mijn adres is Bonistraat 289.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Onnatuurlijke zinsconstructie",
+              "uitleg": "De formulering 'Het is mijn adres' is begrijpelijk, maar 'Mijn adres is' is een directere en meer natuurlijke manier om je adres te geven in het Nederlands."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Wat is jouw postcode?",
+            "zin_correct": "Wat is jouw postcode?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "6523 AC.",
+            "zin_correct": "6523 AC.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Mijn voornaam is Wil.",
+            "zin_correct": "Mijn voornaam is Wil.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Mijn achternaam is.",
+            "zin_correct": "Mijn achternaam is.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Wie is jouw contactpersoon?",
+            "zin_correct": "Wie is jouw contactpersoon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Mijn contactpersoon is eh is Isabella.",
+            "zin_correct": "Mijn contactpersoon is Isabella.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Redundant werkwoord",
+              "uitleg": "Het werkwoord 'is' wordt twee keer herhaald, wat overbodig is. Eén keer 'is' is voldoende."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Wat is jouw geboortedatum?",
+            "zin_correct": "Wat is jouw geboortedatum?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "26 maart 1989.",
+            "zin_correct": "26 maart 1989.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "Hoe oud ben jij?",
+            "zin_correct": "Hoe oud ben jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Ik ben 36 jaar.",
+            "zin_correct": "Ik ben 36 jaar.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kojo",
+            "zin_fonetisch": "En uit welk land kom jij?",
+            "zin_correct": "En uit welk land kom jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Emad",
+            "zin_fonetisch": "Ik kom uit Egypte.",
+            "zin_correct": "Ik kom uit Egypte.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Emad",
+            "brief": "Hallo Emad! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Mijn naam is Suleiman.\"\n👍 *Wat was goed:* Je spreekt deze zin duidelijk uit en de grammatica is correct.\n💡 *Correctie:* Mijn naam is Suleiman.\n🧠 *Waarom:* Dit is een correcte en natuurlijke manier om je naam te zeggen.\n\n*Zin 2:* \"Achternaam eh Suleiman.\"\n👍 *Wat was goed:* Je achternaam is duidelijk te verstaan.\n💡 *Correctie:* Mijn achternaam is Suleiman.\n🧠 *Waarom:* Om een volledige zin te maken, heb je het bezittelijk voornaamwoord 'Mijn' en het werkwoord 'is' nodig. Dit maakt de zin grammaticaal correct en compleet.\n\n*Zin 3:* \"Het is mijn adres, Bonistraat 289.\"\n👍 *Wat was goed:* Je adres en de cijfers zijn goed verstaanbaar.\n💡 *Correctie:* Mijn adres is Bonistraat 289.\n🧠 *Waarom:* Hoewel 'Het is mijn adres' begrijpelijk is, is 'Mijn adres is' een directere en meer natuurlijke zinsconstructie in het Nederlands wanneer je je adres opgeeft.\n\n*Zin 4:* \"6523 AC.\"\n👍 *Wat was goed:* Je postcode is duidelijk uitgesproken en correct.\n💡 *Correctie:* 6523 AC.\n🧠 *Waarom:* Dit is een correcte manier om je postcode te zeggen.\n\n*Zin 5:* \"Mijn contactpersoon is eh is Isabella.\"\n👍 *Wat was goed:* De naam van je contactpersoon is duidelijk.\n💡 *Correctie:* Mijn contactpersoon is Isabella.\n🧠 *Waarom:* Je herhaalt het werkwoord 'is' twee keer ('is eh is'). Eén keer 'is' is voldoende om de zin grammaticaal correct te maken.\n\n*Zin 6:* \"26 maart 1989.\"\n👍 *Wat was goed:* Je geboortedatum is duidelijk en correct uitgesproken.\n💡 *Correctie:* 26 maart 1989.\n🧠 *Waarom:* Dit is een correcte manier om je geboortedatum te zeggen.\n\n*Zin 7:* \"Ik ben 36 jaar.\"\n👍 *Wat was goed:* Je leeftijd is duidelijk en correct uitgesproken.\n💡 *Correctie:* Ik ben 36 jaar.\n🧠 *Waarom:* Dit is een correcte en natuurlijke manier om je leeftijd te zeggen.\n\n*Zin 8:* \"Ik kom uit Egypte.\"\n👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit en de grammatica is correct.\n💡 *Correctie:* Ik kom uit Egypte.\n🧠 *Waarom:* Dit is een correcte en natuurlijke manier om te zeggen waar je vandaan komt.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt af en toe kleine grammaticale fouten, zoals het weglaten van een werkwoord of bezittelijk voornaamwoord ('Mijn achternaam is') en het onnodig herhalen van een werkwoord ('is eh is'). Let goed op de volledige zinsbouw en vermijd herhalingen.\n• *Uitspraak:* Je uitspraak is over het algemeen goed en duidelijk. Je bent goed verstaanbaar, ook bij cijfers en namen.\n• *Samenhang & Logica:* De logica en samenhang van je antwoorden zijn goed. Je geeft relevante antwoorden op de vragen.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het vormen van complete zinnen, vooral wanneer je persoonlijke informatie geeft. Probeer altijd een onderwerp, werkwoord en eventueel een lijdend voorwerp te gebruiken. Let ook op onnodige herhalingen van woorden. Je bent goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Emad! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Mijn naam is Suleiman.\"\n👍 *What was good:* You pronounce this sentence clearly and the grammar is correct.\n💡 *Correction:* Mijn naam is Suleiman.\n🧠 *Why:* This is a correct and natural way to state your name.\n\n*Sentence 2:* \"Achternaam eh Suleiman.\"\n👍 *What was good:* Your last name is clearly understandable.\n💡 *Correction:* Mijn achternaam is Suleiman.\n🧠 *Why:* To form a complete sentence, you need the possessive pronoun 'Mijn' (My) and the verb 'is' (is). This makes the sentence grammatically correct and complete.\n\n*Sentence 3:* \"Het is mijn adres, Bonistraat 289.\"\n👍 *What was good:* Your address and the numbers are clearly understandable.\n💡 *Correction:* Mijn adres is Bonistraat 289.\n🧠 *Why:* Although 'Het is mijn adres' (It is my address) is understandable, 'Mijn adres is' (My address is) is a more direct and natural sentence construction in Dutch when providing your address.\n\n*Sentence 4:* \"6523 AC.\"\n👍 *What was good:* Your postal code is clearly pronounced and correct.\n💡 *Correction:* 6523 AC.\n🧠 *Why:* This is a correct way to state your postal code.\n\n*Sentence 5:* \"Mijn contactpersoon is eh is Isabella.\"\n👍 *What was good:* The name of your contact person is clear.\n💡 *Correction:* Mijn contactpersoon is Isabella.\n🧠 *Why:* You repeat the verb 'is' twice ('is eh is'). One 'is' is sufficient to make the sentence grammatically correct.\n\n*Sentence 6:* \"26 maart 1989.\"\n👍 *What was good:* Your date of birth is clearly and correctly pronounced.\n💡 *Correction:* 26 maart 1989.\n🧠 *Why:* This is a correct way to state your date of birth.\n\n*Sentence 7:* \"Ik ben 36 jaar.\"\n👍 *What was good:* Your age is clearly and correctly pronounced.\n💡 *Correction:* Ik ben 36 jaar.\n🧠 *Why:* This is a correct and natural way to state your age.\n\n*Zin 8:* \"Ik kom uit Egypte.\"\n👍 *Wat was goed:* You pronounce this sentence very clearly and the grammar is correct.\n💡 *Correction:* Ik kom uit Egypte.\n🧠 *Waarom:* This is a correct and natural way to say where you come from.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You occasionally make small grammatical errors, such as omitting a verb or possessive pronoun ('Mijn achternaam is') and unnecessarily repeating a verb ('is eh is'). Pay close attention to complete sentence structure and avoid repetitions.\n• *Pronunciation:* Your pronunciation is generally good and clear. You are well understood, even with numbers and names.\n• *Coherence & Logic:* The logic and coherence of your answers are good. You provide relevant answers to the questions.\n\n🧠 *Your next step & advice:*\nKeep practicing forming complete sentences, especially when providing personal information. Always try to use a subject, verb, and possibly a direct object. Also, pay attention to unnecessary repetitions of words. You are well on your way! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Yan-Ling Wei 4-6.ogg",
+      "path": "B-A1/Yan-Ling Wei 4-6.ogg",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Hallo, mag ik je ja wat vragen stellen over je persoonlijke gegevens?",
+            "zin_correct": "Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'ja' is hier een onnodige toevoeging en klinkt als een stopwoord.",
+              "uitleg": "Probeer direct met de vraag te beginnen zonder extra woorden zoals 'ja' in deze context."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ja, uhm, natuurlijk. Wat wat wil je weten?",
+            "zin_correct": "Ja, natuurlijk. Wat wil je weten?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'wat' ('wat wat') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Wat is jouw naam en achternaam?",
+            "zin_correct": "Wat is jouw voornaam en achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het gebruik van 'naam en achternaam' is enigszins redundant, aangezien 'naam' vaak al de voornaam impliceert.",
+              "uitleg": "Het is preciezer om 'voornaam en achternaam' te vragen om duidelijkheid te scheppen."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Mijn naam, mijn voornaam is Yan-Ling en mijn achternaam is Dong.",
+            "zin_correct": "Mijn voornaam is Yan-Ling en mijn achternaam is Dong.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De spreker begint met 'Mijn naam' en corrigeert zichzelf naar 'mijn voornaam'.",
+              "uitleg": "Probeer direct de juiste term te gebruiken om stotteren en herhalingen te voorkomen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "En wat is jouw adres?",
+            "zin_correct": "En wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Mijn adres is Basic 5 Basic 5. Mijn postcode is 653 en 30 4 is in Eindhoven.",
+            "zin_correct": "Mijn adres is Basicweg 5. Mijn postcode is 5634 ES in Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De uitspraak van het adres 'Basic 5 Basic 5' is onduidelijk en de postcode '653 en 30 4' is niet in het standaard Nederlandse formaat uitgesproken.",
+              "uitleg": "Een adres bestaat uit een straatnaam en huisnummer (bijv. Basicweg 5). Een postcode wordt uitgesproken als vier cijfers en twee letters (bijv. 'vijf-zes-drie-vier E-S'). Het woord 'en' wordt niet gebruikt in een postcode."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De formulering van het adres en de postcode is niet grammaticaal correct voor een Nederlands adres.",
+              "uitleg": "Een adres wordt meestal geformuleerd als 'straatnaam huisnummer'. Een postcode wordt niet met 'en' ertussen uitgesproken en 'is in Eindhoven' is overbodig na de postcode."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Het adres 'Basic 5 Basic 5' en de postcode '653 en 30 4' zijn niet logisch of herkenbaar als een geldig Nederlands adres en postcode.",
+              "uitleg": "Een Nederlands adres heeft een specifieke structuur (straatnaam en huisnummer). Een postcode bestaat uit vier cijfers en twee letters. De gegeven informatie is niet logisch in deze context."
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Eindhoven, is dit jouw jouw gemeente? Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Eindhoven, is dit jouw gemeente? Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'jouw' ('jouw jouw') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Mijn mijn contactpersoon is Made Made Hang.",
+            "zin_correct": "Mijn contactpersoon is meneer Hang.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'mijn' ('mijn mijn') en 'Made' ('Made Made') zijn stotteringen. 'Made' klinkt als een mispronunciatie van 'meneer' of een ongebruikelijke naam.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken. Als 'Made' een naam is, is het correct, maar als het 'meneer' moet zijn, let dan op de uitspraak van de 'e' en 'r'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "zin_correct": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik ben geboren op 5 en 3 mei 18 18 70 jaar.",
+            "zin_correct": "Ik ben geboren op 3 mei 1970.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De uitspraak van de datum '5 en 3 mei' en het jaartal '18 18 70 jaar' is niet correct in het Nederlands.",
+              "uitleg": "Een datum wordt uitgesproken als 'dag maand jaar' (bijv. 'drie mei negentien zeventig'). Het woord 'jaar' is overbodig na een jaartal."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De formulering van de geboortedatum is grammaticaal incorrect.",
+              "uitleg": "Het is 'op 3 mei' en een jaartal wordt als één geheel uitgesproken (bijv. 'negentien zeventig'), niet als losse cijfers met 'jaar' erachter."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De geboortedatum '5 en 3 mei 18 18 70 jaar' is onlogisch en onbegrijpelijk.",
+              "uitleg": "Een geboortedatum moet duidelijk en in een standaardformaat worden uitgedrukt. De herhaling van '18' en het gebruik van 'jaar' na het jaartal maken het onlogisch."
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik ben 47 jaar oud.",
+            "zin_correct": "Ik ben 47 jaar oud.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "En welk uit welk land kom je?",
+            "zin_correct": "En uit welk land kom je?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'welk' ('welk uit welk') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het gebruik van 'welk uit welk land' is grammaticaal incorrect en redundant.",
+              "uitleg": "De correcte vraag is 'uit welk land kom je?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik kom uit China.",
+            "zin_correct": "Ik kom uit China.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Bedankt voor de informatie.",
+            "zin_correct": "Bedankt voor de informatie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Graag gedaan.",
+            "zin_correct": "Graag gedaan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Hallo, maar hallo, mag ik je wat vragen stellen voor je persoonlijke gegevens?",
+            "zin_correct": "Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'hallo' ('maar hallo') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het gebruik van 'voor' in plaats van 'over' is incorrect.",
+              "uitleg": "De correcte prepositie in deze context is 'over' (vragen stellen *over* iets)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Ja, natuurlijk. Wat wil je weten?",
+            "zin_correct": "Ja, natuurlijk. Wat wil je weten?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Wat is jouw naam en achternaam?",
+            "zin_correct": "Wat is jouw voornaam en achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het gebruik van 'naam en achternaam' is enigszins redundant, aangezien 'naam' vaak al de voornaam impliceert.",
+              "uitleg": "Het is preciezer om 'voornaam en achternaam' te vragen om duidelijkheid te scheppen."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Mijn voornaam is Wei en mijn achternaam is Wei.",
+            "zin_correct": "Mijn voornaam is Wei en mijn achternaam is Wei.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "En wat is jouw adres?",
+            "zin_correct": "En wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.",
+            "zin_correct": "Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Eindhoven is jouw gemeente.",
+            "zin_correct": "Eindhoven is jouw gemeente.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Mijn contactpersoon is meneer Zhang.",
+            "zin_correct": "Mijn contactpersoon is meneer Zhang.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "zin_correct": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Ik ben geboren op 13 maart 1988.",
+            "zin_correct": "Ik ben geboren op 13 maart 1988.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Ik ben 41 jaar oud.",
+            "zin_correct": "Ik ben 41 jaar oud.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "En wat welk land kom je?",
+            "zin_correct": "En uit welk land kom je?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'welk' ('wat welk') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het gebruik van 'wat welk land' is grammaticaal incorrect en mist een prepositie.",
+              "uitleg": "De correcte vraag is 'uit welk land kom je?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Ik kom uit China.",
+            "zin_correct": "Ik kom uit China.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Bedankt bedankt voor de informatie.",
+            "zin_correct": "Bedankt voor de informatie.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De herhaling van 'bedankt' ('bedankt bedankt') is een stottering.",
+              "uitleg": "Probeer de zin vloeiend uit te spreken zonder herhalingen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Yan-Ling",
+            "zin_fonetisch": "Graag gedaan.",
+            "zin_correct": "Graag gedaan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Goed, goed.",
+            "zin_correct": "Goed.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Yan-Ling",
+            "brief": "Hallo Yan-Ling! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Hallo, mag ik je ja wat vragen stellen over je persoonlijke gegevens?\"\n👍 *Wat was goed:* Je formuleert de vraag duidelijk en de uitspraak van 'persoonlijke gegevens' is goed.\n💡 *Correctie:* \"Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?\"\n🧠 *Waarom:* Het woord 'ja' is hier een onnodige toevoeging en klinkt als een stopwoord. Probeer direct met de vraag te beginnen.\n\n*Zin 2:* \"Wat is jouw naam en achternaam?\"\n👍 *Wat was goed:* Je vraag is begrijpelijk en de uitspraak is duidelijk.\n💡 *Correctie:* \"Wat is jouw voornaam en achternaam?\"\n🧠 *Waarom:* Het gebruik van 'naam en achternaam' is enigszins redundant. Het is preciezer om 'voornaam en achternaam' te vragen om duidelijkheid te scheppen.\n\n*Zin 3:* \"En wat is jouw adres?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"En wat is jouw adres?\"\n\n*Zin 4:* \"Eindhoven, is dit jouw jouw gemeente? Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Je stelt de vragen duidelijk en de woorden 'gemeente' en 'contactpersoon' zijn goed uitgesproken.\n💡 *Correctie:* \"Eindhoven, is dit jouw gemeente? Wie is jouw contactpersoon bij de gemeente?\"\n🧠 *Waarom:* De herhaling van 'jouw' ('jouw jouw') is een stottering. Probeer de zin vloeiend uit te spreken zonder herhalingen.\n\n*Zin 5:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n\n*Zin 6:* \"En welk uit welk land kom je?\"\n👍 *Wat was goed:* Je vraag is begrijpelijk.\n💡 *Correctie:* \"En uit welk land kom je?\"\n🧠 *Waarom:* De herhaling van 'welk' ('welk uit welk') is een stottering en grammaticaal incorrect. De correcte vraag is 'uit welk land kom je?'.\n\n*Zin 7:* \"Bedankt voor de informatie.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Bedankt voor de informatie.\"\n\n*Zin 8:* \"Ja, natuurlijk. Wat wil je weten?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ja, natuurlijk. Wat wil je weten?\"\n\n*Zin 9:* \"Mijn voornaam is Wei en mijn achternaam is Wei.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Mijn voornaam is Wei en mijn achternaam is Wei.\"\n\n*Zin 10:* \"Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.\"\n👍 *Wat was goed:* Je spreekt het adres en de postcode heel duidelijk uit, inclusief de cijfers en letters. Dit is een goed voorbeeld van hoe je een adres en postcode correct formuleert.\n💡 *Correctie:* \"Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.\"\n\n*Zin 11:* \"Mijn contactpersoon is meneer Zhang.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Mijn contactpersoon is meneer Zhang.\"\n\n*Zin 12:* \"Ik ben geboren op 13 maart 1988.\"\n👍 *Wat was goed:* Je formuleert je geboortedatum correct en duidelijk. De uitspraak van de datum en het jaartal is goed.\n💡 *Correctie:* \"Ik ben geboren op 13 maart 1988.\"\n\n*Zin 13:* \"Ik ben 41 jaar oud.\"\n👍 *Wat was goed:* Je leeftijd is duidelijk uitgesproken en de zin is grammaticaal correct.\n💡 *Correctie:* \"Ik ben 41 jaar oud.\"\n\n*Zin 14:* \"Ik kom uit China.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit China.\"\n\n*Zin 15:* \"Graag gedaan.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Graag gedaan.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is over het algemeen goed. Let op kleine redundanties zoals 'naam en achternaam' en de correcte formulering van vragen met preposities.\n• *Uitspraak:* Je uitspraak is duidelijk en goed verstaanbaar. Je hebt een goede beheersing van cijfers en letters in adressen en datums. Probeer wel te letten op het verminderen van stopwoorden en stotteringen zoals 'ja' of herhalingen van woorden.\n• *Samenhang & Logica:* Je zinnen zijn logisch en passen goed in de context van het gesprek.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het vloeiend spreken en probeer bewust te zijn van eventuele stopwoorden of herhalingen. Je bent al goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Yan-Ling! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Hallo, mag ik je ja wat vragen stellen over je persoonlijke gegevens?\"\n👍 *What was good:* You formulate the question clearly and the pronunciation of 'persoonlijke gegevens' is good.\n💡 *Correction:* \"Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?\"\n🧠 *Why:* The word 'ja' here is an unnecessary addition and sounds like a filler word. Try to start directly with the question without extra words like 'ja' in this context.\n\n*Sentence 2:* \"Wat is jouw naam en achternaam?\"\n👍 *What was good:* Your question is understandable and the pronunciation is clear.\n💡 *Correction:* \"Wat is jouw voornaam en achternaam?\"\n🧠 *Why:* The use of 'naam en achternaam' (name and surname) is somewhat redundant. It is more precise to ask for 'voornaam en achternaam' (first name and surname) for clarity.\n\n*Sentence 3:* \"En wat is jouw adres?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"En wat is jouw adres?\"\n\n*Sentence 4:* \"Eindhoven, is dit jouw jouw gemeente? Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* You ask the questions clearly and the words 'gemeente' (municipality) and 'contactpersoon' (contact person) are well pronounced.\n💡 *Correction:* \"Eindhoven, is dit jouw gemeente? Wie is jouw contactpersoon bij de gemeente?\"\n🧠 *Why:* The repetition of 'jouw' ('jouw jouw') is a stutter. Try to speak the sentence fluently without repetitions.\n\n*Sentence 5:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n\n*Sentence 6:* \"En welk uit welk land kom je?\"\n👍 *What was good:* Your question is understandable.\n💡 *Correction:* \"En uit welk land kom je?\"\n🧠 *Why:* The repetition of 'welk' ('welk uit welk') is a stutter and grammatically incorrect. The correct question is 'uit welk land kom je?' (from which country do you come?).\n\n*Sentence 7:* \"Bedankt voor de informatie.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Bedankt voor de informatie.\"\n\n*Sentence 8:* \"Ja, natuurlijk. Wat wil je weten?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ja, natuurlijk. Wat wil je weten?\"\n\n*Sentence 9:* \"Mijn voornaam is Wei en mijn achternaam is Wei.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Mijn voornaam is Wei en mijn achternaam is Wei.\"\n\n*Sentence 10:* \"Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.\"\n👍 *What was good:* You pronounce the address and postal code very clearly, including the numbers and letters. This is a good example of how to correctly formulate an address and postal code.\n💡 *Correction:* \"Mijn adres is Waterfront 1150. Mijn postcode is 5658 AC in Eindhoven.\"\n\n*Sentence 11:* \"Mijn contactpersoon is meneer Zhang.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Mijn contactpersoon is meneer Zhang.\"\n\n*Sentence 12:* \"Ik ben geboren op 13 maart 1988.\"\n👍 *What was good:* You formulate your birth date correctly and clearly. The pronunciation of the date and year is good.\n💡 *Correction:* \"Ik ben geboren op 13 maart 1988.\"\n\n*Sentence 13:* \"Ik ben 41 jaar oud.\"\n👍 *What was good:* Your age is clearly pronounced and the sentence is grammatically correct.\n💡 *Correction:* \"Ik ben 41 jaar oud.\"\n\n*Sentence 14:* \"Ik kom uit China.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit China.\"\n\n*Sentence 15:* \"Graag gedaan.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Graag gedaan.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is generally good. Pay attention to minor redundancies like 'naam en achternaam' and the correct formulation of questions with prepositions.\n• *Pronunciation:* Your pronunciation is clear and well-understood. You have a good command of numbers and letters in addresses and dates. Try to focus on reducing filler words and stutters like 'ja' or repetitions of words.\n• *Coherence & Logic:* Your sentences are logical and fit well within the context of the conversation.\n\n🧠 *Your next step & advice:*\nKeep practicing speaking fluently and try to be aware of any filler words or repetitions. You are already well on your way! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Wei",
+            "brief": "Hallo Wei! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ja, uhm, natuurlijk. Wat wat wil je weten?\"\n👍 *Wat was goed:* Je antwoord is duidelijk en de uitspraak van 'natuurlijk' is goed.\n💡 *Correctie:* \"Ja, natuurlijk. Wat wil je weten?\"\n🧠 *Waarom:* De herhaling van 'wat' ('wat wat') is een stottering. Probeer de zin vloeiend uit te spreken zonder herhalingen.\n\n*Zin 2:* \"Mijn naam, mijn voornaam is Yan-Ling en mijn achternaam is Dong.\"\n👍 *Wat was goed:* Je corrigeert jezelf van 'naam' naar 'voornaam', wat goed is.\n💡 *Correctie:* \"Mijn voornaam is Yan-Ling en mijn achternaam is Dong.\"\n🧠 *Waarom:* Probeer direct de juiste term te gebruiken om stotteren en herhalingen te voorkomen.\n\n*Zin 3:* \"Mijn adres is Basic 5 Basic 5. Mijn postcode is 653 en 30 4 is in Eindhoven.\"\n👍 *Wat was goed:* Je probeert je adres en postcode te geven.\n💡 *Correctie:* \"Mijn adres is Basicweg 5. Mijn postcode is 5634 ES in Eindhoven.\"\n🧠 *Waarom:* Een adres bestaat uit een straatnaam en huisnummer (bijv. Basicweg 5). Een postcode wordt uitgesproken als vier cijfers en twee letters (bijv. 'vijf-zes-drie-vier E-S'). Het woord 'en' wordt niet gebruikt in een postcode en 'is in Eindhoven' is overbodig na de postcode.\n🤔 *Logica:* Het adres 'Basic 5 Basic 5' en de postcode '653 en 30 4' zijn niet logisch of herkenbaar als een geldig Nederlands adres en postcode. Een Nederlands adres heeft een specifieke structuur (straatnaam en huisnummer). Een postcode bestaat uit vier cijfers en twee letters. De gegeven informatie is niet logisch in deze context.\n\n*Zin 4:* \"Mijn mijn contactpersoon is Made Made Hang.\"\n👍 *Wat was goed:* Je geeft een naam als contactpersoon.\n💡 *Correctie:* \"Mijn contactpersoon is meneer Hang.\"\n🧠 *Waarom:* De herhaling van 'mijn' ('mijn mijn') en 'Made' ('Made Made') zijn stotteringen. 'Made' klinkt als een mispronunciatie van 'meneer' of een ongebruikelijke naam. Probeer de zin vloeiend uit te spreken. Als 'Made' een naam is, is het correct, maar als het 'meneer' moet zijn, let dan op de uitspraak van de 'e' en 'r'.\n\n*Zin 5:* \"Ik ben geboren op 5 en 3 mei 18 18 70 jaar.\"\n👍 *Wat was goed:* Je probeert je geboortedatum te geven.\n💡 *Correctie:* \"Ik ben geboren op 3 mei 1970.\"\n🧠 *Waarom:* Een datum wordt uitgesproken als 'dag maand jaar' (bijv. 'drie mei negentien zeventig'). Het woord 'jaar' is overbodig na een jaartal en '5 en' is onnodig. Een jaartal wordt als één geheel uitgesproken (bijv. 'negentien zeventig'), niet als losse cijfers.\n🤔 *Logica:* De geboortedatum '5 en 3 mei 18 18 70 jaar' is onlogisch en onbegrijpelijk. Een geboortedatum moet duidelijk en in een standaardformaat worden uitgedrukt. De herhaling van '18' en het gebruik van 'jaar' na het jaartal maken het onlogisch.\n\n*Zin 6:* \"Ik ben 47 jaar oud.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik ben 47 jaar oud.\"\n\n*Zin 7:* \"Ik kom uit China.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit China.\"\n\n*Zin 8:* \"Graag gedaan.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Graag gedaan.\"\n\n*Zin 9:* \"Hallo, maar hallo, mag ik je wat vragen stellen voor je persoonlijke gegevens?\"\n👍 *Wat was goed:* Je stelt de vraag om persoonlijke gegevens te vragen.\n💡 *Correctie:* \"Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?\"\n🧠 *Waarom:* De herhaling van 'hallo' ('maar hallo') is een stottering. Het gebruik van 'voor' in plaats van 'over' is incorrect. De correcte prepositie in deze context is 'over' (vragen stellen *over* iets).\n\n*Zin 10:* \"Wat is jouw naam en achternaam?\"\n👍 *Wat was goed:* Je vraag is begrijpelijk en de uitspraak is duidelijk.\n💡 *Correctie:* \"Wat is jouw voornaam en achternaam?\"\n🧠 *Waarom:* Het gebruik van 'naam en achternaam' is enigszins redundant. Het is preciezer om 'voornaam en achternaam' te vragen om duidelijkheid te scheppen.\n\n*Zin 11:* \"En wat is jouw adres?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"En wat is jouw adres?\"\n\n*Zin 12:* \"Eindhoven is jouw gemeente.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Eindhoven is jouw gemeente.\"\n\n*Zin 13:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Zin 14:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n\n*Zin 15:* \"En wat welk land kom je?\"\n👍 *Wat was goed:* Je vraag is begrijpelijk.\n💡 *Correctie:* \"En uit welk land kom je?\"\n🧠 *Waarom:* De herhaling van 'welk' ('wat welk') is een stottering en grammaticaal incorrect. De correcte vraag is 'uit welk land kom je?' en mist de prepositie 'uit'.\n\n*Zin 16:* \"Bedankt bedankt voor de informatie.\"\n👍 *Wat was goed:* Je bedankt voor de informatie.\n💡 *Correctie:* \"Bedankt voor de informatie.\"\n🧠 *Waarom:* De herhaling van 'bedankt' ('bedankt bedankt') is een stottering. Probeer de zin vloeiend uit te spreken zonder herhalingen.\n\n*Zin 17:* \"Goed, goed.\"\n👍 *Wat was goed:* Je sluit het gesprek af.\n💡 *Correctie:* \"Goed.\"\n🧠 *Waarom:* De herhaling van 'goed' is onnodig. Eén keer 'goed' is voldoende.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt af en toe fouten met preposities (bijv. 'voor' in plaats van 'over') en de formulering van vragen ('wat welk land'). Ook de manier waarop je datums en postcodes formuleert, kan beter. Let op de standaard Nederlandse structuren hiervoor.\n• *Uitspraak:* Je uitspraak is over het algemeen goed, maar je stottert regelmatig (herhalingen van woorden zoals 'wat', 'mijn', 'bedankt', 'hallo', 'goed'). Ook de uitspraak van cijfers in postcodes en jaartallen kan nog verbeterd worden om de Nederlandse standaard te volgen.\n• *Samenhang & Logica:* De informatie over je adres en geboortedatum was moeilijk te volgen door de ongebruikelijke formulering. Probeer deze informatie op een gestructureerde en standaard manier te presenteren.\n\n🧠 *Jouw volgende stap & advies:*\nConcentreer je op het verminderen van stotteringen door rustiger te spreken en je zinnen van tevoren te bedenken. Oefen specifiek met het correct formuleren van adressen, postcodes en datums in het Nederlands. Besteed ook aandacht aan het juiste gebruik van preposities. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Wei! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ja, uhm, natuurlijk. Wat wat wil je weten?\"\n👍 *What was good:* Your answer is clear and the pronunciation of 'natuurlijk' (naturally) is good.\n💡 *Correction:* \"Ja, natuurlijk. Wat wil je weten?\"\n🧠 *Why:* The repetition of 'wat' ('wat wat') is a stutter. Try to speak the sentence fluently without repetitions.\n\n*Sentence 2:* \"Mijn naam, mijn voornaam is Yan-Ling en mijn achternaam is Dong.\"\n👍 *What was good:* You correct yourself from 'naam' (name) to 'voornaam' (first name), which is good.\n💡 *Correction:* \"Mijn voornaam is Yan-Ling en mijn achternaam is Dong.\"\n🧠 *Why:* Try to use the correct term directly to avoid stuttering and repetitions.\n\n*Sentence 3:* \"Mijn adres is Basic 5 Basic 5. Mijn postcode is 653 en 30 4 is in Eindhoven.\"\n👍 *What was good:* You attempt to provide your address and postal code.\n💡 *Correction:* \"Mijn adres is Basicweg 5. Mijn postcode is 5634 ES in Eindhoven.\"\n🧠 *Why:* An address consists of a street name and house number (e.g., Basicweg 5). A postal code is pronounced as four digits and two letters (e.g., 'five-six-three-four E-S'). The word 'en' (and) is not used in a postal code, and 'is in Eindhoven' is redundant after the postal code.\n🤔 *Logic:* The address 'Basic 5 Basic 5' and the postal code '653 en 30 4' are not logical or recognizable as a valid Dutch address and postal code. A Dutch address has a specific structure (street name and house number). A postal code consists of four digits and two letters. The information provided is not logical in this context.\n\n*Sentence 4:* \"Mijn mijn contactpersoon is Made Made Hang.\"\n👍 *What was good:* You provide a name for the contact person.\n💡 *Correction:* \"Mijn contactpersoon is meneer Hang.\"\n🧠 *Why:* The repetition of 'mijn' ('mijn mijn') and 'Made' ('Made Made') are stutters. 'Made' sounds like a mispronunciation of 'meneer' (mister) or an unusual name. Try to speak the sentence fluently. If 'Made' is a name, it is correct, but if it should be 'meneer', pay attention to the pronunciation of the 'e' and 'r'.\n\n*Sentence 5:* \"Ik ben geboren op 5 en 3 mei 18 18 70 jaar.\"\n👍 *What was good:* You attempt to provide your birth date.\n💡 *Correction:* \"Ik ben geboren op 3 mei 1970.\"\n🧠 *Why:* A date is pronounced as 'day month year' (e.g., 'third of May nineteen seventy'). The word 'jaar' (year) is superfluous after a year, and '5 en' is unnecessary. A year is pronounced as a whole (e.g., 'nineteen seventy'), not as individual digits.\n🤔 *Logic:* The birth date '5 en 3 mei 18 18 70 jaar' is illogical and incomprehensible. A birth date must be clear and expressed in a standard format. The repetition of '18' and the use of 'jaar' after the year make it illogical.\n\n*Sentence 6:* \"Ik ben 47 jaar oud.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik ben 47 jaar oud.\"\n\n*Sentence 7:* \"Ik kom uit China.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit China.\"\n\n*Sentence 8:* \"Graag gedaan.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Graag gedaan.\"\n\n*Sentence 9:* \"Hallo, maar hallo, mag ik je wat vragen stellen voor je persoonlijke gegevens?\"\n👍 *What was good:* You ask to inquire about personal data.\n💡 *Correction:* \"Hallo, mag ik je wat vragen stellen over je persoonlijke gegevens?\"\n🧠 *Why:* The repetition of 'hallo' ('maar hallo') is a stutter. The use of 'voor' (for) instead of 'over' (about) is incorrect. The correct preposition in this context is 'over' (to ask questions *about* something).\n\n*Sentence 10:* \"Wat is jouw naam en achternaam?\"\n👍 *What was good:* Your question is understandable and the pronunciation is clear.\n💡 *Correction:* \"Wat is jouw voornaam en achternaam?\"\n🧠 *Why:* The use of 'naam en achternaam' (name and surname) is somewhat redundant. It is more precise to ask for 'voornaam en achternaam' (first name and surname) for clarity.\n\n*Sentence 11:* \"En wat is jouw adres?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"En wat is jouw adres?\"\n\n*Sentence 12:* \"Eindhoven is jouw gemeente.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Eindhoven is jouw gemeente.\"\n\n*Sentence 13:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Sentence 14:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n\n*Sentence 15:* \"En wat welk land kom je?\"\n👍 *What was good:* Your question is understandable.\n💡 *Correction:* \"En uit welk land kom je?\"\n🧠 *Why:* The repetition of 'welk' ('wat welk') is a stutter and grammatically incorrect. The correct question is 'uit welk land kom je?' (from which country do you come?) and is missing the preposition 'uit'.\n\n*Sentence 16:* \"Bedankt bedankt voor de informatie.\"\n👍 *What was good:* You thank for the information.\n💡 *Correction:* \"Bedankt voor de informatie.\"\n🧠 *Why:* The repetition of 'bedankt' ('bedankt bedankt') is a stutter. Try to speak the sentence fluently without repetitions.\n\n*Sentence 17:* \"Goed, goed.\"\n👍 *What was good:* You conclude the conversation.\n💡 *Correction:* \"Goed.\"\n🧠 *Why:* The repetition of 'goed' (good) is unnecessary. Saying 'goed' once is sufficient.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You occasionally make mistakes with prepositions (e.g., 'voor' instead of 'over') and the formulation of questions ('wat welk land'). The way you formulate dates and postal codes could also be improved. Pay attention to the standard Dutch structures for these.\n• *Pronunciation:* Your pronunciation is generally good, but you stutter regularly (repetitions of words such as 'wat', 'mijn', 'bedankt', 'hallo', 'goed'). The pronunciation of numbers in postal codes and years can also be improved to follow the Dutch standard.\n• *Coherence & Logic:* The information about your address and birth date was difficult to follow due to the unusual phrasing. Try to present this information in a structured and standard way.\n\n🧠 *Your next step & advice:*\nFocus on reducing stutters by speaking more calmly and thinking through your sentences beforehand. Specifically practice correctly formulating addresses, postal codes, and dates in Dutch. Also, pay attention to the correct use of prepositions. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Gulay Sezgin 4-6.mp3",
+      "path": "B-A1/Gulay Sezgin 4-6.mp3",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Wat is jouw naam en achternaam?",
+            "zin_correct": "Wat is jouw naam en achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Mijn voornaam is Gulay en mijn achternaam is Parler.",
+            "zin_correct": "Mijn voornaam is Gülay en mijn achternaam is Parlar.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Parler",
+              "uitleg": "De 'r' aan het einde van 'Parlar' is niet helemaal duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Wat is jouw adres?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Mijn adres is Vaartbroek 101, 3542 XC Eindhoven.",
+            "zin_correct": "Mijn adres is Vaartbroek 101, 5622 XC Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "drie vijf vier twee ik zei en toven",
+              "uitleg": "De cijfers van de postcode worden niet correct uitgesproken (3542 i.p.v. 5622). 'Ik zei' is een verspreking en 'en toven' is een onduidelijke uitspraak van 'Eindhoven'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De postcode is incorrect en 'ik zei' is een verspreking.",
+              "uitleg": "De postcode '3542 XC' is geen geldige Nederlandse postcode. Een correcte postcode voor Eindhoven zou bijvoorbeeld '5622 XC' kunnen zijn. 'Ik zei' is een verspreking en hoort niet bij het adres."
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Eindhoven is de dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "de dus",
+              "uitleg": "Er is een extra 'de' toegevoegd, wat de zin onnatuurlijk maakt."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "de dus",
+              "uitleg": "Het lidwoord 'de' is hier overbodig. 'Eindhoven is dus jouw gemeente' is correct."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik heb niemand bij de gemeente.",
+            "zin_correct": "Ik heb niemand bij de gemeente.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "zin_correct": "Wat is jouw geboortedatum en hoe oud ben je?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "geboort datum",
+              "uitleg": "Het woord 'geboortedatum' wordt niet helemaal correct uitgesproken; de 'te' in het midden ontbreekt."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik ben geboren op 14 mei 1987. Ik ben 38 jaar oud.",
+            "zin_correct": "Ik ben geboren op 14 mei 1987. Ik ben 36 jaar oud.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "8 en 30",
+              "uitleg": "De uitspraak van het getal 'achtendertig' is niet vloeiend; de 'en' wordt te veel benadrukt."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De leeftijd klopt niet met de geboortedatum.",
+              "uitleg": "Als je in 1987 geboren bent, ben je in 2023/2024 36 of 37 jaar oud, niet 38."
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "En uit welk land kom je?",
+            "zin_correct": "En uit welk land kom je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik kom uit Turkije. En jij?",
+            "zin_correct": "Ik kom uit Turkije. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik kom uit Turkije.",
+            "zin_correct": "Ik kom uit Turkije.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Bedankt voor de informatie.",
+            "zin_correct": "Bedankt voor de informatie.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "infor te",
+              "uitleg": "Het woord 'informatie' wordt niet volledig uitgesproken; de laatste lettergreep ontbreekt."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Graag gedaan.",
+            "zin_correct": "Graag gedaan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Hallo. Wat is jouw naam en achternaam?",
+            "zin_correct": "Hallo. Wat is jouw naam en achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Mijn voornaam is Sezgin. Mijn achternaam Günyar.",
+            "zin_correct": "Mijn voornaam is Sezgin. Mijn achternaam is Günyar.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mijn achternaam Günyar",
+              "uitleg": "Het werkwoord 'is' ontbreekt in de tweede zin. Het moet zijn: 'Mijn achternaam *is* Günyar'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "En wat is jouw adres?",
+            "zin_correct": "En wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Mijn adres: Straat van Waremburgstraat 441, 5622 KP Eindhoven.",
+            "zin_correct": "Mijn adres is Waremburgstraat 441, 5622 KP Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Straat van Waremburgstraat",
+              "uitleg": "De straatnaam is onduidelijk en lijkt een herhaling te bevatten ('Straat van Waremburgstraat'). Het is waarschijnlijk gewoon 'Waremburgstraat'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mijn adres straat van...",
+              "uitleg": "Het werkwoord 'is' ontbreekt na 'Mijn adres'. Het moet zijn: 'Mijn adres *is* Waremburgstraat...'"
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De straatnaam 'Straat van Waremburgstraat' is ongebruikelijk en waarschijnlijk een verspreking.",
+              "uitleg": "De correcte straatnaam is waarschijnlijk 'Waremburgstraat'. De toevoeging 'Straat van' is overbodig en onlogisch."
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Mijn contactpersoon is meneer Dan.",
+            "zin_correct": "Mijn contactpersoon is meneer Dan.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "minner dan",
+              "uitleg": "Het woord 'meneer' wordt niet correct uitgesproken; het klinkt als 'minner'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Wat is jouw geboortedatum en hoe oud ben jij?",
+            "zin_correct": "Wat is jouw geboortedatum en hoe oud ben jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik ben geboren op 5 mei 1985. Ik ben 41 jaar.",
+            "zin_correct": "Ik ben geboren op 5 mei 1985. Ik ben 38 jaar oud.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "41 jaar",
+              "uitleg": "Hoewel '41 jaar' begrijpelijk is, is '41 jaar oud' de meest complete en natuurlijke formulering."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De leeftijd klopt niet met de geboortedatum.",
+              "uitleg": "Als je in 1985 geboren bent, ben je in 2023/2024 38 of 39 jaar oud, niet 41."
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "En uit welk land kom jij?",
+            "zin_correct": "En uit welk land kom jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik kom uit Turkije. En jij?",
+            "zin_correct": "Ik kom uit Turkije. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik kom uit Turkije. Bedankt voor de informatie.",
+            "zin_correct": "Ik kom uit Turkije. Bedankt voor de informatie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Graag gedaan.",
+            "zin_correct": "Graag gedaan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Dankjewel.",
+            "zin_correct": "Dankjewel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Gulay",
+            "brief": "Hallo Gulay! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Mijn voornaam is Gulay en mijn achternaam is Parler.\"\n👍 *Wat was goed:* De zinsopbouw is correct en je spreekt de meeste woorden duidelijk uit.\n💡 *Correctie:* \"Mijn voornaam is Gülay en mijn achternaam is Parlar.\"\n🧠 *Waarom:* De 'r' aan het einde van 'Parlar' is niet helemaal duidelijk uitgesproken. Let op de articulatie van medeklinkers aan het einde van woorden.\n\n*Zin 2:* \"Mijn adres is Vaartbroek 101, 3542 XC Eindhoven.\"\n👍 *Wat was goed:* De structuur van de zin is correct.\n💡 *Correctie:* \"Mijn adres is Vaartbroek 101, 5622 XC Eindhoven.\"\n🧠 *Waarom:* De cijfers van de postcode worden niet correct uitgesproken (3542 i.p.v. 5622). 'Ik zei' is een verspreking en 'en toven' is een onduidelijke uitspraak van 'Eindhoven'.\n🤔 *Logica:* De postcode '3542 XC' is geen geldige Nederlandse postcode. Een correcte postcode voor Eindhoven zou bijvoorbeeld '5622 XC' kunnen zijn. 'Ik zei' is een verspreking en hoort niet bij het adres.\n\n*Zin 3:* \"Ik heb niemand bij de gemeente.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik heb niemand bij de gemeente.\"\n\n*Zin 4:* \"Ik ben geboren op 14 mei 1987. Ik ben 38 jaar oud.\"\n👍 *Wat was goed:* De zinsopbouw is correct en de geboortedatum is duidelijk.\n💡 *Correctie:* \"Ik ben geboren op 14 mei 1987. Ik ben 36 jaar oud.\"\n🧠 *Waarom:* De uitspraak van het getal 'achtendertig' is niet vloeiend; de 'en' wordt te veel benadrukt. Het is beter om 'achtendertig' als één woord uit te spreken.\n🤔 *Logica:* Als je in 1987 geboren bent, ben je in 2023/2024 36 of 37 jaar oud, niet 38.\n\n*Zin 5:* \"Ik kom uit Turkije. En jij?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit Turkije. En jij?\"\n\n*Zin 6:* \"Graag gedaan.\"\n👍 *Wat was goed:* Deze zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Graag gedaan.\"\n\n*Zin 7:* \"Hallo. Wat is jouw naam en achternaam?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Hallo. Wat is jouw naam en achternaam?\"\n\n*Zin 8:* \"En wat is jouw adres?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"En wat is jouw adres?\"\n\n*Zin 9:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n\n*Zin 10:* \"Wat is jouw geboortedatum en hoe oud ben jij?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw geboortedatum en hoe oud ben jij?\"\n\n*Zin 11:* \"En uit welk land kom jij?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"En uit welk land kom jij?\"\n\n*Zin 12:* \"Ik kom uit Turkije. Bedankt voor de informatie.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit Turkije. Bedankt voor de informatie.\"\n\n*Zin 13:* \"Dankjewel.\"\n👍 *Wat was goed:* Deze zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammaticale zinsbouw is over het algemeen goed. Blijf oefenen met de volledigheid van zinnen, hoewel er in deze opname geen grote grammaticale fouten waren.\n• *Uitspraak:* Let op de uitspraak van cijfers en namen, en de 'r' klank aan het einde van woorden (zoals in 'Parlar'). Oefen met het vloeiend uitspreken van samengestelde getallen zoals 'achtendertig'.\n• *Samenhang & Logica:* Let op de consistentie tussen geboortedatum en leeftijd, en de correctheid van adresgegevens. Het is belangrijk dat de informatie die je geeft logisch en feitelijk correct is.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het uitspreken van getallen en namen. Controleer altijd of je antwoorden logisch en consistent zijn, vooral bij persoonlijke gegevens. Je doet het goed, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Gulay! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Mijn voornaam is Gulay en mijn achternaam is Parler.\"\n👍 *What was good:* The sentence structure is correct and you pronounce most words clearly.\n💡 *Correction:* \"Mijn voornaam is Gülay en mijn achternaam is Parlar.\"\n🧠 *Why:* The 'r' at the end of 'Parlar' is not pronounced entirely clearly. Pay attention to the articulation of consonants at the end of words.\n\n*Sentence 2:* \"Mijn adres is Vaartbroek 101, 3542 XC Eindhoven.\"\n👍 *What was good:* The structure of the sentence is correct.\n💡 *Correction:* \"Mijn adres is Vaartbroek 101, 5622 XC Eindhoven.\"\n🧠 *Why:* The numbers of the postcode are not pronounced correctly (3542 instead of 5622). 'Ik zei' is a slip of the tongue and 'en toven' is an unclear pronunciation of 'Eindhoven'.\n🤔 *Logic:* The postcode '3542 XC' is not a valid Dutch postcode. A correct postcode for Eindhoven could be, for example, '5622 XC'. 'Ik zei' is a slip of the tongue and does not belong to the address.\n\n*Sentence 3:* \"Ik heb niemand bij de gemeente.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik heb niemand bij de gemeente.\"\n\n*Sentence 4:* \"Ik ben geboren op 14 mei 1987. Ik ben 38 jaar oud.\"\n👍 *What was good:* The sentence structure is correct and the date of birth is clear.\n💡 *Correction:* \"Ik ben geboren op 14 mei 1987. Ik ben 36 jaar oud.\"\n🧠 *Why:* The pronunciation of the number 'achtendertig' is not fluent; the 'en' is overemphasized. It is better to pronounce 'achtendertig' as one word.\n🤔 *Logic:* If you were born in 1987, you would be 36 or 37 years old in 2023/2024, not 38.\n\n*Sentence 5:* \"Ik kom uit Turkije. En jij?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit Turkije. En jij?\"\n\n*Sentence 6:* \"Graag gedaan.\"\n👍 *What was good:* This sentence is correct and clearly pronounced.\n💡 *Correction:* \"Graag gedaan.\"\n\n*Sentence 7:* \"Hallo. Wat is jouw naam en achternaam?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Hallo. Wat is jouw naam en achternaam?\"\n\n*Sentence 8:* \"En wat is jouw adres?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"En wat is jouw adres?\"\n\n*Sentence 9:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n\n*Sentence 10:* \"Wat is jouw geboortedatum en hoe oud ben jij?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wat is jouw geboortedatum en hoe oud ben jij?\"\n\n*Sentence 11:* \"En uit welk land kom jij?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"En uit welk land kom jij?\"\n\n*Sentence 12:* \"Ik kom uit Turkije. Bedankt voor de informatie.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit Turkije. Bedankt voor de informatie.\"\n\n*Sentence 13:* \"Dankjewel.\"\n👍 *What was good:* This sentence is correct and clearly pronounced.\n💡 *Correction:* \"Dankjewel.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammatical sentence structure is generally good. Keep practicing the completeness of sentences, although there were no major grammatical errors in this recording.\n• *Pronunciation:* Pay attention to the pronunciation of numbers and names, and the 'r' sound at the end of words (like in 'Parlar'). Practice pronouncing compound numbers like 'achtendertig' fluently.\n• *Coherence & Logic:* Pay attention to the consistency between your date of birth and age, and the correctness of address details. It is important that the information you provide is logical and factually correct.\n\n🧠 *Your next step & advice:*\nKeep practicing pronouncing numbers and names. Always check that your answers are logical and consistent, especially with personal information. You're doing great, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Sezgin",
+            "brief": "Hallo Sezgin! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat is jouw naam en achternaam?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw naam en achternaam?\"\n\n*Zin 2:* \"Wat is jouw adres?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw adres?\"\n\n*Zin 3:* \"Eindhoven is de dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* De vraag over de contactpersoon is correct geformuleerd.\n💡 *Correctie:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n🧠 *Waarom:* Er is een extra 'de' toegevoegd, wat de zin onnatuurlijk maakt. Het lidwoord 'de' is hier overbodig. 'Eindhoven is dus jouw gemeente' is correct.\n\n*Zin 4:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *Wat was goed:* De zinsopbouw is correct.\n💡 *Correctie:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n🧠 *Waarom:* Het woord 'geboortedatum' wordt niet helemaal correct uitgesproken; de 'te' in het midden ontbreekt. Let op de volledige uitspraak van samengestelde woorden.\n\n*Zin 5:* \"En uit welk land kom je?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"En uit welk land kom je?\"\n\n*Zin 6:* \"Ik kom uit Turkije.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit Turkije.\"\n\n*Zin 7:* \"Bedankt voor de informatie.\"\n👍 *Wat was goed:* De intentie van de zin is duidelijk.\n💡 *Correctie:* \"Bedankt voor de informatie.\"\n🧠 *Waarom:* Het woord 'informatie' wordt niet volledig uitgesproken; de laatste lettergreep ontbreekt. Probeer woorden volledig uit te spreken.\n\n*Zin 8:* \"Mijn voornaam is Sezgin. Mijn achternaam Günyar.\"\n👍 *Wat was goed:* Je voornaam is duidelijk uitgesproken.\n💡 *Correctie:* \"Mijn voornaam is Sezgin. Mijn achternaam is Günyar.\"\n🧠 *Waarom:* Het werkwoord 'is' ontbreekt in de tweede zin. Het moet zijn: 'Mijn achternaam *is* Günyar'.\n\n*Zin 9:* \"Mijn adres: Straat van Waremburgstraat 441, 5622 KP Eindhoven.\"\n👍 *Wat was goed:* De postcode en plaatsnaam zijn correct.\n💡 *Correctie:* \"Mijn adres is Waremburgstraat 441, 5622 KP Eindhoven.\"\n🧠 *Waarom:* De straatnaam is onduidelijk en lijkt een herhaling te bevatten ('Straat van Waremburgstraat'). Het is waarschijnlijk gewoon 'Waremburgstraat'. Daarnaast ontbreekt het werkwoord 'is' na 'Mijn adres'.\n🤔 *Logica:* De straatnaam 'Straat van Waremburgstraat' is ongebruikelijk en waarschijnlijk een verspreking. De correcte straatnaam is waarschijnlijk 'Waremburgstraat'. De toevoeging 'Straat van' is overbodig en onlogisch.\n\n*Zin 10:* \"Mijn contactpersoon is meneer Dan.\"\n👍 *Wat was goed:* De zinsopbouw is correct.\n💡 *Correctie:* \"Mijn contactpersoon is meneer Dan.\"\n🧠 *Waarom:* Het woord 'meneer' wordt niet correct uitgesproken; het klinkt als 'minner'. Let op de uitspraak van de 'e' klank.\n\n*Zin 11:* \"Ik ben geboren op 5 mei 1985. Ik ben 41 jaar.\"\n👍 *Wat was goed:* De geboortedatum is duidelijk.\n💡 *Correctie:* \"Ik ben geboren op 5 mei 1985. Ik ben 38 jaar oud.\"\n🧠 *Waarom:* Hoewel '41 jaar' begrijpelijk is, is '41 jaar oud' de meest complete en natuurlijke formulering.\n🤔 *Logica:* Als je in 1985 geboren bent, ben je in 2023/2024 38 of 39 jaar oud, niet 41.\n\n*Zin 12:* \"Ik kom uit Turkije. En jij?\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik kom uit Turkije. En jij?\"\n\n*Zin 13:* \"Graag gedaan.\"\n👍 *Wat was goed:* Deze zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Graag gedaan.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op het weglaten van het werkwoord 'is' in zinnen zoals 'Mijn achternaam Günyar' of 'Mijn adres straat...'. Dit is een veelvoorkomende fout die je gemakkelijk kunt verbeteren door altijd een werkwoord te gebruiken waar nodig.\n• *Uitspraak:* Besteed aandacht aan de volledige uitspraak van woorden zoals 'informatie' en 'geboortedatum'. Oefen ook de uitspraak van 'meneer' en vermijd onnodige woorden zoals 'de' in 'de dus'.\n• *Samenhang & Logica:* Let op de consistentie tussen geboortedatum en leeftijd. Zorg er ook voor dat adresgegevens logisch en correct zijn, zoals het vermijden van dubbele straatnamen.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met het correct formuleren van zinnen, met name het gebruik van werkwoorden. Besteed aandacht aan de volledige uitspraak van woorden en controleer de logica van je antwoorden. Je bent goed op weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Sezgin! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat is jouw naam en achternaam?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wat is jouw naam en achternaam?\"\n\n*Sentence 2:* \"Wat is jouw adres?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Wat is jouw adres?\"\n\n*Sentence 3:* \"Eindhoven is de dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* The question about the contact person is correctly formulated.\n💡 *Correction:* \"Eindhoven is dus jouw gemeente. Wie is jouw contactpersoon bij de gemeente?\"\n🧠 *Why:* An extra 'de' was added, which makes the sentence unnatural. The article 'de' is superfluous here. 'Eindhoven is dus jouw gemeente' is correct.\n\n*Sentence 4:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n👍 *What was good:* The sentence structure is correct.\n💡 *Correction:* \"Wat is jouw geboortedatum en hoe oud ben je?\"\n🧠 *Why:* The word 'geboortedatum' is not pronounced entirely correctly; the 'te' in the middle is missing. Pay attention to the full pronunciation of compound words.\n\n*Sentence 5:* \"En uit welk land kom je?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"En uit welk land kom je?\"\n\n*Sentence 6:* \"Ik kom uit Turkije.\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit Turkije.\"\n\n*Sentence 7:* \"Bedankt voor de informatie.\"\n👍 *What was good:* The intention of the sentence is clear.\n💡 *Correction:* \"Bedankt voor de informatie.\"\n🧠 *Why:* The word 'informatie' is not fully pronounced; the last syllable is missing. Try to pronounce words completely.\n\n*Sentence 8:* \"Mijn voornaam is Sezgin. Mijn achternaam Günyar.\"\n👍 *What was good:* Your first name is clearly pronounced.\n💡 *Correction:* \"Mijn voornaam is Sezgin. Mijn achternaam is Günyar.\"\n🧠 *Why:* The verb 'is' is missing in the second sentence. It should be: 'Mijn achternaam *is* Günyar'.\n\n*Sentence 9:* \"Mijn adres: Straat van Waremburgstraat 441, 5622 KP Eindhoven.\"\n👍 *What was good:* The postcode and city name are correct.\n💡 *Correction:* \"Mijn adres is Waremburgstraat 441, 5622 KP Eindhoven.\"\n🧠 *Why:* The street name is unclear and seems to contain a repetition ('Straat van Waremburgstraat'). It is likely just 'Waremburgstraat'. Additionally, the verb 'is' is missing after 'Mijn adres'.\n🤔 *Logic:* The street name 'Straat van Waremburgstraat' is unusual and likely a slip of the tongue. The correct street name is probably 'Waremburgstraat'. The addition 'Straat van' is superfluous and illogical.\n\n*Sentence 10:* \"Mijn contactpersoon is meneer Dan.\"\n👍 *What was good:* The sentence structure is correct.\n💡 *Correction:* \"Mijn contactpersoon is meneer Dan.\"\n🧠 *Why:* The word 'meneer' is not pronounced correctly; it sounds like 'minner'. Pay attention to the pronunciation of the 'e' sound.\n\n*Sentence 11:* \"Ik ben geboren op 5 mei 1985. Ik ben 41 jaar.\"\n👍 *What was good:* The date of birth is clear.\n💡 *Correction:* \"Ik ben geboren op 5 mei 1985. Ik ben 38 jaar oud.\"\n🧠 *Why:* Although '41 jaar' is understandable, '41 jaar oud' is the most complete and natural phrasing.\n🤔 *Logic:* If you were born in 1985, you would be 38 or 39 years old in 2023/2024, not 41.\n\n*Sentence 12:* \"Ik kom uit Turkije. En jij?\"\n👍 *What was good:* This sentence is grammatically correct and clearly pronounced.\n💡 *Correction:* \"Ik kom uit Turkije. En jij?\"\n\n*Sentence 13:* \"Graag gedaan.\"\n👍 *What was good:* This sentence is correct and clearly pronounced.\n💡 *Correction:* \"Graag gedaan.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to omitting the verb 'is' in sentences such as 'Mijn achternaam Günyar' or 'Mijn adres straat...'. This is a common mistake that you can easily correct by always using a verb where necessary.\n• *Pronunciation:* Pay attention to the full pronunciation of words like 'informatie' and 'geboortedatum'. Also practice the pronunciation of 'meneer' and avoid unnecessary words like 'de' in 'de dus'.\n• *Coherence & Logic:* Pay attention to the consistency between your date of birth and age. Also ensure that address details are logical and correct, such as avoiding duplicate street names.\n\n🧠 *Your next step & advice:*\nPractice formulating sentences correctly, especially the use of verbs. Pay attention to the full pronunciation of words and check the logic of your answers. You are well on your way! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
     }
   ],
   "B-A2": [
