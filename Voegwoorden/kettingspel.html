@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voegwoorden Kettingspel — Klassikaal Bord</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #151d30;
+      --surface-hover: #1e2942;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --en-color: #3b82f6;
+      --maar-color: #ef4444;
+      --want-color: #f59e0b;
+      --of-color: #10b981;
+      --dus-color: #8b5cf6;
+      
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 10px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+      transform: translateX(-3px);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── MAIN PLAYBOARD ── */
+    .playboard {
+      display: grid;
+      grid-template-columns: 1fr 160px 1fr;
+      gap: 30px;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .playboard {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 20px;
+      }
+      .conjunctions-col {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px !important;
+      }
+    }
+
+    .input-col {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      height: 100%;
+    }
+
+    .col-label {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sentence-input {
+      width: 100%;
+      height: 150px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 20px;
+      outline: none;
+      resize: none;
+      transition: var(--transition);
+    }
+
+    .sentence-input:focus {
+      border-color: #3b82f6;
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+    }
+
+    .conjunctions-col {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .conj-btn {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 1.4rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      user-select: none;
+    }
+
+    .conj-btn:hover {
+      color: var(--text);
+      transform: scale(1.05);
+    }
+
+    .conj-btn.active[data-conj="en"] { background: var(--en-color); color: #fff; border-color: var(--en-color); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+    .conj-btn.active[data-conj="maar"] { background: var(--maar-color); color: #fff; border-color: var(--maar-color); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+    .conj-btn.active[data-conj="want"] { background: var(--want-color); color: #fff; border-color: var(--want-color); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+    .conj-btn.active[data-conj="of"] { background: var(--of-color); color: #fff; border-color: var(--of-color); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+    .conj-btn.active[data-conj="dus"] { background: var(--dus-color); color: #fff; border-color: var(--dus-color); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+
+    /* ── LIVE PREVIEW & ACTIONS ── */
+    .live-preview-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .preview-header {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .preview-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1.5;
+      min-height: 50px;
+      color: var(--text-muted);
+      transition: var(--transition);
+      white-space: pre-wrap;
+    }
+
+    .preview-text.has-content {
+      color: var(--text);
+    }
+
+    .preview-text span.conj-highlight {
+      font-weight: 900;
+      text-decoration: underline;
+    }
+    .preview-text span[data-high="en"] { color: var(--en-color); }
+    .preview-text span[data-high="maar"] { color: var(--maar-color); }
+    .preview-text span[data-high="want"] { color: var(--want-color); }
+    .preview-text span[data-high="of"] { color: var(--of-color); }
+    .preview-text span[data-high="dus"] { color: var(--dus-color); }
+
+    .action-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      flex-grow: 1;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ── SUGGESTED STARTERS ── */
+    .starters-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .starters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .starter-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .starter-card:hover {
+      background: var(--surface-hover);
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .starter-card span {
+      opacity: 0;
+      transition: var(--transition);
+      color: #3b82f6;
+    }
+
+    .starter-card:hover span {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    /* ── HISTORY / BOARD LOG ── */
+    .history-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .history-item {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .history-text {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .history-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .history-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <h1>🔗 Voegwoorden Kettingspel — Klassikaal Bord</h1>
+      <a href="index.html" class="back-btn">← Terug</a>
+    </header>
+
+    <!-- PLAYBOARD -->
+    <div class="playboard">
+      <!-- LEFT COL (ZIN 1) -->
+      <div class="input-col">
+        <div class="col-label">
+          <span>🗣️ Cursist 1 (Zin 1)</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Begint de zin</span>
+        </div>
+        <textarea id="zin1" class="sentence-input" placeholder="Typ hier de eerste zin..." oninput="updateLiveSentence()"></textarea>
+      </div>
+
+      <!-- MIDDLE COL (CONJUNCTIONS) -->
+      <div class="conjunctions-col">
+        <div class="col-label" style="margin-bottom: 5px;">Link</div>
+        <button class="conj-btn" data-conj="en" onclick="selectConjunction('en')">en</button>
+        <button class="conj-btn" data-conj="maar" onclick="selectConjunction('maar')">maar</button>
+        <button class="conj-btn" data-conj="want" onclick="selectConjunction('want')">want</button>
+        <button class="conj-btn" data-conj="of" onclick="selectConjunction('of')">of</button>
+        <button class="conj-btn" data-conj="dus" onclick="selectConjunction('dus')">dus</button>
+      </div>
+
+      <!-- RIGHT COL (ZIN 2) -->
+      <div class="input-col">
+        <div class="col-label">
+          <span>🗣️ Cursist 2 (Zin 2)</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Voegt aanpassing toe</span>
+        </div>
+        <textarea id="zin2" class="sentence-input" placeholder="Typ hier de tweede zin..." oninput="updateLiveSentence()"></textarea>
+      </div>
+    </div>
+
+    <!-- LIVE PREVIEW & ACTIONS -->
+    <div class="live-preview-box">
+      <div class="preview-header">Live resultaat op het bord:</div>
+      <div id="live-sentence" class="preview-text">De zin verschijnt hier zodra je begint te typen...</div>
+      <div class="action-row">
+        <button class="btn btn-primary" onclick="addSentenceToHistory()">💾 Voeg toe aan het bord</button>
+        <button class="btn btn-secondary" onclick="resetPlayboard()">🧹 Wis invoer</button>
+      </div>
+    </div>
+
+    <!-- STARTER SUGGESTIONS -->
+    <div class="starters-section">
+      <div class="col-label">💡 Ideeën voor zin 1 (Klik om in te vullen)</div>
+      <div class="starters-grid">
+        <div class="starter-card" onclick="useStarter('Ik ben vandaag heel vroeg opgestaan')">Ik ben vandaag heel vroeg opgestaan <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Mijn manager belde mij vanochtend')">Mijn manager belde mij vanochtend <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Het regende hard onderweg naar het werk')">Het regende hard onderweg naar het werk <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Ik wil heel graag Nederlands leren')">Ik wil heel graag Nederlands leren <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Tomasz moet vandaag de dozen controleren')">Tomasz moet vandaag de dozen controleren <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Er is een probleem met het transport')">Er is een probleem met het transport <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('De machines op de afdeling staan stil')">De machines op de afdeling staan stil <span>→</span></div>
+        <div class="starter-card" onclick="useStarter('Ik drink elke ochtend een kop koffie')">Ik drink elke ochtend een kop koffie <span>→</span></div>
+      </div>
+    </div>
+
+    <!-- TIMELINE / HISTORY BOARD -->
+    <div class="history-section">
+      <div class="col-label" style="display:flex; justify-content:space-between;">
+        <span>📋 Gemaakte Zinnen</span>
+        <button class="btn btn-secondary" onclick="copyAllHistory()" style="padding: 6px 12px; font-size: 0.85rem; border-radius: 20px;">📋 Kopieer alle zinnen</button>
+      </div>
+      <ul id="history-list" class="history-list">
+        <li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    let selectedConj = '';
+    const historyList = [];
+
+    // Woordvolgorde regels: kommaplaatsing bij voegwoorden
+    // In het Nederlands komt er een komma voor 'maar', 'want' en 'dus'.
+    // Er komt geen komma voor 'en' en 'of'.
+    const commaConjunctions = ['maar', 'want', 'dus'];
+
+    function selectConjunction(conj) {
+      selectedConj = conj;
+      
+      // Update UI active buttons
+      document.querySelectorAll('.conj-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-conj') === conj) {
+          btn.classList.add('active');
+        }
+      });
+
+      // Zorg voor de correcte hoofdletter/kleine letter in zin 2
+      // Als zin 2 begint met een hoofdletter, veranderen we die naar kleine letter, tenzij het een eigennaam is.
+      const zin2El = document.getElementById('zin2');
+      let val2 = zin2El.value.trim();
+      if (val2.length > 0) {
+        // Alleen de eerste letter veranderen als het geen eigennaam of 'Ik' is
+        const firstWord = val2.split(' ')[0];
+        if (firstWord !== 'Ik' && firstWord !== 'Tomasz' && firstWord !== 'Kevin' && firstWord !== 'Malwina' && firstWord !== 'Ariel' && firstWord !== 'Dorota') {
+          zin2El.value = val2.charAt(0).toLowerCase() + val2.slice(1);
+        }
+      }
+
+      updateLiveSentence();
+    }
+
+    function useStarter(text) {
+      document.getElementById('zin1').value = text;
+      updateLiveSentence();
+      document.getElementById('zin2').focus();
+    }
+
+    function formatSentence(z1, conj, z2) {
+      if (!z1 && !z2 && !conj) return '';
+
+      let result = '';
+      
+      // Zin 1 opschonen
+      let cleanZ1 = z1.trim();
+      if (cleanZ1) {
+        // Verwijder punt aan het einde van zin 1
+        if (cleanZ1.endsWith('.')) {
+          cleanZ1 = cleanZ1.slice(0, -1);
+        }
+      }
+
+      // Zin 2 opschonen
+      let cleanZ2 = z2.trim();
+      if (cleanZ2) {
+        if (cleanZ2.endsWith('.')) {
+          cleanZ2 = cleanZ2.slice(0, -1);
+        }
+      }
+
+      if (cleanZ1) {
+        result += cleanZ1;
+      }
+
+      if (conj) {
+        // Bepaal kommaplaatsing
+        if (cleanZ1 && commaConjunctions.includes(conj)) {
+          result += ',';
+        }
+        result += ` <span class="conj-highlight" data-high="${conj}">${conj}</span>`;
+      }
+
+      if (cleanZ2) {
+        result += ` ${cleanZ2}`;
+      }
+
+      if (result) {
+        result += '.';
+      }
+
+      return result;
+    }
+
+    function updateLiveSentence() {
+      const z1 = document.getElementById('zin1').value;
+      const z2 = document.getElementById('zin2').value;
+      const previewEl = document.getElementById('live-sentence');
+
+      const formatted = formatSentence(z1, selectedConj, z2);
+
+      if (formatted) {
+        previewEl.innerHTML = formatted;
+        previewEl.classList.add('has-content');
+      } else {
+        previewEl.innerHTML = 'De zin verschijnt hier zodra je begint te typen...';
+        previewEl.classList.remove('has-content');
+      }
+    }
+
+    function resetPlayboard() {
+      document.getElementById('zin1').value = '';
+      document.getElementById('zin2').value = '';
+      selectedConj = '';
+      document.querySelectorAll('.conj-btn').forEach(btn => btn.classList.remove('active'));
+      updateLiveSentence();
+      document.getElementById('zin1').focus();
+    }
+
+    function addSentenceToHistory() {
+      const z1 = document.getElementById('zin1').value.trim();
+      const z2 = document.getElementById('zin2').value.trim();
+      
+      if (!z1 || !z2 || !selectedConj) {
+        alert('Vul a.u.b. allebei de zinnen in en kies een voegwoord!');
+        return;
+      }
+
+      // Genereer de schone tekst (zonder HTML span tags)
+      let cleanZ1 = z1;
+      if (cleanZ1.endsWith('.')) cleanZ1 = cleanZ1.slice(0, -1);
+      let cleanZ2 = z2;
+      if (cleanZ2.endsWith('.')) cleanZ2 = cleanZ2.slice(0, -1);
+      
+      let finalSentence = cleanZ1;
+      if (commaConjunctions.includes(selectedConj)) {
+        finalSentence += ',';
+      }
+      finalSentence += ` ${selectedConj} ${cleanZ2}.`;
+
+      historyList.push(finalSentence);
+
+      renderHistory();
+      resetPlayboard();
+    }
+
+    function renderHistory() {
+      const listEl = document.getElementById('history-list');
+      
+      if (historyList.length === 0) {
+        listEl.innerHTML = `<li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>`;
+        return;
+      }
+
+      const noHist = document.getElementById('no-history');
+      if (noHist) noHist.remove();
+
+      // We voegen het nieuwste item bovenaan of onderaan toe
+      const latestIdx = historyList.length - 1;
+      const sentenceText = historyList[latestIdx];
+
+      const li = document.createElement('li');
+      li.className = 'history-item';
+      
+      // highlight het voegwoord in de geschiedenis
+      let highlightedText = sentenceText;
+      const targetConj = ` ${selectedConj} `;
+      if (highlightedText.includes(targetConj)) {
+        highlightedText = highlightedText.replace(targetConj, ` <span style="color:var(--${selectedConj}-color); font-weight:900; text-decoration:underline;">${selectedConj}</span> `);
+      } else if (highlightedText.includes(`, ${selectedConj} `)) {
+        highlightedText = highlightedText.replace(`, ${selectedConj} `, `, <span style="color:var(--${selectedConj}-color); font-weight:900; text-decoration:underline;">${selectedConj}</span> `);
+      }
+
+      li.innerHTML = `
+        <div class="history-text">${highlightedText}</div>
+        <div class="history-actions">
+          <button class="history-btn" onclick="speakText('${sentenceText.replace(/'/g, "\\'")}')" title="Lees voor">🔊</button>
+          <button class="history-btn" onclick="copySingleHistory(this, '${sentenceText.replace(/'/g, "\\'")}')" title="Kopieer">📋</button>
+        </div>
+      `;
+
+      listEl.insertBefore(li, listEl.firstChild);
+    }
+
+    function speakText(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'nl-NL';
+      u.rate = 0.85; // Iets rustiger inspreken voor cursisten
+      window.speechSynthesis.speak(u);
+    }
+
+    function copySingleHistory(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const oldIcon = btn.innerHTML;
+        btn.innerHTML = '✅';
+        setTimeout(() => btn.innerHTML = oldIcon, 1500);
+      });
+    }
+
+    function copyAllHistory() {
+      if (historyList.length === 0) {
+        alert('Er zijn nog geen zinnen om te kopiëren!');
+        return;
+      }
+      const textToCopy = historyList.join('\n');
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert('Alle gemaakte zinnen zijn gekopieerd naar je klembord!');
+      });
+    }
+  </script>
+</body>
+</html>
