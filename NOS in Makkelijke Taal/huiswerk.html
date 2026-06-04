@@ -894,18 +894,49 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
   "feedback_brief_moedertaal": "De WhatsApp feedbackbrief vertaald in de gedetecteerde moedertaal..."
 }`;
 
-            try {
-                const responseText = await callGemini(systemPrompt, homeworkText, true);
-                const result = JSON.parse(responseText.trim());
-                
-                renderResults(result);
-            } catch (err) {
-                console.error(err);
-                alert("Er ging iets fout bij het nakijken: " + err.message);
-            } finally {
-                btn.innerHTML = '🔍 AI Nakijken & Corrigeren';
-                btn.disabled = false;
+            const maxRetries = 3;
+            let attempt = 0;
+            
+            while (attempt < maxRetries) {
+                try {
+                    if (attempt > 0) {
+                        btn.innerHTML = `⏳ Herpoging ${attempt}/${maxRetries - 1} via Gemini...`;
+                    }
+                    const responseText = await callGemini(systemPrompt, homeworkText, true);
+                    const result = JSON.parse(responseText.trim());
+                    
+                    renderResults(result);
+                    btn.innerHTML = '🔍 AI Nakijken & Corrigeren';
+                    btn.disabled = false;
+                    return; // Success, exit function
+                } catch (err) {
+                    attempt++;
+                    const errMsg = err.message || String(err);
+                    console.error(`Nakijken poging ${attempt} mislukt:`, errMsg);
+                    
+                    const isRateLimit = errMsg.toLowerCase().includes("quota") || 
+                                        errMsg.toLowerCase().includes("limit") || 
+                                        errMsg.toLowerCase().includes("429") || 
+                                        errMsg.toLowerCase().includes("exceeded") ||
+                                        errMsg.toLowerCase().includes("resource_exhausted") ||
+                                        errMsg.toLowerCase().includes("exhausted");
+                                        
+                    if (isRateLimit && attempt < maxRetries) {
+                        let countdown = 20;
+                        while (countdown > 0) {
+                            btn.innerHTML = `⏳ Limiet bereikt. Wacht ${countdown}s voor automatische herpoging...`;
+                            await new Promise(r => setTimeout(r, 1000));
+                            countdown--;
+                        }
+                    } else {
+                        alert("Er ging iets fout bij het nakijken: " + errMsg);
+                        break; // Stop retry on non-rate-limit errors or after max retries
+                    }
+                }
             }
+
+            btn.innerHTML = '🔍 AI Nakijken & Corrigeren';
+            btn.disabled = false;
         }
 
         // RENDER RESULTS
