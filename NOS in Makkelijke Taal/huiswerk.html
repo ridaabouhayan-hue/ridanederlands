@@ -502,9 +502,20 @@
             </p>
             <textarea id="homeworkTextarea" class="textarea-field" placeholder="Plak hier het huiswerk, bijvoorbeeld:&#10;Huiswerk NOS in Makkelijke Taal&#10;Naam: Malwina&#10;&#10;*Woord 1:* regering&#10;- Mijn taal: rząd&#10;- Uitleg: de mensen die het land besturen&#10;- Zin: De regering maakt wetten."></textarea>
             
-            <div class="input-group" style="margin-top: 16px; margin-bottom: 8px;">
-                <label for="targetLanguageInput" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel — overschrijf automatische detectie):</label>
-                <input type="text" id="targetLanguageInput" class="input-field" placeholder="Bijv. Pools, Arabisch, Oekraïens, Turks (laat leeg voor automatische detectie)" style="margin-top: 4px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; margin-bottom: 8px;">
+                <div class="input-group">
+                    <label for="targetLanguageInput" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
+                    <input type="text" id="targetLanguageInput" class="input-field" placeholder="Bijv. Pools, Arabisch (laat leeg voor automatische detectie)" style="margin-top: 4px;">
+                </div>
+                <div class="input-group">
+                    <label for="transcriptContextSelect" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">NOS Transcriptie Context:</label>
+                    <select id="transcriptContextSelect" class="input-field" style="margin-top: 4px; padding: 12px 16px; cursor: pointer; height: 48px; background: rgba(15, 23, 42, 0.6); color: var(--text); border: 1px solid var(--border);">
+                        <option value="">Geen (geen extra context meesturen)</option>
+                        <option value="26mei">Dinsdag 26 mei (DigiD, Hittekracht, Schatkamer)</option>
+                        <option value="11mei">Maandag 11 mei (Iran/Amerika, DigiD)</option>
+                        <option value="22april">Woensdag 22 april (Verkiezingen, OV, Economie)</option>
+                    </select>
+                </div>
             </div>
             
             <div class="btn-row">
@@ -756,6 +767,26 @@ Naam: Malwina
             return textResponse;
         }
 
+        // FETCH TRANSCRIPT TEXT AS CONTEXT
+        async function getTranscriptContextText(selectedContext) {
+            if (!selectedContext) return "";
+            try {
+                const resp = await fetch(`transcript_nos_${selectedContext}.html`);
+                if (!resp.ok) return "";
+                const html = await resp.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                
+                // Strip scripts, styles, and other helper layouts
+                doc.querySelectorAll('script, style, .lang-switcher, .quiz-section, .vocab-exercise-section').forEach(el => el.remove());
+                
+                const text = doc.body.textContent || doc.body.innerText || '';
+                return text.replace(/\s+/g, ' ').trim();
+            } catch (e) {
+                console.error("Fout bij laden transcript context:", e);
+                return "";
+            }
+        }
+
         // START AI GRADING
         async function runAiGrading(homeworkText) {
             const btn = document.getElementById('btnGrading');
@@ -763,9 +794,24 @@ Naam: Malwina
             btn.disabled = true;
 
             const manualLang = document.getElementById('targetLanguageInput').value.trim();
+            const selectedContext = document.getElementById('transcriptContextSelect').value;
+
+            let contextPromptText = "";
+            if (selectedContext) {
+                const transcriptText = await getTranscriptContextText(selectedContext);
+                if (transcriptText) {
+                    contextPromptText = `\n\nCONTEXT EN HISTORIE (NOS NIEUWS IN MAKKELIJKE TAAL):
+Hieronder staat het transcript van het nieuws waar dit huiswerk over gaat. Gebruik dit transcript als context om de vertalingen, definities en voorbeeldzinnen van de cursist te beoordelen. 
+Let op: Woorden zoals "hittekracht" of andere specifieke termen die in dit transcript worden genoemd, zijn dus CORRECT en bestaan echt in deze context, ook al zijn ze buiten deze context misschien minder gebruikelijk of officieel. Beoordeel ze dus mild en ga mee in de context van het nieuws!
+
+TRANSCRIPT:
+${transcriptText}\n\n`;
+                }
+            }
 
             const systemPrompt = `Je bent een ervaren NT2 (Nederlands als Tweede Taal) docent. Je krijgt een ruwe tekst met het huiswerk van een cursist. Het huiswerk bestaat uit een woordenlijst van het NOS nieuws in Makkelijke Taal.
 ${manualLang ? `BELANGRIJK: De docent heeft expliciet aangegeven dat de moedertaal van de cursist "${manualLang}" is. Gebruik "${manualLang}" als de moedertaal. Vertaal de feedbackbrief in het 'feedback_brief_moedertaal' veld dus naar het "${manualLang}" en vul bij het JSON-veld "moedertaal" de waarde "${manualLang}" in.` : ''}
+${contextPromptText}
 Elk woord bevat:
 - De vertaling naar hun moedertaal.
 - Een uitleg in het Nederlands.
@@ -785,6 +831,12 @@ CRITERIA VOOR NAKIJKEN:
      - Indien uitleg ontbreekt: "⚠️ Je hebt geen uitleg in simpel Nederlands gegeven."
      - Indien voorbeeldzin ontbreekt: "⚠️ Je hebt geen voorbeeldzin ingevuld."
    - Gebruik in de feedbackbrieven (WhatsApp) ook het waarschuwingsicoon ⚠️ voor dat specifieke onderdeel, en schrijf dat het ontbreekt.
+5. MISPLAATSTE OF VERWISSELDE VELDEN (DUBBEL CHECK):
+   - Controleer of de cursist per ongeluk velden heeft verwisseld (bijvoorbeeld de vertaling in het uitleg-veld geschreven, of de uitleg in het vertalings-veld geschreven, of de voorbeeldzin in het uitleg-veld, etc.).
+   - Als een veld verwisseld is maar de inhoud is inhoudelijk wel correct voor dat andere veld:
+     - Markeer het veld als incorrect (false) of geef een waarschuwing.
+     - Vermeld dit expliciet in de feedback van dat veld (bijv. "vertaling_feedback" of "uitleg_feedback"), bijvoorbeeld: "⚠️ Je hebt hier de uitleg ingevuld in plaats van de vertaling. De uitleg zelf is wel goed!" of "⚠️ Je hebt hier de vertaling ingevuld in plaats van de uitleg. De vertaling zelf klopt wel!"
+     - Zorg dat dit ook in de feedbackbrieven (WhatsApp) gemeld wordt met een ⚠️ icoon en een duidelijke, opbouwende opmerking.
 
 FORMAT FEEDBACKBRIEVEN (WHATSAPP):
 Schrijf twee feedbackbrieven: feedback_brief_nl (Nederlands) en feedback_brief_moedertaal (vertaald naar hun gedetecteerde moedertaal).
@@ -794,15 +846,15 @@ Format van de brief:
 Hallo [Naam]! 👋 Hier is de feedback op je huiswerk / Here is the feedback on your homework:
 
 *Woord 1:* [woord]
-[Emoji] Vertaling: [vertaling] [Indien fout of tip: -> 💡 [Korte uitleg/correctie]]
-[Emoji] Uitleg: [uitleg] [Indien fout of tip: -> 💡 [Korte uitleg/correctie]]
-[Emoji] Zin: [zin] [Indien fout of tip: -> 💡 [Korte uitleg/correctie]]
+[Emoji] Vertaling: [vertaling] [Indien fout/tip/misplaatst: -> 💡 [Korte uitleg/correctie]]
+[Emoji] Uitleg: [uitleg] [Indien fout/tip/misplaatst: -> 💡 [Korte uitleg/correctie]]
+[Emoji] Zin: [zin] [Indien fout/tip/misplaatst: -> 💡 [Korte uitleg/correctie]]
 
 *Woord 2:* ...
 
 Emojis te gebruiken:
 - ✅ : Als het onderdeel helemaal goed en natuurlijk is.
-- ⚠️ : Als het begrijpelijk is, maar een kleine tip, grammatica-correctie of natuurlijker alternatief behoeft (bijv. "laptop stilleggen" -> ⚠️). Of als het onderdeel helemaal ontbreekt.
+- ⚠️ : Als het begrijpelijk is, maar een kleine tip, grammatica-correctie, misplaatst veld of natuurlijker alternatief behoeft. Of als het onderdeel helemaal ontbreekt.
 - ❌ : Als het onderdeel echt fout of onjuist is.
 
 Houd de correcties en tips kort en bondig voor WhatsApp.
@@ -829,13 +881,13 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
       "woord": "het woord",
       "vertaling": "de ingevulde vertaling (indien leeg: 'Niet ingevuld')",
       "vertaling_correct": true of false,
-      "vertaling_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback.",
+      "vertaling_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg/misplaatst: geef feedback.",
       "uitleg": "de ingevulde uitleg (indien leeg: 'Niet ingevuld')",
       "uitleg_correct": true of false,
-      "uitleg_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback.",
+      "uitleg_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg/misplaatst: geef feedback.",
       "zin": "de ingevulde voorbeeldzin (indien leeg: 'Niet ingevuld')",
       "zin_correct": true of false,
-      "zin_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback."
+      "zin_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg/misplaatst: geef feedback."
     }
   ],
   "feedback_brief_nl": "De WhatsApp feedbackbrief in het Nederlands...",
