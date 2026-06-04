@@ -136,7 +136,13 @@ def main():
                 print("   Transcriberen...")
                 # NT2-specifieke prompt voor Zin-voor-Zin analyse (in JSON)
                 prompt = f"""Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
-De bestandsnaam van de audio is "{filename}". De namen in deze bestandsnaam verwijzen vaak naar de sprekers (bijvoorbeeld: "Spreker1 Spreker2" betekent Spreker1 praat als eerste, Spreker2 als tweede). Gebruik deze namen om de sprekers te identificeren in je analyse. Als er geen namen staan, gebruik dan Spreker A en Spreker B.
+De bestandsnaam van de audio is "{filename}".
+
+IDENTIFICATIE VAN DE SPREKERS:
+1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
+2. Vaak noemen de sprekers hun eigen naam in het gesprek (bijvoorbeeld: 'Hallo, ik ben Malwina' of 'Hoi, met Tomasz') of noemen ze elkaar bij naam (bijvoorbeeld: 'En jij, Malwina?'). Als er namen genoemd worden in de audio, gebruik die dan altijd om de sprekers te identificeren.
+3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "{filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
+4. Zorg dat je de sprekers correct identificeert en hun echte namen gebruikt in de 'gesprek' array (in de 'spreker' velden) in plaats van generieke aanduidingen zoals 'Spreker A' of 'Spreker B' of 'Spreker A/B'.
 
 Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat terug:
 
@@ -172,12 +178,15 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
   ]
 }}
 
-Geef ALLEEN deze JSON terug. Zorg dat de JSON valide is. Geef geen extra tekst buiten de JSON.
 BELANGRIJK:
 1. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
 2. Zeg bij een uitspraak of grammatica die correct is NOOIT dat het 'perfect' of 'foutloos' is (dit niveau is voor B2/C1). Zeg in plaats daarvan dat het 'goed', 'duidelijk' of 'begrijpelijk' is.
 3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
-4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Als een cursist bijvoorbeeld 16 zinnen uitspreekt in het "gesprek" array, dan MOETEN er exact 16 zinsanalyses (*Zin 1:* t/m *Zin 16:*) in de 'brief' en 'brief_en' staan. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin helemaal goed was en geen fouten bevatte, noteer dit dan ook in de brief (bijv. "👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit. 💡 *Correctie:* [schrijf hier de originele zin]")."""
+4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin helemaal goed was en geen fouten bevatte, noteer dit dan ook in de brief (bijv. "👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit. 💡 *Correctie:* [schrijf hier de originele zin]").
+5. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
+   - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de `feedback_brieven` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in `feedback_brieven` aan: één voor Malwina en één voor Dorota.
+   - De feedbackbrief voor een specifieke cursist mag ALLEEN de zinnen bevatten die door die SPECIFIEKE cursist zijn uitgesproken (genummerd als *Zin 1:* t/m *Zin N:* voor die persoon). Sla geen zinnen over die door die persoon zijn gezegd, en voeg geen zinnen van de andere spreker(s) toe!
+   - Zorg dat de samenvatting, feedback en het advies in de brief volledig en respectievelijk gericht zijn op hoe die specifieke persoon het heeft gedaan, zodat de docent deze brief direct per WhatsApp individueel naar hen kan sturen."""
                 
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.
