@@ -686,13 +686,17 @@ Naam: Malwina
                 return;
             }
 
-            const code = prompt("Voer de toegangscode in voor Nakijken:");
+            const code = prompt("Voer de docent-toegangscode in (deze code is 1234):");
             if (!code) return;
-            if (code.trim() === "1234") {
+            
+            const trimmed = code.trim();
+            if (trimmed === "1234") {
                 sessionStorage.setItem('homework_auth', '1');
                 runAiGrading(pastedText);
+            } else if (trimmed.length > 20 || trimmed.startsWith("AIzaSy")) {
+                alert("Je hebt per ongeluk je Gemini API-key ingevuld in plaats van de docent-toegangscode! De code om binnen te komen is simpelweg 1234. Je API-key kun je eventueel invoeren via het tandwiel-icoontje (⚙️) rechtsboven.");
             } else {
-                alert("Onjuiste code.");
+                alert("Onjuiste docent-toegangscode. Deze code is 1234.");
             }
         }
 
