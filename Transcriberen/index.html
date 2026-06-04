@@ -50,8 +50,9 @@
             background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem; margin-bottom: 16px; text-align: center;
         }
         .auth-btn {
-            width: 100%; padding: 14px; border: none; border-radius: var(--radius-md);
+            width: 100%; padding: 10px 16px; border: none; border-radius: var(--radius-md);
             background: var(--accent-gradient); color: #fff; font-weight: 700; cursor: pointer; transition: var(--transition);
+            font-size: 0.9rem;
         }
         .auth-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
@@ -68,7 +69,7 @@
 
         /* ── TABS ── */
         .tabs { display: flex; overflow-x: auto; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; scrollbar-width: none; }
-        .tab { padding: 16px 20px; color: var(--text-muted); font-weight: 600; cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; white-space: nowrap; transition: var(--transition); }
+        .tab { padding: 10px 16px; color: var(--text-muted); font-weight: 600; cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; white-space: nowrap; transition: var(--transition); font-size: 0.9rem; }
         .tab:hover { color: var(--text); }
         .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
@@ -97,7 +98,7 @@
         .viewer-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
         .viewer-group { color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         
-        .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); font-size: 0.85rem; }
         .copy-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
 
         .audio-player { width: 100%; margin-bottom: 24px; outline: none; border-radius: 30px; }
@@ -124,10 +125,14 @@
         .icon-fout { color: #ef4444; font-weight: bold; }
 
         /* Scrollbars */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.15) transparent;
+        }
     </style>
 </head>
 <body>
@@ -172,6 +177,12 @@
                 <div style="padding: 16px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                     <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
                     <input type="text" id="targetLanguageInput" placeholder="Bijv. Engels, Pools, Arabisch, Oekraïens" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition);">
+                </div>
+
+                <!-- Custom Instructions Panel -->
+                <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="customInstructionsInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Optionele Instructies (Maatwerk):</label>
+                    <textarea id="customInstructionsInput" placeholder="Bijv. Wees bemoedigend, wees strenger, daag uit op A2 niveau..." style="width: 100%; min-height: 50px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical;"></textarea>
                 </div>
 
                 <!-- Drag & Drop Upload Zone -->
@@ -498,10 +509,9 @@
 
             // 2. Toon taal-tabs (Nederlands / Engels) en kopieerknop
             const activeFb = currentFeedbackBrieven[activeStudentIdx];
-            const hasEnglish = !!activeFb.brief_en;
 
             html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">`;
-            html += `<div style="display: flex; gap: 8px;">`;
+            html += `<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">`;
             
             // NL Tab
             const isNl = activeFeedbackLang === 'nl';
@@ -512,16 +522,22 @@
                 </button>
             `;
 
-            // EN Tab
-            if (hasEnglish) {
-                const isEn = activeFeedbackLang === 'en';
-                html += `
-                    <button onclick="activeFeedbackLang = 'en'; renderFeedbackPane();" 
-                            style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
-                        🌐 Vertaling
-                    </button>
-                `;
-            }
+            // Vertaling Tab
+            const isEn = activeFeedbackLang === 'en';
+            html += `
+                <button onclick="activeFeedbackLang = 'en'; renderFeedbackPane();" 
+                        style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                    🌐 Vertaling ${activeFb.brief_en ? '' : '(Niet vertaald)'}
+                </button>
+            `;
+
+            // Live Translation input & button
+            html += `
+                <div style="display: flex; align-items: center; gap: 4px; margin-left: 8px;">
+                    <input type="text" id="liveTranslationLang" placeholder="Vertaal naar (bijv. Pools)" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.75rem; outline: none; width: 140px; height: 28px; font-weight: 600;">
+                    <button onclick="translateActiveBrief(event)" style="padding: 0 10px; height: 28px; border-radius: 6px; border: none; background: var(--accent-gradient); color: #fff; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center;">Vertalen</button>
+                </div>
+            `;
             html += `</div>`;
 
             // Kopieerknop rechts
@@ -533,7 +549,7 @@
             html += `</div>`;
 
             // 3. Toon de brief zelf
-            const briefContent = activeFeedbackLang === 'nl' ? activeFb.brief : (activeFb.brief_en || 'English translation not available for this legacy entry.');
+            const briefContent = activeFeedbackLang === 'nl' ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal (bijv. Pools of Arabisch) en klik op \'Vertalen\' om deze brief live te vertalen!');
             
             html += `
                 <div id="active-fb-text" style="white-space: pre-wrap; font-size: 1rem; line-height: 1.7; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; max-height: 480px; overflow-y: auto;">${briefContent}</div>
@@ -549,6 +565,100 @@
                 btn.innerHTML = '✅ Gekopieerd!';
                 setTimeout(() => btn.innerHTML = old, 2000);
             });
+        }
+
+        async function translateActiveBrief(event) {
+            const langInput = document.getElementById('liveTranslationLang');
+            const targetLang = langInput ? langInput.value.trim() : '';
+            if (!targetLang) {
+                alert("Vul eerst een taal in (bijvoorbeeld Pools of Arabisch)!");
+                return;
+            }
+
+            const activeFb = currentFeedbackBrieven[activeStudentIdx];
+            if (!activeFb || !activeFb.brief) {
+                alert("Geen feedbackbrief beschikbaar om te vertalen.");
+                return;
+            }
+
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                openSettingsModal();
+                return;
+            }
+
+            const btn = event ? event.target : null;
+            const originalBtnHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '⏳...';
+                btn.disabled = true;
+            }
+
+            try {
+                const systemPrompt = `Je bent een professionele vertaler. Vertaal de volgende Nederlandse feedbackbrief geschreven voor een NT2-cursist naar het ${targetLang}.
+                
+RICHTLIJNEN VOOR DE VERTALING:
+1. Vertaal alleen de docent-uitleg, tips, samenvattingen en inleidende/afsluitende zinnen naar het ${targetLang}.
+2. Houd alle originele en gecorrigeerde Nederlandse leerelementen (zoals de originele Nederlandse zinnen van de student, de gecorrigeerde Nederlandse zinnen en grammatica/uitspraak feedbackkoppen) EXACT in het Nederlands! Vertaal deze dus absoluut NIET naar de doeltaal. Dit is essentieel zodat de cursist de Nederlandse tekst rechtstreeks kan vergelijken met de vertaalde uitleg.
+3. Behoud de exacte opmaak voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijvoorbeeld *Zin 1:* en *Correctie:*). Gebruik geen dubbele asterisks.
+4. Behoud alle emojis en structuur exact.
+
+BRIEF OM TE VERTAALEN:
+${activeFb.brief}`;
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const payload = {
+                    contents: [{
+                        parts: [{ text: systemPrompt }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.1
+                    }
+                };
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Vertaling mislukt: ${res.statusText}`);
+                }
+
+                const data = await res.json();
+                const translatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!translatedText) {
+                    throw new Error("Geen vertaling ontvangen van Gemini.");
+                }
+
+                // Sla de vertaling op in het actieve object en in de database
+                activeFb.brief_en = translatedText.trim();
+                
+                // Vind het actieve bestand in de db en sla op
+                if (currentFileObject) {
+                    const groupFiles = db[activeGroup] || [];
+                    const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                    if (dbFile) {
+                        dbFile.analyse.feedback_brieven = currentFeedbackBrieven;
+                        await saveDatabase();
+                    }
+                }
+
+                activeFeedbackLang = 'en';
+                renderFeedbackPane();
+                alert(`Brief succesvol vertaald naar het ${targetLang}!`);
+
+            } catch (err) {
+                console.error("Fout bij live vertalen:", err);
+                alert("Er ging iets fout bij het vertalen: " + err.message);
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalBtnHtml;
+                    btn.disabled = false;
+                }
+            }
         }
 
         function hideViewer() {
@@ -911,7 +1021,10 @@
                 let badgeText = 'Wachten';
                 let progressText = '';
                 
-                if (item.status === 'uploading') {
+                if (item.status === 'converting') {
+                    badgeColor = '#e67e22';
+                    badgeText = 'Converteren...';
+                } else if (item.status === 'uploading') {
                     badgeColor = 'var(--accent)';
                     badgeText = 'Uploaden';
                     progressText = ` (${item.progress}%)`;
@@ -957,6 +1070,23 @@
                     startBtn.remove();
                 }
             }
+
+            let cancelBtn = document.getElementById('btnCancelQueue');
+            if (isProcessingQueue) {
+                if (!cancelBtn) {
+                    cancelBtn = document.createElement('button');
+                    cancelBtn.id = 'btnCancelQueue';
+                    cancelBtn.className = 'auth-btn';
+                    cancelBtn.style.cssText = 'margin-top: 10px; padding: 10px; font-size: 0.85rem; width: 100%; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444;';
+                    cancelBtn.innerHTML = '⏹️ Annuleren';
+                    cancelBtn.onclick = cancelQueueProcessing;
+                    container.appendChild(cancelBtn);
+                }
+            } else {
+                if (cancelBtn) {
+                    cancelBtn.remove();
+                }
+            }
         }
 
         // ── SEQUENTIAL PROCESSING AND GEMINI API CALLS ──
@@ -990,23 +1120,44 @@
             }
             
             try {
+                let fileToUpload = item.file;
+                const isVideoOrAudio = item.file.type.startsWith('video/') || item.file.name.endsWith('.mp4') || item.file.name.endsWith('.m4a') || item.file.name.endsWith('.aac') || item.file.name.endsWith('.mp4');
+                
+                if (isVideoOrAudio) {
+                    item.status = 'converting';
+                    renderQueue();
+                    try {
+                        fileToUpload = await extractAudioToWav(item.file);
+                    } catch (convErr) {
+                        console.warn("Kon audio niet converteren, uploaden origineel bestand:", convErr);
+                        fileToUpload = item.file;
+                    }
+                }
+
+                if (!isProcessingQueue) return;
+
                 item.status = 'uploading';
                 item.progress = 0;
                 renderQueue();
                 
                 const apiKey = getApiKey();
-                const uploadInfo = await uploadToGeminiFileApi(item.file, apiKey, (pct) => {
+                const uploadInfo = await uploadToGeminiFileApi(fileToUpload, apiKey, (pct) => {
                     item.progress = pct;
                     renderQueue();
                 });
                 
+                if (!isProcessingQueue) return;
+
                 item.status = 'transcribing';
                 renderQueue();
                 
                 await pollFileState(uploadInfo.name, apiKey);
                 
+                if (!isProcessingQueue) return;
+
                 const targetLang = document.getElementById('targetLanguageInput').value.trim();
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang);
+                const customInstructions = document.getElementById('customInstructionsInput').value.trim();
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions);
                 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
                 const newEntry = {
@@ -1141,12 +1292,18 @@
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey, targetLang) {
+        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions) {
             const finalLang = targetLang || 'Engels';
-            const systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
-De bestandsnaam van de audio is "${filename}".
+            let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
+De bestandsnaam van de audio is "${filename}".`;
 
-IDENTIFICATIE VAN DE SPREKERS:
+            if (customInstructions) {
+                systemPrompt += `\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):
+Houd rekening met de volgende extra instructie bij het genereren van de feedback en de brieven:
+"${customInstructions}"`;
+            }
+
+            systemPrompt += `\n\nIDENTIFICATIE VAN DE SPREKERS:
 1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
 2. Vaak noemen de sprekers hun eigen naam in het gesprek (bijvoorbeeld: 'Hallo, ik ben Malwina' of 'Hoi, met Tomasz') of noemen ze elkaar bij naam (bijvoorbeeld: 'En jij, Malwina?'). Als er namen genoemd worden in de audio, gebruik die dan altijd om de sprekers te identificeren.
 3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "${filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
@@ -1256,6 +1413,81 @@ BELANGRIJK:
             }
         }
 
+        function cancelQueueProcessing() {
+            isProcessingQueue = false;
+            uploadQueue.forEach(item => {
+                if (item.status === 'uploading' || item.status === 'transcribing' || item.status === 'converting') {
+                    item.status = 'pending';
+                }
+            });
+            renderQueue();
+            alert("Verwerking geannuleerd.");
+        }
+
+        async function extractAudioToWav(file) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioCtx = new AudioContext();
+            const arrayBuffer = await file.arrayBuffer();
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+            const wavBlob = bufferToWav(audioBuffer);
+            const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+            const wavFile = new File([wavBlob], `${baseName}.wav`, { type: 'audio/wav' });
+            audioCtx.close();
+            return wavFile;
+        }
+
+        function bufferToWav(buffer) {
+            const numOfChan = buffer.numberOfChannels;
+            const length = buffer.length * 2 + 44;
+            const bufferArray = new ArrayBuffer(length);
+            const view = new DataView(bufferArray);
+            const channels = [];
+            let i;
+            let sample;
+            let offset = 0;
+            let pos = 0;
+
+            setUint32(0x46464952);                         // "RIFF"
+            setUint32(length - 8);                         // file length - 8
+            setUint32(0x45564157);                         // "WAVE"
+            setUint32(0x20746d66);                         // "fmt " chunk
+            setUint32(16);                                 // chunk length
+            setUint16(1);                                  // sample format (raw PCM)
+            setUint16(numOfChan);                          // channel count
+            setUint32(buffer.sampleRate);                  // sample rate
+            setUint32(buffer.sampleRate * 2 * numOfChan);  // byte rate
+            setUint16(numOfChan * 2);                      // block align
+            setUint16(16);                                 // bits per sample
+            setUint32(0x61746164);                         // "data" chunk
+            setUint32(length - pos - 4);                   // chunk length
+
+            for (i = 0; i < buffer.numberOfChannels; i++) {
+                channels.push(buffer.getChannelData(i));
+            }
+
+            while (pos < length - 44) {
+                for (i = 0; i < numOfChan; i++) {
+                    sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF);
+                    view.setInt16(44 + pos, sample, true);
+                    pos += 2;
+                }
+                offset++;
+            }
+
+            return new Blob([bufferArray], { type: 'audio/wav' });
+
+            function setUint16(data) {
+                view.setUint16(44 + pos, data, true);
+                pos += 2;
+            }
+
+            function setUint32(data) {
+                view.setUint32(44 + pos, data, true);
+                pos += 4;
+            }
+        }
+
         // ── AUTO-CONNECT ON LOAD ──
         window.addEventListener('DOMContentLoaded', async () => {
             const stored = await getStoredHandle();
@@ -1283,6 +1515,8 @@ BELANGRIJK:
         window.handleFileSelect = handleFileSelect;
         window.moveCurrentFile = moveCurrentFile;
         window.startQueueProcessing = startQueueProcessing;
+        window.translateActiveBrief = translateActiveBrief;
+        window.cancelQueueProcessing = cancelQueueProcessing;
 
     </script>
 

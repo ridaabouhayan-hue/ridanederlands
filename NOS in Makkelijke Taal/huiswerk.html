@@ -130,10 +130,10 @@
             background: var(--surface);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 12px 24px;
+            padding: 9px 18px;
             border-radius: var(--radius-md);
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: var(--transition);
             display: inline-flex;
@@ -477,6 +477,16 @@
             color: var(--text);
             transform: rotate(45deg);
         }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.15) transparent;
+        }
     </style>
 </head>
 <body>
@@ -516,6 +526,11 @@
                         <option value="22april">Woensdag 22 april (Verkiezingen, OV, Economie)</option>
                     </select>
                 </div>
+            </div>
+            
+            <div class="input-group" style="margin-top: 12px; margin-bottom: 8px;">
+                <label for="customInstructionsInput" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Optionele Instructies (Maatwerk):</label>
+                <input type="text" id="customInstructionsInput" class="input-field" placeholder="Bijv. Wees extra bemoedigend, wees strenger, daag uit op A2 niveau" style="margin-top: 4px;">
             </div>
             
             <div class="btn-row">
@@ -796,6 +811,7 @@ Naam: Malwina
 
             const manualLang = document.getElementById('targetLanguageInput').value.trim();
             const selectedContext = document.getElementById('transcriptContextSelect').value;
+            const customInstructions = document.getElementById('customInstructionsInput').value.trim();
 
             let contextPromptText = "";
             if (selectedContext) {
@@ -810,8 +826,13 @@ ${transcriptText}\n\n`;
                 }
             }
 
-            const systemPrompt = `Je bent een ervaren NT2 (Nederlands als Tweede Taal) docent. Je krijgt een ruwe tekst met het huiswerk van een cursist. Het huiswerk bestaat uit een woordenlijst van het NOS nieuws in Makkelijke Taal.
-${manualLang ? `BELANGRIJK: De docent heeft expliciet aangegeven dat de moedertaal van de cursist "${manualLang}" is. Gebruik "${manualLang}" als de moedertaal. Vertaal de feedbackbrief in het 'feedback_brief_moedertaal' veld dus naar het "${manualLang}" en vul bij het JSON-veld "moedertaal" de waarde "${manualLang}" in.` : ''}
+            let systemPrompt = `Je bent een ervaren NT2 (Nederlands als Tweede Taal) docent. Je krijgt een ruwe tekst met het huiswerk van een cursist. Het huiswerk bestaat uit een woordenlijst van het NOS nieuws in Makkelijke Taal.`;
+            if (customInstructions) {
+                systemPrompt += `\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):
+Houd rekening met de volgende extra instructie bij het beoordelen en schrijven van de feedbackbrieven:
+"${customInstructions}"\n\n`;
+            }
+            systemPrompt += `\n${manualLang ? `BELANGRIJK: De docent heeft expliciet aangegeven dat de moedertaal van de cursist "${manualLang}" is. Gebruik "${manualLang}" als de moedertaal. Vertaal de feedbackbrief in het 'feedback_brief_moedertaal' veld dus naar het "${manualLang}" en vul bij het JSON-veld "moedertaal" de waarde "${manualLang}" in.` : ''}
 ${contextPromptText}
 Elk woord bevat:
 - De vertaling naar hun moedertaal.
