@@ -420,10 +420,59 @@
       font-size: 1.1rem;
     }
 
-    .history-btn:hover {
+     .history-btn:hover {
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(255, 255, 255, 0.2);
       transform: scale(1.05);
+    }
+
+    .timer-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    .timer-control:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .timer-control.finished {
+      border-color: var(--maar-color);
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
+      animation: blinkRed 1s infinite alternate;
+    }
+    @keyframes blinkRed {
+      0% { background: rgba(244, 63, 94, 0.05); }
+      100% { background: rgba(244, 63, 94, 0.2); }
+    }
+    .timer-display {
+      cursor: pointer;
+    }
+    .timer-btn {
+      background: none;
+      border: none;
+      color: #6366f1;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+    .timer-btn:hover {
+      color: #818cf8;
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -446,8 +495,14 @@
       <!-- LEFT COL (ZIN 1) -->
       <div class="input-col">
         <div class="col-label">
-          <span>🗣️ Cursist 1 (Zin 1)</span>
-          <span style="font-size:0.75rem; text-transform:none; font-weight:500;">Begint de zin</span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span>🗣️ Cursist 1 (Zin 1)</span>
+            <span style="font-size:0.72rem; text-transform:none; font-weight:500;">Begint de zin</span>
+          </span>
+          <div class="timer-control" id="timer-left">
+            <span class="timer-display" onclick="setTimerTime('left')" title="Klik om tijd in te stellen">⏱️ 15s</span>
+            <button class="timer-btn" onclick="toggleTimer('left')">▶</button>
+          </div>
         </div>
         <textarea id="zin1" class="sentence-input" placeholder="Typ hier de eerste zin..." oninput="updateLiveSentence()"></textarea>
       </div>
@@ -465,8 +520,14 @@
       <!-- RIGHT COL (ZIN 2) -->
       <div class="input-col">
         <div class="col-label">
-          <span>🗣️ Cursist 2 (Zin 2)</span>
-          <span style="font-size:0.75rem; text-transform:none; font-weight:500;">Maakt de zin af</span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span>🗣️ Cursist 2 (Zin 2)</span>
+            <span style="font-size:0.72rem; text-transform:none; font-weight:500;">Maakt de zin af</span>
+          </span>
+          <div class="timer-control" id="timer-right">
+            <span class="timer-display" onclick="setTimerTime('right')" title="Klik om tijd in te stellen">⏱️ 15s</span>
+            <button class="timer-btn" onclick="toggleTimer('right')">▶</button>
+          </div>
         </div>
         <textarea id="zin2" class="sentence-input" placeholder="Typ hier de tweede zin..." oninput="updateLiveSentence()"></textarea>
       </div>
@@ -702,6 +763,103 @@
       navigator.clipboard.writeText(textToCopy).then(() => {
         alert('Alle gemaakte zinnen zijn gekopieerd naar je klembord!');
       });
+    }
+
+    // Timer Javascript Logic
+    const timers = {
+      left: {
+        duration: 15,
+        remaining: 15,
+        interval: null,
+        running: false
+      },
+      right: {
+        duration: 15,
+        remaining: 15,
+        interval: null,
+        running: false
+      }
+    };
+
+    function setTimerTime(side) {
+      const current = timers[side].duration;
+      const input = prompt(`Vul aantal seconden in voor ${side === 'left' ? 'Cursist 1' : 'Cursist 2'}:`, current);
+      if (input === null) return;
+      const parsed = parseInt(input, 10);
+      if (isNaN(parsed) || parsed <= 0) {
+        alert('Vul a.u.b. een geldig getal groter dan 0 in.');
+        return;
+      }
+      
+      if (timers[side].running) {
+        toggleTimer(side);
+      }
+      
+      timers[side].duration = parsed;
+      timers[side].remaining = parsed;
+      
+      updateTimerDisplay(side);
+    }
+
+    function updateTimerDisplay(side) {
+      const displayEl = document.querySelector(`#timer-${side} .timer-display`);
+      displayEl.textContent = `⏱️ ${timers[side].remaining}s`;
+      
+      const controlEl = document.getElementById(`timer-${side}`);
+      if (timers[side].remaining === 0) {
+        controlEl.classList.add('finished');
+      } else {
+        controlEl.classList.remove('finished');
+      }
+    }
+
+    function toggleTimer(side) {
+      const timer = timers[side];
+      const btnEl = document.querySelector(`#timer-${side} .timer-btn`);
+      
+      if (!timer.running) {
+        timer.running = true;
+        btnEl.textContent = '⏸';
+        
+        if (timer.remaining === 0) {
+          timer.remaining = timer.duration;
+          updateTimerDisplay(side);
+        }
+        
+        timer.interval = setInterval(() => {
+          timer.remaining--;
+          updateTimerDisplay(side);
+          
+          if (timer.remaining <= 0) {
+            clearInterval(timer.interval);
+            timer.running = false;
+            btnEl.textContent = '▶';
+            playBeep();
+          }
+        }, 1000);
+      } else {
+        clearInterval(timer.interval);
+        timer.running = false;
+        btnEl.textContent = '▶';
+      }
+    }
+
+    function playBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = 800;
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (e) {
+        console.warn('AudioContext is niet ondersteund of geblokkeerd:', e);
+      }
     }
   </script>
 </body>
