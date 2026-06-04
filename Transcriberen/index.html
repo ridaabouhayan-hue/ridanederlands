@@ -80,7 +80,7 @@
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; overflow: hidden; }
         .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
         .file-list { list-style: none; overflow-y: auto; flex: 1; padding: 10px; }
-        .file-item { padding: 12px; border-radius: var(--radius-md); margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: var(--transition); border: 1px solid transparent; }
+        .file-item { position: relative; padding: 12px 32px 14px 12px; border-radius: var(--radius-md); margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: var(--transition); border: 1px solid transparent; }
         .file-item:hover { background: rgba(255,255,255,0.05); }
         .file-item.active { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); }
         .file-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
@@ -94,14 +94,14 @@
         
         .viewer-content { display: none; flex-direction: column; height: 100%; }
         .viewer-content.active { display: flex; }
-        .viewer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .viewer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .viewer-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
         .viewer-group { color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         
         .copy-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); font-size: 0.85rem; }
         .copy-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
 
-        .audio-player { width: 100%; margin-bottom: 24px; outline: none; border-radius: 30px; }
+        .audio-player { width: 100%; margin-bottom: 16px; outline: none; border-radius: 30px; }
         
         /* ── SUB-TABS (ANALYSIS) ── */
         .sub-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; gap: 10px; overflow-x: auto; scrollbar-width: none;}
@@ -134,8 +134,23 @@
             scrollbar-color: rgba(255,255,255,0.15) transparent;
         }
         .delete-btn {
-            opacity: 0.5;
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             transition: var(--transition);
+            z-index: 10;
+            outline: none;
+            border-radius: 4px;
+            opacity: 0.4;
         }
         .file-item:hover .delete-btn {
             opacity: 1;
@@ -161,6 +176,101 @@
         }
         .toast.show {
             transform: translateY(0);
+        }
+
+        /* ── WORKSPACE 3-COLUMN LAYOUT ── */
+        .viewer-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
+            margin-top: 10px;
+        }
+        .viewer-column {
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .column-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+        }
+        .transcript-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .transcript-card-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 2px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        .transcript-card-delete:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .transcript-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .transcript-input:focus {
+            border-color: var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .viewer-layout {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+                height: auto;
+            }
+            .viewer-column {
+                height: 500px;
+            }
         }
     </style>
 </head>
@@ -264,14 +374,39 @@
                     
                     <audio id="vAudio" class="audio-player" controls></audio>
                     
-                    <div class="sub-tabs">
-                        <div class="sub-tab active" onclick="switchPane('pane-gesprek', this)">💬 Gesprek</div>
-                        <div class="sub-tab" onclick="switchPane('pane-feedback', this)">📝 Feedbackbrieven</div>
-                    </div>
+                    <div class="viewer-layout">
+                        <!-- Column 1: Transcript Gesprek -->
+                        <div class="viewer-column">
+                            <div class="column-title">
+                                <span>💬 Transcript gesprek</span>
+                            </div>
+                            <div class="column-content" id="col-transcript"></div>
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border);">
+                                <button id="btnRegenFeedback" onclick="generateFeedbackFromTranscriptText()" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">🔄 Genereer Feedbackbrief</button>
+                            </div>
+                        </div>
 
-                    <div id="pane-gesprek" class="pane active"></div>
-                    <div id="pane-feedback" class="pane"></div>
-                    <div id="adjustPanelWrap"></div>
+                        <!-- Column 2: Feedbackbrief -->
+                        <div class="viewer-column">
+                            <div class="column-title">
+                                <span>📝 Feedbackbrief</span>
+                            </div>
+                            <div class="column-content" id="col-feedback"></div>
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px;">
+                                <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Optionele instructie achteraf (AI):</div>
+                                <textarea id="afterwardInstructionsInput" placeholder="Bijv. Wees bemoedigender of pas Zin 2 aan..." style="width: 100%; min-height: 40px; max-height: 80px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical; font-weight: 600;"></textarea>
+                                <button id="btnAdjustFeedback" onclick="adjustFeedbackWithAi(event)" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">Pas brief aan met AI</button>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Complete brief & Vertalen -->
+                        <div class="viewer-column">
+                            <div class="column-title">
+                                <span>✨ Complete brief & Vertaling</span>
+                            </div>
+                            <div class="column-content" id="col-complete"></div>
+                        </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -453,113 +588,158 @@
             });
             document.getElementById('moveContainer').style.display = 'flex';
 
-            const a = file.analyse || {};
-            
-            // Render Gesprek
-            let gHtml = '<div class="chat-container">';
-            if(a.gesprek && a.gesprek.length > 0) {
-                let knownSpeakers = {};
-                a.gesprek.forEach((lijn) => {
-                    if (!knownSpeakers[lijn.spreker]) {
-                        knownSpeakers[lijn.spreker] = Object.keys(knownSpeakers).length % 2 === 0 ? 'speaker-a' : 'speaker-b';
-                    }
-                    const sClass = knownSpeakers[lijn.spreker];
-                    
-                    gHtml += `<div class="chat-bubble ${sClass}">`;
-                    gHtml += `<div class="chat-name">${lijn.spreker}</div>`;
-                    gHtml += `<div class="chat-text">"${lijn.zin_fonetisch}"</div>`;
-                    gHtml += `<div class="chat-correct">Doel: ${lijn.zin_correct}</div>`;
-                    
-                    let uAnalyse = lijn.uitspraak_analyse || {};
-                    let gAnalyse = lijn.grammatica_analyse || {};
-                    let lAnalyse = lijn.logica_analyse || {};
-                    
-                    if(uAnalyse.fout) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-fout">🗣️ ❌</span> <div><strong>Uitspraak:</strong> ${uAnalyse.fout}<br><span style="color:#94a3b8">${uAnalyse.uitleg}</span></div></div>`;
-                        gHtml += `</div>`;
-                    } else if(uAnalyse.goed) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-goed">🗣️ ✅</span> <div><strong>Uitspraak is goed</strong></div></div>`;
-                        gHtml += `</div>`;
-                    }
-                    
-                    if(gAnalyse.fout) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-fout">📚 ❌</span> <div><strong>Grammatica:</strong> ${gAnalyse.fout}<br><span style="color:#94a3b8">${gAnalyse.uitleg}</span></div></div>`;
-                        gHtml += `</div>`;
-                    } else if(gAnalyse.goed) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-goed">📚 ✅</span> <div><strong>Grammatica is goed</strong></div></div>`;
-                        gHtml += `</div>`;
-                    }
-
-                    if(lAnalyse.fout) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-fout">🧠 ❌</span> <div><strong>Logica / Samenhang:</strong> ${lAnalyse.fout}<br><span style="color:#94a3b8">${lAnalyse.uitleg}</span></div></div>`;
-                        gHtml += `</div>`;
-                    } else if(lAnalyse.goed) {
-                        gHtml += `<div class="analysis-box">`;
-                        gHtml += `<div class="analysis-item"><span class="icon-goed">🧠 ✅</span> <div><strong>Samenhang is goed</strong></div></div>`;
-                        gHtml += `</div>`;
-                    }
-                    
-                    gHtml += `</div>`;
-                });
-            } else {
-                gHtml += '<div style="color:var(--text-muted);">Geen gespreksanalyse beschikbaar. (Mogelijk een oud transcript of ruwe tekst: ' + (a.letterlijk_transcript || file.transcript) + ')</div>';
-            }
-            gHtml += '</div>';
-            document.getElementById('pane-gesprek').innerHTML = gHtml;
-            
-            // Render Feedbackbrieven
-            currentFeedbackBrieven = a.feedback_brieven || [];
-            activeStudentIdx = 0;
-            activeFeedbackLang = 'nl';
-            renderFeedbackPane();
-            
             // Audio player update
             const player = document.getElementById('vAudio');
             player.src = encodeURI(file.path);
             player.load();
 
-            // Render de aanpassen panel
-            const adjustWrap = document.getElementById('adjustPanelWrap');
-            if (adjustWrap) {
-                adjustWrap.innerHTML = `
-                    <div style="margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-md);">
-                        <div style="font-weight: 800; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                            <span>🪄 Feedback aanpassen achteraf (AI)</span>
-                        </div>
-                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">
-                            Wil je iets veranderen aan het gesprek of de feedbackbrieven? Typ je aanpassing hieronder (bijv. "maak de samenvatting korter", "verwijder zin 2", of "wees aardiger") en laat de AI het direct aanpassen zonder de audio opnieuw te uploaden.
-                        </p>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <textarea id="afterwardInstructionsInput" placeholder="Bijv. Maak de feedback korter..." style="flex: 1; min-height: 40px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical; font-weight: 600;"></textarea>
-                            <button onclick="adjustFeedbackWithAi(event)" style="padding: 0 16px; border-radius: 6px; border: none; background: var(--accent-gradient); color: #fff; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; height: 40px;">Aanpassen</button>
-                        </div>
+            const a = file.analyse || {};
+            currentFeedbackBrieven = a.feedback_brieven || [];
+            activeStudentIdx = 0;
+            activeFeedbackLang = 'nl';
+
+            // Ensure gesprek array exists
+            if (!a.gesprek) {
+                a.gesprek = [];
+            }
+
+            renderTranscriptColumn();
+            renderFeedbackColumn();
+            renderCompleteColumn();
+        }
+
+        function renderTranscriptColumn() {
+            const container = document.getElementById('col-transcript');
+            container.innerHTML = '';
+            
+            const gesprek = currentFileObject.analyse.gesprek || [];
+
+            if (gesprek.length === 0) {
+                const flatText = currentFileObject.analyse.letterlijk_transcript || currentFileObject.transcript || '';
+                container.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:8px; height:100%;">
+                        <span style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Ruwe Transcriptie:</span>
+                        <textarea id="rawTranscriptTextarea" onchange="updateRawTranscriptText(this.value)" style="width:100%; flex:1; padding:10px; background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; resize:none;">${flatText}</textarea>
+                        <p style="font-size:0.75rem; color:var(--text-muted);">Klik op "Genereer Feedbackbrief" om de ruwe tekst te verwerken.</p>
                     </div>
                 `;
+                return;
+            }
+
+            const chatContainer = document.createElement('div');
+            chatContainer.className = 'chat-container';
+
+            let knownSpeakers = {};
+            gesprek.forEach((lijn) => {
+                if (!lijn.spreker) return;
+                if (!knownSpeakers[lijn.spreker]) {
+                    knownSpeakers[lijn.spreker] = Object.keys(knownSpeakers).length % 2 === 0 ? 'speaker-a' : 'speaker-b';
+                }
+                const sClass = knownSpeakers[lijn.spreker];
+                
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${sClass}`;
+                bubble.style.marginBottom = '12px';
+                
+                let bubbleHtml = `
+                    <div class="chat-name">${lijn.spreker}</div>
+                    <div class="chat-text">"${lijn.zin_fonetisch || ''}"</div>
+                    ${lijn.zin_correct ? `<div class="chat-correct">Doel: ${lijn.zin_correct}</div>` : ''}
+                `;
+                
+                let uAnalyse = lijn.uitspraak_analyse || {};
+                let gAnalyse = lijn.grammatica_analyse || {};
+                let lAnalyse = lijn.logica_analyse || {};
+                
+                let analysisBoxes = '';
+                
+                if (uAnalyse.fout) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-fout">🗣️ ❌</span>
+                                <div><strong>Uitspraak:</strong> ${uAnalyse.fout}<br><span style="color:#94a3b8">${uAnalyse.uitleg || ''}</span></div>
+                            </div>
+                        </div>`;
+                } else if (uAnalyse.goed) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-goed">🗣️ ✅</span>
+                                <div><strong>Uitspraak is goed</strong></div>
+                            </div>
+                        </div>`;
+                }
+                
+                if (gAnalyse.fout) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-fout">📚 ❌</span>
+                                <div><strong>Grammatica:</strong> ${gAnalyse.fout}<br><span style="color:#94a3b8">${gAnalyse.uitleg || ''}</span></div>
+                            </div>
+                        </div>`;
+                } else if (gAnalyse.goed) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-goed">📚 ✅</span>
+                                <div><strong>Grammatica is goed</strong></div>
+                            </div>
+                        </div>`;
+                }
+
+                if (lAnalyse.fout) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-fout">🧠 ❌</span>
+                                <div><strong>Logica / Samenhang:</strong> ${lAnalyse.fout}<br><span style="color:#94a3b8">${lAnalyse.uitleg || ''}</span></div>
+                            </div>
+                        </div>`;
+                } else if (lAnalyse.goed) {
+                    analysisBoxes += `
+                        <div class="analysis-box">
+                            <div class="analysis-item">
+                                <span class="icon-goed">🧠 ✅</span>
+                                <div><strong>Samenhang is goed</strong></div>
+                            </div>
+                        </div>`;
+                }
+                
+                bubble.innerHTML = bubbleHtml + analysisBoxes;
+                chatContainer.appendChild(bubble);
+            });
+            
+            container.appendChild(chatContainer);
+        }
+
+        function updateRawTranscriptText(val) {
+            if (currentFileObject && currentFileObject.analyse) {
+                currentFileObject.analyse.letterlijk_transcript = val;
+                saveDatabase();
             }
         }
 
-        function renderFeedbackPane() {
-            const pane = document.getElementById('pane-feedback');
+        function renderFeedbackColumn() {
+            const container = document.getElementById('col-feedback');
+            container.innerHTML = '';
+
             if (!currentFeedbackBrieven || currentFeedbackBrieven.length === 0) {
-                pane.innerHTML = '<div style="color:var(--text-muted); padding: 20px; text-align: center;">Geen feedbackbrieven beschikbaar.</div>';
+                container.innerHTML = '<div style="color:var(--text-muted); text-align: center; padding: 20px;">Geen feedbackbrief beschikbaar. Klik links op "Genereer Feedbackbrief" om er een te maken.</div>';
                 return;
             }
 
             let html = '';
 
-            // 1. Als er meerdere cursisten zijn, toon studenten-tabs
+            // 1. Studenten tabs if there are multiple letters
             if (currentFeedbackBrieven.length > 1) {
-                html += `<div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; overflow-x: auto; scrollbar-width: none;">`;
+                html += `<div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; overflow-x: auto; scrollbar-width: none;">`;
                 currentFeedbackBrieven.forEach((fb, idx) => {
                     const isActive = idx === activeStudentIdx;
                     html += `
-                        <button onclick="activeStudentIdx = ${idx}; renderFeedbackPane();" 
-                                style="padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; border: 1px solid ${isActive ? 'var(--accent)' : 'var(--border)'}; background: ${isActive ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255,255,255,0.02)'}; color: ${isActive ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                        <button onclick="activeStudentIdx = ${idx}; renderFeedbackColumn(); renderCompleteColumn();" 
+                                style="padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; border: 1px solid ${isActive ? 'var(--accent)' : 'var(--border)'}; background: ${isActive ? 'rgba(230, 126, 34, 0.15)' : 'rgba(255,255,255,0.02)'}; color: ${isActive ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none; white-space: nowrap;">
                             👤 ${fb.naam}
                         </button>
                     `;
@@ -567,57 +747,90 @@
                 html += `</div>`;
             }
 
-            // 2. Toon taal-tabs (Nederlands / Engels) en kopieerknop
             const activeFb = currentFeedbackBrieven[activeStudentIdx];
-
-            html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">`;
-            html += `<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">`;
-            
-            // NL Tab
-            const isNl = activeFeedbackLang === 'nl';
             html += `
-                <button onclick="activeFeedbackLang = 'nl'; renderFeedbackPane();" 
-                        style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isNl ? 'var(--accent)' : 'var(--border)'}; background: ${isNl ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isNl ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
-                    🇳🇱 Nederlands
-                </button>
-            `;
-
-            // Vertaling Tab
-            const isEn = activeFeedbackLang === 'en';
-            html += `
-                <button onclick="activeFeedbackLang = 'en'; renderFeedbackPane();" 
-                        style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
-                    🌐 Vertaling ${activeFb.brief_en ? '' : '(Niet vertaald)'}
-                </button>
-            `;
-
-            // Live Translation input & button
-            html += `
-                <div style="display: flex; align-items: center; gap: 4px; margin-left: 8px;">
-                    <input type="text" id="liveTranslationLang" placeholder="Vertaal naar (bijv. Pools)" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.75rem; outline: none; width: 140px; height: 28px; font-weight: 600;">
-                    <button onclick="translateActiveBrief(event)" style="padding: 0 10px; height: 28px; border-radius: 6px; border: none; background: var(--accent-gradient); color: #fff; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center;">Vertalen</button>
+                <div style="display:flex; flex-direction:column; gap:8px; flex:1; min-height:0;">
+                    <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Bewerk Brief Tekst (Nederlands):</label>
+                    <textarea oninput="updateFeedbackBriefText(this.value)" style="width:100%; flex:1; padding:12px; background:rgba(15, 23, 42, 0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; line-height:1.6; resize:none; min-height: 200px;">${activeFb.brief || ''}</textarea>
                 </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function updateFeedbackBriefText(val) {
+            if (currentFeedbackBrieven && currentFeedbackBrieven[activeStudentIdx]) {
+                currentFeedbackBrieven[activeStudentIdx].brief = val;
+                
+                // Keep database in sync
+                if (currentFileObject && currentFileObject.analyse) {
+                    currentFileObject.analyse.feedback_brieven = currentFeedbackBrieven;
+                    saveDatabase();
+                }
+                
+                // Update Column 3 immediately if active language is NL
+                if (activeFeedbackLang === 'nl') {
+                    const briefTextDiv = document.getElementById('active-fb-text');
+                    if (briefTextDiv) {
+                        briefTextDiv.textContent = val;
+                    }
+                }
+            }
+        }
+
+        function renderCompleteColumn() {
+            const container = document.getElementById('col-complete');
+            container.innerHTML = '';
+
+            if (!currentFeedbackBrieven || currentFeedbackBrieven.length === 0) {
+                container.innerHTML = '<div style="color:var(--text-muted); text-align: center; padding: 20px;">Geen feedbackbrief beschikbaar.</div>';
+                return;
+            }
+
+            const activeFb = currentFeedbackBrieven[activeStudentIdx];
+            const isNl = activeFeedbackLang === 'nl';
+            const isEn = activeFeedbackLang === 'en';
+
+            let html = '';
+
+            // Nederlands vs Vertaling tabs
+            html += `<div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">`;
+            html += `
+                <button onclick="activeFeedbackLang = 'nl'; renderCompleteColumn();" 
+                        style="padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid ${isNl ? 'var(--accent)' : 'var(--border)'}; background: ${isNl ? 'rgba(230, 126, 34, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isNl ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                    🇳🇱 NL
+                </button>
+                <button onclick="activeFeedbackLang = 'en'; renderCompleteColumn();" 
+                        style="padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(230, 126, 34, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
+                    🌐 Vertaling
+                </button>
             `;
             html += `</div>`;
 
-            // Kopieerknop rechts
+            // Live Translation tool
             html += `
-                <button class="copy-btn" onclick="copyFeedbackText(this)" style="padding: 6px 14px; font-size: 0.85rem; border-radius: 8px; font-weight: 700; background: var(--accent-gradient); color: #fff; border: none; cursor: pointer; transition: var(--transition);">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
+                    <input type="text" id="liveTranslationLang" placeholder="Bijv. Pools, Arabisch" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.75rem; outline: none; flex: 1; height: 28px; font-weight: 600;">
+                    <button onclick="translateActiveBrief(event)" style="padding: 0 10px; height: 28px; border-radius: 4px; border: none; background: var(--accent-gradient); color: #fff; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; white-space: nowrap;">Vertaal</button>
+                </div>
+            `;
+
+            // Kopieer knop
+            html += `
+                <button class="copy-btn" onclick="copyFeedbackText(this)" style="padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; font-weight: 700; background: var(--accent-gradient); color: #fff; border: none; cursor: pointer; transition: var(--transition); width: 100%; margin-bottom: 12px; text-align: center;">
                     📋 Kopieer voor WhatsApp
                 </button>
             `;
-            html += `</div>`;
 
-            // 3. Toon de brief zelf
-            const briefContent = activeFeedbackLang === 'nl' ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal (bijv. Pools of Arabisch) en klik op \'Vertalen\' om deze brief live te vertalen!');
-            
+            // Brief content display
+            const briefContent = isNl ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal en klik op \'Vertaal\'.');
             html += `
-                <div id="active-fb-text" style="white-space: pre-wrap; font-size: 1rem; line-height: 1.7; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; max-height: 480px; overflow-y: auto;">${briefContent}</div>
+                <div id="active-fb-text" style="white-space: pre-wrap; font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; flex: 1; overflow-y: auto;">${briefContent}</div>
             `;
-
-            pane.innerHTML = html;
+ 
+            container.innerHTML = html;
         }
-
+ 
         function copyFeedbackText(btn) {
             const txt = document.getElementById('active-fb-text').textContent;
             navigator.clipboard.writeText(txt).then(() => {
@@ -625,6 +838,135 @@
                 btn.innerHTML = '✅ Gekopieerd!';
                 setTimeout(() => btn.innerHTML = old, 2000);
             });
+        }
+
+        async function generateFeedbackFromTranscriptText() {
+            if (!currentFileObject) return;
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                openSettingsModal();
+                return;
+            }
+
+            const btn = document.getElementById('btnRegenFeedback');
+            const originalBtnText = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '⏳ Bezig...';
+                btn.disabled = true;
+            }
+
+            try {
+                const targetLang = document.getElementById('targetLanguageInput').value.trim() || 'Engels';
+                const customInstructions = document.getElementById('customInstructionsInput').value.trim();
+                
+                let sourceContent = "";
+                let conversationFormatHelp = "";
+                
+                if (currentFileObject.analyse.gesprek && currentFileObject.analyse.gesprek.length > 0) {
+                    sourceContent = `GEBEWERKT GESPREK IN JSON:\n${JSON.stringify(currentFileObject.analyse.gesprek, null, 2)}`;
+                    conversationFormatHelp = `Gebruik dit gesprek om de feedbackbrieven te genereren. Behoud alle sprekers en zinnen exact.`;
+                } else {
+                    const flatText = currentFileObject.analyse.letterlijk_transcript || currentFileObject.transcript || '';
+                    sourceContent = `RUW TRANSCRIPT:\n"${flatText}"`;
+                    conversationFormatHelp = `Segmenteer deze tekst eerst in afzonderlijke speaker-sentence zinnen in het 'gesprek' JSON veld, en genereer daarna de feedbackbrieven.`;
+                }
+
+                let systemPrompt = `Je bent een ervaren NT2 docent. De gebruiker heeft de transcriptie van een gesprek handmatig bewerkt en wil dat je nieuwe feedbackbrieven genereert op basis van deze bewerkte tekst.
+
+${sourceContent}
+
+DOELTAAL VOOR VERTALING: "${targetLang}"
+${customInstructions ? `BELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):\n"${customInstructions}"` : ''}
+
+Je taak is om:
+1. Een zin-voor-zin analyse uit te voeren op het gesprek (uitspraak_analyse, grammatica_analyse, logica_analyse genereren/updaten).
+2. Een persoonlijke WhatsApp-feedbackbrief te genereren voor elke cursist/spreker in het gesprek.
+3. De feedbackbrieven te vertalen naar de moedertaal van de cursist (${targetLang}) en op te slaan in 'brief_en'. Volg de NT2-richtlijnen: houd alle originele Nederlandse zinnen, de correcties en de feedbackkoppen exact in het Nederlands, vertaal alleen de uitleg en tips.
+4. Het resultaat exact in het volgende JSON-formaat te retourneren:
+{
+  "gesprek": [
+    {
+      "spreker": "Naam van de spreker",
+      "zin_fonetisch": "zin van de student",
+      "zin_correct": "perfecte nederlandse versie",
+      "uitspraak_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." },
+      "grammatica_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." },
+      "logica_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." }
+    }
+  ],
+  "feedback_brieven": [
+     {
+       "naam": "Naam van de cursist",
+       "brief": "Nederlandse feedbackbrief voor WhatsApp...",
+       "brief_en": "Vertaalde feedbackbrief..."
+     }
+  ]
+}
+
+AANVULLENDE RICHTLIJNEN:
+- WhatsApp leest: gebruik ENKELE asterisks (*) voor vetgedrukte teksten, nooit dubbele asterisks (**).
+- Zorg dat de uitleg simpel en opbouwend is (voor A1/A2 niveau).
+- ${conversationFormatHelp}`;
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const payload = {
+                    contents: [{
+                        parts: [{ text: systemPrompt }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.1,
+                        responseMimeType: "application/json"
+                    }
+                };
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Generatie mislukt: ${res.statusText}`);
+                }
+
+                const data = await res.json();
+                const jsonResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!jsonResponse) {
+                    throw new Error("Geen antwoord ontvangen van Gemini.");
+                }
+
+                const result = JSON.parse(jsonResponse.trim());
+                
+                // Update database
+                const groupFiles = db[activeGroup] || [];
+                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                if (dbFile) {
+                    dbFile.analyse.gesprek = result.gesprek;
+                    dbFile.analyse.feedback_brieven = result.feedback_brieven;
+                    currentFileObject.analyse = dbFile.analyse;
+                    await saveDatabase();
+                }
+
+                // Refresh UI columns
+                currentFeedbackBrieven = currentFileObject.analyse.feedback_brieven || [];
+                activeStudentIdx = 0;
+                activeFeedbackLang = 'nl';
+                
+                renderTranscriptColumn();
+                renderFeedbackColumn();
+                renderCompleteColumn();
+                showToast("Feedbackbrieven succesvol gegenereerd!");
+
+            } catch (err) {
+                console.error("Fout bij genereren:", err);
+                alert("Er ging iets fout bij het genereren: " + err.message);
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalBtnText;
+                    btn.disabled = false;
+                }
+            }
         }
 
         async function translateActiveBrief(event) {
@@ -663,7 +1005,7 @@ RICHTLIJNEN VOOR DE VERTALING:
 2. Houd alle originele en gecorrigeerde Nederlandse leerelementen (zoals de originele Nederlandse zinnen van de student, de gecorrigeerde Nederlandse zinnen en grammatica/uitspraak feedbackkoppen) EXACT in het Nederlands! Vertaal deze dus absoluut NIET naar de doeltaal. Dit is essentieel zodat de cursist de Nederlandse tekst rechtstreeks kan vergelijken met de vertaalde uitleg.
 3. Behoud de exacte opmaak voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijvoorbeeld *Zin 1:* en *Correctie:*). Gebruik geen dubbele asterisks.
 4. Behoud alle emojis en structuur exact.
-
+ 
 BRIEF OM TE VERTAALEN:
 ${activeFb.brief}`;
 
@@ -707,7 +1049,7 @@ ${activeFb.brief}`;
                 }
 
                 activeFeedbackLang = 'en';
-                renderFeedbackPane();
+                renderCompleteColumn();
                 alert(`Brief succesvol vertaald naar het ${targetLang}!`);
 
             } catch (err) {
@@ -1711,6 +2053,9 @@ BELANGRIJK:
         window.deleteFile = deleteFile;
         window.adjustFeedbackWithAi = adjustFeedbackWithAi;
         window.showToast = showToast;
+        window.addNewTranscriptLine = addNewTranscriptLine;
+        window.deleteTranscriptLine = deleteTranscriptLine;
+        window.generateFeedbackFromTranscriptText = generateFeedbackFromTranscriptText;
 
     </script>
 

@@ -565,7 +565,7 @@
                     </div>
                 </div>
 
-                <div class="feedback-letter-content" id="feedbackLetterBox">Brief wordt geladen...</div>
+                <textarea class="feedback-letter-content" id="feedbackLetterBox" oninput="updateHomeworkFeedbackText(this.value)" style="width: 100%; min-height: 350px; resize: vertical; border: 1px solid var(--border); font-family: inherit; font-size: 0.95rem; font-weight: 600; outline: none;"></textarea>
 
                 <div style="display:flex; gap:12px; flex-wrap:wrap;">
                     <button class="btn btn-accent" onclick="copyFeedbackText()">📋 Kopieer Brief</button>
@@ -1075,11 +1075,22 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
         function updateFeedbackLetter() {
             const box = document.getElementById('feedbackLetterBox');
             const briefText = activeLang === 'nl' ? feedbackBriefNl : feedbackBriefMoedertaal;
-            box.textContent = briefText || 'Geen brief beschikbaar.';
+            box.value = briefText || '';
 
             // WhatsApp deel-knop updaten
             const shareBtn = document.getElementById('btnShareWhatsapp');
             shareBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(briefText)}`;
+        }
+
+        function updateHomeworkFeedbackText(val) {
+            if (activeLang === 'nl') {
+                feedbackBriefNl = val;
+            } else {
+                feedbackBriefMoedertaal = val;
+            }
+            // WhatsApp deel-knop updaten
+            const shareBtn = document.getElementById('btnShareWhatsapp');
+            shareBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(val)}`;
         }
 
         // COPY FEEDBACK TEXT
