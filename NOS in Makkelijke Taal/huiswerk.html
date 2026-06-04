@@ -771,6 +771,12 @@ CRITERIA VOOR NAKIJKEN:
 3. Voorbeeldzin: Controleer op grammatica, spelling en logica/collocaties (natuurlijk Nederlands).
    - Let op onnatuurlijk taalgebruik: Zinnen die grammaticaal wel correct zijn, maar die we in het Nederlands niet zo zeggen (bijv. "een laptop stilleggen" in plaats van "een laptop uitzetten", of "ik leg de laptop stil").
    - Geef in zulke gevallen een vriendelijke, opbouwende tip: "Ik begrijp wat je bedoelt, maar in het Nederlands zeggen we dit niet zo. We zeggen..."
+4. Omgaan met ontbrekende of lege velden:
+   - Als een cursist een vertaling, uitleg of voorbeeldzin helemaal leeg heeft gelaten of niet heeft ingevuld, markeer dit dan als incorrect (false) en gebruik EXACT deze teksten bij de feedback-velden:
+     - Indien vertaling ontbreekt: "⚠️ Je hebt hier geen vertaling ingevuld."
+     - Indien uitleg ontbreekt: "⚠️ Je hebt geen uitleg in simpel Nederlands gegeven."
+     - Indien voorbeeldzin ontbreekt: "⚠️ Je hebt geen voorbeeldzin ingevuld."
+   - Gebruik in de feedbackbrieven (WhatsApp) ook het waarschuwingsicoon ⚠️ voor dat specifieke onderdeel, en schrijf dat het ontbreekt.
 
 FORMAT FEEDBACKBRIEVEN (WHATSAPP):
 Schrijf twee feedbackbrieven: feedback_brief_nl (Nederlands) en feedback_brief_moedertaal (vertaald naar hun gedetecteerde moedertaal).
@@ -788,10 +794,16 @@ Hallo [Naam]! 👋 Hier is de feedback op je huiswerk / Here is the feedback on 
 
 Emojis te gebruiken:
 - ✅ : Als het onderdeel helemaal goed en natuurlijk is.
-- ⚠️ : Als het begrijpelijk is, maar een kleine tip, grammatica-correctie of natuurlijker alternatief behoeft (bijv. "laptop stilleggen" -> ⚠️).
+- ⚠️ : Als het begrijpelijk is, maar een kleine tip, grammatica-correctie of natuurlijker alternatief behoeft (bijv. "laptop stilleggen" -> ⚠️). Of als het onderdeel helemaal ontbreekt.
 - ❌ : Als het onderdeel echt fout of onjuist is.
 
 Houd de correcties en tips kort en bondig voor WhatsApp.
+
+BELANGRIJK VOOR DE VERTAALDE FEEDBACKBRIEF (feedback_brief_moedertaal):
+- Vertaal alleen de docent-uitleg, tips en inleidende/afsluitende zinnen naar de gedetecteerde moedertaal.
+- Houd alle originele en gecorrigeerde Nederlandse leerelementen (zoals de Nederlandse woorden, de Nederlandse definities/uitleg van de student, en de Nederlandse voorbeeldzinnen) EXACT in het Nederlands! Vertaal deze dus NIET naar de moedertaal.
+- Dit is essentieel zodat de cursist de Nederlandse leerelementen direct naast de vertaalde uitleg ziet en niet omhoog/omlaag hoeft te scrollen in WhatsApp.
+
 Eindig de brief met een korte samenvatting en bemoedigend advies:
 🏁 *Belangrijkste leerpunten / Key takeaways:*
 • [Punt 1]
@@ -807,15 +819,15 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
   "woorden_analyse": [
     {
       "woord": "het woord",
-      "vertaling": "de ingevulde vertaling",
+      "vertaling": "de ingevulde vertaling (indien leeg: 'Niet ingevuld')",
       "vertaling_correct": true of false,
-      "vertaling_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip: geef feedback in het Nederlands en leg kort uit in de moedertaal.",
-      "uitleg": "de ingevulde uitleg",
+      "vertaling_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback.",
+      "uitleg": "de ingevulde uitleg (indien leeg: 'Niet ingevuld')",
       "uitleg_correct": true of false,
-      "uitleg_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip: geef eenvoudige uitleg en toon correctie.",
-      "zin": "de ingevulde voorbeeldzin",
+      "uitleg_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback.",
+      "zin": "de ingevulde voorbeeldzin (indien leeg: 'Niet ingevuld')",
       "zin_correct": true of false,
-      "zin_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip: geef grammatica/logica correctie."
+      "zin_feedback": "Als correct: 'Helemaal goed!' of laat leeg. Als fout/tip/leeg: geef feedback."
     }
   ],
   "feedback_brief_nl": "De WhatsApp feedbackbrief in het Nederlands...",
@@ -852,6 +864,15 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
 
             if (result.woorden_analyse && result.woorden_analyse.length > 0) {
                 result.woorden_analyse.forEach((anal, idx) => {
+                    // Safe values fallback to prevent displaying "undefined"
+                    const hasVertaling = anal.vertaling && anal.vertaling !== "undefined" && anal.vertaling.toLowerCase() !== "niet ingevuld";
+                    const hasUitleg = anal.uitleg && anal.uitleg !== "undefined" && anal.uitleg.toLowerCase() !== "niet ingevuld";
+                    const hasZin = anal.zin && anal.zin !== "undefined" && anal.zin.toLowerCase() !== "niet ingevuld";
+
+                    const vertalingText = hasVertaling ? `"${anal.vertaling}"` : '<em style="color:var(--text-muted);">(Niet ingevuld)</em>';
+                    const uitlegText = hasUitleg ? `"${anal.uitleg}"` : '<em style="color:var(--text-muted);">(Niet ingevuld)</em>';
+                    const zinText = hasZin ? `"${anal.zin}"` : '<em style="color:var(--text-muted);">(Niet ingevuld)</em>';
+
                     const card = document.createElement('div');
                     card.className = 'word-result-card';
                     card.innerHTML = `
@@ -863,30 +884,30 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
                             <div class="field-row">
                                 <span class="field-label">Vertaling naar het ${detectedMoedertaalName}</span>
                                 <div class="field-value">
-                                    <span>"${anal.vertaling}"</span>
-                                    <span class="badge-status ${anal.vertaling_correct ? 'correct' : 'incorrect'}">${anal.vertaling_correct ? 'Correct' : 'Fout'}</span>
+                                    <span>${vertalingText}</span>
+                                    <span class="badge-status ${anal.vertaling_correct ? 'correct' : 'incorrect'}">${anal.vertaling_correct ? 'Correct' : 'Let op'}</span>
                                 </div>
-                                ${anal.vertaling_correct ? '' : `<div class="ai-feedback-box">⚠️ ${anal.vertaling_feedback}</div>`}
+                                ${anal.vertaling_correct ? '' : `<div class="ai-feedback-box">${anal.vertaling_feedback}</div>`}
                             </div>
                             
                             <!-- Uitleg -->
                             <div class="field-row">
                                 <span class="field-label">Uitleg (Nederlands)</span>
                                 <div class="field-value">
-                                    <span>"${anal.uitleg}"</span>
-                                    <span class="badge-status ${anal.uitleg_correct ? 'correct' : 'incorrect'}">${anal.uitleg_correct ? 'Correct' : 'Fout'}</span>
+                                    <span>${uitlegText}</span>
+                                    <span class="badge-status ${anal.uitleg_correct ? 'correct' : 'incorrect'}">${anal.uitleg_correct ? 'Correct' : 'Let op'}</span>
                                 </div>
-                                ${anal.uitleg_correct ? '' : `<div class="ai-feedback-box">⚠️ ${anal.uitleg_feedback}</div>`}
+                                ${anal.uitleg_correct ? '' : `<div class="ai-feedback-box">${anal.uitleg_feedback}</div>`}
                             </div>
 
                             <!-- Voorbeeldzin -->
                             <div class="field-row">
                                 <span class="field-label">Voorbeeldzin</span>
                                 <div class="field-value">
-                                    <span>"${anal.zin}"</span>
-                                    <span class="badge-status ${anal.zin_correct ? 'correct' : 'incorrect'}">${anal.zin_correct ? 'Correct' : 'Fout'}</span>
+                                    <span>${zinText}</span>
+                                    <span class="badge-status ${anal.zin_correct ? 'correct' : 'incorrect'}">${anal.zin_correct ? 'Correct' : 'Let op'}</span>
                                 </div>
-                                ${anal.zin_correct ? '' : `<div class="ai-feedback-box">⚠️ ${anal.zin_feedback}</div>`}
+                                ${anal.zin_correct ? '' : `<div class="ai-feedback-box">${anal.zin_feedback}</div>`}
                             </div>
                         </div>
                     `;
