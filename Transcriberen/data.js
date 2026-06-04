@@ -2600,6 +2600,1059 @@ window.geminiData = {
           }
         ]
       }
+    },
+    {
+      "filename": "Dorota 4-6.ogg",
+      "path": "Westport/Dorota 4-6.ogg",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Hoja Agnieszka",
+            "zin_correct": "Hoi Agnieszka",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De 'oi' klank in 'Hoi' wordt uitgesproken als 'oja'.",
+              "uitleg": "De tweeklank 'oi' in 'Hoi' is een korte, gesloten klank. De uitspraak 'Hoja' klinkt als een open 'o' gevolgd door 'ja'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Jemut werk schone tragen",
+            "zin_correct": "Je moet werkschoenen dragen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'Jemut' in plaats van 'Je moet', 'schone' in plaats van 'schoenen', 'tragen' in plaats van 'dragen'.",
+              "uitleg": "De 'oe' klank in 'moet' en 'schoenen' wordt niet correct uitgesproken. 'Tragen' is een Duits woord, in het Nederlands is het 'dragen'. Let op de 'd' klank aan het begin van het woord."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde woordkeuze ('tragen' in plaats van 'dragen') en ontbrekende meervouds-n bij 'schoenen'.",
+              "uitleg": "Het werkwoord 'tragen' is Duits; in het Nederlands gebruiken we 'dragen'. 'Schoen' is enkelvoud, 'schoenen' is meervoud. 'Werk schoenen' moet 'werkschoenen' zijn (samenstelling)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "wan zondeer het is gevaarlijk",
+            "zin_correct": "Want zonder [werkschoenen] is het gevaarlijk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'wan' in plaats van 'want', 'zondeer' in plaats van 'zonder'.",
+              "uitleg": "De 't' aan het einde van 'want' is belangrijk. De 'o' in 'zonder' is een korte 'o', niet een lange 'ee' klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde voegwoord ('wan' in plaats van 'want') en verkeerde voorzetsel ('zondeer' in plaats van 'zonder').",
+              "uitleg": "'Want' is het juiste voegwoord om een reden aan te geven. 'Zonder' is het correcte voorzetsel."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "De pauze vinden plaats in de kantine",
+            "zin_correct": "De pauze vindt plaats in de kantine.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'vinden' in plaats van 'vindt'.",
+              "uitleg": "De uitspraak van de werkwoordsvorm 'vinden' is die van het meervoud. Voor een enkelvoudig onderwerp ('de pauze') moet de werkwoordsvorm 'vindt' zijn."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde werkwoordsvervoeging.",
+              "uitleg": "Het onderwerp 'de pauze' is enkelvoud, dus het werkwoord moet ook enkelvoud zijn: 'vindt' (stam + t). 'Vinden' is de meervoudsvorm."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "of hier worden genomen",
+            "zin_correct": "of hier wordt [de pauze] genomen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'worden' in plaats van 'wordt'.",
+              "uitleg": "De uitspraak van de werkwoordsvorm 'worden' is die van het meervoud. Voor een enkelvoudig onderwerp ('de pauze') moet de werkwoordsvorm 'wordt' zijn."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde werkwoordsvervoeging en onvolledige zin.",
+              "uitleg": "Als 'de pauze' het impliciete onderwerp is, moet het werkwoord 'wordt' zijn (enkelvoud). De zin is ook wat kort; het is logischer om te zeggen 'of hier wordt de pauze genomen'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De zin is grammaticaal onvolledig en daardoor minder duidelijk.",
+              "uitleg": "De zin 'of hier worden genomen' is te kort en mist het onderwerp. Een logischere formulering zou zijn: 'of de pauze wordt hier genomen' of 'of hier wordt de pauze genomen'."
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "De pauze eh dort 15 of 30 minuten.",
+            "zin_correct": "De pauze duurt 15 of 30 minuten.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'dort' in plaats van 'duurt'.",
+              "uitleg": "'Dort' is een Duits woord. In het Nederlands gebruiken we 'duurt' voor de tijdsduur. Let op de 'uu' klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerde woordkeuze ('dort' in plaats van 'duurt').",
+              "uitleg": "'Dort' is Duits voor 'daar'. Het Nederlandse werkwoord voor 'een bepaalde tijd in beslag nemen' is 'duren'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Dorota",
+            "brief": "Hallo Dorota! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Hoja Agnieszka\"\n👍 *Wat was goed:* De naam 'Agnieszka' spreek je duidelijk uit.\n💡 *Correctie:* \"Hoi Agnieszka\"\n🧠 *Waarom:* De tweeklank 'oi' in 'Hoi' is een korte, gesloten klank. De uitspraak 'Hoja' klinkt als een open 'o' gevolgd door 'ja'.\n\n*Zin 2:* \"Jemut werk schone tragen\"\n👍 *Wat was goed:* De intentie van de zin is duidelijk.\n💡 *Correctie:* \"Je moet werkschoenen dragen.\"\n🧠 *Waarom:* De 'oe' klank in 'moet' en 'schoenen' moet je oefenen. 'Tragen' is een Duits woord; in het Nederlands zeggen we 'dragen'. Let ook op de samenstelling 'werkschoenen' en de meervouds-n.\n\n*Zin 3:* \"wan zondeer het is gevaarlijk\"\n👍 *Wat was goed:* Het woord 'gevaarlijk' spreek je goed uit.\n💡 *Correctie:* \"Want zonder [werkschoenen] is het gevaarlijk.\"\n🧠 *Waarom:* 'Want' is het juiste voegwoord om een reden aan te geven, niet 'wan'. 'Zonder' is het correcte voorzetsel, niet 'zondeer'. Let op de 't' aan het einde van 'want' en de korte 'o' in 'zonder'.\n\n*Zin 4:* \"De pauze vinden plaats in de kantine\"\n👍 *Wat was goed:* De woorden 'plaats' en 'kantine' spreek je duidelijk uit.\n💡 *Correctie:* \"De pauze vindt plaats in de kantine.\"\n🧠 *Waarom:* Het onderwerp 'de pauze' is enkelvoud, dus het werkwoord moet ook enkelvoud zijn: 'vindt' (stam + t). 'Vinden' is de meervoudsvorm.\n\n*Zin 5:* \"of hier worden genomen\"\n👍 *Wat was goed:* De woorden 'hier' en 'genomen' zijn goed verstaanbaar.\n💡 *Correctie:* \"of hier wordt [de pauze] genomen.\"\n🧠 *Waarom:* Als 'de pauze' het impliciete onderwerp is, moet het werkwoord 'wordt' zijn (enkelvoud). De zin is ook wat kort; het is logischer om te zeggen 'of hier wordt de pauze genomen'.\n🤔 *Logica:* De zin 'of hier worden genomen' is te kort en mist het onderwerp. Een logischere formulering zou zijn: 'of de pauze wordt hier genomen' of 'of hier wordt de pauze genomen'.\n\n*Zin 6:* \"De pauze eh dort 15 of 30 minuten.\"\n👍 *Wat was goed:* De getallen '15' en '30' zijn duidelijk.\n💡 *Correctie:* \"De pauze duurt 15 of 30 minuten.\"\n🧠 *Waarom:* 'Dort' is Duits voor 'daar'. Het Nederlandse werkwoord voor 'een bepaalde tijd in beslag nemen' is 'duren'. Let op de 'uu' klank in 'duurt'.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt regelmatig fouten met werkwoordsvervoegingen, vooral bij enkelvoudige onderwerpen (bijv. 'vinden' in plaats van 'vindt', 'worden' in plaats van 'wordt'). Ook is er verwarring met Nederlandse en Duitse woorden (bijv. 'tragen' en 'dort'). Let goed op de juiste voegwoorden en voorzetsels ('want' en 'zonder').\n• *Uitspraak:* Oefen de 'oe' klank (zoals in 'moet' en 'schoenen'), de 'oi' klank (zoals in 'Hoi') en de 'uu' klank (zoals in 'duurt'). Let ook op de 'd' klank aan het begin van woorden (zoals in 'dragen') en de 't' aan het einde van woorden (zoals in 'want').\n• *Samenhang & Logica:* De zinnen zijn over het algemeen logisch, maar soms zijn ze wat kort of onvolledig, waardoor ze minder natuurlijk klinken. Probeer zinnen wat vollediger te maken met het onderwerp en werkwoord.\n\n🧠 *Jouw volgende stap & advies:*\nFocus de komende tijd op de juiste werkwoordsvervoegingen voor enkelvoudige onderwerpen en het correct gebruiken van Nederlandse woorden in plaats van Duitse cognaten. Besteed ook aandacht aan de uitspraak van de specifieke klinkers ('oe', 'oi', 'uu') en medeklinkers ('d', 't'). Blijf oefenen met het formuleren van complete zinnen. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Dorota! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Hoja Agnieszka\"\n👍 *What was good:* You pronounce the name 'Agnieszka' clearly.\n💡 *Correction:* \"Hoi Agnieszka\"\n🧠 *Why:* The diphthong 'oi' in 'Hoi' is a short, closed sound. The pronunciation 'Hoja' sounds like an open 'o' followed by 'ja'.\n\n*Sentence 2:* \"Jemut werk schone tragen\"\n👍 *What was good:* The intention of the sentence is clear.\n💡 *Correction:* \"Je moet werkschoenen dragen.\"\n🧠 *Why:* You need to practice the 'oe' sound in 'moet' and 'schoenen'. 'Tragen' is a German word; in Dutch, we say 'dragen'. Also, pay attention to the compound word 'werkschoenen' and the plural 'n'.\n\n*Sentence 3:* \"wan zondeer het is gevaarlijk\"\n👍 *What was good:* You pronounce the word 'gevaarlijk' well.\n💡 *Correction:* \"Want zonder [werkschoenen] is het gevaarlijk.\"\n🧠 *Why:* 'Want' is the correct conjunction to indicate a reason, not 'wan'. 'Zonder' is the correct preposition, not 'zondeer'. Pay attention to the 't' at the end of 'want' and the short 'o' in 'zonder'.\n\n*Sentence 4:* \"De pauze vinden plaats in de kantine\"\n👍 *What was good:* You pronounce the words 'plaats' and 'kantine' clearly.\n💡 *Correction:* \"De pauze vindt plaats in de kantine.\"\n🧠 *Why:* The subject 'de pauze' is singular, so the verb must also be singular: 'vindt' (stem + t). 'Vinden' is the plural form.\n\n*Sentence 5:* \"of hier worden genomen\"\n👍 *What was good:* The words 'hier' and 'genomen' are clearly understandable.\n💡 *Correction:* \"of hier wordt [de pauze] genomen.\"\n🧠 *Why:* If 'de pauze' is the implicit subject, the verb must be 'wordt' (singular). The sentence is also a bit short; it is more logical to say 'of hier wordt de pauze genomen'.\n🤔 *Logic:* The sentence 'of hier worden genomen' is too short and lacks the subject. A more logical phrasing would be: 'of de pauze wordt hier genomen' or 'of hier wordt de pauze genomen'.\n\n*Sentence 6:* \"De pauze eh dort 15 of 30 minuten.\"\n👍 *What was good:* The numbers '15' and '30' are clear.\n💡 *Correction:* \"De pauze duurt 15 of 30 minuten.\"\n🧠 *Why:* 'Dort' is German for 'there'. The Dutch verb for 'to take a certain amount of time' is 'duren'. Pay attention to the 'uu' sound in 'duurt'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You frequently make errors with verb conjugations, especially with singular subjects (e.g., 'vinden' instead of 'vindt', 'worden' instead of 'wordt'). There is also confusion with Dutch and German words (e.g., 'tragen' and 'dort'). Pay close attention to the correct conjunctions and prepositions ('want' and 'zonder').\n• *Pronunciation:* Practice the 'oe' sound (as in 'moet' and 'schoenen'), the 'oi' sound (as in 'Hoi'), and the 'uu' sound (as in 'duurt'). Also, pay attention to the 'd' sound at the beginning of words (as in 'dragen') and the 't' at the end of words (as in 'want').\n• *Coherence & Logic:* The sentences are generally logical, but sometimes they are a bit short or incomplete, making them sound less natural. Try to make sentences more complete with the subject and verb.\n\n🧠 *Your next step & advice:*\nFor the coming period, focus on correct verb conjugations for singular subjects and using the correct Dutch words instead of German cognates. Also, pay attention to the pronunciation of specific vowels ('oe', 'oi', 'uu') and consonants ('d', 't'). Keep practicing formulating complete sentences. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Malwina 4-6.mp3",
+      "path": "Westport/Malwina 4-6.mp3",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Wij hebben een probleem.",
+            "zin_correct": "Wij hebben een probleem.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Er is een probleem met het transport naar de Duitsland.",
+            "zin_correct": "Er is een probleem met het transport naar Duitsland.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'Duitsland' klinkt als 'Deutsland'.",
+              "uitleg": "De 'ui' klank wordt niet helemaal correct uitgesproken. Het klinkt meer als een 'eu'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Gebruik van 'de' voor een landnaam.",
+              "uitleg": "Landnamen zoals 'Duitsland' krijgen in het Nederlands geen lidwoord 'de' wanneer je er 'naar' toe gaat."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "De vrachtwagenchauffeur heeft vertraging, want want er is een file bij de grens.",
+            "zin_correct": "De vrachtwagenchauffeur heeft vertraging, want er is een file bij de grens.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'vrachtwagenchauffeur' en 'vertraging' klinken met een zachte 'g'.",
+              "uitleg": "De 'g' klank is te zacht, bijna als een 'ch' in 'lachen'. In het Nederlands is de 'g' een hardere, schrapende klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Herhaling van 'want'.",
+              "uitleg": "Het woord 'want' is twee keer achter elkaar gebruikt. Eén keer is voldoende."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "De klant wacht op de eh onderdelen, dus wij moeten snel reageren.",
+            "zin_correct": "De klant wacht op de onderdelen, dus wij moeten snel reageren.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'onderdelen' en 'reageren' klinken met een zachte 'g'.",
+              "uitleg": "De 'g' klank is te zacht, bijna als een 'ch' in 'lachen'. In het Nederlands is de 'g' een hardere, schrapende klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Wij hebben contact met de klant gehad.",
+            "zin_correct": "Wij hebben contact met de klant gehad.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'gehad' klinkt met een zachte 'g'.",
+              "uitleg": "De 'g' klank is te zacht, bijna als een 'ch' in 'lachen'. In het Nederlands is de 'g' een hardere, schrapende klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Maar ze zij zijn niet blij met de vertraging.",
+            "zin_correct": "Maar zij zijn niet blij met de vertraging.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'blij' klinkt met een vlakke 'ij' en 'vertraging' met een zachte 'g'.",
+              "uitleg": "De 'ij' klank is te vlak, bijna als een 'ei'. De 'g' klank is te zacht, bijna als een 'ch' in 'lachen'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Onnodige herhaling van het persoonlijk voornaamwoord.",
+              "uitleg": "Je begon met 'ze' en corrigeerde jezelf naar 'zij'. 'Zij' is de correcte vorm in deze context."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ik stel voor naar de andere bedrijf bellen.",
+            "zin_correct": "Ik stel voor om het andere bedrijf te bellen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'bedrijf' klinkt met een vlakke 'ij'.",
+              "uitleg": "De 'ij' klank is te vlak, bijna als een 'ei'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Incorrecte zinsconstructie en lidwoord.",
+              "uitleg": "Na 'ik stel voor' volgt vaak een 'om te'-constructie. 'Bedrijf' is een 'het'-woord, dus het correcte lidwoord is 'het' in plaats van 'de'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Maar wij hebben ook een andere optie.",
+            "zin_correct": "Maar wij hebben ook een andere optie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Wij kunnen op deze vrachtwagen wachten.",
+            "zin_correct": "Wij kunnen op deze vrachtwagen wachten.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "'vrachtwagen' en 'wachten' klinken met een zachte 'ch'.",
+              "uitleg": "De 'ch' klank is te zacht. In het Nederlands is de 'ch' een hardere, schrapende klank, vooral na een 'a'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Wat denk je, wat is jouw opinie?",
+            "zin_correct": "Wat denk je? Wat is jouw opinie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": null,
+              "uitleg": null
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Malwina",
+            "brief": "Hallo Malwina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wij hebben een probleem.\"\n👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit.\n💡 *Correctie:* Wij hebben een probleem.\n\n*Zin 2:* \"Er is een probleem met het transport naar de Duitsland.\"\n👍 *Wat was goed:* De zinsopbouw is duidelijk.\n💡 *Correctie:* Er is een probleem met het transport naar Duitsland.\n🧠 *Waarom:* Landnamen zoals 'Duitsland' krijgen in het Nederlands geen lidwoord 'de' wanneer je er 'naar' toe gaat. Let ook op de uitspraak van de 'ui'-klank, die mag wat ronder klinken.\n\n*Zin 3:* \"De vrachtwagenchauffeur heeft vertraging, want want er is een file bij de grens.\"\n👍 *Wat was goed:* Je gebruikt de juiste voegwoorden om de reden aan te geven.\n💡 *Correctie:* De vrachtwagenchauffeur heeft vertraging, want er is een file bij de grens.\n🧠 *Waarom:* Je herhaalde het woord 'want' twee keer. Eén keer is voldoende. Let ook op de uitspraak van de 'g' in 'vertraging', deze mag harder klinken.\n\n*Zin 4:* \"De klant wacht op de eh onderdelen, dus wij moeten snel reageren.\"\n👍 *Wat was goed:* De zinsopbouw en woordkeuze zijn goed.\n💡 *Correctie:* De klant wacht op de onderdelen, dus wij moeten snel reageren.\n🧠 *Waarom:* Let op de uitspraak van de 'g' in 'onderdelen' en 'reageren', deze mag harder klinken.\n\n*Zin 5:* \"Wij hebben contact met de klant gehad.\"\n👍 *Wat was goed:* De zin is grammaticaal correct en begrijpelijk.\n💡 *Correctie:* Wij hebben contact met de klant gehad.\n🧠 *Waarom:* Let op de uitspraak van de 'g' in 'gehad', deze mag harder klinken.\n\n*Zin 6:* \"Maar ze zij zijn niet blij met de vertraging.\"\n👍 *Wat was goed:* Je corrigeerde jezelf naar het juiste voornaamwoord 'zij'.\n💡 *Correctie:* Maar zij zijn niet blij met de vertraging.\n🧠 *Waarom:* Je begon met 'ze' en corrigeerde jezelf naar 'zij'. 'Zij' is de correcte vorm in deze context. Let ook op de uitspraak van de 'ij' in 'blij' en de 'g' in 'vertraging'.\n\n*Zin 7:* \"Ik stel voor naar de andere bedrijf bellen.\"\n👍 *Wat was goed:* Je geeft duidelijk een voorstel aan.\n💡 *Correctie:* Ik stel voor om het andere bedrijf te bellen.\n🧠 *Waarom:* Na 'ik stel voor' gebruik je vaak een 'om te'-constructie. Daarnaast is 'bedrijf' een 'het'-woord, dus het correcte lidwoord is 'het' in plaats van 'de'. Let ook op de uitspraak van de 'ij' in 'bedrijf'.\n\n*Zin 8:* \"Maar wij hebben ook een andere optie.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct.\n💡 *Correctie:* Maar wij hebben ook een andere optie.\n\n*Zin 9:* \"Wij kunnen op deze vrachtwagen wachten.\"\n👍 *Wat was goed:* De zinsopbouw is correct.\n💡 *Correctie:* Wij kunnen op deze vrachtwagen wachten.\n🧠 *Waarom:* Let op de uitspraak van de 'ch' in 'vrachtwagen' en 'wachten', deze mag harder klinken.\n\n*Zin 10:* \"Wat denk je, wat is jouw opinie?\"\n👍 *Wat was goed:* Deze vraag is duidelijk en correct geformuleerd.\n💡 *Correctie:* Wat denk je? Wat is jouw opinie?\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt goede vooruitgang met zinsopbouw. Belangrijke aandachtspunten zijn het correct gebruiken van lidwoorden bij landnamen en 'het'-woorden (zoals 'bedrijf'), en het correct toepassen van 'om te'-constructies na werkwoorden zoals 'voorstellen'. Ook het vermijden van onnodige herhalingen van woorden is iets om op te letten.\n• *Uitspraak:* De 'g' en 'ch' klanken zijn vaak te zacht. Oefen deze klanken door ze harder en schrapender te maken, vooral na klinkers zoals 'a' en 'e'. Ook de 'ui' en 'ij' klanken kunnen nog wat ronder en minder vlak klinken. Probeer deze klanken bewust te oefenen.\n• *Samenhang & Logica:* Je verhaal is heel logisch en goed te volgen. De zinnen sluiten goed op elkaar aan en de boodschap is duidelijk.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met de uitspraak van de 'g', 'ch', 'ui' en 'ij' klanken. Zoek online naar oefeningen voor deze specifieke klanken. Concentreer je ook op het correct gebruiken van lidwoorden en de 'om te'-constructie. Je bent goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Malwina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wij hebben een probleem.\"\n👍 *What was good:* You pronounce this sentence very clearly.\n💡 *Correction:* Wij hebben een probleem.\n\n*Sentence 2:* \"Er is een probleem met het transport naar de Duitsland.\"\n👍 *What was good:* The sentence structure is clear.\n💡 *Correction:* Er is een probleem met het transport naar Duitsland.\n🧠 *Why:* Country names like 'Duitsland' (Germany) do not take the article 'de' when you are going 'naar' (to) them in Dutch. Also, pay attention to the pronunciation of the 'ui' sound, which can be a bit rounder.\n\n*Sentence 3:* \"De vrachtwagenchauffeur heeft vertraging, want want er is een file bij de grens.\"\n👍 *What was good:* You use the correct conjunctions to indicate the reason.\n💡 *Correction:* De vrachtwagenchauffeur heeft vertraging, want er is een file bij de grens.\n🧠 *Why:* You repeated the word 'want' twice. Once is sufficient. Also, pay attention to the pronunciation of the 'g' in 'vertraging', which should sound harder.\n\n*Sentence 4:* \"De klant wacht op de eh onderdelen, dus wij moeten snel reageren.\"\n👍 *What was good:* The sentence structure and word choice are good.\n💡 *Correction:* De klant wacht op de onderdelen, dus wij moeten snel reageren.\n🧠 *Why:* Pay attention to the pronunciation of the 'g' in 'onderdelen' and 'reageren', which should sound harder.\n\n*Sentence 5:* \"Wij hebben contact met de klant gehad.\"\n👍 *What was good:* The sentence is grammatically correct and understandable.\n💡 *Correction:* Wij hebben contact met de klant gehad.\n🧠 *Why:* Pay attention to the pronunciation of the 'g' in 'gehad', which should sound harder.\n\n*Sentence 6:* \"Maar ze zij zijn niet blij met de vertraging.\"\n👍 *What was good:* You corrected yourself to the correct pronoun 'zij'.\n💡 *Correction:* Maar zij zijn niet blij met de vertraging.\n🧠 *Why:* You started with 'ze' and corrected yourself to 'zij'. 'Zij' is the correct form in this context. Also, pay attention to the pronunciation of the 'ij' in 'blij' and the 'g' in 'vertraging'.\n\n*Sentence 7:* \"Ik stel voor naar de andere bedrijf bellen.\"\n👍 *What was good:* You clearly state a proposal.\n💡 *Correction:* Ik stel voor om het andere bedrijf te bellen.\n🧠 *Why:* After 'ik stel voor' (I propose), an 'om te'-construction is often used. Additionally, 'bedrijf' (company) is a 'het'-word, so the correct article is 'het' instead of 'de'. Also, pay attention to the pronunciation of the 'ij' in 'bedrijf'.\n\n*Sentence 8:* \"Maar wij hebben ook een andere optie.\"\n👍 *What was good:* This sentence is well-pronounced and grammatically correct.\n💡 *Correction:* Maar wij hebben ook een andere optie.\n\n*Sentence 9:* \"Wij kunnen op deze vrachtwagen wachten.\"\n👍 *What was good:* The sentence structure is correct.\n💡 *Correction:* Wij kunnen op deze vrachtwagen wachten.\n🧠 *Why:* Pay attention to the pronunciation of the 'ch' in 'vrachtwagen' and 'wachten', which should sound harder.\n\n*Sentence 10:* \"Wat denk je, wat is jouw opinie?\"\n👍 *What was good:* This question is clearly and correctly formulated.\n💡 *Correction:* Wat denk je? Wat is jouw opinie?\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You are making good progress with sentence structure. Important points of attention are the correct use of articles with country names and 'het'-words (like 'bedrijf'), and the correct application of 'om te'-constructions after verbs like 'voorstellen'. Also, avoiding unnecessary repetition of words is something to watch out for.\n• *Pronunciation:* The 'g' and 'ch' sounds are often too soft. Practice these sounds by making them harder and more scraping, especially after vowels like 'a' and 'e'. The 'ui' and 'ij' sounds can also be a bit rounder and less flat. Try to consciously practice these sounds.\n• *Coherence & Logic:* Your story is very logical and easy to follow. The sentences connect well, and the message is clear.\n\n🧠 *Your next step & advice:*\nKeep practicing the pronunciation of the 'g', 'ch', 'ui', and 'ij' sounds. Look online for exercises for these specific sounds. Also, focus on correctly using articles and the 'om te'-construction. You are well on your way! Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Malwina Dorota interview.mp3",
+      "path": "Westport/Malwina Dorota interview.mp3",
+      "date": "04-06-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Hoe gaat het met jou Dorota?",
+            "zin_correct": "Hoe gaat het met jou, Dorota?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Goed en met jou?",
+            "zin_correct": "Goed, en met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ook goed.",
+            "zin_correct": "Ook goed.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Hoe laat ben je vandaag met werken?",
+            "zin_correct": "Hoe laat ben je vandaag klaar met werken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De zin is onvolledig.",
+              "uitleg": "Er mist een werkwoord om de actie te voltooien, zoals 'klaar' of 'gestopt'. De correcte zin is 'Hoe laat ben je vandaag klaar met werken?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ik werk tot 4 uur.",
+            "zin_correct": "Ik werk tot 4 uur.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Heb je veel veel werk?",
+            "zin_correct": "Heb je veel werk?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "veel veel",
+              "uitleg": "Het woord 'veel' wordt twee keer herhaald. Eén keer is voldoende."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ja, het is een drukke tijd in Westport.",
+            "zin_correct": "Ja, het is een drukke tijd in Westport.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Oké, wat ga je voor de eh het avondwessen maken?",
+            "zin_correct": "Oké, wat ga je voor het avondeten maken?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "avondwessen",
+              "uitleg": "Het woord 'avondwessen' is niet correct. Het moet 'avondeten' zijn."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "voor de eh het",
+              "uitleg": "Het lidwoord 'de' is onjuist en er is een stottering. Het moet 'voor het' zijn."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "eten, eten maken?",
+            "zin_correct": "eten maken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ik ga spaghetti maken, en jij?",
+            "zin_correct": "Ik ga spaghetti maken, en jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ik weet nog niet.",
+            "zin_correct": "Ik weet het nog niet.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het lijdend voorwerp 'het' ontbreekt.",
+              "uitleg": "In het Nederlands zeg je 'Ik weet *het* nog niet' als je verwijst naar iets dat je nog niet weet."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Heb je een idee?",
+            "zin_correct": "Heb je een idee?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Misschien pierogi?",
+            "zin_correct": "Misschien pierogi?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Nee, te veel werk.",
+            "zin_correct": "Nee, dat is te veel werk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Onderwerp en werkwoord ontbreken.",
+              "uitleg": "Om de zin grammaticaal compleet te maken, moet je 'dat is' toevoegen: 'Nee, dat is te veel werk'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Dan misschien soep?",
+            "zin_correct": "Dan misschien soep?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ja, ik denk dat is eh goed idee.",
+            "zin_correct": "Ja, ik denk dat dat een goed idee is.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "goed idee",
+              "uitleg": "Het lidwoord 'een' ontbreekt voor 'goed idee'. Je zegt 'een goed idee'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "dat is en inversie",
+              "uitleg": "Na 'ik denk dat' volgt een bijzin met de volgorde 'onderwerp - werkwoord'. Het moet 'dat dat een goed idee is' zijn."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Heb je plannen voor het weekend?",
+            "zin_correct": "Heb je plannen voor het weekend?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ik ga boodschappen doen.",
+            "zin_correct": "Ik ga boodschappen doen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Welke boodschappen?",
+            "zin_correct": "Welke boodschappen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Welke boodschappen?",
+            "zin_correct": "Welke boodschappen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ik wil een nieuwe telefoon kopen.",
+            "zin_correct": "Ik wil een nieuwe telefoon kopen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Leuk, maar waarom?",
+            "zin_correct": "Leuk, maar waarom?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Mijn onder is kapot.",
+            "zin_correct": "Mijn oude is kapot.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "onder",
+              "uitleg": "Het woord 'onder' is hier niet correct. Waarschijnlijk bedoelde je 'oude' (telefoon) of 'huidige'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Onjuist woordgebruik in de context.",
+              "uitleg": "'Onder' is een voorzetsel en kan niet het onderwerp van de zin zijn in deze context. Je bedoelde waarschijnlijk 'Mijn oude (telefoon) is kapot' of 'Mijn huidige (telefoon) is kapot'."
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Dat is niet goed.",
+            "zin_correct": "Dat is niet goed.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Ja, dat weet ik.",
+            "zin_correct": "Ja, dat weet ik.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Heb je John gezien?",
+            "zin_correct": "Heb je John gezien?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Nee, waarom?",
+            "zin_correct": "Nee, waarom?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ik heb ik heb een probleem met een project.",
+            "zin_correct": "Ik heb een probleem met een project.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "ik heb ik heb",
+              "uitleg": "Het woord 'ik heb' wordt twee keer herhaald. Eén keer is voldoende."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ik moet vragen of ik goed denk.",
+            "zin_correct": "Ik moet vragen of ik goed denk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Welk project?",
+            "zin_correct": "Welk project?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Cyclisch stellen.",
+            "zin_correct": "Cyclisch stellen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ik wil weten of mijn strategie goed is.",
+            "zin_correct": "Ik wil weten of mijn strategie goed is.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dorota",
+            "zin_fonetisch": "Dat is echt interessant.",
+            "zin_correct": "Dat is echt interessant.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Malwina",
+            "zin_fonetisch": "Ja.",
+            "zin_correct": "Ja.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Malwina",
+            "brief": "Hallo Malwina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Hoe gaat het met jou Dorota?\"\n👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit.\n💡 *Correctie:* \"Hoe gaat het met jou, Dorota?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 2:* \"Hoe laat ben je vandaag met werken?\"\n👍 *Wat was goed:* De uitspraak is duidelijk.\n💡 *Correctie:* \"Hoe laat ben je vandaag klaar met werken?\"\n🧠 *Waarom:* De zin is onvolledig. Er mist een werkwoord om de actie te voltooien, zoals 'klaar' of 'gestopt'.\n\n*Zin 3:* \"Ja, het is een drukke tijd in Westport.\"\n👍 *Wat was goed:* Je spreekt deze zin goed en duidelijk uit.\n💡 *Correctie:* \"Ja, het is een drukke tijd in Westport.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 4:* \"Ik ga spaghetti maken, en jij?\"\n👍 *Wat was goed:* Deze zin is goed geformuleerd en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik ga spaghetti maken, en jij?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 5:* \"Misschien pierogi?\"\n👍 *Wat was goed:* De uitspraak is goed en de vraag is duidelijk.\n💡 *Correctie:* \"Misschien pierogi?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 6:* \"Dan misschien soep?\"\n👍 *Wat was goed:* De vraag is kort en duidelijk.\n💡 *Correctie:* \"Dan misschien soep?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 7:* \"Heb je plannen voor het weekend?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n💡 *Correctie:* \"Heb je plannen voor het weekend?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 8:* \"Welke boodschappen?\"\n👍 *Wat was goed:* Een korte en begrijpelijke vraag.\n💡 *Correctie:* \"Welke boodschappen?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 9:* \"Welke boodschappen?\"\n👍 *Wat was goed:* De herhaling van de vraag is duidelijk.\n💡 *Correctie:* \"Welke boodschappen?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 10:* \"Leuk, maar waarom?\"\n👍 *Wat was goed:* Een goede en logische reactie.\n💡 *Correctie:* \"Leuk, maar waarom?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 11:* \"Dat is niet goed.\"\n👍 *Wat was goed:* De uitspraak is duidelijk en de zin is correct.\n💡 *Correctie:* \"Dat is niet goed.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 12:* \"Heb je John gezien?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n💡 *Correctie:* \"Heb je John gezien?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 13:* \"Ik heb ik heb een probleem met een project.\"\n👍 *Wat was goed:* De rest van de zin is goed geformuleerd.\n💡 *Correctie:* \"Ik heb een probleem met een project.\"\n🧠 *Waarom:* Het woord 'ik heb' wordt twee keer herhaald. Eén keer is voldoende.\n\n*Zin 14:* \"Ik moet vragen of ik goed denk.\"\n👍 *Wat was goed:* De zin is duidelijk en correct.\n💡 *Correctie:* \"Ik moet vragen of ik goed denk.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 15:* \"Cyclisch stellen.\"\n👍 *Wat was goed:* De uitspraak is duidelijk.\n💡 *Correctie:* \"Cyclisch stellen.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 16:* \"Ik wil weten of mijn strategie goed is.\"\n👍 *Wat was goed:* De zin is goed geformuleerd en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik wil weten of mijn strategie goed is.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 17:* \"Ja.\"\n👍 *Wat was goed:* Een korte en duidelijke reactie.\n💡 *Correctie:* \"Ja.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt één keer een onvolledige zin gebruikt ('met werken' in plaats van 'klaar met werken'). Let erop dat je zinnen altijd een voltooid werkwoord hebben als dat nodig is.\n• *Uitspraak:* Je had één keer een lichte herhaling ('ik heb ik heb'). Probeer rustig te spreken en je gedachten te ordenen voordat je begint met de zin.\n• *Samenhang & Logica:* Al je zinnen waren logisch en pasten goed in de context van het gesprek. Goed gedaan!\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het formuleren van complete zinnen en let op kleine herhalingen. Je spreekt al heel duidelijk en je bent goed te volgen. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Malwina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Hoe gaat het met jou Dorota?\"\n👍 *What was good:* You pronounce this sentence very clearly.\n💡 *Correction:* \"Hoe gaat het met jou, Dorota?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 2:* \"Hoe laat ben je vandaag met werken?\"\n👍 *What was good:* The pronunciation is clear.\n💡 *Correction:* \"Hoe laat ben je vandaag klaar met werken?\"\n🧠 *Why:* The sentence is incomplete. A verb is missing to complete the action, such as 'klaar' (finished) or 'gestopt' (stopped). The correct sentence is 'Hoe laat ben je vandaag klaar met werken?'\n\n*Sentence 3:* \"Ja, het is een drukke tijd in Westport.\"\n👍 *What was good:* You pronounce this sentence well and clearly.\n💡 *Correction:* \"Ja, het is een drukke tijd in Westport.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 4:* \"Ik ga spaghetti maken, en jij?\"\n👍 *What was good:* This sentence is well-formulated and clearly pronounced.\n💡 *Correction:* \"Ik ga spaghetti maken, en jij?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 5:* \"Misschien pierogi?\"\n👍 *What was good:* The pronunciation is good and the question is clear.\n💡 *Correction:* \"Misschien pierogi?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 6:* \"Dan misschien soep?\"\n👍 *What was good:* The question is short and clear.\n💡 *Correction:* \"Dan misschien soep?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 7:* \"Heb je plannen voor het weekend?\"\n👍 *What was good:* A correct and clear question.\n💡 *Correction:* \"Heb je plannen voor het weekend?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 8:* \"Welke boodschappen?\"\n👍 *What was good:* A short and understandable question.\n💡 *Correction:* \"Welke boodschappen?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 9:* \"Welke boodschappen?\"\n👍 *What was good:* The repetition of the question is clear.\n💡 *Correction:* \"Welke boodschappen?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 10:* \"Leuk, maar waarom?\"\n👍 *What was good:* A good and logical reaction.\n💡 *Correction:* \"Leuk, maar waarom?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 11:* \"Dat is niet goed.\"\n👍 *What was good:* The pronunciation is clear and the sentence is correct.\n💡 *Correction:* \"Dat is niet goed.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 12:* \"Heb je John gezien?\"\n👍 *What was good:* A correct and clear question.\n💡 *Correctie:* \"Heb je John gezien?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 13:* \"Ik heb ik heb een probleem met een project.\"\n👍 *What was good:* The rest of the sentence is well-formulated.\n💡 *Correction:* \"Ik heb een probleem met een project.\"\n🧠 *Why:* The phrase 'ik heb' is repeated twice. Once is sufficient.\n\n*Sentence 14:* \"Ik moet vragen of ik goed denk.\"\n👍 *What was good:* The sentence is clear and correct.\n💡 *Correction:* \"Ik moet vragen of ik goed denk.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 15:* \"Cyclisch stellen.\"\n👍 *What was good:* The pronunciation is clear.\n💡 *Correction:* \"Cyclisch stellen.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 16:* \"Ik wil weten of mijn strategie goed is.\"\n👍 *What was good:* The sentence is well-formulated and clearly pronounced.\n💡 *Correction:* \"Ik wil weten of mijn strategie goed is.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 17:* \"Ja.\"\n👍 *What was good:* A short and clear response.\n💡 *Correction:* \"Ja.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You used an incomplete sentence once ('met werken' instead of 'klaar met werken'). Pay attention to ensuring your sentences always have a complete verb when necessary.\n• *Pronunciation:* You had a slight repetition once ('ik heb ik heb'). Try to speak calmly and organize your thoughts before starting a sentence.\n• *Coherence & Logic:* All your sentences were logical and fit well into the context of the conversation. Well done!\n\n🧠 *Your next step & advice:*\nKeep practicing formulating complete sentences and pay attention to small repetitions. You already speak very clearly and are easy to follow. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Dorota",
+            "brief": "Hallo Dorota! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Goed en met jou?\"\n👍 *Wat was goed:* De zin is kort, krachtig en duidelijk.\n💡 *Correctie:* \"Goed, en met jou?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 2:* \"Ik werk tot 4 uur.\"\n👍 *Wat was goed:* De zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik werk tot 4 uur.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 3:* \"Heb je veel veel werk?\"\n👍 *Wat was goed:* De vraag is begrijpelijk.\n💡 *Correctie:* \"Heb je veel werk?\"\n🧠 *Waarom:* Het woord 'veel' wordt twee keer herhaald. Eén keer is voldoende.\n\n*Zin 4:* \"Oké, wat ga je voor de eh het avondwessen maken?\"\n👍 *Wat was goed:* De intentie van de vraag is duidelijk.\n💡 *Correctie:* \"Oké, wat ga je voor het avondeten maken?\"\n🧠 *Waarom:* Het woord 'avondwessen' is niet correct. Het moet 'avondeten' zijn. Daarnaast is het lidwoord 'de' onjuist en er is een stottering; het moet 'voor het' zijn.\n\n*Zin 5:* \"eten, eten maken?\"\n👍 *Wat was goed:* Je corrigeert jezelf en maakt de vraag duidelijker.\n💡 *Correctie:* \"eten maken?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed als aanvulling op de vorige zin.\n\n*Zin 6:* \"Ik weet nog niet.\"\n👍 *Wat was goed:* De uitspraak is duidelijk.\n💡 *Correctie:* \"Ik weet het nog niet.\"\n🧠 *Waarom:* Het lijdend voorwerp 'het' ontbreekt. In het Nederlands zeg je 'Ik weet *het* nog niet'.\n\n*Zin 7:* \"Heb je een idee?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n💡 *Correctie:* \"Heb je een idee?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 8:* \"Nee, te veel werk.\"\n👍 *Wat was goed:* De uitspraak is duidelijk.\n💡 *Correctie:* \"Nee, dat is te veel werk.\"\n🧠 *Waarom:* Om de zin grammaticaal compleet te maken, moet je 'dat is' toevoegen: 'Nee, dat is te veel werk'.\n\n*Zin 9:* \"Ja, ik denk dat is eh goed idee.\"\n👍 *Wat was goed:* De intentie is duidelijk.\n💡 *Correctie:* \"Ja, ik denk dat dat een goed idee is.\"\n🧠 *Waarom:* Het lidwoord 'een' ontbreekt voor 'goed idee'. Je zegt 'een goed idee'. Daarnaast volgt na 'ik denk dat' een bijzin met de volgorde 'onderwerp - werkwoord'. Het moet 'dat dat een goed idee is' zijn.\n\n*Zin 10:* \"Ik ga boodschappen doen.\"\n👍 *Wat was goed:* De zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik ga boodschappen doen.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 11:* \"Ik wil een nieuwe telefoon kopen.\"\n👍 *Wat was goed:* De zin is goed geformuleerd en duidelijk uitgesproken.\n💡 *Correctie:* \"Ik wil een nieuwe telefoon kopen.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 12:* \"Mijn onder is kapot.\"\n👍 *Wat was goed:* De uitspraak van 'is kapot' is duidelijk.\n💡 *Correctie:* \"Mijn oude is kapot.\"\n🧠 *Waarom:* Het woord 'onder' is hier niet correct. Waarschijnlijk bedoelde je 'oude' (telefoon) of 'huidige'. 'Onder' is een voorzetsel en kan niet het onderwerp van de zin zijn in deze context. Je bedoelde waarschijnlijk 'Mijn oude (telefoon) is kapot' of 'Mijn huidige (telefoon) is kapot'.\n🤔 *Logica:* 'Onder' is een voorzetsel en kan niet het onderwerp van de zin zijn in deze context. Je bedoelde waarschijnlijk 'Mijn oude (telefoon) is kapot' of 'Mijn huidige (telefoon) is kapot'.\n\n*Zin 13:* \"Ja, dat weet ik.\"\n👍 *Wat was goed:* De zin is correct en duidelijk uitgesproken.\n💡 *Correctie:* \"Ja, dat weet ik.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 14:* \"Nee, waarom?\"\n👍 *Wat was goed:* Een korte en duidelijke reactie.\n💡 *Correctie:* \"Nee, waarom?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 15:* \"Welk project?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n💡 *Correctie:* \"Welk project?\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n*Zin 16:* \"Dat is echt interessant.\"\n👍 *Wat was goed:* De zin is goed geformuleerd en duidelijk uitgesproken.\n💡 *Correctie:* \"Dat is echt interessant.\"\n🧠 *Waarom:* De zin is grammaticaal en qua uitspraak goed.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt nog regelmatig fouten met ontbrekende woorden ('het' bij 'ik weet nog niet', 'dat is' bij 'te veel werk') en de zinsbouw na 'ik denk dat' (inversie). Oefen met het correct toepassen van de bijzinvolgorde en het gebruik van lijdende voorwerpen.\n• *Uitspraak:* Let op herhalingen ('veel veel'), het correcte woordgebruik ('avondwessen' in plaats van 'avondeten', 'onder' in plaats van 'oude') en het gebruik van lidwoorden ('een goed idee').\n• *Samenhang & Logica:* Er was één moment waarop het woordgebruik niet helemaal logisch was ('Mijn onder is kapot'). Probeer altijd te controleren of de woorden die je gebruikt passen bij de context.\n\n🧠 *Jouw volgende stap & advies:*\nFocus de komende tijd op het compleet maken van je zinnen en het correct toepassen van de zinsvolgorde, vooral na voegwoorden zoals 'dat'. Blijf ook oefenen met het kiezen van de juiste woorden. Je bent al goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Dorota! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Goed en met jou?\"\n👍 *What was good:* The sentence is short, powerful, and clear.\n💡 *Correction:* \"Goed, en met jou?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 2:* \"Ik werk tot 4 uur.\"\n👍 *What was good:* The sentence is correct and clearly pronounced.\n💡 *Correction:* \"Ik werk tot 4 uur.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 3:* \"Heb je veel veel werk?\"\n👍 *What was good:* The question is understandable.\n💡 *Correction:* \"Heb je veel werk?\"\n🧠 *Why:* The word 'veel' (much/a lot) is repeated twice. Once is sufficient.\n\n*Sentence 4:* \"Oké, wat ga je voor de eh het avondwessen maken?\"\n👍 *What was good:* The intention of the question is clear.\n💡 *Correction:* \"Oké, wat ga je voor het avondeten maken?\"\n🧠 *Why:* The word 'avondwessen' is incorrect. It should be 'avondeten' (dinner). Additionally, the article 'de' is incorrect and there is a stutter; it should be 'voor het'.\n\n*Sentence 5:* \"eten, eten maken?\"\n👍 *What was good:* You correct yourself and make the question clearer.\n💡 *Correction:* \"eten maken?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct as a clarification of the previous sentence.\n\n*Sentence 6:* \"Ik weet nog niet.\"\n👍 *What was good:* The pronunciation is clear.\n💡 *Correction:* \"Ik weet het nog niet.\"\n🧠 *Why:* The direct object 'het' is missing. In Dutch, you say 'Ik weet *het* nog niet' when referring to something you don't know yet.\n\n*Sentence 7:* \"Heb je een idee?\"\n👍 *What was good:* A correct and clear question.\n💡 *Correction:* \"Heb je een idee?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 8:* \"Nee, te veel werk.\"\n👍 *What was good:* The pronunciation is clear.\n💡 *Correction:* \"Nee, dat is te veel werk.\"\n🧠 *Why:* To make the sentence grammatically complete, you need to add 'dat is' (that is): 'Nee, dat is te veel werk'.\n\n*Sentence 9:* \"Ja, ik denk dat is eh goed idee.\"\n👍 *What was good:* The intention is clear.\n💡 *Correction:* \"Ja, ik denk dat dat een goed idee is.\"\n🧠 *Why:* The article 'een' (a/an) is missing before 'goed idee'. You say 'een goed idee'. Additionally, after 'ik denk dat' (I think that), a subordinate clause follows with the word order 'subject - verb'. It should be 'dat dat een goed idee is'.\n\n*Sentence 10:* \"Ik ga boodschappen doen.\"\n👍 *What was good:* The sentence is correct and clearly pronounced.\n💡 *Correction:* \"Ik ga boodschappen doen.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 11:* \"Ik wil een nieuwe telefoon kopen.\"\n👍 *What was good:* The sentence is well-formulated and clearly pronounced.\n💡 *Correction:* \"Ik wil een nieuwe telefoon kopen.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 12:* \"Mijn onder is kapot.\"\n👍 *What was good:* The pronunciation of 'is kapot' (is broken) is clear.\n💡 *Correction:* \"Mijn oude is kapot.\"\n🧠 *Why:* The word 'onder' (under) is not correct here. You probably meant 'oude' (old) or 'huidige' (current) phone. 'Onder' is a preposition and cannot be the subject of the sentence in this context. You likely meant 'Mijn oude (telefoon) is kapot' or 'Mijn huidige (telefoon) is kapot'.\n🤔 *Logic:* 'Onder' is a preposition and cannot be the subject of the sentence in this context. You likely meant 'Mijn oude (telefoon) is kapot' or 'Mijn huidige (telefoon) is kapot'.\n\n*Sentence 13:* \"Ja, dat weet ik.\"\n👍 *What was good:* The sentence is correct and clearly pronounced.\n💡 *Correction:* \"Ja, dat weet ik.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 14:* \"Nee, waarom?\"\n👍 *What was good:* A short and clear response.\n💡 *Correction:* \"Nee, waarom?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 15:* \"Welk project?\"\n👍 *What was good:* A correct and clear question.\n💡 *Correction:* \"Welk project?\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n*Sentence 16:* \"Dat is echt interessant.\"\n👍 *What was good:* The sentence is well-formulated and clearly pronounced.\n💡 *Correction:* \"Dat is echt interessant.\"\n🧠 *Why:* The sentence is grammatically and phonetically correct.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You still frequently make mistakes with missing words ('het' in 'ik weet nog niet', 'dat is' in 'te veel werk') and sentence structure after 'ik denk dat' (inversion). Practice correctly applying subordinate clause word order and the use of direct objects.\n• *Pronunciation:* Pay attention to repetitions ('veel veel'), correct word usage ('avondwessen' instead of 'avondeten', 'onder' instead of 'oude'), and the use of articles ('een goed idee').\n• *Coherence & Logic:* There was one instance where the word usage was not entirely logical ('Mijn onder is kapot'). Always try to check if the words you use fit the context.\n\n🧠 *Your next step & advice:*\nIn the coming period, focus on completing your sentences and correctly applying sentence order, especially after conjunctions like 'dat'. Also, continue practicing choosing the right words. You are already well on your way! Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
     }
   ],
   "VDL": [
