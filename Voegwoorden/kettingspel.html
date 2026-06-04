@@ -6,25 +6,26 @@
   <title>Voegwoorden Kettingspel — Klassikaal Bord</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f19;
-      --surface: #151d30;
-      --surface-hover: #1e2942;
+      --bg: #090d16;
+      --surface-glass: rgba(22, 32, 54, 0.45);
+      --surface-hover: rgba(30, 45, 75, 0.6);
       --border: rgba(255, 255, 255, 0.08);
       --text: #f8fafc;
-      --text-muted: #94a3b8;
+      --text-muted: #64748b;
       
       --en-color: #3b82f6;
-      --maar-color: #ef4444;
+      --maar-color: #f43f5e;
       --want-color: #f59e0b;
       --of-color: #10b981;
       --dus-color: #8b5cf6;
       
-      --radius-lg: 20px;
-      --radius-md: 12px;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     * {
@@ -34,15 +35,31 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 30px 20px;
+      padding: 40px 20px;
       overflow-x: hidden;
+      position: relative;
     }
+
+    /* Ambient Background Glows */
+    .glow-orb {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(150px);
+      z-index: -1;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .orb-1 { top: -10%; left: -10%; background: #4f46e5; }
+    .orb-2 { bottom: -10%; right: -10%; background: #06b6d4; }
+    .orb-3 { top: 40%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: #6366f1; opacity: 0.08; }
 
     .container {
       max-width: 1200px;
@@ -51,7 +68,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 35px;
     }
 
     /* ── HEADER ── */
@@ -59,31 +76,34 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 20px;
+      padding-bottom: 10px;
     }
 
     .back-btn {
       text-decoration: none;
       color: var(--text-muted);
-      font-weight: 700;
-      padding: 10px 20px;
-      background: var(--surface);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 10px 24px;
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
-      border-radius: 30px;
+      border-radius: 100px;
       transition: var(--transition);
+      backdrop-filter: blur(8px);
     }
 
     .back-btn:hover {
       color: var(--text);
-      border-color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
       transform: translateX(-3px);
     }
 
     h1 {
-      font-size: 2.2rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #a5b4fc, #818cf8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -91,58 +111,61 @@
     /* ── MAIN PLAYBOARD ── */
     .playboard {
       display: grid;
-      grid-template-columns: 1fr 160px 1fr;
-      gap: 30px;
-      align-items: center;
-      background: var(--surface);
+      grid-template-columns: 1fr 180px 1fr;
+      gap: 40px;
+      align-items: stretch;
+      background: var(--surface-glass);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 40px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .playboard {
         grid-template-columns: 1fr;
-        padding: 20px;
-        gap: 20px;
+        padding: 24px;
+        gap: 30px;
       }
       .conjunctions-col {
         flex-direction: row !important;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 10px !important;
+        gap: 12px !important;
       }
     }
 
     .input-col {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      height: 100%;
+      gap: 16px;
     }
 
     .col-label {
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 4px;
     }
 
     .sentence-input {
       width: 100%;
-      height: 150px;
+      height: 160px;
       background: rgba(0, 0, 0, 0.25);
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
       color: var(--text);
       font-family: inherit;
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.35rem;
+      font-weight: 500;
+      line-height: 1.6;
       padding: 20px;
       outline: none;
       resize: none;
@@ -150,28 +173,32 @@
     }
 
     .sentence-input:focus {
-      border-color: #3b82f6;
-      background: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+      background: rgba(0, 0, 0, 0.35);
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.12);
+    }
+
+    .sentence-input::placeholder {
+      color: rgba(255, 255, 255, 0.15);
     }
 
     .conjunctions-col {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      align-items: center;
+      gap: 14px;
+      justify-content: center;
     }
 
     .conj-btn {
       width: 100%;
-      padding: 12px;
-      border: 2px solid var(--border);
-      border-radius: var(--radius-md);
-      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.02);
       color: var(--text-muted);
       font-family: inherit;
-      font-size: 1.4rem;
-      font-weight: 900;
+      font-size: 1.15rem;
+      font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       text-align: center;
@@ -180,41 +207,45 @@
 
     .conj-btn:hover {
       color: var(--text);
-      transform: scale(1.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-2px);
     }
 
-    .conj-btn.active[data-conj="en"] { background: var(--en-color); color: #fff; border-color: var(--en-color); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-    .conj-btn.active[data-conj="maar"] { background: var(--maar-color); color: #fff; border-color: var(--maar-color); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
-    .conj-btn.active[data-conj="want"] { background: var(--want-color); color: #fff; border-color: var(--want-color); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
-    .conj-btn.active[data-conj="of"] { background: var(--of-color); color: #fff; border-color: var(--of-color); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
-    .conj-btn.active[data-conj="dus"] { background: var(--dus-color); color: #fff; border-color: var(--dus-color); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+    .conj-btn.active[data-conj="en"] { background: var(--en-color); color: #fff; border-color: var(--en-color); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3); }
+    .conj-btn.active[data-conj="maar"] { background: var(--maar-color); color: #fff; border-color: var(--maar-color); box-shadow: 0 8px 24px rgba(244, 63, 94, 0.3); }
+    .conj-btn.active[data-conj="want"] { background: var(--want-color); color: #fff; border-color: var(--want-color); box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); }
+    .conj-btn.active[data-conj="of"] { background: var(--of-color); color: #fff; border-color: var(--of-color); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); }
+    .conj-btn.active[data-conj="dus"] { background: var(--dus-color); color: #fff; border-color: var(--dus-color); box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3); }
 
     /* ── LIVE PREVIEW & ACTIONS ── */
     .live-preview-box {
-      background: var(--surface);
+      background: var(--surface-glass);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 30px;
+      padding: 35px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      gap: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .preview-header {
-      font-size: 1rem;
-      font-weight: 800;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .preview-text {
-      font-size: 1.8rem;
-      font-weight: 700;
-      line-height: 1.5;
-      min-height: 50px;
-      color: var(--text-muted);
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 1.6;
+      min-height: 60px;
+      color: rgba(255, 255, 255, 0.2);
       transition: var(--transition);
       white-space: pre-wrap;
     }
@@ -224,8 +255,10 @@
     }
 
     .preview-text span.conj-highlight {
-      font-weight: 900;
+      font-weight: 800;
       text-decoration: underline;
+      text-underline-offset: 4px;
+      padding: 0 4px;
     }
     .preview-text span[data-high="en"] { color: var(--en-color); }
     .preview-text span[data-high="maar"] { color: var(--maar-color); }
@@ -243,8 +276,8 @@
       border: none;
       border-radius: var(--radius-md);
       font-family: inherit;
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       display: inline-flex;
@@ -253,138 +286,153 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
       color: white;
       flex-grow: 1;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
       color: var(--text);
+      backdrop-filter: blur(8px);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     /* ── SUGGESTED STARTERS ── */
     .starters-section {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 16px;
     }
 
     .starters-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
     }
 
     .starter-card {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.01);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 15px;
+      padding: 16px 20px;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
       cursor: pointer;
       transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      backdrop-filter: blur(8px);
     }
 
     .starter-card:hover {
       background: var(--surface-hover);
-      border-color: #3b82f6;
+      border-color: rgba(99, 102, 241, 0.4);
+      color: var(--text);
       transform: translateY(-2px);
     }
 
     .starter-card span {
-      opacity: 0;
+      opacity: 0.3;
       transition: var(--transition);
-      color: #3b82f6;
+      color: #6366f1;
     }
 
     .starter-card:hover span {
       opacity: 1;
-      transform: translateX(3px);
+      transform: translateX(4px);
     }
 
     /* ── HISTORY / BOARD LOG ── */
     .history-section {
-      background: var(--surface);
+      background: var(--surface-glass);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 30px;
+      padding: 35px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 25px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .history-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 16px;
     }
 
     .history-item {
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.15);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 15px 20px;
+      padding: 18px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 20px;
-      animation: slideIn 0.3s ease-out;
+      animation: slideIn 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .history-text {
       font-size: 1.3rem;
-      font-weight: 700;
-      line-height: 1.4;
+      font-weight: 600;
+      line-height: 1.5;
     }
 
     .history-actions {
       display: flex;
-      gap: 8px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .history-btn {
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.02);
       color: var(--text);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: var(--transition);
+      font-size: 1.1rem;
     }
 
     .history-btn:hover {
-      background: var(--surface-hover);
-      border-color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
+
+  <!-- Background Orbs -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
 
   <div class="container">
     <!-- HEADER -->
@@ -399,14 +447,14 @@
       <div class="input-col">
         <div class="col-label">
           <span>🗣️ Cursist 1 (Zin 1)</span>
-          <span style="font-size:0.8rem; color:var(--text-muted);">Begint de zin</span>
+          <span style="font-size:0.75rem; text-transform:none; font-weight:500;">Begint de zin</span>
         </div>
         <textarea id="zin1" class="sentence-input" placeholder="Typ hier de eerste zin..." oninput="updateLiveSentence()"></textarea>
       </div>
 
       <!-- MIDDLE COL (CONJUNCTIONS) -->
       <div class="conjunctions-col">
-        <div class="col-label" style="margin-bottom: 5px;">Link</div>
+        <div class="col-label" style="justify-content: center; margin-bottom: 2px;">Voegwoord</div>
         <button class="conj-btn" data-conj="en" onclick="selectConjunction('en')">en</button>
         <button class="conj-btn" data-conj="maar" onclick="selectConjunction('maar')">maar</button>
         <button class="conj-btn" data-conj="want" onclick="selectConjunction('want')">want</button>
@@ -418,7 +466,7 @@
       <div class="input-col">
         <div class="col-label">
           <span>🗣️ Cursist 2 (Zin 2)</span>
-          <span style="font-size:0.8rem; color:var(--text-muted);">Voegt aanpassing toe</span>
+          <span style="font-size:0.75rem; text-transform:none; font-weight:500;">Maakt de zin af</span>
         </div>
         <textarea id="zin2" class="sentence-input" placeholder="Typ hier de tweede zin..." oninput="updateLiveSentence()"></textarea>
       </div>
@@ -429,14 +477,14 @@
       <div class="preview-header">Live resultaat op het bord:</div>
       <div id="live-sentence" class="preview-text">De zin verschijnt hier zodra je begint te typen...</div>
       <div class="action-row">
-        <button class="btn btn-primary" onclick="addSentenceToHistory()">💾 Voeg toe aan het bord</button>
+        <button class="btn btn-primary" onclick="addSentenceToHistory()">💾 Sla op en zet op het bord</button>
         <button class="btn btn-secondary" onclick="resetPlayboard()">🧹 Wis invoer</button>
       </div>
     </div>
 
     <!-- STARTER SUGGESTIONS -->
     <div class="starters-section">
-      <div class="col-label">💡 Ideeën voor zin 1 (Klik om in te vullen)</div>
+      <div class="col-label">💡 Ideeën voor de eerste zin (Klik om in te vullen)</div>
       <div class="starters-grid">
         <div class="starter-card" onclick="useStarter('Ik ben vandaag heel vroeg opgestaan')">Ik ben vandaag heel vroeg opgestaan <span>→</span></div>
         <div class="starter-card" onclick="useStarter('Mijn manager belde mij vanochtend')">Mijn manager belde mij vanochtend <span>→</span></div>
@@ -451,12 +499,12 @@
 
     <!-- TIMELINE / HISTORY BOARD -->
     <div class="history-section">
-      <div class="col-label" style="display:flex; justify-content:space-between;">
+      <div class="col-label" style="display:flex; justify-content:space-between; align-items:center;">
         <span>📋 Gemaakte Zinnen</span>
-        <button class="btn btn-secondary" onclick="copyAllHistory()" style="padding: 6px 12px; font-size: 0.85rem; border-radius: 20px;">📋 Kopieer alle zinnen</button>
+        <button class="btn btn-secondary" onclick="copyAllHistory()" style="padding: 8px 18px; font-size: 0.85rem; border-radius: 100px;">📋 Kopieer alles</button>
       </div>
       <ul id="history-list" class="history-list">
-        <li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>
+        <li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic; font-size: 0.95rem;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>
       </ul>
     </div>
   </div>
@@ -482,11 +530,9 @@
       });
 
       // Zorg voor de correcte hoofdletter/kleine letter in zin 2
-      // Als zin 2 begint met een hoofdletter, veranderen we die naar kleine letter, tenzij het een eigennaam is.
       const zin2El = document.getElementById('zin2');
       let val2 = zin2El.value.trim();
       if (val2.length > 0) {
-        // Alleen de eerste letter veranderen als het geen eigennaam of 'Ik' is
         const firstWord = val2.split(' ')[0];
         if (firstWord !== 'Ik' && firstWord !== 'Tomasz' && firstWord !== 'Kevin' && firstWord !== 'Malwina' && firstWord !== 'Ariel' && firstWord !== 'Dorota') {
           zin2El.value = val2.charAt(0).toLowerCase() + val2.slice(1);
@@ -507,16 +553,13 @@
 
       let result = '';
       
-      // Zin 1 opschonen
       let cleanZ1 = z1.trim();
       if (cleanZ1) {
-        // Verwijder punt aan het einde van zin 1
         if (cleanZ1.endsWith('.')) {
           cleanZ1 = cleanZ1.slice(0, -1);
         }
       }
 
-      // Zin 2 opschonen
       let cleanZ2 = z2.trim();
       if (cleanZ2) {
         if (cleanZ2.endsWith('.')) {
@@ -529,7 +572,6 @@
       }
 
       if (conj) {
-        // Bepaal kommaplaatsing
         if (cleanZ1 && commaConjunctions.includes(conj)) {
           result += ',';
         }
@@ -581,7 +623,6 @@
         return;
       }
 
-      // Genereer de schone tekst (zonder HTML span tags)
       let cleanZ1 = z1;
       if (cleanZ1.endsWith('.')) cleanZ1 = cleanZ1.slice(0, -1);
       let cleanZ2 = z2;
@@ -603,27 +644,25 @@
       const listEl = document.getElementById('history-list');
       
       if (historyList.length === 0) {
-        listEl.innerHTML = `<li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>`;
+        listEl.innerHTML = `<li id="no-history" style="color: var(--text-muted); text-align: center; padding: 20px; font-style: italic; font-size: 0.95rem;">Nog geen zinnen opgeslagen. Combineer hierboven een zin en klik op opslaan!</li>`;
         return;
       }
 
       const noHist = document.getElementById('no-history');
       if (noHist) noHist.remove();
 
-      // We voegen het nieuwste item bovenaan of onderaan toe
       const latestIdx = historyList.length - 1;
       const sentenceText = historyList[latestIdx];
 
       const li = document.createElement('li');
       li.className = 'history-item';
       
-      // highlight het voegwoord in de geschiedenis
       let highlightedText = sentenceText;
       const targetConj = ` ${selectedConj} `;
       if (highlightedText.includes(targetConj)) {
-        highlightedText = highlightedText.replace(targetConj, ` <span style="color:var(--${selectedConj}-color); font-weight:900; text-decoration:underline;">${selectedConj}</span> `);
+        highlightedText = highlightedText.replace(targetConj, ` <span style="color:var(--${selectedConj}-color); font-weight:800; text-decoration:underline; text-underline-offset:3px;">${selectedConj}</span> `);
       } else if (highlightedText.includes(`, ${selectedConj} `)) {
-        highlightedText = highlightedText.replace(`, ${selectedConj} `, `, <span style="color:var(--${selectedConj}-color); font-weight:900; text-decoration:underline;">${selectedConj}</span> `);
+        highlightedText = highlightedText.replace(`, ${selectedConj} `, `, <span style="color:var(--${selectedConj}-color); font-weight:800; text-decoration:underline; text-underline-offset:3px;">${selectedConj}</span> `);
       }
 
       li.innerHTML = `
@@ -642,7 +681,7 @@
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'nl-NL';
-      u.rate = 0.85; // Iets rustiger inspreken voor cursisten
+      u.rate = 0.85;
       window.speechSynthesis.speak(u);
     }
 
