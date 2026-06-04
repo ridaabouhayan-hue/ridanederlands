@@ -168,6 +168,12 @@
                     <button class="auth-btn" id="btnConnect" onclick="checkAndActivateHandle()" style="padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; width: 100%; height: auto; cursor: pointer; font-weight: 700;">🔗 Koppel data.js</button>
                 </div>
 
+                <!-- Target Language Panel -->
+                <div style="padding: 16px 16px 0; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
+                    <input type="text" id="targetLanguageInput" placeholder="Bijv. Engels, Pools, Arabisch, Oekraïens" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition);">
+                </div>
+
                 <!-- Drag & Drop Upload Zone -->
                 <div id="dropZone" ondragover="event.preventDefault(); this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleFileDrop(event)" style="margin: 16px; padding: 20px; border: 2px dashed var(--border); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: var(--transition); background: rgba(255,255,255,0.01);" onclick="document.getElementById('audioFileInput').click()">
                     <span style="font-size: 1.8rem; display: block; margin-bottom: 6px;">📁</span>
@@ -512,7 +518,7 @@
                 html += `
                     <button onclick="activeFeedbackLang = 'en'; renderFeedbackPane();" 
                             style="padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: 1px solid ${isEn ? 'var(--accent)' : 'var(--border)'}; background: ${isEn ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255,255,255,0.02)'}; color: ${isEn ? 'var(--text)' : 'var(--text-muted)'}; transition: var(--transition); outline: none;">
-                        🇬🇧 English Translation
+                        🌐 Vertaling
                     </button>
                 `;
             }
@@ -999,7 +1005,8 @@
                 
                 await pollFileState(uploadInfo.name, apiKey);
                 
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey);
+                const targetLang = document.getElementById('targetLanguageInput').value.trim();
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang);
                 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
                 const newEntry = {
@@ -1134,7 +1141,8 @@
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey) {
+        async function runTranscription(fileInfo, filename, apiKey, targetLang) {
+            const finalLang = targetLang || 'Engels';
             const systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "${filename}".
 
@@ -1173,7 +1181,7 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
     {
       "naam": "Naam van de cursist",
       "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* \\\"[Fonetische zin van cursist]\\\"\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* \\\"[Correcte zin]\\\"\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank]\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* \\\"[Fonetische zin 2]\\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\",
-      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* \\\"[Phonetic sentence of student]\\\"\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* \\\"[Correct sentence]\\\"\\n🧠 *Why:* [Explanation of grammar rule or sound]\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* \\\"[Phonetic sentence 2]\\\"\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n• *Moedertaal Analyse:* [Identificeer de moedertaal en de grammatica/uitspraak interferentie die te zien is in deze opname, leg uit in het Nederlands hoe dit komt]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\"
+      "brief_en": "De WhatsApp feedbackbrief vertaald naar de moedertaal van de cursist (${finalLang}). Vertaal alleen de docent-uitleg, tips, samenvattingen en inleidende/afsluitende zinnen naar het ${finalLang}. Houd alle originele en gecorrigeerde Nederlandse leerelementen (zoals de originele Nederlandse zinnen, de gecorrigeerde Nederlandse zinnen en grammatica/uitspraak feedbackkoppen) EXACT in het Nederlands! Vertaal deze dus absoluut NIET naar de moedertaal."
     }
   ]
 }
@@ -1190,9 +1198,9 @@ BELANGRIJK:
 6. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
    - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
    - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
-   - Zorg dat de Engelse vertaling van de feedbackbrief (\`brief_en\`) de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
+   - Zorg dat de vertaalde feedbackbrief (\`brief_en\`) die in het ${finalLang} is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
 7. MOEDERTAAL EN WA-IMPORT:
-   - Analyseer op basis van de taalfouten en de uitspraak de moedertaal van de cursist(en). Geef hier een korte toelichting op in de moedertaalanalyse in de brief.`;
+   - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
             let model = "gemini-2.5-flash";
             let payload = {

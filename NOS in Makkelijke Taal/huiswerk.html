@@ -502,6 +502,11 @@
             </p>
             <textarea id="homeworkTextarea" class="textarea-field" placeholder="Plak hier het huiswerk, bijvoorbeeld:&#10;Huiswerk NOS in Makkelijke Taal&#10;Naam: Malwina&#10;&#10;*Woord 1:* regering&#10;- Mijn taal: rząd&#10;- Uitleg: de mensen die het land besturen&#10;- Zin: De regering maakt wetten."></textarea>
             
+            <div class="input-group" style="margin-top: 16px; margin-bottom: 8px;">
+                <label for="targetLanguageInput" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel — overschrijf automatische detectie):</label>
+                <input type="text" id="targetLanguageInput" class="input-field" placeholder="Bijv. Pools, Arabisch, Oekraïens, Turks (laat leeg voor automatische detectie)" style="margin-top: 4px;">
+            </div>
+            
             <div class="btn-row">
                 <button class="btn btn-accent" id="btnGrading" onclick="checkAuthAndGrade()">🔍 AI Nakijken & Corrigeren</button>
                 <button class="btn btn-secondary" onclick="loadExampleText()">📋 Voorbeeld Inladen</button>
@@ -757,7 +762,10 @@ Naam: Malwina
             btn.innerHTML = '⏳ Bezig met nakijken via Gemini...';
             btn.disabled = true;
 
+            const manualLang = document.getElementById('targetLanguageInput').value.trim();
+
             const systemPrompt = `Je bent een ervaren NT2 (Nederlands als Tweede Taal) docent. Je krijgt een ruwe tekst met het huiswerk van een cursist. Het huiswerk bestaat uit een woordenlijst van het NOS nieuws in Makkelijke Taal.
+${manualLang ? `BELANGRIJK: De docent heeft expliciet aangegeven dat de moedertaal van de cursist "${manualLang}" is. Gebruik "${manualLang}" als de moedertaal. Vertaal de feedbackbrief in het 'feedback_brief_moedertaal' veld dus naar het "${manualLang}" en vul bij het JSON-veld "moedertaal" de waarde "${manualLang}" in.` : ''}
 Elk woord bevat:
 - De vertaling naar hun moedertaal.
 - Een uitleg in het Nederlands.
