@@ -374,36 +374,34 @@
                     
                     <audio id="vAudio" class="audio-player" controls></audio>
                     
-                    <div class="viewer-layout">
-                        <!-- Column 1: Transcript Gesprek -->
-                        <div class="viewer-column">
-                            <div class="column-title">
-                                <span>💬 Transcript gesprek</span>
-                            </div>
+                    <!-- Clickable Tabs -->
+                    <div class="sub-tabs" style="margin-bottom: 12px;">
+                        <button id="tabBtn-transcript" class="sub-tab active" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
+                        <button id="tabBtn-feedback" class="sub-tab" onclick="switchViewerTab('feedback')">📝 Feedbackbrief</button>
+                        <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
+                    </div>
+
+                    <div class="viewer-layout" style="display: flex; flex-direction: column; flex: 1; min-height: 0; grid-template-columns: none; gap: 0;">
+                        <!-- Pane 1: Transcript Gesprek -->
+                        <div id="pane-transcript" class="viewer-column" style="display: flex; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-transcript"></div>
-                            <div style="padding-top: 12px; border-top: 1px solid var(--border);">
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: auto;">
                                 <button id="btnRegenFeedback" onclick="generateFeedbackFromTranscriptText()" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">🔄 Genereer Feedbackbrief</button>
                             </div>
                         </div>
 
-                        <!-- Column 2: Feedbackbrief -->
-                        <div class="viewer-column">
-                            <div class="column-title">
-                                <span>📝 Feedbackbrief</span>
-                            </div>
+                        <!-- Pane 2: Feedbackbrief -->
+                        <div id="pane-feedback" class="viewer-column" style="display: none; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-feedback"></div>
-                            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px;">
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
                                 <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Optionele instructie achteraf (AI):</div>
                                 <textarea id="afterwardInstructionsInput" placeholder="Bijv. Wees bemoedigender of pas Zin 2 aan..." style="width: 100%; min-height: 40px; max-height: 80px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical; font-weight: 600;"></textarea>
                                 <button id="btnAdjustFeedback" onclick="adjustFeedbackWithAi(event)" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">Pas brief aan met AI</button>
                             </div>
                         </div>
 
-                        <!-- Column 3: Complete brief & Vertalen -->
-                        <div class="viewer-column">
-                            <div class="column-title">
-                                <span>✨ Complete brief & Vertaling</span>
-                            </div>
+                        <!-- Pane 3: Complete brief & Vertalen -->
+                        <div id="pane-complete" class="viewer-column" style="display: none; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-complete"></div>
                         </div>
                     </div>
@@ -566,6 +564,34 @@
             });
         }
 
+        let activeViewerTab = 'transcript';
+
+        function switchViewerTab(tabName) {
+            activeViewerTab = tabName;
+            
+            // Update tab button classes
+            document.querySelectorAll('.sub-tab').forEach(btn => {
+                if (btn.id === `tabBtn-${tabName}`) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show/hide panes
+            const panes = ['transcript', 'feedback', 'complete'];
+            panes.forEach(p => {
+                const paneEl = document.getElementById(`pane-${p}`);
+                if (paneEl) {
+                    if (p === tabName) {
+                        paneEl.style.display = 'flex';
+                    } else {
+                        paneEl.style.display = 'none';
+                    }
+                }
+            });
+        }
+
         function showViewer(file) {
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('viewerContent').classList.add('active');
@@ -593,7 +619,15 @@
             player.src = encodeURI(file.path);
             player.load();
 
-            const a = file.analyse || {};
+            // Safeguard: Ensure file.analyse is initialized
+            if (!file.analyse) {
+                file.analyse = {
+                    gesprek: [],
+                    feedback_brieven: []
+                };
+            }
+
+            const a = file.analyse;
             currentFeedbackBrieven = a.feedback_brieven || [];
             activeStudentIdx = 0;
             activeFeedbackLang = 'nl';
@@ -606,6 +640,9 @@
             renderTranscriptColumn();
             renderFeedbackColumn();
             renderCompleteColumn();
+
+            // Switch to active tab
+            switchViewerTab(activeViewerTab);
         }
 
         function renderTranscriptColumn() {
@@ -1177,18 +1214,39 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
                 const result = JSON.parse(jsonResponse.trim());
                 
-                // Update het actieve bestand in de db en sla op
-                const groupFiles = db[activeGroup] || [];
-                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
-                if (dbFile) {
-                    dbFile.analyse.gesprek = result.gesprek;
-                    dbFile.analyse.feedback_brieven = result.feedback_brieven;
-                    currentFileObject.analyse = dbFile.analyse; // Update lokale referentie
+                // Update in-memory reference directly
+                if (currentFileObject && currentFileObject.analyse) {
+                    currentFileObject.analyse.gesprek = result.gesprek;
+                    currentFileObject.analyse.feedback_brieven = result.feedback_brieven;
+                    
+                    // Update inside database
+                    const groupFiles = db[activeGroup] || [];
+                    const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                    if (dbFile) {
+                        dbFile.analyse.gesprek = result.gesprek;
+                        dbFile.analyse.feedback_brieven = result.feedback_brieven;
+                    }
+                    
                     await saveDatabase();
                 }
 
-                // Herlaad de viewer
-                showViewer(currentFileObject);
+                // Clear input field
+                if (inputEl) {
+                    inputEl.value = '';
+                }
+
+                // Update references and re-render Columns/Panes in-place (no audio player reset!)
+                currentFeedbackBrieven = currentFileObject.analyse.feedback_brieven || [];
+                
+                // Keep activeStudentIdx valid
+                if (activeStudentIdx >= currentFeedbackBrieven.length) {
+                    activeStudentIdx = 0;
+                }
+
+                renderTranscriptColumn();
+                renderFeedbackColumn();
+                renderCompleteColumn();
+
                 showToast("Feedback succesvol aangepast met AI!");
 
             } catch (err) {
@@ -2053,8 +2111,7 @@ BELANGRIJK:
         window.deleteFile = deleteFile;
         window.adjustFeedbackWithAi = adjustFeedbackWithAi;
         window.showToast = showToast;
-        window.addNewTranscriptLine = addNewTranscriptLine;
-        window.deleteTranscriptLine = deleteTranscriptLine;
+        window.switchViewerTab = switchViewerTab;
         window.generateFeedbackFromTranscriptText = generateFeedbackFromTranscriptText;
 
     </script>
