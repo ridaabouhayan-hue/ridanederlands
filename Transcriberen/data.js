@@ -4568,7 +4568,581 @@ window.geminiData = {
       }
     }
   ],
-  "B-A2": [],
+  "B-A2": [
+    {
+      "filename": "Nurcin Oksan 26-5.ogg",
+      "path": "B-A2/Nurcin Oksan 26-5.ogg",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Hi Oksan.",
+            "zin_correct": "Hoi Oksan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Hi Nurcin. Hoe gaat het?",
+            "zin_correct": "Hoi Nurcin. Hoe gaat het?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Goed. En jij?",
+            "zin_correct": "Goed. En met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "En jij?",
+              "uitleg": "Na de vraag 'Hoe gaat het met jou?' antwoord je met 'Goed, en met jou?' in plaats van 'en jij?'."
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Goed, dankjewel. Kopie vaak kleiding?",
+            "zin_correct": "Goed, dankjewel. Koop je vaak kleding?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Kopie, kleiding",
+              "uitleg": "De 'oo'-klank in 'koop' moet lang en rond zijn, niet kort als 'o'. De 'e'-klank in 'kleding' klinkt te veel als een 'ei'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, soms.",
+            "zin_correct": "Ja, soms.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Chaje chrach winkelen?",
+            "zin_correct": "Ga je graag winkelen?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Chaje chrach",
+              "uitleg": "De 'g' in 'ga' en 'graag' moet een zachte, rollende keelklank zijn, maar hier klinkt het te scherp en onduidelijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, hil chrak.",
+            "zin_correct": "Ja, heel graag.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "hil chrak",
+              "uitleg": "De 'ee' in 'heel' moet lang worden uitgesproken, niet als een korte 'i'. De 'g' in 'graag' klinkt als een 'k' aan het einde."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Kopie onlein kleiding?",
+            "zin_correct": "Koop je online kleding?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Kopie, onlein, kleiding",
+              "uitleg": "Zorg dat 'koop je' niet aan elkaar smelt tot 'kopie'. 'Online' moet met een duidelijke 'ij/ai'-klank en 'kleding' met een schone 'e'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, mest wel.",
+            "zin_correct": "Ja, meestal wel.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mest",
+              "uitleg": "Je slikt een deel van het woord 'meestal' in, waardoor het klinkt als 'mest'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Welke kleur drach je chrach?",
+            "zin_correct": "Welke kleur draag je graag?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "drach, chrach",
+              "uitleg": "De 'g' aan het einde van 'draag' en 'graag' wordt te hard uitgesproken als een 'ch'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Zwart en wit.",
+            "zin_correct": "Zwart en wit.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Oh, mooi. Drach je vaak djins?",
+            "zin_correct": "Oh, mooi. Draag je vaak jeans?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "drach, djins",
+              "uitleg": "De 'g' in 'draag' klinkt te veel als 'ch'. 'Jeans' wordt uitgesproken met een Engelse 'j'-klank (dzjienzo)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, ja, hil vaak.",
+            "zin_correct": "Ja, ja, heel vaak.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "hil",
+              "uitleg": "De 'ee' in 'heel' klinkt te kort, als een 'i'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Kopie dure kleiding?",
+            "zin_correct": "Koop je dure kleding?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Kopie, kleiding",
+              "uitleg": "Wederom klinkt 'koop je' als 'kopie' en 'kleding' als 'kleiding'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Nee, niet eht.",
+            "zin_correct": "Nee, niet echt.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "eht",
+              "uitleg": "De 'ch'-klank in 'echt' wordt niet goed uitgesproken; het klinkt als een zachte 'h'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Fin je de winkels leuk?",
+            "zin_correct": "Vind je de winkels leuk?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Fin je",
+              "uitleg": "De 'v' in 'vind' moet stemhebbend zijn, niet stemloos als een 'f'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, hezelik.",
+            "zin_correct": "Ja, heel leuk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "hezelik",
+              "uitleg": "Dit woord is onverstaanbaar en klinkt als 'hezelik' in plaats van 'heel leuk'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Vrach je hulp in de winkel?",
+            "zin_correct": "Vraag je hulp in de winkel?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Vrach",
+              "uitleg": "De 'g' aan het einde van 'vraag' klinkt te scherp als een 'ch'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Soms wel.",
+            "zin_correct": "Soms wel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Wat kopie vaak?",
+            "zin_correct": "Wat koop je vaak?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kopie",
+              "uitleg": "Zorg dat 'koop je' niet klinkt als 'kopie'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "T-shirt en schoen.",
+            "zin_correct": "T-shirts en schoenen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "T-shirt en schoen",
+              "uitleg": "Gebruik meervoudsvormen ('T-shirts' en 'schoenen') als je in het algemeen praat over wat je vaak koopt."
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Drach je liever sportkleiding?",
+            "zin_correct": "Draag je liever sportkleding?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "sportkleiding",
+              "uitleg": "De 'e' in 'kleding' klinkt te veel als een 'ei'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja.",
+            "zin_correct": "Ja.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, dat zit leker.",
+            "zin_correct": "Ja, dat zit lekker.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "leker",
+              "uitleg": "De 'e' in 'lekker' moet kort zijn, niet lang als 'leker'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Hebie veel schoenen?",
+            "zin_correct": "Heb je veel schoenen?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Hebie",
+              "uitleg": "Zorg dat 'heb je' niet klinkt als 'hebie'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, best wel viel.",
+            "zin_correct": "Ja, best wel veel.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "viel",
+              "uitleg": "De 'ee' in 'veel' klinkt te veel als een 'ie'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Kopie kleiding in de stat?",
+            "zin_correct": "Koop je kleding in de stad?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Kopie, kleiding",
+              "uitleg": "Wederom de uitspraak van 'koop je' en 'kleding'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, mestal.",
+            "zin_correct": "Ja, meestal.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mestal",
+              "uitleg": "De 'ee' in 'meestal' moet lang zijn, niet kort als 'mestal'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Hoeje van moda?",
+            "zin_correct": "Hou je van mode?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Hoeje, moda",
+              "uitleg": "De 'ou' in 'hou' klinkt als 'oe'. De 'e' aan het einde van 'mode' klinkt als een 'a'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, en betje.",
+            "zin_correct": "Ja, een beetje.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "en betje",
+              "uitleg": "De 'ee' in 'beetje' klinkt te kort als 'betje'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Drach je liever comfortabel kleiding?",
+            "zin_correct": "Draag je liever comfortabele kleding?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "comfortabel",
+              "uitleg": "Je vergeet de buigings-e aan het einde van het bijvoeglijk naamwoord 'comfortabele'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "comfortabel kleiding",
+              "uitleg": "Voor een de-woord ('de kleding') krijgt het bijvoeglijk naamwoord een -e: 'comfortabele kleding'."
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, altit.",
+            "zin_correct": "Ja, altijd.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "altit",
+              "uitleg": "De 'ij' in 'altijd' klinkt te kort als een 'i'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Pasie kleiding in de winkel?",
+            "zin_correct": "Pas je kleding in de winkel?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Pasie, kleiding",
+              "uitleg": "'Pas je' klinkt als 'pasie'. 'Kleding' klinkt als 'kleiding'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Ja, naturlik.",
+            "zin_correct": "Ja, natuurlijk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "naturlik",
+              "uitleg": "De 'uu' in 'natuurlijk' klinkt te kort als een 'u'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Heel mooi, dankjewel Oksan.",
+            "zin_correct": "Heel mooi, dankjewel Nurcin.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "dankjewel Oksan",
+              "uitleg": "Je noemt per ongeluk je eigen naam ('Oksan') in plaats van de naam van je gesprekspartner ('Nurcin')."
+            }
+          },
+          {
+            "spreker": "Nurcin",
+            "zin_fonetisch": "Doei.",
+            "zin_correct": "Doei.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Oksan",
+            "zin_fonetisch": "Doei.",
+            "zin_correct": "Doei.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Nurcin",
+            "brief": "Hallo Nurcin! 👋\n\nWat goed dat je hebt geoefend! Je hebt een leuk en vlot gesprek gevoerd over kleding en winkelen. Je antwoordt snel en begrijpt de vragen heel goed. 🎈\n\n👍 Wat ging er al heel goed?\nJe vocabulaire is prima en je durft direct antwoord te geven. Je zinnen zijn kort maar krachtig! 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: De lange 'ee'-klank ❌\nWat je zei: \"hil\" / \"mestal\" / \"betje\"\nHoe het moet: \"heel\" / \"meestal\" / \"beetje\"\nUitleg: In het Nederlands moeten we de 'ee' lang en open uitspreken. Maak je mond wat breder alsof je glimlacht.\n\nOefen nu hardop:\n\"Ik vind het heel leuk.\" 🗣️\n\"Ik koop meestal online.\" 🗣️\n\nTip 2: Meervoud gebruiken 🏡\nWat je zei: \"T-shirt en schoen\"\nHoe het moet: \"T-shirts en schoenen\"\nUitleg: Als je praat over dingen die je in het algemeen vaak koopt, gebruik je meervoud.\n\nOefen nu hardop:\n\"Ik koop vaak schoenen en T-shirts.\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe bent heel goed op weg, Nurcin! Let goed op de lange klinkers, dan klinkt het nóg vloeiender. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Oksan",
+            "brief": "Hallo Oksan! 👋\n\nWat goed dat je hebt geoefend! Je hebt het gesprek heel natuurlijk geleid en stelde veel goede vragen over kleding. 🎈\n\n👍 Wat ging er al heel goed?\nJe spreekt met veel zelfvertrouwen en houdt het gesprek goed op gang. Je zinsbouw is grammaticaal erg sterk! 🌟\n\n💡 Tips voor de volgende keer:\n\nTip 1: Voorkom het samensmelten van woorden ❌\nWat je zei: \"kopie\" / \"hebie\" / \"pasie\"\nHoe het moet: \"koop je\" / \"heb je\" / \"pas je\"\nUitleg: Zorg ervoor dat je de 'je' niet vastplakt aan het werkwoord waardoor het als 'ie' klinkt. Spreek beide woorden apart uit.\n\nOefen nu hardop:\n\"Koop je vaak kleding?\" 🗣️\n\"Heb je veel schoenen?\" 🗣️\n\nTip 2: De 'e' versus 'ei' klank 🏡\nWat je zei: \"kleiding\"\nHoe het moet: \"kleding\"\nUitleg: De 'e' in kleding is een lange, schone 'ee'-klank. Het mag niet klinken als de 'ei' van 'trein'.\n\nOefen nu hardop:\n\"Draag je comfortabele kleding?\" 🗣️\n\n🏁 Persoonlijk slotwoord\nJe bent een fantastische gesprekspartner, Oksan! Als je let op de uitspraak van 'je' en de 'ee'-klank, is je Nederlands uitstekend. Succes! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    }
+  ],
   "B-Alfa": [],
   "B-Z-route": [],
   "B-ONA": []
