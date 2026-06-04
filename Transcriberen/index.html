@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini Transcriber Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="../api_key.js"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -148,14 +149,43 @@
             <div class="brand">
                 <span class="brand-icon">✨</span> Gemini Transcriber
             </div>
-            <button class="logout-btn" onclick="logout()">Uitloggen</button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button onclick="openSettingsModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem; transition: var(--transition);" title="Gemini API Key Instellingen">⚙️</button>
+                <button class="logout-btn" onclick="logout()">Uitloggen</button>
+            </div>
         </div>
 
         <div class="tabs" id="tabsWrap"></div>
 
         <div class="container">
             <div class="sidebar">
-                <div class="sidebar-header">
+                <!-- data.js Connection Panel -->
+                <div id="connPanel" style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+                        <span style="font-weight: 700; color: var(--text-muted);">Database Status:</span>
+                        <span id="connStatus" style="font-weight: 800; color: #ef4444;">🔴 Gekoppeld</span>
+                    </div>
+                    <button class="auth-btn" id="btnConnect" onclick="checkAndActivateHandle()" style="padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; width: 100%; height: auto; cursor: pointer; font-weight: 700;">🔗 Koppel data.js</button>
+                </div>
+
+                <!-- Drag & Drop Upload Zone -->
+                <div id="dropZone" ondragover="event.preventDefault(); this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleFileDrop(event)" style="margin: 16px; padding: 20px; border: 2px dashed var(--border); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: var(--transition); background: rgba(255,255,255,0.01);" onclick="document.getElementById('audioFileInput').click()">
+                    <span style="font-size: 1.8rem; display: block; margin-bottom: 6px;">📁</span>
+                    <span style="font-weight: 700; font-size: 0.88rem; display: block; color: var(--text);">Sleep audio(s) hier</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">of klik om te uploaden</span>
+                    <input type="file" id="audioFileInput" multiple accept="audio/*,video/*" style="display: none;" onchange="handleFileSelect(event)">
+                </div>
+
+                <!-- Queue Container -->
+                <div id="queueContainer" style="display: none; margin: 0 16px 16px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                    <div style="font-weight: 800; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between;">
+                        <span>Wachtrij</span>
+                        <span id="queueProgress">0/0</span>
+                    </div>
+                    <ul id="queueList" style="list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 150px; overflow-y: auto; font-size: 0.8rem; padding: 0;"></ul>
+                </div>
+
+                <div class="sidebar-header" style="border-top: 1px solid var(--border);">
                     <span>Opnames</span>
                     <span id="fileCount" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px; font-size: 0.8rem;">0</span>
                 </div>
@@ -171,8 +201,16 @@
 
                 <div class="viewer-content" id="viewerContent">
                     <div class="viewer-header">
-                        <div>
-                            <div class="viewer-group" id="vGroup">Groep</div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="viewer-group" id="vGroup">Groep</div>
+                                <!-- Move Dropdown -->
+                                <div id="moveContainer" style="display: none; align-items: center; gap: 6px; font-size: 0.78rem;">
+                                    <span style="color: var(--text-muted); font-weight: 700;">📁 Verplaats:</span>
+                                    <select id="moveGroupSelect" onchange="moveCurrentFile(this.value)" style="background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; padding: 2px 6px; cursor: pointer; outline: none; font-weight: 700; font-size: 0.75rem;">
+                                    </select>
+                                </div>
+                            </div>
                             <div class="viewer-title" id="vTitle">bestand.mp3</div>
                         </div>
                         <button class="copy-btn" onclick="copyText()">📋 Kopieer tekst</button>
@@ -205,6 +243,11 @@
         let currentFeedbackBrieven = [];
         let activeStudentIdx = 0;
         let activeFeedbackLang = 'nl';
+
+        let fileHandle = null;
+        let currentFileObject = null;
+        let uploadQueue = [];
+        let isProcessingQueue = false;
 
         // ── AUTHENTICATION ──
         function checkAuth() {
@@ -337,6 +380,21 @@
             document.getElementById('vGroup').textContent = activeGroup;
             document.getElementById('vTitle').textContent = file.filename;
             
+            currentFileObject = file;
+
+            // Populate move dropdown
+            const moveSelect = document.getElementById('moveGroupSelect');
+            moveSelect.innerHTML = '<option value="" disabled selected>Kies groep...</option>';
+            groepen.forEach(g => {
+                if (g !== activeGroup) {
+                    const opt = document.createElement('option');
+                    opt.value = g;
+                    opt.textContent = g;
+                    moveSelect.appendChild(opt);
+                }
+            });
+            document.getElementById('moveContainer').style.display = 'flex';
+
             const a = file.analyse || {};
             
             // Render Gesprek
@@ -491,6 +549,8 @@
             document.getElementById('emptyState').style.display = 'flex';
             document.getElementById('viewerContent').classList.remove('active');
             document.getElementById('vAudio').pause();
+            document.getElementById('moveContainer').style.display = 'none';
+            currentFileObject = null;
         }
 
         function switchPane(id, el) {
@@ -509,6 +569,713 @@
                 setTimeout(() => btn.innerHTML = old, 2000);
             });
         }
+
+        // ── API KEY SETTINGS ──
+        function openSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.opacity = '1';
+            modal.style.pointerEvents = 'all';
+            document.getElementById('apiKeyField').value = localStorage.getItem('user_gemini_api_key') || '';
+        }
+
+        function closeSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+        }
+
+        function saveApiKey() {
+            const val = document.getElementById('apiKeyField').value.trim();
+            if (val) {
+                localStorage.setItem('user_gemini_api_key', val);
+            } else {
+                localStorage.removeItem('user_gemini_api_key');
+            }
+            closeSettingsModal();
+        }
+
+        function getApiKey() {
+            return localStorage.getItem('user_gemini_api_key') || window.GEMINI_API_KEY || '';
+        }
+
+        // ── INDEXEDDB FILE HANDLE STORAGE ──
+        function getStoredHandle() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open("GeminiTranscriberDB", 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains("handles")) {
+                        db.createObjectStore("handles");
+                    }
+                };
+                request.onsuccess = (e) => {
+                    const db = e.target.result;
+                    const tx = db.transaction("handles", "readonly");
+                    const store = tx.objectStore("handles");
+                    const req = store.get("datajs");
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => resolve(null);
+                };
+                request.onerror = () => resolve(null);
+            });
+        }
+
+        function storeHandle(handle) {
+            return new Promise((resolve) => {
+                const request = indexedDB.open("GeminiTranscriberDB", 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains("handles")) {
+                        db.createObjectStore("handles");
+                    }
+                };
+                request.onsuccess = (e) => {
+                    const db = e.target.result;
+                    const tx = db.transaction("handles", "readwrite");
+                    const store = tx.objectStore("handles");
+                    store.put(handle, "datajs");
+                    tx.oncomplete = () => resolve(true);
+                };
+                request.onerror = () => resolve(false);
+            });
+        }
+
+        // ── FILE SYSTEM ACCESS API & SYNC ──
+        async function verifyPermission(fileHandle, readWrite) {
+            const options = {};
+            if (readWrite) {
+                options.mode = 'readwrite';
+            }
+            if ((await fileHandle.queryPermission(options)) === 'granted') {
+                return true;
+            }
+            if ((await fileHandle.requestPermission(options)) === 'granted') {
+                return true;
+            }
+            return false;
+        }
+
+        async function checkAndActivateHandle() {
+            try {
+                let handle = fileHandle;
+                if (!handle) {
+                    handle = await getStoredHandle();
+                }
+                if (!handle) {
+                    await selectDataJsFile();
+                    return;
+                }
+                
+                const hasPermission = await verifyPermission(handle, true);
+                if (hasPermission) {
+                    fileHandle = handle;
+                    await storeHandle(handle);
+                    updateConnectionStatus(true);
+                    await reloadDatabaseFromFile();
+                } else {
+                    updateConnectionStatus(false);
+                    alert("Geen toestemming gekregen voor data.js.");
+                }
+            } catch (err) {
+                console.error("Fout bij activeren handle:", err);
+                updateConnectionStatus(false);
+            }
+        }
+
+        async function selectDataJsFile() {
+            try {
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'JavaScript Database File (data.js)',
+                        accept: { 'application/javascript': ['.js'] }
+                    }],
+                    multiple: false
+                });
+                if (handle) {
+                    if (handle.name !== 'data.js') {
+                        alert("Selecteer alstublieft exact het bestand 'data.js'.");
+                        return;
+                    }
+                    const hasPermission = await verifyPermission(handle, true);
+                    if (hasPermission) {
+                        fileHandle = handle;
+                        await storeHandle(handle);
+                        updateConnectionStatus(true);
+                        await reloadDatabaseFromFile();
+                    }
+                }
+            } catch (err) {
+                console.error("Bestand selecteren geannuleerd/mislukt:", err);
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connStatus');
+            const btn = document.getElementById('btnConnect');
+            if (connected) {
+                statusEl.textContent = "🟢 Gekoppeld";
+                statusEl.style.color = "#10b981";
+                btn.textContent = "🔄 Koppel Opnieuw";
+            } else {
+                statusEl.textContent = "🔴 Niet gekoppeld";
+                statusEl.style.color = "#ef4444";
+                btn.textContent = "🔗 Koppel data.js";
+            }
+        }
+
+        async function reloadDatabaseFromFile() {
+            if (!fileHandle) return;
+            try {
+                const file = await fileHandle.getFile();
+                const content = await file.text();
+                
+                let jsonText = content.replace(/^window\.geminiData\s*=\s*/, '').trim();
+                if (jsonText.endsWith(';')) {
+                    jsonText = jsonText.slice(0, -1);
+                }
+                db = JSON.parse(jsonText);
+                isDataLoaded = true;
+                
+                renderTabs();
+                renderList();
+                console.log("Database succesvol geladen vanaf bestand.");
+            } catch (err) {
+                console.error("Fout bij laden van database uit bestand:", err);
+                alert("Kon data.js niet inlezen of parsen. Controleer of het bestand geldig is.");
+            }
+        }
+
+        async function saveDatabase() {
+            if (!fileHandle) {
+                console.warn("Geen fileHandle gekoppeld. Proberen op te slaan via fallback download.");
+                downloadDataJsFallback();
+                return;
+            }
+            try {
+                const writable = await fileHandle.createWritable();
+                const content = "window.geminiData = " + JSON.stringify(db, null, 2) + ";\n";
+                await writable.write(content);
+                await writable.close();
+                console.log("Database succesvol weggeschreven naar data.js.");
+            } catch (err) {
+                console.error("Fout bij opslaan database:", err);
+                alert("Kon data.js niet automatisch opslaan. Klik op 'Download data.js' om handmatig op te slaan.");
+                downloadDataJsFallback();
+            }
+        }
+
+        function downloadDataJsFallback() {
+            const content = "window.geminiData = " + JSON.stringify(db, null, 2) + ";\n";
+            const blob = new Blob([content], { type: 'application/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ── MOVE TRANSCRIPTION ENTRY ──
+        async function moveCurrentFile(targetGroup) {
+            if (!currentFileObject) return;
+            if (!targetGroup) return;
+            
+            if (!confirm(`Weet je zeker dat je '${currentFileObject.filename}' wilt verplaatsen naar groep '${targetGroup}'?`)) {
+                document.getElementById('moveGroupSelect').value = '';
+                return;
+            }
+
+            const file = currentFileObject;
+            
+            // Verwijder uit huidige groep
+            const srcArr = db[activeGroup] || [];
+            const idx = srcArr.findIndex(f => f.filename === file.filename);
+            if (idx !== -1) {
+                srcArr.splice(idx, 1);
+            }
+            
+            // Update pad
+            file.path = targetGroup + "/" + file.filename;
+            
+            // Voeg toe aan doelgroep
+            if (!db[targetGroup]) db[targetGroup] = [];
+            db[targetGroup].push(file);
+            
+            // Sla database op
+            await saveDatabase();
+            
+            // Switch naar de nieuwe groep en toon het bestand
+            activeGroup = targetGroup;
+            renderTabs();
+            renderList();
+            
+            // Zoek en activeer het item in de lijst
+            const listItems = document.querySelectorAll('.file-item');
+            for (const item of listItems) {
+                if (item.querySelector('.file-name').textContent === file.filename) {
+                    item.classList.add('active');
+                    break;
+                }
+            }
+            showViewer(file);
+            
+            alert(`Bestand '${file.filename}' is verplaatst naar '${targetGroup}'.\nBelangrijk: verplaats het fysieke audiobestand ook naar de map '${targetGroup}' op je computer.`);
+        }
+
+        // ── DRAG AND DROP & UPLOAD QUEUE ──
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            if (files.length > 0) {
+                addFilesToQueue(files);
+            }
+            e.target.value = '';
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            const dropZone = document.getElementById('dropZone');
+            dropZone.style.borderColor = 'var(--border)';
+            
+            const files = [];
+            if (e.dataTransfer.items) {
+                for (let i = 0; i < e.dataTransfer.items.length; i++) {
+                    if (e.dataTransfer.items[i].kind === 'file') {
+                        files.push(e.dataTransfer.items[i].getAsFile());
+                    }
+                }
+            } else {
+                for (let i = 0; i < e.dataTransfer.files.length; i++) {
+                    files.push(e.dataTransfer.files[i]);
+                }
+            }
+            if (files.length > 0) {
+                addFilesToQueue(files);
+            }
+        }
+
+        function addFilesToQueue(files) {
+            files.forEach(file => {
+                if (uploadQueue.some(q => q.file.name === file.name && q.group === activeGroup)) {
+                    return;
+                }
+                
+                const exists = (db[activeGroup] || []).some(f => f.filename === file.name);
+                if (exists) {
+                    if (!confirm(`Het bestand '${file.name}' bestaat al in '${activeGroup}'. Wil je dit bestand opnieuw uploaden en transcriberen? (De oude transcriptie wordt overschreven)`)) {
+                        return;
+                    }
+                }
+
+                uploadQueue.push({
+                    id: 'q_' + Math.random().toString(36).substr(2, 9),
+                    file: file,
+                    group: activeGroup,
+                    status: 'pending',
+                    progress: 0,
+                    error: ''
+                });
+            });
+            
+            renderQueue();
+        }
+
+        function renderQueue() {
+            const container = document.getElementById('queueContainer');
+            const list = document.getElementById('queueList');
+            const progressSpan = document.getElementById('queueProgress');
+            
+            if (uploadQueue.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            list.innerHTML = '';
+            
+            let doneCount = uploadQueue.filter(q => q.status === 'done').length;
+            progressSpan.textContent = `${doneCount}/${uploadQueue.length}`;
+            
+            uploadQueue.forEach(item => {
+                const li = document.createElement('li');
+                li.style.cssText = 'display: flex; flex-direction: column; gap: 4px; padding: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px;';
+                
+                let badgeColor = '#94a3b8';
+                let badgeText = 'Wachten';
+                let progressText = '';
+                
+                if (item.status === 'uploading') {
+                    badgeColor = 'var(--accent)';
+                    badgeText = 'Uploaden';
+                    progressText = ` (${item.progress}%)`;
+                } else if (item.status === 'transcribing') {
+                    badgeColor = '#8b5cf6';
+                    badgeText = 'Transcriberen...';
+                } else if (item.status === 'done') {
+                    badgeColor = '#10b981';
+                    badgeText = 'Voltooid';
+                } else if (item.status === 'error') {
+                    badgeColor = '#ef4444';
+                    badgeText = 'Fout';
+                }
+                
+                li.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.78rem;">
+                        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px;">${item.file.name}</span>
+                        <span style="color: var(--text-muted); font-size: 0.7rem;">(${item.group})</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">
+                        <span style="background: ${badgeColor}22; color: ${badgeColor}; padding: 1px 6px; border-radius: 4px; font-weight: 800;">${badgeText}${progressText}</span>
+                        ${item.error ? `<span style="color: #ef4444; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.error}">${item.error}</span>` : ''}
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+
+            let hasActionable = uploadQueue.some(q => q.status === 'pending' || q.status === 'error');
+            
+            let startBtn = document.getElementById('btnStartQueue');
+            if (hasActionable && !isProcessingQueue) {
+                if (!startBtn) {
+                    startBtn = document.createElement('button');
+                    startBtn.id = 'btnStartQueue';
+                    startBtn.className = 'auth-btn';
+                    startBtn.style.cssText = 'margin-top: 10px; padding: 10px; font-size: 0.85rem; width: 100%; border-radius: var(--radius-md);';
+                    startBtn.innerHTML = '▶️ Transcribeer & Feedback';
+                    startBtn.onclick = startQueueProcessing;
+                    container.appendChild(startBtn);
+                }
+            } else {
+                if (startBtn) {
+                    startBtn.remove();
+                }
+            }
+        }
+
+        // ── SEQUENTIAL PROCESSING AND GEMINI API CALLS ──
+        async function startQueueProcessing() {
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                openSettingsModal();
+                return;
+            }
+            
+            if (!fileHandle) {
+                alert("Selecteer/koppel eerst data.js (🔗 Koppel data.js) om resultaten automatisch op te slaan.");
+                return;
+            }
+
+            isProcessingQueue = true;
+            renderQueue();
+            await processNextInQueue();
+        }
+
+        async function processNextInQueue() {
+            if (!isProcessingQueue) return;
+            
+            const item = uploadQueue.find(q => q.status === 'pending' || q.status === 'error');
+            if (!item) {
+                isProcessingQueue = false;
+                renderQueue();
+                alert("Wachtrij succesvol verwerkt!");
+                return;
+            }
+            
+            try {
+                item.status = 'uploading';
+                item.progress = 0;
+                renderQueue();
+                
+                const apiKey = getApiKey();
+                const uploadInfo = await uploadToGeminiFileApi(item.file, apiKey, (pct) => {
+                    item.progress = pct;
+                    renderQueue();
+                });
+                
+                item.status = 'transcribing';
+                renderQueue();
+                
+                await pollFileState(uploadInfo.name, apiKey);
+                
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey);
+                
+                const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
+                const newEntry = {
+                    filename: item.file.name,
+                    path: `${item.group}/${item.file.name}`,
+                    date: fileDate,
+                    analyse: analysisResult
+                };
+                
+                if (!db[item.group]) db[item.group] = [];
+                const oldIdx = db[item.group].findIndex(f => f.filename === item.file.name);
+                if (oldIdx !== -1) {
+                    db[item.group].splice(oldIdx, 1);
+                }
+                db[item.group].push(newEntry);
+                
+                await saveDatabase();
+                
+                item.status = 'done';
+                renderQueue();
+                
+                if (activeGroup === item.group) {
+                    renderTabs();
+                    renderList();
+                }
+                
+            } catch (err) {
+                console.error("Fout bij verwerken van bestand:", err);
+                item.status = 'error';
+                item.error = err.message || String(err);
+                renderQueue();
+            }
+            
+            setTimeout(() => {
+                processNextInQueue();
+            }, 1000);
+        }
+
+        function uploadToGeminiFileApi(file, apiKey, onProgress) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const startUrl = `https://generativelanguage.googleapis.com/upload/v1beta/files?key=${apiKey}`;
+                    const startHeaders = {
+                        'X-Goog-Upload-Protocol': 'resumable',
+                        'X-Goog-Upload-Command': 'start',
+                        'X-Goog-Upload-Header-Content-Length': file.size.toString(),
+                        'X-Goog-Upload-Header-Content-Type': file.type || 'audio/mp3',
+                        'Content-Type': 'application/json'
+                    };
+                    
+                    const metadata = {
+                        file: {
+                            displayName: file.name
+                        }
+                    };
+                    
+                    const startResponse = await fetch(startUrl, {
+                        method: 'POST',
+                        headers: startHeaders,
+                        body: JSON.stringify(metadata)
+                    });
+                    
+                    if (!startResponse.ok) {
+                        const errText = await startResponse.text();
+                        throw new Error(`Start upload mislukt: ${startResponse.status} ${errText}`);
+                    }
+                    
+                    const uploadUri = startResponse.headers.get('X-Goog-Upload-URL');
+                    if (!uploadUri) {
+                        throw new Error("Geen X-Goog-Upload-URL header ontvangen.");
+                    }
+                    
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('PUT', uploadUri);
+                    xhr.setRequestHeader('X-Goog-Upload-Offset', '0');
+                    xhr.setRequestHeader('X-Goog-Upload-Command', 'upload, finalize');
+                    xhr.setRequestHeader('Content-Length', file.size.toString());
+                    
+                    xhr.upload.onprogress = (e) => {
+                        if (e.lengthComputable) {
+                            const pct = Math.round((e.loaded / e.total) * 100);
+                            onProgress(pct);
+                        }
+                    };
+                    
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                const responseJson = JSON.parse(xhr.responseText);
+                                resolve(responseJson.file);
+                            } catch (err) {
+                                reject(new Error("Upload response is geen geldige JSON."));
+                            }
+                        } else {
+                            reject(new Error(`Upload mislukt: ${xhr.status} ${xhr.responseText}`));
+                        }
+                    };
+                    
+                    xhr.onerror = () => {
+                        reject(new Error("Netwerkfout tijdens uploaden naar Gemini."));
+                    };
+                    
+                    xhr.send(file);
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+
+        function pollFileState(fileResourceName, apiKey) {
+            return new Promise((resolve, reject) => {
+                const checkState = async () => {
+                    try {
+                        const url = `https://generativelanguage.googleapis.com/v1beta/${fileResourceName}?key=${apiKey}`;
+                        const res = await fetch(url);
+                        if (!res.ok) {
+                            throw new Error(`Bestandsstatus ophalen mislukt: ${res.status}`);
+                        }
+                        const data = await res.json();
+                        if (data.state === 'ACTIVE') {
+                            resolve();
+                        } else if (data.state === 'FAILED') {
+                            reject(new Error("Bestandsverwerking bij Gemini is mislukt."));
+                        } else {
+                            setTimeout(checkState, 2000);
+                        }
+                    } catch (err) {
+                        reject(err);
+                    }
+                };
+                checkState();
+            });
+        }
+
+        async function runTranscription(fileInfo, filename, apiKey) {
+            const systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
+De bestandsnaam van de audio is "${filename}".
+
+IDENTIFICATIE VAN DE SPREKERS:
+1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
+2. Vaak noemen de sprekers hun eigen naam in het gesprek (bijvoorbeeld: 'Hallo, ik ben Malwina' of 'Hoi, met Tomasz') of noemen ze elkaar bij naam (bijvoorbeeld: 'En jij, Malwina?'). Als er namen genoemd worden in de audio, gebruik die dan altijd om de sprekers te identificeren.
+3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "${filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
+4. Zorg dat je de sprekers correct identificeert en hun echte namen gebruikt in de 'gesprek' array (in de 'spreker' velden) in plaats van generieke aanduidingen zoals 'Spreker A' of 'Spreker B' of 'Spreker A/B'.
+
+Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat terug:
+
+{
+  "gesprek": [
+    {
+      "spreker": "Naam van de spreker",
+      "zin_fonetisch": "Schrijf exact en fonetisch uit wat er werd gezegd, inclusief stotteren, pauzes (uhm) of taalfouten.",
+      "zin_correct": "Hoe de cursist deze zin in perfect Nederlands had moeten uitspreken en formuleren.",
+      "uitspraak_analyse": {
+        "goed": true,
+        "fout": "Wat er fout klonk (of laat leeg als het goed was)",
+        "uitleg": "Waarom het fout is (bijv. verkeerde klank, klemtoon)"
+      },
+      "grammatica_analyse": {
+        "goed": false,
+        "fout": "Wat de grammaticale fout was (of laat leeg als het goed was)",
+        "uitleg": "De grammaticaregel (bijv. inversie, verkeerd lidwoord)"
+      },
+      "logica_analyse": {
+        "goed": false,
+        "fout": "Wat er onlogisch of vreemd was aan de betekenis/samenhang in de context (of laat leeg als het logisch was)",
+        "uitleg": "Waarom het onlogisch is in deze context en wat een betere logische verwoording is"
+      }
+    }
+  ],
+  "feedback_brieven": [
+    {
+      "naam": "Naam van de cursist",
+      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* \\\"[Fonetische zin van cursist]\\\"\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* \\\"[Correcte zin]\\\"\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank]\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* \\\"[Fonetische zin 2]\\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\",
+      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* \\\"[Phonetic sentence of student]\\\"\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* \\\"[Correct sentence]\\\"\\n🧠 *Why:* [Explanation of grammar rule or sound]\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* \\\"[Phonetic sentence 2]\\\"\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n• *Moedertaal Analyse:* [Identificeer de moedertaal en de grammatica/uitspraak interferentie die te zien is in deze opname, leg uit in het Nederlands hoe dit komt]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\"
+    }
+  ]
+}
+
+BELANGRIJK:
+1. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
+2. Zeg bij een uitspraak of grammatica die correct is NOOIT dat het 'perfect' of 'foutloos' is (dit niveau is voor B2/C1). Zeg in plaats daarvan dat het 'goed', 'duidelijk' of 'begrijpelijk' is.
+3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
+4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin helemaal goed was en geen fouten bevatte, noteer dit dan ook in de brief (bijv. "👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit. 💡 *Correctie:* [schrijf hier de originele zin]").
+5. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
+   - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de \`feedback_brieven\` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in \`feedback_brieven\` aan: één voor Malwina en één voor Dorota.
+   - De feedbackbrief voor een specifieke cursist mag ALLEEN de zinnen bevatten die door die SPECIFIEKE cursist zijn uitgesproken (genummerd als *Zin 1:* t/m *Zin N:* voor die persoon). Sla geen zinnen over die door die persoon zijn gezegd, en voeg geen zinnen van de andere spreker(s) toe!
+   - Zorg dat de samenvatting, feedback en het advies in de brief volledig en respectievelijk gericht zijn op hoe die specifieke persoon het heeft gedaan, zodat de docent deze brief direct per WhatsApp individueel naar hen kan sturen.
+6. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
+   - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
+   - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
+   - Zorg dat de Engelse vertaling van de feedbackbrief (\`brief_en\`) de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
+7. MOEDERTAAL EN WA-IMPORT:
+   - Analyseer op basis van de taalfouten en de uitspraak de moedertaal van de cursist(en). Geef hier een korte toelichting op in de moedertaalanalyse in de brief.`;
+
+            let model = "gemini-2.5-flash";
+            let payload = {
+                contents: [{
+                    parts: [
+                        {
+                            fileData: {
+                                fileUri: fileInfo.uri,
+                                mimeType: fileInfo.mimeType
+                            }
+                        },
+                        {
+                            text: systemPrompt
+                        }
+                    ]
+                }],
+                generationConfig: {
+                    temperature: 0.1,
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const makeRequest = async (selectedModel) => {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(`Generation mislukt voor model ${selectedModel}: ${res.status} ${errText}`);
+                }
+                const data = await res.json();
+                if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0) {
+                    throw new Error("Ongeldig antwoord van Gemini: geen content kandidaten.");
+                }
+                const text = data.candidates[0].content.parts[0].text;
+                return JSON.parse(text.trim());
+            };
+
+            try {
+                return await makeRequest(model);
+            } catch (err) {
+                console.warn(`Genereren met ${model} mislukt, proberen met fallback model gemini-1.5-pro...`, err);
+                try {
+                    return await makeRequest("gemini-1.5-pro");
+                } catch (fallbackErr) {
+                    throw new Error(`Zowel hoofd- als fallback-model mislukt: ${fallbackErr.message || fallbackErr}`);
+                }
+            }
+        }
+
+        // ── AUTO-CONNECT ON LOAD ──
+        window.addEventListener('DOMContentLoaded', async () => {
+            const stored = await getStoredHandle();
+            if (stored) {
+                try {
+                    if (await stored.queryPermission({ mode: 'readwrite' }) === 'granted') {
+                        fileHandle = stored;
+                        updateConnectionStatus(true);
+                        await reloadDatabaseFromFile();
+                    } else {
+                        updateConnectionStatus(false);
+                    }
+                } catch (e) {
+                    updateConnectionStatus(false);
+                }
+            }
+        });
+        
+        // Expose settings variables/functions globally
+        window.openSettingsModal = openSettingsModal;
+        window.closeSettingsModal = closeSettingsModal;
+        window.saveApiKey = saveApiKey;
+        window.checkAndActivateHandle = checkAndActivateHandle;
+        window.handleFileDrop = handleFileDrop;
+        window.handleFileSelect = handleFileSelect;
+        window.moveCurrentFile = moveCurrentFile;
+        window.startQueueProcessing = startQueueProcessing;
+
     </script>
 
 <!-- SPEECH SYNTHESIS INJECTION -->
@@ -565,6 +1332,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
-
+    <!-- MODAL: API KEY SETTINGS -->
+    <div class="modal-overlay" id="settingsModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transition);">
+        <div class="auth-card" style="max-width: 400px; text-align: left;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: #fff;">⚙️ Gemini API-instellingen</h3>
+            <p style="color: var(--text-muted); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;">
+                Voer hier je Gemini API Key in als deze nog niet geladen is vanuit <code>api_key.js</code>. 
+                De sleutel wordt lokaal opgeslagen in de browser en wordt nooit geüpload naar GitHub.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Gemini API Key</label>
+                <input type="password" id="apiKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="AIzaSy...">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="logout-btn" style="background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border);" onclick="closeSettingsModal()">Annuleren</button>
+                <button class="auth-btn" style="width: auto; padding: 10px 20px;" onclick="saveApiKey()">Opslaan</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
