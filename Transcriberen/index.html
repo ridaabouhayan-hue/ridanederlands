@@ -133,6 +133,35 @@
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.15) transparent;
         }
+        .delete-btn {
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+        .file-item:hover .delete-btn {
+            opacity: 1;
+        }
+        .delete-btn:hover {
+            color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: translateY(150%);
+            transition: var(--transition);
+            z-index: 2000;
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -242,6 +271,8 @@
 
                     <div id="pane-gesprek" class="pane active"></div>
                     <div id="pane-feedback" class="pane"></div>
+                    <div id="adjustPanelWrap"></div>
+                </div>
                 </div>
             </div>
         </div>
@@ -373,13 +404,23 @@
             files.forEach((file, idx) => {
                 const li = document.createElement('li');
                 li.className = 'file-item';
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.justifyContent = 'space-between';
+                
                 let dateHtml = file.date ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">📅 ${file.date}</div>` : '';
+                
                 li.innerHTML = `
-                    <div class="file-icon">🎙️</div>
-                    <div style="display:flex; flex-direction:column; overflow:hidden;">
-                        <div class="file-name">${file.filename}</div>
-                        ${dateHtml}
+                    <div style="display:flex; align-items:center; gap:12px; overflow:hidden; flex:1;">
+                        <div class="file-icon">🎙️</div>
+                        <div style="display:flex; flex-direction:column; overflow:hidden;">
+                            <div class="file-name">${file.filename}</div>
+                            ${dateHtml}
+                        </div>
                     </div>
+                    <button class="delete-btn" onclick="deleteFile(event, '${file.filename}')" title="Verwijder transcriptie" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:6px; display:inline-flex; align-items:center; justify-content:center; transition:var(--transition); z-index:10; outline:none; border-radius:6px;">
+                        🗑️
+                    </button>
                 `;
                 li.onclick = () => {
                     document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
@@ -481,6 +522,25 @@
             const player = document.getElementById('vAudio');
             player.src = encodeURI(file.path);
             player.load();
+
+            // Render de aanpassen panel
+            const adjustWrap = document.getElementById('adjustPanelWrap');
+            if (adjustWrap) {
+                adjustWrap.innerHTML = `
+                    <div style="margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                        <div style="font-weight: 800; font-size: 0.85rem; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                            <span>🪄 Feedback aanpassen achteraf (AI)</span>
+                        </div>
+                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600;">
+                            Wil je iets veranderen aan het gesprek of de feedbackbrieven? Typ je aanpassing hieronder (bijv. "maak de samenvatting korter", "verwijder zin 2", of "wees aardiger") en laat de AI het direct aanpassen zonder de audio opnieuw te uploaden.
+                        </p>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <textarea id="afterwardInstructionsInput" placeholder="Bijv. Maak de feedback korter..." style="flex: 1; min-height: 40px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical; font-weight: 600;"></textarea>
+                            <button onclick="adjustFeedbackWithAi(event)" style="padding: 0 16px; border-radius: 6px; border: none; background: var(--accent-gradient); color: #fff; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; height: 40px;">Aanpassen</button>
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         function renderFeedbackPane() {
@@ -666,7 +726,138 @@ ${activeFb.brief}`;
             document.getElementById('viewerContent').classList.remove('active');
             document.getElementById('vAudio').pause();
             document.getElementById('moveContainer').style.display = 'none';
+            const adjustWrap = document.getElementById('adjustPanelWrap');
+            if (adjustWrap) adjustWrap.innerHTML = '';
             currentFileObject = null;
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toastMessage');
+            if (toast) {
+                toast.textContent = text;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            } else {
+                alert(text);
+            }
+        }
+
+        async function deleteFile(e, filename) {
+            e.stopPropagation();
+            if (!confirm(`Weet je zeker dat je de transcriptie van '${filename}' wilt verwijderen uit de database?`)) {
+                return;
+            }
+            
+            if (db[activeGroup]) {
+                const idx = db[activeGroup].findIndex(f => f.filename === filename);
+                if (idx !== -1) {
+                    db[activeGroup].splice(idx, 1);
+                    await saveDatabase();
+                    renderTabs();
+                    renderList();
+                    hideViewer();
+                    showToast("Transcriptie succesvol verwijderd!");
+                }
+            }
+        }
+
+        async function adjustFeedbackWithAi(event) {
+            if (!currentFileObject) return;
+            const inputEl = document.getElementById('afterwardInstructionsInput');
+            const instructions = inputEl ? inputEl.value.trim() : '';
+            if (!instructions) {
+                alert("Typ eerst een aanpassing in het tekstvak!");
+                return;
+            }
+
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                openSettingsModal();
+                return;
+            }
+
+            const btn = event ? event.target : null;
+            const originalBtnHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '⏳ Bezig...';
+                btn.disabled = true;
+            }
+
+            try {
+                const systemPrompt = `Je bent een ervaren NT2 docent. De gebruiker wil de bestaande transcriptie en feedbackbrieven van een cursist aanpassen op basis van docent-instructies.
+                
+Hier is de huidige gespreksanalyse en feedbackbrieven in JSON-formaat:
+${JSON.stringify({ gesprek: currentFileObject.analyse.gesprek, feedback_brieven: currentFileObject.analyse.feedback_brieven }, null, 2)}
+
+INSTRUCTIE VAN DE DOCENT VOOR DE AANPASSING:
+"${instructions}"
+
+Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen volgens deze instructie. Houd rekening met de volgende criteria:
+1. Pas ALLEEN aan wat de docent vraagt. Behoud de rest van de transcripties, uitspraak- en grammatica-analyses exact zoals ze waren.
+2. Zorg dat de feedbackbrieven in de doeltaal (indien vertaald, i.e., in 'brief_en') en het Nederlands consistent blijven met de gevraagde aanpassing.
+3. Het resultaat moet EXACT hetzelfde JSON-formaat retourneren als de invoer:
+{
+  "gesprek": [
+    ...
+  ],
+  "feedback_brieven": [
+    ...
+  ]
+}`;
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const payload = {
+                    contents: [{
+                        parts: [{ text: systemPrompt }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.1,
+                        responseMimeType: "application/json"
+                    }
+                };
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Aanpassing mislukt: ${res.statusText}`);
+                }
+
+                const data = await res.json();
+                const jsonResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!jsonResponse) {
+                    throw new Error("Geen antwoord ontvangen van Gemini.");
+                }
+
+                const result = JSON.parse(jsonResponse.trim());
+                
+                // Update het actieve bestand in de db en sla op
+                const groupFiles = db[activeGroup] || [];
+                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                if (dbFile) {
+                    dbFile.analyse.gesprek = result.gesprek;
+                    dbFile.analyse.feedback_brieven = result.feedback_brieven;
+                    currentFileObject.analyse = dbFile.analyse; // Update lokale referentie
+                    await saveDatabase();
+                }
+
+                // Herlaad de viewer
+                showViewer(currentFileObject);
+                showToast("Feedback succesvol aangepast met AI!");
+
+            } catch (err) {
+                console.error("Fout bij aanpassen met AI:", err);
+                alert("Er ging iets fout bij het aanpassen: " + err.message);
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalBtnHtml;
+                    btn.disabled = false;
+                }
+            }
         }
 
         function switchPane(id, el) {
@@ -1517,6 +1708,9 @@ BELANGRIJK:
         window.startQueueProcessing = startQueueProcessing;
         window.translateActiveBrief = translateActiveBrief;
         window.cancelQueueProcessing = cancelQueueProcessing;
+        window.deleteFile = deleteFile;
+        window.adjustFeedbackWithAi = adjustFeedbackWithAi;
+        window.showToast = showToast;
 
     </script>
 
@@ -1592,5 +1786,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
     </div>
+    <!-- TOAST -->
+    <div class="toast" id="toastMessage">Gekopieerd!</div>
 </body>
 </html>
