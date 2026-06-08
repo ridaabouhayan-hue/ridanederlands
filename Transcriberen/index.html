@@ -946,7 +946,7 @@ AANVULLENDE RICHTLIJNEN:
 - Zorg dat de uitleg simpel en opbouwend is (voor A1/A2 niveau).
 - ${conversationFormatHelp}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1046,7 +1046,7 @@ RICHTLIJNEN VOOR DE VERTALING:
 BRIEF OM TE VERTAALEN:
 ${activeFb.brief}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1185,7 +1185,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
   ]
 }`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1950,7 +1950,7 @@ BELANGRIJK:
 7. MOEDERTAAL EN WA-IMPORT:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
-            let model = "gemini-2.5-flash";
+            let model = "gemini-3.5-flash";
             let payload = {
                 contents: [{
                     parts: [
@@ -1995,11 +1995,11 @@ BELANGRIJK:
             try {
                 return await makeRequest(model);
             } catch (err) {
-                console.warn(`Genereren met ${model} mislukt, proberen met fallback model gemini-1.5-pro...`, err);
+                console.warn(`Genereren met ${model} mislukt, proberen met fallback model gemini-2.5-pro...`, err);
                 try {
-                    return await makeRequest("gemini-1.5-pro");
+                    return await makeRequest("gemini-2.5-pro");
                 } catch (fallbackErr) {
-                    throw new Error(`Zowel hoofd- als fallback-model mislukt: ${fallbackErr.message || fallbackErr}`);
+                    throw new Error(`Zowel hoofdmodel (${model}: ${err.message || err}) als fallback-model (gemini-2.5-pro: ${fallbackErr.message || fallbackErr}) zijn mislukt.`);
                 }
             }
         }

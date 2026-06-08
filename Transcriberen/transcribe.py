@@ -23,9 +23,9 @@ if not GEMINI_API_KEY:
 
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
-# Model selectie: gebruik Pro model voor maximale nauwkeurigheid en perfecte naleving van instructies.
-# Fallback is ingesteld op gemini-1.5-pro als gemini-2.5-pro niet beschikbaar is op dit API-key tier.
-GEMINI_MODEL = "gemini-2.5-flash"
+# Model selectie: gebruik Pro/Flash model voor maximale nauwkeurigheid en perfecte naleving van instructies.
+# Fallback is ingesteld op gemini-2.5-pro als gemini-3.5-flash niet beschikbaar is op dit API-key tier.
+GEMINI_MODEL = "gemini-3.5-flash"
 
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm', '.mp4')
 
@@ -199,9 +199,9 @@ BELANGRIJK:
                 except Exception as model_err:
                     err_lower = str(model_err).lower()
                     if "404" in err_lower or "not found" in err_lower or "not_found" in err_lower:
-                        print(f"⚠️ Model '{GEMINI_MODEL}' niet ondersteund of niet gevonden op deze API-sleutel tier. Fallback naar 'gemini-1.5-pro'...")
+                        print(f"⚠️ Model '{GEMINI_MODEL}' niet ondersteund of niet gevonden op deze API-sleutel tier. Fallback naar 'gemini-2.5-pro'...")
                         response = client.models.generate_content(
-                            model='gemini-1.5-pro',
+                            model='gemini-2.5-pro',
                             contents=[audio_file, prompt],
                             config={'temperature': 0.1, 'response_mime_type': 'application/json'}
                         )
