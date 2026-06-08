@@ -563,11 +563,11 @@
                 <div class="card-desc" style="font-size: 0.8rem; margin-top: 5px;">Binnenkort beschikbaar</div>
             </div>
             <!-- Thema 7 (KLIKBAAR!) -->
-            <a class="topic-card" href="TOETSEN/thema7-toets.html" style="--card-accent:#ec4899; background: linear-gradient(135deg, #2a0b22 0%, #4a123a 100%); padding: 22px; border: 2px solid rgba(236, 72, 153, 0.45);">
-                <div class="card-tag" style="color:#ec4899; background: rgba(236, 72, 153, 0.15);">Thema 7 · Actief</div>
+            <div class="topic-card" onclick="openVersionPicker('thema7')" style="cursor:pointer; --card-accent:#ec4899; background: linear-gradient(135deg, #2a0b22 0%, #4a123a 100%); padding: 22px; border: 2px solid rgba(236, 72, 153, 0.45);">
+                <div class="card-tag" style="color:#ec4899; background: rgba(236, 72, 153, 0.15);">Thema 7 · Actief ✓</div>
                 <div class="card-title" style="font-size: 1.1rem; color:#fff;">Thema 7 — Reizen</div>
-                <div class="card-desc" style="font-size: 0.8rem; color:#ffd0e5; margin-top: 5px;">Start de eindtoets →</div>
-            </a>
+                <div class="card-desc" style="font-size: 0.8rem; color:#ffd0e5; margin-top: 5px;">Kies een versie →</div>
+            </div>
             <!-- Thema 8 -->
             <div class="topic-card" style="opacity: 0.55; cursor: not-allowed; --card-accent:#9ca3af; padding: 22px;">
                 <div class="card-tag" style="color:#9ca3af; background: rgba(156,163,175,0.15);">Thema 8</div>
@@ -575,6 +575,30 @@
                 <div class="card-desc" style="font-size: 0.8rem; margin-top: 5px;">Binnenkort beschikbaar</div>
             </div>
         </div>
+
+<!-- ── VERSION PICKER MODAL ── -->
+<div id="version-modal-overlay" onclick="closeVersionPicker()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center;">
+    <div id="version-modal" onclick="event.stopPropagation()" style="background:#182040; border-radius:24px; padding:36px 32px; max-width:480px; width:90%; border:2px solid rgba(236,72,153,0.4); box-shadow:0 24px 80px rgba(0,0,0,0.5); position:relative;">
+        <button onclick="closeVersionPicker()" style="position:absolute; top:16px; right:18px; background:none; border:none; color:#a0aac4; font-size:1.4rem; cursor:pointer; line-height:1;">✕</button>
+        <div style="font-size:0.75rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#ec4899; margin-bottom:10px;">A1 · Toets</div>
+        <div id="version-modal-title" style="font-size:1.5rem; font-weight:900; color:#fff; margin-bottom:6px;">Thema 7 — Reizen</div>
+        <div style="font-size:0.9rem; color:#a0aac4; margin-bottom:28px; font-weight:600;">Kies de versie van de eindtoets:</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+            <!-- 2026 versie -->
+            <div id="version-btn-2026" onclick="goToVersion2026()" style="cursor:pointer; background:linear-gradient(135deg,#200c38,#34155a); border:2px solid rgba(162,155,254,0.5); border-radius:16px; padding:20px 22px; transition:border-color 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='#a29bfe';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(162,155,254,0.5)';this.style.transform='translateY(0)'">
+                <div style="font-size:0.7rem; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; color:#a29bfe; margin-bottom:6px;">⭐ Aanbevolen</div>
+                <div style="font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:4px;">🖥️ Versie 2026 — Online toets</div>
+                <div style="font-size:0.82rem; color:#c4b8ff; font-weight:600;">Interactieve digitale toets met directe feedback en inleveren via WhatsApp</div>
+            </div>
+            <!-- 2022 versie -->
+            <div id="version-btn-2022" onclick="goToVersion2022()" style="cursor:pointer; background:linear-gradient(135deg,#1a1a2e,#22223a); border:2px solid rgba(156,163,175,0.3); border-radius:16px; padding:20px 22px; transition:border-color 0.2s,transform 0.2s;" onmouseover="this.style.borderColor='#9ca3af';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(156,163,175,0.3)';this.style.transform='translateY(0)'">
+                <div style="font-size:0.7rem; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; color:#9ca3af; margin-bottom:6px;">Klassieke versie</div>
+                <div style="font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:4px;">📄 Versie 2022 — PDF</div>
+                <div style="font-size:0.82rem; color:#9ca3af; font-weight:600;">Download de originele papieren toets als PDF-bestand</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ── FOOTER ── -->
         <div class="footer">
@@ -635,6 +659,45 @@
                 } else {
                     alert("Onjuiste code.");
                 }
+            }
+
+            // ── VERSION PICKER ──
+            let _currentThema = null;
+            const _themaData = {
+                thema7: {
+                    title: 'Thema 7 — Reizen',
+                    url2026: 'TOETSEN/thema7-toets.html',
+                    pdf2022: 'TOETSEN/Toetsen 2022/TaalCompleet A1 - Toets Thema 7 Reizen - Cursist - def 2022.pdf'
+                }
+            };
+
+            function openVersionPicker(thema) {
+                _currentThema = thema;
+                const data = _themaData[thema];
+                if (!data) return;
+                document.getElementById('version-modal-title').textContent = data.title;
+                const overlay = document.getElementById('version-modal-overlay');
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    document.getElementById('version-modal').style.transform = 'scale(1)';
+                }, 10);
+            }
+
+            function closeVersionPicker() {
+                document.getElementById('version-modal-overlay').style.display = 'none';
+                _currentThema = null;
+            }
+
+            function goToVersion2026() {
+                if (!_currentThema) return;
+                window.location.href = _themaData[_currentThema].url2026;
+            }
+
+            function goToVersion2022() {
+                if (!_currentThema) return;
+                window.open(_themaData[_currentThema].pdf2022, '_blank');
+                closeVersionPicker();
             }
 
             function openAdminPortal() {
