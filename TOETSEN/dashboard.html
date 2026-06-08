@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docenten Dashboard — Toetsresultaten</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="toets.css">
+    
+    <!-- AUTHENTICATION CHECK -->
+    <script>
+        if (sessionStorage.getItem('toetsen_auth') !== '1') {
+            alert("Toegang geweigerd. Log alstublieft in via de startpagina.");
+            window.location.href = '../index.html';
+        }
+    </script>
+    
+    <!-- Load API Key -->
+    <script src="../api_key.js"></script>
+    
+    <style>
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Nunito', sans-serif;
+            padding: 30px 0;
+            min-height: 100vh;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-medium);
+            padding-bottom: 20px;
+        }
+        
+        .dashboard-title h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-title p {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .settings-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow-card);
+        }
+        
+        .settings-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+        
+        .settings-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        
+        .settings-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition-fast);
+        }
+        
+        .settings-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
+        }
+        
+                /* Sidebar layout */
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            height: fit-content;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .theme-group-header {
+            background: var(--bg);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--border-medium);
+            cursor: default;
+            user-select: none;
+        }
+        
+        .theme-group-header.has-items {
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .theme-badge {
+            background: var(--border-medium);
+            color: var(--text-muted);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+        
+        .theme-group-header.has-items .theme-badge {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .no-submissions {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 6px 12px;
+            border-bottom: 1px dashed var(--border-subtle);
+        }
+        
+        .submissions-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .submission-card {
+            background: var(--bg);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-left: 8px;
+        }
+        
+        .submission-card:hover, .submission-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
+            background: var(--primary-light);
+        }
+        
+        .submission-card .student-name {
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        
+        .submission-card .timestamp {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        /* Main review panel */
+        .review-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .empty-state {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-medium);
+            border-radius: var(--radius-lg);
+            padding: 50px 30px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-card);
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 25px;
+        }
+        
+        .section-header-bar {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 900;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .qa-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+        
+        .qa-item:last-child {
+            border-bottom: none;
+        }
+        
+        .check-icon {
+            font-weight: 800;
+            margin-right: 6px;
+        }
+        .check-icon.correct { color: #10b981; }
+        .check-icon.half { color: #f59e0b; }
+        .check-icon.incorrect { color: #ef4444; }
+        
+        .feedback-box {
+            width: 100%;
+            height: 250px;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-box:focus {
+            border-color: var(--primary);
+        }
+        
+        .score-pill {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+        
+        .translate-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .translate-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: var(--transition-fast);
+        }
+        
+        .translate-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .action-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-fast);
+            color: white;
+        }
+        
+        .action-btn.green {
+            background: #10b981;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+        .action-btn.green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        }
+        .action-btn.purple {
+            background: var(--primary);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+        }
+        .action-btn.purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .badge-score {
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-weight: 800;
+            margin-left: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .writing-grade-select {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-medium);
+            padding: 4px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 0.85rem;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <header class="dashboard-header">
+            <div class="dashboard-title">
+                <div class="breadcrumb">
+                    <a href="../index.html">Startpagina</a><span>›</span><span>Docenten Dashboard</span>
+                </div>
+                <h1>📊 Toetsen Dashboard</h1>
+                <p>Bekijk ingediende toetsen, voer correcties uit en genereer AI feedbackbrieven</p>
+            </div>
+            
+            <button class="settings-btn" style="background: var(--accent-red);" onclick="clearAllSubmissions()">
+                🗑️ Wis alle inzendingen
+            </button>
+        </header>
+        
+        <!-- Webhook Settings -->
+        <div class="settings-bar">
+            <div class="settings-input-group">
+                <label style="font-weight: 800; font-size: 0.9rem; min-width: 130px;">Apps Script GET URL:</label>
+                <input type="text" id="webhook-url-input" class="settings-input" placeholder="Plak hier je Google Apps Script URL..." onchange="saveWebhookUrl(this.value)">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="settings-btn" onclick="fetchExternalSubmissions()">
+                    🔄 Synchroniseer Sheet
+                </button>
+                <button class="settings-btn" style="background: #8b7ef8;" onclick="toggleImportArea()">
+                    📋 WhatsApp Import
+                </button>
+            </div>
+        </div>
+        
+        <!-- Collapsible Manual Import Area -->
+        <div id="import-area" style="display: none; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 20px; margin-bottom: 25px; box-shadow: var(--shadow-card);">
+            <h3 style="margin-top: 0; font-weight: 800; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 8px;">📋 Handmatig WhatsApp Bericht Importeren</h3>
+            <p class="instruction-text" style="margin-bottom: 12px; font-size: 0.85rem; color: var(--text-secondary);">
+                Kopieer het volledige antwoordbericht van de cursist uit WhatsApp en plak het hieronder. Klik daarna op 'Importeren' om het toe te voegen aan de lijst.
+            </p>
+            <textarea id="import-textarea" class="feedback-box" style="height: 150px; margin-bottom: 12px;" placeholder="Plak hier het WhatsApp bericht..."></textarea>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="settings-btn" style="background: var(--text-muted); padding: 6px 12px; font-size: 0.85rem;" onclick="toggleImportArea()">Annuleren</button>
+                <button class="settings-btn" style="background: #10b981; padding: 6px 12px; font-size: 0.85rem;" onclick="importWhatsAppSub()">📥 Importeren</button>
+            </div>
+        </div>
+        
+        <div class="layout-grid">
+            <!-- Sidebar with grouped submissions per theme -->
+            <aside class="sidebar-card">
+                <div class="sidebar-title" style="margin-bottom: 10px;">📂 Toetsen per Thema</div>
+                <div class="submissions-list" id="submissions-container">
+                    <!-- Loaded dynamically, grouped by theme -->
+                </div>
+            </aside>
+            
+            <!-- Main review panel -->
+            <main id="main-content-panel">
+                <div class="empty-state">
+                    🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
+                </div>
+            </main>
+            
+        </div>
+        
+    </div>
+    
+    <!-- DASHBOARD LOGIC -->
+    <script>
+        // Answer keys & Grading rules from Docent PDF
+        const docentKeys = {
+            sec1: ["b", "d", "b", "b", "b"],
+            sec2: ["b", "c", "a", "a", "b"],
+            sec3: [
+                ["kunnen"],
+                ["mag"],
+                ["kan"],
+                ["kunt", "kan"],
+                ["mag"],
+                ["kun", "kan"],
+                ["kunnen"],
+                ["mogen"],
+                ["mag"],
+                ["kunnen"]
+            ],
+            sec4: [
+                ["is hun hond"],
+                ["zijn jouw schoenen", "zijn je schoenen"],
+                ["is zijn kaart"],
+                ["is onze afspraak"],
+                ["zijn jullie potloden"]
+            ],
+            sec5: [
+                ["kruispunt"],
+                ["wachten", "zij wacht", "wacht"],
+                ["chauffeur", "buschauffeur"],
+                ["denken", "hij denkt", "denkt"],
+                ["boot", "zeilboot"],
+                ["rennen"],
+                ["bord", "verkeersbord"],
+                ["eiland"],
+                ["instappen"],
+                ["slapen", "zij slaapt", "slaapt"]
+            ]
+        };
+
+        const docentQuestions = {
+            sec1: [
+                "1. Welke bus moet Eva nemen?",
+                "2. Hoe laat vertrekt de bus?",
+                "3. Hoelang moet Eva lopen naar het huis van Koen?",
+                "4. Waar moet Eva naar rechts?",
+                "5. Waar moet Eva linksaf?"
+            ],
+            sec2: [
+                "1. Waar woont Aster?",
+                "2. Hoe snel rijdt de trein?",
+                "3. Hoelang moet Aster nog lopen in Amsterdam?",
+                "4. Waarom reist Aster vandaag met de auto?",
+                "5. Hoelang rijdt Aster vandaag met de auto?"
+            ],
+            sec3: [
+                "1. We [werkwoord] hier oversteken.",
+                "2. Je [werkwoord] hier niet lopen.",
+                "3. Olga [werkwoord] de metro nemen.",
+                "4. [werkwoord] u het goede spoor vinden?",
+                "5. Ik [werkwoord] niet autorijden.",
+                "6. [werkwoord] je dit doorgeven aan mijn collega?",
+                "7. Snel! Jullie [werkwoord] de trein nog halen.",
+                "8. Kleine kinderen [werkwoord] niet zelf reizen met het vliegtuig.",
+                "9. Samir [werkwoord] niet op het fietspad rijden met zijn auto.",
+                "10. Jing en Ricardo [werkwoord] hun fiets niet vinden."
+            ],
+            sec4: [
+                "1. Van wie is die hond? (Aron en Zora) -> Het ...",
+                "2. Van wie zijn de schoenen? (jij) -> Het ...",
+                "3. Van wie is de kaart? (hij) -> Het ...",
+                "4. Van wie is de afspraak? (wij) -> Het ...",
+                "5. Van wie zijn de potloden? (jullie) -> Het ..."
+            ],
+            sec5: [
+                "Plaatje 1 (het zebrapad/kruispunt)",
+                "Plaatje 2 (wachten op perron)",
+                "Plaatje 3 (de chauffeur)",
+                "Plaatje 4 (denken/nadenken)",
+                "Plaatje 5 (de zeilboot)",
+                "Plaatje 6 (rennen op baan)",
+                "Plaatje 7 (het verkeersbord)",
+                "Plaatje 8 (het eiland)",
+                "Plaatje 9 (instappen in bus)",
+                "Plaatje 10 (slapen in bed)"
+            ],
+            sec6: [
+                "Zin 1",
+                "Zin 2",
+                "Zin 3",
+                "Zin 4"
+            ]
+        };
+
+        // Fuzzy matching logic
+        function normalize(str) {
+            if (!str) return "";
+            return str.toLowerCase()
+                .replace(/[\.\?\!\,\;]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function getLevenshteinDistance(a, b) {
+            if (a.length === 0) return b.length;
+            if (b.length === 0) return a.length;
+            const matrix = [];
+            for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            Math.min(
+                                matrix[i][j - 1] + 1,
+                                matrix[i - 1][j] + 1
+                            )
+                        );
+                    }
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+
+        function checkCorrectness(studentAns, correctList, maxScore = 1.0) {
+            const studentNorm = normalize(studentAns);
+            if (!studentNorm) return { status: "incorrect", score: 0.0 };
+            
+            // Check exact match
+            if (correctList.some(ans => normalize(ans) === studentNorm)) {
+                return { status: "correct", score: maxScore };
+            }
+            
+            // Check fuzzy match (spelling mistakes)
+            let minDistance = Infinity;
+            for (let ans of correctList) {
+                const ansNorm = normalize(ans);
+                const dist = getLevenshteinDistance(studentNorm, ansNorm);
+                if (dist < minDistance) minDistance = dist;
+            }
+            
+            // Define threshold based on answer length
+            let threshold = 2;
+            if (correctList[0].length <= 4) {
+                threshold = 1;
+            } else if (correctList[0].length > 10) {
+                threshold = 4;
+            }
+            
+            if (minDistance <= threshold) {
+                return { status: "half", score: Math.round(maxScore * 0.67 * 10) / 10 }; // ~2/3 points for spelling
+            }
+            
+            return { status: "incorrect", score: 0.0 };
+        }
+
+        // Submissions database
+        let allSubmissions = {}; // themeKey -> array of submissions
+        let selectedTheme = null;
+        let selectedSubIndex = null;
+        let selectedLanguage = "nl"; // Current translated feedback letter language
+        let manualGrades = {}; // Stores manual grades for section 6 [zinIndex] = score
+        let generatedFeedbacks = {}; // Stores raw generated feedbacks [studentName] = feedbackInDutch
+
+        // Mock data to ensure the teacher sees something on initial load
+        const mockSubmissions = [
+            {
+                name: "Amina Al-Masri",
+                date: "07-06-2026",
+                time: "14:23",
+                theme: "thema7",
+                answers: {
+                    sec1: ["b", "d", "b", "b", "b"], // Perfect 5/5
+                    sec2: ["b", "c", "a", "a", "b"], // Perfect 5/5
+                    sec3: ["kunnen", "mag", "kan", "kunt", "mag", "kan", "kunnen", "mogen", "mag", "kunnen"], // Perfect 10/10
+                    sec4: ["is hun hond", "zijn jouw schoenen", "is zijn kaart", "is onze afspraak", "zijn jullie potloden"], // Perfect 15/15
+                    sec5: ["kruispunt", "wachten", "sjauffeur", "denken", "boot", "rennen", "bord", "eiland", "instap", "slapen"], // spelling mistakes at 3 and 9 -> 26/30
+                    sec6: [
+                        "Ik zie een geel trein op het spoor.",
+                        "Een man rent op de straat.",
+                        "De vrouw koopt een reisticket.",
+                        "Er zijn veel mensen in de bus."
+                    ]
+                }
+            },
+            {
+                name: "Youssef Erdogan",
+                date: "08-06-2026",
+                time: "10:12",
+                theme: "thema7",
+                answers: {
+                    sec1: ["a", "d", "c", "b", "b"], // 3/5
+                    sec2: ["b", "b", "a", "a", "c"], // 3/5
+                    sec3: ["kan", "mag", "kan", "kunt", "mogen", "kun", "kunnen", "mogen", "mag", "kunnen"], // 8/10
+                    sec4: ["is haar hond", "zijn je schoenen", "is zijn kaart", "is ons afspraak", "zijn jullie potloden"], // 1 is wrong, 4 is slightly wrong
+                    sec5: ["zebrapad", "wachten", "chauffeur", "denken", "zeilboot", "rennen", "bord", "eiland", "instappen", "slapen"], // 1 is wrong (zebrapad vs kruispunt)
+                    sec6: [
+                        "De trein is geel.",
+                        "De man rent heel hard.",
+                        "De vrouw heeft een koffer bij het spoor.",
+                        "Ik zie een bus."
+                    ]
+                }
+            }
+        ];
+
+        // Save and Load settings
+        function saveWebhookUrl(val) {
+            localStorage.setItem('toetsen_webhook_url', val.trim());
+        }
+
+        function loadSettings() {
+            const url = localStorage.getItem('toetsen_webhook_url') || "";
+            document.getElementById('webhook-url-input').value = url;
+        }
+
+        const themesInfo = {
+            thema1: { name: "Thema 1 — Hallo", key: "toets_thema1_submissions" },
+            thema2: { name: "Thema 2 — De school", key: "toets_thema2_submissions" },
+            thema3: { name: "Thema 3 — Wonen", key: "toets_thema3_submissions" },
+            thema4: { name: "Thema 4 — Eten", key: "toets_thema4_submissions" },
+            thema5: { name: "Thema 5 — De dokter", key: "toets_thema5_submissions" },
+            thema6: { name: "Thema 6 — Kleding", key: "toets_thema6_submissions" },
+            thema7: { name: "Thema 7 — Reizen", key: "toets_thema7_submissions" },
+            thema8: { name: "Thema 8 — Vrije tijd", key: "toets_thema8_submissions" }
+        };
+
+        function initializeSubmissions() {
+            allSubmissions = {};
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const storageKey = themesInfo[themeKey].key;
+                let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                
+                // Pre-populate Theme 7 with mock data if completely empty
+                if (t === 7 && subs.length === 0) {
+                    localStorage.setItem(storageKey, JSON.stringify(mockSubmissions));
+                    subs = mockSubmissions;
+                }
+                allSubmissions[themeKey] = subs;
+            }
+            updateList();
+        }
+
+        function updateList() {
+            const container = document.getElementById('submissions-container');
+            container.innerHTML = '';
+            
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const themeName = themesInfo[themeKey].name;
+                const subs = allSubmissions[themeKey] || [];
+                const count = subs.length;
+                
+                const header = document.createElement('div');
+                header.className = `theme-group-header ${count > 0 ? 'has-items' : ''}`;
+                header.innerHTML = `
+                    <span>${themeName}</span>
+                    <span class="theme-badge">${count}</span>
+                `;
+                container.appendChild(header);
+                
+                if (count === 0) {
+                    const noSubs = document.createElement('div');
+                    noSubs.className = 'no-submissions';
+                    noSubs.textContent = 'Geen inzendingen';
+                    container.appendChild(noSubs);
+                } else {
+                    subs.forEach((sub, idx) => {
+                        const card = document.createElement('div');
+                        card.className = `submission-card ${selectedTheme === themeKey && selectedSubIndex === idx ? 'selected' : ''}`;
+                        card.onclick = () => selectSubmission(themeKey, idx);
+                        
+                        card.innerHTML = `
+                            <div class="student-name">${sub.name}</div>
+                            <div class="timestamp">📅 ${sub.date} om ${sub.time}</div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            }
+        }
+
+        function clearAllSubmissions() {
+            if (confirm("Weet u zeker dat u alle opgeslagen inzendingen van ALLE thema's wilt wissen uit de browser? Dit wist ook de mock-inzendingen.")) {
+                for (let t = 1; t <= 8; t++) {
+                    const themeKey = `thema${t}`;
+                    const storageKey = themesInfo[themeKey].key;
+                    localStorage.removeItem(storageKey);
+                }
+                selectedTheme = null;
+                selectedSubIndex = null;
+                initializeSubmissions();
+                document.getElementById('main-content-panel').innerHTML = `
+                    <div class="empty-state">
+                        🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
+                    </div>
+                `;
+            }
+        }
+
+        function selectSubmission(theme, idx) {
+            selectedTheme = theme;
+            selectedSubIndex = idx;
+            manualGrades = { 0: 3, 1: 3, 2: 3, 3: 3 }; // Reset writing grades
+            selectedLanguage = "nl"; // Reset feedback language
+            updateList();
+            renderReviewPanel();
+        }
+
+        // Automatic grading & rendering of the review panel
+        function renderReviewPanel() {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const panel = document.getElementById('main-content-panel');
+            
+            if (selectedTheme !== 'thema7') {
+                panel.innerHTML = `
+                    <div class="quiz-card">
+                        <h2>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> (${themesInfo[selectedTheme].name})</h2>
+                        <p style="margin-top: 15px; font-weight: 600; color: var(--text-secondary);">
+                            Voor dit thema is nog geen automatische nakijkfunctie geïmplementeerd. Hieronder staan de ingediende antwoorden:
+                        </p>
+                        <pre style="background:var(--bg); border: 1px solid var(--border-medium); padding:15px; border-radius:var(--radius-sm); overflow-x:auto; margin-top: 15px; color: var(--text-primary); font-family: monospace; font-size: 0.9rem;">
+${JSON.stringify(sub.answers, null, 2)}
+                        </pre>
+                    </div>
+                `;
+                return;
+            }
+            
+            let totalAutoScore = 0;
+            let maxAutoScore = 0;
+            
+            // 1. Grading Sections
+            // Luisteren (5 points)
+            let s1_html = '';
+            sub.answers.sec1.forEach((ans, i) => {
+                const correct = docentKeys.sec1[i];
+                const isCorrect = ans === correct;
+                const score = isCorrect ? 1.0 : 0.0;
+                totalAutoScore += score;
+                maxAutoScore += 1;
+                
+                const icon = isCorrect 
+                    ? `<span class="check-icon correct">✅</span>` 
+                    : `<span class="check-icon incorrect">❌</span>`;
+                s1_html += `
+                    <div class="qa-item">
+                        ${icon} <strong>Vraag ${i+1}:</strong> ${docentQuestions.sec1[i]}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Antwoord cursist: <span style="font-weight:700;">${ans}</span> ${!isCorrect ? `(Juist: ${correct})` : ''}
+                    </div>
+                `;
+            });
+
+            // Lezen (5 points)
+            let s2_html = '';
+            sub.answers.sec2.forEach((ans, i) => {
+                const correct = docentKeys.sec2[i];
+                const isCorrect = ans === correct;
+                const score = isCorrect ? 1.0 : 0.0;
+                totalAutoScore += score;
+                maxAutoScore += 1;
+                
+                const icon = isCorrect 
+                    ? `<span class="check-icon correct">✅</span>` 
+                    : `<span class="check-icon incorrect">❌</span>`;
+                s2_html += `
+                    <div class="qa-item">
+                        ${icon} <strong>Vraag ${i+1}:</strong> ${docentQuestions.sec2[i]}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Antwoord cursist: <span style="font-weight:700;">${ans}</span> ${!isCorrect ? `(Juist: ${correct})` : ''}
+                    </div>
+                `;
+            });
+
+            // Grammatica (10 points)
+            let s3_html = '';
+            sub.answers.sec3.forEach((ans, i) => {
+                const correctList = docentKeys.sec3[i];
+                const res = checkCorrectness(ans, correctList, 1.0);
+                totalAutoScore += res.score;
+                maxAutoScore += 1;
+                
+                let icon = '';
+                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
+                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
+                else icon = `<span class="check-icon incorrect">❌</span>`;
+                
+                s3_html += `
+                    <div class="qa-item">
+                        ${icon} <strong>Zin ${i+1}:</strong> ${docentQuestions.sec3[i]}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"${ans || '(geen antwoord)'}"</span> 
+                        ${res.status !== "correct" ? `(Juist: ${correctList.join('/')})` : ''} 
+                        <span class="badge-score">${res.score}/1 pt</span>
+                    </div>
+                `;
+            });
+
+            // Bezittelijk (5 items x 3 points = 15 points)
+            let s4_html = '';
+            sub.answers.sec4.forEach((ans, i) => {
+                const correctList = docentKeys.sec4[i];
+                const res = checkCorrectness(ans, correctList, 3.0);
+                totalAutoScore += res.score;
+                maxAutoScore += 3;
+                
+                let icon = '';
+                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
+                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
+                else icon = `<span class="check-icon incorrect">❌</span>`;
+                
+                s4_html += `
+                    <div class="qa-item">
+                        ${icon} <strong>Zin ${i+1}:</strong> ${docentQuestions.sec4[i]}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"Het ${ans || '(geen antwoord)'}"</span> 
+                        ${res.status !== "correct" ? `(Juist: Het ${correctList.join(' / Het ')})` : ''}
+                        <span class="badge-score">${res.score}/3 pt</span>
+                    </div>
+                `;
+            });
+
+            // Woordenschat (10 items x 3 points = 30 points)
+            let s5_html = '';
+            sub.answers.sec5.forEach((ans, i) => {
+                const correctList = docentKeys.sec5[i];
+                const res = checkCorrectness(ans, correctList, 3.0);
+                totalAutoScore += res.score;
+                maxAutoScore += 3;
+                
+                let icon = '';
+                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
+                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
+                else icon = `<span class="check-icon incorrect">❌</span>`;
+                
+                s5_html += `
+                    <div class="qa-item">
+                        ${icon} <strong>Plaatje ${i+1}:</strong> ${docentQuestions.sec5[i]}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"${ans || '(geen antwoord)'}"</span> 
+                        ${res.status !== "correct" ? `(Juist: ${correctList.join('/')})` : ''}
+                        <span class="badge-score">${res.score}/3 pt</span>
+                    </div>
+                `;
+            });
+
+            // Section 6 (Schrijven Open Vragen - 4 sentences x 3 points = 12 points)
+            let s6_html = '';
+            sub.answers.sec6.forEach((ans, i) => {
+                const currentScore = manualGrades[i];
+                s6_html += `
+                    <div class="qa-item">
+                        <strong>Zin ${i+1}:</strong> <span style="font-weight:700; font-style:italic;">"${ans || '(geen antwoord)'}"</span>
+                        <div style="margin-top: 8px; display:flex; align-items:center; gap:10px;">
+                            <label style="font-size:0.8rem; font-weight:700;">Beoordeling:</label>
+                            <select class="writing-grade-select" onchange="updateWritingGrade(${i}, this.value)">
+                                <option value="3" ${currentScore === 3 ? 'selected' : ''}>3 pt (Perfecte zin)</option>
+                                <option value="2" ${currentScore === 2 ? 'selected' : ''}>2 pt (Begrijpelijk/Spellingfout)</option>
+                                <option value="1" ${currentScore === 1 ? 'selected' : ''}>1 pt (Zeer matig)</option>
+                                <option value="0" ${currentScore === 0 ? 'selected' : ''}>0 pt (Fout/Incompleet)</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Calculate grand totals
+            const totalWritingScore = Object.values(manualGrades).reduce((sum, v) => sum + v, 0);
+            const totalScore = Math.round((totalAutoScore + totalWritingScore) * 10) / 10;
+            const maxScore = maxAutoScore + 12; // 35 points total if scaled, but raw points in docent PDF:
+            // S1 (5) + S2 (5) + S3 (10) + S4 (15) + S5 (30) + S6 (12) = 77 points total!
+            // Let's display both the raw score and a scaled percentage
+            const percentage = Math.round((totalScore / 77) * 100);
+            
+            panel.innerHTML = `
+                <div class="quiz-card" style="margin-bottom: 0;">
+                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px;">
+                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong></span>
+                        <span class="score-pill" style="font-size:1rem; padding: 6px 14px; background-color:#8b7ef8;">
+                            Score: ${String(totalScore).replace('.', ',')}/77 pt (${percentage}%)
+                        </span>
+                    </h2>
+                    
+                    <div class="results-grid">
+                        <!-- Left column: Q&A Grading details -->
+                        <div style="max-height: 700px; overflow-y: auto; padding-right: 10px;">
+                            
+                            <div class="section-header-bar">1. Luisteren (${sub.answers.sec1.filter((ans, i) => ans === docentKeys.sec1[i]).length}/5 pt)</div>
+                            ${s1_html}
+                            
+                            <div class="section-header-bar">2. Lezen (${sub.answers.sec2.filter((ans, i) => ans === docentKeys.sec2[i]).length}/5 pt)</div>
+                            ${s2_html}
+                            
+                            <div class="section-header-bar">3. Grammatica (Vorm van kunnen/mogen)</div>
+                            ${s3_html}
+                            
+                            <div class="section-header-bar">4. Bezittelijk voornaamwoord (Zinnen schrijven)</div>
+                            ${s4_html}
+                            
+                            <div class="section-header-bar">5. Woordenschat (Plaatjes invullen)</div>
+                            ${s5_html}
+                            
+                            <div class="section-header-bar">6. Schrijven / Spreken (Praatplaat - ${totalWritingScore}/12 pt)</div>
+                            ${s6_html}
+                        </div>
+                        
+                        <!-- Right column: AI Feedback Generator -->
+                        <div style="display:flex; flex-direction:column; gap:15px; border-left:1px solid var(--border-medium); padding-left:20px;">
+                            <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 Gemini AI Feedback Generator</h3>
+                            <span class="instruction-text" style="margin-bottom:5px;">
+                                Analyseer de fouten van ${sub.name} en genereer direct een gepersonaliseerde, bemoedigende feedbackbrief in het Nederlands.
+                            </span>
+                            
+                            <button class="settings-btn" id="generate-ai-btn" style="width:100%; padding:12px; background:var(--primary);" onclick="generateAIFeedback()">
+                                ✨ Genereer AI Feedbackbrief
+                            </button>
+                            
+                            <div class="translate-bar" id="translation-controls" style="display:none;">
+                                <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Vertaal brief:</span>
+                                <button class="translate-btn ${selectedLanguage === 'nl' ? 'active' : ''}" onclick="switchFeedbackLanguage('nl')">🇳🇱 NL</button>
+                                <button class="translate-btn ${selectedLanguage === 'en' ? 'active' : ''}" onclick="switchFeedbackLanguage('en')">🇬🇧 EN</button>
+                                <button class="translate-btn ${selectedLanguage === 'ar' ? 'active' : ''}" onclick="switchFeedbackLanguage('ar')">🇸🇦 AR</button>
+                                <button class="translate-btn ${selectedLanguage === 'tr' ? 'active' : ''}" onclick="switchFeedbackLanguage('tr')">🇹🇷 TR</button>
+                                <button class="translate-btn ${selectedLanguage === 'fa' ? 'active' : ''}" onclick="switchFeedbackLanguage('fa')">🇮🇷 FA</button>
+                                <button class="translate-btn ${selectedLanguage === 'da' ? 'active' : ''}" onclick="switchFeedbackLanguage('da')">🇦🇫 DA</button>
+                                <button class="translate-btn ${selectedLanguage === 'ps' ? 'active' : ''}" onclick="switchFeedbackLanguage('ps')">🇦🇫 PS</button>
+                            </div>
+                            
+                            <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." oninput="updateStoredFeedback(this.value)"></textarea>
+                            
+                            <div class="action-row">
+                                <button class="action-btn purple" onclick="copyFeedbackText()">📋 Kopieer tekst</button>
+                                <button class="action-btn green" onclick="sendFeedbackWhatsApp()">📲 Stuur naar student</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Restore textarea state if already generated
+            if (generatedFeedbacks[sub.name]) {
+                document.getElementById('translation-controls').style.display = 'flex';
+                showActiveFeedbackText();
+            }
+        }
+
+        function updateWritingGrade(idx, val) {
+            manualGrades[idx] = parseInt(val);
+            renderReviewPanel();
+        }
+
+        function updateStoredFeedback(val) {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            if (!sub) return;
+            
+            if (!generatedFeedbacks[sub.name]) {
+                generatedFeedbacks[sub.name] = {};
+            }
+            // Update the translation slot currently active
+            generatedFeedbacks[sub.name][selectedLanguage] = val;
+        }
+
+        // --- GEMINI AI FEEDBACK GENERATION ---
+        async function generateAIFeedback() {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const btn = document.getElementById('generate-ai-btn');
+            const textarea = document.getElementById('feedback-textarea');
+            
+            btn.disabled = true;
+            btn.textContent = "⏳ Analyseren en schrijven...";
+            textarea.value = "Gemini is bezig met het nakijken van de antwoorden en het schrijven van de brief...";
+            
+            try {
+                // Collect detailed error details for the prompt
+                let errorsText = "";
+                
+                // Section 3 checking
+                sub.answers.sec3.forEach((ans, i) => {
+                    const corr = docentKeys.sec3[i];
+                    const res = checkCorrectness(ans, corr);
+                    if (res.status !== "correct") {
+                        errorsText += `- Grammatica Vraag ${i+1}: schreef "${ans || 'niks'}" (moet zijn: ${corr[0]})\n`;
+                    }
+                });
+                
+                // Section 4 checking
+                sub.answers.sec4.forEach((ans, i) => {
+                    const corr = docentKeys.sec4[i];
+                    const res = checkCorrectness(ans, corr, 3.0);
+                    if (res.status !== "correct") {
+                        errorsText += `- Bezittelijk Vraag ${i+1}: schreef "Het ${ans || 'niks'}" (moet zijn: Het ${corr[0]})\n`;
+                    }
+                });
+
+                // Section 5 checking
+                sub.answers.sec5.forEach((ans, i) => {
+                    const corr = docentKeys.sec5[i];
+                    const res = checkCorrectness(ans, corr, 3.0);
+                    if (res.status !== "correct") {
+                        errorsText += `- Woordenschat Plaatje ${i+1} (${docentQuestions.sec5[i]}): schreef "${ans || 'niks'}" (moet zijn: ${corr[0]})\n`;
+                    }
+                });
+                
+                // Section 6 sentences
+                let writingText = "";
+                sub.answers.sec6.forEach((ans, i) => {
+                    writingText += `- Zin ${i+1}: "${ans || '(geen zin)'}" (Beoordeeld met ${manualGrades[i]}/3 punten door docent)\n`;
+                });
+                
+                // Construct Gemini Prompt
+                const prompt = `
+                Je bent een NT2 A1 docent Nederlands. Schrijf een persoonlijke, bemoedigende en professionele feedbackbrief voor de cursist genaamd "${sub.name}".
+                De cursist heeft Toets Thema 7 (Reizen en Vervoer) gemaakt.
+                
+                Hier zijn de details van hun toets:
+                - Naam: ${sub.name}
+                - Score op luisteren: ${sub.answers.sec1.filter((ans, i) => ans === docentKeys.sec1[i]).length}/5
+                - Score op lezen: ${sub.answers.sec2.filter((ans, i) => ans === docentKeys.sec2[i]).length}/5
+                - Fouten en spellingproblemen in grammatica, bezittelijke voornaamwoorden en woordenschat:
+                ${errorsText || "Geen grote fouten in deze secties!"}
+                
+                - Schrijfvaardigheid zinnen (Sectie 6 - Praatplaat):
+                ${writingText}
+                
+                Richtlijnen voor de brief:
+                1. Schrijf de brief volledig in het Nederlands (NT2 A1/A2 niveau, helder en eenvoudig, maar wel natuurlijk).
+                2. Begin met "Beste ${sub.name}," en sluit af met "Met vriendelijke groet, [Je naam]".
+                3. Wees erg positief en bemoedigend! Zeg eerst wat er heel goed ging (bijvoorbeeld hun luister/leesscore of grammatica).
+                4. Geef daarna constructieve en duidelijke leertips over de gemaakte fouten (bijvoorbeeld het verschil tussen 'kunnen' en 'mogen' of spelling van reiswoorden).
+                5. Beoordeel de schrijfvaardigheidszinnen kort en geef tips om de zinnen te verbeteren indien er fouten inzitten (bijv. "geel trein" moet zijn "gele trein").
+                6. Houd de toon warm, empathisch en bemoedigend. Geef geen cijfer in de brief, maar motiveer ze.
+                
+                Geef uitsluitend de tekst van de brief terug.
+                `;
+                
+                const responseText = await callGemini(prompt);
+                
+                // Save original feedback
+                generatedFeedbacks[sub.name] = {
+                    nl: responseText.trim()
+                };
+                
+                document.getElementById('translation-controls').style.display = 'flex';
+                selectedLanguage = "nl";
+                showActiveFeedbackText();
+                
+            } catch (err) {
+                console.error("Gemini API Error:", err);
+                textarea.value = `Fout bij genereren van AI feedback: ${err.message}\n\nControleer of de Gemini API-sleutel correct is ingesteld in api_key.js en je verbinding hebt met het internet.`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "✨ Genereer AI Feedbackbrief";
+            }
+        }
+
+        // Translate the generated feedback using Gemini
+        async function translateFeedback(targetLangCode, targetLangName) {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const textarea = document.getElementById('feedback-textarea');
+            const origFeedback = generatedFeedbacks[sub.name]?.nl;
+            
+            if (!origFeedback) return;
+            
+            textarea.value = `Vertalen naar het ${targetLangName}...`;
+            
+            try {
+                const prompt = `
+                Vertaal de onderstaande Nederlandse feedbackbrief van een docent naar het ${targetLangName}. 
+                Behoud de opmaak, de alinea's en de vriendelijke, bemoedigende toon. 
+                De vertaling moet natuurlijk en accuraat klinken in het ${targetLangName}.
+                
+                Brief om te vertalen:
+                """
+                ${origFeedback}
+                """
+                
+                Geef uitsluitend de vertaling terug.
+                `;
+                
+                const translatedText = await callGemini(prompt);
+                generatedFeedbacks[sub.name][targetLangCode] = translatedText.trim();
+                showActiveFeedbackText();
+            } catch (err) {
+                console.error("Translation Error:", err);
+                textarea.value = `Fout bij vertalen: ${err.message}\n\nOriginele brief:\n\n${origFeedback}`;
+            }
+        }
+
+        function switchFeedbackLanguage(lang) {
+            selectedLanguage = lang;
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            if (!sub) return;
+            
+            // Mark the active language button
+            document.querySelectorAll('.translate-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Search for active button
+            const btns = document.querySelectorAll('.translate-btn');
+            btns.forEach(b => {
+                if (b.textContent.toLowerCase().includes(lang)) {
+                    b.classList.add('active');
+                }
+            });
+            
+            // If already translated/generated, display it
+            if (generatedFeedbacks[sub.name] && generatedFeedbacks[sub.name][lang]) {
+                showActiveFeedbackText();
+            } else {
+                // Otherwise translate it now!
+                const langNames = {
+                    en: "Engels", ar: "Arabisch", tr: "Turks",
+                    fa: "Farsi", da: "Dari", ps: "Pasjtoe"
+                };
+                translateFeedback(lang, langNames[lang]);
+            }
+        }
+
+        function showActiveFeedbackText() {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const textarea = document.getElementById('feedback-textarea');
+            if (generatedFeedbacks[sub.name] && generatedFeedbacks[sub.name][selectedLanguage]) {
+                textarea.value = generatedFeedbacks[sub.name][selectedLanguage];
+            } else {
+                textarea.value = "";
+            }
+        }
+
+        async function callGemini(promptText) {
+            const apiKey = window.GEMINI_API_KEY;
+            if (!apiKey || apiKey.includes("YOUR-")) {
+                throw new Error("Gemini API-sleutel is niet ingesteld in api_key.js");
+            }
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: promptText }]
+                    }]
+                })
+            });
+            const result = await response.json();
+            if (result.candidates && result.candidates[0] && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                return result.candidates[0].content.parts[0].text;
+            } else if (result.error) {
+                throw new Error(result.error.message);
+            } else {
+                throw new Error("Ongeldig antwoord van Gemini API.");
+            }
+        }
+
+        // WhatsApp forwarding and copying
+        function copyFeedbackText() {
+            const textarea = document.getElementById('feedback-textarea');
+            if (!textarea || !textarea.value.trim()) {
+                alert("Geen feedbackbrief aanwezig om te kopiëren.");
+                return;
+            }
+            textarea.select();
+            document.execCommand('copy');
+            alert("Feedbackbrief gekopieerd naar klembord! 📋");
+        }
+
+        function sendFeedbackWhatsApp() {
+            const textarea = document.getElementById('feedback-textarea');
+            if (!textarea || !textarea.value.trim()) {
+                alert("Geen feedbackbrief aanwezig om te verzenden.");
+                return;
+            }
+            const encodedText = encodeURIComponent(textarea.value.trim());
+            const phone = "31626211106"; // Default recipient or student number if available
+            const url = `https://wa.me/${phone}?text=${encodedText}`;
+            window.open(url, '_blank');
+        }
+
+        // Fetch external submissions from Google Apps Script GET
+        function fetchExternalSubmissions() {
+            const url = localStorage.getItem('toetsen_webhook_url');
+            if (!url) {
+                alert("Vul alstublieft eerst de Apps Script GET URL in om te kunnen synchroniseren.");
+                return;
+            }
+            
+            alert("Start synchronisatie met Google Sheets...");
+            // Real integration: GET request to script URL which returns spreadsheet data as JSON
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    // Update LocalStorage and reload
+                    localStorage.setItem('toets_thema7_submissions', JSON.stringify(data));
+                    allSubmissions['thema7'] = data;
+                    selectedTheme = null;
+                    selectedSubIndex = null;
+                    updateList();
+                    alert(`Succesvol ${data.length} inzendingen geladen uit Google Sheets!`);
+                } else {
+                    alert("Foutief antwoordformaat van Google Sheets. Verwachtte een array van submissions.");
+                }
+            })
+            .catch(err => {
+                console.error("Fetch submissions error:", err);
+                alert(`Fout bij laden van Google Sheets: ${err.message}. Controleer of je Apps Script doGet(e) hebt geïmplementeerd en de URL klopt.`);
+            });
+        }
+
+        // --- MANUAL WHATSAPP IMPORT BACKUP FEATURE ---
+        function toggleImportArea() {
+            const area = document.getElementById('import-area');
+            if (area.style.display === 'none' || area.style.display === '') {
+                area.style.display = 'block';
+                document.getElementById('import-textarea').focus();
+            } else {
+                area.style.display = 'none';
+                document.getElementById('import-textarea').value = '';
+            }
+        }
+
+        function parseWhatsAppMessage(text) {
+            if (!text) return null;
+            
+            // Clean up formatting bold markers that WhatsApp/markdown uses
+            const cleanText = text.replace(/\*/g, '');
+            
+            // Extract Name
+            const nameMatch = cleanText.match(/Naam:\s*(.*)/i);
+            const name = nameMatch ? nameMatch[1].trim() : "Onbekende Cursist";
+            
+            // Extract Date and Time
+            const dateMatch = cleanText.match(/Datum:\s*([^\s]*)/i);
+            const date = dateMatch ? dateMatch[1].trim() : new Date().toLocaleDateString('nl-NL');
+            
+            const timeMatch = cleanText.match(/om\s*([0-9:]*)/i);
+            const time = timeMatch ? timeMatch[1].trim() : new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+            
+            // Detect theme
+            let theme = "thema7"; // default
+            if (cleanText.toLowerCase().includes("thema 7")) {
+                theme = "thema7";
+            }
+            
+            const answers = {
+                sec1: [],
+                sec2: [],
+                sec3: [],
+                sec4: [],
+                sec5: [],
+                sec6: []
+            };
+            
+            const lines = cleanText.split('\n');
+            let currentSec = null;
+            
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                const lower = trimmed.toLowerCase();
+                
+                if (lower.includes("1. luisteren")) {
+                    currentSec = "sec1";
+                } else if (lower.includes("2. lezen")) {
+                    currentSec = "sec2";
+                } else if (lower.includes("3. grammatica")) {
+                    currentSec = "sec3";
+                } else if (lower.includes("4. bezittelijk") || lower.includes("4. voornaamwoord") || lower.includes("4. geef antwoord")) {
+                    currentSec = "sec4";
+                } else if (lower.includes("5. woordenschat") || (lower.includes("5. vul in") && !lower.includes("3. vul in"))) {
+                    currentSec = "sec5";
+                } else if (lower.includes("6. schrijven") || lower.includes("6. open") || lower.includes("6. wat zie je")) {
+                    currentSec = "sec6";
+                } else if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
+                    const colonIndex = trimmed.indexOf(':');
+                    if (colonIndex !== -1) {
+                        let ansVal = trimmed.substring(colonIndex + 1).trim();
+                        
+                        if (currentSec === "sec1" || currentSec === "sec2") {
+                            answers[currentSec].push(ansVal);
+                        } else if (currentSec === "sec3") {
+                            answers[currentSec].push(ansVal);
+                        } else if (currentSec === "sec4") {
+                            if (ansVal.toLowerCase().startsWith("het ")) {
+                                ansVal = ansVal.substring(4).trim();
+                            }
+                            answers[currentSec].push(ansVal);
+                        } else if (currentSec === "sec5") {
+                            answers[currentSec].push(ansVal);
+                        } else if (currentSec === "sec6") {
+                            ansVal = ansVal.replace(/^["']|["']$/g, '').trim();
+                            answers[currentSec].push(ansVal);
+                        }
+                    }
+                }
+            });
+            
+            // Pad answers to standard length if empty/missing
+            while (answers.sec1.length < 5) answers.sec1.push("-");
+            while (answers.sec2.length < 5) answers.sec2.push("-");
+            while (answers.sec3.length < 10) answers.sec3.push("-");
+            while (answers.sec4.length < 5) answers.sec4.push("-");
+            while (answers.sec5.length < 10) answers.sec5.push("-");
+            while (answers.sec6.length < 4) answers.sec6.push("-");
+            
+            return {
+                name,
+                date,
+                time,
+                theme,
+                answers
+            };
+        }
+
+        function importWhatsAppSub() {
+            const textarea = document.getElementById('import-textarea');
+            const text = textarea.value.trim();
+            if (!text) {
+                alert("Plak eerst het WhatsApp bericht in het tekstvak.");
+                return;
+            }
+            
+            const parsed = parseWhatsAppMessage(text);
+            if (!parsed) {
+                alert("Kan het bericht niet herkennen. Zorg ervoor dat het een origineel antwoordbericht is.");
+                return;
+            }
+            
+            const storageKey = themesInfo[parsed.theme].key;
+            try {
+                let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                subs.push(parsed);
+                localStorage.setItem(storageKey, JSON.stringify(subs));
+                
+                // Update in-memory
+                allSubmissions[parsed.theme] = subs;
+                
+                // Close import area
+                toggleImportArea();
+                
+                // Refresh list and select the newly imported submission
+                updateList();
+                selectSubmission(parsed.theme, subs.length - 1);
+                
+                alert(`Succesvol toets handmatig geïmporteerd voor: ${parsed.name}!`);
+            } catch (e) {
+                console.error("Fout bij importeren:", e);
+                alert("Fout bij opslaan van handmatige invoer.");
+            }
+        }
+
+        // Document Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            initializeSubmissions();
+        });
+    </script>
+</body>
+</html>
