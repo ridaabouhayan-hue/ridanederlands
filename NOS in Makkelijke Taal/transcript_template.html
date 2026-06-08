@@ -8,6 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Link naar ons nieuwe vaste CSS bestand -->
     <link rel="stylesheet" href="transcript_style.css">
+    <style>
+        /* Afgeleide woorden: basisvorm tonen in tooltip */
+        .tooltip-root {
+            display: block;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            font-size: 0.78em;
+            font-style: italic;
+            opacity: 0.88;
+        }
+    </style>
 </head>
 <body>
 
@@ -133,20 +145,23 @@
         word.appendChild(tooltip);
 
         word.addEventListener('click', (e) => {
-            e.stopPropagation(); // Voorkom dat klik ergens anders wordt geregistreerd
-            
-            // Sluit alle andere open tooltips
+            e.stopPropagation();
+
             vocabWords.forEach(w => {
                 if (w !== word) w.classList.remove('show-tooltip');
             });
 
-            if (currentLang === 'nl') {
-                return; // Geen vertaling als 'nl' is geselecteerd
-            }
+            if (currentLang === 'nl') return;
 
             const translation = word.getAttribute('data-' + currentLang);
             if (translation) {
-                tooltip.textContent = translation;
+                // Afgeleide woorden: toon basisvorm als data-root aanwezig is
+                const root = word.getAttribute('data-root');
+                if (root) {
+                    tooltip.innerHTML = translation + '<span class="tooltip-root">📖 ' + root + '</span>';
+                } else {
+                    tooltip.textContent = translation;
+                }
                 word.classList.toggle('show-tooltip');
             }
         });
