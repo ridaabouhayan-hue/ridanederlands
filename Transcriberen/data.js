@@ -438,7 +438,4637 @@ window.geminiData = {
   "NS": [],
   "B-A1": [],
   "B-A2": [],
-  "B-Alfa": [],
+  "B-Alfa": [
+    {
+      "filename": "Birgul Dursel 27-5.ogg",
+      "path": "B-Alfa/Birgul Dursel 27-5.ogg",
+      "date": "27-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Mijn naam is Dursa.",
+            "zin_correct": "Mijn naam is Birgül.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Dursa",
+              "uitleg": "Je noemt een naam die niet overeenkomt met je officiële voornaam (Birgül), of je spreekt je eigen naam onduidelijk uit."
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Mijn achternaam Temeldoman.",
+            "zin_correct": "Mijn achternaam is Temeldoman.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mijn achternaam Temeldoman",
+              "uitleg": "Het koppelwerkwoord 'is' ontbreekt in deze zin."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Nieuwenburgstraat.",
+            "zin_correct": "Mijn adres is Nieuwenburgstraat.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Nieuwenburgstraat",
+              "uitleg": "Dit is een los woord. Probeer altijd een hele zin te maken, zoals: 'Ik woon in de Nieuwenburgstraat' of 'Mijn adres is Nieuwenburgstraat'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Zes drie... KH... postcode.",
+            "zin_correct": "Mijn postcode is zesenvijftig dertien KH.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Zes drie",
+              "uitleg": "De cijfers van de postcode worden niet volledig of correct uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Zes drie KH postcode",
+              "uitleg": "Dit zijn losse woorden. Maak er een lopende zin van: 'Mijn postcode is...'"
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Zes drie",
+              "uitleg": "Een postcode in Eindhoven begint meestal met 56 (zesenvijftig). 'Zes drie' is geen bestaande postcodecombinatie voor deze regio."
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Eindhoven.",
+            "zin_correct": "Ik woon in de gemeente Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Eindhoven",
+              "uitleg": "Dit is een los woord. Geef antwoord in een hele zin: 'Ik woon in Eindhoven.'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Van Sebastian.",
+            "zin_correct": "Mijn contactpersoon is Sebastian.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Van Sebastian",
+              "uitleg": "Het gebruik van het voorzetsel 'van' is hier overbodig en grammaticaal onjuist."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Van Sebastian",
+              "uitleg": "Door 'van' te gebruiken klinkt het alsof de contactpersoon toebehoort aan Sebastian, in plaats van dat Sebastian zelf de contactpersoon is."
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "December vijftig... negentien...",
+            "zin_correct": "Mijn geboortedatum is vijftien december negentien tachtig.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "vijftig",
+              "uitleg": "Je spreekt waarschijnlijk 'vijftien' uit als 'vijftig', wat verwarrend is voor een datum."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "December vijftig negentien",
+              "uitleg": "In het Nederlands noemen we eerst de dag, dan de maand en dan het jaar. Daarnaast ontbreekt de rest van de zin."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "December vijftig",
+              "uitleg": "Een maand heeft maximaal 31 dagen, dus 'december 50' bestaat niet. Je bedoelde waarschijnlijk 'vijftien december'."
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Vier... dertig... veertig.",
+            "zin_correct": "Ik ben drieënveertig jaar oud.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Vier dertig veertig",
+              "uitleg": "De getallen worden aarzelend en los van elkaar uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Vier dertig veertig",
+              "uitleg": "Dit is geen grammaticale zin. Gebruik de structuur: 'Ik ben [leeftijd] jaar oud.'"
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Vier dertig veertig",
+              "uitleg": "Het is onduidelijk hoe oud je bent omdat je verschillende getallen achter elkaar noemt."
+            }
+          },
+          {
+            "spreker": "Birgül Dursel",
+            "zin_fonetisch": "Uit Turkije.",
+            "zin_correct": "Ik kom uit Turkije.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Uit Turkije",
+              "uitleg": "Dit is een korte woordgroep. Maak er een volledige zin van: 'Ik kom uit Turkije.'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Birgül Dursel",
+            "brief": "Hallo Birgül! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Mijn naam is Dursa.\"\n👍 *Wat was goed:* Je uitspraak van deze zin is heel duidelijk en verstaanbaar.\n💡 *Correctie:* \"Mijn naam is Birgül.\"\n🧠 *Waarom:* Je grammatica is goed, maar let op dat je je eigen naam correct uitspreekt zodat de luisteraar je meteen begrijpt.\n🤔 *Logica:* Je noemt een naam die niet helemaal overeenkomt met je officiële naam.\n\n*Zin 2:* \"Mijn achternaam Temeldoman.\"\n👍 *Wat was goed:* Je spreekt je achternaam heel netjes uit.\n💡 *Correctie:* \"Mijn achternaam is Temeldoman.\"\n🧠 *Waarom:* In het Nederlands heb je altijd een werkwoord nodig in de zin. Hier moet het woordje *is* tussen.\n\n*Zin 3:* \"Nieuwenburgstraat.\"\n👍 *Wat was goed:* De straatnaam is goed te verstaan.\n💡 *Correctie:* \"Mijn adres is Nieuwenburgstraat.\"\n🧠 *Waarom:* Probeer losse woorden te vermijden en antwoord te geven in een hele zin.\n\n*Zin 4:* \"Zes drie... KH... postcode.\"\n👍 *Wat was goed:* Je probeert de letters van je postcode netjes te spellen.\n💡 *Correctie:* \"Mijn postcode is zesenvijftig dertien KH.\"\n🧠 *Waarom:* Een postcode in Eindhoven begint meestal met 56. Probeer de getallen als één geheel uit te spreken in plaats van losse cijfers.\n🤔 *Logica:* 'Zes drie' is geen logische start voor een postcode in Eindhoven.\n\n*Zin 5:* \"Eindhoven.\"\n👍 *Wat was goed:* Je spreekt de naam van de stad heel duidelijk uit.\n💡 *Correctie:* \"Ik woon in de gemeente Eindhoven.\"\n🧠 *Waarom:* Geef antwoord met een hele zin om je Nederlands te verbeteren.\n\n*Zin 6:* \"Van Sebastian.\"\n👍 *Wat was goed:* De naam Sebastian is heel duidelijk uitgesproken.\n💡 *Correctie:* \"Mijn contactpersoon is Sebastian.\"\n🧠 *Waarom:* Het woordje *van* hoort hier niet te staan. Je zegt gewoon direct de naam.\n🤔 *Logica:* Door 'van' te gebruiken klinkt het alsof de contactpersoon van Sebastian is, in plaats van dat hij het zelf is.\n\n*Zin 7:* \"December vijftig... negentien...\"\n👍 *Wat was goed:* Je probeert de maand en het jaartal te noemen.\n💡 *Correctie:* \"Mijn geboortedatum is vijftien december negentien tachtig.\"\n🧠 *Waarom:* In het Nederlands zeggen we eerst de dag en dan pas de maand. Let ook op het verschil tussen *vijftien* (15) en *vijftig* (50).\n🤔 *Logica:* December heeft maar 31 dagen, dus 'december 50' kan niet kloppen.\n\n*Zin 8:* \"Vier... dertig... veertig.\"\n👍 *Wat was goed:* Je probeert zelf je leeftijd te corrigeren.\n💡 *Correctie:* \"Ik ben drieënveertig jaar oud.\"\n🧠 *Waarom:* Getallen in het Nederlands kunnen lastig zijn. Oefen extra met de tientallen en de volgorde (eerst de eenheden, dan de tientallen).\n🤔 *Logica:* Het is voor de luisteraar nu verwarrend hoe oud je precies bent.\n\n*Zin 9:* \"Uit Turkije.\"\n👍 *Wat was goed:* Je uitspraak van 'Turkije' is heel goed.\n💡 *Correctie:* \"Ik kom uit Turkije.\"\n🧠 *Waarom:* Maak er een mooie, complete zin van met een onderwerp en een werkwoord.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je geeft vaak antwoord met losse woorden of korte zinnen. Probeer altijd een hele zin te maken met een onderwerp en een werkwoord (zoals *is* of *kom*).\n• *Uitspraak:* Je uitspraak van losse woorden is over het algemeen prima en verstaanbaar. Let wel goed op het verschil tussen getallen zoals *vijftien* en *vijftig*.\n• *Samenhang & Logica:* Soms raak je in de war met getallen (postcode, geboortedatum en leeftijd), waardoor de informatie inhoudelijk niet helemaal klopt.\n\n🧠 *Jouw volgende stap & advies:*\nNeem de tijd om rustig na te denken over getallen in het Nederlands. Oefen vooral met het uitspreken van je geboortejaar en je leeftijd in hele zinnen. Je bent op de goede weg, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Birgül! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Mijn naam is Dursa.\"\n👍 *What was good:* Your pronunciation of this sentence is very clear and understandable.\n💡 *Correction:* \"Mijn naam is Birgül.\"\n🧠 *Why:* Your grammar is correct, but make sure to pronounce your own name clearly so the listener understands you immediately.\n🤔 *Logic:* You mentioned a name that does not match your official first name.\n\n*Sentence 2:* \"Mijn achternaam Temeldoman.\"\n👍 *What was good:* You pronounce your last name very well.\n💡 *Correction:* \"Mijn achternaam is Temeldoman.\"\n🧠 *Why:* In Dutch, you always need a verb in the sentence. The word *is* should be added here.\n\n*Sentence 3:* \"Nieuwenburgstraat.\"\n👍 *What was good:* The street name is easy to understand.\n💡 *Correction:* \"Mijn adres is Nieuwenburgstraat.\"\n🧠 *Why:* Try to avoid single words and answer in full sentences.\n\n*Sentence 4:* \"Zes drie... KH... postcode.\"\n👍 *What was good:* You try to spell the letters of your postcode nicely.\n💡 *Correction:* \"Mijn postcode is zesenvijftig dertien KH.\"\n🧠 *Why:* A postcode in Eindhoven usually starts with 56. Try to pronounce the numbers as a whole instead of separate digits.\n🤔 *Logic:* 'Zes drie' (63) is not a logical start for a postcode in Eindhoven.\n\n*Sentence 5:* \"Eindhoven.\"\n👍 *What was good:* You pronounce the name of the city very clearly.\n💡 *Correction:* \"Ik woon in de gemeente Eindhoven.\"\n🧠 *Why:* Answer with a full sentence to improve your Dutch.\n\n*Sentence 6:* \"Van Sebastian.\"\n👍 *What was good:* The name Sebastian is pronounced very clearly.\n💡 *Correction:* \"Mijn contactpersoon is Sebastian.\"\n🧠 *Why:* The word *van* does not belong here. You just say the name directly.\n🤔 *Logic:* By using 'van', it sounds like the contact person belongs to Sebastian, instead of him being the contact person himself.\n\n*Sentence 7:* \"December vijftig... negentien...\"\n👍 *What was good:* You try to mention the month and the year.\n💡 *Correction:* \"Mijn geboortedatum is vijftien december negentien tachtig.\"\n🧠 *Why:* In Dutch, we say the day first and then the month. Also, pay attention to the difference between *vijftien* (15) and *vijftig* (50).\n🤔 *Logic:* December only has 31 days, so 'december 50' cannot be correct.\n\n*Sentence 8:* \"Vier... dertig... veertig.\"\n👍 *What was good:* You try to correct your age yourself.\n💡 *Correction:* \"Ik ben drieënveertig jaar oud.\"\n🧠 *Why:* Numbers in Dutch can be tricky. Practice extra with the tens and the order (units first, then tens).\n🤔 *Logic:* It is currently confusing for the listener to know exactly how old you are.\n\n*Sentence 9:* \"Uit Turkije.\"\n👍 *What was good:* Your pronunciation of 'Turkije' is very good.\n💡 *Correction:* \"Ik kom uit Turkije.\"\n🧠 *Why:* Make it a nice, complete sentence with a subject and a verb.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You often answer with single words or short phrases. Try to always make a full sentence with a subject and a verb (like *is* or *kom*).\n• *Pronunciation:* Your pronunciation of individual words is generally fine and understandable. Do pay close attention to the difference between numbers like *vijftien* and *vijftig*.\n• *Coherence & Logic:* Sometimes you get confused with numbers (postcode, date of birth, and age), which makes the information factually incorrect.\n\n🧠 *Your next step & advice:*\nTake your time to think about numbers in Dutch. Practice especially with pronouncing your birth year and your age in full sentences. You are on the right track, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Dursel Birgul 20-5 Huis.ogg",
+      "path": "B-Alfa/Dursel Birgul 20-5 Huis.ogg",
+      "date": "20-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Woon jij eh in een huis of een appartement?",
+            "zin_correct": "Woon jij in een huis of in een appartement?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van de woorden is duidelijk en goed verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zin is grammaticaal correct, al is het herhalen van het voorzetsel 'in' ('of in een appartement') nog netter."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Ik woon eh een huis.",
+            "zin_correct": "Ik woon in een huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden worden duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Voorzetsel 'in' ontbreekt.",
+              "uitleg": "Bij het werkwoord 'wonen' moet je het voorzetsel 'in' gebruiken om de locatie aan te geven: 'wonen in'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik woon in een appartement. En jij?",
+            "zin_correct": "Ik woon in een appartement. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is goed en de intonatie bij de vraag is natuurlijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zin is grammaticaal correct."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De vraag 'En jij?' is overbodig en onlogisch in deze context.",
+              "uitleg": "Birgul heeft in de vorige zin net verteld dat ze in een huis woont. Het is onlogisch om haar direct daarna opnieuw te vragen 'En jij?'."
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Geen appartement, in huis... eh... groot huis.",
+            "zin_correct": "Ik woon niet in een appartement, maar in een huis. Het is een groot huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van de losse woorden is prima."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Er ontbreken werkwoorden, lidwoorden en persoonlijke voornaamwoorden.",
+              "uitleg": "De cursist spreekt in losse woorden in plaats van in hele zinnen. Er moet een onderwerp ('ik', 'het') en een werkwoord ('woon', 'is') gebruikt worden."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik woon in een huis met met een tuin. Heb jij een balkon?",
+            "zin_correct": "Ik woon in een huis met een tuin. Heb jij een balkon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is goed, ondanks de kleine hapering op het woord 'met'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De grammaticale structuur van de zin is correct."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Deze zin spreekt de eerdere bewering van Dursel tegen.",
+              "uitleg": "In haar vorige beurt zei Dursel: 'Ik woon in een appartement.' Nu zegt ze: 'Ik woon in een huis met een tuin.' Dit is inhoudelijk tegenstrijdig en onlogisch in een natuurlijk gesprek."
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Mijn huis geen balkon, een tuin.",
+            "zin_correct": "Mijn huis heeft geen balkon, maar een tuin.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden zijn goed verstaanbaar uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het werkwoord 'heeft' en het voegwoord 'maar' ontbreken.",
+              "uitleg": "Om bezit of een eigenschap van een huis aan te duiden, heb je het werkwoord 'hebben' nodig: 'Mijn huis heeft...'. Om een tegenstelling te maken gebruik je 'maar'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ja, ik heb een balkon. Is jouw tuin groot?",
+            "zin_correct": "Ja, ik heb een balkon. Is jouw tuin groot?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak en klemtoon zijn goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zinnen zijn grammaticaal correct gebouwd."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Mijn... huis groot huis.",
+            "zin_correct": "Mijn huis is een groot huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van de woorden is duidelijk."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het koppelwerkwoord 'is' en het onbepaalde lidwoord 'een' ontbreken.",
+              "uitleg": "In een Nederlandse zin heb je een persoonsvorm nodig. Bij een eigenschap gebruik je 'is': 'Mijn huis is een groot huis'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Dit is geen logisch antwoord op de gestelde vraag.",
+              "uitleg": "Dursel vroeg: 'Is jouw tuin groot?'. Birgul antwoordt over haar huis ('Mijn huis groot huis') in plaats van over haar tuin."
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Nee, de tuin is klein. Met wie woon jij?",
+            "zin_correct": "Mijn tuin is klein. Met wie woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is helder en goed verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zinnen zijn grammaticaal correct."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Het woord 'Nee' aan het begin is onlogisch.",
+              "uitleg": "Dursel stelt een vraag aan Birgul, maar begint haar eigen zin met 'Nee, de tuin is klein'. Dit sluit niet logisch aan op het gesprek, omdat ze hiermee haar eigen tuin beschrijft zonder dat er een ja/nee-vraag aan voorafging."
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Is groot.",
+            "zin_correct": "Mijn tuin is groot.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is prima."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het onderwerp ontbreekt in de zin.",
+              "uitleg": "Een Nederlandse zin kan niet alleen uit een werkwoord en een bijvoeglijk naamwoord bestaan. Er moet een onderwerp bij: 'De tuin is groot' of 'Hij is groot'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik woon met...",
+            "zin_correct": "Ik woon met...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van de aanzet is goed."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De zin is niet afgemaakt.",
+              "uitleg": "De zin stopt halverwege na het voorzetsel 'met'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ah nee...",
+            "zin_correct": "Ah nee...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is natuurlijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Dit is een uitroep, grammaticaal niet te beoordelen als volledige zin."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Dursel",
+            "brief": "Hallo Dursel! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Woon jij eh in een huis of een appartement?\"\n👍 *Wat was goed:* Je spreekt de woorden heel duidelijk en rustig uit.\n💡 *Correctie:* \"Woon jij in een huis of in een appartement?\"\n🧠 *Waarom:* Het is grammaticaal mooier om het voorzetsel 'in' te herhalen voor het tweede zelfstandig naamwoord.\n\n*Zin 2:* \"Ik woon in een appartement. En jij?\"\n👍 *Wat was goed:* Je uitspraak is heel natuurlijk en de vraagstelling klinkt goed.\n💡 *Correctie:* \"Ik woon in een appartement. En jij?\"\n🤔 *Logica:* Inhoudelijk is deze zin een beetje vreemd in het gesprek. Birgul had in de vorige zin namelijk al verteld dat ze in een huis woont. Door opnieuw 'En jij?' te vragen, lijkt het alsof je niet goed naar haar antwoord hebt geluisterd.\n\n*Zin 3:* \"Ik woon in een huis met met een tuin. Heb jij een balkon?\"\n👍 *Wat was goed:* Ondanks een kleine hapering spreek je de zin vloeiend uit.\n💡 *Correctie:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🤔 *Logica:* Deze zin spreekt je vorige zin tegen. Eerst zei je dat je in een appartement woont, en nu woon je in een huis met een tuin. Probeer in een rollenspel goed op de logica van je eigen antwoorden te letten!\n\n*Zin 4:* \"Ja, ik heb een balkon. Is jouw tuin groot?\"\n👍 *Wat was goed:* Je stelt de vraag met een heel goede intonatie.\n💡 *Correctie:* \"Ja, ik heb een balkon. Is jouw tuin groot?\"\n\n*Zin 5:* \"Nee, de tuin is klein. Met wie woon jij?\"\n👍 *Wat was goed:* Je spreekt de woorden heel helder uit.\n💡 *Correctie:* \"Mijn tuin is klein. Met wie woon jij?\"\n🤔 *Logica:* Het woordje 'Nee' aan het begin is onlogisch. Niemand stelde jou een ja/nee-vraag over jouw tuin. Je kunt beter direct zeggen: 'Mijn tuin is klein.'\n\n*Zin 6:* \"Ik woon met...\"\n👍 *Wat was goed:* De start van de zin klinkt grammaticaal goed.\n💡 *Correctie:* \"Ik woon met [mijn familie / mijn man / mijn kinderen].\"\n🧠 *Waarom:* Je hebt de zin helaas niet afgemaakt.\n\n*Zin 7:* \"Ah nee...\"\n👍 *Wat was goed:* Een heel natuurlijke reactie toen het even misging!\n💡 *Correctie:* \"Ah nee...\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is over het algemeen erg goed! Je maakt mooie, complete zinnen. Let er alleen op dat je je zinnen ook echt afmaakt.\n• *Uitspraak:* Jouw uitspraak is heel duidelijk, rustig en goed verstaanbaar. Je hebt een fijne, natuurlijke intonatie bij het stellen van vragen.\n• *Samenhang & Logica:* Dit is jouw belangrijkste leerpunt. Je las nu waarschijnlijk een rollenspel voor van een blaadje, waardoor je zinnen elkaar tegenspraken (eerst woon je in een appartement, dan in een huis) en je vragen stelde die al beantwoord waren. Probeer echt te luisteren naar je gesprekspartner en daarop te reageren.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de volgende keer een vrij gesprek te voeren zonder te veel op een blaadje te kijken. Luister goed naar wat de ander zegt en reageer daar spontaan op. Je uitspraak is al super, dus vertrouw op jezelf! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Dursel! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Woon jij eh in een huis of een appartement?\"\n👍 *What was good:* You pronounce the words very clearly and calmly.\n💡 *Correction:* \"Woon jij in een huis of in een appartement?\"\n🧠 *Why:* Grammatically, it is nicer to repeat the preposition 'in' before the second noun.\n\n*Sentence 2:* \"Ik woon in een appartement. En jij?\"\n👍 *What was good:* Your pronunciation is very natural and the question sounds good.\n💡 *Correction:* \"Ik woon in een appartement. En jij?\"\n🤔 *Logic:* Content-wise, this sentence is a bit strange in the conversation. Birgul had already mentioned in the previous sentence that she lives in a house. By asking 'En jij?' again, it seems like you didn't listen to her answer.\n\n*Sentence 3:* \"Ik woon in een huis met met een tuin. Heb jij een balkon?\"\n👍 *What was good:* Despite a small hesitation, you pronounce the sentence fluently.\n💡 *Correction:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🤔 *Logic:* This sentence contradicts your previous sentence. First you said you live in an apartment, and now you live in a house with a garden. Try to pay attention to the logic of your own answers in a roleplay!\n\n*Sentence 4:* \"Ja, ik heb een balkon. Is jouw tuin groot?\"\n👍 *What was good:* You ask the question with very good intonation.\n💡 *Correction:* \"Ja, ik heb een balkon. Is jouw tuin groot?\"\n\n*Sentence 5:* \"Nee, de tuin is klein. Met wie woon jij?\"\n👍 *What was good:* You pronounce the words very clearly.\n💡 *Correction:* \"Mijn tuin is klein. Met wie woon jij?\"\n🤔 *Logic:* The word 'Nee' at the beginning is illogical. Nobody asked you a yes/no question about your garden. It is better to say directly: 'Mijn tuin is klein.'\n\n*Sentence 6:* \"Ik woon met...\"\n👍 *What was good:* The start of the sentence sounds grammatically correct.\n💡 *Correction:* \"Ik woon met [mijn familie / mijn man / mijn kinderen].\"\n🧠 *Why:* Unfortunately, you did not finish the sentence.\n\n*Sentence 7:* \"Ah nee...\"\n👍 *What was good:* A very natural reaction when things went wrong for a moment!\n💡 *Correction:* \"Ah nee...\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is generally very good! You make nice, complete sentences. Just make sure you actually finish your sentences.\n• *Pronunciation:* Your pronunciation is very clear, calm, and easy to understand. You have a nice, natural intonation when asking questions.\n• *Coherence & Logic:* This is your main point of improvement. You were probably reading a roleplay from a sheet, which caused your sentences to contradict each other (first living in an apartment, then in a house) and you asked questions that had already been answered. Try to really listen to your conversation partner and respond to them.\n\n🧠 *Your next step & advice:*\nNext time, try to have a free conversation without looking at a sheet too much. Listen carefully to what the other person says and respond spontaneously. Your pronunciation is already great, so trust in yourself! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Birgul",
+            "brief": "Hallo Birgul! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik woon eh een huis.\"\n👍 *Wat was goed:* Je spreekt de woorden heel duidelijk uit.\n💡 *Correctie:* \"Ik woon in een huis.\"\n🧠 *Waarom:* In het Nederlands gebruik je altijd het voorzetsel 'in' na het werkwoord 'wonen' om een locatie aan te geven.\n\n*Zin 2:* \"Geen appartement, in huis... eh... groot huis.\"\n👍 *Wat was goed:* Je bent heel goed verstaanbaar en probeert jezelf te verduidelijken.\n💡 *Correctie:* \"Ik woon niet in een appartement, maar in een huis. Het is een groot huis.\"\n🧠 *Waarom:* Je spreekt nu in losse woorden. Probeer hele zinnen te maken met een onderwerp ('ik', 'het') en een werkwoord ('woon', 'is').\n\n*Zin 3:* \"Mijn huis geen balkon, een tuin.\"\n👍 *Wat was goed:* De betekenis van wat je wilt zeggen is heel duidelijk.\n💡 *Correctie:* \"Mijn huis heeft geen balkon, maar een tuin.\"\n🧠 *Waarom:* Je hebt hier het werkwoord 'heeft' nodig om bezit aan te duiden. Met het woord 'maar' maak je een mooie tegenstelling.\n\n*Zin 4:* \"Mijn... huis groot huis.\"\n👍 *Wat was goed:* Je uitspraak van de woorden is prima.\n💡 *Correctie:* \"Mijn huis is een groot huis.\" of \"Mijn tuin is groot.\"\n🧠 *Waarom:* Er ontbreekt een werkwoord ('is') en een lidwoord ('een').\n🤔 *Logica:* Dursel vroeg: 'Is jouw tuin groot?'. Jij antwoordt hier over je huis in plaats van over je tuin. Dat sluit niet helemaal logisch aan op de vraag.\n\n*Zin 5:* \"Is groot.\"\n👍 *Wat was goed:* Je reageert snel en probeert je antwoord te corrigeren.\n💡 *Correctie:* \"Mijn tuin is groot.\" of \"Hij is groot.\"\n🧠 *Waarom:* Een Nederlandse zin heeft altijd een onderwerp nodig (zoals 'de tuin' of 'hij'). Je kunt niet alleen 'Is groot' zeggen.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Dit is je belangrijkste leerpunt. Je spreekt nu nog veel in losse woorden en korte telegramstijl. Probeer altijd een onderwerp (ik, het, de tuin) en een werkwoord (woon, is, heeft) in je zinnen te gebruiken.\n• *Uitspraak:* Jouw uitspraak is erg goed! Alle woorden die je zegt zijn direct verstaanbaar en duidelijk.\n• *Samenhang & Logica:* Let goed op de vragen die gesteld worden. Als iemand vraagt naar de 'tuin', geef dan antwoord over de 'tuin' en niet over het 'huis'.\n\n🧠 *Jouw volgende stap & advies:*\nFocus de komende tijd op het maken van complete zinnen. Denk aan de structuur: *Wie* + *wat doet* + *waar*. Bijvoorbeeld: \"Ik (wie) woon (wat doet) in een huis (waar)\". Je uitspraak is al heel mooi, dus met complete zinnen ga je enorme stappen maken! Zet hem op! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Birgul! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik woon eh een huis.\"\n👍 *What was good:* You pronounce the words very clearly.\n💡 *Correction:* \"Ik woon in een huis.\"\n🧠 *Why:* In Dutch, you always use the preposition 'in' after the verb 'wonen' to indicate a location.\n\n*Sentence 2:* \"Geen appartement, in huis... eh... groot huis.\"\n👍 *What was good:* You are very easy to understand and try to clarify yourself.\n💡 *Correction:* \"Ik woon niet in een appartement, maar in een huis. Het is een groot huis.\"\n🧠 *Why:* You are speaking in loose words now. Try to make complete sentences with a subject ('ik', 'het') and a verb ('woon', 'is').\n\n*Sentence 3:* \"Mijn huis geen balkon, een tuin.\"\n👍 *What was good:* The meaning of what you want to say is very clear.\n💡 *Correction:* \"Mijn huis heeft geen balkon, maar een tuin.\"\n🧠 *Why:* You need the verb 'heeft' (has) here to indicate possession. With the word 'maar' (but) you make a nice contrast.\n\n*Sentence 4:* \"Mijn... huis groot huis.\"\n👍 *What was good:* Your pronunciation of the words is fine.\n💡 *Correction:* \"Mijn huis is een groot huis.\" or \"Mijn tuin is groot.\"\n🧠 *Why:* A verb ('is') and an article ('een') are missing.\n🤔 *Logic:* Dursel asked: 'Is jouw tuin groot?'. You answer about your house here instead of your garden. That does not connect logically to the question.\n\n*Sentence 5:* \"Is groot.\"\n👍 *What was good:* You react quickly and try to correct your answer.\n💡 *Correction:* \"Mijn tuin is groot.\" or \"Hij is groot.\"\n🧠 *Why:* A Dutch sentence always needs a subject (like 'de tuin' or 'hij'). You cannot just say 'Is groot'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* This is your main point of improvement. You currently speak a lot in loose words and short telegram style. Try to always use a subject (ik, het, de tuin) and a verb (woon, is, heeft) in your sentences.\n• *Pronunciation:* Your pronunciation is very good! All the words you say are immediately understandable and clear.\n• *Coherence & Logic:* Pay close attention to the questions being asked. If someone asks about the 'garden', answer about the 'garden' and not about the 'house'.\n\n🧠 *Your next step & advice:*\nFocus on making complete sentences in the coming period. Think of the structure: *Who* + *does what* + *where*. For example: \"Ik (who) woon (does what) in een huis (where)\". Your pronunciation is already very beautiful, so with complete sentences you will make huge steps! Go for it! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Dursel Mina 20-5 Huis.ogg",
+      "path": "B-Alfa/Dursel Mina 20-5 Huis.ogg",
+      "date": "20-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Woon jij in... huis of de in appartement?",
+            "zin_correct": "Woon jij in een huis of in een appartement?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "huis of de in appartement",
+              "uitleg": "Je bent de lidwoorden 'een' vergeten voor 'huis' en 'appartement'. Daarnaast is de woordvolgorde 'de in' incorrect; dit moet 'in een' zijn."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Eh, geen appartement, eh mijn huis, groot huis.",
+            "zin_correct": "Eh, ik woon niet in een appartement, maar in een groot huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "geen appartement, mijn huis, groot huis",
+              "uitleg": "Je gebruikt geen werkwoorden in deze zin. Je moet zeggen: 'Ik woon niet in een...' en 'Mijn huis is een groot huis'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Heb jij een tuin of een balkon?",
+            "zin_correct": "Heb jij een tuin of een balkon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Mijn... geen balkon, een tuin.",
+            "zin_correct": "Ik heb geen balkon, maar een tuin.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mijn... geen balkon",
+              "uitleg": "Je gebruikt het bezittelijk voornaamwoord 'mijn' in plaats van het persoonlijk voornaamwoord 'ik' met het werkwoord 'heb'. Zeg: 'Ik heb geen balkon'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Hoeveel kamers?",
+            "zin_correct": "Hoeveel kamers heb je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Hoeveel kamers?",
+              "uitleg": "Dit is een incomplete zin. Je moet een onderwerp en een werkwoord toevoegen: 'Hoeveel kamers heb je?' of 'Hoeveel kamers zijn er?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Heb?",
+            "zin_correct": "Heb ik?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Heb?",
+              "uitleg": "Dit is een los werkwoord. Je moet een onderwerp toevoegen om er een correcte vraag van te maken, bijvoorbeeld: 'Heb ik?' of 'Bedoel je hoeveel kamers ik heb?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Heb.",
+            "zin_correct": "Heb je.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Heb.",
+              "uitleg": "Dit is een los werkwoord. Je moet het onderwerp 'je' toevoegen: 'Heb je' of 'Ja, hoeveel kamers heb je?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Vier kamers, eh vier kamers.",
+            "zin_correct": "Ik heb vier kamers.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Vier kamers",
+              "uitleg": "Dit is een korte zin zonder werkwoord en onderwerp. Maak er een hele zin van: 'Ik heb vier kamers' of 'Er zijn vier kamers'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Welke kamers van jou zijn?",
+            "zin_correct": "Welke kamers heb je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Welke kamers van jou zijn?",
+              "uitleg": "De woordvolgorde is incorrect en de constructie 'van jou zijn' is niet natuurlijk. Correct is: 'Welke kamers heb je?' of 'Welke kamers zijn er in jouw huis?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Mijn... eh... woonkamers, eh...",
+            "zin_correct": "Ik heb een woonkamer, slaapkamers...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mijn... woonkamers",
+              "uitleg": "Je gebruikt 'woonkamers' in het meervoud, maar meestal heeft een huis één woonkamer. Daarnaast ontbreekt een werkwoord. Zeg: 'Ik heb een woonkamer en...'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Oké. Met wie woon jij?",
+            "zin_correct": "Oké. Met wie woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Met man, eh en kind. Woon.",
+            "zin_correct": "Ik woon met mijn man en mijn kind.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Met man, en kind. Woon.",
+              "uitleg": "Je plaatst het werkwoord 'woon' helemaal aan het einde van de zin en vergeet het onderwerp 'ik' en de bezittelijke voornaamwoorden 'mijn'. De juiste volgorde is: 'Ik woon met mijn man en kind'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Is jouw huis...?",
+            "zin_correct": "Is jouw huis mooi?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Is jouw huis...?",
+              "uitleg": "Je zin is niet afgemaakt. Je had een bijvoeglijk naamwoord moeten toevoegen, zoals 'mooi' of 'groot'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ja, eh mijn huis mooi, groot huis.",
+            "zin_correct": "Ja, mijn huis is mooi. Het is een groot huis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "mijn huis mooi, groot huis",
+              "uitleg": "Je vergeet het koppelwerkwoord 'is' en het lidwoord 'een'. Zeg: 'Mijn huis is mooi, het is een groot huis'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Oké.",
+            "zin_correct": "Oké.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Klaar?",
+            "zin_correct": "Zijn we klaar?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Klaar?",
+              "uitleg": "Dit is een incompleet woord. Maak er een volledige vraag van: 'Zijn we klaar?'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Klaar.",
+            "zin_correct": "We zijn klaar.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Klaar.",
+              "uitleg": "Dit is een incompleet woord. Maak er een volledige zin van: 'We zijn klaar.'"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Dursel",
+            "brief": "Hallo Dursel! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Woon jij in... huis of de in appartement?\"\n👍 *Wat was goed:* Je uitspraak is heel duidelijk en je durft direct een vraag te stellen.\n💡 *Correctie:* \"Woon jij in een huis of in een appartement?\"\n🧠 *Waarom:* Je bent de lidwoorden 'een' vergeten. Ook is de volgorde 'de in' niet correct; dit moet 'in een' zijn.\n\n*Zin 2:* \"Heb jij een tuin of een balkon?\"\n👍 *Wat was goed:* Deze zin is helemaal correct geformuleerd en heel duidelijk uitgesproken!\n💡 *Correctie:* \"Heb jij een tuin of een balkon?\"\n\n*Zin 3:* \"Hoeveel kamers?\"\n👍 *Wat was goed:* Je stelt een korte, begrijpelijke vraag.\n💡 *Correctie:* \"Hoeveel kamers heb je?\"\n🧠 *Waarom:* In het Nederlands maken we liever een volledige zin met een onderwerp en een werkwoord.\n\n*Zin 4:* \"Heb.\"\n👍 *Wat was goed:* Je probeert Mina te helpen met het juiste woord.\n💡 *Correctie:* \"Heb je.\"\n🧠 *Waarom:* Alleen 'heb' is te kort, voeg altijd het onderwerp 'je' toe.\n\n*Zin 5:* \"Welke kamers van jou zijn?\"\n👍 *Wat was goed:* Je woordenschat is goed, je gebruikt de juiste woorden.\n💡 *Correctie:* \"Welke kamers heb je?\" of \"Welke kamers zijn er in jouw huis?\"\n🧠 *Waarom:* De woordvolgorde klopt hier niet helemaal en 'van jou zijn' is geen natuurlijke Nederlandse constructie.\n\n*Zin 6:* \"Oké. Met wie woon jij?\"\n👍 *Wat was goed:* Dit is een perfecte, grammaticaal correcte vraag!\n💡 *Correctie:* \"Oké. Met wie woon jij?\"\n\n*Zin 7:* \"Is jouw huis...?\"\n👍 *Wat was goed:* Je begint een goede vraag te stellen.\n💡 *Correctie:* \"Is jouw huis mooi?\" of \"Is jouw huis groot?\"\n🧠 *Waarom:* Je hebt de zin niet helemaal afgemaakt. Voeg een bijvoeglijk naamwoord toe aan het einde.\n\n*Zin 8:* \"Oké.\"\n👍 *Wat was goed:* Goede, natuurlijke reactie.\n💡 *Correctie:* \"Oké.\"\n\n*Zin 9:* \"Klaar.\"\n👍 *Wat was goed:* Je reageert direct op Mina.\n💡 *Correctie:* \"We zijn klaar.\"\n🧠 *Waarom:* Maak er een volledige zin van door 'We zijn' toe te voegen.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je stelt al heel goede vragen! Let er wel op dat je zinnen volledig maakt met een onderwerp en een werkwoord (zoals 'heb je' in plaats van alleen 'heb'). Vergeet ook de lidwoorden 'een' of 'het/de' niet.\n• *Uitspraak:* Je uitspraak is erg goed en verstaanbaar. Ga zo door!\n• *Samenhang & Logica:* Het gesprek verloopt heel natuurlijk en je reageert goed op de antwoorden van Mina.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de volgende keer te letten op het maken van volledige zinnen. In plaats van korte vragen zoals 'Hoeveel kamers?', kun je oefenen met 'Hoeveel kamers heb jij?'. Je doet het super! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Dursel! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Woon jij in... huis of de in appartement?\"\n👍 *What was good:* Your pronunciation is very clear and you confidently ask a question.\n💡 *Correction:* \"Woon jij in een huis of in een appartement?\"\n🧠 *Why:* You forgot the articles 'een'. Also, the word order 'de in' is incorrect; it should be 'in een'.\n\n*Sentence 2:* \"Heb jij een tuin of een balkon?\"\n👍 *What was good:* This sentence is grammatically perfect and very clearly pronounced!\n💡 *Correction:* \"Heb jij een tuin of een balkon?\"\n\n*Sentence 3:* \"Hoeveel kamers?\"\n👍 *What was good:* You ask a short, understandable question.\n💡 *Correction:* \"Hoeveel kamers heb je?\"\n🧠 *Why:* In Dutch, we prefer to make complete sentences with a subject and a verb.\n\n*Sentence 4:* \"Heb.\"\n👍 *What was good:* You try to help Mina with the correct word.\n💡 *Correction:* \"Heb je.\"\n🧠 *Why:* Just 'heb' is too short, always add the subject 'je'.\n\n*Sentence 5:* \"Welke kamers van jou zijn?\"\n👍 *What was good:* Your vocabulary is good, you use the right words.\n💡 *Correction:* \"Welke kamers heb je?\" or \"Welke kamers zijn er in jouw huis?\"\n🧠 *Why:* The word order is not entirely correct here and 'van jou zijn' is not a natural Dutch construction.\n\n*Sentence 6:* \"Oké. Met wie woon jij?\"\n👍 *What was good:* This is a perfect, grammatically correct question!\n💡 *Correction:* \"Oké. Met wie woon jij?\"\n\n*Sentence 7:* \"Is jouw huis...?\"\n👍 *What was good:* You start asking a good question.\n💡 *Correction:* \"Is jouw huis mooi?\" or \"Is jouw huis groot?\"\n🧠 *Why:* You didn't finish the sentence. Add an adjective at the end.\n\n*Sentence 8:* \"Oké.\"\n👍 *What was good:* Good, natural reaction.\n💡 *Correction:* \"Oké.\"\n\n*Sentence 9:* \"Klaar.\"\n👍 *What was good:* You react directly to Mina.\n💡 *Correction:* \"We zijn klaar.\"\n🧠 *Why:* Make it a complete sentence by adding 'We zijn'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You are already asking very good questions! Make sure to make your sentences complete with a subject and a verb (like 'heb je' instead of just 'heb'). Also, don't forget the articles 'een' or 'het/de'.\n• *Pronunciation:* Your pronunciation is very good and understandable. Keep it up!\n• *Coherence & Logic:* The conversation flows very naturally and you react well to Mina's answers.\n\n🧠 *Your next step & advice:*\nNext time, try to focus on making complete sentences. Instead of short questions like 'Hoeveel kamers?', practice saying 'Hoeveel kamers heb jij?'. You are doing great! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Mina",
+            "brief": "Hallo Mina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Eh, geen appartement, eh mijn huis, groot huis.\"\n👍 *Wat was goed:* Je geeft een duidelijk antwoord en gebruikt goede woordenschat ('appartement', 'groot huis').\n💡 *Correction:* \"Eh, ik woon niet in een appartement, maar in een groot huis.\"\n🧠 *Waarom:* Je zin mist een werkwoord ('woon') en lidwoorden ('een'). Zonder werkwoord is de zin grammaticaal niet compleet.\n\n*Zin 2:* \"Mijn... geen balkon, een tuin.\"\n👍 *Wat was goed:* Je begrijpt de vraag goed en geeft het juiste antwoord.\n💡 *Correction:* \"Ik heb geen balkon, maar een tuin.\"\n🧠 *Waarom:* Je gebruikt 'mijn' (bezittelijk), maar je moet 'ik' (persoonlijk voornaamwoord) gebruiken in combinatie met het werkwoord 'heb'.\n\n*Zin 3:* \"Heb?\"\n👍 *Wat was goed:* Je probeert de vraag van Dursel te verifiëren.\n💡 *Correction:* \"Heb ik?\" of \"Bedoel je hoeveel kamers ik heb?\"\n🧠 *Waarom:* Alleen het werkwoord 'heb' is te kort. Voeg een onderwerp toe.\n\n*Zin 4:* \"Vier kamers, eh vier kamers.\"\n👍 *Wat was goed:* Je geeft het juiste aantal kamers aan.\n💡 *Correction:* \"Ik heb vier kamers.\"\n🧠 *Waarom:* Maak er een hele zin van door 'Ik heb' toe te voegen.\n\n*Zin 5:* \"Mijn... eh... woonkamers, eh...\"\n👍 *Wat was goed:* Je probeert de kamers te benoemen.\n💡 *Correction:* \"Ik heb een woonkamer, slaapkamers...\"\n🧠 *Waarom:* Je gebruikt 'woonkamers' in het meervoud, maar meestal heeft een huis één woonkamer. Gebruik ook hier 'Ik heb' in plaats van 'Mijn'.\n\n*Zin 6:* \"Met man, eh en kind. Woon.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden ('man', 'kind').\n💡 *Correction:* \"Ik woon met mijn man en mijn kind.\"\n🧠 *Waarom:* Je plaatst het werkwoord 'woon' helemaal aan het einde van de zin. In het Nederlands staat het werkwoord meestal op de tweede positie: 'Ik woon met...'. Vergeet ook 'mijn' niet voor 'man' en 'kind'.\n\n*Zin 7:* \"Ja, eh mijn huis mooi, groot huis.\"\n👍 *Wat was goed:* Je reageert heel positief en enthousiast.\n💡 *Correction:* \"Ja, mijn huis is mooi. Het is een groot huis.\"\n🧠 *Waarom:* Je bent het koppelwerkwoord 'is' vergeten ('mijn huis *is* mooi') en het lidwoord 'een' voor 'groot huis'.\n\n*Zin 8:* \"Klaar?\"\n👍 *Wat was goed:* Je vraagt op een natuurlijke manier of het gesprek klaar is.\n💡 *Correction:* \"Zijn we klaar?\"\n🧠 *Waarom:* Maak er een volledige vraag van door 'Zijn we' toe te voegen.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je gebruikt vaak losse woorden of korte zinnen zonder werkwoord (zoals 'geen appartement' of 'vier kamers'). Probeer altijd een onderwerp ('ik') en een werkwoord ('woon' of 'heb') te gebruiken. Let ook op de positie van het werkwoord; dit staat bijna nooit aan het einde van een hoofdzin.\n• *Uitspraak:* Je uitspraak is prima en heel begrijpelijk. Je spreekt de woorden rustig uit.\n• *Samenhang & Logica:* Je begrijpt alle vragen van Dursel heel goed en geeft logische antwoorden.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer bij het antwoorden altijd te beginnen met 'Ik heb...' of 'Ik woon...'. Dit helpt je om direct een goede, volledige Nederlandse zin te maken. Je bent goed op weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Eh, geen appartement, eh mijn huis, groot huis.\"\n👍 *What was good:* You give a clear answer and use good vocabulary ('appartement', 'groot huis').\n💡 *Correction:* \"Eh, ik woon niet in een appartement, maar in een groot huis.\"\n🧠 *Why:* Your sentence lacks a verb ('woon') and articles ('een'). Without a verb, the sentence is grammatically incomplete.\n\n*Sentence 2:* \"Mijn... geen balkon, een tuin.\"\n👍 *What was good:* You understand the question well and give the correct answer.\n💡 *Correction:* \"Ik heb geen balkon, maar een tuin.\"\n🧠 *Why:* You use 'mijn' (possessive), but you should use 'ik' (personal pronoun) in combination with the verb 'heb'.\n\n*Sentence 3:* \"Heb?\"\n👍 *What was good:* You try to verify Dursel's question.\n💡 *Correction:* \"Heb ik?\" or \"Bedoel je hoeveel kamers ik heb?\"\n🧠 *Why:* Just the verb 'heb' is too short. Add a subject.\n\n*Sentence 4:* \"Vier kamers, eh vier kamers.\"\n👍 *What was good:* You indicate the correct number of rooms.\n💡 *Correction:* \"Ik heb vier kamers.\"\n🧠 *Why:* Make it a complete sentence by adding 'Ik heb'.\n\n*Sentence 5:* \"Mijn... eh... woonkamers, eh...\"\n👍 *What was good:* You try to name the rooms.\n💡 *Correction:* \"Ik heb een woonkamer, slaapkamers...\"\n🧠 *Why:* You use 'woonkamers' in the plural, but usually a house has only one living room. Also use 'Ik heb' instead of 'Mijn' here.\n\n*Sentence 6:* \"Met man, eh en kind. Woon.\"\n👍 *What was good:* You use the correct words ('man', 'kind').\n💡 *Correction:* \"Ik woon met mijn man en mijn kind.\"\n🧠 *Why:* You place the verb 'woon' at the very end of the sentence. In Dutch, the verb is usually in the second position: 'Ik woon met...'. Also, don't forget 'mijn' before 'man' and 'kind'.\n\n*Sentence 7:* \"Ja, eh mijn huis mooi, groot huis.\"\n👍 *What was good:* You react very positively and enthusiastically.\n💡 *Correction:* \"Ja, mijn huis is mooi. Het is een groot huis.\"\n🧠 *Why:* You forgot the copula verb 'is' ('mijn huis *is* mooi') and the article 'een' before 'groot huis'.\n\n*Sentence 8:* \"Klaar?\"\n👍 *What was good:* You ask in a natural way if the conversation is finished.\n💡 *Correction:* \"Zijn we klaar?\"\n🧠 *Why:* Make it a complete question by adding 'Zijn we'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You often use single words or short sentences without a verb (like 'geen appartement' or 'vier kamers'). Try to always use a subject ('ik') and a verb ('woon' or 'heb'). Also pay attention to the position of the verb; it is almost never at the end of a main clause.\n• *Pronunciation:* Your pronunciation is fine and very understandable. You pronounce the words calmly.\n• *Coherence & Logic:* You understand all of Dursel's questions very well and give logical answers.\n\n🧠 *Your next step & advice:*\nWhen answering, try to always start with 'Ik heb...' or 'Ik woon...'. This will help you to immediately form a correct, complete Dutch sentence. You are well on your way! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Ikram Birgul 6 mei.ogg",
+      "path": "B-Alfa/Ikram Birgul 6 mei.ogg",
+      "date": "06-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Wat drink jij als ochtends?",
+            "zin_correct": "Wat drink jij 's ochtends?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "als ochtends",
+              "uitleg": "De klank van 's ochtends werd uitgesproken als 'als ochtends'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "als ochtends",
+              "uitleg": "In het Nederlands gebruiken we de vaste uitdrukking ''s ochtends' (een verkorting van 'des ochtends') om 'in the morning' aan te duiden. 'Als ochtends' is grammaticaal onjuist."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ik drink koffie.",
+            "zin_correct": "Ik drink koffie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Wat vind jij lekker?",
+            "zin_correct": "Wat vind jij lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ik vind... ik vind pizza lekker.",
+            "zin_correct": "Ik vind pizza lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Waar koop jij eten?",
+            "zin_correct": "Waar koop jij eten?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ik kook... kip met rijst.",
+            "zin_correct": "Ik koop mijn eten bij de supermarkt.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Ik kook... kip met rijst.",
+              "uitleg": "De vraag was 'Waar koop jij eten?' (Where do you buy food?). Jouw antwoord 'Ik kook kip met rijst' (I cook chicken with rice) geeft geen antwoord op de vraag 'waar' (where) je het koopt. Een logisch antwoord zou zijn: 'Ik koop mijn eten bij de supermarkt' of 'Ik koop eten op de markt'."
+            }
+          },
+          {
+            "spreker": "Birgul",
+            "zin_fonetisch": "Kun jij koken?",
+            "zin_correct": "Kun jij koken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ja... uhm...",
+            "zin_correct": "Ja, ik kan koken.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Birgul",
+            "brief": "Hallo Birgul! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat drink jij als ochtends?\"\n👍 *Wat was goed:* Je stelt de vraag met een goed tempo en een actieve houding.\n💡 *Correctie:* \"Wat drink jij 's ochtends?\"\n🧠 *Waarom:* We zeggen in het Nederlands ''s ochtends' (met een s-klank aan het begin) en niet 'als ochtends'. Dit is een vaste combinatie.\n\n*Zin 2:* \"Wat vind jij lekker?\"\n👍 *Wat was goed:* Deze zin is helemaal correct uitgesproken en grammaticaal perfect geformuleerd!\n💡 *Correctie:* \"Wat vind jij lekker?\"\n\n*Zin 3:* \"Waar koop jij eten?\"\n👍 *Wat was goed:* Zeer duidelijke uitspraak van de 'k'-klank en een goede, korte vraag.\n💡 *Correctie:* \"Waar koop jij eten?\"\n\n*Zin 4:* \"Kun jij koken?\"\n👍 *Wat was goed:* Heel goed geformuleerd met de juiste inversie (werkwoord voor het onderwerp) voor een vraag.\n💡 *Correctie:* \"Kun jij koken?\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is erg sterk! Je maakt moeiteloos correcte vraagzinnen. Let alleen op vaste uitdrukkingen van tijd, zoals ''s ochtends'.\n• *Uitspraak:* Je bent heel goed te verstaan. Probeer de s-klank aan het begin van ''s ochtends' nog wat scherper te oefenen.\n• *Samenhang & Logica:* Je leidt het gesprek op een natuurlijke manier en stelt logische, opeenvolgende vragen.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf zo doorgaan met het stellen van vragen! Probeer de volgende keer de antwoorden van je gesprekspartner nog actiever samen te vatten of door te vragen om het gesprek langer te maken. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Birgul! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat drink jij als ochtends?\"\n👍 *What was good:* You ask the question with a good pace and an active attitude.\n💡 *Correction:* \"Wat drink jij 's ochtends?\"\n🧠 *Why:* In Dutch, we say ''s ochtends' (with an s-sound at the start) and not 'als ochtends'. This is a fixed expression.\n\n*Sentence 2:* \"Wat vind jij lekker?\"\n👍 *What was good:* This sentence is pronounced completely correctly and is grammatically perfect!\n💡 *Correction:* \"Wat vind jij lekker?\"\n\n*Sentence 3:* \"Waar koop jij eten?\"\n👍 *What was good:* Very clear pronunciation of the 'k' sound and a good, concise question.\n💡 *Correction:* \"Waar koop jij eten?\"\n\n*Sentence 4:* \"Kun jij koken?\"\n👍 *What was good:* Very well formulated with the correct inversion (verb before subject) for a question.\n💡 *Correction:* \"Kun jij koken?\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is very strong! You easily form correct question sentences. Just pay attention to fixed time expressions like ''s ochtends'.\n• *Pronunciation:* You are very easy to understand. Try to practice the s-sound at the start of ''s ochtends' a bit more sharply.\n• *Coherence & Logic:* You lead the conversation in a natural way and ask logical, sequential questions.\n\n🧠 *Your next step & advice:*\nKeep up the great work asking questions! Next time, try to actively summarize your partner's answers or ask follow-up questions to extend the conversation. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Ikram",
+            "brief": "Hallo Ikram! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik drink koffie.\"\n👍 *Wat was goed:* Dit is een heel duidelijk en correct antwoord. Goede uitspraak van 'koffie'.\n💡 *Correctie:* \"Ik drink koffie.\"\n\n*Zin 2:* \"Ik vind... ik vind pizza lekker.\"\n👍 *Wat was goed:* Ondanks een kleine aarzeling herstel je jezelf heel goed en maak je een perfecte zin.\n💡 *Correctie:* \"Ik vind pizza lekker.\"\n\n*Zin 3:* \"Ik kook... kip met rijst.\"\n👍 *Wat was goed:* Je uitspraak van de woorden 'kip' en 'rijst' is heel duidelijk.\n💡 *Correctie:* \"Ik koop mijn eten bij de supermarkt.\"\n🧠 *Waarom:* De grammatica van jouw zin is goed, maar het antwoord past niet bij de vraag.\n🤔 *Logica:* De vraag was \"Waar koop jij eten?\" (Where do you buy food?). Jouw antwoord ging over *wat* je kookt (\"Ik kook kip met rijst\"). Let goed op het vraagwoord 'waar' (where) en het werkwoord 'kopen' (to buy). Een passend antwoord is bijvoorbeeld: \"Ik koop mijn eten bij de supermarkt.\"\n\n*Zin 4:* \"Ja... uhm...\"\n👍 *Wat was goed:* Je geeft direct antwoord op de ja/nee-vraag.\n💡 *Correctie:* \"Ja, ik kan koken.\"\n🧠 *Waarom:* Probeer je antwoord compleet te maken door er een hele zin van te maken. Dat helpt om vloeiender te leren spreken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je zinnen zijn grammaticaal goed opgebouwd. Probeer korte antwoorden zoals 'Ja' uit te breiden naar een volledige zin.\n• *Uitspraak:* Je uitspraak is heel helder en verstaanbaar. Geen grote fouten gehoord!\n• *Samenhang & Logica:* Let goed op de vraagwoorden. 'Waar' vraagt om een locatie (bijvoorbeeld: de supermarkt, de markt), niet om een activiteit of gerecht.\n\n🧠 *Jouw volgende stap & advies:*\nLuister de volgende keer extra kritisch naar het vraagwoord (wie, wat, waar, wanneer, hoe). Dit helpt je om direct het juiste antwoord te geven. Je bent goed op weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Ikram! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik drink koffie.\"\n👍 *What was good:* This is a very clear and correct answer. Good pronunciation of 'koffie'.\n💡 *Correction:* \"Ik drink koffie.\"\n\n*Sentence 2:* \"Ik vind... ik vind pizza lekker.\"\n👍 *What was good:* Despite a small hesitation, you correct yourself very well and make a perfect sentence.\n💡 *Correction:* \"Ik vind pizza lekker.\"\n\n*Sentence 3:* \"Ik kook... kip met rijst.\"\n👍 *What was good:* Your pronunciation of the words 'kip' and 'rijst' is very clear.\n💡 *Correction:* \"Ik koop mijn eten bij de supermarkt.\"\n🧠 *Why:* The grammar of your sentence is correct, but the answer does not match the question.\n🤔 *Logic:* The question was \"Waar koop jij eten?\" (Where do you buy food?). Your answer was about *what* you cook (\"Ik kook kip met rijst\"). Pay close attention to the question word 'waar' (where) and the verb 'kopen' (to buy). A fitting answer would be: \"Ik koop mijn eten bij de supermarkt.\"\n\n*Sentence 4:* \"Ja... uhm...\"\n👍 *What was good:* You answer the yes/no question directly.\n💡 *Correction:* \"Ja, ik kan koken.\"\n🧠 *Why:* Try to complete your answer by making it a full sentence. This helps you practice speaking more fluently.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your sentences are grammatically well-structured. Try to expand short answers like 'Ja' into full sentences.\n• *Pronunciation:* Your pronunciation is very clear and understandable. No major errors heard!\n• *Coherence & Logic:* Pay close attention to question words. 'Waar' asks for a location (e.g., the supermarket, the market), not an activity or a dish.\n\n🧠 *Your next step & advice:*\nNext time, listen extra carefully to the question word (who, what, where, when, how). This will help you give the correct answer immediately. You are doing great! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Ikram Hafida 20-5 Huis.ogg",
+      "path": "B-Alfa/Ikram Hafida 20-5 Huis.ogg",
+      "date": "20-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Woon jij in een huis of een appartement?",
+            "zin_correct": "Woon jij in een huis of een appartement?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Ik woon in een appartement, en jij?",
+            "zin_correct": "Ik woon in een appartement. En jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "appartement",
+              "uitleg": "De 'e' in 'appartement' werd uitgesproken als een 'a'-klank (apartemant)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ik woon in een huis met een tuin. Heb jij een balkon?",
+            "zin_correct": "Ik woon in een huis met een tuin. Heb jij een balkon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Ik heb geen balkon. Las jouw tuin groot?",
+            "zin_correct": "Ik heb geen balkon. Is jouw tuin groot?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Is",
+              "uitleg": "Het woord 'Is' klonk als 'Las' of 'As' door een onduidelijke aanzet van de klinker."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Nee, ik... ik heb tuin... is klein.",
+            "zin_correct": "Nee, ik heb een kleine tuin.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik heb tuin is klein",
+              "uitleg": "Er ontbreekt een lidwoord ('een') en de zinsbouw klopt niet. Het moet zijn: 'ik heb een kleine tuin' of 'mijn tuin is klein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Met wie woon jij?",
+            "zin_correct": "Met wie woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Ik woon alleen.",
+            "zin_correct": "Ik woon alleen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ik woon met mijn man. Ik heb geen kinderen.",
+            "zin_correct": "Ik woon samen met mijn man. Ik heb geen kinderen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Is jouw beurt leuk?",
+            "zin_correct": "Is jouw buurt leuk?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "beurt",
+              "uitleg": "De 'uu'-klank in 'buurt' werd uitgesproken als een 'eu'-klank (beurt)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Ja, het is rustig. Er is een park dichtbij in jouw buurt?",
+            "zin_correct": "Ja, het is rustig. Er is een park dichtbij. Is er ook een park in jouw buurt?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Er is een park dichtbij in jouw buurt?",
+              "uitleg": "De zin combineert een stellende zin over de eigen buurt met een vraag over de buurt van de ander zonder duidelijke overgang of juiste vraagvolgorde."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Er is een park dichtbij in jouw buurt?",
+              "uitleg": "Het is verwarrend omdat het lijkt alsof het park in de buurt van de ander ligt, terwijl de spreker haar eigen buurt bedoelt. Beter is: 'Er is een park dichtbij. En hoe is het in jouw buurt?'"
+            }
+          },
+          {
+            "spreker": "Ikram",
+            "zin_fonetisch": "Ja, mijn beurt is ook leuk. Het bos is dichtbij.",
+            "zin_correct": "Ja, mijn buurt is ook leuk. Het bos is dichtbij.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "beurt",
+              "uitleg": "De 'uu'-klank in 'buurt' werd weer uitgesproken als een 'eu'-klank (beurt)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Ikram",
+            "brief": "Hallo Ikram! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Woon jij in een huis of een appartement?\"\n👍 *Wat was goed:* Je spreekt deze vraag heel duidelijk en correct uit.\n💡 *Correctie:* \"Woon jij in een huis of een appartement?\"\n🧠 *Waarom:* Deze zin is helemaal goed geformuleerd.\n\n*Zin 2:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n👍 *Wat was goed:* Zeer vloeiend uitgesproken en grammaticaal helemaal in orde.\n💡 *Correctie:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🧠 *Waarom:* De zinsbouw en de uitspraak zijn erg duidelijk.\n\n*Zin 3:* \"Nee, ik... ik heb tuin... is klein.\"\n👍 *Wat was goed:* Je probeert jezelf te corrigeren, wat heel goed is.\n💡 *Correctie:* \"Nee, ik heb een kleine tuin.\"\n🧠 *Waarom:* Je mist het lidwoord 'een' en de zinsbouw klopt niet helemaal. In het Nederlands zeggen we 'ik heb een kleine tuin' of 'mijn tuin is klein'.\n\n*Zin 4:* \"Met wie woon jij?\"\n👍 *Wat was goed:* Een prima, natuurlijke vraag.\n💡 *Correctie:* \"Met wie woon jij?\"\n🧠 *Waarom:* De grammatica en uitspraak zijn goed.\n\n*Zin 5:* \"Ik woon met mijn man. Ik heb geen kinderen.\"\n👍 *Wat was goed:* Heel begrijpelijk en grammaticaal correct.\n💡 *Correctie:* \"Ik woon samen met mijn man. Ik heb geen kinderen.\"\n🧠 *Waarom:* 'Ik woon met mijn man' is prima, maar 'Ik woon samen met mijn man' klinkt nog iets natuurlijker.\n\n*Zin 6:* \"Is jouw beurt leuk?\"\n👍 *Wat was goed:* De zinsbouw van deze vraag is correct.\n💡 *Correctie:* \"Is jouw buurt leuk?\"\n🧠 *Waarom:* Let op de 'uu'-klank in 'buurt'. Je sprak het uit als 'beurt'. Probeer je lippen meer te tuiten voor de 'uu'.\n\n*Zin 7:* \"Ja, mijn beurt is ook leuk. Het bos is dichtbij.\"\n👍 *Wat was goed:* Je geeft een goed en passend antwoord.\n💡 *Correctie:* \"Ja, mijn buurt is ook leuk. Het bos is dichtbij.\"\n🧠 *Waarom:* Let ook hier weer op de uitspraak van 'buurt'. Het klinkt nu als 'beurt'.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is over het algemeen erg sterk. Let alleen op bij het beschrijven van bezit (zoals de tuin) dat je de juiste adjectieven en lidwoorden gebruikt.\n• *Uitspraak:* Jouw belangrijkste leerpunt is de 'uu'-klank in het woord 'buurt'. Dit klinkt nu nog te veel als 'beurt'. Oefen deze klank door je lippen rond te maken.\n• *Samenhang & Logica:* Je reageert heel logisch op de vragen van je gesprekspartner.\n\n🧠 *Jouw volgende stap & advice:*\nProbeer de komende tijd extra te letten op de 'uu'-klank in woorden zoals 'buurt', 'huur' en 'duur'. Je bent op de goede weg, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Ikram! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Woon jij in een huis of een appartement?\"\n👍 *What was good:* You pronounced this question very clearly and correctly.\n💡 *Correction:* \"Woon jij in een huis of een appartement?\"\n🧠 *Why:* This sentence is formulated perfectly.\n\n*Sentence 2:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n👍 *What was good:* Very fluently pronounced and grammatically correct.\n💡 *Correction:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🧠 *Why:* The sentence structure and pronunciation are very clear.\n\n*Sentence 3:* \"Nee, ik... ik heb tuin... is klein.\"\n👍 *What was good:* You tried to correct yourself, which is very good.\n💡 *Correction:* \"Nee, ik heb een kleine tuin.\"\n🧠 *Why:* You missed the article 'een' and the sentence structure is incorrect. In Dutch, we say 'ik heb een kleine tuin' (I have a small garden) or 'mijn tuin is klein' (my garden is small).\n\n*Sentence 4:* \"Met wie woon jij?\"\n👍 *What was good:* A fine, natural question.\n💡 *Correction:* \"Met wie woon jij?\"\n🧠 *Why:* The grammar and pronunciation are good.\n\n*Sentence 5:* \"Ik woon met mijn man. Ik heb geen kinderen.\"\n👍 *What was good:* Very understandable and grammatically correct.\n💡 *Correction:* \"Ik woon samen met mijn man. Ik heb geen kinderen.\"\n🧠 *Why:* 'Ik woon met mijn man' is fine, but 'Ik woon samen met mijn man' sounds slightly more natural.\n\n*Sentence 6:* \"Is jouw beurt leuk?\"\n👍 *What was good:* The sentence structure of this question is correct.\n💡 *Correction:* \"Is jouw buurt leuk?\"\n🧠 *Why:* Pay attention to the 'uu' sound in 'buurt'. You pronounced it as 'beurt'. Try to round your lips more for the 'uu' sound.\n\n*Sentence 7:* \"Ja, mijn beurt is ook leuk. Het bos is dichtbij.\"\n👍 *What was good:* You gave a good and appropriate answer.\n💡 *Correction:* \"Ja, mijn buurt is ook leuk. Het bos is dichtbij.\"\n🧠 *Why:* Again, pay attention to the pronunciation of 'buurt'. It currently sounds like 'beurt'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is generally very strong. Just make sure when describing possessions (like the garden) that you use the correct adjectives and articles.\n• *Pronunciation:* Your main point of improvement is the 'uu' sound in the word 'buurt'. It currently sounds too much like 'beurt'. Practice this sound by rounding your lips.\n• *Coherence & Logic:* You respond very logically to your partner's questions.\n\n🧠 *Your next step & advice:*\nTry to pay extra attention to the 'uu' sound in words like 'buurt', 'huur', and 'duur' in the coming period. You are on the right track, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Hafida",
+            "brief": "Hallo Hafida! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik woon in een appartement, en jij?\"\n👍 *Wat was goed:* Een heel natuurlijke reactie en goede wedervraag.\n💡 *Correctie:* \"Ik woon in een appartement. En jij?\"\n🧠 *Waarom:* Let op de uitspraak van 'appartement'. De laatste 'e' klinkt nu een beetje als een 'a' (apartemant).\n\n*Zin 2:* \"Ik heb geen balkon. Las jouw tuin groot?\"\n👍 *Wat was goed:* Je reageert goed op de vraag van de ander.\n💡 *Correctie:* \"Ik heb geen balkon. Is jouw tuin groot?\"\n🧠 *Waarom:* Het woordje 'Is' klonk een beetje als 'Las' of 'As'. Probeer de 'i'-klank scherper uit te spreken.\n\n*Zin 3:* \"Ik woon alleen.\"\n👍 *Wat was goed:* Kort, duidelijk en grammaticaal correct.\n💡 *Correctie:* \"Ik woon alleen.\"\n🧠 *Waarom:* Deze zin is helemaal goed.\n\n*Zin 4:* \"En jij?\"\n👍 *Wat was goed:* Goede, actieve manier om het gesprek gaande te houden.\n💡 *Correctie:* \"En jij?\"\n🧠 *Waarom:* Dit is een prima wedervraag.\n\n*Zin 5:* \"Ja, het is rustig. Er is een park dichtbij in jouw buurt?\"\n👍 *Wat was goed:* Je gebruikt goede woordenschat zoals 'rustig' en 'dichtbij'.\n💡 *Correctie:* \"Ja, het is rustig. Er is een park dichtbij. Is er ook een park in jouw buurt?\"\n🧠 *Waarom:* De zin 'Er is een park dichtbij in jouw buurt?' is verwarrend. Het lijkt alsof je zegt dat het park in de buurt van de ander ligt, terwijl je jouw eigen buurt bedoelt. Knip dit op in twee zinnen.\n🤔 *Logica:* Het is logischer om eerst te vertellen over je eigen buurt, en daarna een nieuwe vraag te stellen over de buurt van de ander.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt mooie, korte zinnen. Let op bij het stellen van vragen dat je de juiste vraagvolgorde gebruikt (inversie) en zinnen niet te snel in elkaar schuift.\n• *Uitspraak:* Let op de klinkers. De 'e' in 'appartement' en de 'i' in 'is' mogen nog iets scherper en nauwkeuriger worden uitgesproken.\n• *Samenhang & Logica:* Zorg voor een duidelijke scheiding tussen wat je over jezelf vertelt en wat je aan de ander vraagt, zodat de luisteraar het goed kan volgen.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer bij het stellen van vragen goed te letten op de volgorde van de woorden (eerst het werkwoord, dan het onderwerp, bijv. 'Is er...'). Je doet het al heel goed, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Hafida! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik woon in een appartement, en jij?\"\n👍 *What was good:* A very natural response and a good follow-up question.\n💡 *Correction:* \"Ik woon in een appartement. En jij?\"\n🧠 *Why:* Pay attention to the pronunciation of 'appartement'. The last 'e' sounds a bit like an 'a' (apartemant).\n\n*Sentence 2:* \"Ik heb geen balkon. Las jouw tuin groot?\"\n👍 *What was good:* You respond well to the other person's question.\n💡 *Correction:* \"Ik heb geen balkon. Is jouw tuin groot?\"\n🧠 *Why:* The word 'Is' sounded a bit like 'Las' or 'As'. Try to pronounce the 'i' sound more sharply.\n\n*Sentence 3:* \"Ik woon alleen.\"\n👍 *What was good:* Short, clear, and grammatically correct.\n💡 *Correction:* \"Ik woon alleen.\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 4:* \"En jij?\"\n👍 *What was good:* Good, active way to keep the conversation going.\n💡 *Correction:* \"En jij?\"\n🧠 *Why:* This is a fine follow-up question.\n\n*Sentence 5:* \"Ja, het is rustig. Er is een park dichtbij in jouw buurt?\"\n👍 *What was good:* You use good vocabulary like 'rustig' and 'dichtbij'.\n💡 *Correction:* \"Ja, het is rustig. Er is een park dichtbij. Is er ook een park in jouw buurt?\"\n🧠 *Why:* The sentence 'Er is een park dichtbij in jouw buurt?' is confusing. It sounds like you are saying the park is in the other person's neighborhood, while you mean your own. Split this into two sentences.\n🤔 *Logic:* It is more logical to first talk about your own neighborhood, and then ask a new question about the other person's neighborhood.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You make nice, short sentences. When asking questions, make sure to use the correct question word order (inversion) and do not merge sentences too quickly.\n• *Pronunciation:* Pay attention to the vowels. The 'e' in 'appartement' and the 'i' in 'is' can be pronounced slightly more sharply and accurately.\n• *Coherence & Logic:* Ensure a clear separation between what you say about yourself and what you ask the other person, so the listener can follow easily.\n\n🧠 *Your next step & advice:*\nWhen asking questions, try to pay close attention to the word order (verb first, then subject, e.g., 'Is er...'). You are doing great, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Mariama Mina 27-5.ogg",
+      "path": "B-Alfa/Mariama Mina 27-5.ogg",
+      "date": "27-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is your naam?",
+            "zin_correct": "Wat is jouw naam?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your",
+              "uitleg": "Je spreekt de eerste woorden uit in het Engels in plaats van het Nederlands."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is your naam?",
+              "uitleg": "Dit is een mix van Engels ('What is your') en Nederlands ('naam'). In het Nederlands zeg je: 'Wat is jouw naam?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Mina is...",
+            "zin_correct": "Mijn naam is Mina.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Mina is...",
+              "uitleg": "De zin is incompleet. Je moet zeggen: 'Mijn naam is Mina' of 'Ik heet Mina'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Mina is...",
+              "uitleg": "Het antwoord is afgebroken en daardoor niet volledig begrijpelijk."
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is your achternaam?",
+            "zin_correct": "Wat is jouw achternaam?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your",
+              "uitleg": "Je spreekt de eerste woorden uit in het Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is your achternaam?",
+              "uitleg": "Dit is een mix van Engels en Nederlands. Het moet zijn: 'Wat is jouw achternaam?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Khadija",
+            "zin_correct": "Mijn achternaam is Khadija.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is your adres?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your",
+              "uitleg": "Je spreekt de eerste woorden uit in het Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is your adres?",
+              "uitleg": "Dit is een mix van Engels en Nederlands. Het moet zijn: 'Wat is jouw adres?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "uh... Venuslaan 34",
+            "zin_correct": "Mijn adres is Venuslaan 34.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is your postcode?",
+            "zin_correct": "Wat is jouw postcode?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your",
+              "uitleg": "Je spreekt de eerste woorden uit in het Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is your postcode?",
+              "uitleg": "Dit is een mix van Engels en Nederlands. Het moet zijn: 'Wat is jouw postcode?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Postcode... 56 50... 33... X H",
+            "zin_correct": "Mijn postcode is 5633 XH.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "56 50... 33... X H",
+              "uitleg": "De cijfercombinatie die je noemt is te lang voor een Nederlandse postcode (die bestaat uit 4 cijfers en 2 letters, bijvoorbeeld 5633 XH)."
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "In welke gemeente woon jij?",
+            "zin_correct": "In welke gemeente woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik weet niet.",
+            "zin_correct": "Ik weet het niet.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik weet niet.",
+              "uitleg": "In het Nederlands moet je het lijdend voorwerp 'het' toevoegen: 'Ik weet het niet'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Eindhoven.",
+            "zin_correct": "Woon je in Eindhoven?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Uhm...",
+            "zin_correct": "Uhm...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik weet niet.",
+            "zin_correct": "Ik weet het niet.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik weet niet.",
+              "uitleg": "In het Nederlands moet je het lijdend voorwerp 'het' toevoegen: 'Ik weet het niet'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Nee?",
+            "zin_correct": "Nee?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is jouw geboortedatum?",
+            "zin_correct": "Wat is jouw geboortedatum?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What",
+              "uitleg": "Je spreekt het eerste woord uit in het Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is jouw",
+              "uitleg": "Je mixt het Engelse 'What' met het Nederlandse 'is jouw'. Het moet zijn: 'Wat is jouw geboortedatum?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Geboortedatum... uh... 2001... 21 maart.",
+            "zin_correct": "Mijn geboortedatum is 21 maart 2001.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "2001... 21 maart",
+              "uitleg": "In het Nederlands noemen we eerst de dag, dan de maand en dan het jaar: '21 maart 2001'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Hoe oud ben jij?",
+            "zin_correct": "Hoe oud ben jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Uhm... 22.",
+            "zin_correct": "Ik ben 22 jaar oud.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Uh, uit welk land kom jij?",
+            "zin_correct": "Uit welk land kom jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Uh, Afghanistan.",
+            "zin_correct": "Ik kom uit Afghanistan.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Goed.",
+            "zin_correct": "Goed.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Mariama",
+            "brief": "Hallo Mariama! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"What is your naam?\"\n👍 *Wat was goed:* Je spreekt het woord 'naam' heel duidelijk uit.\n💡 *Correctie:* \"Wat is jouw naam?\"\n🧠 *Waarom:* Je mixt hier Engels ('What is your') met Nederlands ('naam'). Probeer de hele zin in het Nederlands te stellen.\n\n*Zin 2:* \"What is your achternaam?\"\n👍 *Wat was goed:* Je uitspraak van 'achternaam' is goed verstaanbaar.\n💡 *Correctie:* \"Wat is jouw achternaam?\"\n🧠 *Waarom:* Ook hier gebruik je de Engelse woorden 'What is your'. In het Nederlands is dit 'Wat is jouw'.\n\n*Zin 3:* \"What is your adres?\"\n👍 *Wat was goed:* Je spreekt 'adres' goed uit.\n💡 *Correctie:* \"Wat is jouw adres?\"\n🧠 *Waarom:* Let op dat je niet terugvalt op het Engels. Gebruik 'Wat is jouw'.\n\n*Zin 4:* \"What is your postcode?\"\n👍 *Wat was goed:* Je intonatie is goed en klinkt als een echte vraag.\n💡 *Correctie:* \"Wat is jouw postcode?\"\n🧠 *Waarom:* Probeer consequent 'Wat is jouw' te gebruiken in plaats van 'What is your'.\n\n*Zin 5:* \"In welke gemeente woon jij?\"\n👍 *Wat was goed:* Deze zin is helemaal correct en heel duidelijk uitgesproken!\n💡 *Correctie:* \"In welke gemeente woon jij?\"\n\n*Zin 6:* \"Eindhoven.\"\n👍 *Wat was goed:* Je helpt de ander goed door de gemeente te noemen.\n💡 *Correctie:* \"Woon je in Eindhoven?\"\n\n*Zin 7:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Zeer goede en vloeiende zin. Je uitspraak van 'contactpersoon' is uitstekend.\n💡 *Correctie:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Zin 8:* \"Nee?\"\n👍 *Wat was goed:* Korte en natuurlijke reactie.\n💡 *Correctie:* \"Nee?\"\n\n*Zin 9:* \"What is jouw geboortedatum?\"\n👍 *Wat was goed:* Je gebruikt hier al het Nederlandse 'jouw geboortedatum'.\n💡 *Correctie:* \"Wat is jouw geboortedatum?\"\n🧠 *Waarom:* Je gebruikt nog het Engelse woord 'What'. In het Nederlands schrijven en spreken we dit uit als 'Wat'.\n\n*Zin 10:* \"Hoe oud ben jij?\"\n👍 *Wat was goed:* Perfecte Nederlandse zin, heel natuurlijk uitgesproken.\n💡 *Correctie:* \"Hoe oud ben jij?\"\n\n*Zin 11:* \"Uh, uit welk land kom jij?\"\n👍 *Wat was goed:* Heel duidelijke vraagstelling.\n💡 *Correctie:* \"Uit welk land kom jij?\"\n\n*Zin 12:* \"Goed.\"\n👍 *Wat was goed:* Een prima afsluiting van het gesprek.\n💡 *Correctie:* \"Goed.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je mixt nog vaak Engels en Nederlands in je vragen (bijvoorbeeld 'What is your' in plaats van 'Wat is jouw'). Probeer hier alert op te zijn.\n• *Uitspraak:* Je uitspraak van de Nederlandse woorden is erg goed en duidelijk verstaanbaar.\n• *Samenhang & Logica:* Je stelt de vragen in een logische volgorde en reageert goed op de antwoorden van je gesprekspartner.\n\n🧠 *Jouw volgende stap & advies:*\nLet de komende tijd goed op dat je geen Engelse woorden zoals 'What' of 'your' gebruikt wanneer je een vraag stelt in het Nederlands. Oefen specifiek met de vaste structuur: 'Wat is jouw...'. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mariama! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"What is your naam?\"\n👍 *What was good:* You pronounce the word 'naam' very clearly.\n💡 *Correction:* \"Wat is jouw naam?\"\n🧠 *Why:* You are mixing English ('What is your') with Dutch ('naam') here. Try to formulate the entire sentence in Dutch.\n\n*Sentence 2:* \"What is your achternaam?\"\n👍 *What was good:* Your pronunciation of 'achternaam' is very understandable.\n💡 *Correction:* \"Wat is jouw achternaam?\"\n🧠 *Why:* Here too, you use the English words 'What is your'. In Dutch, this is 'Wat is jouw'.\n\n*Sentence 3:* \"What is your adres?\"\n👍 *What was good:* You pronounce 'adres' well.\n💡 *Correction:* \"Wat is jouw adres?\"\n🧠 *Why:* Be careful not to fall back into English. Use 'Wat is jouw'.\n\n*Sentence 4:* \"What is your postcode?\"\n👍 *What was good:* Your intonation is good and sounds like a real question.\n💡 *Correction:* \"Wat is jouw postcode?\"\n🧠 *Why:* Try to consistently use 'Wat is jouw' instead of 'What is your'.\n\n*Sentence 5:* \"In welke gemeente woon jij?\"\n👍 *What was good:* This sentence is completely correct and very clearly pronounced!\n💡 *Correction:* \"In welke gemeente woon jij?\"\n\n*Sentence 6:* \"Eindhoven.\"\n👍 *What was good:* You help the other person well by naming the municipality.\n💡 *Correction:* \"Woon je in Eindhoven?\"\n\n*Sentence 7:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* Very good and fluent sentence. Your pronunciation of 'contactpersoon' is excellent.\n💡 *Correction:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Sentence 8:* \"Nee?\"\n👍 *What was good:* Short and natural reaction.\n💡 *Correction:* \"Nee?\"\n\n*Sentence 9:* \"What is jouw geboortedatum?\"\n👍 *What was good:* You are already using the Dutch 'jouw geboortedatum' here.\n💡 *Correction:* \"Wat is jouw geboortedatum?\"\n🧠 *Why:* You are still using the English word 'What'. In Dutch, we write and pronounce this as 'Wat'.\n\n*Sentence 10:* \"Hoe oud ben jij?\"\n👍 *What was good:* Perfect Dutch sentence, very naturally pronounced.\n💡 *Correction:* \"Hoe oud ben jij?\"\n\n*Sentence 11:* \"Uh, uit welk land kom jij?\"\n👍 *What was good:* Very clear questioning.\n💡 *Correction:* \"Uit welk land kom jij?\"\n\n*Sentence 12:* \"Goed.\"\n👍 *What was good:* A fine conclusion to the conversation.\n💡 *Correction:* \"Goed.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You still often mix English and Dutch in your questions (for example, 'What is your' instead of 'Wat is jouw'). Try to be alert to this.\n• *Pronunciation:* Your pronunciation of Dutch words is very good and clearly understandable.\n• *Coherence & Logic:* You ask the questions in a logical order and respond well to your conversation partner's answers.\n\n🧠 *Your next step & advice:*\nIn the coming period, pay close attention to not using English words like 'What' or 'your' when asking a question in Dutch. Practice specifically with the fixed structure: 'Wat is jouw...'. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Mina",
+            "brief": "Hallo Mina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Mina is...\"\n👍 *Wat was goed:* Je noemt je naam duidelijk.\n💡 *Correctie:* \"Mijn naam is Mina.\"\n🧠 *Waarom:* De zin is nu niet compleet. Zeg 'Mijn naam is Mina' of 'Ik heet Mina'.\n🤔 *Logica:* Het antwoord is afgebroken, waardoor het niet helemaal logisch klinkt.\n\n*Zin 2:* \"Khadija\"\n👍 *Wat was goed:* Je geeft direct antwoord op de vraag.\n💡 *Correctie:* \"Mijn achternaam is Khadija.\"\n\n*Zin 3:* \"uh... Venuslaan 34\"\n👍 *Wat was goed:* Je spreekt de straatnaam en het huisnummer goed uit.\n💡 *Correctie:* \"Mijn adres is Venuslaan 34.\"\n\n*Zin 4:* \"Postcode... 56 50... 33... X H\"\n👍 *Wat was goed:* Je spreekt de letters 'X' en 'H' goed uit.\n💡 *Correctie:* \"Mijn postcode is 5633 XH.\"\n🤔 *Logica:* De cijferreeks die je noemt is te lang voor een Nederlandse postcode. Een postcode in Nederland heeft altijd 4 cijfers en 2 letters.\n\n*Zin 5:* \"Ik weet niet.\"\n👍 *Wat was goed:* Je antwoordt snel en eerlijk.\n💡 *Correctie:* \"Ik weet het niet.\"\n🧠 *Waarom:* In het Nederlands moet je altijd het woordje 'het' toevoegen bij deze uitdrukking: 'Ik weet het niet'.\n\n*Zin 6:* \"Uhm...\"\n👍 *Wat was goed:* Je neemt even de tijd om na te denken.\n💡 *Correctie:* \"Uhm...\"\n\n*Zin 7:* \"Ik weet niet.\"\n👍 *Wat was goed:* Je uitspraak is verstaanbaar.\n💡 *Correctie:* \"Ik weet het niet.\"\n🧠 *Waarom:* Vergeet ook hier het woordje 'het' niet: 'Ik weet het niet'.\n\n*Zin 8:* \"Geboortedatum... uh... 2001... 21 maart.\"\n👍 *Wat was goed:* Je noemt de juiste datum en maand.\n💡 *Correctie:* \"Mijn geboortedatum is 21 maart 2001.\"\n🧠 *Waarom:* In het Nederlands noemen we eerst de dag, dan de maand en als laatste het jaar.\n\n*Zin 9:* \"Uhm... 22.\"\n👍 *Wat was goed:* Je geeft het juiste getal als antwoord.\n💡 *Correctie:* \"Ik ben 22 jaar oud.\"\n\n*Zin 10:* \"Uh, Afghanistan.\"\n👍 *Wat was goed:* Je spreekt de naam van je land goed uit.\n💡 *Correctie:* \"Ik kom uit Afghanistan.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op dat je zinnen compleet maakt. Zeg bijvoorbeeld 'Ik weet het niet' in plaats van 'Ik weet niet'.\n• *Uitspraak:* Je uitspraak is over het algemeen heel duidelijk en goed verstaanbaar.\n• *Samenhang & Logica:* Let op de structuur van de postcode (4 cijfers, 2 letters) en de volgorde van de geboortedatum (dag-maand-jaar).\n\n🧠 *Jouw volgende stap & advies:*\nProbeer bij het beantwoorden van vragen vaker in hele zinnen te spreken. In plaats van alleen '22', kun je zeggen: 'Ik ben 22 jaar oud'. Dit helpt je om nog beter Nederlands te leren spreken! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Mina is...\"\n👍 *What was good:* You state your name clearly.\n💡 *Correction:* \"Mijn naam is Mina.\"\n🧠 *Why:* The sentence is currently incomplete. Say 'Mijn naam is Mina' or 'Ik heet Mina'.\n🤔 *Logic:* The answer is cut off, making it sound incomplete.\n\n*Sentence 2:* \"Khadija\"\n👍 *What was good:* You answer the question directly.\n💡 *Correction:* \"Mijn achternaam is Khadija.\"\n\n*Sentence 3:* \"uh... Venuslaan 34\"\n👍 *What was good:* You pronounce the street name and house number well.\n💡 *Correction:* \"Mijn adres is Venuslaan 34.\"\n\n*Sentence 4:* \"Postcode... 56 50... 33... X H\"\n👍 *What was good:* You pronounce the letters 'X' and 'H' well.\n💡 *Correction:* \"Mijn postcode is 5633 XH.\"\n🤔 *Logic:* The sequence of numbers you mention is too long for a Dutch postcode. A postcode in the Netherlands always has 4 digits and 2 letters.\n\n*Sentence 5:* \"Ik weet niet.\"\n👍 *What was good:* You answer quickly and honestly.\n💡 *Correction:* \"Ik weet het niet.\"\n🧠 *Why:* In Dutch, you must always add the word 'het' to this expression: 'Ik weet het niet'.\n\n*Sentence 6:* \"Uhm...\"\n👍 *What was good:* You take a moment to think.\n💡 *Correction:* \"Uhm...\"\n\n*Sentence 7:* \"Ik weet niet.\"\n👍 *What was good:* Your pronunciation is understandable.\n💡 *Correction:* \"Ik weet het niet.\"\n🧠 *Why:* Do not forget the word 'het' here either: 'Ik weet het niet'.\n\n*Sentence 8:* \"Geboortedatum... uh... 2001... 21 maart.\"\n👍 *What was good:* You mention the correct date and month.\n💡 *Correction:* \"Mijn geboortedatum is 21 maart 2001.\"\n🧠 *Why:* In Dutch, we mention the day first, then the month, and finally the year.\n\n*Sentence 9:* \"Uhm... 22.\"\n👍 *What was good:* You give the correct number as an answer.\n💡 *Correction:* \"Ik ben 22 jaar oud.\"\n\n*Sentence 10:* \"Uh, Afghanistan.\"\n👍 *What was good:* You pronounce the name of your country well.\n💡 *Correction:* \"Ik kom uit Afghanistan.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Make sure to complete your sentences. For example, say 'Ik weet het niet' instead of 'Ik weet niet'.\n• *Pronunciation:* Your pronunciation is generally very clear and easy to understand.\n• *Coherence & Logic:* Pay attention to the structure of the postcode (4 digits, 2 letters) and the order of the date of birth (day-month-year).\n\n🧠 *Your next step & advice:*\nTry to speak in full sentences more often when answering questions. Instead of just '22', you can say: 'Ik ben 22 jaar oud'. This will help you learn to speak Dutch even better! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Meryem Dursel 6 mei.ogg",
+      "path": "B-Alfa/Meryem Dursel 6 mei.ogg",
+      "date": "06-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Kun jij... zout?",
+            "zin_correct": "Wil jij zout?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden 'kun', 'jij' en 'zout' worden verstaanbaar uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Kun jij zout?",
+              "uitleg": "De zin mist een hoofdwerkwoord (bijvoorbeeld 'hebben' of 'gebruiken') of er is een verkeerd hulpwerkwoord gebruikt. Als je wilt vragen of iemand zout wil, zeg je: 'Wil je zout?' of 'Houd je van zout?'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Kun jij zout?",
+              "uitleg": "Deze vraag is onlogisch omdat 'kunnen' verwijst naar een vaardigheid, en je kunt niet 'zout kunnen'. Een logischer alternatief is: 'Wil je zout?' of 'Gebruik je zout?'."
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik drink... koffie.",
+            "zin_correct": "Ik drink koffie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van 'ik', 'drink' en 'koffie' is prima en duidelijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zin is grammaticaal helemaal correct."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Ik drink koffie.",
+              "uitleg": "Als antwoord op de vraag 'Kun jij zout?' (of 'Wil je zout?') is het antwoord 'Ik drink koffie' onlogisch, omdat koffie niets met zout te maken heeft."
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Wat... eet jij vanavond?",
+            "zin_correct": "Wat eet jij vanavond?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden worden rustig en duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De vraagstelling met inversie ('eet jij') is correct toegepast."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik eet... rijst... met... vis.",
+            "zin_correct": "Ik eet rijst met vis.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden worden met duidelijke pauzes maar met een goede klank uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zinsbouw (onderwerp - persoonsvorm - rest) is correct."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Wat vind jij lekker?",
+            "zin_correct": "Wat vind jij lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Zeer vloeiende en duidelijke uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De inversie 'vind jij' is correct (zonder -t achter 'vind' omdat 'jij' erachter staat)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik vind... pizza lekker.",
+            "zin_correct": "Ik vind pizza lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De klanken zijn goed en de woorden zijn goed verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De zinsbouw is correct."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Wat... waar koop jij eten?",
+            "zin_correct": "Waar koop jij eten?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De spreker herstelt zichzelf snel van 'wat' naar 'waar'. De uitspraak is helder."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De vraag is grammaticaal correct geformuleerd."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik koop... eten supermarkt.",
+            "zin_correct": "Ik koop eten in de supermarkt.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden worden goed uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik koop eten supermarkt.",
+              "uitleg": "Er ontbreekt een voorzetsel ('in') en een lidwoord ('de') om de plaats aan te duiden."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Kun jij koken?",
+            "zin_correct": "Kun jij koken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is kort, krachtig en correct."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De ja/nee-vraag met het hulpwerkwoord 'kunnen' en het hele werkwoord 'koken' aan het eind is perfect."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Dursel",
+            "zin_fonetisch": "Ik koken... pizza.",
+            "zin_correct": "Ik kan pizza maken.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden zijn goed verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik koken pizza.",
+              "uitleg": "Het werkwoord 'koken' staat in de infinitief (hele werkwoord) in plaats van de vervoegde vorm 'kook'. Daarnaast gebruiken we in het Nederlands 'maken' of 'bakken' voor een pizza, niet 'koken'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Ik koken pizza.",
+              "uitleg": "In het Nederlands zeg je niet dat je een pizza 'kookt'. Koken doe je met water (zoals aardappels of rijst). Een pizza 'bak' je of 'maak' je."
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Meryem",
+            "brief": "Hallo Meryem! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Kun jij... zout?\"\n👍 *Wat was goed:* Je spreekt de woorden heel duidelijk uit.\n💡 *Correctie:* \"Wil jij zout?\" of \"Houd jij van zout?\"\n🧠 *Waarom:* De zin is nu incompleet. Je kunt niet 'zout kunnen'. Je moet vragen of iemand zout *wil* of van zout *houdt*.\n🤔 *Logica:* Het is onlogisch om te vragen 'Kun jij zout?', omdat zout geen vaardigheid is.\n\n*Zin 2:* \"Wat... eet jij vanavond?\"\n👍 *Wat was goed:* Je past de inversie ('eet jij') heel goed toe.\n💡 *Correctie:* \"Wat eet jij vanavond?\"\n🧠 *Waarom:* Dit is een perfecte Nederlandse vraag.\n\n*Zin 3:* \"Wat vind jij lekker?\"\n👍 *Wat was goed:* Zeer vloeiende en natuurlijke uitspraak.\n💡 *Correctie:* \"Wat vind jij lekker?\"\n🧠 *Waarom:* De grammatica is helemaal correct. Omdat 'jij' achter het werkwoord staat, krijgt 'vind' geen -t.\n\n*Zin 4:* \"Wat... waar koop jij eten?\"\n👍 *Wat was goed:* Goed dat je jezelf snel corrigeerde van 'wat' naar 'waar'.\n💡 *Correctie:* \"Waar koop jij eten?\"\n🧠 *Waarom:* De vraag is grammaticaal helemaal in orde.\n\n*Zin 5:* \"Kun jij koken?\"\n👍 *Wat was goed:* Heel duidelijk en direct uitgesproken.\n💡 *Correctie:* \"Kun jij koken?\"\n🧠 *Waarom:* Dit is een perfecte ja/nee-vraag met het hulpwerkwoord vooraan en het hele werkwoord achteraan.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je stelt je vragen over het algemeen heel goed! Let alleen op bij de eerste zin: zorg dat je altijd een hoofdwerkwoord gebruikt als je een hulpwerkwoord zoals 'kunnen' gebruikt.\n• *Uitspraak:* Je uitspraak is erg duidelijk en verstaanbaar. Je spreekt rustig en corrigeert jezelf goed.\n• *Samenhang & Logica:* Let erop dat je vragen logisch aansluiten op wat je wilt weten. 'Kun jij zout?' is voor een Nederlander verwarrend.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf vooral zo doorgaan met het stellen van vragen! Probeer de volgende keer op te letten dat je zinnen compleet zijn met de juiste werkwoorden. Je bent op de goede weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Meryem! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Kun jij... zout?\"\n👍 *What was good:* You pronounce the words very clearly.\n💡 *Correction:* \"Wil jij zout?\" (Do you want salt?) or \"Houd jij van zout?\" (Do you like salt?)\n🧠 *Why:* The sentence is currently incomplete. You cannot 'can' salt. You need to ask if someone *wants* salt or *likes* salt.\n🤔 *Logic:* It is illogical to ask 'Can you salt?', because salt is not a skill.\n\n*Sentence 2:* \"Wat... eet jij vanavond?\"\n👍 *What was good:* You applied inversion ('eet jij') very well.\n💡 *Correction:* \"Wat eet jij vanavond?\"\n🧠 *Why:* This is a perfect Dutch question.\n\n*Sentence 3:* \"Wat vind jij lekker?\"\n👍 *What was good:* Very fluent and natural pronunciation.\n💡 *Correction:* \"Wat vind jij lekker?\"\n🧠 *Why:* The grammar is completely correct. Because 'jij' is behind the verb, 'vind' does not get a -t.\n\n*Sentence 4:* \"Wat... waar koop jij eten?\"\n👍 *What was good:* Good job correcting yourself quickly from 'wat' to 'waar'.\n💡 *Correction:* \"Waar koop jij eten?\"\n🧠 *Why:* The question is grammatically completely correct.\n\n*Sentence 5:* \"Kun jij koken?\"\n👍 *What was good:* Pronounced very clearly and directly.\n💡 *Correction:* \"Kun jij koken?\"\n🧠 *Why:* This is a perfect yes/no question with the auxiliary verb at the front and the infinitive at the end.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You formulate your questions very well in general! Just pay attention to the first sentence: make sure you always use a main verb when using an auxiliary verb like 'kunnen'.\n• *Pronunciation:* Your pronunciation is very clear and understandable. You speak calmly and correct yourself well.\n• *Coherence & Logic:* Make sure your questions logically connect to what you want to know. 'Kun jij zout?' is confusing for a Dutch speaker.\n\n🧠 *Your next step & advice:*\nKeep up the great work asking questions! Next time, try to make sure your sentences are complete with the correct verbs. You are on the right track! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Dursel",
+            "brief": "Hallo Dursel! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik drink... koffie.\"\n👍 *Wat was goed:* Je spreekt deze zin heel duidelijk en correct uit.\n💡 *Correctie:* \"Ik drink koffie.\"\n🧠 *Waarom:* De zin is grammaticaal helemaal correct.\n🤔 *Logica:* Hoewel de zin grammaticaal klopt, is het een onlogisch antwoord op de vraag 'Kun jij zout?'.\n\n*Zin 2:* \"Ik eet... rijst... met... vis.\"\n👍 *Wat was goed:* Goede uitspraak van de woorden 'rijst' en 'vis'.\n💡 *Correctie:* \"Ik eet rijst met vis.\"\n🧠 *Waarom:* De zinsbouw is helemaal correct.\n\n*Zin 3:* \"Ik vind... pizza lekker.\"\n👍 *Wat was goed:* Je spreekt de woorden goed en verstaanbaar uit.\n💡 *Correctie:* \"Ik vind pizza lekker.\"\n🧠 *Waarom:* Dit is een prima Nederlandse zin.\n\n*Zin 4:* \"Ik koop... eten supermarkt.\"\n👍 *Wat was goed:* De woorden zijn goed verstaanbaar.\n💡 *Correctie:* \"Ik koop eten in de supermarkt.\"\n🧠 *Waarom:* Je moet een voorzetsel ('in') en een lidwoord ('de') gebruiken om aan te geven *waar* je het koopt.\n\n*Zin 5:* \"Ik koken... pizza.\"\n👍 *Wat was goed:* De woorden zijn goed te begrijpen.\n💡 *Correctie:* \"Ik kan pizza maken.\" of \"Ik bak pizza.\"\n🧠 *Waarom:* Je gebruikt nu het hele werkwoord 'koken' in plaats van de ik-vorm 'kook'. Daarnaast gebruiken we in het Nederlands 'maken' of 'bakken' voor een pizza, niet 'koken'.\n🤔 *Logica:* In het Nederlands 'kook' je geen pizza. Koken doe je met water (zoals pasta of rijst). Een pizza 'bak' of 'maak' je.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op de werkwoordsvervoegingen (bijv. 'ik kook' in plaats van 'ik koken') en vergeet de kleine woordjes zoals voorzetsels ('in') en lidwoorden ('de') niet.\n• *Uitspraak:* Je uitspraak is prima en goed verstaanbaar. Probeer de woorden nog iets meer aan elkaar te verbinden voor een betere vloeiendheid.\n• *Samenhang & Logica:* Let op de betekenis van werkwoorden. We 'koken' geen pizza, maar we 'bakken' of 'maken' een pizza.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de komende tijd extra te letten op het gebruik van voorzetsels (in, op, naar) en de juiste werkwoordsvormen. Je bent al heel goed op weg, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Dursel! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik drink... koffie.\"\n👍 *What was good:* You pronounce this sentence very clearly and correctly.\n💡 *Correction:* \"Ik drink koffie.\"\n🧠 *Why:* The sentence is grammatically completely correct.\n🤔 *Logic:* Although the sentence is grammatically correct, it is an illogical answer to the question 'Can you salt?'.\n\n*Sentence 2:* \"Ik eet... rijst... met... vis.\"\n👍 *What was good:* Good pronunciation of the words 'rijst' and 'vis'.\n💡 *Correction:* \"Ik eet rijst met vis.\"\n🧠 *Why:* The sentence structure is completely correct.\n\n*Sentence 3:* \"Ik vind... pizza lekker.\"\n👍 *What was good:* You pronounce the words well and understandably.\n💡 *Correction:* \"Ik vind pizza lekker.\"\n🧠 *Why:* This is a fine Dutch sentence.\n\n*Sentence 4:* \"Ik koop... eten supermarkt.\"\n👍 *What was good:* The words are easily understood.\n💡 *Correction:* \"Ik koop eten in de supermarkt.\"\n🧠 *Why:* You need to use a preposition ('in') and an article ('de') to indicate *where* you buy it.\n\n*Sentence 5:* \"Ik koken... pizza.\"\n👍 *What was good:* The words are easy to understand.\n💡 *Correction:* \"Ik kan pizza maken.\" (I can make pizza) or \"Ik bak pizza.\" (I bake pizza)\n🧠 *Why:* You are currently using the infinitive 'koken' instead of the first-person singular 'kook'. Additionally, in Dutch we use 'maken' (make) or 'bakken' (bake) for a pizza, not 'koken' (boil).\n🤔 *Logic:* In Dutch, you do not 'boil' (koken) a pizza. Boiling is done with water (like pasta or rice). You 'bake' (bakken) or 'make' (maken) a pizza.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay attention to verb conjugations (e.g., 'ik kook' instead of 'ik koken') and do not forget small words like prepositions ('in') and articles ('de').\n• *Pronunciation:* Your pronunciation is fine and very understandable. Try to connect the words a bit more for better fluency.\n• *Coherence & Logic:* Pay attention to the meaning of verbs. We do not 'boil' (koken) a pizza, but we 'bake' (bakken) or 'make' (maken) a pizza.\n\n🧠 *Your next step & advice:*\nIn the coming period, try to pay extra attention to using prepositions (in, op, naar) and the correct verb forms. You are well on your way, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Mina Mariama 27-5.ogg",
+      "path": "B-Alfa/Mina Mariama 27-5.ogg",
+      "date": "27-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Hi, wat is jouw naam?",
+            "zin_correct": "Hoi, wat is jouw naam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Mijn naam is Mariama.",
+            "zin_correct": "Mijn naam is Mariama.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Wat is jouw achternaam?",
+            "zin_correct": "Wat is jouw achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Mijn achternaam is Tamba.",
+            "zin_correct": "Mijn achternaam is Tamba.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "What is your address?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your address",
+              "uitleg": "De spreker stelt de vraag volledig in het Engels in plaats van in het Nederlands."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Engelse zinsbouw en woorden",
+              "uitleg": "Er wordt Engels gebruikt in plaats van Nederlands."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Engelse vraag in een Nederlandse context",
+              "uitleg": "Het is onlogisch om Engels te spreken tijdens een Nederlandse spreekvaardigheidstoets."
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Kameliastraat 28.",
+            "zin_correct": "Kameliastraat 28.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "What is your postcode?",
+            "zin_correct": "Wat is jouw postcode?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your postcode",
+              "uitleg": "De spreker stelt de vraag in het Engels."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Engelse zinsbouw",
+              "uitleg": "Er wordt Engels gebruikt in plaats van Nederlands."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Engelse vraag",
+              "uitleg": "Het is onlogisch om Engels te spreken tijdens een Nederlandse spreekvaardigheidstoets."
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Uh... 5644 CN.",
+            "zin_correct": "5644 CN.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "En welke uh gemeente woon jij?",
+            "zin_correct": "En in welke gemeente woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "welke gemeente woon jij",
+              "uitleg": "Het voorzetsel 'in' ontbreekt aan het begin van de vraagstelling."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "In Eindhoven.",
+            "zin_correct": "In Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "What is my contactpersoon bij de gemeente?",
+            "zin_correct": "Wie is mijn contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is my",
+              "uitleg": "De spreker gebruikt Engelse woorden aan het begin van de zin."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is my contactpersoon",
+              "uitleg": "Er wordt Engels ('What is my') gemengd met Nederlands. Daarnaast moet het vragend voornaamwoord voor personen 'wie' zijn en niet 'wat'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De geïnterviewde stelt zelf een vraag",
+              "uitleg": "In deze rollenspelcontext stelt de geïnterviewde plotseling een vraag aan de interviewer, wat de rollen omdraait."
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Simona Evers.",
+            "zin_correct": "Simona Evers.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "What is your geboortedatum?",
+            "zin_correct": "Wat is jouw geboortedatum?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "What is your",
+              "uitleg": "De spreker gebruikt Engelse woorden aan het begin van de zin."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "What is your geboortedatum",
+              "uitleg": "Er wordt Engels gemengd met Nederlands."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Engelse woorden",
+              "uitleg": "Het is onlogisch om Engels te gebruiken in een Nederlandse spreektoets."
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "8 november 1997.",
+            "zin_correct": "Acht november negentien zevenennegentig.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Hoe oud ben jij?",
+            "zin_correct": "Hoe oud ben jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik ben 28 jaar.",
+            "zin_correct": "Ik ben achtentwintig jaar.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Uit welk land kom jij?",
+            "zin_correct": "Uit welk land kom jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik kom uit Gambia.",
+            "zin_correct": "Ik kom uit Gambia.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Mina",
+            "brief": "Hallo Mina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Hi, wat is jouw naam?\"\n👍 *Wat was goed:* Je stelt de vraag op een vriendelijke manier en de uitspraak is duidelijk.\n💡 *Correctie:* \"Hoi, wat is jouw naam?\"\n🧠 *Waarom:* 'Hi' is Engels. In het Nederlands gebruiken we liever 'Hoi' of 'Hallo'.\n\n*Zin 2:* \"Wat is jouw achternaam?\"\n👍 *Wat was goed:* Deze zin is grammaticaal helemaal correct en heel duidelijk uitgesproken.\n💡 *Correctie:* \"Wat is jouw achternaam?\"\n\n*Zin 3:* \"What is your address?\"\n👍 *Wat was goed:* Je spreekt de Engelse woorden goed uit.\n💡 *Correctie:* \"Wat is jouw adres?\"\n🧠 *Waarom:* Je stelt de vraag volledig in het Engels. Probeer tijdens een Nederlandse spreektoets altijd Nederlands te praten.\n🤔 *Logica:* Het is verwarrend om Engels te spreken als je Nederlands oefent.\n\n*Zin 4:* \"What is your postcode?\"\n👍 *Wat was goed:* Je bent goed verstaanbaar.\n💡 *Correctie:* \"Wat is jouw postcode?\"\n🧠 *Waarom:* Ook hier gebruik je Engels ('What is your') in plaats van Nederlands ('Wat is jouw').\n🤔 *Logica:* Probeer de Engelse taal te vermijden tijdens het oefenen.\n\n*Zin 5:* \"En welke uh gemeente woon jij?\"\n👍 *Wat was goed:* Je gebruikt het juiste woord 'gemeente'.\n💡 *Correctie:* \"En in welke gemeente woon jij?\"\n🧠 *Waarom:* Je bent het voorzetsel 'in' vergeten aan het begin van de vraag.\n\n*Zin 6:* \"Simona Evers.\"\n👍 *Wat was goed:* Je geeft een duidelijk en kort antwoord.\n💡 *Correctie:* \"Simona Evers.\"\n\n*Zin 7:* \"What is your geboortedatum?\"\n👍 *Wat was goed:* Je gebruikt het Nederlandse woord 'geboortedatum' correct.\n💡 *Correctie:* \"Wat is jouw geboortedatum?\"\n🧠 *Waarom:* Je mengt Engels ('What is your') met Nederlands. Dit noemen we 'code-switching'. Probeer de hele zin in het Nederlands te zeggen.\n🤔 *Logica:* Het mengen van talen maakt het gesprek minder vloeiend.\n\n*Zin 8:* \"Hoe oud ben jij?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal perfect en heel natuurlijk uitgesproken.\n💡 *Correctie:* \"Hoe oud ben jij?\"\n\n*Zin 9:* \"Uit welk land kom jij?\"\n👍 *Wat was goed:* Zeer goede zinsbouw en duidelijke uitspraak van de klanken.\n💡 *Correctie:* \"Uit welk land kom jij?\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je zinsbouw in het Nederlands is over het algemeen goed, maar je vergeet soms een voorzetsel (zoals 'in' bij 'in welke gemeente').\n• *Uitspraak:* Je uitspraak is erg duidelijk en verstaanbaar. Je spreekt rustig en met een goed tempo.\n• *Samenhang & Logica:* Het grootste verbeterpunt is dat je vaak terugvalt op het Engels ('What is your'). Probeer jezelf te dwingen om de Nederlandse vertaling te gebruiken, zelfs als je even moet nadenken.\n\n🧠 *Jouw volgende stap & advice:*\nProbeer de komende tijd Engelse hulpmiddelen te vermijden tijdens het spreken. Als je een woord niet weet, probeer het dan te omschrijven in het Nederlands. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Hi, wat is jouw naam?\"\n👍 *What was good:* You ask the question in a friendly manner and the pronunciation is clear.\n💡 *Correction:* \"Hoi, wat is jouw naam?\"\n🧠 *Why:* 'Hi' is English. In Dutch, we prefer to use 'Hoi' or 'Hallo'.\n\n*Sentence 2:* \"Wat is jouw achternaam?\"\n👍 *What was good:* This sentence is grammatically completely correct and very clearly pronounced.\n💡 *Correction:* \"Wat is jouw achternaam?\"\n\n*Sentence 3:* \"What is your address?\"\n👍 *What was good:* You pronounce the English words well.\n💡 *Correction:* \"Wat is jouw adres?\"\n🧠 *Why:* You ask the question entirely in English. Try to always speak Dutch during a Dutch speaking test.\n🤔 *Logic:* It is confusing to speak English when practicing Dutch.\n\n*Sentence 4:* \"What is your postcode?\"\n👍 *What was good:* You are easily understood.\n💡 *Correction:* \"Wat is jouw postcode?\"\n🧠 *Why:* Here too, you use English ('What is your') instead of Dutch ('Wat is jouw').\n🤔 *Logic:* Try to avoid the English language during practice.\n\n*Sentence 5:* \"En welke uh gemeente woon jij?\"\n👍 *What was good:* You use the correct word 'gemeente'.\n💡 *Correction:* \"En in welke gemeente woon jij?\"\n🧠 *Why:* You forgot the preposition 'in' at the beginning of the question.\n\n*Sentence 6:* \"Simona Evers.\"\n👍 *What was good:* You give a clear and short answer.\n💡 *Correction:* \"Simona Evers.\"\n\n*Sentence 7:* \"What is your geboortedatum?\"\n👍 *What was good:* You use the Dutch word 'geboortedatum' correctly.\n💡 *Correction:* \"Wat is jouw geboortedatum?\"\n🧠 *Why:* You mix English ('What is your') with Dutch. This is called code-switching. Try to say the whole sentence in Dutch.\n🤔 *Logic:* Mixing languages makes the conversation less fluent.\n\n*Sentence 8:* \"Hoe oud ben jij?\"\n👍 *What was good:* This question is grammatically perfect and pronounced very naturally.\n💡 *Correction:* \"Hoe oud ben jij?\"\n\n*Sentence 9:* \"Uit welk land kom jij?\"\n👍 *What was good:* Very good sentence structure and clear pronunciation of the sounds.\n💡 *Correction:* \"Uit welk land kom jij?\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your sentence structure in Dutch is generally good, but you sometimes forget a preposition (like 'in' in 'in welke gemeente').\n• *Pronunciation:* Your pronunciation is very clear and intelligible. You speak calmly and at a good pace.\n• *Coherence & Logic:* The biggest point for improvement is that you often fall back on English ('What is your'). Try to force yourself to use the Dutch translation, even if you have to think for a moment.\n\n🧠 *Your next step & advice:*\nTry to avoid English crutches while speaking in the coming period. If you don't know a word, try to describe it in Dutch. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Mariama",
+            "brief": "Hallo Mariama! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Mijn naam is Mariama.\"\n👍 *Wat was goed:* Je introduceert jezelf heel netjes en de uitspraak is erg duidelijk.\n💡 *Correctie:* \"Mijn naam is Mariama.\"\n\n*Zin 2:* \"Mijn achternaam is Tamba.\"\n👍 *Wat was goed:* Goede zinsbouw en duidelijke uitspraak van je achternaam.\n💡 *Correctie:* \"Mijn achternaam is Tamba.\"\n\n*Zin 3:* \"Kameliastraat 28.\"\n👍 *Wat was goed:* Je spreekt de straatnaam en het getal goed uit.\n💡 *Correctie:* \"Kameliastraat 28.\"\n\n*Zin 4:* \"Uh... 5644 CN.\"\n👍 *Wat was goed:* Je noemt de cijfers en letters van de postcode correct in het Nederlands.\n💡 *Correctie:* \"5644 CN.\"\n\n*Zin 5:* \"In Eindhoven.\"\n👍 *Wat was goed:* Kort en correct antwoord met het juiste voorzetsel 'in'.\n💡 *Correctie:* \"In Eindhoven.\"\n\n*Zin 6:* \"What is my contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Je gebruikt de Nederlandse woorden 'contactpersoon bij de gemeente' heel goed.\n💡 *Correctie:* \"Wie is mijn contactpersoon bij de gemeente?\"\n🧠 *Waarom:* Je gebruikt Engelse woorden ('What is my') aan het begin. Daarnaast vragen we naar personen met 'wie' en niet met 'wat'.\n🤔 *Logica:* In dit rollenspel ben jij de persoon die vragen beantwoordt, dus het is een beetje onverwacht dat je zelf een vraag stelt.\n\n*Zin 7:* \"8 november 1997.\"\n👍 *Wat was goed:* Je spreekt de datum en het jaartal goed uit in het Nederlands.\n💡 *Correctie:* \"Acht november negentien zevenennegentig.\"\n\n*Zin 8:* \"Ik ben 28 jaar.\"\n👍 *Wat was goed:* De structuur 'Ik ben ... jaar' is helemaal correct.\n💡 *Correctie:* \"Ik ben achtentwintig jaar.\"\n\n*Zin 9:* \"Ik kom uit Gambia.\"\n👍 *Wat was goed:* Perfecte zin! Je gebruikt het juiste voorzetsel 'uit'.\n💡 *Correctie:* \"Ik kom uit Gambia.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is erg sterk. Je zinnen zijn kort maar correct. Let op dat je bij personen 'wie' gebruikt in plaats van 'wat'.\n• *Uitspraak:* Je uitspraak is heel duidelijk en je bent goed te verstaan. De getallen en letters spreek je ook goed uit.\n• *Samenhang & Logica:* Pas op met het mixen van Engels en Nederlands ('What is my'). Probeer de hele zin in het Nederlands te formuleren.\n\n🧠 *Jouw volgende stap & advies:*\nJe bent al heel goed op weg! Probeer de volgende keer nog meer volledige zinnen te maken in plaats van korte antwoorden (bijvoorbeeld: 'Ik woon in Eindhoven' in plaats van alleen 'In Eindhoven'). Succes! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mariama! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Mijn naam is Mariama.\"\n👍 *What was good:* You introduce yourself very nicely and the pronunciation is very clear.\n💡 *Correction:* \"Mijn naam is Mariama.\"\n\n*Sentence 2:* \"Mijn achternaam is Tamba.\"\n👍 *What was good:* Good sentence structure and clear pronunciation of your last name.\n💡 *Correction:* \"Mijn achternaam is Tamba.\"\n\n*Sentence 3:* \"Kameliastraat 28.\"\n👍 *What was good:* You pronounce the street name and the number well.\n💡 *Correction:* \"Kameliastraat 28.\"\n\n*Sentence 4:* \"Uh... 5644 CN.\"\n👍 *What was good:* You state the numbers and letters of the postcode correctly in Dutch.\n💡 *Correction:* \"5644 CN.\"\n\n*Sentence 5:* \"In Eindhoven.\"\n👍 *What was good:* Short and correct answer using the correct preposition 'in'.\n💡 *Correction:* \"In Eindhoven.\"\n\n*Sentence 6:* \"What is my contactpersoon bij de gemeente?\"\n👍 *What was good:* You use the Dutch words 'contactpersoon bij de gemeente' very well.\n💡 *Correction:* \"Wie is mijn contactpersoon bij de gemeente?\"\n🧠 *Why:* You use English words ('What is my') at the beginning. Additionally, we ask about people using 'wie' (who) and not 'wat' (what).\n🤔 *Logic:* In this roleplay, you are the person answering questions, so it is a bit unexpected that you ask a question yourself.\n\n*Sentence 7:* \"8 november 1997.\"\n👍 *What was good:* You pronounce the date and the year well in Dutch.\n💡 *Correction:* \"Acht november negentien zevenennegentig.\"\n\n*Sentence 8:* \"Ik ben 28 jaar.\"\n👍 *What was good:* The structure 'Ik ben ... jaar' is completely correct.\n💡 *Correction:* \"Ik ben achtentwintig jaar.\"\n\n*Sentence 9:* \"Ik kom uit Gambia.\"\n👍 *What was good:* Perfect sentence! You use the correct preposition 'uit'.\n💡 *Correction:* \"Ik kom uit Gambia.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is very strong. Your sentences are short but correct. Make sure to use 'wie' instead of 'wat' when referring to people.\n• *Pronunciation:* Your pronunciation is very clear and you are easy to understand. You also pronounce the numbers and letters well.\n• *Coherence & Logic:* Watch out for mixing English and Dutch ('What is my'). Try to formulate the entire sentence in Dutch.\n\n🧠 *Your next step & advice:*\nYou are already on the right track! Next time, try to make more full sentences instead of short answers (for example: 'Ik woon in Eindhoven' instead of just 'In Eindhoven'). Good luck! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Mina Mariama 6 mei.ogg",
+      "path": "B-Alfa/Mina Mariama 6 mei.ogg",
+      "date": "06-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Wat drink jij als ochtend?",
+            "zin_correct": "Wat drink jij 's ochtends?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "als ochtend",
+              "uitleg": "De cursist spreekt 'als ochtend' uit in plaats van ''s ochtends'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "als ochtend",
+              "uitleg": "De constructie 'als ochtend' bestaat niet in het Nederlands om een tijdstip aan te duiden. Dit moet ''s ochtends' of 'in de ochtend' zijn."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik drink sap 's ochtends. En jij?",
+            "zin_correct": "Ik drink 's ochtends sap. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "sap 's ochtends",
+              "uitleg": "De tijdsaanduiding ''s ochtends' staat in een hoofdzin bij voorkeur direct na de persoonsvorm of voor het lijdend voorwerp."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik drink uh melk 's ochtends.",
+            "zin_correct": "Ik drink 's ochtends melk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "melk 's ochtends",
+              "uitleg": "Net als bij de vorige zin is de woordvolgorde niet optimaal. De tijdsaanduiding ''s ochtends' hoort voor het lijdend voorwerp 'melk' te staan."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Wat eet jij vandaag?",
+            "zin_correct": "Wat eet jij vandaag?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik eet rijst en kip. En met jij?",
+            "zin_correct": "Ik eet rijst en kip. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "En met jij?",
+              "uitleg": "Na het voorzetsel 'met' moet het objectpronomen 'jou' gebruikt worden ('En met jou?'). Echter, in deze context is de korte wedervraag 'En jij?' veel natuurlijker."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik uh vandaag eten uh kabal palaw.",
+            "zin_correct": "Ik eet vandaag Kabuli Palaw.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kabal palaw",
+              "uitleg": "De cursist spreekt het Afghaanse gerecht 'Kabuli Palaw' uit als 'kabal palaw'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik vandaag eten",
+              "uitleg": "De cursist gebruikt het hele werkwoord 'eten' in plaats van de vervoegde vorm 'eet' voor de eerste persoon enkelvoud. Daarnaast staat het werkwoord niet op de tweede positie."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Wat vind jij lekker?",
+            "zin_correct": "Wat vind jij lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik vind uh kip lekker.",
+            "zin_correct": "Ik vind kip lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik vind uh rijst lekker.",
+            "zin_correct": "Ik vind rijst lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Wat vind jij niet lekker?",
+            "zin_correct": "Wat vind jij niet lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik vind uh vis niet lekker.",
+            "zin_correct": "Ik vind vis niet lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ik vind uh pizza niet lekker, döner niet lekker, ja.",
+            "zin_correct": "Ik vind pizza en döner niet lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "pizza niet lekker, döner niet lekker",
+              "uitleg": "De herhaling van 'niet lekker' is grammaticaal overbodig. Het is beter om de twee zelfstandige naamwoorden te verbinden met 'en'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Waar koop jij eten?",
+            "zin_correct": "Waar koop jij eten?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ik koop eten bij de Albert Heijn restaurant. En jij?",
+            "zin_correct": "Ik koop eten bij de Albert Heijn. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "de Albert Heijn restaurant",
+              "uitleg": "Het woord 'restaurant' is een het-woord, dus het zou 'het Albert Heijn-restaurant' moeten zijn. Echter, Albert Heijn is een supermarkt."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Albert Heijn restaurant",
+              "uitleg": "Albert Heijn is een supermarktketen en geen restaurant. Het is logischer om te zeggen: 'Ik koop eten bij de Albert Heijn' of 'in de supermarkt'."
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Albert Heijn, Aldi, Jumbo, ja.",
+            "zin_correct": "Bij de Albert Heijn, de Aldi en de Jumbo.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Albert Heijn, Aldi, Jumbo",
+              "uitleg": "Dit is een elliptische zin (onvolledig). Het is beter om lidwoorden en het voorzetsel 'bij' te gebruiken."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Kan jij koken?",
+            "zin_correct": "Kun jij koken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Kan jij",
+              "uitleg": "Hoewel 'kan jij' veel voorkomt in spreektaal, is 'kun jij' de grammaticaal correcte standaardvorm voor de tweede persoon enkelvoud."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mariama",
+            "zin_fonetisch": "Ja, en jij?",
+            "zin_correct": "Ja, en jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Mina",
+            "zin_fonetisch": "Ja, ik uh ook koken goed.",
+            "zin_correct": "Ja, ik kan ook goed koken.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik ook koken goed",
+              "uitleg": "De cursist mist het hulpwerkwoord 'kan' en de woordvolgorde is incorrect. Het hele werkwoord 'koken' moet aan het einde van de zin staan."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Mina",
+            "brief": "Hallo Mina! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat drink jij als ochtend?\"\n👍 *Wat was goed:* Je stelt een duidelijke vraag aan je gesprekspartner.\n💡 *Correctie:* \"Wat drink jij 's ochtends?\"\n🧠 *Waarom:* We gebruiken in het Nederlands ''s ochtends' (of 'in de ochtend') om aan te geven wanneer iets gebeurt. 'Als ochtend' is geen correcte Nederlandse uitdrukking.\n\n*Zin 2:* \"Ik drink uh melk 's ochtends.\"\n👍 *Wat was goed:* Je antwoord is heel begrijpelijk.\n💡 *Correctie:* \"Ik drink 's ochtends melk.\"\n🧠 *Waarom:* De tijdsaanduiding ''s ochtends' staat in een standaardzin meestal direct na het werkwoord en voor het lijdend voorwerp ('melk').\n\n*Zin 3:* \"Wat eet jij vandaag?\"\n👍 *Wat was goed:* Deze zin is grammaticaal helemaal correct en heel natuurlijk uitgesproken!\n💡 *Correctie:* \"Wat eet jij vandaag?\"\n\n*Zin 4:* \"Ik uh vandaag eten uh kabal palaw.\"\n👍 *Wat was goed:* Je probeert een specifiek traditioneel gerecht te benoemen.\n💡 *Correctie:* \"Ik eet vandaag Kabuli Palaw.\"\n🧠 *Waarom:* Je bent het werkwoord vergeten te vervoegen. Je moet 'eet' gebruiken in plaats van het hele werkwoord 'eten'. Daarnaast moet het werkwoord op de tweede positie in de zin staan.\n\n*Zin 5:* \"Wat vind jij lekker?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal helemaal correct en heel duidelijk uitgesproken!\n💡 *Correctie:* \"Wat vind jij lekker?\"\n\n*Zin 6:* \"Ik vind uh rijst lekker.\"\n👍 *Wat was goed:* Goed geantwoord! De structuur 'Ik vind ... lekker' klopt helemaal.\n💡 *Correctie:* \"Ik vind rijst lekker.\"\n\n*Zin 7:* \"Wat vind jij niet lekker?\"\n👍 *Wat was goed:* Heel goed geformuleerd. De ontkenning 'niet' staat op de juiste plek.\n💡 *Correctie:* \"Wat vind jij niet lekker?\"\n\n*Zin 8:* \"Ik vind uh pizza niet lekker, döner niet lekker, ja.\"\n👍 *Wat was goed:* Je geeft een uitgebreid antwoord met meerdere voorbeelden.\n💡 *Correctie:* \"Ik vind pizza en döner niet lekker.\"\n🧠 *Waarom:* In plaats van 'niet lekker' twee keer te herhalen, kun je de twee woorden verbinden met 'en'. Dat klinkt veel natuurlijker.\n\n*Zin 9:* \"Waar koop jij eten?\"\n👍 *Wat was goed:* Een perfecte, korte vraag met de juiste woordvolgorde.\n💡 *Correctie:* \"Waar koop jij eten?\"\n\n*Zin 10:* \"Albert Heijn, Aldi, Jumbo, ja.\"\n👍 *Wat was goed:* Je noemt de namen van de supermarkten heel duidelijk.\n💡 *Correctie:* \"Bij de Albert Heijn, de Aldi en de Jumbo.\"\n🧠 *Waarom:* In een volledig antwoord gebruiken we het voorzetsel 'bij' en lidwoorden voor de winkelnamen.\n\n*Zin 11:* \"Kan jij koken?\"\n👍 *Wat was goed:* Heel duidelijke vraag.\n💡 *Correctie:* \"Kun jij koken?\"\n🧠 *Waarom:* Hoewel 'kan jij' veel gebruikt wordt in spreektaal, is 'kun jij' de grammaticaal correcte standaardvorm voor de tweede persoon enkelvoud (jij).\n\n*Zin 12:* \"Ja, ik uh ook koken goed.\"\n👍 *Wat was goed:* Je antwoord is positief en begrijpelijk.\n💡 *Correctie:* \"Ja, ik kan ook goed koken.\"\n🧠 *Waarom:* Je hebt hier het hulpwerkwoord 'kan' nodig. De juiste volgorde is: 'ik kan ook goed koken'. Het hele werkwoord 'koken' komt helemaal aan het einde van de zin te staan.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op de positie van het werkwoord in de zin. Het werkwoord moet op de tweede positie staan (bijvoorbeeld: 'Ik eet vandaag...' in plaats van 'Ik vandaag eten...'). Vergeet ook niet om het werkwoord te vervoegen naar de juiste persoon.\n• *Uitspraak:* Je uitspraak is over het algemeen heel duidelijk en goed verstaanbaar. Probeer de overgang tussen woorden nog iets vloeiender te maken door minder pauzes ('uh') te gebruiken.\n• *Samenhang & Logica:* Je zinnen sluiten goed aan op de vragen van je partner. Probeer in plaats van losse woorden of herhalingen vaker verbindingswoorden zoals 'en' of 'maar' te gebruiken.\n\n🧠 *Jouw volgende stap & advies:*\nOefen de komende tijd extra met de positie van het werkwoord in de zin en het gebruik van hulpwerkwoorden zoals 'kunnen' en 'willen'. Je bent op de goede weg, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mina! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat drink jij als ochtend?\"\n👍 *What was good:* You ask a clear question to your conversation partner.\n💡 *Correction:* \"Wat drink jij 's ochtends?\"\n🧠 *Why:* In Dutch, we use ''s ochtends' (or 'in de ochtend') to indicate when something happens. 'Als ochtend' is not a correct Dutch expression.\n\n*Sentence 2:* \"Ik drink uh melk 's ochtends.\"\n👍 *What was good:* Your answer is very understandable.\n💡 *Correction:* \"Ik drink 's ochtends melk.\"\n🧠 *Why:* The time indication ''s ochtends' is usually placed directly after the verb and before the direct object ('melk') in a standard sentence.\n\n*Sentence 3:* \"Wat eet jij vandaag?\"\n👍 *What was good:* This sentence is grammatically completely correct and pronounced very naturally!\n💡 *Correction:* \"Wat eet jij vandaag?\"\n\n*Sentence 4:* \"Ik uh vandaag eten uh kabal palaw.\"\n👍 *What was good:* You try to name a specific traditional dish.\n💡 *Correction:* \"Ik eet vandaag Kabuli Palaw.\"\n🧠 *Why:* You forgot to conjugate the verb. You should use 'eet' instead of the infinitive 'eten'. Additionally, the verb must be in the second position in the sentence.\n\n*Sentence 5:* \"Wat vind jij lekker?\"\n👍 *What was good:* This question is grammatically completely correct and pronounced very clearly!\n💡 *Correction:* \"Wat vind jij lekker?\"\n\n*Sentence 6:* \"Ik vind uh rijst lekker.\"\n👍 *What was good:* Well answered! The structure 'Ik vind ... lekker' is completely correct.\n💡 *Correction:* \"Ik vind rijst lekker.\"\n\n*Sentence 7:* \"Wat vind jij niet lekker?\"\n👍 *What was good:* Very well formulated. The negation 'niet' is in the right place.\n💡 *Correction:* \"Wat vind jij niet lekker?\"\n\n*Sentence 8:* \"Ik vind uh pizza niet lekker, döner niet lekker, ja.\"\n👍 *What was good:* You give a detailed answer with multiple examples.\n💡 *Correction:* \"Ik vind pizza en döner niet lekker.\"\n🧠 *Why:* Instead of repeating 'niet lekker' twice, you can connect the two words with 'en' (and). This sounds much more natural.\n\n*Sentence 9:* \"Waar koop jij eten?\"\n👍 *What was good:* A perfect, short question with the correct word order.\n💡 *Correction:* \"Waar koop jij eten?\"\n\n*Sentence 10:* \"Albert Heijn, Aldi, Jumbo, ja.\"\n👍 *What was good:* You name the supermarkets very clearly.\n💡 *Correction:* \"Bij de Albert Heijn, de Aldi en de Jumbo.\"\n🧠 *Why:* In a full answer, we use the preposition 'bij' (at) and articles before the store names.\n\n*Sentence 11:* \"Kan jij koken?\"\n👍 *What was good:* Very clear question.\n💡 *Correction:* \"Kun jij koken?\"\n🧠 *Why:* Although 'kan jij' is often used in spoken language, 'kun jij' is the grammatically correct standard form for the second person singular (you).\n\n*Sentence 12:* \"Ja, ik uh ook koken goed.\"\n👍 *What was good:* Your answer is positive and understandable.\n💡 *Correction:* \"Ja, ik kan ook goed koken.\"\n🧠 *Why:* You need the auxiliary verb 'kan' (can) here. The correct word order is: 'ik kan ook goed koken'. The infinitive 'koken' goes at the very end of the sentence.\n\n*🏁 Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to the position of the verb in the sentence. The verb must be in the second position (e.g., 'Ik eet vandaag...' instead of 'Ik vandaag eten...'). Also, do not forget to conjugate the verb to the correct person.\n• *Pronunciation:* Your pronunciation is generally very clear and easy to understand. Try to make the transition between words a bit smoother by using fewer pauses ('uh').\n• *Coherence & Logic:* Your sentences connect well with your partner's questions. Try to use connecting words like 'en' (and) or 'maar' (but) more often instead of loose words or repetitions.\n\n🧠 *Your next step & advice:*\nIn the coming period, practice extra with the position of the verb in the sentence and the use of auxiliary verbs like 'kunnen' (to be able to) and 'willen' (to want). You are on the right track, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Mariama",
+            "brief": "Hallo Mariama! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik drink sap 's ochtends. En jij?\"\n👍 *Wat was goed:* Heel goed en vlot uitgesproken. De wedervraag is ook heel natuurlijk.\n💡 *Correctie:* \"Ik drink 's ochtends sap. En jij?\"\n🧠 *Waarom:* De tijdsaanduiding ''s ochtends' staat in het Nederlands meestal direct na de persoonsvorm ('drink') en voor het lijdend voorwerp ('sap').\n\n*Zin 2:* \"Ik eet rijst en kip. En met jij?\"\n👍 *Wat was goed:* Het eerste deel van je zin is perfect geformuleerd.\n💡 *Correctie:* \"Ik eet rijst en kip. En jij?\" of \"En met jou?\"\n🧠 *Waarom:* 'En met jij?' is grammaticaal niet correct. Na een voorzetsel zoals 'met' gebruiken we het objectpronomen 'jou' ('En met jou?'). In deze context is de korte wedervraag 'En jij?' echter het meest natuurlijk.\n\n*Zin 3:* \"Ik vind uh kip lekker.\"\n👍 *Wat was goed:* Heel duidelijke uitspraak en de structuur 'Ik vind ... lekker' klopt helemaal.\n💡 *Correctie:* \"Ik vind kip lekker.\"\n\n*Zin 4:* \"Ik vind uh vis niet lekker.\"\n👍 *Wat was goed:* Goed gebruik van de ontkenning 'niet lekker' op de juiste positie.\n💡 *Correctie:* \"Ik vind vis niet lekker.\"\n\n*Zin 5:* \"En jij?\"\n👍 *Wat was goed:* Korte, correcte en natuurlijke wedervraag.\n💡 *Correctie:* \"En jij?\"\n\n*Zin 6:* \"Ik koop eten bij de Albert Heijn restaurant. En jij?\"\n👍 *Wat was goed:* Je gebruikt het juiste voorzetsel 'bij'.\n💡 *Correctie:* \"Ik koop eten bij de Albert Heijn. En jij?\"\n🧠 *Waarom:* 'Restaurant' is een het-woord, dus het zou 'het Albert Heijn-restaurant' moeten zijn. Echter, Albert Heijn is een supermarkt, geen restaurant.\n🤔 *Logica:* Albert Heijn is een supermarktketen en geen restaurant. Het is logischer om te zeggen: 'Ik koop eten bij de Albert Heijn' of 'in de supermarkt'.\n\n*Zin 7:* \"Ja, en jij?\"\n👍 *Wat was goed:* Heel natuurlijk en correct gereageerd op de vraag.\n💡 *Correctie:* \"Ja, en jij?\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op het gebruik van persoonlijke voornaamwoorden na een voorzetsel (bijvoorbeeld: 'met jou' in plaats van 'met jij'). Probeer ook de positie van tijdsaanduidingen zoals ''s ochtends' te oefenen.\n• *Uitspraak:* Je uitspraak is erg goed en vloeiend. Je bent heel makkelijk te verstaan en praat in een mooi tempo.\n• *Samenhang & Logica:* Let op de betekenis van woorden in de context. Een supermarkt zoals Albert Heijn noemen we in het Nederlands geen 'restaurant'.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf vooral zo doorgaan met spreken! Je hebt al veel zelfvertrouwen en een goede uitspraak. Richt je de komende tijd op het correcte gebruik van voornaamwoorden (jij/jou) en lidwoorden (de/het). Succes! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Mariama! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik drink sap 's ochtends. En jij?\"\n👍 *What was good:* Very well and fluently pronounced. The follow-up question is also very natural.\n💡 *Correction:* \"Ik drink 's ochtends sap. En jij?\"\n🧠 *Why:* In Dutch, the time indication ''s ochtends' is usually placed directly after the conjugated verb ('drink') and before the direct object ('sap').\n\n*Sentence 2:* \"Ik eet rijst en kip. En met jij?\"\n👍 *What was good:* The first part of your sentence is perfectly formulated.\n💡 *Correction:* \"Ik eet rijst en kip. En jij?\" or \"En met jou?\"\n🧠 *Why:* 'En met jij?' is grammatically incorrect. After a preposition like 'met', we use the object pronoun 'jou' ('En met jou?'). In this context, however, the short question 'En jij?' is the most natural.\n\n*Sentence 3:* \"Ik vind uh kip lekker.\"\n👍 *What was good:* Very clear pronunciation and the structure 'Ik vind ... lekker' is completely correct.\n💡 *Correction:* \"Ik vind kip lekker.\"\n\n*Sentence 4:* \"Ik vind uh vis niet lekker.\"\n👍 *What was good:* Good use of the negation 'niet lekker' in the correct position.\n💡 *Correction:* \"Ik vind vis niet lekker.\"\n\n*Sentence 5:* \"En jij?\"\n👍 *What was good:* Short, correct, and natural follow-up question.\n💡 *Correction:* \"En jij?\"\n\n*Sentence 6:* \"Ik koop eten bij de Albert Heijn restaurant. En jij?\"\n👍 *What was good:* You use the correct preposition 'bij'.\n💡 *Correction:* \"Ik koop eten bij de Albert Heijn. En jij?\"\n🧠 *Why:* 'Restaurant' is a 'het'-word, so it should be 'het Albert Heijn-restaurant'. However, Albert Heijn is a supermarket, not a restaurant.\n🤔 *Logic:* Albert Heijn is a supermarket chain and not a restaurant. It is more logical to say: 'Ik koop eten bij de Albert Heijn' or 'in de supermarkt'.\n\n*Sentence 7:* \"Ja, en jij?\"\n👍 *What was good:* Very natural and correct response to the question.\n💡 *Correction:* \"Ja, en jij?\"\n\n*🏁 Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to the use of personal pronouns after a preposition (e.g., 'met jou' instead of 'met jij'). Also, try to practice the position of time indications like ''s ochtends'.\n• *Pronunciation:* Your pronunciation is very good and fluent. You are very easy to understand and speak at a nice pace.\n• *Coherence & Logic:* Pay attention to the meaning of words in context. We do not call a supermarket like Albert Heijn a 'restaurant' in Dutch.\n\n🧠 *Your next step & advice:*\nKeep up the great work speaking! You already have a lot of confidence and good pronunciation. Focus in the coming period on the correct use of pronouns (jij/jou) and articles (de/het). Good luck! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Nadia Hafida 6 mei.ogg",
+      "path": "B-Alfa/Nadia Hafida 6 mei.ogg",
+      "date": "06-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Nadia",
+            "zin_fonetisch": "Wat drink jij sochtends?",
+            "zin_correct": "Wat drink jij 's ochtends?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Ik drink tei en jij?",
+            "zin_correct": "Ik drink thee en jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "tei",
+              "uitleg": "De klank 'ee' in 'thee' werd uitgesproken als 'ei'. Zorg ervoor dat je de 'ee' lang en gesloten uitspreekt (/eː/)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nadia",
+            "zin_fonetisch": "Ik drink koffie.",
+            "zin_correct": "Ik drink koffie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Wat eet jij vanavond?",
+            "zin_correct": "Wat eet jij vanavond?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nadia",
+            "zin_fonetisch": "Ik eet rijst met kep.",
+            "zin_correct": "Ik eet rijst met kip.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "kep",
+              "uitleg": "De korte 'i' in 'kip' klonk als een 'e' (/kep/). Probeer de korte 'i' scherper uit te spreken als in 'dit' of 'ik'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Lekker, kan jij koken?",
+            "zin_correct": "Lekker, kan jij koken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nadia",
+            "zin_fonetisch": "Ja, een beetje.",
+            "zin_correct": "Ja, een beetje.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Nadia",
+            "brief": "Hallo Nadia! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat drink jij sochtends?\"\n👍 *Wat was goed:* Je stelt de vraag heel natuurlijk en de uitspraak van 's ochtends is prima verstaanbaar.\n💡 *Correctie:* \"Wat drink jij 's ochtends?\"\n🧠 *Waarom:* Dit is grammaticaal en qua uitspraak helemaal in orde.\n\n*Zin 2:* \"Ik drink koffie.\"\n👍 *Wat was goed:* Heel duidelijk uitgesproken, korte en krachtige zin.\n💡 *Correctie:* \"Ik drink koffie.\"\n🧠 *Waarom:* De uitspraak van 'koffie' is prima.\n\n*Zin 3:* \"Ik eet rijst met kep.\"\n👍 *Wat was goed:* De zinsbouw is perfect en de woorden 'rijst met' klinken goed.\n💡 *Correctie:* \"Ik eet rijst met kip.\"\n🧠 *Waarom:* Je sprak 'kip' uit als 'kep'. Let op de korte 'i'-klank; deze moet klinken zoals in 'ik' of 'dit', niet als een 'e'.\n\n*Zin 4:* \"Ja, een beetje.\"\n👍 *Wat was goed:* Een heel natuurlijke reactie met een goede uitspraak van 'een beetje'.\n💡 *Correctie:* \"Ja, een beetje.\"\n🧠 *Waarom:* Dit is een perfecte en informele manier om te antwoorden.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is uitstekend! Je maakt korte, correcte zinnen en reageert heel passend op de vragen.\n• *Uitspraak:* Let vooral op de korte 'i'-klank in woorden zoals 'kip'. Zorg dat dit niet als een 'e' (/kep/) klinkt.\n• *Samenhang & Logica:* Het gesprek verloopt heel natuurlijk en logisch. Je antwoorden sluiten perfect aan op de vragen.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met de korte klinkers (zoals de 'i' in kip, vis, dit). Je doet het al super goed en spreekt met veel zelfvertrouwen. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Nadia! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat drink jij sochtends?\"\n👍 *What was good:* You ask the question very naturally and the pronunciation of 's ochtends is very clear.\n💡 *Correction:* \"Wat drink jij 's ochtends?\"\n🧠 *Why:* This is grammatically and phonetically completely correct.\n\n*Sentence 2:* \"Ik drink koffie.\"\n👍 *What was good:* Very clearly pronounced, short and strong sentence.\n💡 *Correction:* \"Ik drink koffie.\"\n🧠 *Why:* The pronunciation of 'koffie' is great.\n\n*Sentence 3:* \"Ik eet rijst met kep.\"\n👍 *What was good:* The sentence structure is perfect and the words 'rijst met' sound good.\n💡 *Correction:* \"Ik eet rijst met kip.\"\n🧠 *Why:* You pronounced 'kip' as 'kep'. Pay attention to the short 'i' sound; it should sound like the 'i' in 'ik' or 'dit', not like an 'e'.\n\n*Sentence 4:* \"Ja, een beetje.\"\n👍 *What was good:* A very natural reaction with a good pronunciation of 'een beetje'.\n💡 *Correction:* \"Ja, een beetje.\"\n🧠 *Why:* This is a perfect and informal way to answer.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is excellent! You make short, correct sentences and respond very appropriately to the questions.\n• *Pronunciation:* Pay special attention to the short 'i' sound in words like 'kip'. Make sure it doesn't sound like an 'e' (/kep/).\n• *Coherence & Logic:* The conversation flows very naturally and logically. Your answers connect perfectly to the questions.\n\n🧠 *Your next step & advice:*\nKeep practicing short vowels (like the 'i' in kip, vis, dit). You are already doing great and speaking with a lot of confidence. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Hafida",
+            "brief": "Hallo Hafida! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik drink tei en jij?\"\n👍 *Wat was goed:* Je reageert snel en stelt direct een goede wedervraag.\n💡 *Correctie:* \"Ik drink thee en jij?\"\n🧠 *Waarom:* Je sprak 'thee' uit als 'tei'. De 'ee'-klank in het Nederlands is een lange, gesloten klank (/eː/). Probeer je mond iets minder te bewegen aan het einde van de klank zodat het geen 'ij/ei' wordt.\n\n*Zin 2:* \"Wat eet jij vanavond?\"\n👍 *Wat was goed:* De zinsbouw is helemaal correct en de vraag is heel duidelijk.\n💡 *Correctie:* \"Wat eet jij vanavond?\"\n🧠 *Waarom:* Dit is een perfecte vraag om het gesprek gaande te houden.\n\n*Zin 3:* \"Lekker, kan jij koken?\"\n👍 *Wat was goed:* Heel leuk en natuurlijk gereageerd met 'lekker'. De vraag is grammaticaal helemaal correct.\n💡 *Correctie:* \"Lekker, kan jij koken?\"\n🧠 *Waarom:* De inversie (kan jij) is correct toegepast voor een vraagzin.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is uitstekend! Je stelt goede vragen en gebruikt de juiste woordvolgorde.\n• *Uitspraak:* Let op de lange 'ee'-klank in woorden zoals 'thee'. Zorg ervoor dat deze niet verandert in een 'ei'-klank.\n• *Samenhang & Logica:* Je toont actieve interesse in je gesprekspartner door goede wedervragen te stellen. Dit maakt het gesprek heel levendig.\n\n🧠 *Jouw volgende stap & advies:*\nOefen specifiek met de uitspraak van de lange 'ee' (thee, meenemen, geel) zodat deze niet als 'ei' klinkt. Je doet het fantastisch en je durft goed te spreken! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Hafida! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik drink tei en jij?\"\n👍 *What was good:* You respond quickly and immediately ask a good follow-up question.\n💡 *Correction:* \"Ik drink thee en jij?\"\n🧠 *Why:* You pronounced 'thee' as 'tei'. The 'ee' sound in Dutch is a long, closed vowel (/eː/). Try to move your mouth slightly less at the end of the sound so it doesn't turn into an 'ij/ei' sound.\n\n*Sentence 2:* \"Wat eet jij vanavond?\"\n👍 *What was good:* The sentence structure is completely correct and the question is very clear.\n💡 *Correction:* \"Wat eet jij vanavond?\"\n🧠 *Why:* This is a perfect question to keep the conversation going.\n\n*Sentence 3:* \"Lekker, kan jij koken?\"\n👍 *What was good:* Very nice and natural reaction with 'lekker'. The question is grammatically completely correct.\n💡 *Correction:* \"Lekker, kan jij koken?\"\n🧠 *Why:* The inversion (kan jij) is correctly applied for a question.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is excellent! You ask good questions and use the correct word order.\n• *Pronunciation:* Pay attention to the long 'ee' sound in words like 'thee'. Make sure it doesn't turn into an 'ei' sound.\n• *Coherence & Logic:* You show active interest in your conversation partner by asking good follow-up questions. This makes the conversation very lively.\n\n🧠 *Your next step & advice:*\nPractice specifically with the pronunciation of the long 'ee' (thee, meenemen, geel) so that it doesn't sound like 'ei'. You are doing fantastic and you speak with great courage! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Nursel 6 mei.ogg",
+      "path": "B-Alfa/Nursel 6 mei.ogg",
+      "date": "06-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat drink jij ochtends?",
+            "zin_correct": "Wat drink jij 's ochtends?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak van de woorden is verstaanbaar, hoewel de 'ch' in 'ochtends' nog wat zachter mag."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ochtends",
+              "uitleg": "In het Nederlands gebruiken we de vaste uitdrukking ''s ochtends' (met de oude genitief-s) om 'in the morning' aan te duiden."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "Ik drink...",
+            "zin_correct": "Ik drink...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De aanzet is prima en duidelijk verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik drink...",
+            "zin_correct": "Ik drink...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke uitspraak van de ik-vorm."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "Ik drinke...",
+            "zin_correct": "Ik drink...",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "drinke",
+              "uitleg": "Er wordt een extra 'e'-klank aan het einde van het werkwoord geplakt."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "drinke",
+              "uitleg": "De ik-vorm van het werkwoord 'drinken' is 'drink', zonder extra -e aan het einde."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "thee",
+            "zin_correct": "thee",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'th' wordt correct als een 't' uitgesproken en de lange 'ee' klinkt goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "thee",
+            "zin_correct": "thee",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Nette imitatie van het woord 'thee'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "ochtends",
+            "zin_correct": "'s ochtends",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De klanken in 'ochtends' worden goed gevormd."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ochtends",
+              "uitleg": "Ook hier ontbreekt de verplichte ''s' voor het woord 'ochtends'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "ochtends",
+            "zin_correct": "'s ochtends",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De uitspraak is een goede herhaling van de moeder."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ochtends",
+              "uitleg": "Het kind herhaalt de foutieve vorm zonder ''s'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat... wie eet jij vanavond?",
+            "zin_correct": "Wat eet jij vanavond?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woorden zijn individueel goed uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "wie",
+              "uitleg": "Er is een hapering waarbij 'wie' (who) wordt gezegd in plaats van 'wat' (what)."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "wie eet jij",
+              "uitleg": "'Wie eet jij' betekent 'Who are you eating', wat kannibalistisch klinkt. Het moet puur 'Wat eet jij' zijn."
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pizza",
+            "zin_correct": "Pizza.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke uitspraak van het woord 'pizza'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik eet...",
+            "zin_correct": "Ik eet...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De lange 'ee' in 'eet' klinkt goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pasta",
+            "zin_correct": "pasta.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De klinkers in 'pasta' klinken helder."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "pasta vanavond",
+            "zin_correct": "pasta vanavond.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De klemtoon op 'vanavond' is correct."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat vind jij lekker?",
+            "zin_correct": "Wat vind jij lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Zeer vloeiend en natuurlijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pizza",
+            "zin_correct": "Pizza.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik vind...",
+            "zin_correct": "Ik vind...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De korte 'i' in 'vind' klinkt goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pizza",
+            "zin_correct": "pizza.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Goed herhaald."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "pizza lekker",
+            "zin_correct": "pizza lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'l' en 'r' in 'lekker' klinken goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pizza lekker",
+            "zin_correct": "pizza lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De intonatie is vrolijk en correct."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat vind jij niet lekker?",
+            "zin_correct": "Wat vind jij niet lekker?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Goede zinsmelodie en duidelijke articulatie."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "Ik vind...",
+            "zin_correct": "Ik vind...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "patat... tat...",
+            "zin_correct": "patat...",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "patat tat",
+              "uitleg": "Er is een lichte hapering of herhaling van de laatste lettergreep ('tat')."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "patat...",
+            "zin_correct": "patat...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De harde 't' aan het einde klinkt goed."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "niet lekker",
+            "zin_correct": "niet lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'ie' in 'niet' is mooi lang."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "niet lekker",
+            "zin_correct": "niet lekker.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Goed nagezegd."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Waar koop jij eten?",
+            "zin_correct": "Waar koop jij eten?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'oo' in 'koop' klinkt goed gesloten."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik koop...",
+            "zin_correct": "Ik koop...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke aanzet."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "markt",
+            "zin_correct": "op de markt.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'rkt'-medeklinkercombinatie aan het einde is lastig maar wordt goed uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "markt",
+              "uitleg": "Er ontbreekt een voorzetsel en lidwoord. Het moet 'op de markt' zijn."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "markt",
+            "zin_correct": "op de markt.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke uitspraak van de medeklinkers."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "markt",
+              "uitleg": "Ook Nursel vergeet hier het voorzetsel 'op de' aan te reiken."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "markt",
+            "zin_correct": "op de markt.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Herhaling is verstaanbaar."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "markt",
+              "uitleg": "Herhaling van de incomplete grammaticale structuur."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Kun jij koken?",
+            "zin_correct": "Kun jij koken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De 'u' in 'kun' klinkt goed kort."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ja, ik kook...",
+            "zin_correct": "Ja, ik kan koken...",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijke uitspraak."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik kook",
+              "uitleg": "Als antwoord op 'Kun jij koken?' is 'Ja, ik kan koken' of 'Ja, ik kook' mogelijk, maar 'Ja, ik kan...' sluit beter aan op de hulpwerkwoordvraag."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Kind",
+            "zin_fonetisch": "pizza",
+            "zin_correct": "pizza.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "pizza",
+            "zin_correct": "pizza.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Laatste woord is helder."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Nursel",
+            "brief": "Hallo Nursel! 👋\n\nWat ontzettend leuk en goed dat je samen met je kind aan het oefenen bent! Dit is een fantastische manier om de taal actief te gebruiken. Hieronder vind je de feedback op jouw zinnen.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat drink jij ochtends?\"\n👍 *Wat was goed:* Je stelt de vraag heel spontaan en met een goede intonatie.\n💡 *Correctie:* \"Wat drink jij *'s ochtends*?\"\n🧠 *Waarom:* In het Nederlands zeggen we altijd *'s ochtends* (met een s-klank aan het begin) als we 'in the morning' bedoelen.\n\n*Zin 2:* \"Ik drink...\"\n👍 *Wat was goed:* Goed gedaan om de zin voor te bereiden zodat je kind deze kan afmaken.\n💡 *Correctie:* \"Ik drink...\"\n\n*Zin 3:* \"thee\"\n👍 *Wat was goed:* De uitspraak van de lange 'ee' klinkt heel zuiver.\n💡 *Correctie:* \"thee\"\n\n*Zin 4:* \"ochtends\"\n👍 *Wat was goed:* Je herhaalt het woord duidelijk.\n💡 *Correctie:* \"*'s ochtends*\"\n🧠 *Waarom:* Vergeet ook hier de *'s* niet aan het begin.\n\n*Zin 5:* \"Wat... wie eet jij vanavond?\"\n👍 *Wat was goed:* Je herstelt jezelf snel.\n💡 *Correctie:* \"Wat eet jij vanavond?\"\n🧠 *Waarom:* Je struikelde even over het woord 'wie'. 'Wie eet jij' betekent 'Who are you eating', wat natuurlijk niet klopt! Het moet echt 'Wat' zijn.\n\n*Zin 6:* \"Ik eet...\"\n👍 *Wat was goed:* Prima aanzet voor het antwoord.\n💡 *Correctie:* \"Ik eet...\"\n\n*Zin 7:* \"pasta vanavond\"\n👍 *Wat was goed:* De klemtoon op 'vanavond' ligt perfect op de tweede lettergreep.\n💡 *Correctie:* \"pasta vanavond.\"\n\n*Zin 8:* \"Wat vind jij lekker?\"\n👍 *Wat was goed:* Deze zin klinkt heel natuurlijk en vloeiend. Uitstekend!\n💡 *Correctie:* \"Wat vind jij lekker?\"\n\n*Zin 9:* \"Ik vind...\"\n👍 *Wat was goed:* De korte 'i' in 'vind' klinkt heel goed.\n💡 *Correctie:* \"Ik vind...\"\n\n*Zin 10:* \"pizza lekker\"\n👍 *Wat was goed:* De 'l' en 'r' in 'lekker' worden goed gearticuleerd.\n💡 *Correctie:* \"pizza lekker.\"\n\n*Zin 11:* \"Wat vind jij niet lekker?\"\n👍 *Wat was goed:* Zeer duidelijke vraagstelling.\n💡 *Correctie:* \"Wat vind jij niet lekker?\"\n\n*Zin 12:* \"patat... tat...\"\n👍 *Wat was goed:* Je probeert het woord goed over te brengen.\n💡 *Correctie:* \"patat...\"\n🧠 *Waarom:* Je haperde een beetje aan het einde van het woord 'patat'.\n\n*Zin 13:* \"niet lekker\"\n👍 *Wat was goed:* De 'ie' in 'niet' is mooi lang uitgesproken.\n💡 *Correctie:* \"niet lekker.\"\n\n*Zin 14:* \"Waar koop jij eten?\"\n👍 *Wat was goed:* De 'oo' in 'koop' klinkt mooi gesloten.\n💡 *Correctie:* \"Waar koop jij eten?\"\n\n*Zin 15:* \"Ik koop...\"\n👍 *Wat was goed:* Goede, duidelijke aanzet.\n💡 *Correctie:* \"Ik koop...\"\n\n*Zin 16:* \"markt\"\n👍 *Wat was goed:* Je spreekt de moeilijke medeklinkers aan het einde goed uit.\n💡 *Correctie:* \"*op de* markt.\"\n🧠 *Waarom:* In het Nederlands zeggen we dat we iets *op de* markt kopen. Alleen 'markt' is grammaticaal niet compleet.\n\n*Zin 17:* \"Kun jij koken?\"\n👍 *Wat was goed:* De korte 'u' in 'kun' klinkt uitstekend.\n💡 *Correctie:* \"Kun jij koken?\"\n\n*Zin 18:* \"Ja, ik kook...\"\n👍 *Wat was goed:* Goed verstaanbaar.\n💡 *Correctie:* \"Ja, ik *kan* koken...\"\n🧠 *Waarom:* Omdat de vraag met 'kun' (kunnen) begint, is het mooier om te antwoorden met 'ik kan'.\n\n*Zin 19:* \"pizza\"\n👍 *Wat was goed:* Duidelijke afsluiting.\n💡 *Correctie:* \"pizza.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op vaste voorzetsels en lidwoorden, zoals *'s ochtends* en *op de markt*. Dit maakt je Nederlands direct een stuk correcter.\n• *Uitspraak:* Je uitspraak is al heel erg goed en verstaanbaar! Soms is er een kleine hapering (zoals bij 'patat'), maar je corrigeert jezelf goed.\n• *Samenhang & Logica:* Let op het verschil tussen 'wat' en 'wie' om grappige misverstanden te voorkomen.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf vooral zo doorgaan met samen oefenen! Het helpt enorm om deze korte vraag-en-antwoordspelletjes te doen. Probeer de volgende keer te letten op de kleine woordjes zoals 'op de' en ''s'. Je doet het super! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Nursel! 👋\n\nHow wonderful and great that you are practicing Dutch together with your child! This is a fantastic way to actively use the language. Below you will find the feedback on your sentences.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat drink jij ochtends?\"\n👍 *What was good:* You ask the question very spontaneously and with good intonation.\n💡 *Correction:* \"Wat drink jij *'s ochtends*?\"\n🧠 *Why:* In Dutch, we always say *'s ochtends* (with an s-sound at the start) when we mean 'in the morning'.\n\n*Sentence 2:* \"Ik drink...\"\n👍 *What was good:* Well done preparing the sentence so your child can finish it.\n💡 *Correction:* \"Ik drink...\"\n\n*Sentence 3:* \"thee\"\n👍 *What was good:* The pronunciation of the long 'ee' sounds very pure.\n💡 *Correction:* \"thee\"\n\n*Sentence 4:* \"ochtends\"\n👍 *What was good:* You repeat the word clearly.\n💡 *Correction:* \"*'s ochtends*\"\n🧠 *Why:* Don't forget the *'s* at the beginning here as well.\n\n*Sentence 5:* \"Wat... wie eet jij vanavond?\"\n👍 *What was good:* You recover quickly.\n💡 *Correction:* \"Wat eet jij vanavond?\"\n🧠 *Why:* You stumbled slightly over the word 'wie'. 'Wie eet jij' means 'Who are you eating', which is not correct! It really has to be 'Wat'.\n\n*Sentence 6:* \"Ik eet...\"\n👍 *What was good:* Great start for the answer.\n💡 *Correction:* \"Ik eet...\"\n\n*Sentence 7:* \"pasta vanavond\"\n👍 *What was good:* The stress on 'vanavond' is perfectly placed on the second syllable.\n💡 *Correction:* \"pasta vanavond.\"\n\n*Sentence 8:* \"Wat vind jij lekker?\"\n👍 *What was good:* This sentence sounds very natural and fluent. Excellent!\n💡 *Correction:* \"Wat vind jij lekker?\"\n\n*Sentence 9:* \"Ik vind...\"\n👍 *What was good:* The short 'i' in 'vind' sounds very good.\n💡 *Correction:* \"Ik vind...\"\n\n*Sentence 10:* \"pizza lekker\"\n👍 *What was good:* The 'l' and 'r' in 'lekker' are well articulated.\n💡 *Correction:* \"pizza lekker.\"\n\n*Sentence 11:* \"Wat vind jij niet lekker?\"\n👍 *What was good:* Very clear questioning.\n💡 *Correction:* \"Wat vind jij niet lekker?\"\n\n*Sentence 12:* \"patat... tat...\"\n👍 *What was good:* You try to convey the word well.\n💡 *Correction:* \"patat...\"\n🧠 *Why:* You stuttered slightly at the end of the word 'patat'.\n\n*Sentence 13:* \"niet lekker\"\n👍 *What was good:* The 'ie' in 'niet' is beautifully prolonged.\n💡 *Correction:* \"niet lekker.\"\n\n*Sentence 14:* \"Waar koop jij eten?\"\n👍 *What was good:* The 'oo' in 'koop' sounds nicely closed.\n💡 *Correction:* \"Waar koop jij eten?\"\n\n*Sentence 15:* \"Ik koop...\"\n👍 *What was good:* Good, clear start.\n💡 *Correction:* \"Ik koop...\"\n\n*Sentence 16:* \"markt\"\n👍 *What was good:* You pronounce the difficult consonants at the end well.\n💡 *Correction:* \"*op de* markt.\"\n🧠 *Why:* In Dutch, we say we buy something *op de* (on the) market. Just 'markt' is grammatically incomplete.\n\n*Sentence 17:* \"Kun jij koken?\"\n👍 *What was good:* The short 'u' in 'kun' sounds excellent.\n💡 *Correction:* \"Kun jij koken?\"\n\n*Sentence 18:* \"Ja, ik kook...\"\n👍 *What was good:* Very intelligible.\n💡 *Correction:* \"Ja, ik *kan* koken...\"\n🧠 *Why:* Since the question starts with 'kun' (can), it is better to answer with 'ik kan'.\n\n*Sentence 19:* \"pizza\"\n👍 *What was good:* Clear ending.\n💡 *Correction:* \"pizza.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to fixed prepositions and articles, such as *'s ochtends* and *op de markt*. This instantly makes your Dutch much more correct.\n• *Pronunciation:* Your pronunciation is already very good and clear! Sometimes there is a small hesitation (like with 'patat'), but you correct yourself well.\n• *Coherence & Logic:* Watch out for the difference between 'wat' and 'wie' to avoid funny misunderstandings.\n\n🧠 *Your next step & advice:* \nKeep practicing together like this! It helps enormously to do these short Q&A games. Next time, try to pay attention to the small words like 'op de' and ''s'. You are doing great! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Kind",
+            "brief": "Hallo! 👋\n\nWat supergoed dat jij samen met je mama Nederlands oefent! Je doet heel goed je best. Hier is jouw persoonlijke feedback.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik drink...\"\n👍 *Wat was goed:* Je begint heel goed aan de zin.\n💡 *Correctie:* \"Ik drink...\"\n\n*Zin 2:* \"Ik drinke...\"\n👍 *Wat was goed:* Je probeert de zin langer te maken.\n💡 *Correctie:* \"Ik *drink*...\"\n🧠 *Waarom:* Let op dat je geen 'e' aan het einde plakt. Het is 'ik drink', niet 'drinke'.\n\n*Zin 3:* \"thee\"\n👍 *Wat was goed:* Heel netjes en duidelijk uitgesproken!\n💡 *Correctie:* \"thee\"\n\n*Zin 4:* \"ochtends\"\n👍 *Wat was goed:* Je herhaalt het woord goed.\n💡 *Correctie:* \"*'s ochtends*\"\n🧠 *Waarom:* Probeer de volgende keer de 's' aan het begin te zeggen: *'s ochtends*.\n\n*Zin 5:* \"pizza\"\n👍 *Wat was goed:* Heel duidelijk gezegd.\n💡 *Correctie:* \"pizza.\"\n\n*Zin 6:* \"pasta\"\n👍 *Wat was goed:* De klank is heel mooi en helder.\n💡 *Correctie:* \"pasta.\"\n\n*Zin 7:* \"pizza\"\n👍 *Wat was goed:* Goed geantwoord op de vraag.\n💡 *Correctie:* \"pizza.\"\n\n*Zin 8:* \"pizza\"\n👍 *Wat was goed:* Weer heel duidelijk.\n💡 *Correctie:* \"pizza.\"\n\n*Zin 9:* \"pizza lekker\"\n👍 *Wat was goed:* Je klinkt heel vrolijk en de uitspraak is top!\n💡 *Correctie:* \"pizza lekker.\"\n\n*Zin 10:* \"Ik vind...\"\n👍 *Wat was goed:* Goede start van je zin.\n💡 *Correctie:* \"Ik vind...\"\n\n*Zin 11:* \"patat...\"\n👍 *Wat was goed:* De 't' aan het einde klinkt heel scherp en goed.\n💡 *Correctie:* \"patat...\"\n\n*Zin 12:* \"niet lekker\"\n👍 *Wat was goed:* Heel goed nagezegd van je mama.\n💡 *Correctie:* \"niet lekker.\"\n\n*Zin 13:* \"markt\"\n👍 *Wat was goed:* De moeilijke letters aan het einde gaan heel goed.\n💡 *Correctie:* \"*op de* markt.\"\n🧠 *Waarom:* Probeer de hele zin te zeggen: \"Ik koop eten *op de* markt.\"\n\n*Zin 14:* \"markt\"\n👍 *Wat was goed:* Goede herhaling.\n💡 *Correctie:* \"*op de* markt.\"\n\n*Zin 15:* \"pizza\"\n👍 *Wat was goed:* Super gedaan!\n💡 *Correctie:* \"pizza.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let op dat je geen extra 'e' achter werkwoorden plakt (dus 'ik drink', niet 'drinke'). Probeer ook de kleine woordjes zoals *op de* te gebruiken.\n• *Uitspraak:* Je spreekt de woorden al heel erg netjes en duidelijk uit. De klanken zijn helder!\n\n🧠 *Jouw volgende stap & advies:*\nBlijf zo goed oefenen met je mama! Je bent een topper en leert heel snel. Volgende keer mag je proberen om nog langere zinnen te maken. Zet 'm op! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello! 👋\n\nHow super cool that you are practicing Dutch together with your mom! You are doing a really great job. Here is your personal feedback.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik drink...\"\n👍 *What was good:* You start the sentence very well.\n💡 *Correction:* \"Ik drink...\"\n\n*Sentence 2:* \"Ik drinke...\"\n👍 *What was good:* You try to make the sentence longer.\n💡 *Correction:* \"Ik *drink*...\"\n🧠 *Why:* Be careful not to stick an 'e' at the end. It is 'ik drink', not 'drinke'.\n\n*Sentence 3:* \"thee\"\n👍 *What was good:* Very neatly and clearly pronounced!\n💡 *Correction:* \"thee\"\n\n*Sentence 4:* \"ochtends\"\n👍 *What was good:* You repeat the word well.\n💡 *Correction:* \"*'s ochtends*\"\n🧠 *Why:* Try to say the 's' at the beginning next time: *'s ochtends*.\n\n*Sentence 5:* \"pizza\"\n👍 *What was good:* Said very clearly.\n💡 *Correction:* \"pizza.\"\n\n*Sentence 6:* \"pasta\"\n👍 *What was good:* The sound is very beautiful and clear.\n💡 *Correction:* \"pasta.\"\n\n*Sentence 7:* \"pizza\"\n👍 *What was good:* Good answer to the question.\n💡 *Correction:* \"pizza.\"\n\n*Sentence 8:* \"pizza\"\n👍 *What was good:* Very clear again.\n💡 *Correction:* \"pizza.\"\n\n*Sentence 9:* \"pizza lekker\"\n👍 *What was good:* You sound very cheerful and the pronunciation is great!\n💡 *Correction:* \"pizza lekker.\"\n\n*Sentence 10:* \"Ik vind...\"\n👍 *What was good:* Good start to your sentence.\n💡 *Correction:* \"Ik vind...\"\n\n*Sentence 11:* \"patat...\"\n👍 *What was good:* The 't' at the end sounds very sharp and good.\n💡 *Correction:* \"patat...\"\n\n*Sentence 12:* \"niet lekker\"\n👍 *What was good:* Very well repeated after your mom.\n💡 *Correction:* \"niet lekker.\"\n\n*Sentence 13:* \"markt\"\n👍 *What was good:* The difficult letters at the end are going very well.\n💡 *Correction:* \"*op de* markt.\"\n🧠 *Why:* Try to say the whole sentence: \"Ik koop eten *op de* markt.\"\n\n*Sentence 14:* \"markt\"\n👍 *What was good:* Good repetition.\n💡 *Correction:* \"*op de* markt.\"\n\n*Sentence 15:* \"pizza\"\n👍 *What was good:* Super job!\n💡 *Correction:* \"pizza.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Be careful not to add an extra 'e' after verbs (so 'ik drink', not 'drinke'). Also try to use the small words like *op de*.\n• *Pronunciation:* You already pronounce the words very neatly and clearly. The sounds are bright!\n\n🧠 *Your next step & advice:*\nKeep practicing so well with your mom! You are a star and you learn very fast. Next time you can try to make even longer sentences. Go for it! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Nursel Meryem 20-5 Huis.ogg",
+      "path": "B-Alfa/Nursel Meryem 20-5 Huis.ogg",
+      "date": "20-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Woon jij in een huis of een appartement?",
+            "zin_correct": "Woon jij in een huis of een appartement?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik woon in een appartement. En jij?",
+            "zin_correct": "Ik woon in een appartement. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik woon in een huis met een tuin. Heb jij een balkon?",
+            "zin_correct": "Ik woon in een huis met een tuin. Heb jij een balkon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik heb eh twee balkon. Twee balkon. Ja, ik heb een twee balkon. Is jouw tuin groot?",
+            "zin_correct": "Ik heb twee balkons. Ja, ik heb twee balkons. Is jouw tuin groot?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "balkon",
+              "uitleg": "De 'o'-klank in 'balkon' mag iets korter en ronder, en vergeet de meervouds-s niet."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "twee balkon, een twee balkon",
+              "uitleg": "Na het getal 'twee' moet het zelfstandig naamwoord in het meervoud staan ('balkons'). Daarnaast kun je het onbepaalde lidwoord 'een' niet combineren met het meervoud 'twee balkons'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik heb eh tuin is groot.",
+            "zin_correct": "Mijn tuin is groot.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik heb tuin is groot",
+              "uitleg": "Dit is een dubbele hoofdzinconstructie die grammaticaal niet klopt. Je moet kiezen tussen: 'Ik heb een grote tuin' of 'Mijn tuin is groot'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wie woon jij?",
+            "zin_correct": "Met wie woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Wie woon jij?",
+              "uitleg": "Je bent het voorzetsel 'met' vergeten. In het Nederlands vragen we: 'Met wie woon jij?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik woon met mijn man. En jij?",
+            "zin_correct": "Ik woon met mijn man. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik woon met mijn man.",
+            "zin_correct": "Ik woon met mijn man.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik woon alleen. Is jouw buurt leuk?",
+            "zin_correct": "Ik woon alleen. Is jouw buurt leuk?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Ik woon alleen direct na Ik woon met mijn man",
+              "uitleg": "Het is onlogisch om eerst te zeggen 'Ik woon met mijn man' en direct daarna 'Ik woon alleen'. Waarschijnlijk las je de verschillende opties van het papier op, maar in een echt gesprek spreekt dit elkaar tegen."
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik woon... eh mijn man. Is jouw buurt leuk?",
+            "zin_correct": "Ik woon met mijn man. Is jouw buurt leuk?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik woon mijn man",
+              "uitleg": "Je bent hier het voorzetsel 'met' vergeten. Het moet zijn: 'Ik woon met mijn man'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Ik vind... Ik vind buurt leuk.",
+            "zin_correct": "Ik vind de buurt leuk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik vind buurt leuk",
+              "uitleg": "Je bent het lidwoord 'de' of het bezittelijk voornaamwoord 'mijn' vergeten voor het woord 'buurt'. Het moet zijn: 'Ik vind de buurt leuk' of 'Ik vind mijn buurt leuk'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ja, het is rustig. En er is een park dicht in jouw buurt?",
+            "zin_correct": "Ja, het is rustig. En is er een park dichtbij in jouw buurt?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "er is een park dicht in jouw buurt?",
+              "uitleg": "Voor een vraagzin moet je inversie gebruiken: 'is er' in plaats van 'er is'. Daarnaast gebruiken we 'dichtbij' in plaats van 'dicht' in deze context."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Mijn buurt is ook leuk. Het bos is dichtbij.",
+            "zin_correct": "Mijn buurt is ook leuk. Het bos is dichtbij.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "dichtbij",
+              "uitleg": "De uitspraak van 'dichtbij' klonk een beetje als 'dicht-beit'. Let op de 'ij'-klank aan het einde."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Nursel",
+            "brief": "Hallo Nursel! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Woon jij in een huis of een appartement?\"\n👍 *Wat was goed:* Heel goed uitgesproken en een perfecte vraagstelling!\n💡 *Correctie:* \"Woon jij in een huis of een appartement?\"\n🧠 *Waarom:* Deze zin is helemaal correct.\n\n*Zin 2:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n👍 *Wat was goed:* Zeer vloeiend en grammaticaal helemaal in orde.\n💡 *Correctie:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🧠 *Waarom:* Deze zin is helemaal correct.\n\n*Zin 3:* \"Ik heb eh tuin is groot.\"\n👍 *Wat was goed:* De woorden 'tuin' en 'groot' zijn goed uitgesproken.\n💡 *Correctie:* \"Mijn tuin is groot.\" of \"Ik heb een grote tuin.\"\n🧠 *Waarom:* Je combineert hier twee zinsstructuren ('Ik heb...' en 'tuin is groot'). Kies voor één van de twee opties.\n\n*Zin 4:* \"Wie woon jij?\"\n👍 *Wat was goed:* Je stem is heel duidelijk en verstaanbaar.\n💡 *Correctie:* \"Met wie woon jij?\"\n🧠 *Waarom:* In het Nederlands moet je het voorzetsel 'met' gebruiken om te vragen naar gezelschap.\n\n*Zin 5:* \"Ik woon met mijn man.\"\n👍 *Wat was goed:* Korte, duidelijke en correcte zin.\n💡 *Correctie:* \"Ik woon met mijn man.\"\n🧠 *Waarom:* Deze zin is helemaal correct.\n\n*Zin 6:* \"Ik woon alleen. Is jouw buurt leuk?\"\n👍 *Wat was goed:* De uitspraak van de woorden is prima.\n💡 *Correctie:* \"Ik woon alleen. Is jouw buurt leuk?\"\n🧠 *Waarom:* Grammaticaal is de zin goed.\n🤔 *Logica:* Het is verwarrend dat je eerst zegt 'Ik woon met mijn man' en direct daarna 'Ik woon alleen'. In een echt gesprek spreekt dit elkaar tegen.\n\n*Zin 7:* \"Ik vind... Ik vind buurt leuk.\"\n👍 *Wat was goed:* Goede poging om jezelf te corrigeren.\n💡 *Correctie:* \"Ik vind de buurt leuk.\" of \"Ik vind mijn buurt leuk.\"\n🧠 *Waarom:* Je bent het lidwoord 'de' of het bezittelijk voornaamwoord 'mijn' vergeten voor het woord 'buurt'.\n\n*Zin 8:* \"Mijn buurt is ook leuk. Het bos is dichtbij.\"\n👍 *Wat was goed:* Een mooie, actieve zin om het gesprek mee af te sluiten.\n💡 *Correctie:* \"Mijn buurt is ook leuk. Het bos is dichtbij.\"\n🧠 *Waarom:* Let op de uitspraak van 'dichtbij'. Dit klonk nu een beetje als 'dicht-beit'. Oefen de 'ij'-klank goed.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op het gebruik van voorzetsels (zoals 'met' in 'met wie') en lidwoorden (zoals 'de' voor 'buurt'). Probeer ook te vermijden dat je twee zinsstructuren in elkaar schuift (zoals 'Ik heb tuin is groot').\n• *Uitspraak:* Je spreekt over het algemeen heel duidelijk en rustig. Let alleen op de tweeklank 'ij' in woorden zoals 'dichtbij'.\n• *Samenhang & Logica:* Let erop dat je in een rollenspel niet zomaar tegenstrijdige opties achter elkaar opleest (zoals 'met mijn man' en daarna 'alleen').\n\n🧠 *Jouw volgende stap & advies:*\nProbeer bij het spreken rustig de tijd te nemen om de zin in je hoofd te vormen voordat je begint. Let vooral op de kleine woordjes zoals 'met', 'de' en 'het'. Je bent op de goede weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Nursel! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Woon jij in een huis of een appartement?\"\n👍 *What was good:* Very well pronounced and a perfect question structure!\n💡 *Correction:* \"Woon jij in een huis of een appartement?\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 2:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n👍 *What was good:* Very fluent and grammatically completely correct.\n💡 *Correction:* \"Ik woon in een huis met een tuin. Heb jij een balkon?\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 3:* \"Ik heb eh tuin is groot.\"\n👍 *What was good:* The words 'tuin' and 'groot' are well pronounced.\n💡 *Correction:* \"Mijn tuin is groot.\" or \"Ik heb een grote tuin.\"\n🧠 *Why:* You are combining two sentence structures here ('Ik heb...' and 'tuin is groot'). Choose one of the two options.\n\n*Sentence 4:* \"Wie woon jij?\"\n👍 *What was good:* Your voice is very clear and understandable.\n💡 *Correction:* \"Met wie woon jij?\"\n🧠 *Why:* In Dutch, you must use the preposition 'met' (with) to ask about company.\n\n*Sentence 5:* \"Ik woon met mijn man.\"\n👍 *What was good:* Short, clear, and correct sentence.\n💡 *Correction:* \"Ik woon met mijn man.\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 6:* \"Ik woon alleen. Is jouw buurt leuk?\"\n👍 *What was good:* The pronunciation of the words is fine.\n💡 *Correction:* \"Ik woon alleen. Is jouw buurt leuk?\"\n🧠 *Why:* Grammatically, the sentence is correct.\n🤔 *Logic:* It is confusing that you first say 'Ik woon met mijn man' and immediately after 'Ik woon alleen'. In a real conversation, these contradict each other.\n\n*Sentence 7:* \"Ik vind... Ik vind buurt leuk.\"\n👍 *What was good:* Good attempt to correct yourself.\n💡 *Correction:* \"Ik vind de buurt leuk.\" or \"Ik vind mijn buurt leuk.\"\n🧠 *Why:* You forgot the article 'de' or the possessive pronoun 'mijn' before the word 'buurt'.\n\n*Sentence 8:* \"Mijn buurt is ook leuk. Het bos is dichtbij.\"\n👍 *What was good:* A nice, active sentence to close the conversation.\n💡 *Correction:* \"Mijn buurt is ook leuk. Het bos is dichtbij.\"\n🧠 *Why:* Pay attention to the pronunciation of 'dichtbij'. This sounded a bit like 'dicht-beit'. Practice the 'ij' sound well.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to the use of prepositions (like 'met' in 'met wie') and articles (like 'de' before 'buurt'). Also try to avoid merging two sentence structures (like 'Ik heb tuin is groot').\n• *Pronunciation:* You generally speak very clearly and calmly. Just watch out for the diphthong 'ij' in words like 'dichtbij'.\n• *Coherence & Logic:* Make sure that in a role-play you don't just read contradictory options one after the other (like 'with my husband' and then 'alone').\n\n🧠 *Your next step & advice:*\nTry to take your time when speaking to form the sentence in your head before you start. Pay special attention to small words like 'met', 'de', and 'het'. You are on the right track! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Meryem",
+            "brief": "Hallo Meryem! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Ik woon in een appartement. En jij?\"\n👍 *Wat was goed:* Heel natuurlijk uitgesproken en grammaticaal helemaal correct!\n💡 *Correction:* \"Ik woon in een appartement. En jij?\"\n🧠 *Waarom:* Deze zin is helemaal correct.\n\n*Zin 2:* \"Ik heb eh twee balkon. Twee balkon. Ja, ik heb een twee balkon. Is jouw tuin groot?\"\n👍 *Wat was goed:* Je herstelt jezelf goed en stelt een actieve wedervraag.\n💡 *Correction:* \"Ik heb twee balkons. Ja, ik heb twee balkons. Is jouw tuin groot?\"\n🧠 *Waarom:* Na het getal 'twee' moet het meervoud 'balkons' gebruikt worden. Je kunt ook niet 'een' (enkelvoud) en 'twee' (meervoud) combineren.\n\n*Zin 3:* \"Ik woon met mijn man. En jij?\"\n👍 *Wat was goed:* Heel duidelijk uitgesproken en een goede interactie.\n💡 *Correction:* \"Ik woon met mijn man. En jij?\"\n🧠 *Waarom:* Deze zin is helemaal correct.\n\n*Zin 4:* \"Ik woon... eh mijn man. Is jouw buurt leuk?\"\n👍 *Wat was goed:* Je stem is goed verstaanbaar.\n💡 *Correction:* \"Ik woon met mijn man. Is jouw buurt leuk?\"\n🧠 *Waarom:* Je bent hier het voorzetsel 'met' vergeten. Zonder 'met' klopt de zin grammaticaal niet.\n\n*Zin 5:* \"Ja, het is rustig. En er is een park dicht in jouw buurt?\"\n👍 *Wat was goed:* Goed gebruik van het woord 'rustig'.\n💡 *Correction:* \"Ja, het is rustig. En is er een park dichtbij in jouw buurt?\"\n🧠 *Waarom:* In een vraagzin moet het werkwoord vooraan staan (inversie: 'is er' in plaats van 'er is'). Daarnaast gebruiken we 'dichtbij' in plaats van 'dicht'.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op het meervoud van zelfstandige naamwoorden na getallen (bijv. 'twee balkons'). Denk ook aan de woordvolgorde bij vragen (inversie: 'is er...').\n• *Uitspraak:* Je uitspraak is erg duidelijk en je spreekt op een prettig tempo. Let op de uitspraak van de 'o'-klank in 'balkon'.\n• *Samenhang & Logica:* Je reageert heel goed op de vragen van je gesprekspartner en houdt het gesprek levendig door wedervragen te stellen.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het maken van vragen. Onthoud de regel: bij een vraag draaien we het onderwerp en het werkwoord om (inversie). Je doet het super! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Meryem! 👋\n\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Ik woon in een appartement. En jij?\"\n👍 *What was good:* Very naturally pronounced and grammatically completely correct!\n💡 *Correction:* \"Ik woon in een appartement. En jij?\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 2:* \"Ik heb eh twee balkon. Twee balkon. Ja, ik heb een twee balkon. Is jouw tuin groot?\"\n👍 *What was good:* You recover well and ask an active follow-up question.\n💡 *Correction:* \"Ik heb twee balkons. Ja, ik heb twee balkons. Is jouw tuin groot?\"\n🧠 *Why:* After the number 'twee' (two), the plural 'balkons' must be used. You also cannot combine 'een' (singular) and 'twee' (plural).\n\n*Sentence 3:* \"Ik woon met mijn man. En jij?\"\n👍 *What was good:* Very clearly pronounced and good interaction.\n💡 *Correction:* \"Ik woon met mijn man. En jij?\"\n🧠 *Why:* This sentence is completely correct.\n\n*Sentence 4:* \"Ik woon... eh mijn man. Is jouw buurt leuk?\"\n👍 *What was good:* Your voice is very understandable.\n💡 *Correction:* \"Ik woon met mijn man. Is jouw buurt leuk?\"\n🧠 *Why:* You forgot the preposition 'met' (with) here. Without 'met', the sentence is grammatically incorrect.\n\n*Sentence 5:* \"Ja, het is rustig. En er is een park dicht in jouw buurt?\"\n👍 *What was good:* Good use of the word 'rustig' (quiet).\n💡 *Correction:* \"Ja, het is rustig. En is er een park dichtbij in jouw buurt?\"\n🧠 *Why:* In a question, the verb must come first (inversion: 'is er' instead of 'er is'). Additionally, we use 'dichtbij' instead of 'dicht' in this context.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Pay close attention to the plural of nouns after numbers (e.g., 'twee balkons'). Also remember the word order in questions (inversion: 'is er...').\n• *Pronunciation:* Your pronunciation is very clear and you speak at a pleasant pace. Pay attention to the pronunciation of the 'o' sound in 'balkon'.\n• *Coherence & Logic:* You respond very well to your partner's questions and keep the conversation lively by asking counter-questions.\n\n🧠 *Your next step & advice:*\nKeep practicing making questions. Remember the rule: in a question, we swap the subject and the verb (inversion). You are doing great! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Nursel Meryem 27-5.ogg",
+      "path": "B-Alfa/Nursel Meryem 27-5.ogg",
+      "date": "27-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat is jo nam?",
+            "zin_correct": "Wat is jouw naam?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "jo nam",
+              "uitleg": "Je spreekt 'jouw' uit als 'jo' en 'naam' met een korte a-klank ('nam'). Dit moet een lange aa-klank zijn."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Het bezittelijk voornaamwoord is 'jouw', niet 'jo'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein nam is Meryem.",
+            "zin_correct": "Mijn naam is Meryem.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein nam",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein' (Duitse klank) en 'naam' met een korte a-klank ('nam')."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Het bezittelijk voornaamwoord is 'mijn', niet 'mein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat is jo achternaam?",
+            "zin_correct": "Wat is jouw achternaam?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Je spreekt 'jouw' uit als 'jo'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Het bezittelijk voornaamwoord is 'jouw', niet 'jo'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein achternaam is Temizbas.",
+            "zin_correct": "Mijn achternaam is Temizbas.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Het bezittelijk voornaamwoord is 'mijn', niet 'mein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat is jo adres?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Je spreekt 'jouw' uit als 'jo'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Het bezittelijk voornaamwoord is 'jouw', niet 'jo'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein adres is Generaal van Heutszstraat.",
+            "zin_correct": "Mijn adres is Generaal van Heutszstraat.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Het bezittelijk voornaamwoord is 'mijn', niet 'mein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat is jau postkod?",
+            "zin_correct": "Wat is jouw postcode?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "postkod",
+              "uitleg": "Je spreekt 'postcode' uit met een korte o-klank ('postkod') in plaats van een lange o-klank ('postcode')."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein postkod is zesenvijftig drieëntwintig ha-ge.",
+            "zin_correct": "Mijn postcode is zesenvijftig drieëntwintig ha-ge.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein postkod",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein' en 'postcode' als 'postkod'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Het bezittelijk voornaamwoord is 'mijn', niet 'mein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "In welke gemeente woon je?",
+            "zin_correct": "In welke gemeente woon je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "In woon gemeente... Eindhoven.",
+            "zin_correct": "Ik woon in de gemeente Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "In",
+              "uitleg": "Je spreekt het persoonlijk voornaamwoord 'ik' uit als 'in'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "In woon gemeente",
+              "uitleg": "De zinsbouw klopt niet. Het moet zijn: 'Ik woon in de gemeente Eindhoven'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wie is jouw contactpersoon bij de gemeente?",
+            "zin_correct": "Wie is jouw contactpersoon bij de gemeente?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein contactpersoon is bij de gemeente...",
+            "zin_correct": "Mijn contactpersoon bij de gemeente is [naam].",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "is bij de gemeente",
+              "uitleg": "De volgorde is onjuist en de zin is niet afgemaakt. Het moet zijn: 'Mijn contactpersoon bij de gemeente is...'"
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Zin is niet afgemaakt",
+              "uitleg": "Je stopt halverwege de zin en noemt geen naam van een contactpersoon."
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Wat is jo geboortedatum?",
+            "zin_correct": "Wat is jouw geboortedatum?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Je spreekt 'jouw' uit als 'jo'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "jo",
+              "uitleg": "Het bezittelijk voornaamwoord is 'jouw', niet 'jo'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Mein geboortedatum is drie april twee negen zestien zeventig.",
+            "zin_correct": "Mijn geboortedatum is drie april negentienzesenzeventig.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "mein",
+              "uitleg": "Je spreekt 'mijn' uit als 'mein'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "twee negen zestien zeventig",
+              "uitleg": "Je noemt losse getallen in plaats van het jaartal correct uit te spreken (bijvoorbeeld 'negentienzesenzeventig')."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Onlogische datum",
+              "uitleg": "De getallenreeks 'twee negen zestien zeventig' vormt geen logisch jaartal in het Nederlands."
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Hoe oud ben je?",
+            "zin_correct": "Hoe oud ben je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik ben negenenveertig jaar oud.",
+            "zin_correct": "Ik ben negenenveertig jaar oud.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Nursel",
+            "zin_fonetisch": "Uit welk land kom je?",
+            "zin_correct": "Uit welk land kom je?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Meryem",
+            "zin_fonetisch": "Ik kom uit Turkije.",
+            "zin_correct": "Ik kom uit Turkije.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Nursel",
+            "brief": "Hallo Nursel! 👋\n\nWat goed dat je hebt geoefend! Hieronder vind je de analyse van jouw vragen in het gesprek met Meryem.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Zin 1:* \"Wat is jo nam?\"\n👍 *Wat was goed:* Je stelt direct een duidelijke vraag.\n💡 *Correctie:* \"Wat is jouw naam?\"\n🧠 *Waarom:* Gebruik het woord *jouw* in plaats van 'jo'. Let ook op de lange aa-klank in *naam*.\n\n*Meryem antwoordde toen:* \"Mein nam is Meryem.\"\n\n*Zin 2:* \"Wat is jo achternaam?\"\n👍 *Wat was goed:* De vraag is goed te begrijpen.\n💡 *Correctie:* \"Wat is jouw achternaam?\"\n🧠 *Waarom:* Gebruik ook hier *jouw* in plaats van 'jo'.\n\n*Meryem antwoordde toen:* \"Mein achternaam is Temizbas.\"\n\n*Zin 3:* \"Wat is jo adres?\"\n👍 *Wat was goed:* Je spreekt rustig en verstaanbaar.\n💡 *Correctie:* \"Wat is jouw adres?\"\n🧠 *Waarom:* Gebruik *jouw* in plaats van 'jo'.\n\n*Meryem antwoordde toen:* \"Mein adres is Generaal van Heutszstraat.\"\n\n*Zin 4:* \"Wat is jau postkod?\"\n👍 *Wat was goed:* Je uitspraak van 'jauw' is hier al veel beter!\n💡 *Correctie:* \"Wat is jouw postcode?\"\n🧠 *Waarom:* Let op de uitspraak van *postcode*. De 'o' is een lange klank (zoals in 'boot') en de 'e' aan het einde is een stomme e.\n\n*Meryem antwoordde toen:* \"Mein postkod is zesenvijftig drieëntwintig ha-ge.\"\n\n*Zin 5:* \"In welke gemeente woon je?\"\n👍 *Wat was goed:* Deze zin is helemaal correct uitgesproken en grammaticaal perfect!\n\n*Meryem antwoordde toen:* \"In woon gemeente... Eindhoven.\"\n\n*Zin 6:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *Wat was goed:* Uitstekend! Een moeilijke zin die je foutloos en heel duidelijk uitspreekt.\n\n*Meryem antwoordde toen:* \"Mein contactpersoon is bij de gemeente...\"\n\n*Zin 7:* \"Wat is jo geboortedatum?\"\n👍 *Wat was goed:* Het woord 'geboortedatum' is goed uitgesproken.\n💡 *Correctie:* \"Wat is jouw geboortedatum?\"\n🧠 *Waarom:* Let weer op het woord *jouw* in plaats van 'jo'.\n\n*Meryem antwoordde toen:* \"Mein geboortedatum is drie april twee negen zestien zeventig.\"\n\n*Zin 8:* \"Hoe oud ben je?\"\n👍 *Wat was goed:* Perfecte, korte en duidelijke vraag!\n\n*Meryem antwoordde toen:* \"Ik ben negenenveertig jaar oud.\"\n\n*Zin 9:* \"Uit welk land kom je?\"\n👍 *Wat was goed:* Heel goed uitgesproken en een natuurlijke vraag.\n\n*Meryem antwoordde toen:* \"Ik kom uit Turkije.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je gebruikt consequent 'jo' in plaats van *jouw*. Let erop dat je het bezittelijk voornaamwoord voluit schrijft en uitspreekt als *jouw*.\n• *Uitspraak:* Let op de lange klinkers, zoals de 'aa' in *naam* en de 'o' in *postcode*.\n• *Samenhang & Logica:* Je vragen volgen elkaar logisch op en vormen een goed interview.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met het hardop uitspreken van het woord *jouw*. Je doet het al heel goed, ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Nursel! 👋\n\nGreat job practicing! Below you will find the analysis of your questions in the conversation with Meryem.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Sentence 1:* \"Wat is jo nam?\"\n👍 *What was good:* You ask a clear question right away.\n💡 *Correction:* \"Wat is jouw naam?\"\n🧠 *Why:* Use the word *jouw* instead of 'jo'. Also pay attention to the long aa-sound in *naam*.\n\n*Meryem then answered:* \"Mein nam is Meryem.\"\n\n*Sentence 2:* \"Wat is jo achternaam?\"\n👍 *What was good:* The question is easy to understand.\n💡 *Correction:* \"Wat is jouw achternaam?\"\n🧠 *Why:* Use *jouw* instead of 'jo' here as well.\n\n*Meryem then answered:* \"Mein achternaam is Temizbas.\"\n\n*Sentence 3:* \"Wat is jo adres?\"\n👍 *What was good:* You speak calmly and clearly.\n💡 *Correction:* \"Wat is jouw adres?\"\n🧠 *Why:* Use *jouw* instead of 'jo'.\n\n*Meryem then answered:* \"Mein adres is Generaal van Heutszstraat.\"\n\n*Sentence 4:* \"Wat is jau postkod?\"\n👍 *What was good:* Your pronunciation of 'jauw' is much better here!\n💡 *Correction:* \"Wat is jouw postcode?\"\n🧠 *Why:* Pay attention to the pronunciation of *postcode*. The 'o' is a long sound (like in 'boot') and the 'e' at the end is a silent e.\n\n*Meryem then answered:* \"Mein postkod is zesenvijftig drieëntwintig ha-ge.\"\n\n*Sentence 5:* \"In welke gemeente woon je?\"\n👍 *What was good:* This sentence is completely correct and grammatically perfect!\n\n*Meryem then answered:* \"In woon gemeente... Eindhoven.\"\n\n*Sentence 6:* \"Wie is jouw contactpersoon bij de gemeente?\"\n👍 *What was good:* Excellent! A difficult sentence that you pronounce flawlessly and very clearly.\n\n*Meryem then answered:* \"Mein contactpersoon is bij de gemeente...\"\n\n*Sentence 7:* \"Wat is jo geboortedatum?\"\n👍 *What was good:* The word 'geboortedatum' is well pronounced.\n💡 *Correction:* \"Wat is jouw geboortedatum?\"\n🧠 *Why:* Pay attention to the word *jouw* instead of 'jo'.\n\n*Meryem then answered:* \"Mein geboortedatum is drie april twee negen zestien zeventig.\"\n\n*Sentence 8:* \"Hoe oud ben je?\"\n👍 *What was good:* Perfect, short and clear question!\n\n*Meryem then answered:* \"Ik ben negenenveertig jaar oud.\"\n\n*Sentence 9:* \"Uit welk land kom je?\"\n👍 *What was good:* Very well pronounced and a natural question.\n\n*Meryem then answered:* \"Ik kom uit Turkije.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You consistently use 'jo' instead of *jouw*. Make sure to write and pronounce the possessive pronoun fully as *jouw*.\n• *Pronunciation:* Pay attention to long vowels, such as the 'aa' in *naam* and the 'o' in *postcode*.\n• *Coherence & Logic:* Your questions follow each other logically and form a good interview.\n\n🧠 *Your next step & advice:*\nPractice pronouncing the word *jouw* out loud. You are doing great, keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Meryem",
+            "brief": "Hallo Meryem! 👋\n\nWat goed dat je hebt geoefend! Hieronder vind je de analyse van jouw antwoorden in het gesprek met Nursel.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Nursel vroeg eerst:* \"Wat is jo nam?\"\n\n*Zin 1:* \"Mein nam is Meryem.\"\n👍 *Wat was goed:* Je geeft direct antwoord op de vraag.\n💡 *Correctie:* \"Mijn naam is Meryem.\"\n🧠 *Waarom:* Gebruik het Nederlandse woord *mijn* in plaats van 'mein' (dat klinkt als Duits of Engels). Let ook op de lange aa-klank in *naam*.\n\n*Nursel vroeg toen:* \"Wat is jo achternaam?\"\n\n*Zin 2:* \"Mein achternaam is Temizbas.\"\n👍 *Wat was goed:* Je achternaam is heel duidelijk te verstaan.\n💡 *Correctie:* \"Mijn achternaam is Temizbas.\"\n🧠 *Waarom:* Gebruik *mijn* in plaats van 'mein'.\n\n*Nursel vroeg toen:* \"Wat is jo adres?\"\n\n*Zin 3:* \"Mein adres is Generaal van Heutszstraat.\"\n👍 *Wat was goed:* Je spreekt de straatnaam heel netjes uit!\n💡 *Correctie:* \"Mijn adres is Generaal van Heutszstraat.\"\n🧠 *Waarom:* Gebruik *mijn* in plaats van 'mein'.\n\n*Nursel vroeg toen:* \"Wat is jau postkod?\"\n\n*Zin 4:* \"Mein postkod is zesenvijftig drieëntwintig ha-ge.\"\n👍 *Wat was goed:* Je noemt de cijfers en letters van je postcode heel goed in het Nederlands.\n💡 *Correctie:* \"Mijn postcode is zesenvijftig drieëntwintig ha-ge.\"\n🧠 *Waarom:* Gebruik *mijn* en let op de uitspraak van *postcode* (met een lange o-klank).\n\n*Nursel vroeg toen:* \"In welke gemeente woon je?\"\n\n*Zin 5:* \"In woon gemeente... Eindhoven.\"\n👍 *Wat was goed:* Je noemt de stad Eindhoven correct.\n💡 *Correctie:* \"Ik woon in de gemeente Eindhoven.\"\n🧠 *Waarom:* Je zegt 'In' in plaats van *Ik*. De juiste volgorde is: *Ik woon in de gemeente Eindhoven*.\n\n*Nursel vroeg toen:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Zin 6:* \"Mein contactpersoon is bij de gemeente...\"\n👍 *Wat was goed:* Je probeert de zin netjes op te bouwen.\n💡 *Correctie:* \"Mijn contactpersoon bij de gemeente is [naam].\"\n🧠 *Waarom:* De volgorde klopt niet helemaal en de zin is niet afgemaakt. Je moet eindigen met de naam van de persoon.\n🤔 *Logica:* Omdat je de zin niet afmaakt, geef je geen antwoord op de vraag.\n\n*Nursel vroeg toen:* \"Wat is jo geboortedatum?\"\n\n*Zin 7:* \"Mein geboortedatum is drie april twee negen zestien zeventig.\"\n👍 *Wat was goed:* De dag en maand ('drie april') zijn heel goed uitgesproken.\n💡 *Correctie:* \"Mijn geboortedatum is drie april negentienzesenzeventig.\"\n🧠 *Waarom:* In het Nederlands spreken we jaartallen uit als honderdtallen (bijvoorbeeld *negentienzesenzeventig*), niet als losse cijfers.\n🤔 *Logica:* De cijferreeks 'twee negen zestien zeventig' is verwarrend als jaartal.\n\n*Nursel vroeg toen:* \"Hoe oud ben je?\"\n\n*Zin 8:* \"Ik ben negenenveertig jaar oud.\"\n👍 *Wat was goed:* Uitstekend! Deze zin is grammaticaal en qua uitspraak helemaal perfect!\n\n*Nursel vroeg toen:* \"Uit welk land kom je?\"\n\n*Zin 9:* \"Ik kom uit Turkije.\"\n👍 *Wat was goed:* Heel goed gedaan! Een foutloze en duidelijke zin.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je gebruikt vaak 'mein' in plaats van *mijn*. Let ook op de zinsbouw bij het beantwoorden van vragen (zoals bij de gemeente en je contactpersoon).\n• *Uitspraak:* Let op de klank van *mijn* (niet 'mein') en *naam* (lange aa-klank).\n• *Samenhang & Logica:* Zorg dat je zinnen afmaakt, zodat de luisteraar alle informatie krijgt.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met het uitspreken van jaartallen in het Nederlands (bijvoorbeeld 'negentien-tachtig'). Je bent al heel goed op weg! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Meryem! 👋\n\nGreat job practicing! Below you will find the analysis of your answers in the conversation with Nursel.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Nursel first asked:* \"Wat is jo nam?\"\n\n*Sentence 1:* \"Mein nam is Meryem.\"\n👍 *What was good:* You answer the question directly.\n💡 *Correction:* \"Mijn naam is Meryem.\"\n🧠 *Why:* Use the Dutch word *mijn* instead of 'mein' (which sounds German or English). Also pay attention to the long aa-sound in *naam*.\n\n*Nursel then asked:* \"Wat is jo achternaam?\"\n\n*Sentence 2:* \"Mein achternaam is Temizbas.\"\n👍 *What was good:* Your last name is very easy to understand.\n💡 *Correction:* \"Mijn achternaam is Temizbas.\"\n🧠 *Why:* Use *mijn* instead of 'mein'.\n\n*Nursel then asked:* \"Wat is jo adres?\"\n\n*Sentence 3:* \"Mein adres is Generaal van Heutszstraat.\"\n👍 *What was good:* You pronounce the street name very neatly!\n💡 *Correction:* \"Mijn adres is Generaal van Heutszstraat.\"\n🧠 *Why:* Use *mijn* instead of 'mein'.\n\n*Nursel then asked:* \"Wat is jau postkod?\"\n\n*Sentence 4:* \"Mein postkod is zesenvijftig drieëntwintig ha-ge.\"\n👍 *What was good:* You say the numbers and letters of your postcode very well in Dutch.\n💡 *Correction:* \"Mijn postcode is zesenvijftig drieëntwintig ha-ge.\"\n🧠 *Why:* Use *mijn* and pay attention to the pronunciation of *postcode* (with a long o-sound).\n\n*Nursel then asked:* \"In welke gemeente woon je?\"\n\n*Sentence 5:* \"In woon gemeente... Eindhoven.\"\n👍 *What was good:* You mention the city of Eindhoven correctly.\n💡 *Correction:* \"Ik woon in de gemeente Eindhoven.\"\n🧠 *Why:* You say 'In' instead of *Ik*. The correct word order is: *Ik woon in de gemeente Eindhoven*.\n\n*Nursel then asked:* \"Wie is jouw contactpersoon bij de gemeente?\"\n\n*Sentence 6:* \"Mein contactpersoon is bij de gemeente...\"\n👍 *What was good:* You try to build the sentence neatly.\n💡 *Correction:* \"Mijn contactpersoon bij de gemeente is [naam].\"\n🧠 *Why:* The word order is not entirely correct and the sentence is incomplete. You should end with the name of the person.\n🤔 *Logic:* Because you do not finish the sentence, you do not answer the question.\n\n*Nursel then asked:* \"Wat is jo geboortedatum?\"\n\n*Sentence 7:* \"Mein geboortedatum is drie april twee negen zestien zeventig.\"\n👍 *What was good:* The day and month ('drie april') are very well pronounced.\n💡 *Correction:* \"Mijn geboortedatum is drie april negentienzesenzeventig.\"\n🧠 *Why:* In Dutch, we pronounce years as hundreds (for example *negentienzesenzeventig*), not as separate digits.\n🤔 *Logic:* The sequence of numbers 'twee negen zestien zeventig' is confusing as a year.\n\n*Nursel then asked:* \"Hoe oud ben je?\"\n\n*Sentence 8:* \"Ik ben negenenveertig jaar oud.\"\n👍 *What was good:* Excellent! This sentence is grammatically and pronunciation-wise completely perfect!\n\n*Nursel then asked:* \"Uit welk land kom je?\"\n\n*Sentence 9:* \"Ik kom uit Turkije.\"\n👍 *What was good:* Very well done! A flawless and clear sentence.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You often use 'mein' instead of *mijn*. Also pay attention to the sentence structure when answering questions (such as with the municipality and your contact person).\n• *Pronunciation:* Pay attention to the sound of *mijn* (not 'mein') and *naam* (long aa-sound).\n• *Coherence & Logic:* Make sure you finish your sentences so that the listener gets all the information.\n\n🧠 *Your next step & advice:*\nPractice pronouncing years in Dutch (for example 'negentien-tachtig'). You are already on the right track! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Saloua Hafida 27-5.ogg",
+      "path": "B-Alfa/Saloua Hafida 27-5.ogg",
+      "date": "27-05-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wat is jouw naam?",
+            "zin_correct": "Wat is jouw naam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Mijn naam is Hafida.",
+            "zin_correct": "Mijn naam is Hafida.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wat is jouw achternaam?",
+            "zin_correct": "Wat is jouw achternaam?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Bouchiah.",
+            "zin_correct": "Bouchiah.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wat is jouw adres?",
+            "zin_correct": "Wat is jouw adres?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Nauwstraat 87.",
+            "zin_correct": "Nauwstraat 87.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wat is jouw eh postcode?",
+            "zin_correct": "Wat is jouw postcode?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "5 6 2 8 K K Eindhoven.",
+            "zin_correct": "5628 KK Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "In welke gemeente woon jij?",
+            "zin_correct": "In welke gemeente woon jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Eindhoven.",
+            "zin_correct": "Eindhoven.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wie is jouw eh contactpersoon?",
+            "zin_correct": "Wie is jouw contactpersoon?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Femic.",
+            "zin_correct": "Femic.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Wat is jouw eh geboortedatum?",
+            "zin_correct": "Wat is jouw geboortedatum?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "2 juli 1982.",
+            "zin_correct": "2 juli 1982.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Hoe oud ben jij?",
+            "zin_correct": "Hoe oud ben jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "Drieënveertig.",
+            "zin_correct": "Drieënveertig.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Saloua",
+            "zin_fonetisch": "Uit welk land kom jij?",
+            "zin_correct": "Uit welk land kom jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hafida",
+            "zin_fonetisch": "In Marokko.",
+            "zin_correct": "Uit Marokko.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "In Marokko",
+              "uitleg": "Het voorzetsel 'in' is hier onjuist. Als iemand vraagt 'Uit welk land kom jij?', antwoord je met 'Uit Marokko' of 'Ik kom uit Marokko'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "In Marokko",
+              "uitleg": "'In Marokko' betekent dat je er nu bent of dat er iets binnen het land gebeurt. Om herkomst aan te duiden gebruiken we 'uit'."
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Saloua",
+            "brief": "Hallo Saloua! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele gesprek met Hafida letterlijk uitgeschreven. Ik vertel je per zin wat er goed ging.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij vroeg:\n*Zin 1:* \"Wat is jouw naam?\"\n👍 *Wat was goed:* Heel duidelijk uitgesproken en een perfecte vraag om het gesprek mee te beginnen.\n\n*Hafida antwoordde toen:* \"Mijn naam is Hafida.\"\n\nJij vroeg:\n*Zin 2:* \"Wat is jouw achternaam?\"\n👍 *Wat was goed:* Goede uitspraak en een correcte, natuurlijke vraag.\n\n*Hafida antwoordde toen:* \"Bouchiah.\"\n\nJij vroeg:\n*Zin 3:* \"Wat is jouw adres?\"\n👍 *Wat was goed:* Duidelijk verstaanbaar en grammaticaal helemaal correct.\n\n*Hafida antwoordde toen:* \"Nauwstraat 87.\"\n\nJij vroeg:\n*Zin 4:* \"Wat is jouw eh postcode?\"\n👍 *Wat was goed:* Heel natuurlijk gesproken. De kleine pauze 'eh' is helemaal niet erg.\n\n*Hafida antwoordde toen:* \"5 6 2 8 K K Eindhoven.\"\n\nJij vroeg:\n*Zin 5:* \"In welke gemeente woon jij?\"\n👍 *Wat was goed:* Prachtige zin! Je gebruikt de juiste woordvolgorde (inversie) na de vraag.\n\n*Hafida antwoordde toen:* \"Eindhoven.\"\n\nJij vroeg:\n*Zin 6:* \"Wie is jouw eh contactpersoon?\"\n👍 *Wat was goed:* Goede woordenschat. Het woord 'contactpersoon' is lastig, maar je sprak het heel goed uit.\n\n*Hafida antwoordde toen:* \"Femic.\"\n\nJij vroeg:\n*Zin 7:* \"Wat is jouw eh geboortedatum?\"\n👍 *Wat was goed:* Heel goed uitgesproken. 'Geboortedatum' is een lang woord, maar het klinkt heel duidelijk.\n\n*Hafida antwoordde toen:* \"2 juli 1982.\"\n\nJij vroeg:\n*Zin 8:* \"Hoe oud ben jij?\"\n👍 *Wat was goed:* Korte, krachtige en correcte vraag.\n\n*Hafida antwoordde toen:* \"Drieënveertig.\"\n\nJij vroeg:\n*Zin 9:* \"Uit welk land kom jij?\"\n👍 *Wat was goed:* Heel goed geformuleerd met het juiste voorzetsel 'uit'.\n\n*Hafida antwoordde toen:* \"In Marokko.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is uitstekend! Alle vragen die je stelt zijn grammaticaal 100% correct.\n• *Uitspraak:* Je spreekt rustig, duidelijk en bent zeer goed verstaanbaar. Ga zo door!\n• *Samenhang & Logica:* De vragen volgen elkaar logisch op en vormen een mooi, compleet interview.\n\n🧠 *Jouw volgende stap & advies:*\nJe doet het fantastisch als interviewer! Probeer de volgende keer eens door te vragen, bijvoorbeeld: 'Hoe spel je dat?' of 'Kun je dat herhalen?'. Dat maakt het gesprek nog actiever. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Saloua! 👋\n\nGreat job practicing! Below I have transcribed your entire conversation with Hafida literally. I will tell you per sentence what went well.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\nYou asked:\n*Sentence 1:* \"Wat is jouw naam?\"\n👍 *What was good:* Very clearly pronounced and a perfect question to start the conversation.\n\n*Hafida answered then:* \"Mijn naam is Hafida.\"\n\nYou asked:\n*Sentence 2:* \"Wat is jouw achternaam?\"\n👍 *What was good:* Good pronunciation and a correct, natural question.\n\n*Hafida answered then:* \"Bouchiah.\"\n\nYou asked:\n*Sentence 3:* \"Wat is jouw adres?\"\n👍 *What was good:* Clearly understandable and grammatically completely correct.\n\n*Hafida answered then:* \"Nauwstraat 87.\"\n\nYou asked:\n*Sentence 4:* \"Wat is jouw eh postcode?\"\n👍 *What was good:* Very naturally spoken. The small pause 'eh' is not a problem at all.\n\n*Hafida answered then:* \"5 6 2 8 K K Eindhoven.\"\n\nYou asked:\n*Sentence 5:* \"In welke gemeente woon jij?\"\n👍 *What was good:* Beautiful sentence! You used the correct word order (inversion) after the question.\n\n*Hafida answered then:* \"Eindhoven.\"\n\nYou asked:\n*Sentence 6:* \"Wie is jouw eh contactpersoon?\"\n👍 *What was good:* Good vocabulary. The word 'contactpersoon' is difficult, but you pronounced it very well.\n\n*Hafida answered then:* \"Femic.\"\n\nYou asked:\n*Sentence 7:* \"Wat is jouw eh geboortedatum?\"\n👍 *What was good:* Very well pronounced. 'Geboortedatum' is a long word, but it sounds very clear.\n\n*Hafida answered then:* \"2 juli 1982.\"\n\nYou asked:\n*Sentence 8:* \"Hoe oud ben jij?\"\n👍 *What was good:* Short, powerful, and correct question.\n\n*Hafida answered then:* \"Drieënveertig.\"\n\nYou asked:\n*Sentence 9:* \"Uit welk land kom jij?\"\n👍 *What was good:* Very well formulated with the correct preposition 'uit'.\n\n*Hafida answered then:* \"In Marokko.\"\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* Your grammar is excellent! All the questions you asked are grammatically 100% correct.\n• *Pronunciation:* You speak calmly, clearly, and are very easy to understand. Keep it up!\n• *Coherence & Logic:* The questions follow each other logically and form a nice, complete interview.\n\n🧠 *Your next step & advice:*\nYou are doing fantastic as an interviewer! Next time, try asking follow-up questions, such as: 'Hoe spel je dat?' (How do you spell that?) or 'Kun je dat herhalen?' (Can you repeat that?). This makes the conversation even more active. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Hafida",
+            "brief": "Hallo Hafida! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele gesprek met Saloua letterlijk uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Saloua vroeg eerst:* \"Wat is jouw naam?\"\n\nJij zei:\n*Zin 1:* \"Mijn naam is Hafida.\"\n👍 *Wat was goed:* Heel goed! Dit is een volledige en grammaticaal perfecte zin.\n\n*Saloua vroeg toen:* \"Wat is jouw achternaam?\"\n\nJij zei:\n*Zin 2:* \"Bouchiah.\"\n👍 *Wat was goed:* Kort en duidelijk antwoord.\n\n*Saloua vroeg toen:* \"Wat is jouw adres?\"\n\nJij zei:* \n*Zin 3:* \"Nauwstraat 87.\"\n👍 *Wat was goed:* Goed verstaanbaar uitgesproken.\n\n*Saloua vroeg toen:* \"Wat is jouw eh postcode?\"\n\nJij zei:\n*Zin 4:* \"5 6 2 8 K K Eindhoven.\"\n👍 *Wat was goed:* Heel goed gespeld! De cijfers en letters waren heel duidelijk te horen.\n\n*Saloua vroeg toen:* \"In welke gemeente woon jij?\"\n\nJij zei:\n*Zin 5:* \"Eindhoven.\"\n👍 *Wat was goed:* Correct en duidelijk antwoord.\n\n*Saloua vroeg toen:* \"Wie is jouw eh contactpersoon?\"\n\nJij zei:\n*Zin 6:* \"Femic.\"\n👍 *Wat was goed:* Duidelijk antwoord op de vraag.\n\n*Saloua vroeg toen:* \"Wat is jouw eh geboortedatum?\"\n\nJij zei:\n*Zin 7:* \"2 juli 1982.\"\n👍 *Wat was goed:* Heel knap! Je sprak de datum en het jaartal heel goed uit.\n\n*Saloua vroeg toen:* \"Hoe oud ben jij?\"\n\nJij zei:\n*Zin 8:* \"Drieënveertig.\"\n👍 *Wat was goed:* Goede uitspraak van het getal.\n\n*Saloua vroeg toen:* \"Uit welk land kom jij?\"\n\nJij zei:\n*Zin 9:* \"In Marokko.\"\n👍 *Wat was goed:* Je landnaam 'Marokko' is goed uitgesproken.\n💡 *Correctie:* \"Uit Marokko.\" of \"Ik kom uit Marokko.\"\n🧠 *Waarom:* Het woord 'in' betekent dat je er nu bent. Als iemand vraagt waar je vandaan komt ('Uit welk land...'), moet je het woord 'uit' gebruiken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je geeft korte en duidelijke antwoorden. Let goed op het verschil tussen de voorzetsels 'in' (locatie nu) en 'uit' (herkomst).\n• *Uitspraak:* Je uitspraak is heel duidelijk! Cijfers, letters en data spreek je heel netjes uit.\n• *Samenhang & Logica:* Je antwoorden sluiten perfect aan op de vragen van Saloua.\n\n🧠 *Jouw volgende stap & advies:*\nJe hebt deze oefening heel goed gedaan! Probeer de volgende keer eens te antwoorden met een hele zin, bijvoorbeeld: 'Ik woon in Eindhoven' of 'Ik kom uit Marokko'. Dat is een goede extra oefening. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Hafida! 👋\n\nGreat job practicing! Below I have transcribed your entire conversation with Saloua literally. I will tell you per sentence what went well, and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Saloua asked first:* \"Wat is jouw naam?\"\n\nYou said:\n*Sentence 1:* \"Mijn naam is Hafida.\"\n👍 *What was good:* Very good! This is a complete and grammatically perfect sentence.\n\n*Saloua asked then:* \"Wat is jouw achternaam?\"\n\nYou said:\n*Sentence 2:* \"Bouchiah.\"\n👍 *What was good:* Short and clear answer.\n\n*Saloua asked then:* \"Wat is jouw adres?\"\n\nYou said:\n*Sentence 3:* \"Nauwstraat 87.\"\n👍 *What was good:* Clearly pronounced.\n\n*Saloua asked then:* \"Wat is jouw eh postcode?\"\n\nYou said:\n*Sentence 4:* \"5 6 2 8 K K Eindhoven.\"\n👍 *What was good:* Very well spelled! The numbers and letters were very clear to hear.\n\n*Saloua asked then:* \"In welke gemeente woon jij?\"\n\nYou said:\n*Sentence 5:* \"Eindhoven.\"\n👍 *What was good:* Correct and clear answer.\n\n*Saloua asked then:* \"Wie is jouw eh contactpersoon?\"\n\nYou said:\n*Sentence 6:* \"Femic.\"\n👍 *What was good:* Clear answer to the question.\n\n*Saloua asked then:* \"Wat is jouw eh geboortedatum?\"\n\nYou said:\n*Sentence 7:* \"2 juli 1982.\"\n👍 *What was good:* Very impressive! You pronounced the date and the year very well.\n\n*Saloua asked then:* \"Hoe oud ben jij?\"\n\nYou said:\n*Sentence 8:* \"Drieënveertig.\"\n👍 *What was good:* Good pronunciation of the number.\n\n*Saloua asked then:* \"Uit welk land kom jij?\"\n\nYou said:\n*Sentence 9:* \"In Marokko.\"\n👍 *What was good:* Your country name 'Marokko' is well pronounced.\n💡 *Correction:* \"Uit Marokko.\" or \"Ik kom uit Marokko.\"\n🧠 *Why:* The word 'in' means you are there now. When someone asks where you are from ('Uit welk land...'), you must use the word 'uit'.\n\n🏁 *Summary & Key Takeaways:*\n• *Grammar:* You give short and clear answers. Pay close attention to the difference between the prepositions 'in' (current location) and 'uit' (origin).\n• *Pronunciation:* Your pronunciation is very clear! You pronounce numbers, letters, and dates very neatly.\n• *Coherence & Logic:* Your answers connect perfectly to Saloua's questions.\n\n🧠 *Your next step & advice:*\nYou did a great job on this exercise! Next time, try to answer with a full sentence, for example: 'Ik woon in Eindhoven' or 'Ik kom uit Marokko'. That is a great extra practice. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    }
+  ],
   "B-Z-route": [],
   "B-ONA": []
 };

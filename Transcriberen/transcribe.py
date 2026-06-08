@@ -117,6 +117,20 @@ def main():
     for grp, filename, filepath in to_process:
         print(f"\n⏳ Bezig met: [{grp}] {filename}")
         
+        # Check of er een opdracht- of contextbestand is in de groepsmap
+        grp_dir = os.path.join(root_dir, grp)
+        assignment_context = ""
+        for name in ["opdracht.txt", "context.txt"]:
+            context_path = os.path.join(grp_dir, name)
+            if os.path.exists(context_path):
+                try:
+                    with open(context_path, "r", encoding="utf-8") as cf:
+                        assignment_context = cf.read().strip()
+                    print(f"   ℹ️ Opdracht context geladen uit {name} ({len(assignment_context)} tekens)")
+                    break
+                except Exception as ce:
+                    print(f"   ⚠️ Kon {name} niet lezen: {ce}")
+        
         audio_file = None
         while True:
             try:
@@ -136,9 +150,15 @@ def main():
                 print("   Transcriberen...")
                 # NT2-specifieke prompt voor Zin-voor-Zin analyse (in JSON)
                 prompt = f"""Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
-De bestandsnaam van de audio is "{filename}".
+De bestandsnaam van de audio is "{filename}"."""
 
-IDENTIFICATIE VAN DE SPREKERS:
+                if assignment_context:
+                    prompt += f"""\n\nOPDRACHT / CONTEXT VAN DE TAAK:
+Je moet controleren of de cursist(en) de opdracht goed hebben gevolgd. Hier is de context/opdrachtomschrijving:
+"{assignment_context}"
+Evalueer kritisch of ze de opdracht correct hebben uitgevoerd en de juiste grammatica/woordenschat voor deze taak hebben gebruikt. Verwerk dit in hun feedbackbrief."""
+
+                prompt += f"""\n\nIDENTIFICATIE VAN DE SPREKERS:
 1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
 2. Vaak noemen de sprekers hun eigen naam in het gesprek (bijvoorbeeld: 'Hallo, ik ben Malwina' of 'Hoi, met Tomasz') of noemen ze elkaar bij naam (bijvoorbeeld: 'En jij, Malwina?'). Als er namen genoemd worden in de audio, gebruik die dan altijd om de sprekers te identificeren.
 3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "{filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
@@ -172,21 +192,33 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
   "feedback_brieven": [
     {{
       "naam": "Naam van de cursist",
-      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* \\"[Fonetische zin van cursist]\\"\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* \\"[Correcte zin]\\"\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank]\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* \\"[Fonetische zin 2]\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* \\"[Phonetic sentence of student]\\"\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* \\"[Correct sentence]\\"\\n🧠 *Why:* [Explanation of grammar rule or sound]\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* \\"[Phonetic sentence 2]\\"\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* \\\"[Fonetische zin van cursist]\\\"\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* \\\"[Correcte zin]\\\" (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* \\\"[Fonetische zin 2]\\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\",
+      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* \\\"[Phonetic sentence of student]\\\"\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* \\\"[Correct sentence]\\\" (OMIT THIS AND THE WHY LINE BELOW COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🧠 *Why:* [Explanation of grammar rule or sound] (OMIT THIS AND THE CORRECTION LINE ABOVE COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* \\\"[Phonetic sentence 2]\\\"\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
     }}
   ]
 }}
 
 BELANGRIJK:
 1. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
-2. Zeg bij een uitspraak of grammatica die correct is NOOIT dat het 'perfect' of 'foutloos' is (dit niveau is voor B2/C1). Zeg in plaats daarvan dat het 'goed', 'duidelijk' of 'begrijpelijk' is.
+2. Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
 3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
-4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin helemaal goed was en geen fouten bevatte, noteer dit dan ook in de brief (bijv. "👍 *Wat was goed:* Je spreekt deze zin heel duidelijk uit. 💡 *Correctie:* [schrijf hier de originele zin]").
+4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
 5. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
    - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de `feedback_brieven` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in `feedback_brieven` aan: één voor Malwina en één voor Dorota.
-   - De feedbackbrief voor een specifieke cursist mag ALLEEN de zinnen bevatten die door die SPECIFIEKE cursist zijn uitgesproken (genummerd als *Zin 1:* t/m *Zin N:* voor die persoon). Sla geen zinnen over die door die persoon zijn gezegd, en voeg geen zinnen van de andere spreker(s) toe!
-   - Zorg dat de samenvatting, feedback en het advies in de brief volledig en respectievelijk gericht zijn op hoe die specifieke persoon het heeft gedaan, zodat de docent deze brief direct per WhatsApp individueel naar hen kan sturen."""
+   - In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
+   - Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
+     Jij zei
+     *Zin X:* "[Fonetische zin van ALI]"
+     👍 *Wat was goed:* [Compliment]
+     💡 *Correctie:* "[Correcte zin]" (alleen als correctie nodig is)
+     🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
+   - Voor de zinnen die door de ANDERE cursist (bijv. SARAH) zijn uitgesproken, toon je deze chronologisch tussendoor als context. Format:
+     *SARAH vroeg/zei toen:* "[Zin van Sarah]" (als het een vraag is, gebruik "vroeg", anders "zei")
+   - Op deze manier leest de brief voor elke cursist als een chronologisch gesprek waarin hun eigen zinnen gedetailleerd geanalyseerd worden en de zinnen van de ander als pure context ertussen staan.
+6. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
+   - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
+   - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
+   - Zorg dat de vertaalde feedbackbrief (`brief_en`) die in de doeltaal is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren."""
                 
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.
