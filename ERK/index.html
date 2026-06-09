@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERK Vaardigheden & Mastery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b; /* Very dark zinc */
+            --surface: #18181b;
+            --surface-hover: #27272a;
+            --border: #3f3f46;
+            --text-main: #f8fafc;
+            --text-muted: #a1a1aa;
+            
+            --primary: #3b82f6; /* Blue */
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --accent-luisteren: #10b981; /* Green */
+            --accent-lezen: #f59e0b; /* Amber */
+            --accent-interactie: #ec4899; /* Pink */
+            --accent-productie: #8b5cf6; /* Purple */
+            --accent-schrijven: #06b6d4; /* Cyan */
+
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Ambient Glows */
+        .glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .glow-1 { top: -10%; left: -10%; background: var(--primary); }
+        .glow-2 { bottom: -10%; right: -10%; background: var(--accent-productie); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* LEVEL SELECTOR */
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .level-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .level-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .level-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* CONTENT AREA */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SKILL ACCORDION */
+        .skill-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .skill-item:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-header {
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .skill-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .skill-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .icon-luisteren { background: var(--accent-luisteren); box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .icon-lezen { background: var(--accent-lezen); box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+        .icon-interactie { background: var(--accent-interactie); box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+        .icon-productie { background: var(--accent-productie); box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        .icon-schrijven { background: var(--accent-schrijven); box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+
+        .chevron {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-item.open .chevron {
+            transform: rotate(180deg);
+            color: white;
+        }
+
+        .skill-item.open {
+            border-color: var(--primary);
+        }
+
+        /* SKILL CONTENT */
+        .skill-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+
+        .skill-item.open .skill-content {
+            grid-template-rows: 1fr;
+        }
+
+        .skill-inner {
+            overflow: hidden;
+            padding: 0 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skill-item.open .skill-inner {
+            padding: 0 30px 30px 30px;
+        }
+
+        .erk-description {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-top: 20px;
+        }
+
+        .assignment-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: var(--radius-md);
+        }
+
+        .assignment-info h4 {
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+        .assignment-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px var(--primary-glow);
+            background: #2563eb;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <div class="container">
+        <header>
+            <h1>ERK Vaardigheden</h1>
+            <p>Klik op een niveau en bekijk per onderdeel wat je moet kunnen. Beheers een onderdeel 100% om door te gaan.</p>
+        </header>
+
+        <div class="level-selector" id="level-selector">
+            <!-- Buttons are generated by JS -->
+        </div>
+
+        <div class="content-area" id="content-area">
+            <!-- Accordions are generated by JS -->
+        </div>
+    </div>
+
+    <script>
+        const erkData = {
+            "Pre-A1": {
+                "Luisteren": "Kan zeer korte, geïsoleerde en voornamelijk kant-en-klare uitingen begrijpen, mits er langzaam en met veel pauzes wordt gesproken.",
+                "Lezen": "Kan zeer eenvoudige, alledaagse woorden en korte zinnen begrijpen op bijvoorbeeld borden of in simpele instructies.",
+                "Interactie": "Kan communiceren op zeer basaal niveau, mits de gesprekspartner helpt en erg langzaam spreekt.",
+                "Productie": "Kan basale informatie geven over zichzelf met behulp van losse woorden of uit het hoofd geleerde frasen.",
+                "Schrijven": "Kan persoonlijke basisgegevens opschrijven, zoals naam, adres en nationaliteit."
+            },
+            "A1": {
+                "Luisteren": "Ik kan vertrouwde woorden en basiszinnen begrijpen die mezelf, mijn familie en directe concrete omgeving betreffen, wanneer de mensen langzaam en duidelijk spreken.",
+                "Lezen": "Ik kan vertrouwde namen, woorden en zeer eenvoudige zinnen begrijpen, bijvoorbeeld in mededelingen, op posters en in catalogi.",
+                "Interactie": "Ik kan deelnemen aan een eenvoudig gesprek, wanneer de gesprekspartner bereid is om zaken in een langzamer spreektempo te herhalen of opnieuw te formuleren en mij helpt bij het formuleren van wat ik probeer te zeggen. Ik kan eenvoudige vragen stellen en beantwoorden die een directe behoefte of zeer vertrouwde onderwerpen betreffen.",
+                "Productie": "Ik kan eenvoudige uitdrukkingen en zinnen gebruiken om mijn woonomgeving en de mensen die ik ken, te beschrijven.",
+                "Schrijven": "Ik kan een korte, eenvoudige ansichtkaart schrijven, bijvoorbeeld voor het zenden van vakantiegroeten. Ik kan op formulieren persoonlijke details invullen, bijvoorbeeld mijn naam, nationaliteit en adres noteren op een hotelinschrijvingsformulier."
+            },
+            "A2": {
+                "Luisteren": "Ik kan zinnen en de meest frequente woorden begrijpen die betrekking hebben op gebieden die van direct persoonlijk belang zijn (bijvoorbeeld basisinformatie over mezelf en mijn familie, winkelen, plaatselijke omgeving, werk). Ik kan de belangrijkste punten in korte, duidelijke eenvoudige boodschappen en aankondigingen volgen.",
+                "Lezen": "Ik kan zeer korte eenvoudige teksten lezen. Ik kan specifieke voorspelbare informatie vinden in eenvoudige, alledaagse teksten zoals advertenties, folders, menu's en dienstregelingen en ik kan korte, eenvoudige, persoonlijke brieven begrijpen.",
+                "Interactie": "Ik kan communiceren over eenvoudige en alledaagse taken die een eenvoudige en directe uitwisseling van informatie over vertrouwde onderwerpen en activiteiten betreffen. Ik kan zeer korte sociale gesprekken aan, alhoewel ik gewoonlijk niet voldoende begrijp om het gesprek zelfstandig gaande te houden.",
+                "Productie": "Ik kan een reeks uitdrukkingen en zinnen gebruiken om in eenvoudige bewoordingen mijn familie en andere mensen, leefomstandigheden, mijn opleiding en mijn huidige of meest recente baan te beschrijven.",
+                "Schrijven": "Ik kan korte, eenvoudige notities en boodschappen opschrijven. Ik kan een zeer eenvoudige persoonlijke brief schrijven, bijvoorbeeld om iemand voor iets te bedanken."
+            },
+            "B1": {
+                "Luisteren": "Ik kan de hoofdpunten begrijpen wanneer in duidelijk uitgesproken standaardtaal wordt gesproken over vertrouwde zaken die ik regelmatig tegenkom op mijn werk, school, vrije tijd enz. Ik kan de hoofdpunten van veel radio- of tvprogramma’s over actuele zaken of over onderwerpen van persoonlijk of beroepsmatig belang begrijpen, wanneer er betrekkelijk langzaam en duidelijk gesproken wordt.",
+                "Lezen": "Ik kan teksten begrijpen die hoofdzakelijk bestaan uit hoogfrequente, alledaagse of aan mijn werk gerelateerde taal. Ik kan de beschrijving van gebeurtenissen, gevoelens en wensen in persoonlijke brieven begrijpen.",
+                "Interactie": "Ik kan de meeste situaties aan die zich kunnen voordoen tijdens een reis in een gebied waar de betreffende taal wordt gesproken. Ik kan onvoorbereid deelnemen aan een gesprek over onderwerpen die vertrouwd zijn, of mijn persoonlijke belangstelling hebben of die betrekking hebben op het dagelijks leven (bijvoorbeeld familie, hobby's, werk, reizen en actuele gebeurtenissen).",
+                "Productie": "Ik kan uitingen op een simpele manier aan elkaar verbinden, zodat ik ervaringen en gebeurtenissen, mijn dromen, verwachtingen en ambities kan beschrijven. Ik kan in het kort redenen en verklaringen geven voor mijn meningen en plannen. Ik kan een verhaal vertellen, of de plot van een boek of film weergeven en mijn reacties beschrijven.",
+                "Schrijven": "Ik kan eenvoudige samenhangende tekst schrijven over onderwerpen die vertrouwd of van persoonlijk belang zijn. Ik kan persoonlijke brieven schrijven waarin ik mijn ervaringen en indrukken beschrijf."
+            },
+            "B2": {
+                "Luisteren": "Ik kan een langer betoog en lezingen begrijpen en zelfs complexe redeneringen volgen, wanneer het onderwerp redelijk vertrouwd is. Ik kan de meeste nieuws- en actualiteitenprogramma’s op de tv begrijpen. Ik kan het grootste deel van films in standaardtaal begrijpen.",
+                "Lezen": "Ik kan artikelen en verslagen lezen die betrekking hebben op eigentijdse problemen, waarbij de schrijvers een bepaalde houding of standpunt innemen. Ik kan eigentijds literair proza begrijpen.",
+                "Interactie": "Ik kan zodanig deelnemen aan een vloeiend en spontaan gesprek, dat normale uitwisseling met moedertaalsprekers redelijk mogelijk is. Ik kan binnen een vertrouwde context actief deelnemen aan een discussie en hierin mijn standpunten uitleggen en ondersteunen.",
+                "Productie": "Ik kan duidelijke, gedetailleerde beschrijvingen presenteren over een breed scala van onderwerpen die betrekking hebben op mijn interessegebied. Ik kan een standpunt over een actueel onderwerp verklaren en de voordelen en nadelen van diverse opties uiteenzetten.",
+                "Schrijven": "Ik kan een duidelijke, gedetailleerde tekst schrijven over een breed scala van onderwerpen die betrekking hebben op mijn interesses. Ik kan een opstel of verslag schrijven, informatie doorgeven of redenen aanvoeren ter ondersteuning vóór of tégen een specifiek standpunt. Ik kan brieven schrijven waarin ik het persoonlijk belang van gebeurtenissen en ervaringen aangeef."
+            },
+            "C1": {
+                "Luisteren": "Ik kan een langer betoog begrijpen, zelfs wanneer dit niet duidelijk gestructureerd is en wanneer relaties slechts impliciet zijn en niet expliciet worden aangegeven. Ik kan zonder al te veel inspanning tvprogramma’s en films begrijpen.",
+                "Lezen": "Ik kan lange en complexe feitelijke en literaire teksten begrijpen, en het gebruik van verschillende stijlen waarderen. Ik kan gespecialiseerde artikelen en lange technische instructies begrijpen, zelfs wanneer deze geen betrekking hebben op mijn terrein.",
+                "Interactie": "Ik kan mezelf vloeiend en spontaan uitdrukken zonder merkbaar naar uitdrukkingen te hoeven zoeken. Ik kan de taal flexibel en effectief gebruiken voor sociale en professionele doeleinden. Ik kan ideeën en meningen met precisie formuleren en mijn bijdrage vaardig aan die van andere sprekers relateren.",
+                "Productie": "Ik kan duidelijke, gedetailleerde beschrijvingen geven over complexe onderwerpen en daarbij sub-thema's integreren, specifieke standpunten ontwikkelen en het geheel afronden met een passende conclusie.",
+                "Schrijven": "Ik kan me in duidelijke, goed gestructureerde tekst uitdrukken en daarbij redelijk uitgebreid standpunten uiteenzetten. Ik kan in een brief, een opstel of een verslag schrijven over complexe onderwerpen en daarbij de voor mij belangrijke punten benadrukken. Ik kan schrijven in een stijl die is aangepast aan de lezer die ik in gedachten heb."
+            },
+            "C2": {
+                "Luisteren": "Ik kan moeiteloos gesproken taal begrijpen, in welke vorm dan ook, hetzij in direct contact, hetzij via radio of tv, zelfs wanneer in een snel moedertaaltempo gesproken wordt als ik tenminste enige tijd heb om vertrouwd te raken met het accent.",
+                "Lezen": "Ik kan moeiteloos vrijwel alle vormen van de geschreven taal lezen, inclusief abstracte, structureel of linguïstisch complexe teksten, zoals handleidingen, specialistische artikelen en literaire werken.",
+                "Interactie": "Ik kan zonder moeite deelnemen aan welk gesprek of discussie dan ook en ben zeer vertrouwd met idiomatische uitdrukkingen en spreektaal. Ik kan mezelf vloeiend uitdrukken en de fijnere betekenisnuances precies weergeven. Als ik een probleem tegenkom, kan ik mezelf hernemen en mijn betoog zo herstructureren dat andere mensen het nauwelijks merken.",
+                "Productie": "Ik kan een duidelijke, goedlopende beschrijving of redenering presenteren in een stijl die past bij de context en in een doeltreffende logische structuur, zodat de toehoorder in staat is de belangrijke punten op te merken en te onthouden.",
+                "Schrijven": "Ik kan een duidelijke en vloeiend lopende tekst in een gepaste stijl schrijven. Ik kan complexe brieven, verslagen of artikelen schrijven waarin ik een zaak weergeef in een doeltreffende, logische structuur, zodat de lezer de belangrijke punten kan opmerken en onthouden. Ik kan samenvattingen van en kritieken op professionele of literaire werken schrijven."
+            }
+        };
+
+        const icons = {
+            "Luisteren": { icon: "🎧", class: "icon-luisteren" },
+            "Lezen": { icon: "📖", class: "icon-lezen" },
+            "Interactie": { icon: "🗣️", class: "icon-interactie" },
+            "Productie": { icon: "🎤", class: "icon-productie" },
+            "Schrijven": { icon: "✍️", class: "icon-schrijven" }
+        };
+
+        const levels = Object.keys(erkData);
+        let currentLevel = "A1";
+
+        const selectorEl = document.getElementById('level-selector');
+        const contentEl = document.getElementById('content-area');
+
+        // Initialize Level Buttons
+        levels.forEach(level => {
+            const btn = document.createElement('button');
+            btn.className = `level-btn ${level === currentLevel ? 'active' : ''}`;
+            btn.textContent = level;
+            btn.onclick = () => selectLevel(level);
+            selectorEl.appendChild(btn);
+        });
+
+        function selectLevel(level) {
+            currentLevel = level;
+            // Update buttons
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === level);
+            });
+            // Render content
+            renderContent();
+        }
+
+        function toggleAccordion(element) {
+            const item = element.parentElement;
+            const isOpen = item.classList.contains('open');
+            
+            // Close all others
+            document.querySelectorAll('.skill-item').forEach(el => el.classList.remove('open'));
+            
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        }
+
+        function renderContent() {
+            contentEl.innerHTML = '';
+            const data = erkData[currentLevel];
+
+            // Trigger animation
+            contentEl.style.animation = 'none';
+            contentEl.offsetHeight; // trigger reflow
+            contentEl.style.animation = 'fadeIn 0.4s ease-out';
+
+            Object.entries(data).forEach(([skillName, description]) => {
+                const iconData = icons[skillName] || { icon: "📌", class: "" };
+                
+                const item = document.createElement('div');
+                item.className = 'skill-item';
+                
+                item.innerHTML = `
+                    <div class="skill-header" onclick="toggleAccordion(this)">
+                        <div class="skill-title">
+                            <div class="skill-icon ${iconData.class}">${iconData.icon}</div>
+                            ${skillName}
+                        </div>
+                        <div class="chevron">▼</div>
+                    </div>
+                    <div class="skill-content">
+                        <div class="skill-inner">
+                            <div class="erk-description">
+                                <strong>Wat je moet kunnen:</strong><br>
+                                ${description}
+                            </div>
+                            
+                            <div class="assignment-box">
+                                <div class="assignment-info">
+                                    <h4>Mastery Opdrachten: ${skillName} (${currentLevel})</h4>
+                                    <p>Oefen dit onderdeel totdat je het 100% beheerst zonder fouten.</p>
+                                </div>
+                                <button class="btn-start" onclick="alert('Hier komt later de daadwerkelijke opdrachtomgeving voor dit specifieke onderdeel!')">
+                                    Start Oefening ➔
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contentEl.appendChild(item);
+            });
+        }
+
+        // Initial render
+        renderContent();
+    </script>
+</body>
+</html>
