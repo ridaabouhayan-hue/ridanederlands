@@ -15,6 +15,88 @@
         .theme-rood   { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.08); }
         .theme-roze   { --theme: #ec4899; --theme-bg: rgba(236,72,153,0.08); }
         .theme-geel   { --theme: #ca8a04; --theme-bg: rgba(202,138,4,0.08); }
+
+        /* Overlap/Column fix for sentence grids */
+        #hz-grid.mv-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            #hz-grid.mv-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        #hz-grid .mv-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+        #hz-grid .mv-item span {
+            min-width: unset;
+            width: auto;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Dictee styles */
+        .dictee-list { list-style: none; padding: 0; margin: 0; }
+        .dictee-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            background: var(--bg-glass, rgba(67, 97, 238, 0.04));
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .dictee-list input {
+            flex: 1;
+            min-width: 180px;
+            border: 2px solid var(--border-med);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.92rem;
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .dictee-list input:focus { border-color: var(--theme, var(--primary)); }
+        .dictee-list input.correct { border-color: #10b981; background: rgba(16,185,129,0.08); color: #059669; font-weight: 700; }
+        .dictee-list input.fout { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #dc2626; }
+        .dictee-audio-btns { display: flex; gap: 6px; }
+        .dictee-btn {
+            background: var(--theme, var(--primary));
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+        .dictee-btn:hover { filter: brightness(1.1); }
+        .slow-speak-btn {
+            background: transparent;
+            border: 2px solid var(--theme, var(--primary));
+            color: var(--theme, var(--primary));
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .slow-speak-btn:hover { background: var(--theme-bg, rgba(67,97,238,0.08)); }
     </style>
     <script>
         (function() {
@@ -173,6 +255,22 @@
                 <button class="reset-btn" onclick="resetZO()">🔄 Opnieuw</button>
             </div>
 
+            <!-- Dictee -->
+            <div class="opdracht-card theme-geel">
+                <h3 data-translate="dicteeTitle">🗣️ Dictee: Luister en typ</h3>
+                <p class="instructie" data-translate="instrDictee">Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.</p>
+                
+                <h4 style="margin-top:15px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeWordsHeader">Deel 1: Woorden</h4>
+                <ul class="dictee-list" id="dictee-woorden"></ul>
+                
+                <h4 style="margin-top:25px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeSentencesHeader">Deel 2: Zinnen</h4>
+                <ul class="dictee-list" id="dictee-zinnen"></ul>
+                
+                <button class="check-btn" onclick="checkDictee()">Controleer</button>
+                <span id="dictee-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetDictee()">🔄 Opnieuw</button>
+            </div>
+
             <!-- 7: Schrijfopdracht -->
             <div class="opdracht-card theme-rood">
                 <h3>Schrijf zinnen over de boerderij</h3>
@@ -225,6 +323,10 @@ const UI = {
         instrHZ: 'Vul de juiste vorm van hebben of zijn in. (Herhaling)',
         instrZO: 'Klik op de woorden in de goede volgorde om een correcte zin te maken. (Herhaling)',
         instrSchrijf: 'Beantwoord de vragen in volledige zinnen. Gebruik de woorden van deze les.',
+        dicteeTitle: '🗣️ Dictee: Luister en typ',
+        instrDictee: 'Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.',
+        dicteeWordsHeader: 'Deel 1: Woorden',
+        dicteeSentencesHeader: 'Deel 2: Zinnen',
         q1: '1. Welke dieren zie jij op een boerderij? Noem er minstens 4 met het lidwoord (de/het).',
         q2: '2. Wat doet een boer elke dag? Schrijf 2 zinnen.',
         q3: '3. Welk dier vind jij het leukst? Waarom? Schrijf 2 zinnen.',
@@ -242,6 +344,10 @@ const UI = {
         instrHZ: 'Fill in the correct form of have (hebben) or be (zijn). (Review)',
         instrZO: 'Click the words in the right order to make a correct sentence. (Review)',
         instrSchrijf: 'Answer the questions in full sentences. Use the words from this lesson.',
+        dicteeTitle: '🗣️ Dictation: Listen and type',
+        instrDictee: 'Click on the audio button and type the word or sentence exactly as you hear it.',
+        dicteeWordsHeader: 'Part 1: Words',
+        dicteeSentencesHeader: 'Part 2: Sentences',
         q1: '1. Which animals do you see on a farm? Name at least 4 with the article (de/het).',
         q2: '2. What does a farmer do every day? Write 2 sentences.',
         q3: '3. Which animal do you like most? Why? Write 2 sentences.',
@@ -259,6 +365,10 @@ const UI = {
         instrHZ: 'املأ الصيغة الصحيحة لفعل يملك (hebben) أو يكون (zijn). (مراجعة)',
         instrZO: 'انقر على الكلمات بالترتيب الصحيح لتكوين جملة صحيحة. (مراجعة)',
         instrSchrijf: 'أجب عن الأسئلة بجمل كاملة. استخدم كلمات هذا الدرس.',
+        dicteeTitle: '🗣️ الإملاء: استمع واكتب',
+        instrDictee: 'انقر على زر الصوت واكتب الكلمة أو الجملة كما تسمعها تمامًا.',
+        dicteeWordsHeader: 'الجزء الأول: الكلمات',
+        dicteeSentencesHeader: 'الجزء الثاني: الجمل',
         q1: '1. ما هي الحيوانات التي تراها في المزرعة؟ اذكر 4 منها على الأقل مع أداة التعريف (de/het).',
         q2: '2. ماذا يفعل المزارع كل يوم؟ اكتب جملتين.',
         q3: '3. أي حيوان تفضله أكثر؟ لماذا؟ اكتب جملتين.',
@@ -276,6 +386,10 @@ const UI = {
         instrHZ: 'Sahip olmak (hebben) veya olmak (zijn) fiillerinin doğru biçimini doldurun. (Tekrar)',
         instrZO: 'Doğru bir cümle kurmak için kelimeleri doğru sırayla tıklayın. (Tekrar)',
         instrSchrijf: 'Soruları tam cümlelerle yanıtlayın. Bu dersteki kelimeleri kullanın.',
+        dicteeTitle: '🗣️ Dikte: Dinle ve Yaz',
+        instrDictee: 'Ses düğmesine tıklayın ve duyduğunuz kelimeyi veya cümleyi tam olarak yazın.',
+        dicteeWordsHeader: 'Bölüm 1: Kelimeler',
+        dicteeSentencesHeader: 'Bölüm 2: Cümleler',
         q1: '1. Bir çiftlikte hangi hayvanları görüyorsunuz? En az 4 tanesini tanımlayıcı edatıyla (de/het) yazın.',
         q2: '2. Bir çiftçi her gün ne yapar? 2 cümle yazın.',
         q3: '3. En çok hangi hayvanı beğeniyorsunuz? Neden? 2 cümle yazın.',
@@ -291,7 +405,25 @@ const UITLEG = {
 };
 
 let _ttsAudio=null;
-function speak(text){if(!text)return;if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}_ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+text)}`);_ttsAudio.play().catch(()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='nl-NL';u.rate=0.9;window.speechSynthesis.speak(u);}});}
+function speak(text, isSlow=false){
+    if(!text)return;
+    if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}
+    let processedText = text;
+    if(isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    const rate = isSlow ? 0.6 : 0.9;
+    _ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+processedText)}`);
+    _ttsAudio.play().catch(()=>{
+        if('speechSynthesis'in window){
+            window.speechSynthesis.cancel();
+            const u=new SpeechSynthesisUtterance(text);
+            u.lang='nl-NL';
+            u.rate=rate;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
 
 function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 
@@ -382,7 +514,7 @@ const zoData=[
     {woorden:['Op','de','boerderij','wonen','veel','dieren','.'], correct:'Op de boerderij wonen veel dieren .'},
     {woorden:['De','kleren','liggen','overal','.'], correct:'De kleren liggen overal .'},
     {woorden:['De','jongen','draagt','een','dik','vest','.'], correct:'De jongen draagt een dik vest .'},
-    {woorden:['Sommige','dieren','zijn','heel','groot','.'], correct:'Sommige dierene zijn heel groot .', alt:'Sommige dieren zijn heel groot .'},
+    {woorden:['Sommige','dieren','zijn','heel','groot','.'], correct:'Sommige dieren zijn heel groot .'},
     {woorden:['Een','koe','geeft','melk','.'], correct:'Een koe geeft melk .'}
 ];
 let zoPlaced=[];
@@ -390,6 +522,110 @@ function buildZO(){const c=document.getElementById('zo-container');c.innerHTML='
 function addZO(chip,zi){if(chip.classList.contains('used'))return;chip.classList.add('used');zoPlaced[zi].push(chip.dataset.w);const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const pl=document.createElement('span');pl.className='zo-placed';pl.textContent=chip.dataset.w;pl.onclick=()=>{const idx=zoPlaced[zi].lastIndexOf(chip.dataset.w);if(idx!==-1)zoPlaced[zi].splice(idx,1);chip.classList.remove('used');pl.remove();};ans.appendChild(pl);}
 function checkZO(){let good=0;zoData.forEach((item,zi)=>{const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const str=zoPlaced[zi].join(' ');if(str===item.correct || (item.alt && str===item.alt)){ans.classList.add('correct-ans');good++;}else{ans.classList.add('fout-ans');}});const sc=document.getElementById('zo-score');sc.style.display='inline-block';sc.textContent=`${good}/${zoData.length}`;sc.className='score-badge '+(good===zoData.length?'score-goed':good>=3?'score-midden':'score-slecht');}
 function resetZO(){buildZO();document.getElementById('zo-score').style.display='none';}
+
+// ── DICETEE ──
+const dicteeWoorden = [
+    "de boerderij",
+    "het dier",
+    "de koe",
+    "het paard",
+    "het schaap",
+    "de hond",
+    "de kat",
+    "het varken",
+    "overal",
+    "kwijt"
+];
+
+const dicteeZinnen = [
+    "Het varken is heel dik.",
+    "Een koe geeft melk.",
+    "Vissen leven in het water.",
+    "Ik ben mijn hond kwijt.",
+    "Het schaap heeft zachte wol."
+];
+
+function buildDictee(){
+    const ulW = document.getElementById('dictee-woorden');
+    const ulZ = document.getElementById('dictee-zinnen');
+    ulW.innerHTML = '';
+    ulZ.innerHTML = '';
+    
+    dicteeWoorden.forEach((item, i) => {
+        ulW.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-w-${i}" placeholder="Typ het woord…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        ulZ.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-z-${i}" placeholder="Typ de zin…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+}
+
+function checkDictee(){
+    let good = 0;
+    const total = dicteeWoorden.length + dicteeZinnen.length;
+    
+    dicteeWoorden.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-w-${i}`);
+        inp.classList.remove('correct', 'fout');
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 1 && userVal.length > 3){
+            inp.classList.add('correct');
+            good++;
+            inp.title = `Spelling: ${item}`;
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-z-${i}`);
+        inp.classList.remove('correct', 'fout');
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 2 && userVal.length > 8){
+            inp.classList.add('correct');
+            good++;
+            inp.title = `Spelling: ${item}`;
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    
+    const sc = document.getElementById('dictee-score');
+    sc.style.display = 'inline-block';
+    sc.textContent = `${good}/${total}`;
+    sc.className = 'score-badge ' + (good === total ? 'score-goed' : good >= total * 0.6 ? 'score-midden' : 'score-slecht');
+}
+
+function resetDictee(){
+    buildDictee();
+    document.getElementById('dictee-score').style.display = 'none';
+}
 
 // ── OPDRACHT 7: SCHRIJVEN ──
 function buildSchrijf(lang){
@@ -438,6 +674,7 @@ buildMV();
 buildHZ();
 buildPuzzel();
 buildZO();
+buildDictee();
 buildSchrijf('nl');
 </script>
 
