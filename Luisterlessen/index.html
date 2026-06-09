@@ -165,22 +165,29 @@
         </div>
     </div>
 
+    <script src="data.js"></script>
     <script>
         let db = [];
         let currentLevel = "A1";
 
-        // Fetch data
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
-                db = data;
-                initApp();
-            })
-            .catch(err => {
-                console.error("Geen data gevonden of fout bij inladen", err);
-                document.getElementById('no-data-msg').style.display = 'block';
-                document.getElementById('no-data-msg').innerText = "Database (data.json) kon niet geladen worden. Heb je al een les gegenereerd?";
-            });
+        // Laad data uit data.js als dat aanwezig is (voorkomt CORS fouten bij file://)
+        if (window.luisterportaalData) {
+            db = window.luisterportaalData;
+            initApp();
+        } else {
+            // Fetch data (voor netlify/webserver)
+            fetch('data.json')
+                .then(res => res.json())
+                .then(data => {
+                    db = data;
+                    initApp();
+                })
+                .catch(err => {
+                    console.error("Geen data gevonden of fout bij inladen", err);
+                    document.getElementById('no-data-msg').style.display = 'block';
+                    document.getElementById('no-data-msg').innerText = "Database (data.json) kon niet geladen worden. Heb je al een les gegenereerd?";
+                });
+        }
 
         function initApp() {
             // Get unique levels

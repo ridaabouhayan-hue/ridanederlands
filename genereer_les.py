@@ -4,9 +4,10 @@ import json
 import requests
 import time
 import re
+import random
 import threading
 import webbrowser
-import google.generativeai as genai
+from google import genai
 from pydub import AudioSegment
 
 import tkinter as tk
@@ -42,25 +43,91 @@ def load_eleven_key():
 def load_voices():
     if not os.path.exists(VOICES_FILE):
         dummy_data = {
-            "Vrouw": "vul_hier_vrouwen_voice_id_in",
-            "Man": "vul_hier_mannen_voice_id_in"
+            "Vrouwen": [
+                "vul_hier_vrouwen_voice_id_1",
+                "vul_hier_vrouwen_voice_id_2"
+            ],
+            "Mannen": [
+                "vul_hier_mannen_voice_id_1",
+                "vul_hier_mannen_voice_id_2"
+            ]
         }
         with open(VOICES_FILE, 'w', encoding='utf-8') as f:
             json.dump(dummy_data, f, indent=4)
-        raise LesGeneratorError(f"Bestand {VOICES_FILE} aangemaakt. Vul hier eerst je Voice ID's in voor 'Man' en 'Vrouw'!")
+        raise LesGeneratorError(f"Bestand {VOICES_FILE} aangemaakt met een voorbeeldstructuur. Vul hier je Voice ID's in!")
         
     with open(VOICES_FILE, 'r', encoding='utf-8') as f:
         voices = json.load(f)
         
+    # Controleer of er ten minste één geldige voice ID in staat
+    has_valid_voice = False
     for k, v in voices.items():
-        if "vul_hier" in v:
-            raise LesGeneratorError(f"Let op: Voice ID voor {k} is nog niet ingevuld in {VOICES_FILE}.")
+        if isinstance(v, list):
+            for item in v:
+                if item and "vul_hier" not in item:
+                    has_valid_voice = True
+        elif isinstance(v, str):
+            if v and "vul_hier" not in v:
+                has_valid_voice = True
+                
+    if not has_valid_voice:
+        raise LesGeneratorError(f"Let op: Vul eerst ten minste één geldige Voice ID in in {VOICES_FILE}.")
             
     return voices
 
+def assign_speaker_voices(sprekers, voices):
+    # Haal vrouwelijke stemmen op (ondersteunt "Vrouwen" lijst of "Vrouw" string/lijst)
+    vrouwen_ids = []
+    if "Vrouwen" in voices:
+        vrouwen_ids = voices["Vrouwen"] if isinstance(voices["Vrouwen"], list) else [voices["Vrouwen"]]
+    elif "Vrouw" in voices:
+        vrouwen_ids = voices["Vrouw"] if isinstance(voices["Vrouw"], list) else [voices["Vrouw"]]
+        
+    # Haal mannelijke stemmen op (ondersteunt "Mannen" lijst of "Man" string/lijst)
+    mannen_ids = []
+    if "Mannen" in voices:
+        mannen_ids = voices["Mannen"] if isinstance(voices["Mannen"], list) else [voices["Mannen"]]
+    elif "Man" in voices:
+        mannen_ids = voices["Man"] if isinstance(voices["Man"], list) else [voices["Man"]]
+        
+    # Filter placeholder-teksten eruit
+    vrouwen_ids = [vid for vid in vrouwen_ids if vid and "vul_hier" not in vid]
+    mannen_ids = [vid for vid in mannen_ids if vid and "vul_hier" not in vid]
+    
+    if not vrouwen_ids and not mannen_ids:
+        raise LesGeneratorError("Fout: Geen geldige Voice IDs gevonden in stemmen.json.")
+        
+    # Kopieer en schud de stemmenlijsten om willekeurig unieke stemmen toe te wijzen
+    available_vrouwen = vrouwen_ids.copy()
+    random.shuffle(available_vrouwen)
+    available_mannen = mannen_ids.copy()
+    random.shuffle(available_mannen)
+    
+    assigned = {}
+    for naam, info in sprekers.items():
+        geslacht = info.get('geslacht', 'vrouw').lower()
+        if 'man' in geslacht and not 'vrouw' in geslacht:
+            if available_mannen:
+                assigned[naam] = available_mannen.pop(0)
+            elif mannen_ids:
+                assigned[naam] = random.choice(mannen_ids)
+            else:
+                assigned[naam] = random.choice(vrouwen_ids) if vrouwen_ids else None
+        else:
+            if available_vrouwen:
+                assigned[naam] = available_vrouwen.pop(0)
+            elif vrouwen_ids:
+                assigned[naam] = random.choice(vrouwen_ids)
+            else:
+                assigned[naam] = random.choice(mannen_ids) if mannen_ids else None
+                
+        if not assigned[naam]:
+            raise LesGeneratorError(f"Fout: Kan geen stem toewijzen aan {naam} ({geslacht}) omdat er geen stemmen in stemmen.json staan.")
+            
+    return assigned
+
 def genereer_les_data(prompt, niveau, gemini_key):
-    genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    client = genai.Client(api_key=gemini_key)
     
     systeem_prompt = f"""Je bent een expert in het schrijven van lesmateriaal voor NT2 (Nederlands als tweede taal).
 Schrijf een extreem simpele conversatie op ERK-niveau {niveau} over het volgende onderwerp/situatie: "{prompt}".
@@ -94,7 +161,10 @@ Je MOET je antwoord geven in puur JSON formaat. Geen markdown block (```json), g
 }}
 """
 
-    response = model.generate_content(systeem_prompt)
+    response = client.models.generate_content(
+        model='gemini-2.5-flash',
+        contents=systeem_prompt
+    )
     
     ruwe_tekst = response.text.strip()
     if ruwe_tekst.startswith("```json"):
@@ -150,6 +220,11 @@ def opslaan_in_database(les_data):
     
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(db, f, indent=4)
+        
+    # Sla ook op als data.js voor lokale file:// compatibiliteit
+    js_file = os.path.join(OUTPUT_DIR, "data.js")
+    with open(js_file, 'w', encoding='utf-8') as f:
+        f.write(f"window.luisterportaalData = {json.dumps(db, indent=4)};\n")
         
     return les_data['id']
 
@@ -219,16 +294,7 @@ def run_gui():
                 status_var.set("1/3: AI schrijft het script en de vragen...")
                 les_data = genereer_les_data(prompt, niveau, gemini_key)
                 
-                speaker_to_voiceid = {}
-                for naam, info in les_data['sprekers'].items():
-                    geslacht = info.get('geslacht', 'vrouw').lower()
-                    if 'man' in geslacht and not 'vrouw' in geslacht:
-                        speaker_to_voiceid[naam] = voices.get('Man')
-                    else:
-                        speaker_to_voiceid[naam] = voices.get('Vrouw')
-                        
-                    if not speaker_to_voiceid[naam]:
-                        raise LesGeneratorError(f"Fout: Geen voice_id gevonden in stemmen.json voor geslacht '{geslacht}'")
+                speaker_to_voiceid = assign_speaker_voices(les_data['sprekers'], voices)
 
                 # Stap 2
                 status_var.set("2/3: Audio genereren met ElevenLabs...")
@@ -310,16 +376,7 @@ def run_cli():
         titel = les_data['thema']
         print(f"\n✅ Les gegenereerd: [{niveau}] {titel}")
         
-        speaker_to_voiceid = {}
-        for naam, info in les_data['sprekers'].items():
-            geslacht = info.get('geslacht', 'vrouw').lower()
-            if 'man' in geslacht and not 'vrouw' in geslacht:
-                speaker_to_voiceid[naam] = voices.get('Man')
-            else:
-                speaker_to_voiceid[naam] = voices.get('Vrouw')
-                
-            if not speaker_to_voiceid[naam]:
-                raise LesGeneratorError(f"Geen voice_id gevonden in stemmen.json voor geslacht '{geslacht}'.")
+        speaker_to_voiceid = assign_speaker_voices(les_data['sprekers'], voices)
 
         print("\n2. Audio genereren via ElevenLabs...")
         audio_segments = []

@@ -24,8 +24,8 @@ if not GEMINI_API_KEY:
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
 # Model selectie: gebruik Pro/Flash model voor maximale nauwkeurigheid en perfecte naleving van instructies.
-# Fallback is ingesteld op gemini-2.5-pro als gemini-3.5-flash niet beschikbaar is op dit API-key tier.
-GEMINI_MODEL = "gemini-3.5-flash"
+# Fallback is ingesteld op gemini-2.5-pro als gemini-2.5-flash niet beschikbaar is op dit API-key tier.
+GEMINI_MODEL = "gemini-2.5-flash"
 
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm', '.mp4')
 

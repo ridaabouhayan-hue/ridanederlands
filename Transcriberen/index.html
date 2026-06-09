@@ -74,10 +74,10 @@
         .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
         /* ── LAYOUT ── */
-        .container { display: grid; grid-template-columns: 320px 1fr; gap: 24px; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1; height: calc(100vh - 130px); }
+        .container { display: grid; grid-template-columns: 320px 1fr; gap: 24px; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1; min-height: calc(100vh - 130px); }
         
         /* ── LEFT PANEL (LIST) ── */
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; overflow: hidden; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; overflow: hidden; position: sticky; top: 90px; height: calc(100vh - 130px); }
         .sidebar-top { flex: 0 0 auto; overflow-y: auto; max-height: 55%; }
         .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; align-items: center; flex: 0 0 auto; }
         .file-list { list-style: none; overflow-y: auto; flex: 1; min-height: 120px; padding: 10px; }
@@ -89,7 +89,7 @@
         .file-name { font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* ── RIGHT PANEL (VIEWER) ── */
-        .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: 24px; overflow: hidden; position: relative; }
+        .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: 24px; position: relative; }
         .empty-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); }
         .empty-state h3 { color: var(--text); margin: 16px 0 8px; }
         
@@ -204,8 +204,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
-            flex: 1;
-            min-height: 0;
             margin-top: 10px;
         }
         .viewer-column {
@@ -215,8 +213,7 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 16px;
-            height: 100%;
-            overflow: hidden;
+            height: auto;
         }
         .column-title {
             font-size: 0.85rem;
@@ -232,12 +229,9 @@
             letter-spacing: 0.5px;
         }
         .column-content {
-            flex: 1;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding-right: 4px;
         }
         .transcript-card {
             background: rgba(255, 255, 255, 0.02);
@@ -424,19 +418,19 @@
                         <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
                     </div>
 
-                    <div class="viewer-layout" style="display: flex; flex-direction: column; flex: 1; min-height: 0; grid-template-columns: none; gap: 0;">
+                    <div class="viewer-layout" style="display: flex; flex-direction: column; grid-template-columns: none; gap: 0;">
                         <!-- Pane 1: Transcript Gesprek -->
-                        <div id="pane-transcript" class="viewer-column" style="display: flex; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
+                        <div id="pane-transcript" class="viewer-column" style="display: flex; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-transcript"></div>
-                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: auto;">
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
                                 <button id="btnRegenFeedback" onclick="generateFeedbackFromTranscriptText()" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">🔄 Genereer Feedbackbrief</button>
                             </div>
                         </div>
 
                         <!-- Pane 2: Feedbackbrief -->
-                        <div id="pane-feedback" class="viewer-column" style="display: none; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
+                        <div id="pane-feedback" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-feedback"></div>
-                            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; margin-top: 20px;">
                                 <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Optionele instructie achteraf (AI):</div>
                                 <textarea id="afterwardInstructionsInput" placeholder="Bijv. Wees bemoedigender of pas Zin 2 aan..." style="width: 100%; min-height: 40px; max-height: 80px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(15, 23, 42, 0.5); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); resize: vertical; font-weight: 600;"></textarea>
                                 <button id="btnAdjustFeedback" onclick="adjustFeedbackWithAi(event)" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">Pas brief aan met AI</button>
@@ -444,7 +438,7 @@
                         </div>
 
                         <!-- Pane 3: Complete brief & Vertalen -->
-                        <div id="pane-complete" class="viewer-column" style="display: none; flex-direction: column; height: 100%; flex: 1; min-height: 0; background: none; border: none; padding: 0;">
+                        <div id="pane-complete" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-complete"></div>
                         </div>
                     </div>
@@ -716,9 +710,9 @@
             if (gesprek.length === 0) {
                 const flatText = currentFileObject.analyse.letterlijk_transcript || currentFileObject.transcript || '';
                 container.innerHTML = `
-                    <div style="display:flex; flex-direction:column; gap:8px; height:100%;">
+                    <div style="display:flex; flex-direction:column; gap:8px;">
                         <span style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Ruwe Transcriptie:</span>
-                        <textarea id="rawTranscriptTextarea" onchange="updateRawTranscriptText(this.value)" style="width:100%; flex:1; padding:10px; background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; resize:none;">${flatText}</textarea>
+                        <textarea id="rawTranscriptTextarea" onchange="updateRawTranscriptText(this.value)" style="width:100%; min-height:450px; padding:12px; background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; resize:vertical; line-height:1.6;">${flatText}</textarea>
                         <p style="font-size:0.75rem; color:var(--text-muted);">Klik op "Genereer Feedbackbrief" om de ruwe tekst te verwerken.</p>
                     </div>
                 `;
@@ -848,9 +842,9 @@
 
             const activeFb = currentFeedbackBrieven[activeStudentIdx];
             html += `
-                <div style="display:flex; flex-direction:column; gap:8px; flex:1; min-height:0;">
+                <div style="display:flex; flex-direction:column; gap:8px;">
                     <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Bewerk Brief Tekst (Nederlands):</label>
-                    <textarea oninput="updateFeedbackBriefText(this.value)" style="width:100%; flex:1; padding:12px; background:rgba(15, 23, 42, 0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; line-height:1.6; resize:none; min-height: 200px;">${activeFb.brief || ''}</textarea>
+                    <textarea oninput="updateFeedbackBriefText(this.value)" style="width:100%; min-height:450px; padding:12px; background:rgba(15, 23, 42, 0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; line-height:1.6; resize:vertical;">${activeFb.brief || ''}</textarea>
                 </div>
             `;
 
@@ -939,7 +933,7 @@
             // Brief content display
             const briefContent = isNl ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal en klik op \'Vertaal\'.');
             html += `
-                <div id="active-fb-text" style="white-space: pre-wrap; font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; flex: 1; overflow-y: auto;">${briefContent}</div>
+                <div id="active-fb-text" style="white-space: pre-wrap; font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; min-height: 350px;">${briefContent}</div>
             `;
  
             container.innerHTML = html;
@@ -1039,7 +1033,7 @@ AANVULLENDE RICHTLIJNEN:
    * Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander — zodat ze niet per ongeluk de foute versie onthouden.
 - ${conversationFormatHelp}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1139,7 +1133,7 @@ RICHTLIJNEN VOOR DE VERTALING:
 BRIEF OM TE VERTAALEN:
 ${activeFb.brief}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1289,7 +1283,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
   ]
 }`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -2072,7 +2066,7 @@ BELANGRIJK:
 7. MOEDERTAAL EN WA-IMPORT:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
-            let model = "gemini-3.5-flash";
+            let model = "gemini-2.5-flash";
             let payload = {
                 contents: [{
                     parts: [

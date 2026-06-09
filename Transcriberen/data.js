@@ -1652,7 +1652,469 @@ window.geminiData = {
   "Coca-Cola": [],
   "NS": [],
   "B-A1": [],
-  "B-A2": [],
+  "B-A2": [
+    {
+      "filename": "Zohrab Tanushan 9-6.ogg",
+      "path": "B-A2/Zohrab Tanushan 9-6.ogg",
+      "date": "9-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Hey Zohrab, hoe gaat het?",
+            "zin_correct": "Hé Zohrab, hoe gaat het?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Hey Tanushan, goed, met jou?",
+            "zin_correct": "Hé Tanushan, goed. Met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Ja, ook goed.",
+            "zin_correct": "Ja, ook goed.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Heb jij iets gepland voor dit zomervakantie?",
+            "zin_correct": "Heb jij iets gepland voor deze zomervakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "dit zomervakantie",
+              "uitleg": "Het woord 'zomervakantie' is een de-woord (de vakantie). Bij de-woorden gebruik je 'deze'. 'Dit' gebruik je voor het-woorden (bijvoorbeeld: dit huis)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Ja, ik heb al ingepland.",
+            "zin_correct": "Ja, ik heb al iets gepland.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik heb al ingepland",
+              "uitleg": "Het werkwoord 'inplannen' heeft een lijdend voorwerp nodig. Je plant *iets*. De zin is dus niet compleet. Je kunt zeggen: 'Ik heb al iets gepland' of 'Ik heb al plannen gemaakt'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Uh, waar ga je naartoe?",
+            "zin_correct": "Waar ga je naartoe?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Ik ga naar Frankrijk met mijn familie.",
+            "zin_correct": "Ik ga naar Frankrijk met mijn familie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Ja, zeker. Ik ga naar Sri Lanka met mijn vriendin.",
+            "zin_correct": "Jazeker. Ik ga naar Sri Lanka met mijn vriendin.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Oké, leuk.",
+            "zin_correct": "Oké, leuk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Wat ga jij daar doen?",
+            "zin_correct": "Wat ga je daar doen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Uh, dit is mijn eerste keer terug naar Sri Lanka en ik zie mijn familie en ga ik sommige toerist plekken kijken.",
+            "zin_correct": "Dit is de eerste keer dat ik terugga naar Sri Lanka. Ik ga mijn familie bezoeken en ik ga een paar toeristische plekken bekijken.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "toerist plekken",
+              "uitleg": "Het woord 'toerist' moet hier een bijvoeglijk naamwoord zijn: 'toeristische'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "eerste keer terug naar... en ik zie... en ga ik...",
+              "uitleg": "De zinsopbouw is niet correct. Beter is: 'Dit is de eerste keer dat ik terugga...'. Je praat over de toekomst, dus gebruik 'ik ga zien' of 'ik ga bezoeken'. Na 'en' begin je een nieuwe hoofdzin, dus de volgorde is 'en ik ga' (geen inversie)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Uh, wat ga jij in Frankrijk doen?",
+            "zin_correct": "Wat ga jij in Frankrijk doen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Wij gaan zwemmen, lekker eten, lekker genieten enzo.",
+            "zin_correct": "We gaan zwemmen, lekker eten, lekker genieten, enzovoort.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "'Enzo' is spreektaal, maar prima te begrijpen. Het volledige woord is 'enzovoort'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Oh, dat is goed, uh?",
+            "zin_correct": "Oh, dat klinkt goed!",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "dat is goed",
+              "uitleg": "Grammaticaal is dit correct, maar de betekenis past niet goed. 'Dat is goed' gebruik je als iets correct is. Als je reageert op leuke plannen, zeg je beter: 'Dat klinkt goed!' of 'Dat is leuk!'."
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Hey Zohrab, weet jij een beetje Eiffeltoren in Parijs?",
+            "zin_correct": "Hé Zohrab, ken je de Eiffeltoren in Parijs?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "weet jij een beetje Eiffeltoren",
+              "uitleg": "Gebruik 'kennen' voor mensen, plaatsen en dingen. 'Weten' is voor feiten. Je moet ook het lidwoord 'de' gebruiken: 'de Eiffeltoren'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "een beetje Eiffeltoren",
+              "uitleg": "De zin 'weet jij een beetje Eiffeltoren' is onlogisch. Het klinkt alsof je vraagt of hij een klein stukje van de toren kent. De vraag 'Ken je de Eiffeltoren?' is logisch."
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Ga jij ook daar bezoeken?",
+            "zin_correct": "Ga je die ook bezoeken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "daar bezoeken",
+              "uitleg": "Het werkwoord 'bezoeken' heeft een direct object nodig: wat bezoek je? Je bezoekt *iets* of *iemand*. Correct is: 'Ga je *die* (de toren) ook bezoeken?'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Ja, ik weet het, maar uh wij gaan deze keer helemaal andere kant van Frankrijk.",
+            "zin_correct": "Ja, die ken ik, maar we gaan deze keer naar een heel andere kant van Frankrijk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik weet het / helemaal andere kant",
+              "uitleg": "Als reactie op 'ken je...?' is 'die ken ik' beter dan 'ik weet het'. Verder mist er een lidwoord: 'naar *een* heel andere kant'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Wanneer kom jij terug Nederland?",
+            "zin_correct": "Wanneer kom je terug naar Nederland?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "terug Nederland",
+              "uitleg": "Je mist het voorzetsel 'naar'. Het is altijd 'terugkomen *naar* een plaats'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Uh, ja, ik ga in... in... en ik ga in Sri Lanka een maanden blijven, dan kom ik terug op 27 augustus.",
+            "zin_correct": "Ik ga een maand in Sri Lanka blijven. Dan kom ik op 27 augustus terug.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "een maanden",
+              "uitleg": "Je zegt 'een', wat enkelvoud is, maar 'maanden' is meervoud. Het moet zijn: 'een maand'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "een maanden",
+              "uitleg": "Na 'een' gebruik je altijd het enkelvoud. Dus: 'een maand'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Je beantwoordt je eigen vraag aan Zohrab.",
+              "uitleg": "Je vroeg net aan Zohrab wanneer hij terugkomt, maar nu geef je zelf antwoord over jouw reis. Dit is verwarrend in een gesprek. Wacht eerst op het antwoord van de ander."
+            }
+          },
+          {
+            "spreker": "Tanushan",
+            "zin_fonetisch": "Uh, heb jij iets andere plan?",
+            "zin_correct": "Heb jij nog andere plannen?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "plan (enkelvoud)",
+              "uitleg": "Omdat je 'andere' gebruikt, praat je over meer dan één plan. Dan moet je het meervoud gebruiken: 'plannen'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "iets andere plan",
+              "uitleg": "'Iets' past hier niet. Het is beter om 'nog' te gebruiken. En 'plan' moet meervoud zijn: 'plannen'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Zohrab",
+            "zin_fonetisch": "Nee, ik heb nog... nog geen andere plannen.",
+            "zin_correct": "Nee, ik heb nog geen andere plannen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Tanushan",
+            "brief": "Hallo Tanushan! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei:\n*Zin 1:* \"Hey Zohrab, hoe gaat het?\"\n👍 *Wat was goed:* Een perfecte start van het gesprek! Duidelijk en correct.\n\n*Zohrab zei toen:* \"Hey Tanushan, goed, met jou?\"\n\nJij zei:\n*Zin 2:* \"Ja, ook goed.\"\n👍 *Wat was goed:* Goed en correct antwoord.\n\nJij zei:\n*Zin 3:* \"Heb jij iets gepland voor dit zomervakantie?\"\n👍 *Wat was goed:* De zinsopbouw is goed en de vraag is duidelijk.\n💡 *Correctie:* \"Heb jij iets gepland voor *deze* zomervakantie?\"\n🧠 *Waarom:* Het woord 'zomervakantie' is een de-woord (de vakantie). Bij de-woorden gebruik je 'deze'. 'Dit' gebruik je voor het-woorden (bijvoorbeeld: dit huis).\n\n*Zohrab zei toen:* \"Ja, ik heb al ingepland.\"\n\nJij zei:\n*Zin 4:* \"Uh, waar ga je naartoe?\"\n👍 *Wat was goed:* Prima vraag, helemaal correct.\n\n*Zohrab zei toen:* \"Ik ga naar Frankrijk met mijn familie.\"\n\n*Zohrab vroeg toen:* \"En jij?\"\n\nJij zei:\n*Zin 5:* \"Ja, zeker. Ik ga naar Sri Lanka met mijn vriendin.\"\n👍 *Wat was goed:* Duidelijk en correct antwoord.\n\n*Zohrab zei toen:* \"Oké, leuk.\"\n\n*Zohrab vroeg toen:* \"Wat ga jij daar doen?\"\n\nJij zei:\n*Zin 6:* \"Uh, dit is mijn eerste keer terug naar Sri Lanka en ik zie mijn familie en ga ik sommige toerist plekken kijken.\"\n👍 *Wat was goed:* Ik begrijp goed wat je wilt vertellen.\n💡 *Correctie:* \"Dit is de eerste keer dat ik terugga naar Sri Lanka. Ik ga mijn familie bezoeken en ik ga een paar toeristische plekken bekijken.\"\n🧠 *Waarom:* Je praat over de toekomst, dus gebruik 'ik ga...'. Na 'en' begin je een nieuwe zin, dus dan zeg je 'en ik ga...' (geen omgedraaide woordvolgorde). 'Toerist plekken' moet 'toeristische plekken' zijn.\n\nJij vroeg:\n*Zin 7:* \"Uh, wat ga jij in Frankrijk doen?\"\n👍 *Wat was goed:* Helemaal correct!\n\n*Zohrab zei toen:* \"Wij gaan zwemmen, lekker eten, lekker genieten enzo.\"\n\nJij zei:\n*Zin 8:* \"Oh, dat is goed, uh?\"\n👍 *Wat was goed:* Je reactie is goed te begrijpen.\n💡 *Correctie:* \"Oh, dat klinkt goed!\"\n🧠 *Waarom:* 'Dat is goed' zeg je als iets correct is. Als je reageert op leuke plannen van iemand, is 'Dat klinkt goed!' of 'Dat is leuk!' een betere reactie.\n\nJij vroeg:\n*Zin 9:* \"Hey Zohrab, weet jij een beetje Eiffeltoren in Parijs?\"\n👍 *Wat was goed:* Je probeert een complexe vraag te stellen, dat is goed.\n💡 *Correctie:* \"Hé Zohrab, ken je de Eiffeltoren in Parijs?\"\n🧠 *Waarom:* Voor plaatsen, mensen en dingen gebruik je het werkwoord 'kennen'. 'Weten' gebruik je voor feiten. De zin 'een beetje Eiffeltoren' is niet logisch; je bedoelt de hele toren.\n\nJij vroeg:\n*Zin 10:* \"Ga jij ook daar bezoeken?\"\n👍 *Wat was goed:* De vraag is duidelijk.\n💡 *Correctie:* \"Ga je die ook bezoeken?\"\n🧠 *Waarom:* Het werkwoord 'bezoeken' heeft een lijdend voorwerp nodig: wat bezoek je? Je bezoekt *iets*. Dus: 'Ga je *die* (de toren) ook bezoeken?'.\n\n*Zohrab zei toen:* \"Ja, ik weet het, maar uh wij gaan deze keer helemaal andere kant van Frankrijk.\"\n\nJij vroeg:\n*Zin 11:* \"Wanneer kom jij terug Nederland?\"\n👍 *Wat was goed:* Duidelijke vraag.\n💡 *Correctie:* \"Wanneer kom je terug *naar* Nederland?\"\n🧠 *Waarom:* Je mist het woordje 'naar'. Het is altijd 'terugkomen *naar* een plaats'.\n\nJij zei:\n*Zin 12:* \"Uh, ja, ik ga in... in... en ik ga in Sri Lanka een maanden blijven, dan kom ik terug op 27 augustus.\"\n👍 *Wat was goed:* Je geeft duidelijke informatie over je reis.\n💡 *Correctie:* \"Ik ga *een maand* in Sri Lanka blijven. Dan kom ik op 27 augustus terug.\"\n🧠 *Waarom:* Na 'een' gebruik je enkelvoud: 'een maand'. 'Maanden' is meervoud.\n🤔 *Logica:* Let op: je vroeg net aan Zohrab wanneer hij terugkomt, maar nu geef je zelf antwoord. Dit is verwarrend. Wacht in een gesprek altijd eerst op het antwoord van de ander.\n\nJij vroeg:\n*Zin 13:* \"Uh, heb jij iets andere plan?\"\n👍 *Wat was goed:* Ik begrijp je vraag.\n💡 *Correctie:* \"Heb jij nog andere plannen?\"\n🧠 *Waarom:* Het woord 'iets' past hier niet goed. 'Nog' is beter. Omdat je 'andere' gebruikt, praat je over meervoud, dus gebruik je 'plannen'.\n\n*Zohrab zei toen:* \"Nee, ik heb nog... nog geen andere plannen.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grootste uitdagingen zijn de kleine woordjes. Let goed op het verschil tussen 'dit' en 'deze', het gebruik van voorzetsels zoals 'naar', en het verschil tussen enkelvoud ('maand', 'plan') en meervoud ('maanden', 'plannen'). Ook het verschil tussen 'weten' en 'kennen' is een belangrijk punt.\n• *Uitspraak:* Je uitspraak is heel duidelijk en goed verstaanbaar. Daar hoef je je geen zorgen over te maken.\n• *Samenhang & Logica:* Probeer goed naar de ander te luisteren en te reageren op wat hij zegt. Soms beantwoordde je je eigen vraag, wat het gesprek een beetje verwarrend maakte. Neem de tijd om het antwoord van de ander af te wachten.\n\n🧠 *Jouw volgende stap & advies:*\nFocus de komende tijd op de kleine woordjes: lidwoorden (de/het), voorzetsels (naar, in, op) en aanwijzende voornaamwoorden (dit/deze). Als je deze beter gebruikt, zal je Nederlands veel natuurlijker klinken. Je doet het al heel goed! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Tanushan! 👋\n\nGreat job on practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\nYou said:\n*Zin 1:* \"Hey Zohrab, hoe gaat het?\"\n👍 *What was good:* A perfect start to the conversation! Clear and correct.\n\n*Zohrab then said:* \"Hey Tanushan, goed, met jou?\"\n\nYou said:\n*Zin 2:* \"Ja, ook goed.\"\n👍 *What was good:* Good and correct answer.\n\nYou said:\n*Zin 3:* \"Heb jij iets gepland voor dit zomervakantie?\"\n👍 *What was good:* The sentence structure is good and the question is clear.\n💡 *Correction:* \"Heb jij iets gepland voor *deze* zomervakantie?\"\n🧠 *Why:* The word 'zomervakantie' is a de-word (de vakantie). With de-words, you use 'deze'. You use 'dit' for het-words (for example: dit huis).\n\n*Zohrab then said:* \"Ja, ik heb al ingepland.\"\n\nYou said:\n*Zin 4:* \"Uh, waar ga je naartoe?\"\n👍 *What was good:* Great question, completely correct.\n\n*Zohrab then said:* \"Ik ga naar Frankrijk met mijn familie.\"\n\n*Zohrab then asked:* \"En jij?\"\n\nYou said:\n*Zin 5:* \"Ja, zeker. Ik ga naar Sri Lanka met mijn vriendin.\"\n👍 *What was good:* Clear and correct answer.\n\n*Zohrab then said:* \"Oké, leuk.\"\n\n*Zohrab then asked:* \"Wat ga jij daar doen?\"\n\nYou said:\n*Zin 6:* \"Uh, dit is mijn eerste keer terug naar Sri Lanka en ik zie mijn familie en ga ik sommige toerist plekken kijken.\"\n👍 *What was good:* I understand well what you want to say.\n💡 *Correction:* \"Dit is de eerste keer dat ik terugga naar Sri Lanka. Ik ga mijn familie bezoeken en ik ga een paar toeristische plekken bekijken.\"\n🧠 *Why:* You are talking about the future, so use 'ik ga...'. After 'en', you start a new sentence, so you say 'en ik ga...' (no inverted word order). 'Toerist plekken' should be 'toeristische plekken'.\n\nYou asked:\n*Zin 7:* \"Uh, wat ga jij in Frankrijk doen?\"\n👍 *What was good:* Completely correct!\n\n*Zohrab then said:* \"Wij gaan zwemmen, lekker eten, lekker genieten enzo.\"\n\nYou said:\n*Zin 8:* \"Oh, dat is goed, uh?\"\n👍 *What was good:* Your reaction is easy to understand.\n💡 *Correction:* \"Oh, dat klinkt goed!\"\n🧠 *Why:* You say 'Dat is goed' when something is correct. When you react to someone's nice plans, 'Dat klinkt goed!' or 'Dat is leuk!' is a better response.\n\nYou asked:\n*Zin 9:* \"Hey Zohrab, weet jij een beetje Eiffeltoren in Parijs?\"\n👍 *What was good:* You are trying to ask a complex question, which is good.\n💡 *Correction:* \"Hé Zohrab, ken je de Eiffeltoren in Parijs?\"\n🧠 *Why:* For places, people, and things, you use the verb 'kennen'. You use 'weten' for facts. The phrase 'een beetje Eiffeltoren' is not logical; you mean the whole tower.\n\nYou asked:\n*Zin 10:* \"Ga jij ook daar bezoeken?\"\n👍 *What was good:* The question is clear.\n💡 *Correction:* \"Ga je die ook bezoeken?\"\n🧠 *Why:* The verb 'bezoeken' needs a direct object: what are you visiting? You visit *something*. So: 'Ga je *die* (de toren) ook bezoeken?'.\n\n*Zohrab then said:* \"Ja, ik weet het, maar uh wij gaan deze keer helemaal andere kant van Frankrijk.\"\n\nYou asked:\n*Zin 11:* \"Wanneer kom jij terug Nederland?\"\n👍 *What was good:* Clear question.\n💡 *Correction:* \"Wanneer kom je terug *naar* Nederland?\"\n🧠 *Why:* You are missing the word 'naar'. It is always 'terugkomen *naar* een plaats' (to come back *to* a place).\n\nYou said:\n*Zin 12:* \"Uh, ja, ik ga in... in... en ik ga in Sri Lanka een maanden blijven, dan kom ik terug op 27 augustus.\"\n👍 *What was good:* You provide clear information about your trip.\n💡 *Correction:* \"Ik ga *een maand* in Sri Lanka blijven. Dan kom ik op 27 augustus terug.\"\n🧠 *Why:* After 'een' (one), you use the singular form: 'een maand'. 'Maanden' is plural.\n🤔 *Logic:* Pay attention: you just asked Zohrab when he is coming back, but now you are answering for yourself. This is confusing. In a conversation, always wait for the other person's answer first.\n\nYou asked:\n*Zin 13:* \"Uh, heb jij iets andere plan?\"\n👍 *What was good:* I understand your question.\n💡 *Correction:* \"Heb jij nog andere plannen?\"\n🧠 *Why:* The word 'iets' (something) doesn't fit well here. 'Nog' (any more) is better. Because you use 'andere' (other), you are talking about the plural, so you should use 'plannen'.\n\n*Zohrab then said:* \"Nee, ik heb nog... nog geen andere plannen.\"\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* Your biggest challenges are the small words. Pay close attention to the difference between 'dit' and 'deze', the use of prepositions like 'naar', and the difference between singular ('maand', 'plan') and plural ('maanden', 'plannen'). The difference between 'weten' and 'kennen' is also an important point.\n• *Pronunciation:* Your pronunciation is very clear and easy to understand. You don't need to worry about that.\n• *Cohesion & Logic:* Try to listen carefully to the other person and respond to what they say. Sometimes you answered your own question, which made the conversation a bit confusing. Take the time to wait for the other person's answer.\n\n🧠 *Your Next Step & Advice:*\nIn the coming time, focus on the small words: articles (de/het), prepositions (naar, in, op), and demonstrative pronouns (dit/deze). If you use these better, your Dutch will sound much more natural. You are already doing very well! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Zohrab",
+            "brief": "Hallo Zohrab! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Tanushan zei toen:* \"Hey Zohrab, hoe gaat het?\"\n\nJij zei:\n*Zin 1:* \"Hey Tanushan, goed, met jou?\"\n👍 *Wat was goed:* Een perfecte en duidelijke reactie. Goed gedaan!\n\n*Tanushan zei toen:* \"Ja, ook goed.\"\n\n*Tanushan vroeg toen:* \"Heb jij iets gepland voor dit zomervakantie?\"\n\nJij zei:\n*Zin 2:* \"Ja, ik heb al ingepland.\"\n👍 *Wat was goed:* Je antwoord is duidelijk en je uitspraak is goed.\n💡 *Correctie:* \"Ja, ik heb al iets gepland.\"\n🧠 *Waarom:* Het werkwoord 'inplannen' heeft een lijdend voorwerp nodig. Je plant *iets*. De zin is dus niet compleet. Je kunt zeggen: 'Ik heb al iets gepland' of 'Ik heb al plannen gemaakt'.\n\n*Tanushan vroeg toen:* \"Uh, waar ga je naartoe?\"\n\nJij zei:\n*Zin 3:* \"Ik ga naar Frankrijk met mijn familie.\"\n👍 *Wat was goed:* Een duidelijke en correcte zin.\n\nJij vroeg:\n*Zin 4:* \"En jij?\"\n👍 *Wat was goed:* Perfecte vraag.\n\n*Tanushan zei toen:* \"Ja, zeker. Ik ga naar Sri Lanka met mijn vriendin.\"\n\nJij zei:\n*Zin 5:* \"Oké, leuk.\"\n👍 *Wat was goed:* Goede, korte reactie.\n\nJij vroeg:\n*Zin 6:* \"Wat ga jij daar doen?\"\n👍 *Wat was goed:* Prima vraag, helemaal correct.\n\n*Tanushan zei toen:* \"Uh, dit is mijn eerste keer terug naar Sri Lanka en ik zie mijn familie en ga ik sommige toerist plekken kijken.\"\n\n*Tanushan vroeg toen:* \"Uh, wat ga jij in Frankrijk doen?\"\n\nJij zei:\n*Zin 7:* \"Wij gaan zwemmen, lekker eten, lekker genieten enzo.\"\n👍 *Wat was goed:* Heel goed! Je somt de activiteiten correct op. 'Enzo' is spreektaal, maar prima te begrijpen. Het volledige woord is 'enzovoort'.\n\n*Tanushan zei toen:* \"Oh, dat is goed, uh?\"\n\n*Tanushan vroeg toen:* \"Hey Zohrab, weet jij een beetje Eiffeltoren in Parijs?\"\n\n*Tanushan vroeg toen:* \"Ga jij ook daar bezoeken?\"\n\nJij zei:\n*Zin 8:* \"Ja, ik weet het, maar uh wij gaan deze keer helemaal andere kant van Frankrijk.\"\n👍 *Wat was goed:* Je antwoord is duidelijk en je legt de situatie goed uit.\n💡 *Correctie:* \"Ja, die ken ik, maar we gaan deze keer naar *een* heel andere kant van Frankrijk.\"\n🧠 *Waarom:* Als reactie op 'ken je...?' is 'die ken ik' een betere reactie dan 'ik weet het'. Verder mis je het lidwoord 'een' voor 'heel andere kant'.\n\n*Tanushan vroeg toen:* \"Wanneer kom jij terug Nederland?\"\n\n*Tanushan zei toen:* \"Uh, ja, ik ga in... in... en ik ga in Sri Lanka een maanden blijven, dan kom ik terug op 27 augustus.\"\n\n*Tanushan vroeg toen:* \"Uh, heb jij iets andere plan?\"\n\nJij zei:\n*Zin 9:* \"Nee, ik heb nog... nog geen andere plannen.\"\n👍 *Wat was goed:* Een perfecte en duidelijke zin om het gesprek af te sluiten.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is al op een hoog niveau. De belangrijkste aandachtspunten voor jou zijn het compleet maken van je zinnen (zoals 'ik heb al *iets* gepland') en het gebruiken van de juiste lidwoorden (zoals '*een* andere kant'). Dit zijn kleine details die je Nederlands nog beter maken.\n• *Uitspraak:* Je uitspraak is uitstekend. Je bent heel duidelijk en makkelijk te verstaan. Ga zo door!\n• *Samenhang & Logica:* Je reageert altijd logisch en passend op de vragen. Je volgt het gesprek heel goed.\n\n🧠 *Jouw volgende stap & advies:*\nJouw basis is heel sterk. Probeer de komende tijd te letten op de kleine details, zoals het toevoegen van een lijdend voorwerp of het juiste lidwoord. Luister goed naar hoe Nederlanders dit doen. Je bent al heel ver gekomen! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Zohrab! 👋\n\nGreat job on practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Tanushan then said:* \"Hey Zohrab, hoe gaat het?\"\n\nYou said:\n*Zin 1:* \"Hey Tanushan, goed, met jou?\"\n👍 *What was good:* A perfect and clear response. Well done!\n\n*Tanushan then said:* \"Ja, ook goed.\"\n\n*Tanushan then asked:* \"Heb jij iets gepland voor dit zomervakantie?\"\n\nYou said:\n*Zin 2:* \"Ja, ik heb al ingepland.\"\n👍 *What was good:* Your answer is clear and your pronunciation is good.\n💡 *Correction:* \"Ja, ik heb al iets gepland.\"\n🧠 *Why:* The verb 'inplannen' needs a direct object. You plan *something*. So the sentence is incomplete. You can say: 'Ik heb al iets gepland' or 'Ik heb al plannen gemaakt'.\n\n*Tanushan then asked:* \"Uh, waar ga je naartoe?\"\n\nYou said:\n*Zin 3:* \"Ik ga naar Frankrijk met mijn familie.\"\n👍 *What was good:* A clear and correct sentence.\n\nYou asked:\n*Zin 4:* \"En jij?\"\n👍 *What was good:* Perfect question.\n\n*Tanushan then said:* \"Ja, zeker. Ik ga naar Sri Lanka met mijn vriendin.\"\n\nYou said:\n*Zin 5:* \"Oké, leuk.\"\n👍 *What was good:* Good, short reaction.\n\nYou asked:\n*Zin 6:* \"Wat ga jij daar doen?\"\n👍 *What was good:* Great question, completely correct.\n\n*Tanushan then said:* \"Uh, dit is mijn eerste keer terug naar Sri Lanka en ik zie mijn familie en ga ik sommige toerist plekken kijken.\"\n\n*Tanushan then asked:* \"Uh, wat ga jij in Frankrijk doen?\"\n\nYou said:\n*Zin 7:* \"Wij gaan zwemmen, lekker eten, lekker genieten enzo.\"\n👍 *What was good:* Very good! You list the activities correctly. 'Enzo' is colloquial, but perfectly understandable. The full word is 'enzovoort'.\n\n*Tanushan then said:* \"Oh, dat is goed, uh?\"\n\n*Tanushan then asked:* \"Hey Zohrab, weet jij een beetje Eiffeltoren in Parijs?\"\n\n*Tanushan then asked:* \"Ga jij ook daar bezoeken?\"\n\nYou said:\n*Zin 8:* \"Ja, ik weet het, maar uh wij gaan deze keer helemaal andere kant van Frankrijk.\"\n👍 *What was good:* Your answer is clear and you explain the situation well.\n💡 *Correction:* \"Ja, die ken ik, maar we gaan deze keer naar *een* heel andere kant van Frankrijk.\"\n🧠 *Why:* In response to 'ken je...?', 'die ken ik' is a better response than 'ik weet het'. Furthermore, you are missing the article 'een' before 'heel andere kant'.\n\n*Tanushan then asked:* \"Wanneer kom jij terug Nederland?\"\n\n*Tanushan then said:* \"Uh, ja, ik ga in... in... en ik ga in Sri Lanka een maanden blijven, dan kom ik terug op 27 augustus.\"\n\n*Tanushan then asked:* \"Uh, heb jij iets andere plan?\"\n\nYou said:\n*Zin 9:* \"Nee, ik heb nog... nog geen andere plannen.\"\n👍 *What was good:* A perfect and clear sentence to conclude the conversation.\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* Your grammar is already at a high level. The main points of attention for you are completing your sentences (like 'ik heb al *iets* gepland') and using the correct articles (like '*een* andere kant'). These are small details that will make your Dutch even better.\n• *Pronunciation:* Your pronunciation is excellent. You are very clear and easy to understand. Keep it up!\n• *Cohesion & Logic:* You always respond logically and appropriately to the questions. You follow the conversation very well.\n\n🧠 *Your Next Step & Advice:*\nYour foundation is very strong. In the coming time, try to pay attention to the small details, like adding a direct object or the correct article. Listen carefully to how native Dutch speakers do this. You have come a long way! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    }
+  ],
   "B-Alfa": [
     {
       "filename": "Birgul Dursel 27-5.ogg",

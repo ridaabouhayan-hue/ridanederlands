@@ -1,4 +1,4 @@
-[
+window.luisterportaalData = [
     {
         "thema": "Welkom bij het Luisterportaal!",
         "niveau": "A1",
@@ -123,4 +123,4 @@
         "audio_url": "audio/A1_tandarts_afspraak_maken_1781015734.mp3",
         "id": "a1_1781015734"
     }
-]
+];
