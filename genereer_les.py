@@ -4,8 +4,13 @@ import json
 import requests
 import time
 import re
+import threading
+import webbrowser
 import google.generativeai as genai
 from pydub import AudioSegment
+
+import tkinter as tk
+from tkinter import ttk, messagebox
 
 GEMINI_API_FILE = "API.txt"
 ELEVEN_API_FILE = "API_ELEVENLABS.txt"
@@ -16,22 +21,21 @@ AUDIO_DIR = os.path.join(OUTPUT_DIR, "audio")
 DATA_FILE = os.path.join(OUTPUT_DIR, "data.json")
 TEMP_DIR = "temp_audio"
 
+class LesGeneratorError(Exception):
+    pass
+
 def load_gemini_key():
     if not os.path.exists(GEMINI_API_FILE):
-        print(f"Fout: {GEMINI_API_FILE} niet gevonden.")
-        sys.exit(1)
+        raise LesGeneratorError(f"Fout: {GEMINI_API_FILE} niet gevonden.")
     with open(GEMINI_API_FILE, 'r', encoding='utf-8') as f:
         for line in f:
             if line.startswith("GEMINI_API_KEY="):
                 return line.split("=", 1)[1].strip()
-    print("Fout: GEMINI_API_KEY niet gevonden in API.txt.")
-    sys.exit(1)
+    raise LesGeneratorError("Fout: GEMINI_API_KEY niet gevonden in API.txt.")
 
 def load_eleven_key():
     if not os.path.exists(ELEVEN_API_FILE):
-        print(f"Fout: {ELEVEN_API_FILE} niet gevonden.")
-        print("Maak dit bestand aan en zet hier puur je ElevenLabs API key in.")
-        sys.exit(1)
+        raise LesGeneratorError(f"Fout: {ELEVEN_API_FILE} niet gevonden. Maak dit bestand aan en zet hier puur je ElevenLabs API key in.")
     with open(ELEVEN_API_FILE, 'r', encoding='utf-8') as f:
         return f.read().strip()
 
@@ -43,21 +47,18 @@ def load_voices():
         }
         with open(VOICES_FILE, 'w', encoding='utf-8') as f:
             json.dump(dummy_data, f, indent=4)
-        print(f"Bestand {VOICES_FILE} aangemaakt. Vul hier eerst je Voice ID's in voor 'Man' en 'Vrouw'!")
-        sys.exit(1)
+        raise LesGeneratorError(f"Bestand {VOICES_FILE} aangemaakt. Vul hier eerst je Voice ID's in voor 'Man' en 'Vrouw'!")
         
     with open(VOICES_FILE, 'r', encoding='utf-8') as f:
         voices = json.load(f)
         
     for k, v in voices.items():
         if "vul_hier" in v:
-            print(f"Let op: Voice ID voor {k} is nog niet ingevuld in {VOICES_FILE}.")
-            sys.exit(1)
+            raise LesGeneratorError(f"Let op: Voice ID voor {k} is nog niet ingevuld in {VOICES_FILE}.")
             
     return voices
 
 def genereer_les_data(prompt, niveau, gemini_key):
-    print("1. AI aan het werk zetten via Gemini...")
     genai.configure(api_key=gemini_key)
     model = genai.GenerativeModel('gemini-2.5-flash')
     
@@ -109,10 +110,7 @@ Je MOET je antwoord geven in puur JSON formaat. Geen markdown block (```json), g
         data = json.loads(ruwe_tekst)
         return data
     except json.JSONDecodeError as e:
-        print(f"Fout: Gemini gaf geen geldig JSON formaat terug: {e}")
-        print("Ruwe tekst was:")
-        print(ruwe_tekst)
-        sys.exit(1)
+        raise LesGeneratorError(f"Fout: Gemini gaf geen geldig JSON formaat terug: {e}")
 
 def genereer_audio_elevenlabs(text, voice_id, api_key, output_path):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
@@ -135,8 +133,7 @@ def genereer_audio_elevenlabs(text, voice_id, api_key, output_path):
             f.write(response.content)
         return True
     else:
-        print(f"ElevenLabs Error: {response.text}")
-        return False
+        raise LesGeneratorError(f"ElevenLabs Error: {response.text}")
 
 def opslaan_in_database(les_data):
     if os.path.exists(DATA_FILE):
@@ -148,7 +145,6 @@ def opslaan_in_database(les_data):
     else:
         db = []
         
-    # Genereer unieke id
     les_data['id'] = f"{les_data['niveau'].lower()}_{int(time.time())}"
     db.append(les_data)
     
@@ -157,87 +153,220 @@ def opslaan_in_database(les_data):
         
     return les_data['id']
 
-def main():
-    if len(sys.argv) < 3:
-        print("Gebruik: python genereer_les.py \"Onderwerp\" \"Niveau\"")
-        print("Bijvoorbeeld: python genereer_les.py \"in de supermarkt\" \"A1\"")
-        prompt = input("Waar wil je een les over genereren? Typ het onderwerp: ")
-        niveau = input("Op welk niveau? (bijv. A1 of A2): ").upper()
-    else:
+# ─── GUI LOGICA ───
+
+def run_gui():
+    root = tk.Tk()
+    root.title("Les Generator - Luisterportaal")
+    root.geometry("480x320")
+    root.resizable(False, False)
+
+    try:
+        root.iconbitmap('favicon.ico')
+    except:
+        pass
+
+    style = ttk.Style()
+    style.theme_use('clam')
+
+    # Fonts
+    font_large = ('Segoe UI', 12)
+    font_bold = ('Segoe UI', 12, 'bold')
+
+    frame = tk.Frame(root, bg="#f0f4f8", padx=25, pady=25)
+    frame.pack(fill=tk.BOTH, expand=True)
+
+    tk.Label(frame, text="Maak een nieuwe Luisterles", font=('Segoe UI', 16, 'bold'), bg="#f0f4f8", fg="#1e293b").pack(anchor=tk.W, pady=(0, 20))
+
+    # Onderwerp
+    tk.Label(frame, text="Onderwerp (bijv. in de supermarkt):", font=font_large, bg="#f0f4f8").pack(anchor=tk.W)
+    subject_var = tk.StringVar()
+    subject_entry = ttk.Entry(frame, textvariable=subject_var, width=45, font=font_large)
+    subject_entry.pack(fill=tk.X, pady=(5, 15))
+
+    # Niveau
+    tk.Label(frame, text="Niveau:", font=font_large, bg="#f0f4f8").pack(anchor=tk.W)
+    level_var = tk.StringVar(value="A1")
+    level_combo = ttk.Combobox(frame, textvariable=level_var, values=["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"], state="readonly", font=font_large)
+    level_combo.pack(fill=tk.X, pady=(5, 20))
+
+    # Status
+    status_var = tk.StringVar(value="")
+    status_label = tk.Label(frame, textvariable=status_var, fg="#3b82f6", bg="#f0f4f8", font=font_large)
+    status_label.pack(anchor=tk.W, pady=(0, 10))
+
+    def on_generate():
+        prompt = subject_var.get().strip()
+        niveau = level_var.get()
+        if not prompt:
+            messagebox.showwarning("Waarschuwing", "Vul a.u.b. een onderwerp in.")
+            return
+
+        generate_btn.config(state=tk.DISABLED)
+        status_var.set("Starten...")
+
+        def worker():
+            try:
+                if not os.path.exists(TEMP_DIR): os.makedirs(TEMP_DIR)
+                if not os.path.exists(AUDIO_DIR): os.makedirs(AUDIO_DIR)
+
+                status_var.set("API sleutels inladen...")
+                gemini_key = load_gemini_key()
+                eleven_key = load_eleven_key()
+                voices = load_voices()
+
+                # Stap 1
+                status_var.set("1/3: AI schrijft het script en de vragen...")
+                les_data = genereer_les_data(prompt, niveau, gemini_key)
+                
+                speaker_to_voiceid = {}
+                for naam, info in les_data['sprekers'].items():
+                    geslacht = info.get('geslacht', 'vrouw').lower()
+                    if 'man' in geslacht and not 'vrouw' in geslacht:
+                        speaker_to_voiceid[naam] = voices.get('Man')
+                    else:
+                        speaker_to_voiceid[naam] = voices.get('Vrouw')
+                        
+                    if not speaker_to_voiceid[naam]:
+                        raise LesGeneratorError(f"Fout: Geen voice_id gevonden in stemmen.json voor geslacht '{geslacht}'")
+
+                # Stap 2
+                status_var.set("2/3: Audio genereren met ElevenLabs...")
+                audio_segments = []
+                silence = AudioSegment.silent(duration=500)
+                
+                conversatie = les_data['conversatie']
+                for i, zin in enumerate(conversatie):
+                    speaker = zin['speaker']
+                    text = zin['text']
+                    voice_id = speaker_to_voiceid.get(speaker)
+                    temp_file = os.path.join(TEMP_DIR, f"line_{i}.mp3")
+                    
+                    status_var.set(f"2/3: Audio opnemen regel {i+1} van {len(conversatie)}...")
+                    genereer_audio_elevenlabs(text, voice_id, eleven_key, temp_file)
+                    
+                    seg = AudioSegment.from_mp3(temp_file)
+                    if audio_segments:
+                        audio_segments.append(silence)
+                    audio_segments.append(seg)
+                    time.sleep(0.5)
+
+                # Stap 3
+                status_var.set("3/3: Audio samenvoegen en opslaan...")
+                combined = AudioSegment.empty()
+                for seg in audio_segments:
+                    combined += seg
+                    
+                slug = re.sub(r'[^a-zA-Z0-9]', '_', les_data['thema'])[:25].strip('_').lower()
+                mp3_filename = f"{niveau}_{slug}_{int(time.time())}.mp3"
+                mp3_path = os.path.join(AUDIO_DIR, mp3_filename)
+                
+                combined.export(mp3_path, format="mp3")
+                
+                les_data['audio_url'] = f"audio/{mp3_filename}"
+                opslaan_in_database(les_data)
+
+                status_var.set("✅ Klaar! Les is opgeslagen.")
+                messagebox.showinfo("Succes!", f"Les '{les_data['thema']}' is succesvol gegenereerd en toegevoegd aan het portaal!")
+                
+                # Probeer lokaal de website te openen
+                portal_path = os.path.abspath(os.path.join(OUTPUT_DIR, "index.html"))
+                webbrowser.open(f"file:///{portal_path.replace(chr(92), '/')}")
+
+            except LesGeneratorError as e:
+                status_var.set("❌ Fout opgetreden.")
+                messagebox.showerror("Fout", str(e))
+            except Exception as e:
+                status_var.set("❌ Fout opgetreden.")
+                messagebox.showerror("Systeem Fout", str(e))
+            finally:
+                generate_btn.config(state=tk.NORMAL)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    generate_btn = tk.Button(frame, text="🚀 Genereer Les", bg="#3b82f6", fg="white", font=font_bold, cursor="hand2", relief="flat", command=on_generate)
+    generate_btn.pack(fill=tk.X, ipady=8, pady=(10, 0))
+
+    root.mainloop()
+
+# ─── COMMAND LINE LOGICA ───
+
+def run_cli():
+    try:
         prompt = sys.argv[1]
         niveau = sys.argv[2].upper()
         
-    gemini_key = load_gemini_key()
-    eleven_key = load_eleven_key()
-    voices = load_voices()
-    
-    if not os.path.exists(TEMP_DIR):
-        os.makedirs(TEMP_DIR)
-    if not os.path.exists(AUDIO_DIR):
-        os.makedirs(AUDIO_DIR)
+        gemini_key = load_gemini_key()
+        eleven_key = load_eleven_key()
+        voices = load_voices()
         
-    # 1. Genereer lesdata met Gemini
-    les_data = genereer_les_data(prompt, niveau, gemini_key)
-    titel = les_data['thema']
-    print(f"\n✅ Les gegenereerd: [{niveau}] {titel}")
-    
-    # Koppel namen aan Voice IDs o.b.v. geslacht
-    speaker_to_voiceid = {}
-    for naam, info in les_data['sprekers'].items():
-        geslacht = info.get('geslacht', 'vrouw').lower()
-        if 'man' in geslacht and not 'vrouw' in geslacht:
-            speaker_to_voiceid[naam] = voices.get('Man')
-        else:
-            speaker_to_voiceid[naam] = voices.get('Vrouw')
+        if not os.path.exists(TEMP_DIR):
+            os.makedirs(TEMP_DIR)
+        if not os.path.exists(AUDIO_DIR):
+            os.makedirs(AUDIO_DIR)
             
-        if not speaker_to_voiceid[naam]:
-            print(f"Fout: Geen voice_id gevonden in stemmen.json voor geslacht '{geslacht}' (Speaker {naam}).")
-            sys.exit(1)
+        print("1. AI aan het werk zetten via Gemini...")
+        les_data = genereer_les_data(prompt, niveau, gemini_key)
+        titel = les_data['thema']
+        print(f"\n✅ Les gegenereerd: [{niveau}] {titel}")
+        
+        speaker_to_voiceid = {}
+        for naam, info in les_data['sprekers'].items():
+            geslacht = info.get('geslacht', 'vrouw').lower()
+            if 'man' in geslacht and not 'vrouw' in geslacht:
+                speaker_to_voiceid[naam] = voices.get('Man')
+            else:
+                speaker_to_voiceid[naam] = voices.get('Vrouw')
+                
+            if not speaker_to_voiceid[naam]:
+                raise LesGeneratorError(f"Geen voice_id gevonden in stemmen.json voor geslacht '{geslacht}'.")
 
-    # 2. Genereer audio met ElevenLabs
-    print("\n2. Audio genereren via ElevenLabs...")
-    audio_segments = []
-    silence = AudioSegment.silent(duration=500) # 0.5 seconde stilte
-    
-    conversatie = les_data['conversatie']
-    for i, zin in enumerate(conversatie):
-        speaker = zin['speaker']
-        text = zin['text']
-        voice_id = speaker_to_voiceid.get(speaker)
+        print("\n2. Audio genereren via ElevenLabs...")
+        audio_segments = []
+        silence = AudioSegment.silent(duration=500)
         
-        temp_file = os.path.join(TEMP_DIR, f"line_{i}.mp3")
-        print(f"   Spraak ophalen voor regel {i+1} ({speaker})...")
-        
-        if genereer_audio_elevenlabs(text, voice_id, eleven_key, temp_file):
+        conversatie = les_data['conversatie']
+        for i, zin in enumerate(conversatie):
+            speaker = zin['speaker']
+            text = zin['text']
+            voice_id = speaker_to_voiceid.get(speaker)
+            
+            temp_file = os.path.join(TEMP_DIR, f"line_{i}.mp3")
+            print(f"   Spraak ophalen voor regel {i+1} ({speaker})...")
+            
+            genereer_audio_elevenlabs(text, voice_id, eleven_key, temp_file)
             seg = AudioSegment.from_mp3(temp_file)
             if audio_segments:
                 audio_segments.append(silence)
             audio_segments.append(seg)
-        else:
-            print("Gestopt wegens API fout.")
-            sys.exit(1)
+            time.sleep(0.5)
             
-        time.sleep(0.5)
+        print("\n3. Audio samenvoegen...")
+        combined = AudioSegment.empty()
+        for seg in audio_segments:
+            combined += seg
+            
+        slug = re.sub(r'[^a-zA-Z0-9]', '_', titel)[:25].strip('_').lower()
+        mp3_filename = f"{niveau}_{slug}_{int(time.time())}.mp3"
+        mp3_path = os.path.join(AUDIO_DIR, mp3_filename)
         
-    # 3. Audio samenvoegen
-    print("\n3. Audio samenvoegen...")
-    combined = AudioSegment.empty()
-    for seg in audio_segments:
-        combined += seg
+        combined.export(mp3_path, format="mp3")
+        print(f"   Succes: {mp3_filename} opgeslagen in audio map.")
         
-    slug = re.sub(r'[^a-zA-Z0-9]', '_', titel)[:25].strip('_').lower()
-    mp3_filename = f"{niveau}_{slug}_{int(time.time())}.mp3"
-    mp3_path = os.path.join(AUDIO_DIR, mp3_filename)
-    
-    combined.export(mp3_path, format="mp3")
-    print(f"   Succes: {mp3_filename} opgeslagen in audio map.")
-    
-    # Update de les_data met de audio link en sla op in db
-    les_data['audio_url'] = f"audio/{mp3_filename}"
-    les_id = opslaan_in_database(les_data)
-    
-    print(f"\n🎉 KLAAR! De les is opgeslagen in de database onder ID '{les_id}'.")
-    print("Open 'luisteren.html' om de nieuwe les te bekijken.")
+        les_data['audio_url'] = f"audio/{mp3_filename}"
+        les_id = opslaan_in_database(les_data)
+        
+        print(f"\n🎉 KLAAR! De les is opgeslagen in de database onder ID '{les_id}'.")
+    except LesGeneratorError as e:
+        print(e)
+        sys.exit(1)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        if len(sys.argv) < 3:
+            print("Fout: Geef een onderwerp én een niveau mee. Bijv: python genereer_les.py \"Bank\" \"A2\"")
+            sys.exit(1)
+        run_cli()
+    else:
+        # Geen argumenten? Open de grafische Windows interface!
+        run_gui()
