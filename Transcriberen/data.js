@@ -2113,6 +2113,929 @@ window.geminiData = {
           }
         ]
       }
+    },
+    {
+      "filename": "Homaira Hawa 9-6.ogg",
+      "path": "B-A2/Homaira Hawa 9-6.ogg",
+      "date": "9-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Hallo Hawa, hoe gaat het met jou?",
+            "zin_correct": "Hallo Hawa, hoe gaat het met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Goed en jij?",
+            "zin_correct": "Goed, en met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De zin is te kort en informeel.",
+              "uitleg": "Het is beter om 'en met jou?' te zeggen, wat de verkorte vorm is van 'en hoe gaat het met jou?'. 'En jij?' kan ook, maar 'en met jou?' is iets completer en formeler in deze context."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Goed, prima.",
+            "zin_correct": "Goed, prima.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Ga jij dit jaar op vakantie?",
+            "zin_correct": "Ga jij dit jaar op vakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Ja, ik ga naar vakantie.",
+            "zin_correct": "Ja, ik ga op vakantie.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd voorzetsel 'naar'.",
+              "uitleg": "Voor 'vakantie' gebruik je het voorzetsel 'op', niet 'naar'. Je gaat *op* vakantie."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Waar ga jij naartoe?",
+            "zin_correct": "Waar ga jij naartoe?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Ik ga naar op mijn land.",
+            "zin_correct": "Ik ga naar mijn land.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Dubbel voorzetsel 'naar op'.",
+              "uitleg": "Je gebruikt of 'naar' (richting) of 'op' (locatie/activiteit), niet beide. Als je naar een land gaat, zeg je 'naar mijn land'. Als je in je land op vakantie gaat, zeg je 'op vakantie in mijn land'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Eh, leuk. Rijd jij met de auto of met de trein?",
+            "zin_correct": "Eh, leuk. Reis jij met de auto of met de trein?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Rijd jij",
+              "uitleg": "De klank 'ij' in 'rijd' is goed, maar het woord 'rijden' betekent zelf de auto besturen. Hier bedoel je 'reizen' (verplaatsen)."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Ik ga naar met de trein.",
+            "zin_correct": "Ik ga met de trein.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Dubbel voorzetsel 'naar met'.",
+              "uitleg": "Je gebruikt 'met' om het vervoermiddel aan te geven. 'Naar' is voor de bestemming. Je zegt 'Ik ga met de trein' of 'Ik ga naar [plaats] met de trein'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Eh, wat gaan jullie doen in jouw land?",
+            "zin_correct": "Eh, wat gaan jullie doen in jouw land?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Wij gaan in het strand wandelen, eten en zwemmen.",
+            "zin_correct": "Wij gaan op het strand wandelen, eten en zwemmen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd voorzetsel 'in'.",
+              "uitleg": "Voor 'strand' gebruik je het voorzetsel 'op' (op het strand) of 'naar' (naar het strand). 'In' gebruik je als je ergens binnenin bent."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Oké, alvast fijne vakantie. Doei Hawa.",
+            "zin_correct": "Oké, alvast fijne vakantie. Doei Hawa.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Dankjewel.",
+            "zin_correct": "Dankjewel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hawa",
+            "zin_fonetisch": "Doei.",
+            "zin_correct": "Doei.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Homaira",
+            "brief": "Hallo Homaira! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Hawa, hoe gaat het met jou?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Hawa vroeg toen:* \"Goed en jij?\"\n\n*Jij zei*\n*Zin 2:* \"Goed, prima.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en correct.\n\n*Jij zei*\n*Zin 3:* \"Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Deze vraag is duidelijk en correct geformuleerd.\n\n*Hawa zei toen:* \"Ja, ik ga naar vakantie.\"\n\n*Jij zei*\n*Zin 4:* \"Waar ga jij naartoe?\"\n👍 *Wat was goed:* Een duidelijke en correcte vraag.\n\n*Hawa zei toen:* \"Ik ga naar op mijn land.\"\n\n*Jij zei*\n*Zin 5:* \"Eh, leuk. Rijd jij met de auto of met de trein?\"\n💡 *Correctie:* \"Eh, leuk. Reis jij met de auto of met de trein?\"\n🧠 *Waarom:* Het woord 'rijden' betekent dat je zelf de auto bestuurt. Als je je verplaatst met een vervoermiddel, gebruik je 'reizen'.\n\n*Hawa zei toen:* \"Ik ga naar met de trein.\"\n\n*Jij zei*\n*Zin 6:* \"Eh, wat gaan jullie doen in jouw land?\"\n👍 *Wat was goed:* Deze vraag is goed uitgesproken en grammaticaal correct.\n\n*Hawa zei toen:* \"Wij gaan in het strand wandelen, eten en zwemmen.\"\n\n*Jij zei*\n*Zin 7:* \"Oké, alvast fijne vakantie. Doei Hawa.\"\n👍 *Wat was goed:* Een vriendelijke en correcte afsluiting.\n\n*Hawa zei toen:* \"Dankjewel.\"\n\n*Hawa zei toen:* \"Doei.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Jouw zinnen waren grammaticaal allemaal correct. Heel goed!\n• *Uitspraak:* Je uitspraak is erg duidelijk en goed verstaanbaar. Let alleen op het verschil tussen 'rijden' en 'reizen' in de context van vervoer.\n• *Samenhang & Logica:* Je vragen en opmerkingen waren altijd logisch en pasten goed in het gesprek.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het maken van zinnen en let goed op de woordkeuze, zoals het verschil tussen 'rijden' en 'reizen'. Je bent al heel goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Homaira! 👋\n\nGreat that you practiced! Below, I have transcribed your entire conversation sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Hawa, hoe gaat het met jou?\"\n👍 *Wat was goed:* This sentence was perfectly pronounced and grammatically completely correct. Well done!\n\n*Hawa vroeg toen:* \"Goed en jij?\"\n\n*Jij zei*\n*Zin 2:* \"Goed, prima.\"\n👍 *Wat was goed:* This sentence was well pronounced and correct.\n\n*Jij zei*\n*Zin 3:* \"Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* This question is clearly and correctly formulated.\n\n*Hawa zei toen:* \"Ja, ik ga naar vakantie.\"\n\n*Jij zei*\n*Zin 4:* \"Waar ga jij naartoe?\"\n👍 *Wat was goed:* A clear and correct question.\n\n*Hawa zei toen:* \"Ik ga naar op mijn land.\"\n\n*Jij zei*\n*Zin 5:* \"Eh, leuk. Rijd jij met de auto of met de trein?\"\n💡 *Correctie:* \"Eh, leuk. Reis jij met de auto of met de trein?\"\n🧠 *Waarom:* The word 'rijden' (to drive) means you are operating the car yourself. When you are moving from one place to another using a means of transport, you use 'reizen' (to travel).\n\n*Hawa zei toen:* \"Ik ga naar met de trein.\"\n\n*Jij zei*\n*Zin 6:* \"Eh, wat gaan jullie doen in jouw land?\"\n👍 *Wat was goed:* This question was well pronounced and grammatically correct.\n\n*Hawa zei toen:* \"Wij gaan in het strand wandelen, eten en zwemmen.\"\n\n*Jij zei*\n*Zin 7:* \"Oké, alvast fijne vakantie. Doei Hawa.\"\n👍 *Wat was goed:* A friendly and correct closing.\n\n*Hawa zei toen:* \"Dankjewel.\"\n\n*Hawa zei toen:* \"Doei.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your sentences were all grammatically correct. Very good!\n• *Uitspraak:* Your pronunciation is very clear and easy to understand. Just pay attention to the difference between 'rijden' and 'reizen' in the context of transport.\n• *Samenhang & Logica:* Your questions and comments were always logical and fit well into the conversation.\n\n🧠 *Jouw volgende stap & advies:*\nKeep practicing forming sentences and pay close attention to word choice, such as the difference between 'rijden' and 'reizen'. You are already well on your way! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Hawa",
+            "brief": "Hallo Hawa! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg toen:* \"Hallo Hawa, hoe gaat het met jou?\"\n\n*Jij zei*\n*Zin 1:* \"Goed en jij?\"\n💡 *Correctie:* \"Goed, en met jou?\"\n🧠 *Waarom:* Het is beter om 'en met jou?' te zeggen, wat de verkorte vorm is van 'en hoe gaat het met jou?'. 'En jij?' kan ook, maar 'en met jou?' is iets completer en formeler in deze context.\n\n*Homaira zei toen:* \"Goed, prima.\"\n\n*Homaira vroeg toen:* \"Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga naar vakantie.\"\n💡 *Correctie:* \"Ja, ik ga op vakantie.\"\n🧠 *Waarom:* Voor 'vakantie' gebruik je het voorzetsel 'op', niet 'naar'. Je gaat *op* vakantie.\n\n*Homaira vroeg toen:* \"Waar ga jij naartoe?\"\n\n*Jij zei*\n*Zin 3:* \"Ik ga naar op mijn land.\"\n💡 *Correctie:* \"Ik ga naar mijn land.\"\n🧠 *Waarom:* Je gebruikt of 'naar' (richting) of 'op' (locatie/activiteit), niet beide. Als je naar een land gaat, zeg je 'naar mijn land'. Als je in je land op vakantie gaat, zeg je 'op vakantie in mijn land'.\n\n*Homaira vroeg toen:* \"Eh, leuk. Rijd jij met de auto of met de trein?\"\n\n*Jij zei*\n*Zin 4:* \"Ik ga naar met de trein.\"\n💡 *Correctie:* \"Ik ga met de trein.\"\n🧠 *Waarom:* Je gebruikt 'met' om het vervoermiddel aan te geven. 'Naar' is voor de bestemming. Je zegt 'Ik ga met de trein' of 'Ik ga naar [plaats] met de trein'.\n\n*Homaira vroeg toen:* \"Eh, wat gaan jullie doen in jouw land?\"\n\n*Jij zei*\n*Zin 5:* \"Wij gaan in het strand wandelen, eten en zwemmen.\"\n💡 *Correctie:* \"Wij gaan op het strand wandelen, eten en zwemmen.\"\n🧠 *Waarom:* Voor 'strand' gebruik je het voorzetsel 'op' (op het strand) of 'naar' (naar het strand). 'In' gebruik je als je ergens binnenin bent.\n\n*Homaira zei toen:* \"Oké, alvast fijne vakantie. Doei Hawa.\"\n\n*Jij zei*\n*Zin 6:* \"Dankjewel.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en correct.\n\n*Jij zei*\n*Zin 7:* \"Doei.\"\n👍 *Wat was goed:* Een correcte afsluiting.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt goed geoefend met zinnen maken! Let vooral op het juiste gebruik van voorzetsels zoals 'op', 'naar' en 'in'. Dit zijn kleine woordjes die een groot verschil maken in de betekenis van je zin. Probeer te onthouden dat je *op* vakantie gaat, *naar* een land reist, en *op* het strand bent.\n• *Uitspraak:* Je uitspraak is erg duidelijk en goed verstaanbaar. Ga zo door!\n• *Samenhang & Logica:* Je antwoorden waren altijd logisch en pasten goed in het gesprek.\n\n🧠 *Jouw volgende stap & advies:*\nOefen extra met voorzetsels. Probeer zinnen te maken met 'op', 'naar' en 'in' in verschillende contexten. Bijvoorbeeld: 'Ik ga *naar* de stad', 'Ik ben *in* de stad', 'Ik zit *op* de bank'. Dit zal je helpen om je zinnen nog preciezer te maken. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Hawa! 👋\n\nGreat that you practiced! Below, I have transcribed your entire conversation sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg toen:* \"Hallo Hawa, hoe gaat het met jou?\"\n\n*Jij zei*\n*Zin 1:* \"Goed en jij?\"\n💡 *Correctie:* \"Goed, en met jou?\"\n🧠 *Waarom:* It is better to say 'en met jou?' (and with you?), which is the shortened form of 'en hoe gaat het met jou?' (and how are you?). 'En jij?' (and you?) can also be used, but 'en met jou?' is slightly more complete and formal in this context.\n\n*Homaira zei toen:* \"Goed, prima.\"\n\n*Homaira vroeg toen:* \"Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga naar vakantie.\"\n💡 *Correctie:* \"Ja, ik ga op vakantie.\"\n🧠 *Waarom:* For 'vakantie' (holiday), you use the preposition 'op' (on), not 'naar' (to). You go *op* vakantie (on holiday).\n\n*Homaira vroeg toen:* \"Waar ga jij naartoe?\"\n\n*Jij zei*\n*Zin 3:* \"Ik ga naar op mijn land.\"\n💡 *Correctie:* \"Ik ga naar mijn land.\"\n🧠 *Waarom:* You use either 'naar' (to/towards) or 'op' (on/at), not both. If you are going to a country, you say 'naar mijn land' (to my country). If you are going on holiday in your country, you say 'op vakantie in mijn land' (on holiday in my country).\n\n*Homaira vroeg toen:* \"Eh, leuk. Rijd jij met de auto of met de trein?\"\n\n*Jij zei*\n*Zin 4:* \"Ik ga naar met de trein.\"\n💡 *Correctie:* \"Ik ga met de trein.\"\n🧠 *Waarom:* You use 'met' (with) to indicate the means of transport. 'Naar' (to) is for the destination. You say 'Ik ga met de trein' (I go by train) or 'Ik ga naar [place] met de trein' (I go to [place] by train).\n\n*Homaira vroeg toen:* \"Eh, wat gaan jullie doen in jouw land?\"\n\n*Jij zei*\n*Zin 5:* \"Wij gaan in het strand wandelen, eten en zwemmen.\"\n💡 *Correctie:* \"Wij gaan op het strand wandelen, eten en zwemmen.\"\n🧠 *Waarom:* For 'strand' (beach), you use the preposition 'op' (on the beach) or 'naar' (to the beach). You use 'in' (in) when you are inside something.\n\n*Homaira zei toen:* \"Oké, alvast fijne vakantie. Doei Hawa.\"\n\n*Jij zei*\n*Zin 6:* \"Dankjewel.\"\n👍 *Wat was goed:* This sentence was well pronounced and correct.\n\n*Jij zei*\n*Zin 7:* \"Doei.\"\n👍 *Wat was goed:* A correct closing.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You practiced forming sentences well! Pay special attention to the correct use of prepositions such as 'op', 'naar', and 'in'. These are small words that make a big difference in the meaning of your sentence. Try to remember that you go *op* vakantie (on holiday), travel *naar* een land (to a country), and are *op* het strand (on the beach).\n• *Uitspraak:* Your pronunciation is very clear and easy to understand. Keep it up!\n• *Samenhang & Logica:* Your answers were always logical and fit well into the conversation.\n\n🧠 *Jouw volgende stap & advies:*\nPractice prepositions extra. Try to make sentences with 'op', 'naar', and 'in' in different contexts. For example: 'Ik ga *naar* de stad' (I go to the city), 'Ik ben *in* de stad' (I am in the city), 'Ik zit *op* de bank' (I am sitting on the couch). This will help you make your sentences even more precise. Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Vi Shukriya 9-6.ogg",
+      "path": "B-A2/Vi Shukriya 9-6.ogg",
+      "date": "9-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Waar ga je het liefst naartoe op vakantie?",
+            "zin_correct": "Waar ga je het liefst naartoe op vakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Vi",
+            "zin_fonetisch": "Ik ga naar Italiën.",
+            "zin_correct": "Ik ga naar Italië.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Italiën",
+              "uitleg": "De 'ë' in 'Italië' klinkt als 'je' of 'uh', niet als 'en'. Het is een trema dat aangeeft dat de 'i' en 'e' apart worden uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Reis je liever met de auto, de trein of het vliegtuig? Waarom?",
+            "zin_correct": "Reis je liever met de auto, de trein of het vliegtuig? Waarom?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Vi",
+            "zin_fonetisch": "Ik liet met de auto, want het is makkelijk en comfortable.",
+            "zin_correct": "Ik reis met de auto, want het is makkelijk en comfortabel.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "comfortable",
+              "uitleg": "Het woord 'comfortable' is Engels. In het Nederlands zeggen we 'comfortabel'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "liet",
+              "uitleg": "Je gebruikte 'liet' (verleden tijd van 'laten'), maar je bedoelde 'reis' (tegenwoordige tijd van 'reizen'). 'Reizen' betekent 'to travel'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Wat neem je altijd mee in je koffer?",
+            "zin_correct": "Wat neem je altijd mee in je koffer?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Vi",
+            "zin_fonetisch": "Ik neem kleren en schoenen in mijn koffer.",
+            "zin_correct": "Ik neem kleren en schoenen mee in mijn koffer.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ontbreken van 'mee'",
+              "uitleg": "Het werkwoord is 'meenemen' (to take along), wat een scheidbaar werkwoord is. 'Mee' moet aan het einde van de zin of na het lijdend voorwerp staan."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Wat vind je leuk om te doen op vakantie?",
+            "zin_correct": "Wat vind je leuk om te doen op vakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Vi",
+            "zin_fonetisch": "Ik wil op mijn vakantie is eten en wandelen is leuk.",
+            "zin_correct": "Op mijn vakantie vind ik eten en wandelen leuk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Onjuiste zinsbouw en dubbel gebruik van 'is'.",
+              "uitleg": "De zin is een combinatie van twee ideeën die niet goed samenkomen. Je kunt zeggen: \"Op mijn vakantie vind ik eten en wandelen leuk.\" of \"Ik vind het leuk om te eten en te wandelen op vakantie.\" Vermijd het dubbele gebruik van 'is'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Heb je wel eens in een hotel of op een camping geslapen?",
+            "zin_correct": "Heb je wel eens in een hotel of op een camping geslapen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Vi",
+            "zin_fonetisch": "Ik heb een hotel geslapen.",
+            "zin_correct": "Ik heb in een hotel geslapen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ontbreken van het voorzetsel 'in'.",
+              "uitleg": "Bij 'slapen' in een gebouw of op een plek gebruik je het voorzetsel 'in'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Shukriya",
+            "zin_fonetisch": "Dankjewel.",
+            "zin_correct": "Dankjewel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Vi",
+            "brief": "Hallo Vi! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Shukriya vroeg toen:* \"Waar ga je het liefst naartoe op vakantie?\"\n\nJij zei\n*Zin 1:* \"Ik ga naar Italiën.\"\n👍 *Wat was goed:* De zinsbouw is correct en de zin is goed verstaanbaar.\n💡 *Correctie:* \"Ik ga naar Italië.\"\n🧠 *Waarom:* De 'ë' in 'Italië' klinkt als 'je' of 'uh', niet als 'en'. Het is een trema dat aangeeft dat de 'i' en 'e' apart worden uitgesproken.\n\n*Shukriya vroeg toen:* \"Reis je liever met de auto, de trein of het vliegtuig? Waarom?\"\n\nJij zei\n*Zin 2:* \"Ik liet met de auto, want het is makkelijk en comfortable.\"\n👍 *Wat was goed:* Je antwoord is duidelijk en de reden is logisch.\n💡 *Correctie:* \"Ik reis met de auto, want het is makkelijk en comfortabel.\"\n🧠 *Waarom:* Je gebruikte 'liet' (verleden tijd van 'laten'), maar je bedoelde 'reis' (tegenwoordige tijd van 'reizen'). 'Reizen' betekent 'to travel'. Ook is 'comfortable' Engels; in het Nederlands zeggen we 'comfortabel'.\n\n*Shukriya vroeg toen:* \"Wat neem je altijd mee in je koffer?\"\n\nJij zei\n*Zin 3:* \"Ik neem kleren en schoenen in mijn koffer.\"\n👍 *Wat was goed:* De woorden 'kleren' en 'schoenen' zijn goed uitgesproken en de zin is duidelijk.\n💡 *Correctie:* \"Ik neem kleren en schoenen mee in mijn koffer.\"\n🧠 *Waarom:* Het werkwoord is 'meenemen' (to take along), wat een scheidbaar werkwoord is. 'Mee' moet aan het einde van de zin of na het lijdend voorwerp staan.\n\n*Shukriya vroeg toen:* \"Wat vind je leuk om te doen op vakantie?\"\n\nJij zei\n*Zin 4:* \"Ik wil op mijn vakantie is eten en wandelen is leuk.\"\n👍 *Wat was goed:* Je bedoeling is duidelijk: je vindt eten en wandelen leuk op vakantie.\n💡 *Correctie:* \"Op mijn vakantie vind ik eten en wandelen leuk.\"\n🧠 *Waarom:* De zin is een combinatie van twee ideeën die niet goed samenkomen. Je kunt zeggen: \"Op mijn vakantie vind ik eten en wandelen leuk.\" of \"Ik vind het leuk om te eten en te wandelen op vakantie.\" Vermijd het dubbele gebruik van 'is'.\n\n*Shukriya vroeg toen:* \"Heb je wel eens in een hotel of op een camping geslapen?\"\n\nJij zei\n*Zin 5:* \"Ik heb een hotel geslapen.\"\n👍 *Wat was goed:* De werkwoorden 'heb' en 'geslapen' zijn correct gebruikt voor de voltooid tegenwoordige tijd.\n💡 *Correctie:* \"Ik heb in een hotel geslapen.\"\n🧠 *Waarom:* Bij 'slapen' in een gebouw of op een plek gebruik je het voorzetsel 'in'.\n\n*Shukriya zei toen:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica was uitstekend. Alle zinnen waren correct opgebouwd.\n• *Uitspraak:* Je uitspraak was heel duidelijk en verstaanbaar. Er waren geen opvallende fouten.\n• *Samenhang & Logica:* Je vragen waren logisch en pasten goed in het gesprek.\n\n🧠 *Jouw volgende stap & advies:*\nJe hebt een heel goed niveau van Nederlands! Blijf oefenen met het stellen van vragen en het voeren van gesprekken. Je bent al heel ver! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Vi! 👋\n\nGreat job practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Shukriya asked then:* \"Waar ga je het liefst naartoe op vakantie?\"\n\nJij zei\n*Zin 1:* \"Ik ga naar Italiën.\"\n👍 *Wat was goed:* The sentence structure is correct and the sentence is clearly understandable.\n💡 *Correctie:* \"Ik ga naar Italië.\"\n🧠 *Waarom:* The 'ë' in 'Italië' sounds like 'je' or 'uh', not 'en'. It's a dieresis indicating that the 'i' and 'e' are pronounced separately.\n\n*Shukriya asked then:* \"Reis je liever met de auto, de trein of het vliegtuig? Waarom?\"\n\nJij zei\n*Zin 2:* \"Ik liet met de auto, want het is makkelijk en comfortable.\"\n👍 *Wat was goed:* Your answer is clear and the reason is logical.\n💡 *Correctie:* \"Ik reis met de auto, want het is makkelijk en comfortabel.\"\n🧠 *Waarom:* You used 'liet' (past tense of 'laten' - to let/leave), but you meant 'reis' (present tense of 'reizen' - to travel). Also, 'comfortable' is English; in Dutch, we say 'comfortabel'.\n\n*Shukriya asked then:* \"Wat neem je altijd mee in je koffer?\"\n\nJij zei\n*Zin 3:* \"Ik neem kleren en schoenen in mijn koffer.\"\n👍 *Wat was goed:* The words 'kleren' and 'schoenen' are well-pronounced and the sentence is clear.\n💡 *Correctie:* \"Ik neem kleren en schoenen mee in mijn koffer.\"\n🧠 *Waarom:* The verb is 'meenemen' (to take along), which is a separable verb. 'Mee' should be at the end of the sentence or after the direct object.\n\n*Shukriya asked then:* \"Wat vind je leuk om te doen op vakantie?\"\n\nJij zei\n*Zin 4:* \"Ik wil op mijn vakantie is eten en wandelen is leuk.\"\n👍 *Wat was goed:* Your intention is clear: you like eating and walking on vacation.\n💡 *Correctie:* \"Op mijn vakantie vind ik eten en wandelen leuk.\"\n🧠 *Waarom:* The sentence is a combination of two ideas that don't quite come together. You can say: \"Op mijn vakantie vind ik eten en wandelen leuk.\" (On my vacation, I find eating and walking fun.) or \"Ik vind het leuk om te eten en te wandelen op vakantie.\" (I find it fun to eat and walk on vacation.) Avoid the double use of 'is'.\n\n*Shukriya asked then:* \"Heb je wel eens in een hotel of op een camping geslapen?\"\n\nJij zei\n*Zin 5:* \"Ik heb een hotel geslapen.\"\n👍 *Wat was goed:* The verbs 'heb' and 'geslapen' are correctly used for the present perfect tense.\n💡 *Correctie:* \"Ik heb in een hotel geslapen.\"\n🧠 *Waarom:* When 'slapen' (to sleep) in a building or at a place, you use the preposition 'in'.\n\n*Shukriya said then:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your grammar was excellent. All sentences were constructed correctly.\n• *Uitspraak:* Your pronunciation was very clear and understandable. There were no noticeable errors.\n• *Samenhang & Logica:* Your questions were logical and fit well into the conversation.\n\n🧠 *Jouw volgende stap & advies:*\nYou have a very good level of Dutch! Keep practicing asking questions and having conversations. You've come a long way! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Shukriya",
+            "brief": "Hallo Shukriya! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Waar ga je het liefst naartoe op vakantie?\"\n👍 *Wat was goed:* Deze zin is perfect geformuleerd en duidelijk uitgesproken. Goed gedaan!\n\n*Vi vroeg toen:* \"Ik ga naar Italiën.\"\n\nJij zei\n*Zin 2:* \"Reis je liever met de auto, de trein of het vliegtuig? Waarom?\"\n👍 *Wat was goed:* Je stelde de vraag heel duidelijk en correct. De uitspraak was ook goed.\n\n*Vi vroeg toen:* \"Ik liet met de auto, want het is makkelijk en comfortable.\"\n\nJij zei\n*Zin 3:* \"Wat neem je altijd mee in je koffer?\"\n👍 *Wat was goed:* Een heldere en correcte vraag. De uitspraak was goed verstaanbaar.\n\n*Vi vroeg toen:* \"Ik neem kleren en schoenen in mijn koffer.\"\n\nJij zei\n*Zin 4:* \"Wat vind je leuk om te doen op vakantie?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal correct en goed uitgesproken. Heel duidelijk!\n\n*Vi vroeg toen:* \"Ik wil op mijn vakantie is eten en wandelen is leuk.\"\n\nJij zei\n*Zin 5:* \"Heb je wel eens in een hotel of op een camping geslapen?\"\n👍 *Wat was goed:* Je vraag was correct en duidelijk. Goede zinsbouw en uitspraak.\n\n*Vi vroeg toen:* \"Ik heb een hotel geslapen.\"\n\nJij zei\n*Zin 6:* \"Dankjewel.\"\n👍 *Wat was goed:* Een correct en vriendelijk slotwoord. Goed uitgesproken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op de juiste werkwoordsvormen (zoals 'reis' in plaats van 'liet') en het gebruik van scheidbare werkwoorden zoals 'meenemen'. Ook de zinsbouw kan soms nog wat duidelijker, vooral bij langere zinnen.\n• *Uitspraak:* Oefen de uitspraak van de 'ë' in woorden zoals 'Italië'. Let ook op het gebruik van Nederlandse woorden in plaats van Engelse leenwoorden, zoals 'comfortabel' in plaats van 'comfortable'.\n• *Samenhang & Logica:* Je antwoorden zijn logisch en passen goed bij de vragen. De uitdaging zit vooral in de grammaticale constructie om je ideeën vloeiend te uiten.\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het vormen van zinnen en let extra goed op de werkwoordsvormen en voorzetsels. Probeer ook bewust Nederlandse woorden te gebruiken waar je misschien geneigd bent een Engels woord te gebruiken. Je bent goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Shukriya! 👋\n\nGreat job practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Waar ga je het liefst naartoe op vakantie?\"\n👍 *Wat was goed:* This sentence was perfectly formulated and clearly pronounced. Well done!\n\n*Vi asked then:* \"Ik ga naar Italiën.\"\n\nJij zei\n*Zin 2:* \"Reis je liever met de auto, de trein of het vliegtuig? Waarom?\"\n👍 *Wat was goed:* You asked the question very clearly and correctly. The pronunciation was also good.\n\n*Vi asked then:* \"Ik liet met de auto, want het is makkelijk en comfortable.\"\n\nJij zei\n*Zin 3:* \"Wat neem je altijd mee in je koffer?\"\n👍 *Wat was goed:* A clear and correct question. The pronunciation was very understandable.\n\n*Vi asked then:* \"Ik neem kleren en schoenen in mijn koffer.\"\n\nJij zei\n*Zin 4:* \"Wat vind je leuk om te doen op vakantie?\"\n👍 *Wat was goed:* This question is grammatically correct and well-pronounced. Very clear!\n\n*Vi asked then:* \"Ik wil op mijn vakantie is eten en wandelen is leuk.\"\n\nJij zei\n*Zin 5:* \"Ik heb een hotel geslapen.\"\n👍 *Wat was goed:* The verbs 'heb' and 'geslapen' are correctly used for the present perfect tense.\n💡 *Correctie:* \"Ik heb in een hotel geslapen.\"\n🧠 *Waarom:* When 'slapen' (to sleep) in a building or at a place, you use the preposition 'in'.\n\n*Vi said then:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Pay close attention to the correct verb forms (like 'reis' instead of 'liet') and the use of separable verbs such as 'meenemen'. Also, sentence structure could sometimes be clearer, especially with longer sentences.\n• *Uitspraak:* Practice the pronunciation of the 'ë' in words like 'Italië'. Also, pay attention to using Dutch words instead of English loanwords, such as 'comfortabel' instead of 'comfortable'.\n• *Samenhang & Logica:* Your answers are logical and fit well with the questions. The challenge lies mainly in the grammatical construction to express your ideas fluently.\n\n🧠 *Jouw volgende stap & advies:*\nKeep practicing forming sentences and pay extra attention to verb forms and prepositions. Also, try to consciously use Dutch words where you might be inclined to use an English word. You are well on your way! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Homaira Roxanne 9-6.ogg",
+      "path": "B-A2/Homaira Roxanne 9-6.ogg",
+      "date": "9-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Hallo Roxana, hoe gaat het?",
+            "zin_correct": "Hallo Roxana, hoe gaat het?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "Hallo Homaira, goed? En met jou?",
+            "zin_correct": "Hallo Homaira, goed? En met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Prima. Ga jij dit jaar op vakantie?",
+            "zin_correct": "Prima. Ga jij dit jaar op vakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "Ja, ik ga in de zomer naar Iran met mijn man.",
+            "zin_correct": "Ja, ik ga in de zomer naar Iran met mijn man.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Ja, ik ook gaan eh naar vakantie met mijn man.",
+            "zin_correct": "Ja, ik ga ook op vakantie met mijn man.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De woordvolgorde is niet correct en het voorzetsel is verkeerd.",
+              "uitleg": "Bij 'ook' komt het werkwoord 'gaan' direct na 'ik'. Voor vakantie gebruik je 'op vakantie', niet 'naar vakantie'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Hoe gaan jullie naar ehm Duitsland?",
+            "zin_correct": "Hoe gaan jullie naar Duitsland?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.",
+            "zin_correct": "Wij gaan met de auto, dat is makkelijk.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "De klanken van 'halle spoelen' zijn niet duidelijk en komen niet overeen met een bestaand Nederlands woord of uitdrukking.",
+              "uitleg": "Het is onduidelijk welk woord of welke uitdrukking hier bedoeld wordt. De klanken 'halle spoelen' zijn niet herkenbaar in het Nederlands."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "De uitdrukking 'met halle spoelen' is onlogisch en heeft geen betekenis in deze context.",
+              "uitleg": "Na 'dat is makkelijk' verwacht je een reden of een verdere uitleg die logisch is. 'Met halle spoelen' is geen bestaande uitdrukking en maakt de zin onbegrijpelijk."
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Hoe gaan jullie naar Iran?",
+            "zin_correct": "Hoe gaan jullie naar Iran?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.",
+            "zin_correct": "Wij gaan met het vliegtuig naar Iran, want dat is sneller.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Wat gaan jullie doen in Iran?",
+            "zin_correct": "Wat gaan jullie doen in Iran?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?",
+            "zin_correct": "We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'family' is met een Engelse uitspraak uitgesproken.",
+              "uitleg": "Spreek 'familie' uit met de Nederlandse klanken, dus met een 'ie'-klank aan het einde."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De constructie 'bezoek naar mijn family' is niet correct.",
+              "uitleg": "Je zegt 'mijn familie bezoeken' (werkwoord) of 'op bezoek gaan bij mijn familie' (uitdrukking). 'Bezoek naar' is geen correcte constructie."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.",
+            "zin_correct": "Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "De woordvolgorde is niet correct.",
+              "uitleg": "Het werkwoord 'ga' moet direct na 'ik' komen, dus 'ik ga ook'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Wij samen eh eten, praten, ik ga bezoek daar.",
+            "zin_correct": "Wij gaan daar samen eten en praten, en ik ga op bezoek.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Er ontbreken werkwoorden en een voorzetsel, en de zinsbouw is niet correct.",
+              "uitleg": "Je moet een werkwoord zoals 'gaan' toevoegen ('Wij gaan samen eten en praten'). Ook zeg je 'op bezoek gaan' en niet 'bezoek gaan'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "Leuk.",
+            "zin_correct": "Leuk.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Eh eh een hele fijne vakantie half vast Roxana.",
+            "zin_correct": "Een hele fijne vakantie alvast, Roxana.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Het woord 'alvast' is uitgesproken als 'half vast'.",
+              "uitleg": "Let op de uitspraak van 'alvast'. De 'a' is kort en de 'v' is een 'v'-klank, niet een 'f'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Het woord 'half vast' is niet correct in deze context.",
+              "uitleg": "Je bedoelt 'alvast', wat betekent 'vooruitlopend op iets' of 'reeds'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxanne",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Dankjewel.",
+            "zin_correct": "Dankjewel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Homaira",
+            "brief": "Hallo Homaira! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Roxanne vroeg/zei toen:* \"Hallo Homaira, goed? En met jou?\"\n\n*Jij zei*\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Roxanne vroeg/zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 3:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed verstaanbaar.\n💡 *Correctie:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Waarom:* In het Nederlands staat het werkwoord ('ga') meestal direct na het onderwerp ('ik'). 'Ook' komt daarna. En voor 'vakantie' gebruiken we het voorzetsel 'op', dus 'op vakantie'.\n\n*Jij zei*\n*Zin 4:* \"Hoe gaan jullie naar ehm Duitsland?\"\n👍 *Wat was goed:* Deze vraag is heel duidelijk en correct geformuleerd. De 'ehm' is een natuurlijke pauze.\n\n*Jij zei*\n*Zin 5:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n👍 *Wat was goed:* Het eerste deel van de zin, 'Wij gaan met de auto, dat is makkelijk', is goed en duidelijk.\n💡 *Correctie:* \"Wij gaan met de auto, dat is makkelijk.\"\n🧠 *Waarom:* De uitdrukking 'met halle spoelen' is niet duidelijk en geen bestaande Nederlandse uitdrukking. Het is onduidelijk wat je hier precies bedoelde. Probeer altijd duidelijke Nederlandse woorden en zinnen te gebruiken.\n🤔 *Logica:* De zin 'met halle spoelen' is onlogisch in deze context. Als je wilt uitleggen waarom de auto makkelijk is, kun je bijvoorbeeld zeggen: 'dat is makkelijk, want dan kunnen we onderweg stoppen' of 'dat is makkelijk, want dan zijn we flexibel'.\n\n*Jij zei*\n*Zin 6:* \"Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* Deze vraag is correct en duidelijk uitgesproken.\n\n*Roxanne vroeg/zei toen:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\n*Jij zei*\n*Zin 7:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal correct en goed verstaanbaar.\n\n*Roxanne vroeg/zei toen:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n\n*Jij zei*\n*Zin 8:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.\"\n🧠 *Waarom:* Net als bij een eerdere zin, moet het werkwoord 'ga' direct na het onderwerp 'ik' komen. Dus 'ik ga ook'.\n\n*Jij zei*\n*Zin 9:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n👍 *Wat was goed:* De woorden zijn verstaanbaar en de intentie is duidelijk.\n💡 *Correctie:* \"Wij gaan daar samen eten en praten, en ik ga op bezoek.\"\n🧠 *Waarom:* Je moet een werkwoord toevoegen, zoals 'gaan' ('Wij gaan samen eten en praten'). Ook gebruik je de uitdrukking 'op bezoek gaan' als je iemand bezoekt, niet 'bezoek gaan'.\n\n*Roxanne vroeg/zei toen:* \"Leuk.\"\n\n*Jij zei*\n*Zin 10:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n👍 *Wat was goed:* Je bedoeling is duidelijk en je wenst Roxana een fijne vakantie.\n💡 *Correctie:* \"Een hele fijne vakantie alvast, Roxana.\"\n🧠 *Waarom:* Het woord dat je bedoelt is 'alvast', wat 'vooruitlopend op iets' betekent. Let ook op de uitspraak van 'alvast' (met een korte 'a' en een 'v'-klank).\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 11:* \"Dankjewel.\"\n👍 *Wat was goed:* Dit is correct en duidelijk uitgesproken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt vaak fouten met de woordvolgorde, vooral wanneer je 'ook' gebruikt. Het werkwoord komt meestal direct na het onderwerp (bijv. 'ik ga ook', niet 'ik ook ga'). Let ook op het gebruik van de juiste voorzetsels (bijv. 'op vakantie', 'op bezoek gaan') en het toevoegen van werkwoorden waar nodig (bijv. 'Wij *gaan* samen eten').\n• *Uitspraak:* Over het algemeen ben je goed verstaanbaar. Let wel op specifieke woorden zoals 'alvast' (niet 'half vast') en probeer onduidelijke uitdrukkingen zoals 'halle spoelen' te vermijden door te oefenen met correcte Nederlandse zinnen.\n• *Samenhang & Logica:* De zin 'met halle spoelen' was onlogisch in de context. Probeer altijd te controleren of je zinnen logisch zijn en goed aansluiten bij wat je wilt zeggen.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met de woordvolgorde in zinnen met 'ook' en met het correct gebruiken van voorzetsels zoals 'op' en 'bij'. Probeer ook hele zinnen te formuleren met werkwoorden, zelfs als je meerdere acties noemt. Blijf oefenen met spreken, dat helpt enorm! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Homaira! 👋\n\nWell done on practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Roxanne vroeg/zei toen:* \"Hallo Homaira, goed? En met jou?\"\n\n*Jij zei*\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Roxanne vroeg/zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 3:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed verstaanbaar.\n💡 *Correctie:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Waarom:* In Dutch, the verb ('ga') usually comes directly after the subject ('ik'). 'Ook' comes after that. And for 'vakantie' (holiday), we use the preposition 'op', so 'op vakantie'.\n\n*Jij zei*\n*Zin 4:* \"Hoe gaan jullie naar ehm Duitsland?\"\n👍 *Wat was goed:* Deze vraag is heel duidelijk en correct geformuleerd. De 'ehm' is een natuurlijke pauze.\n\n*Jij zei*\n*Zin 5:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n👍 *Wat was goed:* Het eerste deel van de zin, 'Wij gaan met de auto, dat is makkelijk', is goed en duidelijk.\n💡 *Correctie:* \"Wij gaan met de auto, dat is makkelijk.\"\n🧠 *Waarom:* The expression 'met halle spoelen' is not clear and not an existing Dutch expression. It is unclear what you meant here. Always try to use clear Dutch words and sentences.\n🤔 *Logica:* The phrase 'met halle spoelen' is illogical in this context. If you want to explain why the car is easy, you could say, for example: 'dat is makkelijk, want dan kunnen we onderweg stoppen' (that's easy because then we can stop along the way) or 'dat is makkelijk, want dan zijn we flexibel' (that's easy because then we are flexible).\n\n*Jij zei*\n*Zin 6:* \"Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* Deze vraag is correct en duidelijk uitgesproken.\n\n*Roxanne vroeg/zei toen:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\n*Jij zei*\n*Zin 7:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal correct en goed verstaanbaar.\n\n*Roxanne vroeg/zei toen:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n\n*Jij zei*\n*Zin 8:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.\"\n🧠 *Waarom:* Just like with a previous sentence, the verb 'ga' must come directly after the subject 'ik'. So 'ik ga ook'.\n\n*Jij zei*\n*Zin 9:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n👍 *Wat was goed:* De woorden zijn verstaanbaar en de intentie is duidelijk.\n💡 *Correctie:* \"Wij gaan daar samen eten en praten, en ik ga op bezoek.\"\n🧠 *Waarom:* You need to add a verb, such as 'gaan' ('Wij gaan samen eten en praten' - We are going to eat and talk together). Also, you use the expression 'op bezoek gaan' (to visit) when you visit someone, not 'bezoek gaan'.\n\n*Roxanne vroeg/zei toen:* \"Leuk.\"\n\n*Jij zei*\n*Zin 10:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n👍 *Wat was goed:* Je bedoeling is duidelijk en je wenst Roxana een fijne vakantie.\n💡 *Correctie:* \"Een hele fijne vakantie alvast, Roxana.\"\n🧠 *Waarom:* The word you mean is 'alvast', which means 'in advance' or 'already'. Also pay attention to the pronunciation of 'alvast' (with a short 'a' and a 'v' sound).\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 11:* \"Dankjewel.\"\n👍 *Wat was goed:* Dit is correct en duidelijk uitgesproken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You often make mistakes with word order, especially when using 'ook' (also). The verb usually comes directly after the subject (e.g., 'ik ga ook', not 'ik ook ga'). Also pay attention to using the correct prepositions (e.g., 'op vakantie' - on holiday, 'op bezoek gaan' - to visit) and adding verbs where necessary (e.g., 'Wij *gaan* samen eten' - We *are going to* eat together).\n• *Uitspraak:* Overall, you are well understood. However, pay attention to specific words like 'alvast' (not 'half vast') and try to avoid unclear expressions like 'halle spoelen' by practicing with correct Dutch sentences.\n• *Samenhang & Logica:* The phrase 'met halle spoelen' was illogical in context. Always try to check if your sentences are logical and fit well with what you want to say.\n\n🧠 *Jouw volgende stap & advies:*\nPractice word order in sentences with 'ook' and using prepositions like 'op' and 'bij' correctly. Also try to formulate complete sentences with verbs, even when listing multiple actions. Keep practicing speaking, it helps a lot! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Roxanne",
+            "brief": "Hallo Roxanne! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg/zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\n*Jij zei*\n*Zin 1:* \"Hallo Homaira, goed? En met jou?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Homaira vroeg/zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Jij zei*\n*Zin 3:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort, krachtig en correct.\n\n*Homaira vroeg/zei toen:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar ehm Duitsland?\"\n\n*Homaira vroeg/zei toen:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar Iran?\"\n\n*Jij zei*\n*Zin 4:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en goed verstaanbaar. De reden is ook duidelijk.\n\n*Homaira vroeg/zei toen:* \"Wat gaan jullie doen in Iran?\"\n\n*Jij zei*\n*Zin 5:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?\"\n🧠 *Waarom:* Het woord 'family' is Engels. In het Nederlands zeggen we 'familie'. Ook is de constructie 'bezoek naar mijn familie' niet correct. Je zegt 'mijn familie bezoeken' (werkwoord) of 'op bezoek gaan bij mijn familie'.\n\n*Homaira vroeg/zei toen:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n\n*Homaira vroeg/zei toen:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n\n*Jij zei*\n*Zin 6:* \"Leuk.\"\n👍 *Wat was goed:* Dit is een correct en passend antwoord.\n\n*Homaira vroeg/zei toen:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n\n*Jij zei*\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort en correct.\n\n*Homaira vroeg/zei toen:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt weinig grammaticale fouten. Het belangrijkste punt is het correct gebruiken van werkwoorden en uitdrukkingen, zoals 'mijn familie bezoeken' in plaats van 'bezoek naar mijn family'.\n• *Uitspraak:* Over het algemeen ben je goed verstaanbaar. Let wel op Engelse woorden die je in het Nederlands gebruikt, zoals 'family'. Probeer de Nederlandse uitspraak 'familie' te gebruiken.\n• *Samenhang & Logica:* Je zinnen zijn altijd logisch en passen goed in het gesprek. Goed gedaan!\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het correct gebruiken van Nederlandse werkwoorden en uitdrukkingen, vooral wanneer je over activiteiten praat. Probeer ook bewust te zijn van Engelse woorden die je misschien onbewust gebruikt en vervang ze door de Nederlandse equivalenten. Je bent al heel goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Roxanne! 👋\n\nWell done on practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg/zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\n*Jij zei*\n*Zin 1:* \"Hallo Homaira, goed? En met jou?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Homaira vroeg/zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Jij zei*\n*Zin 3:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort, krachtig en correct.\n\n*Homaira vroeg/zei toen:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar ehm Duitsland?\"\n\n*Homaira vroeg/zei toen:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar Iran?\"\n\n*Jij zei*\n*Zin 4:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en goed verstaanbaar. De reden is ook duidelijk.\n\n*Homaira vroeg/zei toen:* \"Wat gaan jullie doen in Iran?\"\n\n*Jij zei*\n*Zin 5:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?\"\n🧠 *Waarom:* The word 'family' is English. In Dutch, we say 'familie'. Also, the construction 'bezoek naar mijn familie' is not correct. You say 'mijn familie bezoeken' (verb) or 'op bezoek gaan bij mijn familie' (expression).\n\n*Homaira vroeg/zei toen:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n\n*Homaira vroeg/zei toen:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n\n*Jij zei*\n*Zin 6:* \"Leuk.\"\n👍 *Wat was goed:* Dit is een correct en passend antwoord.\n\n*Homaira vroeg/zei toen:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n\n*Jij zei*\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort en correct.\n\n*Homaira vroeg/zei toen:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You make few grammatical errors. The most important point is the correct use of verbs and expressions, such as 'mijn familie bezoeken' (to visit my family) instead of 'bezoek naar mijn family'.\n• *Uitspraak:* Overall, you are well understood. However, pay attention to English words you might unconsciously use in Dutch, such as 'family'. Try to use the Dutch pronunciation 'familie'.\n• *Samenhang & Logica:* Your sentences are always logical and fit well into the conversation. Well done!\n\n🧠 *Jouw volgende stap & advies:*\nKeep practicing the correct use of Dutch verbs and expressions, especially when talking about activities. Also try to be aware of English words you might unconsciously use and replace them with their Dutch equivalents. You are already well on your way! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
     }
   ],
   "B-Alfa": [
