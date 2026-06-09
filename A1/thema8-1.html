@@ -97,6 +97,14 @@
             transition: 0.2s;
         }
         .slow-speak-btn:hover { background: var(--theme-bg, rgba(67,97,238,0.08)); }
+
+        /* Levenshtein almost correct styling */
+        input.almost-correct, select.almost-correct {
+            border-color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #d97706 !important;
+            font-weight: 700;
+        }
     </style>
     <script>
         (function() {
@@ -479,8 +487,45 @@ const mvData=[
     {enk:'de boerderij', mv:'de boerderijen'},
     {enk:'het dier',     mv:'de dieren'}
 ];
-function buildMV(){const g=document.getElementById('mv-grid');g.innerHTML='';mvData.forEach((item,i)=>{g.innerHTML+=`<div class="mv-item"><span>${item.enk} →</span><input type="text" id="mv-${i}" placeholder="meervoud…" autocomplete="off"></div>`;});}
-function checkMV(){let good=0;mvData.forEach((item,i)=>{const inp=document.getElementById('mv-'+i);inp.classList.remove('correct','fout');const d=levenshtein(inp.value.trim().toLowerCase(),item.mv.toLowerCase());if(d===0){inp.classList.add('correct');good++;}else if(d<=1){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('mv-score');sc.style.display='inline-block';sc.textContent=`${good}/${mvData.length}`;sc.className='score-badge '+(good===mvData.length?'score-goed':good>=5?'score-midden':'score-slecht');}
+function buildMV(){
+    const g=document.getElementById('mv-grid');
+    g.innerHTML='';
+    mvData.forEach((item,i)=>{
+        g.innerHTML+=`<div class="mv-item"><span style="font-weight: 700; min-width: 150px; display: inline-flex; align-items: center; gap: 6px;"><span style="color: var(--theme, var(--primary));">${i+1}.</span><span>${item.enk} →</span></span><input type="text" id="mv-${i}" placeholder="meervoud…" autocomplete="off"></div>`;
+    });
+}
+function checkMV(){
+    let good=0;
+    mvData.forEach((item,i)=>{
+        const inp=document.getElementById('mv-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        
+        const val = inp.value.trim().toLowerCase();
+        const expected = item.mv.toLowerCase();
+        const d=levenshtein(val, expected);
+        
+        if(d===0){
+            inp.classList.add('correct');
+            good++;
+        } else if(d <= (expected.length >= 5 ? 2 : 1) && val.length > 0){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent=`Let op: ${item.mv}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('mv-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${mvData.length}`;
+    sc.className='score-badge '+(good===mvData.length?'score-goed':good>=5?'score-midden':'score-slecht');
+}
 function resetMV(){buildMV();document.getElementById('mv-score').style.display='none';}
 
 // ── OPDRACHT 4: HEBBEN OF ZIJN (Herhaling) ──
@@ -492,8 +537,51 @@ const hzData=[
     {zin:'Wij ___ twee witte schapen.', ans:'hebben'},
     {zin:'___ jij een kat?', ans:'heb'}
 ];
-function buildHZ(){const g=document.getElementById('hz-grid');g.innerHTML='';hzData.forEach((item,i)=>{const part=item.zin.split('___');g.innerHTML+=`<div class="mv-item" style="margin-bottom:12px;"><span>${part[0]}</span><input type="text" id="hz-${i}" style="width:110px;text-align:center;margin:0 6px;" placeholder="vorm…" autocomplete="off"><span>${part[1]}</span></div>`;});}
-function checkHZ(){let good=0;hzData.forEach((item,i)=>{const inp=document.getElementById('hz-'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ans.toLowerCase()){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('hz-score');sc.style.display='inline-block';sc.textContent=`${good}/${hzData.length}`;sc.className='score-badge '+(good===hzData.length?'score-goed':good>=4?'score-midden':'score-slecht');}
+function buildHZ(){
+    const g=document.getElementById('hz-grid');
+    g.innerHTML='';
+    hzData.forEach((item,i)=>{
+        const part=item.zin.split('___');
+        g.innerHTML+=`<div class="mv-item" style="margin-bottom:12px;">
+            <span style="color: var(--theme, var(--primary)); font-weight: bold; margin-right: 4px;">${i+1}.</span>
+            <span>${part[0]}</span>
+            <input type="text" id="hz-${i}" style="width:110px;text-align:center;margin:0 6px;" placeholder="vorm…" autocomplete="off">
+            <span>${part[1]}</span>
+        </div>`;
+    });
+}
+function checkHZ(){
+    let good=0;
+    hzData.forEach((item,i)=>{
+        const inp=document.getElementById('hz-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        
+        const val = inp.value.trim().toLowerCase();
+        const expected = item.ans.toLowerCase();
+        const d = levenshtein(val, expected);
+        
+        if(d===0){
+            inp.classList.add('correct');
+            good++;
+        } else if(d <= 1 && val.length > 0) {
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:4px;font-weight:700;';
+            fz.textContent=`(${item.ans})`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('hz-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${hzData.length}`;
+    sc.className='score-badge '+(good===hzData.length?'score-goed':good>=4?'score-midden':'score-slecht');
+}
 function resetHZ(){buildHZ();document.getElementById('hz-score').style.display='none';}
 
 // ── OPDRACHT 5: PUZZEL ──
@@ -506,22 +594,45 @@ const puzzelData=[
     {hint:'Een dier dat blaft en de boerderij bewaakt.',       ans:'hond'}
 ];
 function buildPuzzel(){const g=document.getElementById('puzzel-grid');g.innerHTML='';puzzelData.forEach((item,i)=>{g.innerHTML+=`<div class="puzzel-row"><span class="puzzel-nr">${i+1}.</span><input type="text" id="puz-${i}" placeholder="…" autocomplete="off"><span class="puzzel-hint">${item.hint}</span></div>`;});}
-function checkPuzzel(){let good=0;puzzelData.forEach((item,i)=>{const inp=document.getElementById('puz-'+i);inp.classList.remove('correct','fout');const note=inp.parentNode.querySelector('.fz-note');if(note)note.remove();const d=levenshtein(inp.value.trim().toLowerCase(),item.ans);if(d===0){inp.classList.add('correct');good++;}else if(d<=1){inp.classList.add('correct');good++;const fz=document.createElement('span');fz.className='fz-note';fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;';fz.textContent=`Let op spelling: ${item.ans}`;inp.parentNode.appendChild(fz);}else{inp.classList.add('fout');const wr=document.createElement('span');wr.className='fz-note';wr.style.cssText='color:#dc2626;font-size:0.82rem;margin-left:8px;';wr.textContent=`Antwoord: ${item.ans}`;inp.parentNode.appendChild(wr);}});const sc=document.getElementById('puzzel-score');sc.style.display='inline-block';sc.textContent=`${good}/${puzzelData.length}`;sc.className='score-badge '+(good===puzzelData.length?'score-goed':good>=4?'score-midden':'score-slecht');if(good===puzzelData.length){const gh=document.getElementById('puzzel-geheim');gh.style.display='block';gh.textContent='🎉 Geweldig! Je kent alle boerderijwoorden!';}}
+function checkPuzzel(){
+    let good=0;
+    puzzelData.forEach((item,i)=>{
+        const inp=document.getElementById('puz-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        
+        const val = inp.value.trim().toLowerCase();
+        const expected = item.ans.toLowerCase();
+        const d = levenshtein(val, expected);
+        
+        if(d===0){
+            inp.classList.add('correct');
+            good++;
+        } else if(d <= (expected.length >= 5 ? 2 : 1) && val.length > 0){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent=`Let op: ${item.ans}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+            const wr=document.createElement('span');
+            wr.className='fz-note';
+            wr.style.cssText='color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent=`Antwoord: ${item.ans}`;
+            inp.parentNode.appendChild(wr);
+        }
+    });
+    const sc=document.getElementById('puzzel-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${puzzelData.length}`;
+    sc.className='score-badge '+(good===puzzelData.length?'score-goed':good>=4?'score-midden':'score-slecht');
+    if(good===puzzelData.length){const gh=document.getElementById('puzzel-geheim');gh.style.display='block';gh.textContent='🎉 Geweldig! Je kent alle boerderijwoorden!';}
+}
 function resetPuzzel(){buildPuzzel();document.getElementById('puzzel-score').style.display='none';document.getElementById('puzzel-geheim').style.display='none';}
-
-// ── OPDRACHT 6: ZIN ORDENEN (Herhaling) ──
-const zoData=[
-    {woorden:['Op','de','boerderij','wonen','veel','dieren','.'], correct:'Op de boerderij wonen veel dieren .'},
-    {woorden:['De','kleren','liggen','overal','.'], correct:'De kleren liggen overal .'},
-    {woorden:['De','jongen','draagt','een','dik','vest','.'], correct:'De jongen draagt een dik vest .'},
-    {woorden:['Sommige','dieren','zijn','heel','groot','.'], correct:'Sommige dieren zijn heel groot .'},
-    {woorden:['Een','koe','geeft','melk','.'], correct:'Een koe geeft melk .'}
-];
-let zoPlaced=[];
-function buildZO(){const c=document.getElementById('zo-container');c.innerHTML='';zoPlaced=[];zoData.forEach((item,zi)=>{const sh=[...item.woorden].sort(()=>Math.random()-.5);zoPlaced[zi]=[];c.innerHTML+=`<div class="zo-container" style="margin-bottom:20px;"><div class="zo-zin-nr">Zin ${zi+1}:</div><div class="zo-chips" id="zo-chips-${zi}">${sh.map(w=>`<span class="zo-chip" onclick="addZO(this,${zi})" data-w="${w}">${w}</span>`).join('')}</div><div class="zo-answer" id="zo-ans-${zi}"></div></div>`;});}
-function addZO(chip,zi){if(chip.classList.contains('used'))return;chip.classList.add('used');zoPlaced[zi].push(chip.dataset.w);const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const pl=document.createElement('span');pl.className='zo-placed';pl.textContent=chip.dataset.w;pl.onclick=()=>{const idx=zoPlaced[zi].lastIndexOf(chip.dataset.w);if(idx!==-1)zoPlaced[zi].splice(idx,1);chip.classList.remove('used');pl.remove();};ans.appendChild(pl);}
-function checkZO(){let good=0;zoData.forEach((item,zi)=>{const ans=document.getElementById('zo-ans-'+zi);ans.classList.remove('correct-ans','fout-ans');const str=zoPlaced[zi].join(' ');if(str===item.correct || (item.alt && str===item.alt)){ans.classList.add('correct-ans');good++;}else{ans.classList.add('fout-ans');}});const sc=document.getElementById('zo-score');sc.style.display='inline-block';sc.textContent=`${good}/${zoData.length}`;sc.className='score-badge '+(good===zoData.length?'score-goed':good>=3?'score-midden':'score-slecht');}
-function resetZO(){buildZO();document.getElementById('zo-score').style.display='none';}
 
 // ── DICETEE ──
 const dicteeWoorden = [
@@ -580,7 +691,10 @@ function checkDictee(){
     
     dicteeWoorden.forEach((item, i) => {
         const inp = document.getElementById(`dictee-w-${i}`);
-        inp.classList.remove('correct', 'fout');
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
         const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
         const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
         
@@ -589,17 +703,29 @@ function checkDictee(){
             inp.classList.add('correct');
             good++;
         } else if(dist <= 1 && userVal.length > 3){
-            inp.classList.add('correct');
+            inp.classList.add('almost-correct');
             good++;
-            inp.title = `Spelling: ${item}`;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
         } else {
             inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
         }
     });
     
     dicteeZinnen.forEach((item, i) => {
         const inp = document.getElementById(`dictee-z-${i}`);
-        inp.classList.remove('correct', 'fout');
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
         const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
         const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
         
@@ -608,11 +734,20 @@ function checkDictee(){
             inp.classList.add('correct');
             good++;
         } else if(dist <= 2 && userVal.length > 8){
-            inp.classList.add('correct');
+            inp.classList.add('almost-correct');
             good++;
-            inp.title = `Spelling: ${item}`;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
         } else {
             inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
         }
     });
     

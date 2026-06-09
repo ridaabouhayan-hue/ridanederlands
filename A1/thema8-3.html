@@ -80,6 +80,14 @@
         .rooster-tabel .cat-jeugd { color: #f59e0b; font-weight: 700; }
         .rooster-tabel .cat-senior { color: #4361ee; font-weight: 700; }
         .rooster-tabel .cat-vrij { color: #7209b7; font-weight: 700; }
+
+        /* Levenshtein almost correct styling */
+        input.almost-correct, select.almost-correct {
+            border-color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #d97706 !important;
+            font-weight: 700;
+        }
     </style>
     <script>
         (function() {
@@ -259,12 +267,12 @@ const VOCAB = [
     {nl:'de heer (heren)', en:'gentleman', ar:'سيد', tr:'bay', ex:'In het team zitten alleen heren.'},
     {nl:'iedereen', en:'everyone', ar:'كل شخص', tr:'herkes', ex:'Fatima groet iedereen.'},
     {nl:'de informatie', en:'information', ar:'معلومات', tr:'bilgi', ex:'De informatie staat op het rooster.'},
-    {nl:'spelen (spelen)', en:'to play', ar:'يلعب', tr:'oynamak', ex:'Wij spelen een wedstrijd.'},
-    {nl:'sporten (sporten)', en:'to exercise / play sports', ar:'يمارس الرياضة', tr:'spor yapmak', ex:'Daniël sport twee keer per week.'},
+    {nl:'spelen', en:'to play', ar:'يلعب', tr:'oynamak', ex:'Wij spelen een wedstrijd.'},
+    {nl:'sporten', en:'to exercise / play sports', ar:'يمارس الرياضة', tr:'spor yapmak', ex:'Daniël sport twee keer per week.'},
     {nl:'het team (teams)', en:'team', ar:'فريق', tr:'takım', ex:'Ze zitten samen in een team.'},
-    {nl:'trainen (trainen)', en:'to train / practice', ar:'يتمرن / يتدرب', tr:'antrenman yapmak', ex:'Senioren A trainen op maandag.'},
+    {nl:'trainen', en:'to train / practice', ar:'يتمرن / يتدرب', tr:'antrenman yapmak', ex:'Senioren A trainen op maandag.'},
     {nl:'vanaf', en:'starting from', ar:'ابتداء من', tr:'‐den/‐dan itibaren', ex:'Ze trainen vanaf zeven uur.'},
-    {nl:'voetballen (voetballen)', en:'to play football', ar:'يلعب كرة القدم', tr:'futbol oynamak', ex:'De kinderen voetballen graag buiten.'},
+    {nl:'voetballen', en:'to play football', ar:'يلعب كرة القدم', tr:'futbol oynamak', ex:'De kinderen voetballen graag buiten.'},
     {nl:'de wedstrijd (wedstrijden)', en:'match / game', ar:'مباراة', tr:'maç', ex:'Wij spelen vandaag een belangrijke wedstrijd.'}
 ];
 
@@ -409,7 +417,47 @@ const invulRoosterData=[
     {zin:'Ahmed Bakr is de trainer van Senioren ___.',                ans:'A', alts:['a','A']}
 ];
 function buildInvulRooster(){const ul=document.getElementById('invul-rooster');ul.innerHTML='';invulRoosterData.forEach((item,i)=>{ul.innerHTML+=`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="invr-${i}" autocomplete="off" placeholder="…">`)}</li>`;});}
-function checkInvulRooster(){let good=0;invulRoosterData.forEach((item,i)=>{const inp=document.getElementById('invr-'+i);inp.classList.remove('correct','fout');const val=inp.value.trim().toLowerCase();const match=item.alts.some(a=>levenshtein(val,a.toLowerCase())<=1);if(match){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('invul-rooster-score');sc.style.display='inline-block';sc.textContent=`${good}/${invulRoosterData.length}`;sc.className='score-badge '+(good===invulRoosterData.length?'score-goed':good>=4?'score-midden':'score-slecht');}
+function checkInvulRooster(){
+    let good=0;
+    invulRoosterData.forEach((item,i)=>{
+        const inp=document.getElementById('invr-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        
+        const val=inp.value.trim().toLowerCase();
+        let exactMatch = false;
+        let fuzzyMatch = false;
+        
+        item.alts.forEach(a => {
+            const d = levenshtein(val, a.toLowerCase());
+            if (d === 0) {
+                exactMatch = true;
+            } else if (d <= (a.length >= 5 ? 2 : 1)) {
+                fuzzyMatch = true;
+            }
+        });
+        
+        if(exactMatch){
+            inp.classList.add('correct');
+            good++;
+        } else if(fuzzyMatch && val.length > 0){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent=`Let op: ${item.ans}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('invul-rooster-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${invulRoosterData.length}`;
+    sc.className='score-badge '+(good===invulRoosterData.length?'score-goed':good>=4?'score-midden':'score-slecht');
+}
 function resetInvulRooster(){buildInvulRooster();document.getElementById('invul-rooster-score').style.display='none';}
 
 // ── OPDRACHT 4: WERKWOORD VERVOEGEN (Herhaling) ──
@@ -421,8 +469,51 @@ const conjData=[
     {zin:'Wij ___ vandaag een belangrijke wedstrijd. (hebben)', ans:'hebben'},
     {zin:'___ jij ook bij de club? (sporten)', ans:'sport'}
 ];
-function buildConj(){const g=document.getElementById('conj-grid');g.innerHTML='';conjData.forEach((item,i)=>{const part=item.zin.split('___');g.innerHTML+=`<div class="mv-item" style="margin-bottom:12px;"><span>${part[0]}</span><input type="text" id="conj-${i}" style="width:110px;text-align:center;margin:0 6px;" placeholder="vervoeg…" autocomplete="off"><span>${part[1]}</span></div>`;});}
-function checkConj(){let good=0;conjData.forEach((item,i)=>{const inp=document.getElementById('conj-'+i);inp.classList.remove('correct','fout');if(inp.value.trim().toLowerCase()===item.ans.toLowerCase()){inp.classList.add('correct');good++;}else{inp.classList.add('fout');}});const sc=document.getElementById('conj-score');sc.style.display='inline-block';sc.textContent=`${good}/${conjData.length}`;sc.className='score-badge '+(good===conjData.length?'score-goed':good>=4?'score-midden':'score-slecht');}
+function buildConj(){
+    const g=document.getElementById('conj-grid');
+    g.innerHTML='';
+    conjData.forEach((item,i)=>{
+        const part=item.zin.split('___');
+        g.innerHTML+=`<div class="mv-item" style="margin-bottom:12px;">
+            <span style="color: var(--theme, var(--primary)); font-weight: bold; margin-right: 4px;">${i+1}.</span>
+            <span>${part[0]}</span>
+            <input type="text" id="conj-${i}" style="width:110px;text-align:center;margin:0 6px;" placeholder="vervoeg…" autocomplete="off">
+            <span>${part[1]}</span>
+        </div>`;
+    });
+}
+function checkConj(){
+    let good=0;
+    conjData.forEach((item,i)=>{
+        const inp=document.getElementById('conj-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        
+        const val = inp.value.trim().toLowerCase();
+        const expected = item.ans.toLowerCase();
+        const d = levenshtein(val, expected);
+        
+        if(d===0){
+            inp.classList.add('correct');
+            good++;
+        } else if(d <= 1 && val.length > 0) {
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:4px;font-weight:700;';
+            fz.textContent=`(${item.ans})`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('conj-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${conjData.length}`;
+    sc.className='score-badge '+(good===conjData.length?'score-goed':good>=4?'score-midden':'score-slecht');
+}
 function resetConj(){buildConj();document.getElementById('conj-score').style.display='none';}
 
 // ── OPDRACHT 5: MC SPORT ──
