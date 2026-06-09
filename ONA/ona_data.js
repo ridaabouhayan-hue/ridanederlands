@@ -1,6 +1,13 @@
 // Data structuur en logica voor het gedetailleerde ONA Dashboard
 
-const CLOUD_API_URL = "https://api.restful-api.dev/objects/ff8081819d82fab6019e802499c624b8";
+// Sync settings helpers
+function getSyncUrl() {
+    return localStorage.getItem('ona_sync_webhook_url') || "";
+}
+
+function setSyncUrl(url) {
+    localStorage.setItem('ona_sync_webhook_url', url.trim());
+}
 
 const onaItems = [
     { id: 'c1', label: 'K1: Oriëntatie', type: 'card' },
@@ -46,27 +53,55 @@ const defaultData = {
 };
 
 let activeGroup = "ona-43";
-let onaData = defaultData; // Start met default, wordt overschreven door cloud
+let onaData = defaultData; // Start met default, wordt overschreven door cloud of local storage
 let isLoaded = false;
 
 // Cloud logica
 async function loadFromCloud() {
+    // 1. Eerst lokaal inladen uit localStorage (voor directe responsiviteit)
+    const localJson = localStorage.getItem('ona_dashboard_local_data');
+    if (localJson) {
+        try {
+            onaData = JSON.parse(localJson);
+            isLoaded = true;
+            renderDashboard();
+        } catch (err) {
+            console.error("Fout bij laden van lokale data:", err);
+        }
+    }
+
+    const cloudUrl = getSyncUrl();
+    if (!cloudUrl) {
+        // Geen cloud sync URL ingesteld, we zijn klaar met inladen van lokale data
+        isLoaded = true;
+        updateSyncStatus("local");
+        renderDashboard();
+        return;
+    }
+
+    updateSyncStatus("syncing");
+
     try {
-        const response = await fetch(CLOUD_API_URL);
+        const response = await fetch(cloudUrl);
         const json = await response.json();
         
-        if (json && json.data && json.data.onaData) {
-            onaData = json.data.onaData;
+        let cloudOnaData = null;
+        if (json && json.onaData) {
+            cloudOnaData = json.onaData;
+        }
+        
+        if (cloudOnaData) {
             // Migreer of reset als de oude groepsstructuur er nog is of als we nieuwe groepen missen
-            if (onaData["groep-42"] || !onaData["ona-43"]) {
-                onaData = defaultData;
+            if (cloudOnaData["groep-42"] || !cloudOnaData["ona-43"]) {
+                cloudOnaData = defaultData;
+                onaData = cloudOnaData;
                 saveToCloud();
             } else {
                 // Update bestaande studenten driveLink als deze de oude standaard is
                 let updated = false;
-                for (const group in onaData) {
-                    if (Array.isArray(onaData[group])) {
-                        onaData[group].forEach(student => {
+                for (const group in cloudOnaData) {
+                    if (Array.isArray(cloudOnaData[group])) {
+                        cloudOnaData[group].forEach(student => {
                             if (student.driveLink === "https://drive.google.com/") {
                                 student.driveLink = "https://drive.google.com/drive/folders/1l9I3leOf5WUsbDgXEx8PqGVu0ehbuPkH";
                                 updated = true;
@@ -74,36 +109,122 @@ async function loadFromCloud() {
                         });
                     }
                 }
+                
+                onaData = cloudOnaData;
                 if (updated) {
                     saveToCloud();
+                } else {
+                    // Sla ook lokaal op
+                    localStorage.setItem('ona_dashboard_local_data', JSON.stringify(onaData));
                 }
             }
+            updateSyncStatus("connected");
         } else {
-            // Eerste keer? Gebruik defaultData en sla direct op
-            onaData = defaultData;
-            saveToCloud();
+            // Eerste keer? Gebruik de huidige lokale data en push naar de cloud
+            await saveToCloud();
+            updateSyncStatus("connected");
         }
         isLoaded = true;
         renderDashboard();
     } catch (e) {
         console.error("Fout bij laden uit cloud:", e);
-        alert("Kon data niet laden uit de cloud. Controleer je internetverbinding.");
+        updateSyncStatus("error");
+        // We blokkeren de gebruiker niet, ze kunnen offline doorwerken
+        isLoaded = true;
+        renderDashboard();
     }
 }
 
+let syncTimeout = null;
+
 async function saveToCloud() {
-    try {
-        await fetch(CLOUD_API_URL, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: "ona_rabou_db",
-                data: { onaData: onaData }
-            })
-        });
-    } catch (e) {
-        console.error("Fout bij opslaan naar cloud:", e);
-        alert("Fout bij opslaan! Controleer je internetverbinding.");
+    // Sla altijd direct lokaal op
+    localStorage.setItem('ona_dashboard_local_data', JSON.stringify(onaData));
+
+    const cloudUrl = getSyncUrl();
+    if (!cloudUrl) {
+        updateSyncStatus("local");
+        return;
+    }
+
+    updateSyncStatus("syncing");
+
+    // Debounce cloud saving met 1 seconde
+    if (syncTimeout) clearTimeout(syncTimeout);
+    
+    syncTimeout = setTimeout(async () => {
+        try {
+            const response = await fetch(cloudUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 
+                    'Content-Type': 'text/plain' // Voorkomt CORS preflight OPTIONS request in Apps Script
+                },
+                body: JSON.stringify({ onaData: onaData })
+            });
+            const result = await response.json();
+            if (result && result.status === "success") {
+                updateSyncStatus("connected");
+            } else {
+                console.error("Cloud opslaan mislukt:", result);
+                updateSyncStatus("error");
+            }
+        } catch (e) {
+            console.error("Fout bij opslaan naar cloud:", e);
+            updateSyncStatus("error");
+        }
+    }, 1000);
+}
+
+// Sync settings UI handlers
+function toggleSyncSettings() {
+    const bar = document.getElementById('sync-settings');
+    if (!bar) return;
+    if (bar.style.display === 'none' || bar.style.display === '') {
+        bar.style.display = 'block';
+        // Vul huidige URL in
+        const input = document.getElementById('ona-sync-url');
+        if (input) input.value = getSyncUrl();
+    } else {
+        bar.style.display = 'none';
+    }
+}
+
+function saveSyncSettings() {
+    const input = document.getElementById('ona-sync-url');
+    if (!input) return;
+    const url = input.value.trim();
+    
+    setSyncUrl(url);
+    
+    // Sluit het instellingen paneel
+    const bar = document.getElementById('sync-settings');
+    if (bar) bar.style.display = 'none';
+    
+    // Trigger direct opnieuw inladen en synchroniseren
+    loadFromCloud();
+}
+
+function updateSyncStatus(status) {
+    const badge = document.getElementById('sync-status-badge');
+    if (!badge) return;
+    
+    if (status === "local") {
+        badge.innerHTML = "☁️ Lokaal opslaan actief (geen cloud sync)";
+        badge.style.background = "rgba(255,255,255,0.15)";
+        badge.style.color = "white";
+    } else if (status === "syncing") {
+        badge.innerHTML = "🔄 Synchroniseren...";
+        badge.style.background = "rgba(255, 159, 28, 0.25)";
+        badge.style.color = "#fff";
+    } else if (status === "connected") {
+        badge.innerHTML = "✅ Gesynchroniseerd";
+        badge.style.background = "rgba(46, 196, 182, 0.25)";
+        badge.style.color = "#fff";
+    } else if (status === "error") {
+        badge.innerHTML = "❌ Synchronisatie fout / Offline";
+        badge.style.background = "rgba(255, 74, 74, 0.25)";
+        badge.style.color = "#fff";
     }
 }
 
