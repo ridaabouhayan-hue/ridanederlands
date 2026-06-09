@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centraal Luisterportaal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --surface: #18181b;
+            --surface-hover: #27272a;
+            --border: #3f3f46;
+            --text-main: #f8fafc;
+            --text-muted: #a1a1aa;
+            
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --success: #10b981;
+            --danger: #ef4444;
+
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header { text-align: center; }
+        header h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; }
+
+        /* Levels & Themes */
+        .level-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;}
+        .level-tab {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted);
+            padding: 10px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        }
+        .level-tab:hover { background: rgba(255,255,255,0.1); color: white; }
+        .level-tab.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+
+        .themes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .theme-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+            padding: 20px; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; gap: 10px;
+        }
+        .theme-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .theme-title { font-size: 1.2rem; font-weight: 700; color: white; }
+        .theme-meta { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Lesson View */
+        .lesson-view { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; animation: fadeIn 0.4s ease-out; }
+        .lesson-view.active { display: block; }
+        .back-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; margin-bottom: 20px; font-weight: 600; }
+        .back-btn:hover { color: white; }
+
+        .lesson-header { margin-bottom: 25px; }
+        .lesson-header h2 { font-size: 2rem; color: var(--primary); }
+
+        .audio-container { background: rgba(0,0,0,0.3); padding: 20px; border-radius: var(--radius-md); margin-bottom: 30px; }
+        audio { width: 100%; outline: none; margin-bottom: 15px; }
+        .speed-controls { display: flex; gap: 10px; justify-content: center; }
+        .speed-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); }
+        .speed-btn.active, .speed-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Transcript */
+        .transcript-section { margin-bottom: 30px; }
+        .toggle-btn { background: rgba(255,255,255,0.05); border: 1px dashed var(--border); color: white; width: 100%; padding: 15px; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 1.05rem; transition: var(--transition); }
+        .toggle-btn:hover { background: rgba(255,255,255,0.1); }
+        .transcript-content { display: none; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .transcript-content.hidden { display: none; }
+        
+        .bubble { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 1.05rem; line-height: 1.5; }
+        .bubble.sp-1 { background: var(--primary); align-self: flex-start; border-bottom-left-radius: 0; }
+        .bubble.sp-2 { background: #6366f1; align-self: flex-end; border-bottom-right-radius: 0; }
+        .speaker-name { font-weight: 700; font-size: 0.8rem; margin-bottom: 4px; opacity: 0.8; text-transform: uppercase; }
+
+        /* Questions */
+        .questions-section { border-top: 1px solid var(--border); padding-top: 30px; }
+        .questions-section h3 { margin-bottom: 20px; font-size: 1.5rem; }
+        .question-block { background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; }
+        .q-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); padding: 12px; border-radius: 8px; text-align: left; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+        .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.05); }
+        .option-btn.correct { background: var(--success); border-color: var(--success); color: white; }
+        .option-btn.wrong { background: var(--danger); border-color: var(--danger); color: white; opacity: 0.7; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hidden-until-loaded { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Luisterportaal</h1>
+            <p>Oefen je luistervaardigheid met honderden gesprekken per niveau.</p>
+        </header>
+
+        <!-- Overzicht weergave (Niveaus & Thema's) -->
+        <div id="overview-view">
+            <div class="level-tabs" id="level-tabs"></div>
+            <div class="themes-grid" id="themes-grid"></div>
+            <div id="no-data-msg" style="text-align:center; color: var(--text-muted); margin-top: 40px; display: none;">
+                Nog geen lessen gevonden voor dit niveau. Gebruik het Python script om ze te genereren!
+            </div>
+        </div>
+
+        <!-- Specifieke Les weergave -->
+        <div class="lesson-view" id="lesson-view">
+            <button class="back-btn" onclick="showOverview()">← Terug naar overzicht</button>
+            <div class="lesson-header">
+                <h2 id="l-title">Titel</h2>
+                <p style="color: var(--text-muted);" id="l-meta">Niveau A1</p>
+            </div>
+
+            <div class="audio-container">
+                <audio id="l-audio" controls>
+                    <source src="" type="audio/mpeg">
+                </audio>
+                <div class="speed-controls">
+                    <button class="speed-btn active" onclick="setSpeed(1.0, this)">1x (Normaal)</button>
+                    <button class="speed-btn" onclick="setSpeed(0.75, this)">0.75x (Traag)</button>
+                    <button class="speed-btn" onclick="setSpeed(0.5, this)">0.5x (Zeer Traag)</button>
+                </div>
+            </div>
+
+            <div class="transcript-section">
+                <button class="toggle-btn" id="l-toggle-btn" onclick="toggleTranscript()">👁️ Toon Transcript (Spiekbriefje)</button>
+                <div class="transcript-content hidden" id="l-transcript"></div>
+            </div>
+
+            <div class="questions-section" id="l-questions-section">
+                <h3>Luistervragen</h3>
+                <div id="l-questions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let db = [];
+        let currentLevel = "A1";
+
+        // Fetch data
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                db = data;
+                initApp();
+            })
+            .catch(err => {
+                console.error("Geen data gevonden of fout bij inladen", err);
+                document.getElementById('no-data-msg').style.display = 'block';
+                document.getElementById('no-data-msg').innerText = "Database (data.json) kon niet geladen worden. Heb je al een les gegenereerd?";
+            });
+
+        function initApp() {
+            // Get unique levels
+            const levels = [...new Set(db.map(l => l.niveau))].sort();
+            if (levels.length > 0 && !levels.includes(currentLevel)) {
+                currentLevel = levels[0];
+            }
+
+            // Render level tabs
+            const tabsContainer = document.getElementById('level-tabs');
+            tabsContainer.innerHTML = '';
+            
+            if(levels.length === 0) {
+                document.getElementById('no-data-msg').style.display = 'block';
+                return;
+            }
+
+            levels.forEach(lvl => {
+                const btn = document.createElement('button');
+                btn.className = `level-tab ${lvl === currentLevel ? 'active' : ''}`;
+                btn.innerText = `Niveau ${lvl}`;
+                btn.onclick = () => {
+                    currentLevel = lvl;
+                    initApp(); // re-render
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            // Render themes for current level
+            renderThemes();
+        }
+
+        function renderThemes() {
+            const grid = document.getElementById('themes-grid');
+            grid.innerHTML = '';
+            
+            const lessons = db.filter(l => l.niveau === currentLevel);
+            
+            if (lessons.length === 0) {
+                document.getElementById('no-data-msg').style.display = 'block';
+            } else {
+                document.getElementById('no-data-msg').style.display = 'none';
+                
+                lessons.forEach(lesson => {
+                    const card = document.createElement('div');
+                    card.className = 'theme-card';
+                    card.innerHTML = `
+                        <div class="theme-title">${lesson.thema}</div>
+                        <div class="theme-meta">▶️ Audio • ${lesson.vragen.length} Vragen</div>
+                    `;
+                    card.onclick = () => openLesson(lesson);
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        function openLesson(lesson) {
+            document.getElementById('overview-view').style.display = 'none';
+            document.getElementById('lesson-view').classList.add('active');
+
+            // Populate Info
+            document.getElementById('l-title').innerText = lesson.thema;
+            document.getElementById('l-meta').innerText = `Niveau ${lesson.niveau}`;
+            
+            // Populate Audio
+            const audioEl = document.getElementById('l-audio');
+            audioEl.src = lesson.audio_url;
+            audioEl.playbackRate = 1.0;
+            // reset speed buttons
+            document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.speed-btn').classList.add('active');
+
+            // Populate Transcript
+            const tContainer = document.getElementById('l-transcript');
+            tContainer.innerHTML = '';
+            tContainer.classList.add('hidden'); // hidden by default
+            document.getElementById('l-toggle-btn').innerText = "👁️ Toon Transcript (Spiekbriefje)";
+            
+            // Determine speakers to assign colors
+            const sprekersKeys = Object.keys(lesson.sprekers);
+            
+            lesson.conversatie.forEach(zin => {
+                const isSp1 = zin.speaker === sprekersKeys[0];
+                const cls = isSp1 ? 'sp-1' : 'sp-2';
+                
+                tContainer.innerHTML += `
+                    <div class="bubble ${cls}">
+                        <div class="speaker-name">${zin.speaker}</div>
+                        ${zin.text}
+                    </div>
+                `;
+            });
+
+            // Populate Questions
+            const qContainer = document.getElementById('l-questions');
+            qContainer.innerHTML = '';
+            
+            if (!lesson.vragen || lesson.vragen.length === 0) {
+                document.getElementById('l-questions-section').style.display = 'none';
+            } else {
+                document.getElementById('l-questions-section').style.display = 'block';
+                
+                lesson.vragen.forEach((q, qIndex) => {
+                    const block = document.createElement('div');
+                    block.className = 'question-block';
+                    
+                    let optsHtml = '';
+                    q.opties.forEach((opt, oIndex) => {
+                        optsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${oIndex}, ${q.antwoord_index})">${opt}</button>`;
+                    });
+                    
+                    block.innerHTML = `
+                        <div class="q-text">${qIndex + 1}. ${q.vraag}</div>
+                        <div class="options">${optsHtml}</div>
+                    `;
+                    qContainer.appendChild(block);
+                });
+            }
+        }
+
+        function showOverview() {
+            document.getElementById('lesson-view').classList.remove('active');
+            document.getElementById('overview-view').style.display = 'block';
+            document.getElementById('l-audio').pause();
+        }
+
+        function setSpeed(rate, btnEl) {
+            document.getElementById('l-audio').playbackRate = rate;
+            document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+        }
+
+        function toggleTranscript() {
+            const t = document.getElementById('l-transcript');
+            const btn = document.getElementById('l-toggle-btn');
+            if (t.classList.contains('hidden')) {
+                t.classList.remove('hidden');
+                btn.innerText = "🙈 Verberg Transcript";
+            } else {
+                t.classList.add('hidden');
+                btn.innerText = "👁️ Toon Transcript (Spiekbriefje)";
+            }
+        }
+
+        function checkAnswer(btnEl, selectedIdx, correctIdx) {
+            const parent = btnEl.parentElement;
+            // Disable all buttons in this question
+            Array.from(parent.children).forEach(b => b.disabled = true);
+            
+            if (selectedIdx === correctIdx) {
+                btnEl.classList.add('correct');
+            } else {
+                btnEl.classList.add('wrong');
+                // Highlight correct one
+                parent.children[correctIdx].classList.add('correct');
+            }
+        }
+    </script>
+</body>
+</html>
