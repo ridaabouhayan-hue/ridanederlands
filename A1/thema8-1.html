@@ -181,8 +181,14 @@
                 <h3>Verbind het dier met de beschrijving</h3>
                 <p class="instructie" data-translate="instrVerbind">Klik op een dier (links), dan op de juiste beschrijving (rechts). Herhaal wat je al hebt geleerd!</p>
                 <div class="verbind-container">
-                    <div class="verbind-col" id="vb1-links"></div>
-                    <div class="verbind-col" id="vb1-rechts"></div>
+                    <div class="verbind-col">
+                        <div class="verbind-col-header">🐄 Dier</div>
+                        <div id="vb1-links"></div>
+                    </div>
+                    <div class="verbind-col">
+                        <div class="verbind-col-header">📝 Beschrijving</div>
+                        <div id="vb1-rechts"></div>
+                    </div>
                 </div>
                 <span id="vb1-score" class="score-badge" style="display:none"></span>
                 <button class="reset-btn" onclick="resetVerbind()">🔄 Opnieuw</button>
@@ -434,7 +440,7 @@ const vbData=[
     {woord:'het paard',   def:'Een groot dier waarop je kunt rijden.'}
 ];
 let vbSel=null,vbType=null,vbDone=0;
-function buildVerbind(){const L=document.getElementById('vb1-links'),R=document.getElementById('vb1-rechts');const sh=[...vbData].sort(()=>Math.random()-.5);vbData.forEach((item,i)=>{const d=document.createElement('div');d.className='verbind-item';d.dataset.id=i;d.dataset.side='links';d.textContent=item.woord;d.onclick=()=>selVb(d);L.appendChild(d);});sh.forEach(item=>{const idx=vbData.findIndex(v=>v.woord===item.woord);const d=document.createElement('div');d.className='verbind-item';d.dataset.id=idx;d.dataset.side='rechts';d.textContent=item.def;d.style.fontSize='.81rem';d.onclick=()=>selVb(d);R.appendChild(d);});}
+function buildVerbind(){const L=document.getElementById('vb1-links'),R=document.getElementById('vb1-rechts');L.innerHTML='';R.innerHTML='';const sh=[...vbData].sort(()=>Math.random()-.5);vbData.forEach((item,i)=>{const d=document.createElement('div');d.className='verbind-item';d.dataset.id=i;d.dataset.side='links';d.textContent=item.woord;d.onclick=()=>selVb(d);L.appendChild(d);});sh.forEach(item=>{const idx=vbData.findIndex(v=>v.woord===item.woord);const d=document.createElement('div');d.className='verbind-item';d.dataset.id=idx;d.dataset.side='rechts';d.textContent=item.def;d.style.fontSize='.81rem';d.onclick=()=>selVb(d);R.appendChild(d);});}
 function selVb(el){if(vbSel===null){vbSel=el;el.classList.add('selected');vbType=el.dataset.side;}else{if(el.dataset.side===vbType){vbSel.classList.remove('selected');vbSel=el;el.classList.add('selected');return;}vbSel.classList.remove('selected');if(vbSel.dataset.id===el.dataset.id){vbSel.classList.add('matched-ok');el.classList.add('matched-ok');vbDone++;if(vbDone===vbData.length){const s=document.getElementById('vb1-score');s.style.display='inline-block';s.textContent=`${vbDone}/${vbData.length} ✓`;s.className='score-badge score-goed';}}else{vbSel.classList.add('matched-err');el.classList.add('matched-err');setTimeout(()=>{vbSel.classList.remove('matched-err');el.classList.remove('matched-err');},600);}vbSel=null;vbType=null;}}
 function resetVerbind(){vbSel=null;vbType=null;vbDone=0;document.getElementById('vb1-links').innerHTML='';document.getElementById('vb1-rechts').innerHTML='';document.getElementById('vb1-score').style.display='none';buildVerbind();}
 
