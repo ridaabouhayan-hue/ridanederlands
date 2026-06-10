@@ -9,15 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #09090b;
-            --surface: #18181b;
-            --surface-hover: #27272a;
-            --border: #3f3f46;
-            --text-main: #f8fafc;
-            --text-muted: #a1a1aa;
+            --bg: #f5f3ef; /* Warm licht-beige achtergrond, NOS-stijl */
+            --surface: #ffffff;
+            --surface-hover: #faf9f6;
+            --border: #e2e8f0;
+            --text-main: #1f2937;
+            --text-muted: #64748b;
             
-            --primary: #3b82f6;
-            --primary-glow: rgba(59, 130, 246, 0.4);
+            --primary: #e3000f; /* NOS Rood */
+            --primary-glow: rgba(227, 0, 15, 0.1);
             --success: #10b981;
             --danger: #ef4444;
 
@@ -53,68 +53,127 @@
         }
 
         header { text-align: center; }
-        header h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        header p { color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; }
+        header h1 { font-size: 3rem; font-weight: 800; color: #002f6c; /* NOS Blauw */ }
+        header p { color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; font-weight: 500; }
 
         /* Levels & Themes */
         .level-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;}
         .level-tab {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted);
+            background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
             padding: 10px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .level-tab:hover { background: rgba(255,255,255,0.1); color: white; }
-        .level-tab.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+        .level-tab:hover { background: var(--surface-hover); color: var(--text-main); }
+        .level-tab.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px var(--primary-glow); }
 
         .themes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
         .theme-card {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
             padding: 20px; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        .theme-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .theme-title { font-size: 1.2rem; font-weight: 700; color: white; }
-        .theme-meta { font-size: 0.85rem; color: var(--text-muted); }
+        .theme-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+        .theme-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
+        .theme-meta { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
         /* Lesson View */
-        .lesson-view { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; animation: fadeIn 0.4s ease-out; }
+        .lesson-view { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px; animation: fadeIn 0.4s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
         .lesson-view.active { display: block; }
-        .back-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; margin-bottom: 20px; font-weight: 600; }
-        .back-btn:hover { color: white; }
+        .back-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; margin-bottom: 20px; font-weight: 600; transition: var(--transition); }
+        .back-btn:hover { color: var(--primary); }
 
         .lesson-header { margin-bottom: 25px; }
-        .lesson-header h2 { font-size: 2rem; color: var(--primary); }
+        .lesson-header h2 { font-size: 2rem; color: #002f6c; }
 
-        .audio-container { background: rgba(0,0,0,0.3); padding: 20px; border-radius: var(--radius-md); margin-bottom: 30px; }
+        /* Sticky Audio Container */
+        .audio-container { 
+            background: #f8fafc; 
+            border: 1px solid var(--border); 
+            padding: 20px; 
+            border-radius: var(--radius-md); 
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
         audio { width: 100%; outline: none; margin-bottom: 15px; }
         .speed-controls { display: flex; gap: 10px; justify-content: center; }
-        .speed-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); }
+        .speed-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); font-weight: 500; }
         .speed-btn.active, .speed-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* Transcript */
         .transcript-section { margin-bottom: 30px; }
-        .toggle-btn { background: rgba(255,255,255,0.05); border: 1px dashed var(--border); color: white; width: 100%; padding: 15px; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 1.05rem; transition: var(--transition); }
-        .toggle-btn:hover { background: rgba(255,255,255,0.1); }
+        .toggle-btn { background: var(--surface); border: 1px dashed var(--border); color: var(--text-main); width: 100%; padding: 15px; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 1.05rem; transition: var(--transition); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .toggle-btn:hover { background: var(--surface-hover); border-color: var(--primary); color: var(--primary); }
         .transcript-content { display: none; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; }
         .transcript-content.hidden { display: none; }
         
-        .bubble { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 1.05rem; line-height: 1.5; }
-        .bubble.sp-1 { background: var(--primary); align-self: flex-start; border-bottom-left-radius: 0; }
-        .bubble.sp-2 { background: #6366f1; align-self: flex-end; border-bottom-right-radius: 0; }
+        .bubble { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 1.05rem; line-height: 1.5; color: var(--text-main); }
+        .bubble.sp-1 { background: #f1f5f9; border: 1px solid #e2e8f0; align-self: flex-start; border-bottom-left-radius: 0; }
+        .bubble.sp-2 { background: #e0f2fe; border: 1px solid #bae6fd; align-self: flex-end; border-bottom-right-radius: 0; color: #0369a1; }
         .speaker-name { font-weight: 700; font-size: 0.8rem; margin-bottom: 4px; opacity: 0.8; text-transform: uppercase; }
 
         /* Questions */
         .questions-section { border-top: 1px solid var(--border); padding-top: 30px; }
-        .questions-section h3 { margin-bottom: 20px; font-size: 1.5rem; }
-        .question-block { background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; }
-        .q-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; }
+        .questions-section h3 { margin-bottom: 20px; font-size: 1.5rem; color: #002f6c; }
+        .question-block { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; }
+        .q-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; color: var(--text-main); }
         .options { display: flex; flex-direction: column; gap: 10px; }
-        .option-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); padding: 12px; border-radius: 8px; text-align: left; cursor: pointer; transition: var(--transition); font-size: 1rem; }
-        .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.05); }
+        .option-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); padding: 12px; border-radius: 8px; text-align: left; cursor: pointer; transition: var(--transition); font-size: 1rem; font-weight: 500; }
+        .option-btn:hover:not(:disabled) { background: var(--surface-hover); border-color: #cbd5e1; }
         .option-btn.correct { background: var(--success); border-color: var(--success); color: white; }
         .option-btn.wrong { background: var(--danger); border-color: var(--danger); color: white; opacity: 0.7; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .hidden-until-loaded { display: none; }
+
+        /* New Waveform & Player Styles */
+        .waveform-container {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 15px 15px 5px 15px;
+            margin-top: 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .waveform-container-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .waveform-canvas {
+            width: 100%;
+            height: 100px;
+            cursor: pointer;
+            display: block;
+        }
+        
+        /* Interactive clickable transcript bubbles */
+        .bubble {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            border: 1px solid transparent;
+        }
+        .bubble:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        .bubble.active {
+            border-color: var(--primary) !important;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(227, 0, 15, 0.1), 0 0 8px var(--primary-glow) !important;
+        }
     </style>
 </head>
 <body>
@@ -151,6 +210,14 @@
                     <button class="speed-btn" onclick="setSpeed(0.75, this)">0.75x (Traag)</button>
                     <button class="speed-btn" onclick="setSpeed(0.5, this)">0.5x (Zeer Traag)</button>
                 </div>
+                <!-- Waveform Visualizer -->
+                <div class="waveform-container">
+                    <div class="waveform-container-title">
+                        <span>Audiogolf &amp; Pauzes</span>
+                        <span id="waveform-time" style="font-family: monospace; font-size: 0.85rem;">00:00 / 00:00</span>
+                    </div>
+                    <canvas id="waveform-canvas" class="waveform-canvas"></canvas>
+                </div>
             </div>
 
             <div class="transcript-section">
@@ -169,6 +236,11 @@
     <script>
         let db = [];
         let currentLevel = "A1";
+        let currentLesson = null;
+        let waveformCanvas = null;
+        let ctx = null;
+        let isDragging = false;
+        let lastActiveIdx = -1;
 
         // Laad data uit data.js als dat aanwezig is (voorkomt CORS fouten bij file://)
         if (window.luisterportaalData) {
@@ -188,6 +260,27 @@
                     document.getElementById('no-data-msg').innerText = "Database (data.json) kon niet geladen worden. Heb je al een les gegenereerd?";
                 });
         }
+
+        // Setup audio element listeners
+        const audioEl = document.getElementById('l-audio');
+        
+        audioEl.addEventListener('loadedmetadata', () => {
+            if (currentLesson) {
+                ensureTimestamps(currentLesson, audioEl.duration);
+                initWaveform();
+            }
+        });
+        
+        audioEl.addEventListener('timeupdate', () => {
+            drawWaveform();
+            updateTranscriptHighlight();
+        });
+
+        window.addEventListener('resize', () => {
+            if (currentLesson) {
+                resizeCanvas();
+            }
+        });
 
         function initApp() {
             // Get unique levels
@@ -245,6 +338,9 @@
         }
 
         function openLesson(lesson) {
+            currentLesson = lesson;
+            lastActiveIdx = -1;
+            
             document.getElementById('overview-view').style.display = 'none';
             document.getElementById('lesson-view').classList.add('active');
 
@@ -253,12 +349,17 @@
             document.getElementById('l-meta').innerText = `Niveau ${lesson.niveau}`;
             
             // Populate Audio
-            const audioEl = document.getElementById('l-audio');
             audioEl.src = lesson.audio_url;
             audioEl.playbackRate = 1.0;
             // reset speed buttons
             document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
             document.querySelector('.speed-btn').classList.add('active');
+
+            // Reset Waveform Text
+            const timeTextEl = document.getElementById('waveform-time');
+            if (timeTextEl) {
+                timeTextEl.innerText = "00:00 / 00:00";
+            }
 
             // Populate Transcript
             const tContainer = document.getElementById('l-transcript');
@@ -269,12 +370,12 @@
             // Determine speakers to assign colors
             const sprekersKeys = Object.keys(lesson.sprekers);
             
-            lesson.conversatie.forEach(zin => {
+            lesson.conversatie.forEach((zin, index) => {
                 const isSp1 = zin.speaker === sprekersKeys[0];
                 const cls = isSp1 ? 'sp-1' : 'sp-2';
                 
                 tContainer.innerHTML += `
-                    <div class="bubble ${cls}">
+                    <div class="bubble ${cls}" id="bubble-${index}" onclick="seekToSentence(${index})">
                         <div class="speaker-name">${zin.speaker}</div>
                         ${zin.text}
                     </div>
@@ -311,11 +412,12 @@
         function showOverview() {
             document.getElementById('lesson-view').classList.remove('active');
             document.getElementById('overview-view').style.display = 'block';
-            document.getElementById('l-audio').pause();
+            audioEl.pause();
+            currentLesson = null;
         }
 
         function setSpeed(rate, btnEl) {
-            document.getElementById('l-audio').playbackRate = rate;
+            audioEl.playbackRate = rate;
             document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
         }
@@ -326,6 +428,8 @@
             if (t.classList.contains('hidden')) {
                 t.classList.remove('hidden');
                 btn.innerText = "🙈 Verberg Transcript";
+                // Scroll immediately to active if any
+                updateTranscriptHighlight();
             } else {
                 t.classList.add('hidden');
                 btn.innerText = "👁️ Toon Transcript (Spiekbriefje)";
@@ -343,6 +447,279 @@
                 btnEl.classList.add('wrong');
                 // Highlight correct one
                 parent.children[correctIdx].classList.add('correct');
+            }
+        }
+
+        // ─── WAVEFORM & INTERACTIVE TIMELINE LOGICA ───
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Schat de start/eindtijden voor legacy lessen die geen start_ms en end_ms hebben
+        function ensureTimestamps(lesson, duration) {
+            let hasTimestamps = lesson.conversatie.every(z => typeof z.start_ms !== 'undefined');
+            if (hasTimestamps) return;
+
+            const n = lesson.conversatie.length;
+            const totalChars = lesson.conversatie.reduce((sum, z) => sum + z.text.length, 0);
+            
+            let pauseSec = 1.5;
+            let totalPause = (n - 1) * pauseSec;
+            if (totalPause >= duration) {
+                pauseSec = 0.5;
+                totalPause = (n - 1) * pauseSec;
+            }
+            if (totalPause >= duration) {
+                pauseSec = 0;
+                totalPause = 0;
+            }
+
+            const speechDuration = duration - totalPause;
+            let currentMs = 0;
+            
+            lesson.conversatie.forEach((zin, idx) => {
+                const pct = totalChars > 0 ? (zin.text.length / totalChars) : (1 / n);
+                const sentenceDurationMs = pct * speechDuration * 1000;
+                
+                zin.start_ms = currentMs;
+                zin.end_ms = currentMs + sentenceDurationMs;
+                
+                currentMs = zin.end_ms + (pauseSec * 1000);
+            });
+        }
+
+        function initWaveform() {
+            waveformCanvas = document.getElementById('waveform-canvas');
+            ctx = waveformCanvas.getContext('2d');
+            
+            // Registreer klik- en sleep-events op de geluidsgolf
+            if (!waveformCanvas.dataset.eventsAttached) {
+                waveformCanvas.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    seekToCanvasX(e);
+                });
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (isDragging) {
+                        seekToCanvasX(e);
+                    }
+                });
+                
+                window.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                waveformCanvas.dataset.eventsAttached = "true";
+            }
+            
+            resizeCanvas();
+        }
+
+        function resizeCanvas() {
+            if (!waveformCanvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            waveformCanvas.width = waveformCanvas.clientWidth * dpr;
+            waveformCanvas.height = waveformCanvas.clientHeight * dpr;
+            drawWaveform();
+        }
+
+        function seekToCanvasX(e) {
+            if (!waveformCanvas || !currentLesson) return;
+            if (isNaN(audioEl.duration)) return;
+            
+            const rect = waveformCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, x / rect.width));
+            audioEl.currentTime = pct * audioEl.duration;
+        }
+
+        function seekToSentence(index) {
+            if (currentLesson && currentLesson.conversatie && currentLesson.conversatie[index]) {
+                const startSec = currentLesson.conversatie[index].start_ms / 1000;
+                audioEl.currentTime = startSec;
+                audioEl.play();
+            }
+        }
+
+        function drawWaveform() {
+            if (!waveformCanvas || !ctx || !currentLesson) return;
+            
+            const W = waveformCanvas.width;
+            const H = waveformCanvas.height;
+            const duration = audioEl.duration || 0;
+            const currentTime = audioEl.currentTime || 0;
+            
+            ctx.clearRect(0, 0, W, H);
+            
+            // 1. Achtergrond
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, W, H);
+            
+            const dpr = window.devicePixelRatio || 1;
+            const timelineHeight = 22 * dpr;
+            const gridHeight = H - timelineHeight;
+            
+            // Draw grid lines
+            ctx.strokeStyle = "#f1f5f9";
+            ctx.lineWidth = 1;
+            
+            // Horizontaal
+            for (let y = gridHeight / 4; y < gridHeight; y += gridHeight / 4) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(W, y);
+                ctx.stroke();
+            }
+            
+            const step = 5; // gridline notches om de 5 seconden
+            const pxPerSec = W / (duration || 1);
+            
+            // Verticaal grid
+            for (let sec = 0; sec <= duration; sec += step) {
+                const x = sec * pxPerSec;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, gridHeight);
+                ctx.stroke();
+            }
+
+            // 2. Highlight actieve spraakblok
+            const curMs = currentTime * 1000;
+            currentLesson.conversatie.forEach((zin, idx) => {
+                if (curMs >= zin.start_ms && curMs <= zin.end_ms) {
+                    const xStart = (zin.start_ms / 1000) * pxPerSec;
+                    const xEnd = (zin.end_ms / 1000) * pxPerSec;
+                    
+                    ctx.fillStyle = "rgba(227, 0, 15, 0.04)";
+                    ctx.fillRect(xStart, 0, xEnd - xStart, gridHeight);
+                }
+            });
+
+            // 3. Teken Waveform Bars (syllabes en spraakgolven)
+            const barWidth = 2 * dpr;
+            const gap = 1 * dpr;
+            const stepPx = barWidth + gap;
+            
+            ctx.lineWidth = barWidth;
+            const midY = gridHeight / 2;
+            const maxAmplitude = gridHeight * 0.4;
+            
+            for (let x = 0; x < W; x += stepPx) {
+                const t = (x / W) * duration;
+                const tMs = t * 1000;
+                
+                let speakerTurn = currentLesson.conversatie.find(z => tMs >= z.start_ms && tMs <= z.end_ms);
+                let isPlayed = t <= currentTime;
+                
+                if (speakerTurn) {
+                    const turnIdx = currentLesson.conversatie.indexOf(speakerTurn);
+                    const L = speakerTurn.end_ms - speakerTurn.start_ms;
+                    const p = (tMs - speakerTurn.start_ms) / L;
+                    
+                    const baseEnvelope = Math.sin(p * Math.PI);
+                    const freq1 = 12 + (turnIdx % 4);
+                    const freq2 = 4 + (turnIdx % 3);
+                    const shape = 0.55 + 0.3 * Math.sin(p * Math.PI * freq1) + 0.15 * Math.cos(p * Math.PI * freq2);
+                    const detail = 0.95 + 0.05 * Math.sin(x * 0.8);
+                    
+                    let amplitude = baseEnvelope * shape * detail;
+                    amplitude = Math.max(0.04, Math.min(1.0, amplitude));
+                    
+                    const barH = amplitude * maxAmplitude;
+                    ctx.strokeStyle = isPlayed ? "#e3000f" : "#cbd5e1";
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x, midY - barH);
+                    ctx.lineTo(x, midY + barH);
+                    ctx.stroke();
+                } else {
+                    // Pauze vlakke lijn
+                    ctx.strokeStyle = isPlayed ? "rgba(227, 0, 15, 0.3)" : "#e2e8f0";
+                    ctx.beginPath();
+                    ctx.moveTo(x, midY);
+                    ctx.lineTo(x + barWidth, midY);
+                    ctx.stroke();
+                }
+            }
+            
+            // 4. Tijdbalk (notches en tekst onderaan)
+            ctx.fillStyle = "#f8fafc";
+            ctx.fillRect(0, gridHeight, W, timelineHeight);
+            
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.beginPath();
+            ctx.moveTo(0, gridHeight);
+            ctx.lineTo(W, gridHeight);
+            ctx.stroke();
+            
+            ctx.fillStyle = "#64748b";
+            ctx.font = `${9 * dpr}px 'Inter', sans-serif`;
+            
+            for (let sec = 0; sec <= duration; sec += step) {
+                const x = sec * pxPerSec;
+                
+                ctx.strokeStyle = "#e2e8f0";
+                ctx.beginPath();
+                ctx.moveTo(x, gridHeight);
+                ctx.lineTo(x, gridHeight + 6 * dpr);
+                ctx.stroke();
+                
+                const mins = Math.floor(sec / 60);
+                const secs = Math.floor(sec % 60);
+                const label = `${mins}:${secs.toString().padStart(2, '0')}`;
+                ctx.fillText(label, x + 2 * dpr, gridHeight + 14 * dpr);
+            }
+            
+            // 5. Playhead
+            const playheadX = (currentTime / (duration || 1)) * W;
+            ctx.strokeStyle = "#002f6c";
+            ctx.lineWidth = 2 * dpr;
+            ctx.beginPath();
+            ctx.moveTo(playheadX, 0);
+            ctx.lineTo(playheadX, gridHeight + 4 * dpr);
+            ctx.stroke();
+            
+            ctx.fillStyle = "#002f6c";
+            ctx.beginPath();
+            ctx.arc(playheadX, 0, 4 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 6. Update tekst
+            const timeTextEl = document.getElementById('waveform-time');
+            if (timeTextEl) {
+                timeTextEl.innerText = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+            }
+        }
+
+        function updateTranscriptHighlight() {
+            if (!currentLesson) return;
+            const curMs = audioEl.currentTime * 1000;
+            
+            let activeIdx = -1;
+            currentLesson.conversatie.forEach((zin, idx) => {
+                if (curMs >= zin.start_ms && curMs <= zin.end_ms) {
+                    activeIdx = idx;
+                }
+            });
+            
+            if (activeIdx !== lastActiveIdx) {
+                document.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
+                
+                if (activeIdx !== -1) {
+                    const activeBubble = document.getElementById(`bubble-${activeIdx}`);
+                    if (activeBubble) {
+                        activeBubble.classList.add('active');
+                        const t = document.getElementById('l-transcript');
+                        if (!t.classList.contains('hidden')) {
+                            activeBubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }
+                }
+                lastActiveIdx = activeIdx;
             }
         }
     </script>
