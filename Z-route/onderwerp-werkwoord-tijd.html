@@ -424,33 +424,144 @@
             text-align: right;
         }
 
-        .nav-tabs {
-            display: flex;
-            gap: 12px;
+        /* New Navigation Styles */
+        .nav-container {
             margin-bottom: 30px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .nav-tab {
+        .main-branches {
+            display: flex;
+            gap: 15px;
+        }
+
+        .branch-btn-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .branch-btn {
+            width: 100%;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-muted);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s;
-            font-size: 0.95rem;
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
         }
 
-        .nav-tab:hover {
+        .branch-btn:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-dark);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
-        .nav-tab.active {
+        .branch-btn.active {
+            background: linear-gradient(135deg, rgba(78, 140, 255, 0.15) 0%, rgba(78, 140, 255, 0.05) 100%);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .branch-btn .chevron {
+            font-size: 0.8rem;
+            transition: transform 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .branch-btn.active .chevron {
+            color: var(--accent);
+        }
+
+        .branch-btn-wrapper.open .branch-btn .chevron {
+            transform: rotate(180deg);
+        }
+
+        .branch-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            overflow: hidden;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .branch-btn-wrapper.open .branch-dropdown {
+            display: block;
+        }
+
+        .branch-dropdown a {
+            display: block;
+            padding: 12px 18px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .branch-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .branch-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            padding-left: 24px;
+        }
+
+        .branch-dropdown a.active {
+            background: rgba(78, 140, 255, 0.1);
+            color: var(--accent);
+        }
+
+        .sub-nav-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sub-nav-tab {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .sub-nav-tab:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-dark);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-nav-tab.active {
             background: var(--accent);
             color: #0f1729;
             border-color: var(--accent);
@@ -474,13 +585,17 @@
                 max-width: none;
             }
 
-            .nav-tabs {
+            .sub-nav-tabs {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 8px;
             }
-            .nav-tab {
+            .sub-nav-tab {
                 text-align: center;
+            }
+            .main-branches {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -489,11 +604,41 @@
     <div class="container">
         <a href="../index.html" class="back-link">← Terug naar Hoofdmenu</a>
 
-        <div class="nav-tabs">
-            <a href="onderwerp-werkwoord.html" class="nav-tab">1. Wie + Werkwoord</a>
-            <a href="onderwerp-werkwoord-tijd.html" class="nav-tab active">2. Onderwerp + Werkwoord + Tijd</a>
-            <a href="onderwerp-werkwoord-tijd-object.html" class="nav-tab">3. Onderwerp + Werkwoord + Tijd + Object</a>
-            <a href="index.html" class="nav-tab">4. Het TOP Systeem (T-O-P)</a>
+        <div class="nav-container">
+            <div class="main-branches">
+                <div class="branch-btn-wrapper">
+                    <button class="branch-btn active" onclick="toggleBranchDropdown('branch-1')">
+                        <span>1 Werkwoord</span>
+                        <span class="chevron">▼</span>
+                    </button>
+                    <div class="branch-dropdown" id="branch-1">
+                        <a href="onderwerp-werkwoord.html">1. Wie + Werkwoord</a>
+                        <a href="onderwerp-werkwoord-tijd.html" class="active">2. Onderwerp + Werkwoord + Tijd</a>
+                        <a href="onderwerp-werkwoord-tijd-object.html">3. Onderwerp + Werkwoord + Tijd + Object</a>
+                        <a href="index.html">4. Het TOP Systeem (T-O-P)</a>
+                    </div>
+                </div>
+                
+                <div class="branch-btn-wrapper">
+                    <button class="branch-btn" onclick="toggleBranchDropdown('branch-2')">
+                        <span>2 Werkwoorden</span>
+                        <span class="chevron">▼</span>
+                    </button>
+                    <div class="branch-dropdown" id="branch-2">
+                        <a href="onderwerp-twee-werkwoorden.html">1. Wie + 2 Werkwoorden</a>
+                        <a href="onderwerp-twee-werkwoorden-tijd.html">2. Wie + 2 Werkwoorden + Tijd</a>
+                        <a href="onderwerp-twee-werkwoorden-tijd-object.html">3. Wie + 2 Werkwoorden + Tijd + Object</a>
+                        <a href="onderwerp-twee-werkwoorden-top.html">4. Het TOP Systeem + 2 Werkwoorden</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-nav-tabs">
+                <a href="onderwerp-werkwoord.html" class="sub-nav-tab">1. Wie + Werkwoord</a>
+                <a href="onderwerp-werkwoord-tijd.html" class="sub-nav-tab active">2. Onderwerp + Werkwoord + Tijd</a>
+                <a href="onderwerp-werkwoord-tijd-object.html" class="sub-nav-tab">3. Onderwerp + Werkwoord + Tijd + Object</a>
+                <a href="index.html" class="sub-nav-tab">4. Het TOP Systeem (T-O-P)</a>
+            </div>
         </div>
 
         <header>
@@ -692,7 +837,7 @@
         <div class="exercise-section">
             <div class="exercise-header">
                 <h2>Schrijf de zin goed op</h2>
-                <div class="score-badge">Score: <span id="current-score">0</span> / 20</div>
+                <div class="score-badge">Score: <span id="current-score">0</span> / 30</div>
             </div>
 
             <p style="color: var(--text-muted); font-weight: 600; margin-bottom: 25px; line-height: 1.5;">
@@ -811,8 +956,77 @@
                 tokens: ["Zij", "in de middag", "praten"],
                 correctTokens: ["Zij", "praten", "in de middag"],
                 answers: ["Zij praten in de middag.", "zij praten in de middag"]
+            },
+            {
+                tokens: ["De zon", "vandaag", "schijnt"],
+                correctTokens: ["De zon", "schijnt", "vandaag"],
+                answers: ["De zon schijnt vandaag.", "de zon schijnt vandaag"]
+            },
+            {
+                tokens: ["spelen", "De kinderen", "in de middag"],
+                correctTokens: ["De kinderen", "spelen", "in de middag"],
+                answers: ["De kinderen spelen in de middag.", "de kinderen spelen in de middag"]
+            },
+            {
+                tokens: ["nu", "De auto", "rijdt"],
+                correctTokens: ["De auto", "rijdt", "nu"],
+                answers: ["De auto rijdt nu.", "de auto rijdt nu"]
+            },
+            {
+                tokens: ["De bakker", "bakt", "vannacht"],
+                correctTokens: ["De bakker", "bakt", "vannacht"],
+                answers: ["De bakker bakt vannacht.", "de bakker bakt vannacht"]
+            },
+            {
+                tokens: ["luistert", "Jij", "nu"],
+                correctTokens: ["Jij", "luistert", "nu"],
+                answers: ["Jij luistert nu.", "jij luistert nu"]
+            },
+            {
+                tokens: ["praten", "Zij", "vanavond"],
+                correctTokens: ["Zij", "praten", "vanavond"],
+                answers: ["Zij praten vanavond.", "zij praten vanavond"]
+            },
+            {
+                tokens: ["tikt", "altijd", "De klok"],
+                correctTokens: ["De klok", "tikt", "altijd"],
+                answers: ["De klok tikt altijd.", "de klok tikt altijd"]
+            },
+            {
+                tokens: ["schrijf", "morgen", "Ik"],
+                correctTokens: ["Ik", "schrijf", "morgen"],
+                answers: ["Ik schrijf morgen.", "ik schrijf morgen"]
+            },
+            {
+                tokens: ["studeren", "vanmiddag", "Wij"],
+                correctTokens: ["Wij", "studeren", "vanmiddag"],
+                answers: ["Wij studeren vanmiddag.", "wij studeren vanmiddag"]
+            },
+            {
+                tokens: ["begint", "vanavond", "Het feest"],
+                correctTokens: ["Het feest", "begint", "vanavond"],
+                answers: ["Het feest begint vanavond.", "het feest begint vanavond"]
             }
         ];
+
+        function toggleBranchDropdown(id) {
+            const wrapper = document.getElementById(id).parentNode;
+            const isOpen = wrapper.classList.contains('open');
+            
+            // Close all first
+            document.querySelectorAll('.branch-btn-wrapper').forEach(w => w.classList.remove('open'));
+            
+            if (!isOpen) {
+                wrapper.classList.add('open');
+            }
+        }
+        
+        // Close dropdowns on click outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.branch-btn-wrapper')) {
+                document.querySelectorAll('.branch-btn-wrapper').forEach(w => w.classList.remove('open'));
+            }
+        });
 
         let scoresState = new Array(exercises.length).fill(false);
         let currentLang = 'nl';
