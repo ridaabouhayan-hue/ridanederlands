@@ -1140,6 +1140,12 @@
             border-color: var(--accent-blue);
         }
 
+        .duo-textarea:disabled {
+            opacity: 0.5;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: not-allowed;
+        }
+
         .duo-divider {
             display: flex;
             flex-direction: column;
@@ -1240,6 +1246,12 @@
         .btn-reveal-answer:hover {
             border-color: var(--accent-purple);
             background: rgba(139, 92, 246, 0.05);
+        }
+
+        .btn-reveal-answer:disabled, .btn-next-card:disabled {
+            opacity: 0.35 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
         }
 
         .duo-score-controls {
@@ -2303,7 +2315,10 @@
                         <p class="duo-card-transl" id="duo-qa-transl" style="font-size: 0.9rem; margin: 0;"></p>
                     </div>
 
-                    <button class="btn-next-card" onclick="nextDuoQACard()" data-i18n-nl="🎲 Volgende Vraag" data-i18n-en="🎲 Next Question" data-i18n-pl="🎲 Następne Pytanie">🎲 Volgende Vraag</button>
+                    <div style="display:flex; gap:10px; margin-top: auto;">
+                        <button class="btn-next-card" id="btn-submit-qa-question" onclick="submitCustomChatQuestion()" style="flex:1; background: var(--accent-purple); display:flex; align-items:center; justify-content:center; gap:8px;" data-i18n-nl="Verstuur Vraag 💬" data-i18n-en="Send Question 💬" data-i18n-pl="Wyślij Pytanie 💬">Verstuur Vraag 💬</button>
+                        <button class="btn-next-card" onclick="nextDuoQACard()" style="flex:1;" data-i18n-nl="🎲 Volgende Vraag" data-i18n-en="🎲 Next Question" data-i18n-pl="🎲 Następne Pytanie">🎲 Volgende Vraag</button>
+                    </div>
                 </div>
 
                 <!-- Divider Arrow -->
@@ -2333,16 +2348,38 @@
                         </div>
                     </div>
 
-                    <div class="duo-controls-row" style="margin-top: auto;">
-                        <button class="btn-reveal-answer" onclick="revealDuoQAAnswer()" data-i18n-nl="👁️ Toon Modelantwoord" data-i18n-en="👁️ Show Model Answer" data-i18n-pl="👁️ Pokaż Odpowiedź Wzorcową">👁️ Toon Modelantwoord</button>
-                        
-                        <div class="duo-score-controls">
-                            <span data-i18n-nl="Punten:" data-i18n-en="Points:" data-i18n-pl="Punkty:">Punten:</span>
-                            <button class="score-counter-btn" onclick="adjustDuoQAScore(-1)">-</button>
-                            <span class="score-counter-val" id="duo-qa-score-val">0</span>
-                            <button class="score-counter-btn" onclick="adjustDuoQAScore(1)">+</button>
+                    <div class="duo-controls-row" style="margin-top: auto; display:flex; flex-direction:column; gap:12px; align-items:stretch;">
+                        <div style="display:flex; gap:10px; width:100%;">
+                            <button class="btn-reveal-answer" id="btn-submit-qa-answer" onclick="submitCustomChatAnswer()" style="flex:1; border-color: var(--accent-green); background: rgba(16, 185, 129, 0.05); display:flex; align-items:center; justify-content:center; gap:8px;" data-i18n-nl="Verstuur Antwoord 💬" data-i18n-en="Send Answer 💬" data-i18n-pl="Wyślij Odpowiedź 💬">Verstuur Antwoord 💬</button>
+                            <button class="btn-reveal-answer" onclick="revealDuoQAAnswer()" style="flex:1;" data-i18n-nl="👁️ Modelantwoord" data-i18n-en="👁️ Model Answer" data-i18n-pl="👁️ Odpowiedź Wzorcowa">👁️ Modelantwoord</button>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                            <div class="duo-score-controls" style="width:100%; justify-content:space-between;">
+                                <span data-i18n-nl="Punten:" data-i18n-en="Points:" data-i18n-pl="Punkty:">Punten:</span>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <button class="score-counter-btn" onclick="adjustDuoQAScore(-1)">-</button>
+                                    <span class="score-counter-val" id="duo-qa-score-val">0</span>
+                                    <button class="score-counter-btn" onclick="adjustDuoQAScore(1)">+</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Turn Status Banner -->
+            <div id="duo-qa-turn-banner" style="margin-top: 24px; padding: 14px; border-radius: var(--radius-sm); border: 2px solid var(--border-color); text-align: center; font-weight: 850; font-size: 1.15rem; background: rgba(139, 92, 246, 0.05); color: var(--accent-purple); transition: var(--transition);">
+                Beurt: Cursist 1 🗣️ (Stel een vraag)
+            </div>
+
+            <!-- Custom Chat History Container -->
+            <div class="custom-chat-container" id="custom-chat-history" style="margin-top: 30px; display: none; flex-direction: column; gap: 16px; max-width: 800px; margin-left: auto; margin-right: auto; padding: 25px; background: rgba(11, 15, 25, 0.4); border: 2px solid var(--border-color); border-radius: var(--radius-md); backdrop-filter: blur(5px);">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px;">
+                    <h4 style="font-family:'Outfit', sans-serif; font-weight:800; font-size: 1.25rem; color:var(--text-secondary);" data-i18n-nl="💬 Live Gesprek" data-i18n-en="💬 Live Chat" data-i18n-pl="💬 Rozmowa na żywo">💬 Live Gesprek</h4>
+                    <button class="btn-next-card" onclick="resetCustomChat()" style="background: var(--accent-red); padding: 8px 16px; font-size: 0.9rem; font-weight: 800; border: none; color: white; border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);" data-i18n-nl="🗑️ Wis gesprek" data-i18n-en="🗑️ Clear chat" data-i18n-pl="🗑️ Wyczyść czat">🗑️ Wis gesprek</button>
+                </div>
+                <div id="custom-chat-bubbles" style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- custom bubbles generated here -->
                 </div>
             </div>
         </section>
@@ -2726,6 +2763,7 @@
         let rightQAInterval = null;
         let leftQATimeRemaining = 15;
         let rightQATimeRemaining = 15;
+        let customChatNextTurn = 'question'; // 'question' or 'answer'
 
         // Interactive TOP Sentence Builder State
         let builderStepIndex = 0;
@@ -4505,6 +4543,11 @@
             // Lock and sync TOP Builder Tense
             builderTense = (tense === 'voltooid' ? 'vtt' : 'ovt');
             setBuilderTense(builderTense);
+            
+            // Reset Custom Chat history on tab switch
+            if (typeof resetCustomChat === 'function') {
+                resetCustomChat();
+            }
         }
 
         // Set the active UI language dynamically
@@ -4553,6 +4596,11 @@
             renderAddedChips('place');
             
             compileSentence();
+            
+            // Update custom chat UI translation
+            if (typeof updateCustomChatUI === 'function') {
+                updateCustomChatUI();
+            }
         }
 
         // Handle verb selection in interactive section
@@ -5077,6 +5125,10 @@
             nextDuoCard();
             nextDuoQACard();
             initBuilder();
+            
+            if (typeof updateCustomChatUI === 'function') {
+                updateCustomChatUI();
+            }
         });
         
         
@@ -6131,6 +6183,207 @@
                 window.speechSynthesis.speak(utterance);
             } else {
                 console.warn("Speech synthesis not supported in this browser.");
+            }
+        }
+
+        // Custom Chat Bubbles Helper Logic
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function speakBubbleText(btnElement) {
+            const bubble = btnElement.closest('.chat-bubble');
+            if (bubble) {
+                const textContent = bubble.querySelector('.bubble-text-content');
+                if (textContent) {
+                    speakText(textContent.textContent);
+                }
+            }
+        }
+
+        function submitCustomChatQuestion() {
+            const inputEl = document.getElementById('duo-qa-question-input');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            const safeText = escapeHtml(text);
+
+            // Show container
+            const container = document.getElementById('custom-chat-history');
+            if (container) container.style.display = 'flex';
+
+            // Create bubble element
+            const bubblesList = document.getElementById('custom-chat-bubbles');
+            if (bubblesList) {
+                const bubble = document.createElement('div');
+                bubble.className = 'chat-bubble question-bubble';
+                bubble.style.cssText = `
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    padding: 12px 16px;
+                    border-radius: 16px 16px 16px 4px;
+                    border: 2px solid var(--accent-purple);
+                    background: rgba(139, 92, 246, 0.1);
+                    max-width: 70%;
+                    align-self: flex-start;
+                    animation: fadeInUp 0.3s ease-out;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+                    position: relative;
+                `;
+                
+                bubble.innerHTML = `
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                        <span>🗣️ Cursist 1</span>
+                        <button onclick="speakBubbleText(this)" style="background: none; border: none; color: var(--accent-purple); font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">
+                            🔊 <span data-i18n-nl="Luister" data-i18n-en="Listen" data-i18n-pl="Słuchaj">Luister</span>
+                        </button>
+                    </div>
+                    <div class="bubble-text-content" style="font-size: 1.1rem; font-weight: 600; line-height: 1.4; color: var(--text-primary); word-break: break-word;">${safeText}</div>
+                `;
+                bubblesList.appendChild(bubble);
+                
+                // Scroll container to bottom
+                bubblesList.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Clear input textarea
+            inputEl.value = '';
+
+            // Move turn to answer
+            customChatNextTurn = 'answer';
+            updateCustomChatUI();
+        }
+
+        function submitCustomChatAnswer() {
+            const inputEl = document.getElementById('duo-qa-answer-input');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            const safeText = escapeHtml(text);
+
+            // Show container
+            const container = document.getElementById('custom-chat-history');
+            if (container) container.style.display = 'flex';
+
+            // Create bubble element
+            const bubblesList = document.getElementById('custom-chat-bubbles');
+            if (bubblesList) {
+                const bubble = document.createElement('div');
+                bubble.className = 'chat-bubble answer-bubble';
+                bubble.style.cssText = `
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    padding: 12px 16px;
+                    border-radius: 16px 16px 4px 16px;
+                    border: 2px solid var(--accent-green);
+                    background: rgba(16, 185, 129, 0.1);
+                    max-width: 70%;
+                    align-self: flex-end;
+                    animation: fadeInUp 0.3s ease-out;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+                    position: relative;
+                `;
+                
+                bubble.innerHTML = `
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                        <span>🗣️ Cursist 2</span>
+                        <button onclick="speakBubbleText(this)" style="background: none; border: none; color: var(--accent-green); font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">
+                            🔊 <span data-i18n-nl="Luister" data-i18n-en="Listen" data-i18n-pl="Słuchaj">Luister</span>
+                        </button>
+                    </div>
+                    <div class="bubble-text-content" style="font-size: 1.1rem; font-weight: 600; line-height: 1.4; color: var(--text-primary); word-break: break-word;">${safeText}</div>
+                `;
+                bubblesList.appendChild(bubble);
+                
+                // Scroll container to bottom
+                bubblesList.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Clear input textarea
+            inputEl.value = '';
+
+            // Move turn to question
+            customChatNextTurn = 'question';
+            updateCustomChatUI();
+        }
+
+        function resetCustomChat() {
+            const bubblesList = document.getElementById('custom-chat-bubbles');
+            if (bubblesList) bubblesList.innerHTML = '';
+
+            const container = document.getElementById('custom-chat-history');
+            if (container) container.style.display = 'none';
+
+            customChatNextTurn = 'question';
+            
+            // Also clear text inputs
+            const questionInput = document.getElementById('duo-qa-question-input');
+            const answerInput = document.getElementById('duo-qa-answer-input');
+            if (questionInput) questionInput.value = '';
+            if (answerInput) answerInput.value = '';
+
+            updateCustomChatUI();
+        }
+
+        function updateCustomChatUI() {
+            const btnQuestion = document.getElementById('btn-submit-qa-question');
+            const btnAnswer = document.getElementById('btn-submit-qa-answer');
+            const questionInput = document.getElementById('duo-qa-question-input');
+            const answerInput = document.getElementById('duo-qa-answer-input');
+
+            if (customChatNextTurn === 'question') {
+                if (btnQuestion) btnQuestion.disabled = false;
+                if (btnAnswer) btnAnswer.disabled = true;
+                if (questionInput) questionInput.disabled = false;
+                if (answerInput) answerInput.disabled = true;
+            } else {
+                if (btnQuestion) btnQuestion.disabled = true;
+                if (btnAnswer) btnAnswer.disabled = false;
+                if (questionInput) questionInput.disabled = true;
+                if (answerInput) answerInput.disabled = false;
+            }
+
+            const banner = document.getElementById('duo-qa-turn-banner');
+            if (banner) {
+                if (customChatNextTurn === 'question') {
+                    banner.style.background = 'rgba(139, 92, 246, 0.05)';
+                    banner.style.borderColor = 'var(--accent-purple)';
+                    banner.style.color = 'var(--accent-purple)';
+                    if (currentLang === 'nl') {
+                        banner.innerHTML = 'Beurt: Cursist 1 🗣️ (Stel een vraag)';
+                    } else if (currentLang === 'pl') {
+                        banner.innerHTML = 'Kolej: Uczeń 1 🗣️ (Zadaj pytanie)';
+                    } else {
+                        banner.innerHTML = 'Turn: Student 1 🗣️ (Ask a question)';
+                    }
+                } else {
+                    banner.style.background = 'rgba(16, 185, 129, 0.05)';
+                    banner.style.borderColor = 'var(--accent-green)';
+                    banner.style.color = 'var(--accent-green)';
+                    if (currentLang === 'nl') {
+                        banner.innerHTML = 'Beurt: Cursist 2 🗣️ (Geef antwoord)';
+                    } else if (currentLang === 'pl') {
+                        banner.innerHTML = 'Kolej: Uczeń 2 🗣️ (Napisz odpowiedź)';
+                    } else {
+                        banner.innerHTML = 'Turn: Student 2 🗣️ (Give answer)';
+                    }
+                }
+            }
+
+            // Sync dynamic bubble play text translations
+            const bubblesList = document.getElementById('custom-chat-bubbles');
+            if (bubblesList) {
+                bubblesList.querySelectorAll('[data-i18n-nl]').forEach(el => {
+                    const text = el.getAttribute('data-i18n-' + currentLang);
+                    if (text) el.innerHTML = text;
+                });
             }
         }
 
