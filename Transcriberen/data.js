@@ -2222,8 +2222,8 @@ window.geminiData = {
         "gesprek": [
           {
             "spreker": "Gulay",
-            "zin_fonetisch": "Hoi Sezgin, heb jij een huisdier?",
-            "zin_correct": "Hoi Sezgin, heb jij een huisdier?",
+            "zin_fonetisch": "Hallo Sezgin.",
+            "zin_correct": "Hallo Sezgin.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2242,8 +2242,8 @@ window.geminiData = {
           },
           {
             "spreker": "Sezgin",
-            "zin_fonetisch": "Ja, ik heb een kat. En jij?",
-            "zin_correct": "Ja, ik heb een kat. En jij?",
+            "zin_fonetisch": "Hallo Gulay.",
+            "zin_correct": "Hallo Gulay.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2262,8 +2262,8 @@ window.geminiData = {
           },
           {
             "spreker": "Gulay",
-            "zin_fonetisch": "Ik heb geen huisdier. Welk dier vind jij het leukst?",
-            "zin_correct": "Ik heb geen huisdier. Welk dier vind jij het leukst?",
+            "zin_fonetisch": "Hoe gaat het met jou?",
+            "zin_correct": "Hoe gaat het met jou?",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2282,8 +2282,8 @@ window.geminiData = {
           },
           {
             "spreker": "Sezgin",
-            "zin_fonetisch": "Ik vind de hond het leukst, want ze zijn heel lief. En jij?",
-            "zin_correct": "Ik vind de hond het leukst, want hij is heel lief. En jij?",
+            "zin_fonetisch": "Goed, met jou?",
+            "zin_correct": "Goed, en met jou?",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2291,8 +2291,8 @@ window.geminiData = {
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "Verkeerd persoonlijk voornaamwoord 'ze' gebruikt voor 'de hond'.",
-              "uitleg": "Voor een enkelvoudig dier zoals 'de hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud."
+              "fout": "Het woordje 'en' ontbreekt.",
+              "uitleg": "Het is gebruikelijker en vollediger om 'en' toe te voegen als je de vraag terugstelt. Dus: 'Goed, en met jou?'."
             },
             "logica_analyse": {
               "goed": true,
@@ -2302,8 +2302,88 @@ window.geminiData = {
           },
           {
             "spreker": "Gulay",
-            "zin_fonetisch": "Ik vind de paard het leukst, want ze zijn mooi.",
-            "zin_correct": "Ik vind het paard het leukst, want het is mooi.",
+            "zin_fonetisch": "Ook goed, dank je wel.",
+            "zin_correct": "Ook goed, dank je wel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Uhm, wat ga je doen in het weekend?",
+            "zin_correct": "Wat ga je doen in het weekend?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De aarzeling 'uhm' is normaal in spreektaal, de rest van de zin is duidelijk uitgesproken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik ga naar de bioscoop met mijn vrienden.",
+            "zin_correct": "Ik ga naar de bioscoop met mijn vrienden.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Oh, leuk! Welke film ga je kijken?",
+            "zin_correct": "Oh, leuk! Welke film ga je kijken?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik weet niet, uhm, mijn vrienden kiezen.",
+            "zin_correct": "Dat weet ik niet, mijn vrienden kiezen.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2311,8 +2391,8 @@ window.geminiData = {
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "Verkeerd lidwoord 'de' en verkeerd persoonlijk voornaamwoord 'ze'.",
-              "uitleg": "Het woord 'paard' is een 'het'-woord, dus je zegt 'het paard'. Voor een enkelvoudig dier zoals 'het paard' gebruik je 'het' als persoonlijk voornaamwoord, niet 'ze'."
+              "fout": "Ik weet niet.",
+              "uitleg": "Als je antwoord geeft op een vraag ('Welke film?'), verwijs je naar die informatie met 'het' of 'dat'. De juiste zin is: 'Ik weet het niet' of 'Dat weet ik niet'."
             },
             "logica_analyse": {
               "goed": true,
@@ -2321,9 +2401,9 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Sezgin",
-            "zin_fonetisch": "Heb je liever een kat of een hond?",
-            "zin_correct": "Heb je liever een kat of een hond?",
+            "spreker": "Gulay",
+            "zin_fonetisch": "Oké. En wat ga je nog meer doen?",
+            "zin_correct": "Oké. En wat ga je nog meer doen?",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2341,9 +2421,9 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Gulay",
-            "zin_fonetisch": "Ik heb liever een hond, want ze zijn speels.",
-            "zin_correct": "Ik heb liever een hond, want hij is speels.",
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Zondag ik ga mijn familie bezoeken.",
+            "zin_correct": "Zondag ga ik mijn familie bezoeken.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2351,8 +2431,28 @@ window.geminiData = {
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "Verkeerd persoonlijk voornaamwoord 'ze' gebruikt voor 'een hond'.",
-              "uitleg": "Voor een enkelvoudig dier zoals 'een hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud."
+              "fout": "Zondag ik ga...",
+              "uitleg": "Dit is een inversiefout. Als je een zin begint met tijd (Zondag), plaats (hier) of iets anders dan het onderwerp, dan komt het werkwoord (ga) op de tweede plaats, en het onderwerp (ik) op de derde plaats. Dus: Tijd (Zondag) + Werkwoord (ga) + Onderwerp (ik)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Gezellig! En jij, wat ga jij doen?",
+            "zin_correct": "Gezellig! En wat ga jij doen?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "En jij, wat ga jij doen?",
+              "uitleg": "Je vraagt hier twee keer hetzelfde. 'En jij?' betekent al 'Wat ga jij doen?'. Het is beter om één van de twee te kiezen: 'En jij?' of 'En wat ga jij doen?'."
             },
             "logica_analyse": {
               "goed": true,
@@ -2362,12 +2462,12 @@ window.geminiData = {
           },
           {
             "spreker": "Sezgin",
-            "zin_fonetisch": "Ben je weleens naar een dierentuin geweest?",
-            "zin_correct": "Ben je weleens naar een dierentuin geweest?",
+            "zin_fonetisch": "Ik ga uhm... ik ga thuisblijven en een boek lezen.",
+            "zin_correct": "Ik ga thuisblijven en een boek lezen.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
-              "uitleg": ""
+              "uitleg": "De herhaling 'ik ga' is een normale aarzeling in spreektaal. De uitspraak is verder duidelijk."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -2382,8 +2482,8 @@ window.geminiData = {
           },
           {
             "spreker": "Gulay",
-            "zin_fonetisch": "Ja, ik ben naar Artis geweest. En jij?",
-            "zin_correct": "Ja, ik ben naar Artis geweest. En jij?",
+            "zin_fonetisch": "Oh, dat is ook fijn. Fijn weekend!",
+            "zin_correct": "Oh, dat is ook fijn. Fijn weekend!",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2402,88 +2502,8 @@ window.geminiData = {
           },
           {
             "spreker": "Sezgin",
-            "zin_fonetisch": "Nee, nog niet. Welke dieren zie je op een boerderij?",
-            "zin_correct": "Nee, nog niet. Welke dieren zie je op een boerderij?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Gulay",
-            "zin_fonetisch": "Op een boerderij zie je koeien en schapen.",
-            "zin_correct": "Op een boerderij zie je koeien en schapen.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Sezgin",
-            "zin_fonetisch": "Ben je bang voor een dier?",
-            "zin_correct": "Ben je bang voor een dier?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Gulay",
-            "zin_fonetisch": "Ik ben bang voor spinnen.",
-            "zin_correct": "Ik ben bang voor spinnen.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Sezgin",
-            "zin_fonetisch": "Oké.",
-            "zin_correct": "Oké.",
+            "zin_fonetisch": "Jij ook, doei!",
+            "zin_correct": "Jij ook, doei!",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -2504,13 +2524,13 @@ window.geminiData = {
         "feedback_brieven": [
           {
             "naam": "Gulay",
-            "brief": "Hallo Gulay! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hoi Sezgin, heb jij een huisdier?\"\n👍 *Wat was goed:* Deze openingszin was perfect en volgde de leidraad goed.\n\n*Sezgin vroeg/zei toen:* \"Ja, ik heb een kat. En jij?\"\n\nJij zei\n*Zin 2:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de volgende vraag volgens de leidraad.\n\n*Sezgin vroeg/zei toen:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n\nJij zei\n*Zin 3:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n💡 *Correctie:* \"Ik vind *het* paard het leukst, want *het* is mooi.\"\n🧠 *Waarom:* Het woord 'paard' is een 'het'-woord, dus je zegt 'het paard'. Voor een enkelvoudig dier zoals 'het paard' gebruik je 'het' als persoonlijk voornaamwoord, niet 'ze'. 'Ze' gebruik je alleen voor meervoud.\n\n*Sezgin vroeg/zei toen:* \"Heb je liever een kat of een hond?\"\n\nJij zei\n*Zin 4:* \"Ik heb liever een hond, want ze zijn speels.\"\n💡 *Correctie:* \"Ik heb liever een hond, want *hij* is speels.\"\n🧠 *Waarom:* Voor een enkelvoudig dier zoals 'een hond' gebruik je 'hij' (als het een mannetje is) of 'zij' (als het een vrouwtje is), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud.\n\n*Sezgin vroeg/zei toen:* \"Ben je weleens naar een dierentuin geweest?\"\n\nJij zei\n*Zin 5:* \"Ja, ik ben naar Artis geweest. En jij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de vraag terug.\n\n*Sezgin vroeg/zei toen:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n\nJij zei\n*Zin 6:* \"Op een boerderij zie je koeien en schapen.\"\n👍 *Wat was goed:* Dit antwoord was helemaal correct en duidelijk.\n\n*Sezgin vroeg/zei toen:* \"Ben je bang voor een dier?\"\n\nJij zei\n*Zin 7:* \"Ik ben bang voor spinnen.\"\n👍 *Wat was goed:* Een correct en duidelijk antwoord.\n\n*Sezgin vroeg/zei toen:* \"Oké.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt goed geoefend met het stellen en beantwoorden van vragen. Een belangrijk aandachtspunt voor jou is het correct gebruiken van lidwoorden ('de'/'het') en persoonlijke voornaamwoorden ('hij'/'zij'/'het'/'ze') bij dieren. Onthoud dat 'ze' alleen voor meervoud is, en dat je goed moet opletten of een woord 'de' of 'het' krijgt.\n• *Uitspraak:* Jouw uitspraak was over het algemeen goed verstaanbaar. Blijf oefenen met de klanken en de intonatie van het Nederlands.\n• *Samenhang & Logica:* Je hebt de leidraad goed gevolgd en de vragen logisch beantwoord. Het gesprek liep vloeiend.\n\n🧠 *Jouw volgende stap & advies:*\nOefen specifiek met 'de' en 'het' woorden, en de bijbehorende persoonlijke voornaamwoorden. Maak bijvoorbeeld een lijstje met dieren en schrijf erbij of het 'de' of 'het' is, en welk voornaamwoord je dan gebruikt. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hallo Gulay! 👋\n\nGreat job practicing! Below, I have literally transcribed your entire story sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hoi Sezgin, heb jij een huisdier?\"\n👍 *Wat was goed:* This opening sentence was perfect and followed the guideline well.\n\n*Sezgin vroeg/zei toen:* \"Ja, ik heb een kat. En jij?\"\n\nJij zei\n*Zin 2:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n👍 *Wat was goed:* Your answer was correct and you asked the next question according to the guideline.\n\n*Sezgin vroeg/zei toen:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n\nJij zei\n*Zin 3:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n💡 *Correctie:* \"Ik vind *het* paard het leukst, want *het* is mooi.\"\n🧠 *Waarom:* The word 'paard' (horse) is a 'het'-word, so you say 'het paard'. For a singular animal like 'het paard', you use 'het' as a personal pronoun, not 'ze'. 'Ze' is only used for plural.\n\n*Sezgin vroeg/zei toen:* \"Heb je liever een kat of een hond?\"\n\nJij zei\n*Zin 4:* \"Ik heb liever een hond, want ze zijn speels.\"\n💡 *Correctie:* \"Ik heb liever een hond, want *hij* is speels.\"\n🧠 *Waarom:* For a singular animal like 'een hond' (a dog), you use 'hij' (if it's male) or 'zij' (if it's female), or 'het' if the gender is unknown or not important. 'Ze' is used for plural.\n\n*Sezgin vroeg/zei toen:* \"Ben je weleens naar een dierentuin geweest?\"\n\nJij zei\n*Zin 5:* \"Ja, ik ben naar Artis geweest. En jij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the question back.\n\n*Sezgin vroeg/zei toen:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n\nJij zei\n*Zin 6:* \"Op een boerderij zie je koeien en schapen.\"\n👍 *Wat was goed:* This answer was completely correct and clear.\n\n*Sezgin vroeg/zei toen:* \"Ben je bang voor een dier?\"\n\nJij zei\n*Zin 7:* \"Ik ben bang voor spinnen.\"\n👍 *Wat was goed:* A correct and clear answer.\n\n*Sezgin vroeg/zei toen:* \"Oké.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You practiced well with asking and answering questions. An important point of attention for you is the correct use of articles ('de'/'het') and personal pronouns ('hij'/'zij'/'het'/'ze') with animals. Remember that 'ze' is only for plural, and you need to pay close attention to whether a word takes 'de' or 'het'.\n• *Uitspraak:* Your pronunciation was generally well understandable. Keep practicing the sounds and intonation of Dutch.\n• *Samenhang & Logica:* You followed the guideline well and answered the questions logically. The conversation flowed smoothly.\n\n🧠 *Jouw volgende stap & advies:*\nSpecifically practice with 'de' and 'het' words, and the corresponding personal pronouns. For example, make a list of animals and write next to them whether it's 'de' or 'het', and which pronoun you then use. Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+            "brief": "Hallo Gulay! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hallo Sezgin.\"\n👍 *Wat was goed:* Een duidelijke en vriendelijke opening van het gesprek!\n\n*Sezgin zei toen:* \"Hallo Gulay.\"\n\nJij vroeg\n*Zin 2:* \"Hoe gaat het met jou?\"\n👍 *Wat was goed:* Perfecte vraag, heel goed uitgesproken.\n\n*Sezgin zei toen:* \"Goed, met jou?\"\n\nJij zei\n*Zin 3:* \"Ook goed, dank je wel.\"\n👍 *Wat was goed:* Een correct en beleefd antwoord.\n\nJij vroeg\n*Zin 4:* \"Uhm, wat ga je doen in het weekend?\"\n👍 *Wat was goed:* Goede vraag en duidelijk verstaanbaar. De 'uhm' is heel normaal als je even nadenkt.\n\n*Sezgin zei toen:* \"Ik ga naar de bioscoop met mijn vrienden.\"\n\nJij vroeg\n*Zin 5:* \"Oh, leuk! Welke film ga je kijken?\"\n👍 *Wat was goed:* Een hele goede en logische vervolgvraag. Dit houdt het gesprek gaande.\n\n*Sezgin zei toen:* \"Ik weet niet, uhm, mijn vrienden kiezen.\"\n\nJij vroeg\n*Zin 6:* \"Oké. En wat ga je nog meer doen?\"\n👍 *Wat was goed:* Weer een goede vraag om het gesprek voort te zetten.\n\n*Sezgin zei toen:* \"Zondag ik ga mijn familie bezoeken.\"\n\nJij vroeg\n*Zin 7:* \"Gezellig! En jij, wat ga jij doen?\"\n👍 *Wat was goed:* Je reageert leuk op wat Sezgin zegt met 'Gezellig!'.\n💡 *Correctie:* \"Gezellig! En wat ga jij doen?\"\n🧠 *Waarom:* Je vroeg hier twee keer hetzelfde. 'En jij?' betekent al 'Wat ga jij doen?'. Het is beter om één van de twee te kiezen. Bijvoorbeeld: 'Gezellig! En jij?' of 'Gezellig! En wat ga jij doen?'.\n\n*Sezgin zei toen:* \"Ik ga uhm... ik ga thuisblijven en een boek lezen.\"\n\nJij zei\n*Zin 8:* \"Oh, dat is ook fijn. Fijn weekend!\"\n👍 *Wat was goed:* Een perfecte en vriendelijke afsluiting van het gesprek.\n\n*Sezgin zei toen:* \"Jij ook, doei!\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is al heel goed! Het enige kleine puntje was de dubbele vraag in zin 7 ('En jij, wat ga jij doen?'). Probeer je vragen kort en direct te houden, dan klinkt het nog natuurlijker.\n• *Uitspraak:* Je uitspraak is heel duidelijk en goed verstaanbaar. Daar hoef je je geen zorgen over te maken.\n• *Samenhang & Logica:* Je stelt logische vragen en reageert goed op de antwoorden van Sezgin. Je bent een goede gesprekspartner!\n\n🧠 *Jouw volgende stap & advies:*\nJe doet het super! Je kunt een gesprek goed voeren. Een kleine volgende stap is om te letten op het stellen van korte, efficiënte vragen. Blijf vooral veel praten, want je bent op de goede weg. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Gulay! 👋\n\nGreat job on practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be even better.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hallo Sezgin.\"\n👍 *Wat was goed:* A clear and friendly opening to the conversation!\n\n*Sezgin zei toen:* \"Hallo Gulay.\"\n\nJij vroeg\n*Zin 2:* \"Hoe gaat het met jou?\"\n👍 *Wat was goed:* A perfect question, very well pronounced.\n\n*Sezgin zei toen:* \"Goed, met jou?\"\n\nJij zei\n*Zin 3:* \"Ook goed, dank je wel.\"\n👍 *Wat was goed:* A correct and polite answer.\n\nJij vroeg\n*Zin 4:* \"Uhm, wat ga je doen in het weekend?\"\n👍 *Wat was goed:* Good question and clearly understandable. The 'uhm' is very normal when you're thinking for a moment.\n\n*Sezgin zei toen:* \"Ik ga naar de bioscoop met mijn vrienden.\"\n\nJij vroeg\n*Zin 5:* \"Oh, leuk! Welke film ga je kijken?\"\n👍 *Wat was goed:* A very good and logical follow-up question. This keeps the conversation going.\n\n*Sezgin zei toen:* \"Ik weet niet, uhm, mijn vrienden kiezen.\"\n\nJij vroeg\n*Zin 6:* \"Oké. En wat ga je nog meer doen?\"\n👍 *Wat was goed:* Another good question to continue the conversation.\n\n*Sezgin zei toen:* \"Zondag ik ga mijn familie bezoeken.\"\n\nJij vroeg\n*Zin 7:* \"Gezellig! En jij, wat ga jij doen?\"\n👍 *Wat was goed:* You react nicely to what Sezgin says with 'Gezellig!'.\n💡 *Correctie:* \"Gezellig! En wat ga jij doen?\"\n🧠 *Waarom:* You asked the same thing twice here. 'En jij?' already means 'What are you going to do?'. It's better to choose one of the two. For example: 'Gezellig! En jij?' or 'Gezellig! En wat ga jij doen?'.\n\n*Sezgin zei toen:* \"Ik ga uhm... ik ga thuisblijven en een boek lezen.\"\n\nJij zei\n*Zin 8:* \"Oh, dat is ook fijn. Fijn weekend!\"\n👍 *Wat was goed:* A perfect and friendly way to end the conversation.\n\n*Sezgin zei toen:* \"Jij ook, doei!\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your grammar is already very good! The only small point was the double question in sentence 7 ('En jij, wat ga jij doen?'). Try to keep your questions short and direct, and it will sound even more natural.\n• *Uitspraak:* Your pronunciation is very clear and easy to understand. You don't need to worry about that.\n• *Samenhang & Logica:* You ask logical questions and respond well to Sezgin's answers. You are a good conversation partner!\n\n🧠 *Jouw volgende stap & advies:*\nYou're doing great! You can hold a conversation well. A small next step is to pay attention to asking short, efficient questions. Keep talking a lot, because you are on the right track. Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           },
           {
             "naam": "Sezgin",
-            "brief": "Hallo Sezgin! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay vroeg/zei toen:* \"Hoi Sezgin, heb jij een huisdier?\"\n\nJij zei\n*Zin 1:* \"Ja, ik heb een kat. En jij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de vraag goed terug.\n\n*Gulay vroeg/zei toen:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n\nJij zei\n*Zin 2:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n💡 *Correctie:* \"Ik vind de hond het leukst, want *hij* is heel lief. En jij?\"\n🧠 *Waarom:* Voor een enkelvoudig dier zoals 'de hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud.\n\n*Gulay vroeg/zei toen:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n\nJij zei\n*Zin 3:* \"Heb je liever een kat of een hond?\"\n👍 *Wat was goed:* Deze vraag was correct en volgde de leidraad goed.\n\n*Gulay vroeg/zei toen:* \"Ik heb liever een hond, want ze zijn speels.\"\n\nJij zei\n*Zin 4:* \"Ben je weleens naar een dierentuin geweest?\"\n👍 *Wat was goed:* Deze vraag was correct en duidelijk.\n\n*Gulay vroeg/zei toen:* \"Ja, ik ben naar Artis geweest. En jij?\"\n\nJij zei\n*Zin 5:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de volgende vraag goed.\n\n*Gulay vroeg/zei toen:* \"Op een boerderij zie je koeien en schapen.\"\n\nJij zei\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n\n*Gulay vroeg/zei toen:* \"Ik ben bang voor spinnen.\"\n\nJij zei\n*Zin 7:* \"Oké.\"\n👍 *Wat was goed:* Een korte, maar correcte reactie.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt de vragen uit de leidraad goed gesteld en je antwoorden waren grotendeels correct. Let goed op het gebruik van persoonlijke voornaamwoorden ('hij'/'zij'/'het'/'ze') bij enkelvoudige dieren. 'Ze' is alleen voor meervoud.\n• *Uitspraak:* Jouw uitspraak was goed verstaanbaar. Blijf oefenen met de Nederlandse klanken.\n• *Samenhang & Logica:* Je hebt de leidraad goed gevolgd en het gesprek verliep logisch en vloeiend. Goed gedaan!\n\n🧠 *Jouw volgende stap & advies:*\nFocus op het correct gebruiken van persoonlijke voornaamwoorden voor dieren. Probeer te onthouden dat 'hij' of 'zij' voor een enkel dier is, en 'ze' voor meerdere dieren. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hallo Sezgin! 👋\n\nGreat job practicing! Below, I have literally transcribed your entire story sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay vroeg/zei toen:* \"Hoi Sezgin, heb jij een huisdier?\"\n\nJij zei\n*Zin 1:* \"Ja, ik heb een kat. En jij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the question back well.\n\n*Gulay vroeg/zei toen:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n\nJij zei\n*Zin 2:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n💡 *Correctie:* \"Ik vind de hond het leukst, want *hij* is heel lief. En jij?\"\n🧠 *Waarom:* For a singular animal like 'de hond' (the dog), you use 'hij' (male) or 'zij' (female), or 'het' if the gender is unknown or not important. 'Ze' is used for plural.\n\n*Gulay vroeg/zei toen:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n\nJij zei\n*Zin 3:* \"Heb je liever een kat of een hond?\"\n👍 *Wat was goed:* This question was correct and followed the guideline well.\n\n*Gulay vroeg/zei toen:* \"Ik heb liever een hond, want ze zijn speels.\"\n\nJij zei\n*Zin 4:* \"Ben je weleens naar een dierentuin geweest?\"\n👍 *Wat was goed:* This question was correct and clear.\n\n*Gulay vroeg/zei toen:* \"Ja, ik ben naar Artis geweest. En jij?\"\n\nJij zei\n*Zin 5:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the next question well.\n\n*Gulay vroeg/zei toen:* \"Op een boerderij zie je koeien en schapen.\"\n\nJij zei\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *Wat was goed:* A correct and clear question.\n\n*Gulay vroeg/zei toen:* \"Ik ben bang voor spinnen.\"\n\nJij zei\n*Zin 7:* \"Oké.\"\n👍 *Wat was goed:* A short, but correct response.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You asked the questions from the guideline well and your answers were largely correct. Pay close attention to the use of personal pronouns ('hij'/'zij'/'het'/'ze') for singular animals. 'Ze' is only for plural.\n• *Uitspraak:* Your pronunciation was well understandable. Keep practicing the Dutch sounds.\n• *Samenhang & Logica:* You followed the guideline well and the conversation flowed logically and smoothly. Well done!\n\n🧠 *Jouw volgende stap & advies:*\nFocus on correctly using personal pronouns for animals. Try to remember that 'hij' or 'zij' is for a single animal, and 'ze' is for multiple animals. Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+            "brief": "Hallo Sezgin! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay zei toen:* \"Hallo Sezgin.\"\n\nJij zei\n*Zin 1:* \"Hallo Gulay.\"\n👍 *Wat was goed:* Een duidelijke en vriendelijke reactie.\n\n*Gulay vroeg toen:* \"Hoe gaat het met jou?\"\n\nJij zei\n*Zin 2:* \"Goed, met jou?\"\n👍 *Wat was goed:* Je geeft antwoord en stelt de vraag terug, heel goed!\n💡 *Correctie:* \"Goed, en met jou?\"\n🧠 *Waarom:* Het is een kleine tip, maar het klinkt natuurlijker als je het woordje 'en' toevoegt. Het maakt de zin net iets completer.\n\n*Gulay zei toen:* \"Ook goed, dank je wel.\"\n\n*Gulay vroeg toen:* \"Uhm, wat ga je doen in het weekend?\"\n\nJij zei\n*Zin 3:* \"Ik ga naar de bioscoop met mijn vrienden.\"\n👍 *Wat was goed:* Een perfecte zin! De grammatica en woordkeuze zijn helemaal correct.\n\n*Gulay vroeg toen:* \"Oh, leuk! Welke film ga je kijken?\"\n\nJij zei\n*Zin 4:* \"Ik weet niet, uhm, mijn vrienden kiezen.\"\n👍 *Wat was goed:* Het is duidelijk wat je bedoelt.\n💡 *Correctie:* \"Dat weet ik niet, mijn vrienden kiezen.\"\n🧠 *Waarom:* Als je antwoord geeft op een vraag (zoals 'Welke film?'), gebruik je 'het' of 'dat' om daarnaar te verwijzen. Dus: 'Ik weet het niet' of 'Dat weet ik niet'.\n\n*Gulay vroeg toen:* \"Oké. En wat ga je nog meer doen?\"\n\nJij zei\n*Zin 5:* \"Zondag ik ga mijn familie bezoeken.\"\n👍 *Wat was goed:* Alle woorden zijn correct en de betekenis is duidelijk.\n💡 *Correctie:* \"Zondag ga ik mijn familie bezoeken.\"\n🧠 *Waarom:* Dit is een belangrijke regel: inversie. Als je een zin begint met de tijd (Zondag), dan moet het werkwoord (ga) op de tweede plek komen, en het onderwerp (ik) op de derde plek. De volgorde is dus: Tijd + Werkwoord + Onderwerp.\n\n*Gulay vroeg toen:* \"Gezellig! En jij, wat ga jij doen?\"\n\nJij zei\n*Zin 6:* \"Ik ga uhm... ik ga thuisblijven en een boek lezen.\"\n👍 *Wat was goed:* Een prima antwoord. De aarzeling is normaal in spreektaal.\n\n*Gulay zei toen:* \"Oh, dat is ook fijn. Fijn weekend!\"\n\nJij zei\n*Zin 7:* \"Jij ook, doei!\"\n👍 *Wat was goed:* Een correcte en vriendelijke afsluiting.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je belangrijkste leerpunt is de *inversie*. Onthoud goed: als een zin NIET met het onderwerp begint (maar bijvoorbeeld met tijd of plaats), dan komt het werkwoord vóór het onderwerp. Dus: 'Vandaag ga ik...', 'In de stad is het...'. Een ander punt is het gebruik van 'het/dat' in 'Ik weet het niet'.\n• *Uitspraak:* Je uitspraak is goed en duidelijk. Mensen kunnen je zonder problemen verstaan.\n• *Samenhang & Logica:* Je geeft logische en passende antwoorden op de vragen. Het gesprek verloopt soepel.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de komende week bewust te oefenen met inversie. Maak zinnen en begin expres met een woord voor tijd of plaats. Bijvoorbeeld: 'Morgen ga ik...', 'Thuis eet ik...', 'In het weekend slaap ik...'. Als je deze regel onder de knie krijgt, maak je een grote stap vooruit! Je doet het goed. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Sezgin! 👋\n\nGreat job on practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be even better.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay zei toen:* \"Hallo Sezgin.\"\n\nJij zei\n*Zin 1:* \"Hallo Gulay.\"\n👍 *Wat was goed:* A clear and friendly response.\n\n*Gulay vroeg toen:* \"Hoe gaat het met jou?\"\n\nJij zei\n*Zin 2:* \"Goed, met jou?\"\n👍 *Wat was goed:* You answer the question and ask it back, very good!\n💡 *Correctie:* \"Goed, en met jou?\"\n🧠 *Waarom:* It's a small tip, but it sounds more natural if you add the word 'en'. It makes the sentence just a bit more complete.\n\n*Gulay zei toen:* \"Ook goed, dank je wel.\"\n\n*Gulay vroeg toen:* \"Uhm, wat ga je doen in het weekend?\"\n\nJij zei\n*Zin 3:* \"Ik ga naar de bioscoop met mijn vrienden.\"\n👍 *Wat was goed:* A perfect sentence! The grammar and word choice are completely correct.\n\n*Gulay vroeg toen:* \"Oh, leuk! Welke film ga je kijken?\"\n\nJij zei\n*Zin 4:* \"Ik weet niet, uhm, mijn vrienden kiezen.\"\n👍 *Wat was goed:* It's clear what you mean.\n💡 *Correctie:* \"Dat weet ik niet, mijn vrienden kiezen.\"\n🧠 *Waarom:* When you answer a question (like 'Welke film?'), you use 'het' or 'dat' to refer to it. So: 'Ik weet het niet' or 'Dat weet ik niet'.\n\n*Gulay vroeg toen:* \"Oké. En wat ga je nog meer doen?\"\n\nJij zei\n*Zin 5:* \"Zondag ik ga mijn familie bezoeken.\"\n👍 *Wat was goed:* All the words are correct and the meaning is clear.\n💡 *Correctie:* \"Zondag ga ik mijn familie bezoeken.\"\n🧠 *Waarom:* This is an important rule: inversion. When you start a sentence with the time (Zondag), the verb (ga) must come in the second position, and the subject (ik) in the third position. So the order is: Time + Verb + Subject.\n\n*Gulay vroeg toen:* \"Gezellig! En jij, wat ga jij doen?\"\n\nJij zei\n*Zin 6:* \"Ik ga uhm... ik ga thuisblijven en een boek lezen.\"\n👍 *Wat was goed:* A fine answer. The hesitation is normal in spoken language.\n\n*Gulay zei toen:* \"Oh, dat is ook fijn. Fijn weekend!\"\n\nJij zei\n*Zin 7:* \"Jij ook, doei!\"\n👍 *Wat was goed:* A correct and friendly closing.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your most important learning point is *inversion*. Remember this well: if a sentence does NOT start with the subject (but for example with time or place), the verb comes before the subject. So: 'Vandaag ga ik...', 'In de stad is het...'. Another point is using 'het/dat' in 'Ik weet het niet'.\n• *Uitspraak:* Your pronunciation is good and clear. People can understand you without any problems.\n• *Samenhang & Logica:* You give logical and appropriate answers to the questions. The conversation flows smoothly.\n\n🧠 *Jouw volgende stap & advies:*\nIn the coming week, try to consciously practice inversion. Make sentences and deliberately start with a word for time or place. For example: 'Morgen ga ik...', 'Thuis eet ik...', 'In het weekend slaap ik...'. If you master this rule, you will take a big step forward! You are doing well. Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           }
         ]
       }
