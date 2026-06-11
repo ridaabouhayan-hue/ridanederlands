@@ -1651,7 +1651,871 @@ window.geminiData = {
   "Shell": [],
   "Coca-Cola": [],
   "NS": [],
-  "B-A1": [],
+  "B-A1": [
+    {
+      "filename": "Wei Tang 11-6.ogg",
+      "path": "B-A1/Wei Tang 11-6.ogg",
+      "date": "11-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Hallo Tang, heb jij een huisdier?",
+            "zin_correct": "Hallo Tang, heb jij een huisdier?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Ik eh heb eh geen eh huisdier.",
+            "zin_correct": "Ik heb geen huisdier.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "huisdier",
+              "uitleg": "De 'ui'-klank klinkt een beetje als 'o', waardoor het woord als 'hostdier' klinkt. De 'ui' is een lastige klank, probeer 'a' en 'u' snel achter elkaar te zeggen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik heb ook geen huisdier.",
+            "zin_correct": "Ik heb ook geen huisdier.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Welk dier vind jij het leukst?",
+            "zin_correct": "Welk dier vind jij het leukst?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik vind de honden leukst, want honden zijn schattig.",
+            "zin_correct": "Ik vind honden het leukst, want honden zijn schattig.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik vind de honden leukst",
+              "uitleg": "Als je zegt dat iets 'het leukst' is (de overtreffende trap of superlatief), moet je het woordje 'het' gebruiken. Dus: 'het leukst', 'het grootst', 'het mooist'. 'De honden' is niet fout, maar als je over honden in het algemeen praat, kun je het lidwoord 'de' weglaten."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Ben je je weleens naar een dierentuin geweest?",
+            "zin_correct": "Ben je weleens naar een dierentuin geweest?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Ben je je",
+              "uitleg": "Het begin van de zin was niet zo duidelijk. Het klonk alsof je 'Ben je je' zei. Probeer de woorden rustig en duidelijk na elkaar uit te spreken: 'Ben... je... weleens...'"
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woordvolgorde voor de vraag is perfect!"
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ja, ik ben naar een dierentuin in Anamo geweest. En jij?",
+            "zin_correct": "Ja, ik ben naar een dierentuin in Arnhem geweest. En jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Anamo",
+              "uitleg": "De plaatsnaam 'Arnhem' sprak je uit als 'Anamo'. De 'r' en de 'h' in het midden zijn lastig. Probeer het als 'Arn-hem' uit te spreken."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Nee, nog niet.",
+            "zin_correct": "Nee, nog niet.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Welk dieren zie je op een boerderij?",
+            "zin_correct": "Welke dieren zie je op een boerderij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Welk dieren",
+              "uitleg": "Omdat 'dieren' een meervoudswoord is, gebruik je 'welke'. Je gebruikt 'welk' voor enkelvoudige het-woorden (bijvoorbeeld: welk dier)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Op een boerderij zie je koeien, varkens, eenden, kippen, geiten.",
+            "zin_correct": "Op een boerderij zie je koeien, varkens, eenden, kippen en geiten.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "koeien, eenden, kippen, geiten",
+              "uitleg": "De namen van de dieren waren erg moeilijk te verstaan. 'Koeien' klonk als 'koeing', 'eenden' als 'eenge', 'kippen' als 'kulleke' en 'geiten' als 'kest-dier'. Probeer deze woorden langzaam te oefenen met een online woordenboek dat de uitspraak laat horen."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De structuur van de zin is goed. Het is iets natuurlijker om 'en' voor het laatste woord in een opsomming te zetten."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik ken paard, schaap.",
+            "zin_correct": "Ik ken ook paarden en schapen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Ik ken paard, schaap.",
+              "uitleg": "Als je dieren noemt die je kent, is het beter om de meervoudsvorm te gebruiken ('paarden', 'schapen'). Het woordje 'ook' verbindt jouw antwoord beter met wat Tang net zei."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Tang",
+            "zin_fonetisch": "Ben je bang voor een dier?",
+            "zin_correct": "Ben je bang voor een dier?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Ben je",
+              "uitleg": "Net als bij de vorige vraag was het begin ('Ben je') niet zo duidelijk. Let goed op de uitspraak van deze twee korte woordjes."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Wei",
+            "zin_fonetisch": "Ik ben bang voor katten.",
+            "zin_correct": "Ik ben bang voor katten.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Wei",
+            "brief": "Hallo Wei! 👋\n\nWat goed dat je hebt geoefend! Jullie hebben een leuk gesprek gevoerd over dieren. Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei:\n*Zin 1:* \"Hallo Tang, heb jij een huisdier?\"\n👍 *Wat was goed:* Een perfecte start van het gesprek! De vraag is grammaticaal correct en duidelijk uitgesproken.\n\n*Tang zei toen:* \"Ik eh heb eh geen eh huisdier.\"\n\nJij zei:\n*Zin 2:* \"Ik heb ook geen huisdier.\"\n👍 *Wat was goed:* Goed en duidelijk antwoord.\n\n*Tang vroeg toen:* \"Welk dier vind jij het leukst?\"\n\nJij zei:\n*Zin 3:* \"Ik vind de honden leukst, want honden zijn schattig.\"\n👍 *Wat was goed:* Je geeft een duidelijke reden met 'want', heel goed! De uitspraak was ook prima.\n💡 *Correctie:* \"Ik vind honden het leukst, want honden zijn schattig.\"\n🧠 *Waarom:* Als je zegt dat iets 'het leukst' is (de overtreffende trap), moet je het woordje 'het' gebruiken. Dus: 'het leukst', 'het grootst', 'het mooist'.\n\n*Tang vroeg toen:* \"Ben je je weleens naar een dierentuin geweest?\"\n\nJij zei:\n*Zin 4:* \"Ja, ik ben naar een dierentuin in Anamo geweest. En jij?\"\n👍 *Wat was goed:* De zinsstructuur is perfect en je stelt netjes een vraag terug.\n💡 *Correctie:* \"Ja, ik ben naar een dierentuin in Arnhem geweest. En jij?\"\n🧠 *Waarom:* De plaatsnaam 'Arnhem' sprak je uit als 'Anamo'. De 'r' en de 'h' in het midden zijn lastig. Probeer het als 'Arn-hem' uit te spreken.\n\n*Tang zei toen:* \"Nee, nog niet.\"\n\nJij vroeg:\n*Zin 5:* \"Welk dieren zie je op een boerderij?\"\n👍 *Wat was goed:* Goede vraag om het gesprek gaande te houden.\n💡 *Correctie:* \"Welke dieren zie je op een boerderij?\"\n🧠 *Waarom:* Omdat 'dieren' een meervoudswoord is, gebruik je 'welke'. Je gebruikt 'welk' voor enkelvoudige het-woorden (bijvoorbeeld: welk dier).\n\n*Tang zei toen:* \"Op een boerderij zie je koeien, varkens, eenden, kippen, geiten.\"\n\nJij zei:\n*Zin 6:* \"Ik ken paard, schaap.\"\n👍 *Wat was goed:* Je vult de lijst van Tang goed aan. De woorden 'paard' en 'schaap' sprak je goed uit.\n💡 *Correctie:* \"Ik ken ook paarden en schapen.\"\n🧠 *Waarom:* Als je dieren noemt die je kent, is het beter om de meervoudsvorm te gebruiken ('paarden', 'schapen'). Het woordje 'ook' verbindt jouw antwoord beter met wat Tang net zei.\n\n*Tang vroeg toen:* \"Ben je bang voor een dier?\"\n\nJij zei:\n*Zin 7:* \"Ik ben bang voor katten.\"\n👍 *Wat was goed:* Een perfecte en duidelijke zin om het gesprek af te sluiten.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is al heel sterk! De belangrijkste puntjes zijn het gebruik van 'het' bij de overtreffende trap (het leukst), het verschil tussen 'welk' (voor het-woorden) en 'welke' (voor de-woorden en meervoud), en het gebruik van meervoud als je over dieren in het algemeen praat (honden, paarden).\n• *Uitspraak:* Je uitspraak is heel duidelijk en goed verstaanbaar. Alleen de naam 'Arnhem' was een klein struikelblok, wat heel normaal is met Nederlandse plaatsnamen.\n\n🧠 *Jouw volgende stap & advies:*\nJe doet het fantastisch! Probeer de volgende keer te letten op die kleine grammaticaregels die we hebben besproken. Blijf vooral veel praten, want je bent heel goed op weg. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Wei! 👋\n\nGreat job on practicing! You had a nice conversation about animals. Below, I've written out your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\nYou said:\n*Zin 1:* \"Hallo Tang, heb jij een huisdier?\"\n👍 *What was good:* A perfect start to the conversation! The question is grammatically correct and clearly pronounced.\n\n*Tang said then:* \"Ik eh heb eh geen eh huisdier.\"\n\nYou said:\n*Zin 2:* \"Ik heb ook geen huisdier.\"\n👍 *What was good:* A good and clear answer.\n\n*Tang asked then:* \"Welk dier vind jij het leukst?\"\n\nYou said:\n*Zin 3:* \"Ik vind de honden leukst, want honden zijn schattig.\"\n👍 *What was good:* You give a clear reason with 'want', very good! The pronunciation was also fine.\n💡 *Correction:* \"Ik vind honden het leukst, want honden zijn schattig.\"\n🧠 *Why:* When you say something is 'the nicest' (the superlative), you must use the word 'het'. So: 'het leukst', 'het grootst', 'het mooist'.\n\n*Tang asked then:* \"Ben je je weleens naar een dierentuin geweest?\"\n\nYou said:\n*Zin 4:* \"Ja, ik ben naar een dierentuin in Anamo geweest. En jij?\"\n👍 *What was good:* The sentence structure is perfect, and you nicely ask a question back.\n💡 *Correction:* \"Ja, ik ben naar een dierentuin in Arnhem geweest. En jij?\"\n🧠 *Why:* You pronounced the city name 'Arnhem' as 'Anamo'. The 'r' and 'h' in the middle are tricky. Try to pronounce it as 'Arn-hem'.\n\n*Tang said then:* \"Nee, nog niet.\"\n\nYou asked:\n*Zin 5:* \"Welk dieren zie je op een boerderij?\"\n👍 *What was good:* A good question to keep the conversation going.\n💡 *Correction:* \"Welke dieren zie je op een boerderij?\"\n🧠 *Why:* Because 'dieren' is a plural word, you use 'welke'. You use 'welk' for singular het-words (for example: welk dier).\n\n*Tang said then:* \"Op een boerderij zie je koeien, varkens, eenden, kippen, geiten.\"\n\nYou said:\n*Zin 6:* \"Ik ken paard, schaap.\"\n👍 *What was good:* You added nicely to Tang's list. You pronounced the words 'paard' and 'schaap' well.\n💡 *Correction:* \"Ik ken ook paarden en schapen.\"\n🧠 *Why:* When you name animals you know, it's better to use the plural form ('paarden', 'schapen'). The word 'ook' (also) connects your answer better to what Tang just said.\n\n*Tang asked then:* \"Ben je bang voor een dier?\"\n\nYou said:\n*Zin 7:* \"Ik ben bang voor katten.\"\n👍 *What was good:* A perfect and clear sentence to end the conversation.\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* Your grammar is already very strong! The main points are using 'het' with the superlative (het leukst), the difference between 'welk' (for het-words) and 'welke' (for de-words and plurals), and using the plural form when talking about animals in general (honden, paarden).\n• *Pronunciation:* Your pronunciation is very clear and easy to understand. Only the name 'Arnhem' was a small hurdle, which is very normal with Dutch place names.\n\n🧠 *Your next step & advice:*\nYou are doing fantastic! Next time, try to pay attention to those small grammar rules we discussed. Keep talking a lot, because you are well on your way. Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Tang",
+            "brief": "Hallo Tang! 👋\n\nWat goed dat je hebt geoefend! Jullie hebben een leuk gesprek gevoerd over dieren. Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Wei vroeg eerst:* \"Hallo Tang, heb jij een huisdier?\"\n\nJij zei:\n*Zin 1:* \"Ik eh heb eh geen eh huisdier.\"\n👍 *Wat was goed:* De zinsstructuur is helemaal correct.\n💡 *Correctie:* \"Ik heb geen huisdier.\"\n🧠 *Waarom:* De 'ui'-klank in 'huisdier' klinkt een beetje als 'o', waardoor het woord als 'hostdier' klinkt. De 'ui' is een lastige klank, probeer 'a' en 'u' snel achter elkaar te zeggen.\n\n*Wei zei toen:* \"Ik heb ook geen huisdier.\"\n\nJij vroeg:\n*Zin 2:* \"Welk dier vind jij het leukst?\"\n👍 *Wat was goed:* Een perfecte vraag! Goed uitgesproken en de grammatica klopt.\n\n*Wei zei toen:* \"Ik vind de honden leukst, want honden zijn schattig.\"\n\nJij vroeg:\n*Zin 3:* \"Ben je je weleens naar een dierentuin geweest?\"\n👍 *Wat was goed:* De woordvolgorde voor de vraag is perfect!\n💡 *Correctie:* \"Ben je weleens naar een dierentuin geweest?\"\n🧠 *Waarom:* Het begin van de zin was niet zo duidelijk. Het klonk alsof je 'Ben je je' zei. Probeer de woorden rustig en duidelijk na elkaar uit te spreken: 'Ben... je... weleens...'\n\n*Wei zei toen:* \"Ja, ik ben naar een dierentuin in Anamo geweest. En jij?\"\n\nJij zei:\n*Zin 4:* \"Nee, nog niet.\"\n👍 *Wat was goed:* Een kort, duidelijk en correct antwoord.\n\n*Wei vroeg toen:* \"Welk dieren zie je op een boerderij?\"\n\nJij zei:\n*Zin 5:* \"Op een boerderij zie je koeien, varkens, eenden, kippen, geiten.\"\n👍 *Wat was goed:* De structuur van de zin is goed. Je weet veel boerderijdieren te noemen!\n💡 *Correctie:* \"Op een boerderij zie je koeien, varkens, eenden, kippen en geiten.\"\n🧠 *Waarom:* De namen van de dieren waren erg moeilijk te verstaan. 'Koeien' klonk als 'koeing', 'eenden' als 'eenge', 'kippen' als 'kulleke' en 'geiten' als 'kest-dier'. Probeer deze woorden langzaam te oefenen met een online woordenboek dat de uitspraak laat horen.\n\n*Wei zei toen:* \"Ik ken paard, schaap.\"\n\nJij vroeg:\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *Wat was goed:* Goede vraag om het gesprek verder te brengen.\n💡 *Correctie:* \"Ben je bang voor een dier?\"\n🧠 *Waarom:* Net als bij de vorige vraag was het begin ('Ben je') niet zo duidelijk. Let goed op de uitspraak van deze twee korte woordjes.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je volgt de grammaticaregels voor de zinnen en vragen heel goed. Daar hoef je je geen zorgen over te maken.\n• *Uitspraak:* Dit is het belangrijkste punt voor jou om aan te werken. Veel woorden waren moeilijk te verstaan. Vooral het begin van vragen ('Ben je...') en de namen van de dieren. Probeer de woorden langzamer en met meer aandacht voor elke klank uit te spreken. De 'ui'-klank (in huisdier) is ook een goed punt om extra te oefenen.\n\n🧠 *Jouw volgende stap & advies:*\nJe hebt de opdracht goed begrepen en de juiste zinnen gemaakt. De volgende stap is om te focussen op een duidelijke uitspraak. Luister veel naar Nederlands en probeer de woorden hardop na te zeggen. Oefen de woorden die je moeilijk vond uit dit gesprek een paar keer. Je kunt het! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Tang! 👋\n\nGreat job on practicing! You had a nice conversation about animals. Below, I've written out your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Wei asked first:* \"Hallo Tang, heb jij een huisdier?\"\n\nYou said:\n*Zin 1:* \"Ik eh heb eh geen eh huisdier.\"\n👍 *What was good:* The sentence structure is completely correct.\n💡 *Correction:* \"Ik heb geen huisdier.\"\n🧠 *Why:* The 'ui' sound in 'huisdier' sounds a bit like 'o', making the word sound like 'hostdier'. The 'ui' is a tricky sound; try saying 'a' and 'u' quickly after each other.\n\n*Wei said then:* \"Ik heb ook geen huisdier.\"\n\nYou asked:\n*Zin 2:* \"Welk dier vind jij het leukst?\"\n👍 *What was good:* A perfect question! Well-pronounced and the grammar is correct.\n\n*Wei said then:* \"Ik vind de honden leukst, want honden zijn schattig.\"\n\nYou asked:\n*Zin 3:* \"Ben je je weleens naar een dierentuin geweest?\"\n👍 *What was good:* The word order for the question is perfect!\n💡 *Correction:* \"Ben je weleens naar een dierentuin geweest?\"\n🧠 *Why:* The beginning of the sentence was not very clear. It sounded like you said 'Ben je je'. Try to pronounce the words calmly and clearly one after another: 'Ben... je... weleens...'\n\n*Wei said then:* \"Ja, ik ben naar een dierentuin in Anamo geweest. En jij?\"\n\nYou said:\n*Zin 4:* \"Nee, nog niet.\"\n👍 *What was good:* A short, clear, and correct answer.\n\n*Wei asked then:* \"Welk dieren zie je op een boerderij?\"\n\nYou said:\n*Zin 5:* \"Op een boerderij zie je koeien, varkens, eenden, kippen, geiten.\"\n👍 *What was good:* The structure of the sentence is good. You know how to name many farm animals!\n💡 *Correction:* \"Op een boerderij zie je koeien, varkens, eenden, kippen en geiten.\"\n🧠 *Why:* The names of the animals were very difficult to understand. 'Koeien' sounded like 'koeing', 'eenden' like 'eenge', 'kippen' like 'kulleke', and 'geiten' like 'kest-dier'. Try practicing these words slowly with an online dictionary that provides pronunciation.\n\n*Wei said then:* \"Ik ken paard, schaap.\"\n\nYou asked:\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *What was good:* A good question to move the conversation forward.\n💡 *Correction:* \"Ben je bang voor een dier?\"\n🧠 *Why:* Just like with the previous question, the beginning ('Ben je') was not very clear. Pay close attention to the pronunciation of these two short words.\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* You follow the grammar rules for sentences and questions very well. You don't have to worry about that.\n• *Pronunciation:* This is the most important point for you to work on. Many words were difficult to understand. Especially the beginning of questions ('Ben je...') and the names of the animals. Try to pronounce the words more slowly and with more attention to each sound. The 'ui' sound (in huisdier) is also a good point for extra practice.\n\n🧠 *Your next step & advice:*\nYou understood the assignment well and made the correct sentences. The next step is to focus on clear pronunciation. Listen to a lot of Dutch and try to repeat the words out loud. Practice the words you found difficult from this conversation a few times. You can do it! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Ming Hailan 11-6.ogg",
+      "path": "B-A1/Ming Hailan 11-6.ogg",
+      "date": "11-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Heb jij een en hoister?",
+            "zin_correct": "Heb jij een huisdier?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "hoister",
+              "uitleg": "Het woord 'huisdier' is lastig. De 'ui'-klank klinkt als 'oi'. Probeer je mond rond te maken voor de 'ui'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ja, ik heb een kat.",
+            "zin_correct": "Ja, ik heb een kat.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Wrek den vi fings ye het eh lekast?",
+            "zin_correct": "Welk dier vind jij het leukst?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Wrek den vi fings ye, lekast",
+              "uitleg": "De uitspraak van de hele zin is moeilijk te verstaan. 'Welk dier vind jij' klinkt als 'Wrek den vi fings ye'. Het woord 'leukst' klinkt als 'lekast'. De 'eu'-klank is hier een 'e'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woordvolgorde van de vraag is wel goed."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik fint de hont loist. En jij?",
+            "zin_correct": "Ik vind de hond het leukst. En jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "fint, hont, loist",
+              "uitleg": "Je zegt 'fint' in plaats van 'vind'. De 'd' aan het einde van 'hond' spreek je goed uit als een 't'. Het woord 'leukst' spreek je uit als 'loist'. De 'eu'-klank is hier een 'oi'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "het leukst",
+              "uitleg": "Je bent het woordje 'het' vergeten. Als je zegt dat iets 'het leukst' is (de overtreffende trap), moet 'het' erbij."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Heb jij lieve en kat of en hont?",
+            "zin_correct": "Heb je liever een kat of een hond?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "lieve",
+              "uitleg": "Je zegt 'lieve' in plaats van 'liever'. De 'r' aan het einde is belangrijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De vraag is grammaticaal correct. 'Je' is iets gebruikelijker dan 'jij' in deze vraag, maar 'jij' is niet fout."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik heb liever een kat. En jij?",
+            "zin_correct": "Ik heb liever een kat. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Ben je felees far en de taol lewo wost?",
+            "zin_correct": "Ben je weleens naar een dierentuin geweest?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "felees far en de taol lewo wost",
+              "uitleg": "Deze zin was erg moeilijk te verstaan. 'Weleens' klinkt als 'felees' (de 'w' klinkt als 'f'). 'Dierentuin' klinkt als 'de taol'. 'Geweest' klinkt als 'lewo wost'. Dit zijn veel klanken die anders zijn, zoals de 'w', 'ie', 'ui' en 'ee'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De woordvolgorde van de vraag is wel correct."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ja, ik ben naar Ouwehands Dierenpark geweest.",
+            "zin_correct": "Ja, ik ben naar Ouwehands Dierenpark geweest.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "Heel goed dat je de naam 'Ouwehands Dierenpark' zo duidelijk uitspreekt!"
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Wrek dinen win je op en bo-ta?",
+            "zin_correct": "Welke dieren zie je op een boerderij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Wrek dinen win je, bo-ta",
+              "uitleg": "Ook deze zin was moeilijk te verstaan. 'Welke dieren zie je' klinkt als 'Wrek dinen win je'. Het woord 'boerderij' klinkt als 'bo-ta'. De 'oe' en 'ei' klanken zijn lastig."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": "De structuur van de vraag is goed."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik zie de zwagen, en de ko, s-hapen.",
+            "zin_correct": "Ik zie zwanen, een koe en schapen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "zwagen, ko, s-hapen",
+              "uitleg": "'Zwanen' klinkt als 'zwagen'. 'Koe' klinkt als 'ko' (de 'oe'-klank is te kort). 'Schapen' klinkt als 's-hapen', de 'sch'-klank is nog lastig."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "de zwagen, en de ko",
+              "uitleg": "Als je in het algemeen praat over dieren, gebruik je geen lidwoord ('de' of 'het'). Dus 'zwanen' is beter dan 'de zwanen'. Ook is het beter om 'en' alleen voor het laatste woord in een lijst te zetten: 'zwanen, een koe en schapen'."
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "zwanen",
+              "uitleg": "Zwanen zie je meestal niet op een boerderij. Koeien en schapen zijn wel perfecte voorbeelden!"
+            }
+          },
+          {
+            "spreker": "Ming",
+            "zin_fonetisch": "Ben je bach for en dier?",
+            "zin_correct": "Ben je bang voor een dier?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "bach",
+              "uitleg": "Het woord 'bang' spreek je uit als 'bach'. De 'ng'-klank aan het einde is een zachte klank achter in je keel, geen harde 'ch'-klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "Ik ben bach voor langs.",
+            "zin_correct": "Ik ben bang voor slangen.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "bach, langs",
+              "uitleg": "Net als Ming spreek je 'bang' uit als 'bach'. De 'ng'-klank is lastig. Het woord 'slangen' spreek je uit als 'langs'. De 'sl'-klank aan het begin is belangrijk."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Hailan",
+            "zin_fonetisch": "En jij?",
+            "zin_correct": "En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Ming",
+            "brief": "Hallo Ming! 👋\n\nWat goed dat je hebt geoefend met vragen stellen! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij vroeg:\n*Zin 1:* \"Heb jij een en hoister?\"\n👍 *Wat was goed:* Je stelt een duidelijke vraag en de woordvolgorde is correct.\n💡 *Correctie:* \"Heb jij een huisdier?\"\n🧠 *Waarom:* Het woord 'huisdier' is lastig. De 'ui'-klank klinkt als 'oi'. Probeer je mond rond te maken voor de 'ui'-klank.\n\n*Hailan antwoordde toen:* \"Ja, ik heb een kat.\"\n\nJij vroeg:\n*Zin 2:* \"Wrek den vi fings ye het eh lekast?\"\n👍 *Wat was goed:* De woordvolgorde van de vraag is goed. Je weet hoe je een vraag met 'welk' moet beginnen.\n💡 *Correctie:* \"Welk dier vind jij het leukst?\"\n🧠 *Waarom:* De uitspraak van de hele zin is moeilijk te verstaan. 'Welk dier vind jij' klinkt als 'Wrek den vi fings ye'. Het woord 'leukst' klinkt als 'lekast'. De 'eu'-klank is hier een 'e'-klank.\n\n*Hailan antwoordde toen:* \"Ik fint de hont loist. En jij?\"\n\nJij vroeg:\n*Zin 3:* \"Heb jij lieve en kat of en hont?\"\n👍 *Wat was goed:* De vraag is grammaticaal correct en goed te begrijpen.\n💡 *Correctie:* \"Heb je liever een kat of een hond?\"\n🧠 *Waarom:* Je zegt 'lieve' in plaats van 'liever'. De 'r' aan het einde is belangrijk.\n\n*Hailan antwoordde toen:* \"Ik heb liever een kat. En jij?\"\n\nJij vroeg:\n*Zin 4:* \"Ben je felees far en de taol lewo wost?\"\n👍 *Wat was goed:* De structuur van de vraag (beginnen met het werkwoord 'ben') is perfect.\n💡 *Correctie:* \"Ben je weleens naar een dierentuin geweest?\"\n🧠 *Waarom:* Deze zin was erg moeilijk te verstaan. 'Weleens' klinkt als 'felees' (de 'w' klinkt als 'f'). 'Dierentuin' klinkt als 'de taol'. 'Geweest' klinkt als 'lewo wost'. Dit zijn veel klanken die anders zijn, zoals de 'w', 'ie', 'ui' en 'ee'.\n\n*Hailan antwoordde toen:* \"Ja, ik ben naar Ouwehands Dierenpark geweest.\"\n\nJij vroeg:\n*Zin 5:* \"Wrek dinen win je op en bo-ta?\"\n👍 *Wat was goed:* De structuur van de vraag is weer goed.\n💡 *Correctie:* \"Welke dieren zie je op een boerderij?\"\n🧠 *Waarom:* Ook deze zin was moeilijk te verstaan. 'Welke dieren zie je' klinkt als 'Wrek dinen win je'. Het woord 'boerderij' klinkt als 'bo-ta'. De 'oe' en 'ei' klanken zijn lastig.\n\n*Hailan antwoordde toen:* \"Ik zie de zwagen, en de ko, s-hapen.\"\n\nJij vroeg:\n*Zin 6:* \"Ben je bach for en dier?\"\n👍 *Wat was goed:* Een perfecte grammaticale vraag.\n💡 *Correctie:* \"Ben je bang voor een dier?\"\n🧠 *Waarom:* Het woord 'bang' spreek je uit als 'bach'. De 'ng'-klank aan het einde is een zachte klank achter in je keel, geen harde 'ch'-klank.\n\n*Hailan antwoordde toen:* \"Ik ben bach voor langs.\"\n*Hailan vroeg toen:* \"En jij?\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is heel goed! Je weet precies hoe je vragen moet maken. De woordvolgorde is altijd correct. Super!\n• *Uitspraak:* Je grootste uitdaging is de uitspraak. Veel zinnen zijn moeilijk te verstaan. De belangrijkste klanken om op te oefenen zijn: de 'ui' (zoals in huis), de 'eu' (zoals in leuk), de 'w' (zoals in wat), de 'ee' (zoals in geweest) en de 'ng' (zoals in bang).\n• *Samenhang & Logica:* Je hebt de opdracht perfect gevolgd en de juiste vragen gesteld. Heel goed!\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de komende tijd te focussen op de uitspraak van de moeilijke klanken. Luister veel naar Nederlands en probeer de woorden hardop na te zeggen. Je grammatica is al sterk, dus als je uitspraak beter wordt, zul je enorme stappen maken. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Ming! 👋\n\nGreat job on practicing asking questions! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nYou asked:\n*Zin 1:* \"Heb jij een en hoister?\"\n👍 *Wat was goed:* You ask a clear question and the word order is correct.\n💡 *Correctie:* \"Heb jij een huisdier?\"\n🧠 *Waarom:* The word 'huisdier' is tricky. The 'ui' sound sounds like 'oi'. Try to make your mouth round for the 'ui' sound.\n\n*Hailan antwoordde toen:* \"Ja, ik heb een kat.\"\n\nYou asked:\n*Zin 2:* \"Wrek den vi fings ye het eh lekast?\"\n👍 *Wat was goed:* The word order of the question is good. You know how to start a question with 'welk'.\n💡 *Correctie:* \"Welk dier vind jij het leukst?\"\n🧠 *Waarom:* The pronunciation of the whole sentence is hard to understand. 'Welk dier vind jij' sounds like 'Wrek den vi fings ye'. The word 'leukst' sounds like 'lekast'. The 'eu' sound here is an 'e' sound.\n\n*Hailan antwoordde toen:* \"Ik fint de hont loist. En jij?\"\n\nYou asked:\n*Zin 3:* \"Heb jij lieve en kat of en hont?\"\n👍 *Wat was goed:* The question is grammatically correct and easy to understand.\n💡 *Correctie:* \"Heb je liever een kat of een hond?\"\n🧠 *Waarom:* You say 'lieve' instead of 'liever'. The 'r' at the end is important.\n\n*Hailan antwoordde toen:* \"Ik heb liever een kat. En jij?\"\n\nYou asked:\n*Zin 4:* \"Ben je felees far en de taol lewo wost?\"\n👍 *Wat was goed:* The structure of the question (starting with the verb 'ben') is perfect.\n💡 *Correctie:* \"Ben je weleens naar een dierentuin geweest?\"\n🧠 *Waarom:* This sentence was very difficult to understand. 'Weleens' sounds like 'felees' (the 'w' sounds like 'f'). 'Dierentuin' sounds like 'de taol'. 'Geweest' sounds like 'lewo wost'. These are many sounds that are different, like the 'w', 'ie', 'ui', and 'ee'.\n\n*Hailan antwoordde toen:* \"Ja, ik ben naar Ouwehands Dierenpark geweest.\"\n\nYou asked:\n*Zin 5:* \"Wrek dinen win je op en bo-ta?\"\n👍 *Wat was goed:* The structure of the question is good again.\n💡 *Correctie:* \"Welke dieren zie je op een boerderij?\"\n🧠 *Waarom:* This sentence was also hard to understand. 'Welke dieren zie je' sounds like 'Wrek dinen win je'. The word 'boerderij' sounds like 'bo-ta'. The 'oe' and 'ei' sounds are tricky.\n\n*Hailan antwoordde toen:* \"Ik zie de zwagen, en de ko, s-hapen.\"\n\nYou asked:\n*Zin 6:* \"Ben je bach for en dier?\"\n👍 *Wat was goed:* A perfect grammatical question.\n💡 *Correctie:* \"Ben je bang voor een dier?\"\n🧠 *Waarom:* You pronounce the word 'bang' as 'bach'. The 'ng' sound at the end is a soft sound in the back of your throat, not a hard 'ch' sound.\n\n*Hailan antwoordde toen:* \"Ik ben bach voor langs.\"\n*Hailan vroeg toen:* \"En jij?\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your grammar is very good! You know exactly how to form questions. The word order is always correct. Super!\n• *Uitspraak:* Your biggest challenge is pronunciation. Many sentences are difficult to understand. The most important sounds to practice are: the 'ui' (as in huis), the 'eu' (as in leuk), the 'w' (as in wat), the 'ee' (as in geweest), and the 'ng' (as in bang).\n• *Samenhang & Logica:* You followed the assignment perfectly and asked the right questions. Very good!\n\n🧠 *Jouw volgende stap & advies:*\nTry to focus on the pronunciation of the difficult sounds in the coming time. Listen to a lot of Dutch and try to repeat the words out loud. Your grammar is already strong, so if your pronunciation improves, you will make huge progress. Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Hailan",
+            "brief": "Hallo Hailan! 👋\n\nWat goed dat je hebt geoefend met het beantwoorden van vragen! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Ming vroeg:* \"Heb jij een en hoister?\"\n\nJij antwoordde:\n*Zin 1:* \"Ja, ik heb een kat.\"\n👍 *Wat was goed:* Een perfecte en duidelijke zin. Goed gedaan!\n\n*Ming vroeg toen:* \"Wrek den vi fings ye het eh lekast?\"\n\nJij antwoordde:\n*Zin 2:* \"Ik fint de hont loist. En jij?\"\n👍 *Wat was goed:* Je geeft een duidelijk antwoord en stelt de vraag goed terug.\n💡 *Correctie:* \"Ik vind de hond het leukst. En jij?\"\n🧠 *Waarom:* Je bent het woordje 'het' vergeten. Als je zegt dat iets 'het leukst' is, moet 'het' erbij. Let ook op de uitspraak: 'leukst' klinkt als 'loist'. De 'eu'-klank is lastig.\n\n*Ming vroeg toen:* \"Heb jij lieve en kat of en hont?\"\n\nJij antwoordde:\n*Zin 3:* \"Ik heb liever een kat. En jij?\"\n👍 *Wat was goed:* Weer een perfecte zin, zowel grammaticaal als qua uitspraak.\n\n*Ming vroeg toen:* \"Ben je felees far en de taol lewo wost?\"\n\nJij antwoordde:\n*Zin 4:* \"Ja, ik ben naar Ouwehands Dierenpark geweest.\"\n👍 *Wat was goed:* Heel goed! De zin is helemaal correct en je spreekt de naam 'Ouwehands Dierenpark' duidelijk uit.\n\n*Ming vroeg toen:* \"Wrek dinen win je op en bo-ta?\"\n\nJij antwoordde:\n*Zin 5:* \"Ik zie de zwagen, en de ko, s-hapen.\"\n👍 *Wat was goed:* Je geeft goede voorbeelden van dieren.\n💡 *Correctie:* \"Ik zie zwanen, een koe en schapen.\"\n🧠 *Waarom:* Als je in het algemeen praat over dieren, gebruik je geen lidwoord ('de' of 'het'). Dus 'zwanen' is beter dan 'de zwanen'. Ook is het beter om 'en' alleen voor het laatste woord in een lijst te zetten: 'zwanen, een koe en schapen'.\n🤔 *Logica:* Zwanen zie je meestal niet op een boerderij. Koeien en schapen zijn wel perfecte voorbeelden!\n\n*Ming vroeg toen:* \"Ben je bach for en dier?\"\n\nJij antwoordde:\n*Zin 6:* \"Ik ben bach voor langs.\"\n👍 *Wat was goed:* De structuur van de zin is perfect.\n💡 *Correctie:* \"Ik ben bang voor slangen.\"\n🧠 *Waarom:* Je spreekt 'bang' uit als 'bach'. De 'ng'-klank is een zachte klank achter in je keel. Het woord 'slangen' spreek je uit als 'langs'. De 'sl'-klank aan het begin is belangrijk.\n\nJij vroeg:\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Perfect!\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Jouw grammatica is heel sterk. Je maakt bijna geen fouten. Het enige puntje is het gebruik van lidwoorden ('de') als je over algemene dingen praat.\n• *Uitspraak:* Je uitspraak is over het algemeen duidelijk en goed te verstaan. De klanken die voor jou lastig zijn, zijn de 'eu' (in leukst), de 'ng' (in bang) en de 'sl' (in slangen).\n• *Samenhang & Logica:* Je antwoorden passen goed bij de vragen. Je volgt het gesprek heel goed.\n\n🧠 *Jouw volgende stap & advies:*\nJe bent al heel ver! Probeer de komende tijd extra te letten op de uitspraak van de 'eu' en 'ng' klanken. Blijf oefenen met spreken, want je doet het fantastisch. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Hailan! 👋\n\nGreat job on practicing answering questions! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Ming vroeg:* \"Heb jij een en hoister?\"\n\nYou answered:\n*Zin 1:* \"Ja, ik heb een kat.\"\n👍 *Wat was goed:* A perfect and clear sentence. Well done!\n\n*Ming vroeg toen:* \"Wrek den vi fings ye het eh lekast?\"\n\nYou answered:\n*Zin 2:* \"Ik fint de hont loist. En jij?\"\n👍 *Wat was goed:* You give a clear answer and ask the question back correctly.\n💡 *Correctie:* \"Ik vind de hond het leukst. En jij?\"\n🧠 *Waarom:* You forgot the word 'het'. When you say something is 'het leukst' (the superlative), you need to include 'het'. Also, pay attention to the pronunciation: 'leukst' sounds like 'loist'. The 'eu' sound is tricky.\n\n*Ming vroeg toen:* \"Heb jij lieve en kat of en hont?\"\n\nYou answered:\n*Zin 3:* \"Ik heb liever een kat. En jij?\"\n👍 *Wat was goed:* Another perfect sentence, both grammatically and in pronunciation.\n\n*Ming vroeg toen:* \"Ben je felees far en de taol lewo wost?\"\n\nYou answered:\n*Zin 4:* \"Ja, ik ben naar Ouwehands Dierenpark geweest.\"\n👍 *Wat was goed:* Very good! The sentence is completely correct and you pronounce the name 'Ouwehands Dierenpark' clearly.\n\n*Ming vroeg toen:* \"Wrek dinen win je op en bo-ta?\"\n\nYou answered:\n*Zin 5:* \"Ik zie de zwagen, en de ko, s-hapen.\"\n👍 *Wat was goed:* You give good examples of animals.\n💡 *Correctie:* \"Ik zie zwanen, een koe en schapen.\"\n🧠 *Waarom:* When you talk about animals in general, you don't use an article ('de' or 'het'). So 'zwanen' is better than 'de zwanen'. It's also better to use 'en' only before the last word in a list: 'zwanen, een koe en schapen'.\n🤔 *Logica:* You usually don't see swans on a farm. Cows and sheep are perfect examples though!\n\n*Ming vroeg toen:* \"Ben je bach for en dier?\"\n\nYou answered:\n*Zin 6:* \"Ik ben bach voor langs.\"\n👍 *Wat was goed:* The structure of the sentence is perfect.\n💡 *Correctie:* \"Ik ben bang voor slangen.\"\n🧠 *Waarom:* You pronounce 'bang' as 'bach'. The 'ng' sound is a soft sound in the back of your throat. You pronounce the word 'slangen' as 'langs'. The 'sl' sound at the beginning is important.\n\nYou asked:\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Perfect!\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Your grammar is very strong. You make almost no mistakes. The only small point is the use of articles ('de') when talking about general things.\n• *Uitspraak:* Your pronunciation is generally clear and easy to understand. The sounds that are tricky for you are the 'eu' (in leukst), the 'ng' (in bang), and the 'sl' (in slangen).\n• *Samenhang & Logica:* Your answers fit the questions well. You follow the conversation very well.\n\n🧠 *Jouw volgende stap & advies:*\nYou are already very advanced! In the coming time, try to pay extra attention to the pronunciation of the 'eu' and 'ng' sounds. Keep practicing speaking, because you are doing a fantastic job. Keep it up! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    },
+    {
+      "filename": "Gulay Sezgin 11-6.mp4",
+      "path": "B-A1/Gulay Sezgin 11-6.mp4",
+      "date": "11-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Hoi Sezgin, heb jij een huisdier?",
+            "zin_correct": "Hoi Sezgin, heb jij een huisdier?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ja, ik heb een kat. En jij?",
+            "zin_correct": "Ja, ik heb een kat. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik heb geen huisdier. Welk dier vind jij het leukst?",
+            "zin_correct": "Ik heb geen huisdier. Welk dier vind jij het leukst?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ik vind de hond het leukst, want ze zijn heel lief. En jij?",
+            "zin_correct": "Ik vind de hond het leukst, want hij is heel lief. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd persoonlijk voornaamwoord 'ze' gebruikt voor 'de hond'.",
+              "uitleg": "Voor een enkelvoudig dier zoals 'de hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik vind de paard het leukst, want ze zijn mooi.",
+            "zin_correct": "Ik vind het paard het leukst, want het is mooi.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd lidwoord 'de' en verkeerd persoonlijk voornaamwoord 'ze'.",
+              "uitleg": "Het woord 'paard' is een 'het'-woord, dus je zegt 'het paard'. Voor een enkelvoudig dier zoals 'het paard' gebruik je 'het' als persoonlijk voornaamwoord, niet 'ze'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Heb je liever een kat of een hond?",
+            "zin_correct": "Heb je liever een kat of een hond?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik heb liever een hond, want ze zijn speels.",
+            "zin_correct": "Ik heb liever een hond, want hij is speels.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Verkeerd persoonlijk voornaamwoord 'ze' gebruikt voor 'een hond'.",
+              "uitleg": "Voor een enkelvoudig dier zoals 'een hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ben je weleens naar een dierentuin geweest?",
+            "zin_correct": "Ben je weleens naar een dierentuin geweest?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ja, ik ben naar Artis geweest. En jij?",
+            "zin_correct": "Ja, ik ben naar Artis geweest. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Nee, nog niet. Welke dieren zie je op een boerderij?",
+            "zin_correct": "Nee, nog niet. Welke dieren zie je op een boerderij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Op een boerderij zie je koeien en schapen.",
+            "zin_correct": "Op een boerderij zie je koeien en schapen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Ben je bang voor een dier?",
+            "zin_correct": "Ben je bang voor een dier?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Gulay",
+            "zin_fonetisch": "Ik ben bang voor spinnen.",
+            "zin_correct": "Ik ben bang voor spinnen.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Sezgin",
+            "zin_fonetisch": "Oké.",
+            "zin_correct": "Oké.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Gulay",
+            "brief": "Hallo Gulay! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hoi Sezgin, heb jij een huisdier?\"\n👍 *Wat was goed:* Deze openingszin was perfect en volgde de leidraad goed.\n\n*Sezgin vroeg/zei toen:* \"Ja, ik heb een kat. En jij?\"\n\nJij zei\n*Zin 2:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de volgende vraag volgens de leidraad.\n\n*Sezgin vroeg/zei toen:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n\nJij zei\n*Zin 3:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n💡 *Correctie:* \"Ik vind *het* paard het leukst, want *het* is mooi.\"\n🧠 *Waarom:* Het woord 'paard' is een 'het'-woord, dus je zegt 'het paard'. Voor een enkelvoudig dier zoals 'het paard' gebruik je 'het' als persoonlijk voornaamwoord, niet 'ze'. 'Ze' gebruik je alleen voor meervoud.\n\n*Sezgin vroeg/zei toen:* \"Heb je liever een kat of een hond?\"\n\nJij zei\n*Zin 4:* \"Ik heb liever een hond, want ze zijn speels.\"\n💡 *Correctie:* \"Ik heb liever een hond, want *hij* is speels.\"\n🧠 *Waarom:* Voor een enkelvoudig dier zoals 'een hond' gebruik je 'hij' (als het een mannetje is) of 'zij' (als het een vrouwtje is), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud.\n\n*Sezgin vroeg/zei toen:* \"Ben je weleens naar een dierentuin geweest?\"\n\nJij zei\n*Zin 5:* \"Ja, ik ben naar Artis geweest. En jij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de vraag terug.\n\n*Sezgin vroeg/zei toen:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n\nJij zei\n*Zin 6:* \"Op een boerderij zie je koeien en schapen.\"\n👍 *Wat was goed:* Dit antwoord was helemaal correct en duidelijk.\n\n*Sezgin vroeg/zei toen:* \"Ben je bang voor een dier?\"\n\nJij zei\n*Zin 7:* \"Ik ben bang voor spinnen.\"\n👍 *Wat was goed:* Een correct en duidelijk antwoord.\n\n*Sezgin vroeg/zei toen:* \"Oké.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt goed geoefend met het stellen en beantwoorden van vragen. Een belangrijk aandachtspunt voor jou is het correct gebruiken van lidwoorden ('de'/'het') en persoonlijke voornaamwoorden ('hij'/'zij'/'het'/'ze') bij dieren. Onthoud dat 'ze' alleen voor meervoud is, en dat je goed moet opletten of een woord 'de' of 'het' krijgt.\n• *Uitspraak:* Jouw uitspraak was over het algemeen goed verstaanbaar. Blijf oefenen met de klanken en de intonatie van het Nederlands.\n• *Samenhang & Logica:* Je hebt de leidraad goed gevolgd en de vragen logisch beantwoord. Het gesprek liep vloeiend.\n\n🧠 *Jouw volgende stap & advies:*\nOefen specifiek met 'de' en 'het' woorden, en de bijbehorende persoonlijke voornaamwoorden. Maak bijvoorbeeld een lijstje met dieren en schrijf erbij of het 'de' of 'het' is, en welk voornaamwoord je dan gebruikt. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Gulay! 👋\n\nGreat job practicing! Below, I have literally transcribed your entire story sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hoi Sezgin, heb jij een huisdier?\"\n👍 *Wat was goed:* This opening sentence was perfect and followed the guideline well.\n\n*Sezgin vroeg/zei toen:* \"Ja, ik heb een kat. En jij?\"\n\nJij zei\n*Zin 2:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n👍 *Wat was goed:* Your answer was correct and you asked the next question according to the guideline.\n\n*Sezgin vroeg/zei toen:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n\nJij zei\n*Zin 3:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n💡 *Correctie:* \"Ik vind *het* paard het leukst, want *het* is mooi.\"\n🧠 *Waarom:* The word 'paard' (horse) is a 'het'-word, so you say 'het paard'. For a singular animal like 'het paard', you use 'het' as a personal pronoun, not 'ze'. 'Ze' is only used for plural.\n\n*Sezgin vroeg/zei toen:* \"Heb je liever een kat of een hond?\"\n\nJij zei\n*Zin 4:* \"Ik heb liever een hond, want ze zijn speels.\"\n💡 *Correctie:* \"Ik heb liever een hond, want *hij* is speels.\"\n🧠 *Waarom:* For a singular animal like 'een hond' (a dog), you use 'hij' (if it's male) or 'zij' (if it's female), or 'het' if the gender is unknown or not important. 'Ze' is used for plural.\n\n*Sezgin vroeg/zei toen:* \"Ben je weleens naar een dierentuin geweest?\"\n\nJij zei\n*Zin 5:* \"Ja, ik ben naar Artis geweest. En jij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the question back.\n\n*Sezgin vroeg/zei toen:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n\nJij zei\n*Zin 6:* \"Op een boerderij zie je koeien en schapen.\"\n👍 *Wat was goed:* This answer was completely correct and clear.\n\n*Sezgin vroeg/zei toen:* \"Ben je bang voor een dier?\"\n\nJij zei\n*Zin 7:* \"Ik ben bang voor spinnen.\"\n👍 *Wat was goed:* A correct and clear answer.\n\n*Sezgin vroeg/zei toen:* \"Oké.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You practiced well with asking and answering questions. An important point of attention for you is the correct use of articles ('de'/'het') and personal pronouns ('hij'/'zij'/'het'/'ze') with animals. Remember that 'ze' is only for plural, and you need to pay close attention to whether a word takes 'de' or 'het'.\n• *Uitspraak:* Your pronunciation was generally well understandable. Keep practicing the sounds and intonation of Dutch.\n• *Samenhang & Logica:* You followed the guideline well and answered the questions logically. The conversation flowed smoothly.\n\n🧠 *Jouw volgende stap & advies:*\nSpecifically practice with 'de' and 'het' words, and the corresponding personal pronouns. For example, make a list of animals and write next to them whether it's 'de' or 'het', and which pronoun you then use. Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Sezgin",
+            "brief": "Hallo Sezgin! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay vroeg/zei toen:* \"Hoi Sezgin, heb jij een huisdier?\"\n\nJij zei\n*Zin 1:* \"Ja, ik heb een kat. En jij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de vraag goed terug.\n\n*Gulay vroeg/zei toen:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n\nJij zei\n*Zin 2:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n💡 *Correctie:* \"Ik vind de hond het leukst, want *hij* is heel lief. En jij?\"\n🧠 *Waarom:* Voor een enkelvoudig dier zoals 'de hond' gebruik je 'hij' (mannelijk) of 'zij' (vrouwelijk), of 'het' als het geslacht onbekend is of niet belangrijk is. 'Ze' gebruik je voor meervoud.\n\n*Gulay vroeg/zei toen:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n\nJij zei\n*Zin 3:* \"Heb je liever een kat of een hond?\"\n👍 *Wat was goed:* Deze vraag was correct en volgde de leidraad goed.\n\n*Gulay vroeg/zei toen:* \"Ik heb liever een hond, want ze zijn speels.\"\n\nJij zei\n*Zin 4:* \"Ben je weleens naar een dierentuin geweest?\"\n👍 *Wat was goed:* Deze vraag was correct en duidelijk.\n\n*Gulay vroeg/zei toen:* \"Ja, ik ben naar Artis geweest. En jij?\"\n\nJij zei\n*Zin 5:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n👍 *Wat was goed:* Je antwoord was correct en je stelde de volgende vraag goed.\n\n*Gulay vroeg/zei toen:* \"Op een boerderij zie je koeien en schapen.\"\n\nJij zei\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *Wat was goed:* Een correcte en duidelijke vraag.\n\n*Gulay vroeg/zei toen:* \"Ik ben bang voor spinnen.\"\n\nJij zei\n*Zin 7:* \"Oké.\"\n👍 *Wat was goed:* Een korte, maar correcte reactie.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je hebt de vragen uit de leidraad goed gesteld en je antwoorden waren grotendeels correct. Let goed op het gebruik van persoonlijke voornaamwoorden ('hij'/'zij'/'het'/'ze') bij enkelvoudige dieren. 'Ze' is alleen voor meervoud.\n• *Uitspraak:* Jouw uitspraak was goed verstaanbaar. Blijf oefenen met de Nederlandse klanken.\n• *Samenhang & Logica:* Je hebt de leidraad goed gevolgd en het gesprek verliep logisch en vloeiend. Goed gedaan!\n\n🧠 *Jouw volgende stap & advies:*\nFocus op het correct gebruiken van persoonlijke voornaamwoorden voor dieren. Probeer te onthouden dat 'hij' of 'zij' voor een enkel dier is, en 'ze' voor meerdere dieren. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hallo Sezgin! 👋\n\nGreat job practicing! Below, I have literally transcribed your entire story sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Gulay vroeg/zei toen:* \"Hoi Sezgin, heb jij een huisdier?\"\n\nJij zei\n*Zin 1:* \"Ja, ik heb een kat. En jij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the question back well.\n\n*Gulay vroeg/zei toen:* \"Ik heb geen huisdier. Welk dier vind jij het leukst?\"\n\nJij zei\n*Zin 2:* \"Ik vind de hond het leukst, want ze zijn heel lief. En jij?\"\n💡 *Correctie:* \"Ik vind de hond het leukst, want *hij* is heel lief. En jij?\"\n🧠 *Waarom:* For a singular animal like 'de hond' (the dog), you use 'hij' (male) or 'zij' (female), or 'het' if the gender is unknown or not important. 'Ze' is used for plural.\n\n*Gulay vroeg/zei toen:* \"Ik vind de paard het leukst, want ze zijn mooi.\"\n\nJij zei\n*Zin 3:* \"Heb je liever een kat of een hond?\"\n👍 *Wat was goed:* This question was correct and followed the guideline well.\n\n*Gulay vroeg/zei toen:* \"Ik heb liever een hond, want ze zijn speels.\"\n\nJij zei\n*Zin 4:* \"Ben je weleens naar een dierentuin geweest?\"\n👍 *Wat was goed:* This question was correct and clear.\n\n*Gulay vroeg/zei toen:* \"Ja, ik ben naar Artis geweest. En jij?\"\n\nJij zei\n*Zin 5:* \"Nee, nog niet. Welke dieren zie je op een boerderij?\"\n👍 *Wat was goed:* Your answer was correct and you asked the next question well.\n\n*Gulay vroeg/zei toen:* \"Op een boerderij zie je koeien en schapen.\"\n\nJij zei\n*Zin 6:* \"Ben je bang voor een dier?\"\n👍 *Wat was goed:* A correct and clear question.\n\n*Gulay vroeg/zei toen:* \"Ik ben bang voor spinnen.\"\n\nJij zei\n*Zin 7:* \"Oké.\"\n👍 *Wat was goed:* A short, but correct response.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You asked the questions from the guideline well and your answers were largely correct. Pay close attention to the use of personal pronouns ('hij'/'zij'/'het'/'ze') for singular animals. 'Ze' is only for plural.\n• *Uitspraak:* Your pronunciation was well understandable. Keep practicing the Dutch sounds.\n• *Samenhang & Logica:* You followed the guideline well and the conversation flowed logically and smoothly. Well done!\n\n🧠 *Jouw volgende stap & advies:*\nFocus on correctly using personal pronouns for animals. Try to remember that 'hij' or 'zij' is for a single animal, and 'ze' is for multiple animals. Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ]
+      }
+    }
+  ],
   "B-A2": [
     {
       "filename": "Zohrab Tanushan 9-6.ogg",

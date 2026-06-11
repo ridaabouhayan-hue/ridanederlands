@@ -334,6 +334,16 @@
                         ⚠️ Audio bestanden zijn <strong>lokaal</strong> — ze zijn niet beschikbaar op een andere computer. Gebruik "📁 Selecteer bestand" als de audio niet laadt.
                     </div>
 
+                    <!-- Transcription Engine Selection Panel -->
+                    <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
+                        <label for="transcriptionEngineSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Transcriptie Engine:</label>
+                        <select id="transcriptionEngineSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.8); color: #fff; font-size: 0.8rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
+                            <option value="gemini-2.5-pro">Gemini 2.5 Pro (Aanbevolen)</option>
+                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Snel & Goedkoop)</option>
+                            <option value="elevenlabs">ElevenLabs Scribe v2 + Gemini</option>
+                        </select>
+                    </div>
+
                     <!-- Target Language Panel -->
                     <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                         <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
@@ -405,9 +415,9 @@
                     <audio id="vAudio" class="audio-player" controls></audio>
                     
                     <!-- Audio File Fallback/Locate -->
-                    <div id="audioErrorFallback" style="display: none; align-items: center; gap: 10px; margin-bottom: 16px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem;">
-                        <span style="color: #ef4444;">⚠️ Kan audiobestand niet automatisch laden.</span>
-                        <button onclick="handleLocateAudioFile()" style="background: var(--accent); color: white; border: none; padding: 4px 10px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 0.75rem;">📁 Selecteer bestand</button>
+                    <div id="audioErrorFallback" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-muted);">
+                        <span>🎙️ Audio is lokaal en wordt niet permanent opgeslagen. Het transcript blijft wel bewaard.</span>
+                        <button onclick="handleLocateAudioFile()" style="background: var(--accent-gradient); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: var(--transition); white-space: nowrap;">Koppel Audio</button>
                         <input type="file" id="audioLocateInput" style="display: none;" accept="audio/*,video/*" onchange="locateAudioFileSelected(event)">
                     </div>
                     
@@ -584,14 +594,23 @@
                     <div style="display:flex; align-items:center; gap:12px; overflow:hidden; flex:1;">
                         <div class="file-icon">🎙️</div>
                         <div style="display:flex; flex-direction:column; overflow:hidden;">
-                            <div class="file-name">${file.filename}</div>
+                            <div class="file-name"></div>
                             ${dateHtml}
                         </div>
                     </div>
-                    <button class="delete-btn" onclick="deleteFile(event, '${file.filename}')" title="Verwijder transcriptie" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:6px; display:inline-flex; align-items:center; justify-content:center; transition:var(--transition); z-index:10; outline:none; border-radius:6px;">
+                    <button class="delete-btn" title="Verwijder transcriptie" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:6px; display:inline-flex; align-items:center; justify-content:center; transition:var(--transition); z-index:10; outline:none; border-radius:6px;">
                         🗑️
                     </button>
                 `;
+                
+                // Safe text assignment to prevent HTML escaping/single quote issues
+                li.querySelector('.file-name').textContent = file.filename;
+                
+                const deleteBtn = li.querySelector('.delete-btn');
+                deleteBtn.onclick = (e) => {
+                    deleteFile(e, file.filename);
+                };
+                
                 li.onclick = () => {
                     document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
                     li.classList.add('active');
@@ -655,6 +674,7 @@
             const player = document.getElementById('vAudio');
             const fallbackDiv = document.getElementById('audioErrorFallback');
             if (fallbackDiv) fallbackDiv.style.display = 'none';
+            player.style.display = 'block';
 
             if (window.localFileObjects && window.localFileObjects[file.filename]) {
                 player.src = URL.createObjectURL(window.localFileObjects[file.filename]);
@@ -663,11 +683,13 @@
             }
 
             player.onerror = () => {
+                player.style.display = 'none';
                 if (player.src && fallbackDiv) {
                     fallbackDiv.style.display = 'flex';
                 }
             };
             player.onplay = () => {
+                player.style.display = 'block';
                 if (fallbackDiv) {
                     fallbackDiv.style.display = 'none';
                 }
@@ -968,6 +990,10 @@
                 const targetLang = document.getElementById('targetLanguageInput').value.trim() || 'Engels';
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
+                
+                if (customInstructions) {
+                    showToast("Brief genereren gestart met maatwerk: \"" + customInstructions + "\"");
+                }
                 
                 let sourceContent = "";
                 let conversationFormatHelp = "";
@@ -1381,6 +1407,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             modal.style.opacity = '1';
             modal.style.pointerEvents = 'all';
             document.getElementById('apiKeyField').value = localStorage.getItem('user_gemini_api_key') || '';
+            document.getElementById('elevenLabsKeyField').value = localStorage.getItem('user_elevenlabs_api_key') || '';
         }
 
         function closeSettingsModal() {
@@ -1396,11 +1423,22 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             } else {
                 localStorage.removeItem('user_gemini_api_key');
             }
+
+            const elevenVal = document.getElementById('elevenLabsKeyField').value.trim();
+            if (elevenVal) {
+                localStorage.setItem('user_elevenlabs_api_key', elevenVal);
+            } else {
+                localStorage.removeItem('user_elevenlabs_api_key');
+            }
             closeSettingsModal();
         }
 
         function getApiKey() {
             return localStorage.getItem('user_gemini_api_key') || window.GEMINI_API_KEY || '';
+        }
+
+        function getElevenLabsApiKey() {
+            return localStorage.getItem('user_elevenlabs_api_key') || '';
         }
 
         // ── INDEXEDDB FILE HANDLE STORAGE ──
@@ -1794,6 +1832,11 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 return;
             }
 
+            const customInstructions = document.getElementById('customInstructionsInput').value.trim();
+            if (customInstructions) {
+                showToast("Wachtrij gestart met maatwerk: \"" + customInstructions + "\"");
+            }
+
             isProcessingQueue = true;
             renderQueue();
             await processNextInQueue();
@@ -1827,6 +1870,25 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
                 if (!isProcessingQueue) return;
 
+                const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
+                let elevenLabsTranscript = "";
+
+                if (selectedEngine === 'elevenlabs') {
+                    item.status = 'transcribing (ElevenLabs)...';
+                    renderQueue();
+                    
+                    const elevenApiKey = getElevenLabsApiKey();
+                    if (!elevenApiKey) {
+                        throw new Error("Geen ElevenLabs API Key gevonden in instellingen (⚙️). Vul deze in om ElevenLabs te gebruiken.");
+                    }
+                    try {
+                        elevenLabsTranscript = await transcribeWithElevenLabs(fileToUpload, elevenApiKey);
+                        console.log("ElevenLabs transcription complete:", elevenLabsTranscript);
+                    } catch (elevenErr) {
+                        console.warn("ElevenLabs transcription failed, falling back to direct Gemini audio perception:", elevenErr);
+                    }
+                }
+
                 item.status = 'uploading';
                 item.progress = 0;
                 renderQueue();
@@ -1849,7 +1911,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const targetLang = document.getElementById('targetLanguageInput').value.trim();
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext);
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript);
                 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
                 const newEntry = {
@@ -1984,10 +2046,17 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext) {
+        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript) {
             const finalLang = targetLang || 'Engels';
             let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "${filename}".`;
+
+            if (elevenLabsTranscript) {
+                systemPrompt += `\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model (gebruik dit als de 'ground truth' leidraad om te horen wat er exact werd gezegd, en koppel de speaker_id labels aan de echte namen):
+---
+${elevenLabsTranscript}
+---`;
+            }
 
             if (customInstructions) {
                 systemPrompt += `\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):
@@ -2028,7 +2097,7 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
       },
       "logica_analyse": {
         "goed": false,
-        "fout": "Wat er onlogisch of vreemd was aan de betekenis/samenhang in de context (of laat leeg als het logisch was)",
+        "fout": "Wat er onlogisch of vreemd was aan de betekenis/samenhang in the context (of laat leeg als het logisch was)",
         "uitleg": "Waarom het onlogisch is in deze context en wat een betere logische verwoording is"
       }
     }
@@ -2066,7 +2135,8 @@ BELANGRIJK:
 7. MOEDERTAAL EN WA-IMPORT:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
-            let model = "gemini-2.5-flash";
+            const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
+            let model = selectedEngine === 'gemini-2.5-flash' ? 'gemini-2.5-flash' : 'gemini-2.5-pro';
             let payload = {
                 contents: [{
                     parts: [
@@ -2148,6 +2218,65 @@ BELANGRIJK:
                 if (fallbackDiv) fallbackDiv.style.display = 'none';
             }
             e.target.value = '';
+        }
+
+        async function transcribeWithElevenLabs(file, apiKey) {
+            const url = "https://api.elevenlabs.io/v1/speech-to-text";
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("model_id", "scribe_v2");
+            formData.append("diarize", "true");
+            
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "xi-api-key": apiKey
+                },
+                body: formData
+            });
+            
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`ElevenLabs STT mislukt: ${response.status} ${errText}`);
+            }
+            
+            const resJson = await response.json();
+            const words = resJson.words || [];
+            if (!words || words.length === 0) {
+                return resJson.text || "";
+            }
+            
+            // Reconstruct turns
+            let turns = [];
+            let currentSpeaker = null;
+            let currentTurnWords = [];
+            
+            const cleanText = (wordList) => {
+                return wordList.join(" ").replace(/\s+([.,!?;:|])/g, "$1");
+            };
+            
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                const spk = word.speaker_id || "speaker_1";
+                const wText = word.text || "";
+                
+                if (currentSpeaker === null) {
+                    currentSpeaker = spk;
+                    currentTurnWords.push(wText);
+                } else if (spk === currentSpeaker) {
+                    currentTurnWords.push(wText);
+                } else {
+                    turns.push(`${currentSpeaker}: ${cleanText(currentTurnWords)}`);
+                    currentSpeaker = spk;
+                    currentTurnWords = [wText];
+                }
+            }
+            
+            if (currentTurnWords.length > 0) {
+                turns.push(`${currentSpeaker}: ${cleanText(currentTurnWords)}`);
+            }
+            
+            return turns.join("\n");
         }
 
         async function extractAudioToWav(file) {
@@ -2310,14 +2439,19 @@ document.addEventListener('DOMContentLoaded', () => {
     <!-- MODAL: API KEY SETTINGS -->
     <div class="modal-overlay" id="settingsModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transition);">
         <div class="auth-card" style="max-width: 400px; text-align: left;">
-            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: #fff;">⚙️ Gemini API-instellingen</h3>
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: #fff;">⚙️ API Keys & Instellingen</h3>
             <p style="color: var(--text-muted); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;">
-                Voer hier je Gemini API Key in als deze nog niet geladen is vanuit <code>api_key.js</code>. 
-                De sleutel wordt lokaal opgeslagen in de browser en wordt nooit geüpload naar GitHub.
+                Voer hier je API keys in. Ze worden veilig en lokaal opgeslagen in je browser.
             </p>
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Gemini API Key</label>
-                <input type="password" id="apiKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="AIzaSy...">
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Gemini API Key</label>
+                    <input type="password" id="apiKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="AIzaSy...">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">ElevenLabs API Key</label>
+                    <input type="password" id="elevenLabsKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Plak je ElevenLabs key hier...">
+                </div>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 12px;">
                 <button class="logout-btn" style="background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border);" onclick="closeSettingsModal()">Annuleren</button>

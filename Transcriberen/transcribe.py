@@ -1,13 +1,29 @@
 import os
 import sys
 import json
+import re
+import requests
 from google import genai
+
+# =====================================================================
+# CONFIGURATIE VOOR TRANSCRIPTIE
+# Service: "gemini" of "elevenlabs"
+# - "gemini": Directe multimodal transcriptie door Gemini (Pro of Flash).
+# - "elevenlabs": ElevenLabs Scribe v2 voor letterlijke transcriptie, waarna
+#                 Gemini de NT2-analyse en brieven genereert.
+TRANSCRIPTION_SERVICE = "gemini"
+
+# Model selectie voor Gemini (bijv. "gemini-2.5-pro" of "gemini-2.5-flash")
+# "gemini-2.5-pro" wordt sterk aanbevolen voor maximale nauwkeurigheid en correcte klankweergave.
+GEMINI_MODEL = "gemini-2.5-pro"
+# =====================================================================
 
 # ================================================
 # 1. API KEY INSTELLEN
 root_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(root_dir)
 api_key_path = os.path.join(parent_dir, "API.txt")
+eleven_key_path = os.path.join(parent_dir, "API_ELEVENLABS.txt")
 
 GEMINI_API_KEY = None
 if os.path.exists(api_key_path):
@@ -23,9 +39,10 @@ if not GEMINI_API_KEY:
 
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
-# Model selectie: gebruik Pro/Flash model voor maximale nauwkeurigheid en perfecte naleving van instructies.
-# Fallback is ingesteld op gemini-2.5-pro als gemini-2.5-flash niet beschikbaar is op dit API-key tier.
-GEMINI_MODEL = "gemini-2.5-flash"
+ELEVENLABS_API_KEY = None
+if os.path.exists(eleven_key_path):
+    with open(eleven_key_path, "r", encoding="utf-8") as f:
+        ELEVENLABS_API_KEY = f.read().strip()
 
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm', '.mp4')
 
@@ -42,6 +59,65 @@ if len(sys.argv) > 1:
     else:
         print(f"❌ Groep '{doel_groep}' niet gevonden in de lijst. Beschikbaar: {', '.join(groepen)}")
         sys.exit(1)
+
+def clean_reconstructed_text(word_list):
+    text = " ".join(word_list)
+    text = re.sub(r"\s+([.,!?;:])", r"\1", text)
+    return text
+
+def transcribe_with_elevenlabs(filepath, api_key):
+    """Transcribeert een audiobestand via ElevenLabs Speech-to-Text API met Scribe v2 en diarization."""
+    if not api_key:
+        raise Exception("Geen ElevenLabs API-sleutel gevonden. Controleer API_ELEVENLABS.txt in de hoofdmap.")
+        
+    url = "https://api.elevenlabs.io/v1/speech-to-text"
+    headers = {
+        "xi-api-key": api_key
+    }
+    data = {
+        "model_id": "scribe_v2",
+        "diarize": "true"
+    }
+    
+    print("   [ElevenLabs] Verzenden naar ElevenLabs Speech-to-Text API...")
+    with open(filepath, "rb") as f:
+        files = {
+            "file": (os.path.basename(filepath), f, "audio/mpeg")
+        }
+        response = requests.post(url, headers=headers, data=data, files=files)
+        
+    if response.status_code != 200:
+        raise Exception(f"ElevenLabs STT mislukt ({response.status_code}): {response.text}")
+        
+    res_json = response.json()
+    words = res_json.get("words", [])
+    if not words:
+        return res_json.get("text", "")
+        
+    turns = []
+    current_speaker = None
+    current_turn_words = []
+    
+    for word in words:
+        spk = word.get("speaker_id", "speaker_1")
+        w_text = word.get("text", "")
+        
+        if current_speaker is None:
+            current_speaker = spk
+            current_turn_words.append(w_text)
+        elif spk == current_speaker:
+            current_turn_words.append(w_text)
+        else:
+            turn_text = clean_reconstructed_text(current_turn_words)
+            turns.append(f"{current_speaker}: {turn_text}")
+            current_speaker = spk
+            current_turn_words = [w_text]
+            
+    if current_turn_words:
+        turn_text = clean_reconstructed_text(current_turn_words)
+        turns.append(f"{current_speaker}: {turn_text}")
+        
+    return "\n".join(turns)
 
 data_file = os.path.join(root_dir, "data.js")
 
@@ -131,7 +207,28 @@ def main():
                 except Exception as ce:
                     print(f"   ⚠️ Kon {name} niet lezen: {ce}")
         
+        custom_instructions = ""
+        for name in ["instructies.txt", "custom_instructions.txt", "maatwerk.txt"]:
+            inst_path = os.path.join(grp_dir, name)
+            if os.path.exists(inst_path):
+                try:
+                    with open(inst_path, "r", encoding="utf-8") as inf:
+                        custom_instructions = inf.read().strip()
+                    print(f"   ℹ️ Maatwerk instructies geladen uit {name} ({len(custom_instructions)} tekens)")
+                    break
+                except Exception as ie:
+                    print(f"   ⚠️ Kon {name} niet lezen: {ie}")
+        
         audio_file = None
+        eleven_transcript = None
+        if TRANSCRIPTION_SERVICE == "elevenlabs":
+            try:
+                eleven_transcript = transcribe_with_elevenlabs(filepath, ELEVENLABS_API_KEY)
+                print(f"   ✅ ElevenLabs transcriptie voltooid ({len(eleven_transcript)} tekens)")
+            except Exception as ee:
+                print(f"   ⚠️ ElevenLabs transcriptie mislukt: {ee}")
+                print("   Vallen terug op directe Gemini-audioperceptie...")
+
         while True:
             try:
                 if not audio_file:
@@ -151,6 +248,17 @@ def main():
                 # NT2-specifieke prompt voor Zin-voor-Zin analyse (in JSON)
                 prompt = f"""Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "{filename}"."""
+
+                if TRANSCRIPTION_SERVICE == "elevenlabs" and eleven_transcript:
+                    prompt += f"""\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model (gebruik dit als de 'ground truth' leidraad om te horen wat er exact werd gezegd, en koppel de speaker_id labels aan de echte namen):
+---
+{eleven_transcript}
+---"""
+
+                if custom_instructions:
+                    prompt += f"""\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):
+Houd rekening met de volgende extra instructie bij het genereren van de feedback en de brieven:
+"{custom_instructions}" """
 
                 if assignment_context:
                     prompt += f"""\n\nOPDRACHT / CONTEXT VAN DE TAAK:
