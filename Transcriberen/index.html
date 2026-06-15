@@ -433,6 +433,8 @@
                         <button id="tabBtn-transcript" class="sub-tab active" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
                         <button id="tabBtn-feedback" class="sub-tab" onclick="switchViewerTab('feedback')">📝 Feedbackbrief</button>
                         <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
+                        <button id="tabBtn-elevenlabs" class="sub-tab" onclick="switchViewerTab('elevenlabs')">🎙️ ElevenLabs (gehoord)</button>
+                        <button id="tabBtn-azure" class="sub-tab" onclick="switchViewerTab('azure')">🎯 Azure (uitspraak)</button>
                     </div>
 
                     <div class="viewer-layout" style="display: flex; flex-direction: column; grid-template-columns: none; gap: 0;">
@@ -457,6 +459,16 @@
                         <!-- Pane 3: Complete brief & Vertalen -->
                         <div id="pane-complete" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-complete"></div>
+                        </div>
+
+                        <!-- Pane 4: ElevenLabs ruwe transcriptie -->
+                        <div id="pane-elevenlabs" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
+                            <div class="column-content" id="col-elevenlabs"></div>
+                        </div>
+
+                        <!-- Pane 5: Azure uitspraakscores -->
+                        <div id="pane-azure" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
+                            <div class="column-content" id="col-azure"></div>
                         </div>
                     </div>
                 </div>
@@ -629,6 +641,44 @@
 
         let activeViewerTab = 'transcript';
 
+        function renderElevenLabsColumn() {
+            const c = document.getElementById('col-elevenlabs');
+            if (!c) return;
+            const t = (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.elevenlabs_transcript) || '';
+            c.innerHTML = '';
+            if (!t) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen ElevenLabs-transcriptie opgeslagen voor deze opname. Dit gebeurt als de opname met een Gemini-engine is verwerkt, of vóór deze update. Verwerk de opname opnieuw met ElevenLabs als engine om te zien wat het model letterlijk heeft gehoord.</div>';
+                return;
+            }
+            const intro = document.createElement('div');
+            intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
+            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord (letterlijke transcriptie met sprekers). Dit is de basis waarop de feedback is gemaakt.';
+            const pre = document.createElement('pre');
+            pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.82rem;line-height:1.6;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
+            pre.textContent = t;
+            c.appendChild(intro);
+            c.appendChild(pre);
+        }
+
+        function renderAzureColumn() {
+            const c = document.getElementById('col-azure');
+            if (!c) return;
+            const r = (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.azure_pron) || '';
+            c.innerHTML = '';
+            if (!r) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen Azure-uitspraakscores opgeslagen voor deze opname. Controleer of Azure aan staat (links onder de engine-keuze) en of je sleutel + regio in ⚙️ staan, en verwerk de opname dan opnieuw met ElevenLabs als engine.</div>';
+                return;
+            }
+            const intro = document.createElement('div');
+            intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
+            intro.textContent = 'Objectieve uitspraakscores gemeten door Azure (0-100). Het meet de hele opname tegen de transcriptie, dus bij twee sprekers is dit een ruwe indicatie voor het geheel.';
+            const pre = document.createElement('pre');
+            pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-size:0.9rem;line-height:1.7;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
+            pre.textContent = r;
+            c.appendChild(intro);
+            c.appendChild(pre);
+        }
+
         function switchViewerTab(tabName) {
             activeViewerTab = tabName;
             
@@ -642,7 +692,7 @@
             });
             
             // Show/hide panes
-            const panes = ['transcript', 'feedback', 'complete'];
+            const panes = ['transcript', 'feedback', 'complete', 'elevenlabs', 'azure'];
             panes.forEach(p => {
                 const paneEl = document.getElementById(`pane-${p}`);
                 if (paneEl) {
@@ -725,6 +775,8 @@
             renderTranscriptColumn();
             renderFeedbackColumn();
             renderCompleteColumn();
+            renderElevenLabsColumn();
+            renderAzureColumn();
 
             // Switch to active tab
             switchViewerTab(activeViewerTab);
@@ -1541,6 +1593,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
         async function assessPronunciationAzure(blob, referenceText) {
             const cfg = getAzureConfig();
             if (!cfg.enabled || !cfg.key || !cfg.region || !referenceText) return null;
+            console.log('Azure: start uitspraakanalyse (regio ' + cfg.region + ')...');
             try {
                 const sdk = await loadAzureSdk();
                 const pcm = await decodeToPcm16kMono(blob);
@@ -1583,7 +1636,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 };
 
                 const report = await new Promise((resolve) => {
-                    const timer = setTimeout(() => { try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); }, 300000);
+                    const timer = setTimeout(() => { console.warn('Azure: time-out na 90s, ga door zonder uitspraakscores.'); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); }, 90000);
                     const buildReport = () => {
                         const avg = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : null;
                         const acc = avg(accs), flu = avg(flus), comp = avg(comps);
@@ -1601,6 +1654,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 });
 
                 try { recognizer.close(); } catch (_) {}
+                console.log('Azure: klaar.', report);
                 return report;
             } catch (err) {
                 console.warn('Azure uitspraakanalyse overgeslagen:', err);
@@ -1920,6 +1974,12 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 if (item.status === 'converting') {
                     badgeColor = '#e67e22';
                     badgeText = 'Converteren...';
+                } else if (item.status && item.status.indexOf('ElevenLabs') !== -1) {
+                    badgeColor = '#8b5cf6';
+                    badgeText = 'Transcriberen (ElevenLabs)...';
+                } else if (item.status && item.status.indexOf('Azure') !== -1) {
+                    badgeColor = '#0ea5e9';
+                    badgeText = 'Uitspraak meten (Azure)...';
                 } else if (item.status === 'uploading') {
                     badgeColor = 'var(--accent)';
                     badgeText = 'Uploaden';
@@ -2090,7 +2150,13 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
                 const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport);
-                
+
+                // Bewaar de ruwe ElevenLabs- en Azure-output zodat je ze los kunt bekijken.
+                if (analysisResult && typeof analysisResult === 'object') {
+                    analysisResult.elevenlabs_transcript = elevenLabsTranscript || '';
+                    analysisResult.azure_pron = azurePronReport || '';
+                }
+
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
                 const newEntry = {
                     filename: item.file.name,
