@@ -429,6 +429,2999 @@ window.geminiData = {
           }
         ]
       }
+    },
+    {
+      "filename": "Homaira Roxanne 9-6.ogg",
+      "path": "Westport/Homaira Roxanne 9-6.ogg",
+      "date": "15-6-2026",
+      "analyse": {
+        "gesprek": [
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Hallo Roxana, hoe gaat het?",
+            "zin_correct": "Hallo Roxana, hoe gaat het?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Hallo Homeira. Goed en met jou?",
+            "zin_correct": "Hallo Homeira. Goed, en met jou?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Prima. Ga jij dit jaar op vakantie?",
+            "zin_correct": "Prima. Ga jij dit jaar op vakantie?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Ja, ik ga in de zomer naar Iran met mijn man. En jij?",
+            "zin_correct": "Ja, ik ga in de zomer naar Iran met mijn man. En jij?",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "naar, man",
+              "uitleg": "De 'aa' klank in 'naar' en 'man' klinkt een beetje kort, meer als een 'a'. Probeer je mond wat verder open te doen voor een langere 'aaaa' klank."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Ja, ik ook. Gaan, uh, naar vakantie met mijn man.",
+            "zin_correct": "Ja, ik ga ook op vakantie met mijn man.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "Gaan",
+              "uitleg": "Het woord 'gaan' spreek je uit met een zachte 'g' klank voorin je keel. Het klonk nu meer als 'aan'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "Gaan, naar vakantie",
+              "uitleg": "Na 'ik' moet het werkwoord veranderen. Het is 'ik ga'. Ook zeg je in het Nederlands 'óp vakantie gaan', niet 'naar vakantie'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Hoe gaan jullie naar, uh, Duitsland?",
+            "zin_correct": "Hoe gaan jullie naar Duitsland?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Wij gaan met, uh, de auto. Uh, dit is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?",
+            "zin_correct": "Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "hallo spoelen",
+              "uitleg": "De woorden 'hallo spoelen' betekenen niets in deze zin. Je bedoelde waarschijnlijk 'alle spullen' (all the stuff). Dit is een veelvoorkomende fout als je woorden hoort maar ze nog niet goed kent. Goed dat je het probeerde!"
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.",
+            "zin_correct": "Wij gaan met het vliegtuig naar Iran, want dat is sneller.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "vliegtuig",
+              "uitleg": "De 'ui' klank in 'vliegtuig' is lastig. Het klinkt een beetje als 'ie'. Probeer de klank te oefenen, het is een combinatie van 'a' en 'i'."
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Wat gaan jullie doen in Iran?",
+            "zin_correct": "Wat gaan jullie doen in Iran?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?",
+            "zin_correct": "We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "naar strand, bezoek naar mijn familie",
+              "uitleg": "Voor 'strand' gebruik je het lidwoord 'het': 'naar het strand'. Als je iemands huis bezoekt, zeg je 'op bezoek bij' iemand. Bijvoorbeeld: 'Ik ga op bezoek bij mijn moeder'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Uh, ik ook, uh, gaan naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.",
+            "zin_correct": "Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga daar op bezoek.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "eten",
+              "uitleg": "De eerste 'e' in 'eten' klinkt lang, als 'ee'. Het klonk nu een beetje kort."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik ook gaan, Wij samen eten, praten, Ik ga bezoek daar",
+              "uitleg": "De zinnen zijn een beetje kort. Je moet het werkwoord 'gaan' gebruiken: 'Ik ga ook naar Duitsland'. En: 'We gaan samen eten'. Tot slot is de vaste combinatie 'op bezoek gaan'. De juiste zin is: 'Ik ga daar op bezoek'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Gelukkig.",
+            "zin_correct": "Leuk!",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Gelukkig",
+              "uitleg": "'Gelukkig' betekent 'fortunately' of 'happy'. Als reactie op iemands plannen is het logischer om 'Leuk!' (Nice!) of 'Gezellig!' (Cozy/Fun!) te zeggen."
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Uh, uh, een hele fijne vakantie. Hou vast, Roxana.",
+            "zin_correct": "Alvast een hele fijne vakantie, Roxana.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Hou vast",
+              "uitleg": "'Hou vast' betekent 'hold on' of 'hold tight'. Als je iemand een fijne vakantie wenst die nog moet komen, zeg je 'Alvast een fijne vakantie'. 'Alvast' betekent 'in advance'."
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "En jij.",
+            "zin_correct": "Jij ook.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "En jij.",
+              "uitleg": "Dit is een directe vertaling die in het Nederlands niet klopt. Als iemand jou iets wenst, wens je terug met 'Jij ook' (You too) of 'Hetzelfde' (The same to you)."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Dank je wel.",
+            "zin_correct": "Dank je wel.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          }
+        ],
+        "feedback_brieven": [
+          {
+            "naam": "Homaira",
+            "brief": "Hallo Homaira! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Een perfecte opening van het gesprek! Duidelijk en correct.\n\n*Roxana zei toen:* \"Hallo Homeira. Goed, en met jou?\"\n\nJij zei\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Helemaal correct en goed te verstaan.\n\n*Roxana zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n\nJij zei\n*Zin 3:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n👍 *Wat was goed:* De start 'Ja, ik ook' is prima. Je gebruikt de juiste woorden.\n💡 *Correctie:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Waarom:* Na 'ik' moet het werkwoord veranderen. Het is 'ik ga'. Ook zeg je in het Nederlands 'óp vakantie gaan', niet 'naar vakantie'.\n\n*Roxana vroeg toen:* \"Hoe gaan jullie naar Duitsland?\"\n\nJij zei\n*Zin 4:* \"Wij gaan met, uh, de auto. Uh, dit is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* 'Wij gaan met de auto' is een prima zin. De vraag aan het einde is ook goed.\n💡 *Correctie:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n🤔 *Logica:* De woorden 'hallo spoelen' betekenen niets in deze zin. Je bedoelde waarschijnlijk 'alle spullen' (all the stuff). Dit is een veelvoorkomende fout als je woorden hoort maar ze nog niet goed kent. Goed dat je het probeerde!\n\n*Roxana zei toen:* \"Wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\nJij zei\n*Zin 5:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Een goede en duidelijke vraag.\n\n*Roxana zei toen:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n\nJij zei\n*Zin 6:* \"Uh, ik ook, uh, gaan naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n👍 *Wat was goed:* Het is duidelijk wat je wilt vertellen. Je kent de woorden 'neef', 'samen', 'eten' en 'praten'.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga daar op bezoek.\"\n🧠 *Waarom:* Je zinnen zijn een beetje kort. Je moet het werkwoord 'gaan' gebruiken: 'Ik ga ook naar Duitsland'. En: 'We gaan samen eten'. Tot slot is de vaste combinatie 'op bezoek gaan'. De juiste zin is: 'Ik ga daar op bezoek'.\n\n*Roxana zei toen:* \"Leuk!\"\n\nJij zei\n*Zin 7:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n👍 *Wat was goed:* 'Een hele fijne vakantie' is een hele goede wens!\n💡 *Correctie:* \"Alvast een hele fijne vakantie, Roxana.\"\n🤔 *Logica:* 'Hou vast' betekent 'hold on' of 'hold tight'. Als je iemand een fijne vakantie wenst die nog moet komen, zeg je 'Alvast een fijne vakantie'. 'Alvast' betekent 'in advance'.\n\n*Roxana zei toen:* \"Jij ook.\"\n\nJij zei\n*Zin 8:* \"Dank je wel.\"\n👍 *Wat was goed:* Een perfecte afsluiting.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Let goed op de werkwoorden. Na 'ik' zeg je 'ik ga' (niet 'ik gaan'). Probeer ook de vaste combinaties te onthouden, zoals 'op vakantie gaan' en 'op bezoek gaan'.\n• *Uitspraak:* Oefen de 'g'-klank aan het begin van woorden zoals 'gaan'. Het is een zacht schrapend geluid achter in je keel.\n• *Samenhang & Logica:* Je hebt twee keer woorden door elkaar gehaald: 'alle spullen' werd 'hallo spoelen' en je zocht het woord 'alvast' maar zei 'hou vast'. Dit is normaal! Probeer nieuwe woorden die je leert op te schrijven en te oefenen.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de volgende keer een kort verhaaltje te schrijven over je vakantieplannen. Gebruik de correcte zinnen uit deze feedback, zoals 'Ik ga op vakantie' en 'Ik ga op bezoek bij...'. Dit helpt je om de juiste zinsbouw te onthouden. Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Homaira! 👋\n\nGreat job on practicing! Below, I've written out your entire story literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\nYou said\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *What was good:* A perfect opening to the conversation! Clear and correct.\n\n*Roxana then said:* \"Hallo Homeira. Goed, en met jou?\"\n\nYou said\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *What was good:* Completely correct and easy to understand.\n\n*Roxana then said:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n\nYou said\n*Zin 3:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n👍 *What was good:* The start 'Ja, ik ook' is fine. You are using the right words.\n💡 *Correction:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Why:* After 'ik', the verb needs to change. It is 'ik ga'. Also, in Dutch, you say 'óp vakantie gaan', not 'naar vakantie'.\n\n*Roxana then asked:* \"Hoe gaan jullie naar Duitsland?\"\n\nYou said\n*Zin 4:* \"Wij gaan met, uh, de auto. Uh, dit is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n👍 *What was good:* 'Wij gaan met de auto' is a great sentence. The question at the end is also good.\n💡 *Correction:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n🤔 *Logic:* The words 'hallo spoelen' don't mean anything in this sentence. You probably meant 'alle spullen' (all the stuff). This is a common mistake when you hear words but don't know them well yet. It's good that you tried!\n\n*Roxana then said:* \"Wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\nYou said\n*Zin 5:* \"Wat gaan jullie doen in Iran?\"\n👍 *What was good:* A good and clear question.\n\n*Roxana then said:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n\nYou said\n*Zin 6:* \"Uh, ik ook, uh, gaan naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n👍 *What was good:* It's clear what you want to say. You know the words 'neef', 'samen', 'eten', and 'praten'.\n💡 *Correction:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga daar op bezoek.\"\n🧠 *Why:* Your sentences are a bit short. You need to use the verb 'gaan': 'Ik ga ook naar Duitsland'. And: 'We gaan samen eten'. Finally, the fixed combination is 'op bezoek gaan'. The correct sentence is: 'Ik ga daar op bezoek'.\n\n*Roxana then said:* \"Leuk!\"\n\nYou said\n*Zin 7:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n👍 *What was good:* 'Een hele fijne vakantie' is a very good wish!\n💡 *Correction:* \"Alvast een hele fijne vakantie, Roxana.\"\n🤔 *Logic:* 'Hou vast' means 'hold on' or 'hold tight'. When you wish someone a nice holiday that is yet to come, you say 'Alvast een fijne vakantie'. 'Alvast' means 'in advance'.\n\n*Roxana then said:* \"Jij ook.\"\n\nYou said\n*Zin 8:* \"Dank je wel.\"\n👍 *What was good:* A perfect closing.\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* Pay close attention to the verbs. After 'ik', you say 'ik ga' (not 'ik gaan'). Also, try to remember the fixed combinations, like 'op vakantie gaan' and 'op bezoek gaan'.\n• *Pronunciation:* Practice the 'g' sound at the beginning of words like 'gaan'. It's a soft, scraping sound in the back of your throat.\n• *Coherence & Logic:* You mixed up words twice: 'alle spullen' became 'hallo spoelen' and you were looking for the word 'alvast' but said 'hou vast'. This is normal! Try to write down and practice new words you learn.\n\n🧠 *Your next step & advice:*\nNext time, try to write a short story about your holiday plans. Use the correct sentences from this feedback, such as 'Ik ga op vakantie' and 'Ik ga op bezoek bij...'. This will help you remember the correct sentence structure. Keep up the good work! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          },
+          {
+            "naam": "Roxana",
+            "brief": "Hallo Roxana! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\nJij zei\n*Zin 1:* \"Hallo Homeira. Goed en met jou?\"\n👍 *Wat was goed:* Een perfect antwoord, heel duidelijk en vriendelijk.\n\n*Homaira zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\nJij zei\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n👍 *Wat was goed:* Een hele goede, complete zin. Je vertelt wanneer, waarheen en met wie je gaat. Top!\n\n*Homaira zei toen:* \"Ja, ik ga ook op vakantie met mijn man.\"\n\nJij zei\n*Zin 3:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n👍 *Wat was goed:* Een prima en correcte vraag.\n\n*Homaira zei toen:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n\nJij zei\n*Zin 4:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Heel goed dat je 'want' gebruikt om een reden te geven. De zin is helemaal correct.\n\n*Homaira vroeg toen:* \"Wat gaan jullie doen in Iran?\"\n\nJij zei\n*Zin 5:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n👍 *Wat was goed:* Het is duidelijk wat je gaat doen. Je noemt verschillende activiteiten.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n🧠 *Waarom:* Voor 'strand' gebruik je het lidwoord 'het': 'naar het strand'. Als je iemands huis bezoekt, zeg je 'op bezoek bij' iemand. Bijvoorbeeld: 'Ik ga op bezoek bij mijn moeder'.\n\n*Homaira zei toen:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga daar op bezoek.\"\n\nJij zei\n*Zin 6:* \"Gelukkig.\"\n👍 *Wat was goed:* Je geeft een reactie, dat is goed voor het gesprek.\n💡 *Correctie:* \"Leuk!\"\n🤔 *Logica:* 'Gelukkig' betekent 'fortunately' of 'happy'. Als reactie op iemands plannen is het logischer om 'Leuk!' (Nice!) of 'Gezellig!' (Cozy/Fun!) te zeggen.\n\n*Homaira zei toen:* \"Alvast een hele fijne vakantie, Roxana.\"\n\nJij zei\n*Zin 7:* \"En jij.\"\n👍 *Wat was goed:* Je wenst de ander ook iets goeds, dat is beleefd.\n💡 *Correctie:* \"Jij ook.\"\n🧠 *Waarom:* Dit is een directe vertaling die in het Nederlands niet klopt. Als iemand jou iets wenst, wens je terug met 'Jij ook' (You too) of 'Hetzelfde' (The same to you).\n\n*Homaira zei toen:* \"Dank je wel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grammatica is al best goed! De belangrijkste punten zijn het gebruik van het lidwoord ('het strand') en de juiste voorzetsels ('op bezoek bij'). Dit zijn kleine details die je zinnen perfect maken.\n• *Uitspraak:* De 'ui'-klank in 'vliegtuig' is een van de moeilijkste klanken in het Nederlands. Blijf die oefenen! Ook de lange 'aa'-klank in 'naar' en 'man' kan je oefenen door je mond wat verder open te doen.\n• *Samenhang & Logica:* Let op de betekenis van woorden. 'Gelukkig' is een goed woord, maar 'leuk' past beter als reactie op iemands plannen. En onthoud: 'Jij ook!' is de standaard reactie als iemand je iets wenst.\n\n🧠 *Jouw volgende stap & advies:*\nProbeer de volgende keer als je met iemand praat, bewust te reageren met 'Leuk!' of 'Gezellig!'. En als iemand 'fijne dag' zegt, antwoord dan met 'Jij ook!'. Zo oefen je deze standaard Nederlandse reacties. Je doet het super! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Roxana! 👋\n\nGreat job on practicing! Below, I've written out your entire story literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Homaira then said:* \"Hallo Roxana, hoe gaat het?\"\n\nYou said\n*Zin 1:* \"Hallo Homeira. Goed en met jou?\"\n👍 *What was good:* A perfect answer, very clear and friendly.\n\n*Homaira then said:* \"Prima. Ga jij dit jaar op vakantie?\"\n\nYou said\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n👍 *What was good:* A very good, complete sentence. You explain when, where, and with whom you are going. Excellent!\n\n*Homaira then said:* \"Ja, ik ga ook op vakantie met mijn man.\"\n\nYou said\n*Zin 3:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n👍 *What was good:* A great and correct question.\n\n*Homaira then said:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n\nYou said\n*Zin 4:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *What was good:* It's very good that you use 'want' to give a reason. The sentence is completely correct.\n\n*Homaira then asked:* \"Wat gaan jullie doen in Iran?\"\n\nYou said\n*Zin 5:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n👍 *What was good:* It's clear what you are going to do. You list several activities.\n💡 *Correction:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n🧠 *Why:* For 'strand', you use the article 'het': 'naar het strand'. When you visit someone's house, you say 'op bezoek bij' someone. For example: 'Ik ga op bezoek bij mijn moeder'.\n\n*Homaira then said:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga daar op bezoek.\"\n\nYou said\n*Zin 6:* \"Gelukkig.\"\n👍 *What was good:* You give a reaction, which is good for the conversation.\n💡 *Correction:* \"Leuk!\"\n🤔 *Logic:* 'Gelukkig' means 'fortunately' or 'happy'. As a reaction to someone's plans, it is more logical to say 'Leuk!' (Nice!) or 'Gezellig!' (Cozy/Fun!).\n\n*Homaira then said:* \"Alvast een hele fijne vakantie, Roxana.\"\n\nYou said\n*Zin 7:* \"En jij.\"\n👍 *What was good:* You wish the other person something good as well, which is polite.\n💡 *Correction:* \"Jij ook.\"\n🧠 *Why:* This is a direct translation that doesn't work in Dutch. When someone wishes you something, you wish it back with 'Jij ook' (You too) or 'Hetzelfde' (The same to you).\n\n*Homaira then said:* \"Dank je wel.\"\n\n🏁 *Summary & Key Learning Points:*\n• *Grammar:* Your grammar is already quite good! The main points are using the correct article ('het strand') and the right prepositions ('op bezoek bij'). These are small details that will make your sentences perfect.\n• *Pronunciation:* The 'ui' sound in 'vliegtuig' is one of the most difficult sounds in Dutch. Keep practicing it! You can also practice the long 'aa' sound in 'naar' and 'man' by opening your mouth a bit wider.\n• *Coherence & Logic:* Pay attention to the meaning of words. 'Gelukkig' is a good word, but 'leuk' fits better as a reaction to someone's plans. And remember: 'Jij ook!' is the standard response when someone wishes you something.\n\n🧠 *Your next step & advice:*\nNext time you talk to someone, consciously try to respond with 'Leuk!' or 'Gezellig!'. And if someone says 'fijne dag', answer with 'Jij ook!'. This way, you practice these standard Dutch responses. You are doing great! Keep up the good work! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+          }
+        ],
+        "elevenlabs_transcript": "speaker_0: Hallo   Roxana,   hoe   gaat   het?  \nspeaker_1: Hallo   Homeira.   Goed   en   met   jou?  \nspeaker_0: Prima.   Ga   jij   dit   jaar   op   vakantie?  \nspeaker_1: Ja,   ik   ga   in   de   zomer   naar   Iran   met   mijn   man.   En   jij?  \nspeaker_0: Ja,   ik   ook.   Gaan,   uh,   naar   vakantie   met   mijn   man.  \nspeaker_1: Hoe   gaan   jullie   naar,   uh,   Duitsland?  \nspeaker_0: Wij   gaan   met,   uh,   de   auto.   Uh,   dit   is   makkelijk   met,   uh,   hallo   spoelen.   Hoe   gaan   jullie   naar   Iran?  \nspeaker_1: Mhm.   Uh,   wij   gaan   met   het   vliegtuig   naar   Iran,   want   dat   is   sneller.  \nspeaker_0: Wat   gaan   jullie   doen   in   Iran?  \nspeaker_1: We   gaan   naar   strand   en   wandelen   en   bezoek   naar,   uh,   mijn   familie.   En   jij?  \nspeaker_0: Uh,   ik   ook,   uh,   gaan   naar,   uh,   Duitsland.   Uh,   want,   uh,   uh,   mijn   neef   woont   in   Duitsland.   Wij   samen,   uh,   eten,   praten.   Ik   ga   bezoek   daar.  \nspeaker_1: Gelukkig.  \nspeaker_0: Uh,   uh,   een   hele   fijne   vakantie.   Hou   vast,   Roxana.  \nspeaker_1: En   jij.  \nspeaker_0: Dank   je   wel.",
+        "azure_pron": "Gemiddelde uitspraak-accuratesse: 86/100, vloeiendheid: 78/100, volledigheid: 93/100.\nZwakst uitgesproken woorden: uh (0), uh (0), naar (5), man (18), gaan (25), vliegtuig (26), de (29), Iran (34), eten (45), jij (48), de (50), dat (51)",
+        "azure_pron_detail": {
+          "overall": {
+            "accuracy": 86,
+            "fluency": 78,
+            "completeness": 93
+          },
+          "utterances": [
+            {
+              "text": "Hallo, Roxana, hoe gaat het? Gaan de Homeira Dank Goed en met jou Prima. Ga jij dit jaar op vakantie? Ja, Ik ga In de zomer naar Iran met mijn man En jij Ja, ik ook Gaan een naar vakantie met mijn man.",
+              "accuracy": 85,
+              "fluency": 83,
+              "completeness": 88,
+              "pronunciation": 84.4,
+              "words": [
+                {
+                  "word": "Hallo",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "Roxana",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 30
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 32
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "hoe",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "gaat",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "het",
+                  "accuracy": 84,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 79
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 25,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 33
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 33
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 50,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 41
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "Homeira",
+                  "accuracy": 56,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 16
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 76
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Dank",
+                  "accuracy": 65,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 53
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Goed",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 41
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 86.25
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "jou",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Prima",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Ga",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    }
+                  ]
+                },
+                {
+                  "word": "jij",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "dit",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 76
+                    }
+                  ]
+                },
+                {
+                  "word": "jaar",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "op",
+                  "accuracy": 86,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 62,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 28
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "ik",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 78,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "zomer",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 78,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 84
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 2
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "man",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "En",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 74.5
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97.23076923076923
+                    }
+                  ]
+                },
+                {
+                  "word": "jij",
+                  "accuracy": 48,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 77,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 59
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    }
+                  ]
+                },
+                {
+                  "word": "ik",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "ook",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 77
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Gaan",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "een",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 78.46153846153847
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 42
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 55
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "man",
+                  "accuracy": 18,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 20
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 13
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Hoe gaan jullie naar naar Duitsland? Wij gaan met de auto, Dat is makkelijk met de Hallo spoelen. Hoe gaan jullie naar Iran? Wij gaan met het vliegtuig naar Iran, want Dat is sneller. Wat gaan jullie doen in eten? We gaan naar strand en wandelen en bezoek naar uh, mijn familie En Ja.",
+              "accuracy": 83,
+              "fluency": 73,
+              "completeness": 87,
+              "pronunciation": 77.8,
+              "words": [
+                {
+                  "word": "Hoe",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 5,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 6
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 62
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 76
+                    }
+                  ]
+                },
+                {
+                  "word": "Wij",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 86
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 29,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 34
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "auto",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "dat",
+                  "accuracy": 51,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 34
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 6
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    }
+                  ]
+                },
+                {
+                  "word": "is",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 74
+                    }
+                  ]
+                },
+                {
+                  "word": "makkelijk",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 81,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    }
+                  ]
+                },
+                {
+                  "word": "hallo",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "spoelen",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 72
+                    }
+                  ]
+                },
+                {
+                  "word": "Hoe",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "wij",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 62
+                    }
+                  ]
+                },
+                {
+                  "word": "het",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 49
+                    }
+                  ]
+                },
+                {
+                  "word": "vliegtuig",
+                  "accuracy": 26,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 17
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 11
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 14
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 34,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 1
+                    }
+                  ]
+                },
+                {
+                  "word": "want",
+                  "accuracy": 71,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 12
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 85
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "dat",
+                  "accuracy": 65,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 9
+                    }
+                  ]
+                },
+                {
+                  "word": "is",
+                  "accuracy": 86,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 81
+                    }
+                  ]
+                },
+                {
+                  "word": "sneller",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Wat",
+                  "accuracy": 83,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 95,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "doen",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "eten",
+                  "accuracy": 45,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 60
+                    }
+                  ]
+                },
+                {
+                  "word": "We",
+                  "accuracy": 75,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 69,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "strand",
+                  "accuracy": 87,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 49
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 34
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 98.38461538461539
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98.75
+                    }
+                  ]
+                },
+                {
+                  "word": "wandelen",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 81.5
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    }
+                  ]
+                },
+                {
+                  "word": "bezoek",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 85
+                    }
+                  ]
+                },
+                {
+                  "word": "uh",
+                  "accuracy": 0,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 77
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "familie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "En",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 86.0909090909091
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97.6
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 35
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Ik ook, ga naar Duitsland, want mijn neef woont in Duitsland Wij Samen uh eten praten. Ik ga bezoek daar.",
+              "accuracy": 88,
+              "fluency": 79,
+              "completeness": 95,
+              "pronunciation": 84,
+              "words": [
+                {
+                  "word": "ik",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 55
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "ook",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 43
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 87,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "want",
+                  "accuracy": 74,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 50
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 81,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "neef",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "woont",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 64
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "Wij",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    }
+                  ]
+                },
+                {
+                  "word": "samen",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "uh",
+                  "accuracy": 0,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "eten",
+                  "accuracy": 95,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    }
+                  ]
+                },
+                {
+                  "word": "praten",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 74
+                    }
+                  ]
+                },
+                {
+                  "word": "Ik",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "bezoek",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "daar",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 89
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "In hele fijne vakantie. Hou vast Roxana. Dank je wel.",
+              "accuracy": 88,
+              "fluency": 78,
+              "completeness": 100,
+              "pronunciation": 84.4,
+              "words": [
+                {
+                  "word": "in",
+                  "accuracy": 86,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "hele",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 81
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    }
+                  ]
+                },
+                {
+                  "word": "fijne",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Hou",
+                  "accuracy": 74,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "vast",
+                  "accuracy": 66,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 6
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Roxana",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 64
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 27
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 78
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "Dank",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "je",
+                  "accuracy": 82,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "wel",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   ],
   "VDL": [
@@ -3543,7 +6536,7 @@ window.geminiData = {
     {
       "filename": "Homaira Roxanne 9-6.ogg",
       "path": "B-A2/Homaira Roxanne 9-6.ogg",
-      "date": "9-6-2026",
+      "date": "15-6-2026",
       "analyse": {
         "gesprek": [
           {
@@ -3567,9 +6560,9 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "Hallo Homaira, goed? En met jou?",
-            "zin_correct": "Hallo Homaira, goed? En met jou?",
+            "spreker": "Roxana",
+            "zin_fonetisch": "Hallo Homeira. Goed en met jou?",
+            "zin_correct": "Hallo Homeira. Goed, en met jou?",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -3607,33 +6600,13 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "Ja, ik ga in de zomer naar Iran met mijn man.",
-            "zin_correct": "Ja, ik ga in de zomer naar Iran met mijn man.",
+            "spreker": "Roxana",
+            "zin_fonetisch": "Ja, ik ga in de zomer naar Iran met mijn man. En jij?",
+            "zin_correct": "Ja, ik ga in de zomer naar Iran met mijn man. En jij?",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "En jij?",
-            "zin_correct": "En jij?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "naar, man",
+              "uitleg": "De 'aa' klank in 'naar' en 'man' klinkt wat kort, meer als een 'a'. Probeer de klank langer te maken: 'naaar', 'maan'."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -3648,17 +6621,17 @@ window.geminiData = {
           },
           {
             "spreker": "Homaira",
-            "zin_fonetisch": "Ja, ik ook gaan eh naar vakantie met mijn man.",
-            "zin_correct": "Ja, ik ga ook op vakantie met mijn man.",
+            "zin_fonetisch": "Ja, ik ook. Gaan, uh, naar vakantie met mijn man.",
+            "zin_correct": "Ja, ik ook. Ik ga op vakantie met mijn man.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "Gaan, naar, man",
+              "uitleg": "De 'aa' klank in 'gaan', 'naar' en 'man' klinkt te kort. Probeer je mond verder open te doen en de klank langer te maken: 'gaaan'."
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "De woordvolgorde is niet correct en het voorzetsel is verkeerd.",
-              "uitleg": "Bij 'ook' komt het werkwoord 'gaan' direct na 'ik'. Voor vakantie gebruik je 'op vakantie', niet 'naar vakantie'."
+              "fout": "Gaan, uh, naar vakantie",
+              "uitleg": "De zin begint met het werkwoord 'gaan', maar het onderwerp 'ik' ontbreekt. De juiste volgorde is: 'Ik ga...'. Ook gebruik je 'op vakantie gaan', niet 'naar vakantie gaan'."
             },
             "logica_analyse": {
               "goed": true,
@@ -3667,13 +6640,13 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Homaira",
-            "zin_fonetisch": "Hoe gaan jullie naar ehm Duitsland?",
+            "spreker": "Roxana",
+            "zin_fonetisch": "Hoe gaan jullie naar, uh, Duitsland?",
             "zin_correct": "Hoe gaan jullie naar Duitsland?",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "gaan, naar",
+              "uitleg": "Ook hier klinkt de 'aa' klank in 'gaan' en 'naar' wat te kort. Oefen met het langer maken van deze klank."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -3688,12 +6661,12 @@ window.geminiData = {
           },
           {
             "spreker": "Homaira",
-            "zin_fonetisch": "Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.",
-            "zin_correct": "Wij gaan met de auto, dat is makkelijk.",
+            "zin_fonetisch": "Wij gaan met, uh, de auto. Uh, dat is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?",
+            "zin_correct": "Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?",
             "uitspraak_analyse": {
               "goed": false,
-              "fout": "De klanken van 'halle spoelen' zijn niet duidelijk en komen niet overeen met een bestaand Nederlands woord of uitdrukking.",
-              "uitleg": "Het is onduidelijk welk woord of welke uitdrukking hier bedoeld wordt. De klanken 'halle spoelen' zijn niet herkenbaar in het Nederlands."
+              "fout": "hallo spoelen",
+              "uitleg": "Je zegt 'hallo spoelen', maar je bedoelt waarschijnlijk 'alle spullen'. Dit zijn woorden die een beetje op elkaar lijken, maar iets heel anders betekenen."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -3702,38 +6675,18 @@ window.geminiData = {
             },
             "logica_analyse": {
               "goed": false,
-              "fout": "De uitdrukking 'met halle spoelen' is onlogisch en heeft geen betekenis in deze context.",
-              "uitleg": "Na 'dat is makkelijk' verwacht je een reden of een verdere uitleg die logisch is. 'Met halle spoelen' is geen bestaande uitdrukking en maakt de zin onbegrijpelijk."
+              "fout": "hallo spoelen",
+              "uitleg": "De woorden 'hallo spoelen' betekenen niets in deze zin. Omdat je met de auto gaat, is het logisch dat je het over 'alle spullen' hebt die je meeneemt."
             }
           },
           {
-            "spreker": "Homaira",
-            "zin_fonetisch": "Hoe gaan jullie naar Iran?",
-            "zin_correct": "Hoe gaan jullie naar Iran?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.",
+            "spreker": "Roxana",
+            "zin_fonetisch": "Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.",
             "zin_correct": "Wij gaan met het vliegtuig naar Iran, want dat is sneller.",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "vliegtuig",
+              "uitleg": "Het woord 'vliegtuig' is moeilijk. De 'ui'-klank is lastig. Probeer te oefenen: 'ui', 'huis', 'vliegtuig'."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -3751,9 +6704,9 @@ window.geminiData = {
             "zin_fonetisch": "Wat gaan jullie doen in Iran?",
             "zin_correct": "Wat gaan jullie doen in Iran?",
             "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
+              "goed": false,
+              "fout": "gaan",
+              "uitleg": "Let weer op de 'aa'-klank in 'gaan'. Maak hem lang: 'gaaan'."
             },
             "grammatica_analyse": {
               "goed": true,
@@ -3767,18 +6720,18 @@ window.geminiData = {
             }
           },
           {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?",
-            "zin_correct": "We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?",
+            "spreker": "Roxana",
+            "zin_fonetisch": "We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?",
+            "zin_correct": "We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?",
             "uitspraak_analyse": {
-              "goed": false,
-              "fout": "Het woord 'family' is met een Engelse uitspraak uitgesproken.",
-              "uitleg": "Spreek 'familie' uit met de Nederlandse klanken, dus met een 'ie'-klank aan het einde."
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "De constructie 'bezoek naar mijn family' is niet correct.",
-              "uitleg": "Je zegt 'mijn familie bezoeken' (werkwoord) of 'op bezoek gaan bij mijn familie' (uitdrukking). 'Bezoek naar' is geen correcte constructie."
+              "fout": "naar strand, bezoek naar mijn familie",
+              "uitleg": "Het is 'het strand', dus je moet het lidwoord 'het' gebruiken. De vaste uitdrukking is 'op bezoek gaan bij iemand', niet 'bezoek naar'."
             },
             "logica_analyse": {
               "goed": true,
@@ -3788,8 +6741,68 @@ window.geminiData = {
           },
           {
             "spreker": "Homaira",
-            "zin_fonetisch": "Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.",
-            "zin_correct": "Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.",
+            "zin_fonetisch": "Uh, ik ook, uh, ga naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.",
+            "zin_correct": "Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga bij hem op bezoek.",
+            "uitspraak_analyse": {
+              "goed": false,
+              "fout": "eten",
+              "uitleg": "De 'ee' in 'eten' klinkt een beetje kort. Probeer de klank langer te maken: 'eeten'."
+            },
+            "grammatica_analyse": {
+              "goed": false,
+              "fout": "ik ook ga naar, Wij samen eten, praten, Ik ga bezoek daar",
+              "uitleg": "De woordvolgorde is niet juist. Het moet zijn: 'Ik ga ook naar...'. De zin 'Wij samen eten, praten' is te kort; je moet zeggen: 'Wij gaan samen eten en praten'. Tot slot zeg je 'Ik ga op bezoek' of 'Ik ga hem bezoeken', niet 'Ik ga bezoek'."
+            },
+            "logica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "Gelukkig.",
+            "zin_correct": "Leuk!",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Gelukkig.",
+              "uitleg": "'Gelukkig' betekent 'fortunately'. Als reactie op iemands plannen is het natuurlijker om 'Leuk!' of 'Gezellig!' te zeggen."
+            }
+          },
+          {
+            "spreker": "Homaira",
+            "zin_fonetisch": "Uh, uh, een hele fijne vakantie. Hou vast, Roxana.",
+            "zin_correct": "Alvast een hele fijne vakantie, Roxana.",
+            "uitspraak_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "grammatica_analyse": {
+              "goed": true,
+              "fout": "",
+              "uitleg": ""
+            },
+            "logica_analyse": {
+              "goed": false,
+              "fout": "Hou vast",
+              "uitleg": "'Hou vast' betekent 'hold on'. Je bedoelt waarschijnlijk 'Alvast', wat 'in advance' betekent. Dus: 'Alvast een fijne vakantie'."
+            }
+          },
+          {
+            "spreker": "Roxana",
+            "zin_fonetisch": "En jij.",
+            "zin_correct": "Jij ook.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -3797,8 +6810,8 @@ window.geminiData = {
             },
             "grammatica_analyse": {
               "goed": false,
-              "fout": "De woordvolgorde is niet correct.",
-              "uitleg": "Het werkwoord 'ga' moet direct na 'ik' komen, dus 'ik ga ook'."
+              "fout": "En jij.",
+              "uitleg": "'En jij?' is een vraag. Als je iemand hetzelfde wilt wensen, zeg je 'Jij ook'."
             },
             "logica_analyse": {
               "goed": true,
@@ -3808,88 +6821,8 @@ window.geminiData = {
           },
           {
             "spreker": "Homaira",
-            "zin_fonetisch": "Wij samen eh eten, praten, ik ga bezoek daar.",
-            "zin_correct": "Wij gaan daar samen eten en praten, en ik ga op bezoek.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "Er ontbreken werkwoorden en een voorzetsel, en de zinsbouw is niet correct.",
-              "uitleg": "Je moet een werkwoord zoals 'gaan' toevoegen ('Wij gaan samen eten en praten'). Ook zeg je 'op bezoek gaan' en niet 'bezoek gaan'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "Leuk.",
-            "zin_correct": "Leuk.",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Homaira",
-            "zin_fonetisch": "Eh eh een hele fijne vakantie half vast Roxana.",
-            "zin_correct": "Een hele fijne vakantie alvast, Roxana.",
-            "uitspraak_analyse": {
-              "goed": false,
-              "fout": "Het woord 'alvast' is uitgesproken als 'half vast'.",
-              "uitleg": "Let op de uitspraak van 'alvast'. De 'a' is kort en de 'v' is een 'v'-klank, niet een 'f'-klank."
-            },
-            "grammatica_analyse": {
-              "goed": false,
-              "fout": "Het woord 'half vast' is niet correct in deze context.",
-              "uitleg": "Je bedoelt 'alvast', wat betekent 'vooruitlopend op iets' of 'reeds'."
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Roxanne",
-            "zin_fonetisch": "En jij?",
-            "zin_correct": "En jij?",
-            "uitspraak_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "grammatica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            },
-            "logica_analyse": {
-              "goed": true,
-              "fout": "",
-              "uitleg": ""
-            }
-          },
-          {
-            "spreker": "Homaira",
-            "zin_fonetisch": "Dankjewel.",
-            "zin_correct": "Dankjewel.",
+            "zin_fonetisch": "Dank je wel.",
+            "zin_correct": "Dank je wel.",
             "uitspraak_analyse": {
               "goed": true,
               "fout": "",
@@ -3910,15 +6843,3544 @@ window.geminiData = {
         "feedback_brieven": [
           {
             "naam": "Homaira",
-            "brief": "Hallo Homaira! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Roxanne vroeg/zei toen:* \"Hallo Homaira, goed? En met jou?\"\n\n*Jij zei*\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Roxanne vroeg/zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 3:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed verstaanbaar.\n💡 *Correctie:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Waarom:* In het Nederlands staat het werkwoord ('ga') meestal direct na het onderwerp ('ik'). 'Ook' komt daarna. En voor 'vakantie' gebruiken we het voorzetsel 'op', dus 'op vakantie'.\n\n*Jij zei*\n*Zin 4:* \"Hoe gaan jullie naar ehm Duitsland?\"\n👍 *Wat was goed:* Deze vraag is heel duidelijk en correct geformuleerd. De 'ehm' is een natuurlijke pauze.\n\n*Jij zei*\n*Zin 5:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n👍 *Wat was goed:* Het eerste deel van de zin, 'Wij gaan met de auto, dat is makkelijk', is goed en duidelijk.\n💡 *Correctie:* \"Wij gaan met de auto, dat is makkelijk.\"\n🧠 *Waarom:* De uitdrukking 'met halle spoelen' is niet duidelijk en geen bestaande Nederlandse uitdrukking. Het is onduidelijk wat je hier precies bedoelde. Probeer altijd duidelijke Nederlandse woorden en zinnen te gebruiken.\n🤔 *Logica:* De zin 'met halle spoelen' is onlogisch in deze context. Als je wilt uitleggen waarom de auto makkelijk is, kun je bijvoorbeeld zeggen: 'dat is makkelijk, want dan kunnen we onderweg stoppen' of 'dat is makkelijk, want dan zijn we flexibel'.\n\n*Jij zei*\n*Zin 6:* \"Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* Deze vraag is correct en duidelijk uitgesproken.\n\n*Roxanne vroeg/zei toen:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\n*Jij zei*\n*Zin 7:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal correct en goed verstaanbaar.\n\n*Roxanne vroeg/zei toen:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n\n*Jij zei*\n*Zin 8:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.\"\n🧠 *Waarom:* Net als bij een eerdere zin, moet het werkwoord 'ga' direct na het onderwerp 'ik' komen. Dus 'ik ga ook'.\n\n*Jij zei*\n*Zin 9:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n👍 *Wat was goed:* De woorden zijn verstaanbaar en de intentie is duidelijk.\n💡 *Correctie:* \"Wij gaan daar samen eten en praten, en ik ga op bezoek.\"\n🧠 *Waarom:* Je moet een werkwoord toevoegen, zoals 'gaan' ('Wij gaan samen eten en praten'). Ook gebruik je de uitdrukking 'op bezoek gaan' als je iemand bezoekt, niet 'bezoek gaan'.\n\n*Roxanne vroeg/zei toen:* \"Leuk.\"\n\n*Jij zei*\n*Zin 10:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n👍 *Wat was goed:* Je bedoeling is duidelijk en je wenst Roxana een fijne vakantie.\n💡 *Correctie:* \"Een hele fijne vakantie alvast, Roxana.\"\n🧠 *Waarom:* Het woord dat je bedoelt is 'alvast', wat 'vooruitlopend op iets' betekent. Let ook op de uitspraak van 'alvast' (met een korte 'a' en een 'v'-klank).\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 11:* \"Dankjewel.\"\n👍 *Wat was goed:* Dit is correct en duidelijk uitgesproken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt vaak fouten met de woordvolgorde, vooral wanneer je 'ook' gebruikt. Het werkwoord komt meestal direct na het onderwerp (bijv. 'ik ga ook', niet 'ik ook ga'). Let ook op het gebruik van de juiste voorzetsels (bijv. 'op vakantie', 'op bezoek gaan') en het toevoegen van werkwoorden waar nodig (bijv. 'Wij *gaan* samen eten').\n• *Uitspraak:* Over het algemeen ben je goed verstaanbaar. Let wel op specifieke woorden zoals 'alvast' (niet 'half vast') en probeer onduidelijke uitdrukkingen zoals 'halle spoelen' te vermijden door te oefenen met correcte Nederlandse zinnen.\n• *Samenhang & Logica:* De zin 'met halle spoelen' was onlogisch in de context. Probeer altijd te controleren of je zinnen logisch zijn en goed aansluiten bij wat je wilt zeggen.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met de woordvolgorde in zinnen met 'ook' en met het correct gebruiken van voorzetsels zoals 'op' en 'bij'. Probeer ook hele zinnen te formuleren met werkwoorden, zelfs als je meerdere acties noemt. Blijf oefenen met spreken, dat helpt enorm! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hallo Homaira! 👋\n\nWell done on practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Jij zei*\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Roxanne vroeg/zei toen:* \"Hallo Homaira, goed? En met jou?\"\n\n*Jij zei*\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Roxanne vroeg/zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 3:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed verstaanbaar.\n💡 *Correctie:* \"Ja, ik ga ook op vakantie met mijn man.\"\n🧠 *Waarom:* In Dutch, the verb ('ga') usually comes directly after the subject ('ik'). 'Ook' comes after that. And for 'vakantie' (holiday), we use the preposition 'op', so 'op vakantie'.\n\n*Jij zei*\n*Zin 4:* \"Hoe gaan jullie naar ehm Duitsland?\"\n👍 *Wat was goed:* Deze vraag is heel duidelijk en correct geformuleerd. De 'ehm' is een natuurlijke pauze.\n\n*Jij zei*\n*Zin 5:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n👍 *Wat was goed:* Het eerste deel van de zin, 'Wij gaan met de auto, dat is makkelijk', is goed en duidelijk.\n💡 *Correctie:* \"Wij gaan met de auto, dat is makkelijk.\"\n🧠 *Waarom:* The expression 'met halle spoelen' is not clear and not an existing Dutch expression. It is unclear what you meant here. Always try to use clear Dutch words and sentences.\n🤔 *Logica:* The phrase 'met halle spoelen' is illogical in this context. If you want to explain why the car is easy, you could say, for example: 'dat is makkelijk, want dan kunnen we onderweg stoppen' (that's easy because then we can stop along the way) or 'dat is makkelijk, want dan zijn we flexibel' (that's easy because then we are flexible).\n\n*Jij zei*\n*Zin 6:* \"Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* Deze vraag is correct en duidelijk uitgesproken.\n\n*Roxanne vroeg/zei toen:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\n*Jij zei*\n*Zin 7:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Deze vraag is grammaticaal correct en goed verstaanbaar.\n\n*Roxanne vroeg/zei toen:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n\n*Jij zei*\n*Zin 8:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont in Duitsland.\"\n🧠 *Waarom:* Just like with a previous sentence, the verb 'ga' must come directly after the subject 'ik'. So 'ik ga ook'.\n\n*Jij zei*\n*Zin 9:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n👍 *Wat was goed:* De woorden zijn verstaanbaar en de intentie is duidelijk.\n💡 *Correctie:* \"Wij gaan daar samen eten en praten, en ik ga op bezoek.\"\n🧠 *Waarom:* You need to add a verb, such as 'gaan' ('Wij gaan samen eten en praten' - We are going to eat and talk together). Also, you use the expression 'op bezoek gaan' (to visit) when you visit someone, not 'bezoek gaan'.\n\n*Roxanne vroeg/zei toen:* \"Leuk.\"\n\n*Jij zei*\n*Zin 10:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n👍 *Wat was goed:* Je bedoeling is duidelijk en je wenst Roxana een fijne vakantie.\n💡 *Correctie:* \"Een hele fijne vakantie alvast, Roxana.\"\n🧠 *Waarom:* The word you mean is 'alvast', which means 'in advance' or 'already'. Also pay attention to the pronunciation of 'alvast' (with a short 'a' and a 'v' sound).\n\n*Roxanne vroeg/zei toen:* \"En jij?\"\n\n*Jij zei*\n*Zin 11:* \"Dankjewel.\"\n👍 *Wat was goed:* Dit is correct en duidelijk uitgesproken.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You often make mistakes with word order, especially when using 'ook' (also). The verb usually comes directly after the subject (e.g., 'ik ga ook', not 'ik ook ga'). Also pay attention to using the correct prepositions (e.g., 'op vakantie' - on holiday, 'op bezoek gaan' - to visit) and adding verbs where necessary (e.g., 'Wij *gaan* samen eten' - We *are going to* eat together).\n• *Uitspraak:* Overall, you are well understood. However, pay attention to specific words like 'alvast' (not 'half vast') and try to avoid unclear expressions like 'halle spoelen' by practicing with correct Dutch sentences.\n• *Samenhang & Logica:* The phrase 'met halle spoelen' was illogical in context. Always try to check if your sentences are logical and fit well with what you want to say.\n\n🧠 *Jouw volgende stap & advies:*\nPractice word order in sentences with 'ook' and using prepositions like 'op' and 'bij' correctly. Also try to formulate complete sentences with verbs, even when listing multiple actions. Keep practicing speaking, it helps a lot! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+            "brief": "Hallo Homaira! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\nJij zei:\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *Wat was goed:* Een perfecte opening van het gesprek! Duidelijk en correct.\n\n*Roxana zei toen:* \"Hallo Homeira. Goed en met jou?\"\n\nJij zei:\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *Wat was goed:* Goede vraag en helemaal correct gesteld.\n\n*Roxana zei toen:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n\nJij zei:\n*Zin 3:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n👍 *Wat was goed:* Het is duidelijk wat je bedoelt.\n💡 *Correctie:* \"Ja, ik ook. Ik ga op vakantie met mijn man.\"\n🧠 *Waarom:* De zin heeft een onderwerp nodig ('ik'). De juiste uitdrukking is 'op vakantie gaan', niet 'naar vakantie gaan'.\n\n*Roxana vroeg toen:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n\nJij zei:\n*Zin 4:* \"Wij gaan met, uh, de auto. Uh, dat is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n👍 *Wat was goed:* De eerste en de laatste zin zijn grammaticaal helemaal goed!\n💡 *Correctie:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n🧠 *Waarom:* Je zegt 'hallo spoelen', maar je bedoelt 'alle spullen'. Dit zijn woorden die een beetje op elkaar lijken, maar iets heel anders betekenen.\n🤔 *Logica:* De woorden 'hallo spoelen' betekenen niets in deze zin. Omdat je met de auto gaat, is het logisch dat je het over 'alle spullen' hebt die je meeneemt.\n\n*Roxana zei toen:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\nJij zei:\n*Zin 5:* \"Wat gaan jullie doen in Iran?\"\n👍 *Wat was goed:* Een prima en correcte vraag.\n\n*Roxana zei toen:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n\nJij zei:\n*Zin 6:* \"Uh, ik ook, uh, ga naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n👍 *Wat was goed:* Je kunt goed vertellen wat je plannen zijn.\n💡 *Correctie:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga bij hem op bezoek.\"\n🧠 *Waarom:* Let op de woordvolgorde: 'Ik ga ook...'. Zinnen als 'Wij samen eten' zijn te kort. Je moet zeggen: 'Wij gaan samen eten'. De juiste uitdrukking is 'op bezoek gaan'.\n\n*Roxana zei toen:* \"Gelukkig.\"\n\nJij zei:\n*Zin 7:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n👍 *Wat was goed:* Je wenst haar een fijne vakantie, dat is heel aardig.\n💡 *Correctie:* \"Alvast een hele fijne vakantie, Roxana.\"\n🧠 *Waarom:* 'Hou vast' betekent 'hold on'. Je bedoelt waarschijnlijk 'Alvast', wat 'in advance' betekent.\n🤔 *Logica:* 'Hou vast' is niet logisch hier. Het juiste woord om iets van tevoren te wensen is 'alvast'.\n\n*Roxana zei toen:* \"En jij.\"\n\nJij zei:\n*Zin 8:* \"Dank je wel.\"\n👍 *Wat was goed:* Een perfecte afsluiting.\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grootste leerpunt is de zinsbouw. Probeer altijd te denken: wie (onderwerp) + wat doet hij (werkwoord) + rest. Bijvoorbeeld: 'Ik ga op vakantie'. Nu zeg je soms alleen 'Gaan op vakantie'.\n• *Uitspraak:* Let goed op de 'aa'-klank in woorden als 'gaan' en 'naar'. Maak deze klank lang. Ook was er een misverstand met 'alle spullen' ('hallo spoelen'). Luister goed naar hoe woorden klinken.\n• *Samenhang & Logica:* Je gebruikte 'hou vast' in plaats van 'alvast'. Dit zijn 'valse vrienden', woorden die lijken op iets wat je kent, maar iets anders betekenen. Probeer de betekenis van nieuwe woorden goed te leren.\n\n🧠 *Jouw volgende stap & advies:*\nOefen met het maken van simpele, complete zinnen: 'Ik ga...', 'Wij willen...', 'Zij zijn...'. Dit zal je helpen om duidelijker te communiceren. Je doet het al heel goed! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Homaira! 👋\n\nGreat job practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\nYou said:\n*Zin 1:* \"Hallo Roxana, hoe gaat het?\"\n👍 *What was good:* A perfect opening to the conversation! Clear and correct.\n\n*Roxana said then:* \"Hallo Homeira. Goed en met jou?\"\n\nYou said:\n*Zin 2:* \"Prima. Ga jij dit jaar op vakantie?\"\n👍 *What was good:* A good and correctly phrased question.\n\n*Roxana said then:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n\nYou said:\n*Zin 3:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n👍 *What was good:* It's clear what you mean.\n💡 *Correction:* \"Ja, ik ook. Ik ga op vakantie met mijn man.\"\n🧠 *Why:* The sentence needs a subject ('ik'). The correct expression is 'op vakantie gaan', not 'naar vakantie gaan'.\n\n*Roxana asked then:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n\nYou said:\n*Zin 4:* \"Wij gaan met, uh, de auto. Uh, dat is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n👍 *What was good:* The first and last sentences are grammatically perfect!\n💡 *Correction:* \"Wij gaan met de auto. Dat is makkelijk met alle spullen. Hoe gaan jullie naar Iran?\"\n🧠 *Why:* You said 'hallo spoelen', but you meant 'alle spullen'. These are words that sound a bit alike but mean something completely different.\n🤔 *Logic:* The words 'hallo spoelen' don't mean anything in this sentence. Since you're going by car, it's logical that you're talking about 'alle spullen' (all the stuff) you're taking with you.\n\n*Roxana said then:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n\nYou said:\n*Zin 5:* \"Wat gaan jullie doen in Iran?\"\n👍 *What was good:* A great and correct question.\n\n*Roxana said then:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n\nYou said:\n*Zin 6:* \"Uh, ik ook, uh, ga naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n👍 *What was good:* You're good at explaining your plans.\n💡 *Correction:* \"Ik ga ook naar Duitsland, want mijn neef woont daar. We gaan samen eten en praten. Ik ga bij hem op bezoek.\"\n🧠 *Why:* Pay attention to the word order: 'Ik ga ook...'. Sentences like 'Wij samen eten' are too short. You should say: 'Wij gaan samen eten'. The correct expression is 'op bezoek gaan'.\n\n*Roxana said then:* \"Gelukkig.\"\n\nYou said:\n*Zin 7:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n👍 *What was good:* You wish her a nice holiday, which is very kind.\n💡 *Correction:* \"Alvast een hele fijne vakantie, Roxana.\"\n🧠 *Why:* 'Hou vast' means 'hold on'. You probably mean 'Alvast', which means 'in advance'.\n🤔 *Logic:* 'Hou vast' is not logical here. The correct word to wish something in advance is 'alvast'.\n\n*Roxana said then:* \"En jij.\"\n\nYou said:\n*Zin 8:* \"Dank je wel.\"\n👍 *What was good:* A perfect closing.\n\n🏁 *Summary & Key Learning Points:*\n• *Grammatica:* Your main learning point is sentence structure. Always try to think: who (subject) + what are they doing (verb) + rest. For example: 'Ik ga op vakantie'. You sometimes just say 'Gaan op vakantie'.\n• *Uitspraak:* Pay close attention to the 'aa' sound in words like 'gaan' and 'naar'. Make this sound long. There was also a misunderstanding with 'alle spullen' ('hallo spoelen'). Listen carefully to how words sound.\n• *Coherence & Logic:* You used 'hou vast' instead of 'alvast'. These are 'false friends', words that look like something you know but mean something different. Try to learn the correct meaning of new words.\n\n🧠 *Your next step & advice:*\nPractice making simple, complete sentences: 'Ik ga...', 'Wij willen...', 'Zij zijn...'. This will help you communicate more clearly. You are already doing very well! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           },
           {
-            "naam": "Roxanne",
-            "brief": "Hallo Roxanne! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg/zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\n*Jij zei*\n*Zin 1:* \"Hallo Homaira, goed? En met jou?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Homaira vroeg/zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Jij zei*\n*Zin 3:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort, krachtig en correct.\n\n*Homaira vroeg/zei toen:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar ehm Duitsland?\"\n\n*Homaira vroeg/zei toen:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar Iran?\"\n\n*Jij zei*\n*Zin 4:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en goed verstaanbaar. De reden is ook duidelijk.\n\n*Homaira vroeg/zei toen:* \"Wat gaan jullie doen in Iran?\"\n\n*Jij zei*\n*Zin 5:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?\"\n🧠 *Waarom:* Het woord 'family' is Engels. In het Nederlands zeggen we 'familie'. Ook is de constructie 'bezoek naar mijn familie' niet correct. Je zegt 'mijn familie bezoeken' (werkwoord) of 'op bezoek gaan bij mijn familie'.\n\n*Homaira vroeg/zei toen:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n\n*Homaira vroeg/zei toen:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n\n*Jij zei*\n*Zin 6:* \"Leuk.\"\n👍 *Wat was goed:* Dit is een correct en passend antwoord.\n\n*Homaira vroeg/zei toen:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n\n*Jij zei*\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort en correct.\n\n*Homaira vroeg/zei toen:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je maakt weinig grammaticale fouten. Het belangrijkste punt is het correct gebruiken van werkwoorden en uitdrukkingen, zoals 'mijn familie bezoeken' in plaats van 'bezoek naar mijn family'.\n• *Uitspraak:* Over het algemeen ben je goed verstaanbaar. Let wel op Engelse woorden die je in het Nederlands gebruikt, zoals 'family'. Probeer de Nederlandse uitspraak 'familie' te gebruiken.\n• *Samenhang & Logica:* Je zinnen zijn altijd logisch en passen goed in het gesprek. Goed gedaan!\n\n🧠 *Jouw volgende stap & advies:*\nBlijf oefenen met het correct gebruiken van Nederlandse werkwoorden en uitdrukkingen, vooral wanneer je over activiteiten praat. Probeer ook bewust te zijn van Engelse woorden die je misschien onbewust gebruikt en vervang ze door de Nederlandse equivalenten. Je bent al heel goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-            "brief_en": "Hallo Roxanne! 👋\n\nWell done on practicing! Below, I have transcribed your entire story word for word, sentence by sentence. For each sentence, I will tell you what went well and what could be improved.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira vroeg/zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\n*Jij zei*\n*Zin 1:* \"Hallo Homaira, goed? En met jou?\"\n👍 *Wat was goed:* Deze zin is perfect uitgesproken en grammaticaal helemaal correct. Goed gedaan!\n\n*Homaira vroeg/zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\n*Jij zei*\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man.\"\n👍 *Wat was goed:* Deze zin is goed uitgesproken en grammaticaal correct. Heel duidelijk!\n\n*Jij zei*\n*Zin 3:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort, krachtig en correct.\n\n*Homaira vroeg/zei toen:* \"Ja, ik ook gaan eh naar vakantie met mijn man.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar ehm Duitsland?\"\n\n*Homaira vroeg/zei toen:* \"Wij gaan met eh de auto, eh dat is makkelijk met eh halle spoelen.\"\n\n*Homaira vroeg/zei toen:* \"Hoe gaan jullie naar Iran?\"\n\n*Jij zei*\n*Zin 4:* \"Eh wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Deze zin is grammaticaal correct en goed verstaanbaar. De reden is ook duidelijk.\n\n*Homaira vroeg/zei toen:* \"Wat gaan jullie doen in Iran?\"\n\n*Jij zei*\n*Zin 5:* \"We gaan naar het strand en wandelen en bezoek naar eh mijn family. En jij?\"\n👍 *Wat was goed:* Je gebruikt de juiste woorden en de zin is goed te begrijpen.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en mijn familie bezoeken. En jij?\"\n🧠 *Waarom:* The word 'family' is English. In Dutch, we say 'familie'. Also, the construction 'bezoek naar mijn familie' is not correct. You say 'mijn familie bezoeken' (verb) or 'op bezoek gaan bij mijn familie' (expression).\n\n*Homaira vroeg/zei toen:* \"Eh ik ook eh ga naar eh Duitsland, eh want eh eh mijn neef woont in Duitsland.\"\n\n*Homaira vroeg/zei toen:* \"Wij samen eh eten, praten, ik ga bezoek daar.\"\n\n*Jij zei*\n*Zin 6:* \"Leuk.\"\n👍 *Wat was goed:* Dit is een correct en passend antwoord.\n\n*Homaira vroeg/zei toen:* \"Eh eh een hele fijne vakantie half vast Roxana.\"\n\n*Jij zei*\n*Zin 7:* \"En jij?\"\n👍 *Wat was goed:* Deze vraag is kort en correct.\n\n*Homaira vroeg/zei toen:* \"Dankjewel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* You make few grammatical errors. The most important point is the correct use of verbs and expressions, such as 'mijn familie bezoeken' (to visit my family) instead of 'bezoek naar mijn family'.\n• *Uitspraak:* Overall, you are well understood. However, pay attention to English words you might unconsciously use in Dutch, such as 'family'. Try to use the Dutch pronunciation 'familie'.\n• *Samenhang & Logica:* Your sentences are always logical and fit well into the conversation. Well done!\n\n🧠 *Jouw volgende stap & advies:*\nKeep practicing the correct use of Dutch verbs and expressions, especially when talking about activities. Also try to be aware of English words you might unconsciously use and replace them with their Dutch equivalents. You are already well on your way! Keep up the good work! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
+            "naam": "Roxana",
+            "brief": "Hallo Roxana! 👋\n\nWat goed dat je hebt geoefend! Hieronder heb ik jullie hele gesprek letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\n\n🔍 *Zin-voor-Zin Analyse:*\n\n*Homaira zei toen:* \"Hallo Roxana, hoe gaat het?\"\n\nJij zei:\n*Zin 1:* \"Hallo Homeira. Goed en met jou?\"\n👍 *Wat was goed:* Een heel goed en vriendelijk antwoord. Helemaal correct!\n\n*Homaira zei toen:* \"Prima. Ga jij dit jaar op vakantie?\"\n\nJij zei:\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n👍 *Wat was goed:* Dit is een perfecte zin. Goede structuur en duidelijke uitspraak.\n\n*Homaira zei toen:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n\nJij zei:\n*Zin 3:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n👍 *Wat was goed:* Een goede en duidelijke vraag. De grammatica is correct.\n\n*Homaira zei toen:* \"Wij gaan met, uh, de auto. Uh, dat is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n\nJij zei:\n*Zin 4:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *Wat was goed:* Dit is een hele goede zin. De structuur met 'want' is correct gebruikt.\n💡 *Correctie:* \"Wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n🧠 *Waarom:* De uitspraak van 'vliegtuig' is een beetje lastig. De 'ui'-klank is moeilijk in het Nederlands. Oefen deze klank: 'ui', 'huis', 'vliegtuig'.\n\n*Homaira vroeg toen:* \"Wat gaan jullie doen in Iran?\"\n\nJij zei:\n*Zin 5:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n👍 *Wat was goed:* Je geeft een duidelijk antwoord en somt je activiteiten op.\n💡 *Correctie:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n🧠 *Waarom:* Het is 'het strand', dus je hebt het lidwoord 'het' nodig. De vaste uitdrukking is 'op bezoek gaan bij iemand', niet 'bezoek naar'.\n\n*Homaira zei toen:* \"Uh, ik ook, uh, ga naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n\nJij zei:\n*Zin 6:* \"Gelukkig.\"\n👍 *Wat was goed:* Je geeft een reactie, dat is goed.\n💡 *Correctie:* \"Leuk!\"\n🧠 *Waarom:* 'Gelukkig' betekent 'fortunately' of 'happy'. Het is een beetje een vreemde reactie op iemands vakantieplannen. Een woord als 'Leuk!' of 'Gezellig!' past hier beter.\n🤔 *Logica:* 'Gelukkig' is niet de meest logische reactie hier. Het is natuurlijker om te zeggen dat je de plannen leuk vindt.\n\n*Homaira zei toen:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n\nJij zei:\n*Zin 7:* \"En jij.\"\n👍 *Wat was goed:* Het is duidelijk dat je haar hetzelfde wenst.\n💡 *Correctie:* \"Jij ook.\"\n🧠 *Waarom:* 'En jij?' is een vraag. Als je wilt zeggen 'you too', dan zeg je in het Nederlands 'Jij ook'.\n\n*Homaira zei toen:* \"Dank je wel.\"\n\n🏁 *Samenvatting & Belangrijkste leerpunten:*\n• *Grammatica:* Je grootste leerpunten zijn de kleine, maar belangrijke details: het juiste lidwoord ('het strand') en de juiste vaste uitdrukkingen ('op bezoek bij familie'). Ook de reactie 'Jij ook' is belangrijk om te onthouden.\n• *Uitspraak:* Je uitspraak is over het algemeen goed verstaanbaar. De 'aa'-klank (in 'naar', 'gaan') kan wat langer. De 'ui'-klank (in 'vliegtuig') is een bekende moeilijke klank, dus die kun je extra oefenen.\n• *Samenhang & Logica:* Je woordkeuze was soms niet helemaal passend, zoals bij 'Gelukkig'. Probeer na te denken welke reactie het beste past in een gesprek. 'Leuk', 'Gezellig', 'Oh, wat fijn!' zijn vaak goede opties.\n\n🧠 *Jouw volgende stap & advies:*\nLet de komende tijd extra op de kleine woordjes: de, het, een, op, bij, in. Ze maken een groot verschil! Blijf oefenen met de vaste combinaties. Je bent heel goed op weg! Ga zo door! 🚀\n\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+            "brief_en": "Hello Roxana! 👋\n\nGreat job practicing! Below, I've written down your entire conversation literally, sentence by sentence. For each sentence, I'll tell you what went well and what could be improved.\n\n🔍 *Sentence-by-Sentence Analysis:*\n\n*Homaira said then:* \"Hallo Roxana, hoe gaat het?\"\n\nYou said:\n*Zin 1:* \"Hallo Homeira. Goed en met jou?\"\n👍 *What was good:* A very good and friendly answer. Completely correct!\n\n*Homaira said then:* \"Prima. Ga jij dit jaar op vakantie?\"\n\nYou said:\n*Zin 2:* \"Ja, ik ga in de zomer naar Iran met mijn man. En jij?\"\n👍 *What was good:* This is a perfect sentence. Good structure and clear pronunciation.\n\n*Homaira said then:* \"Ja, ik ook. Gaan, uh, naar vakantie met mijn man.\"\n\nYou said:\n*Zin 3:* \"Hoe gaan jullie naar, uh, Duitsland?\"\n👍 *What was good:* A good and clear question. The grammar is correct.\n\n*Homaira said then:* \"Wij gaan met, uh, de auto. Uh, dat is makkelijk met, uh, hallo spoelen. Hoe gaan jullie naar Iran?\"\n\nYou said:\n*Zin 4:* \"Mhm. Uh, wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n👍 *What was good:* This is a very good sentence. The structure with 'want' is used correctly.\n💡 *Correction:* \"Wij gaan met het vliegtuig naar Iran, want dat is sneller.\"\n🧠 *Why:* The pronunciation of 'vliegtuig' is a bit tricky. The 'ui' sound is difficult in Dutch. Practice this sound: 'ui', 'huis', 'vliegtuig'.\n\n*Homaira asked then:* \"Wat gaan jullie doen in Iran?\"\n\nYou said:\n*Zin 5:* \"We gaan naar strand en wandelen en bezoek naar, uh, mijn familie. En jij?\"\n👍 *What was good:* You give a clear answer and list your activities.\n💡 *Correction:* \"We gaan naar het strand, wandelen en op bezoek bij mijn familie. En jij?\"\n🧠 *Why:* It's 'het strand', so you need the article 'het'. The fixed expression is 'op bezoek gaan bij iemand' (to visit someone), not 'bezoek naar'.\n\n*Homaira said then:* \"Uh, ik ook, uh, ga naar, uh, Duitsland. Uh, want, uh, uh, mijn neef woont in Duitsland. Wij samen, uh, eten, praten. Ik ga bezoek daar.\"\n\nYou said:\n*Zin 6:* \"Gelukkig.\"\n👍 *What was good:* You give a reaction, which is good.\n💡 *Correction:* \"Leuk!\"\n🧠 *Why:* 'Gelukkig' means 'fortunately' or 'happy'. It's a bit of a strange reaction to someone's holiday plans. A word like 'Leuk!' (Nice!) or 'Gezellig!' (Cozy/Fun!) fits better here.\n🤔 *Logic:* 'Gelukkig' is not the most logical response here. It's more natural to say that you like the plans.\n\n*Homaira said then:* \"Uh, uh, een hele fijne vakantie. Hou vast, Roxana.\"\n\nYou said:\n*Zin 7:* \"En jij.\"\n👍 *What was good:* It's clear that you are wishing her the same.\n💡 *Correction:* \"Jij ook.\"\n🧠 *Why:* 'En jij?' is a question. If you want to say 'you too', in Dutch you say 'Jij ook'.\n\n*Homaira said then:* \"Dank je wel.\"\n\n🏁 *Summary & Key Learning Points:*\n• *Grammatica:* Your main learning points are the small but important details: the correct article ('het strand') and the correct fixed expressions ('op bezoek bij familie'). The response 'Jij ook' is also important to remember.\n• *Uitspraak:* Your pronunciation is generally easy to understand. The 'aa' sound (in 'naar', 'gaan') could be a bit longer. The 'ui' sound (in 'vliegtuig') is a known difficult sound, so you can practice that one extra.\n• *Coherence & Logic:* Your word choice was sometimes not entirely appropriate, like with 'Gelukkig'. Try to think about which response fits best in a conversation. 'Leuk', 'Gezellig', 'Oh, wat fijn!' are often good options.\n\n🧠 *Your next step & advice:*\nIn the coming time, pay extra attention to the small words: de, het, een, op, bij, in. They make a big difference! Keep practicing the fixed combinations. You are well on your way! Keep it up! 🚀\n\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
           }
-        ]
+        ],
+        "elevenlabs_transcript": "speaker_0: Hallo   Roxana,   hoe   gaat   het?  \nspeaker_1: Hallo   Homeira.   Goed   en   met   jou?  \nspeaker_0: Prima.   Ga   jij   dit   jaar   op   vakantie?  \nspeaker_1: Ja,   ik   ga   in   de   zomer   naar   Iran   met   mijn   man.   En   jij?  \nspeaker_0: Ja,   ik   ook.   Gaan,   uh,   naar   vakantie   met   mijn   man.  \nspeaker_1: Hoe   gaan   jullie   naar,   uh,   Duitsland?  \nspeaker_0: Wij   gaan   met,   uh,   de   auto.   Uh,   dat   is   makkelijk   met,   uh,   hallo   spoelen.   Hoe   gaan   jullie   naar   Iran?  \nspeaker_1: Mhm.   Uh,   wij   gaan   met   het   vliegtuig   naar   Iran,   want   dat   is   sneller.  \nspeaker_0: Wat   gaan   jullie   doen   in   Iran?  \nspeaker_1: We   gaan   naar   strand   en   wandelen   en   bezoek   naar,   uh,   mijn   familie.   En   jij?  \nspeaker_0: Uh,   ik   ook,   uh,   ga   naar,   uh,   Duitsland.   Uh,   want,   uh,   uh,   mijn   neef   woont   in   Duitsland.   Wij   samen,   uh,   eten,   praten.   Ik   ga   bezoek   daar.  \nspeaker_1: Gelukkig.  \nspeaker_0: Uh,   uh,   een   hele   fijne   vakantie.   Hou   vast,   Roxana.  \nspeaker_1: En   jij.  \nspeaker_0: Dank   je   wel.",
+        "elevenlabs_words": [
+          {
+            "w": "Hallo",
+            "s": 0.459,
+            "e": 0.68,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Roxana,",
+            "s": 0.719,
+            "e": 1.439,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "hoe",
+            "s": 1.719,
+            "e": 1.879,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "gaat",
+            "s": 1.919,
+            "e": 2.22,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "het?",
+            "s": 2.299,
+            "e": 2.539,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Hallo",
+            "s": 3.139,
+            "e": 3.359,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Homeira.",
+            "s": 3.419,
+            "e": 3.98,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Goed",
+            "s": 4.199,
+            "e": 4.599,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "en",
+            "s": 5.279,
+            "e": 5.44,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "met",
+            "s": 5.48,
+            "e": 5.679,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "jou?",
+            "s": 5.779,
+            "e": 6.039,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Prima.",
+            "s": 6.399,
+            "e": 6.92,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Ga",
+            "s": 7.44,
+            "e": 7.639,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "jij",
+            "s": 7.699,
+            "e": 7.859,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "dit",
+            "s": 7.899,
+            "e": 8.079,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "jaar",
+            "s": 8.159,
+            "e": 8.34,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "op",
+            "s": 8.479,
+            "e": 8.579,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "vakantie?",
+            "s": 8.619,
+            "e": 9.199,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Ja,",
+            "s": 9.659,
+            "e": 9.859,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "ik",
+            "s": 10.119,
+            "e": 10.239,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "ga",
+            "s": 10.319,
+            "e": 10.519,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "in",
+            "s": 10.579,
+            "e": 10.719,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "de",
+            "s": 10.779,
+            "e": 10.939,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "zomer",
+            "s": 11.019,
+            "e": 11.479,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "naar",
+            "s": 11.659,
+            "e": 11.859,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Iran",
+            "s": 11.96,
+            "e": 12.359,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "met",
+            "s": 12.42,
+            "e": 12.619,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "mijn",
+            "s": 12.679,
+            "e": 12.859,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "man.",
+            "s": 12.979,
+            "e": 13.219,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "En",
+            "s": 13.659,
+            "e": 13.88,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "jij?",
+            "s": 13.979,
+            "e": 14.219,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Ja,",
+            "s": 14.899,
+            "e": 15.259,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ik",
+            "s": 15.679,
+            "e": 15.839,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ook.",
+            "s": 15.96,
+            "e": 16.18,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Gaan,",
+            "s": 16.619,
+            "e": 17.059,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 17.42,
+            "e": 17.559,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "naar",
+            "s": 17.719,
+            "e": 17.939,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "vakantie",
+            "s": 18.02,
+            "e": 18.619,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "met",
+            "s": 18.68,
+            "e": 18.84,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "mijn",
+            "s": 18.899,
+            "e": 19.1,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "man.",
+            "s": 19.18,
+            "e": 19.5,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Hoe",
+            "s": 20.979,
+            "e": 21.199,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "gaan",
+            "s": 21.279,
+            "e": 21.539,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "jullie",
+            "s": 21.639,
+            "e": 21.899,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "naar,",
+            "s": 22,
+            "e": 22.239,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "uh,",
+            "s": 22.459,
+            "e": 22.739,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Duitsland?",
+            "s": 23.439,
+            "e": 24.079,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Wij",
+            "s": 24.979,
+            "e": 25.139,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "gaan",
+            "s": 25.219,
+            "e": 25.42,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "met,",
+            "s": 25.5,
+            "e": 25.799,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 25.879,
+            "e": 26.039,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "de",
+            "s": 26.279,
+            "e": 26.359,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "auto.",
+            "s": 26.599,
+            "e": 27,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Uh,",
+            "s": 27.42,
+            "e": 27.5,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "dat",
+            "s": 27.639,
+            "e": 27.76,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "is",
+            "s": 27.799,
+            "e": 27.92,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "makkelijk",
+            "s": 28,
+            "e": 28.439,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "met,",
+            "s": 28.519,
+            "e": 28.719,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 28.84,
+            "e": 28.879,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "hallo",
+            "s": 29,
+            "e": 29.179,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "spoelen.",
+            "s": 29.359,
+            "e": 29.859,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Hoe",
+            "s": 30.199,
+            "e": 30.34,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "gaan",
+            "s": 30.439,
+            "e": 30.659,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "jullie",
+            "s": 30.76,
+            "e": 31.019,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "naar",
+            "s": 31.099,
+            "e": 31.34,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Iran?",
+            "s": 31.42,
+            "e": 31.839,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Mhm.",
+            "s": 32.18,
+            "e": 32.459,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Uh,",
+            "s": 33.02,
+            "e": 33.2,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "wij",
+            "s": 33.279,
+            "e": 33.499,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "gaan",
+            "s": 33.559,
+            "e": 33.779,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "met",
+            "s": 33.84,
+            "e": 34.04,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "het",
+            "s": 34.059,
+            "e": 34.239,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "vliegtuig",
+            "s": 34.299,
+            "e": 35.02,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "naar",
+            "s": 35.2,
+            "e": 35.419,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Iran,",
+            "s": 35.54,
+            "e": 35.919,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "want",
+            "s": 36.059,
+            "e": 36.219,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "dat",
+            "s": 36.299,
+            "e": 36.5,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "is",
+            "s": 36.579,
+            "e": 36.759,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "sneller.",
+            "s": 36.899,
+            "e": 37.539,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Wat",
+            "s": 38.459,
+            "e": 38.639,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "gaan",
+            "s": 38.739,
+            "e": 38.979,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "jullie",
+            "s": 39.059,
+            "e": 39.639,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "doen",
+            "s": 39.779,
+            "e": 40.059,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "in",
+            "s": 40.119,
+            "e": 40.299,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Iran?",
+            "s": 40.459,
+            "e": 40.859,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "We",
+            "s": 41.379,
+            "e": 41.52,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "gaan",
+            "s": 41.639,
+            "e": 41.919,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "naar",
+            "s": 42,
+            "e": 42.18,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "strand",
+            "s": 42.34,
+            "e": 42.879,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "en",
+            "s": 42.919,
+            "e": 43.079,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "wandelen",
+            "s": 43.18,
+            "e": 43.919,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "en",
+            "s": 44.04,
+            "e": 44.2,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "bezoek",
+            "s": 44.34,
+            "e": 44.879,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "naar,",
+            "s": 44.979,
+            "e": 45.219,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "uh,",
+            "s": 45.779,
+            "e": 45.979,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "mijn",
+            "s": 46.139,
+            "e": 46.399,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "familie.",
+            "s": 46.5,
+            "e": 46.979,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "En",
+            "s": 47.239,
+            "e": 47.419,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "jij?",
+            "s": 47.539,
+            "e": 47.919,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Uh,",
+            "s": 49.139,
+            "e": 49.259,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ik",
+            "s": 49.52,
+            "e": 49.619,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ook,",
+            "s": 49.759,
+            "e": 50,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 50.059,
+            "e": 50.239,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ga",
+            "s": 50.399,
+            "e": 50.619,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "naar,",
+            "s": 50.7,
+            "e": 50.979,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 51.059,
+            "e": 51.099,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Duitsland.",
+            "s": 51.219,
+            "e": 51.819,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Uh,",
+            "s": 52.539,
+            "e": 52.759,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "want,",
+            "s": 52.899,
+            "e": 53.239,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 53.299,
+            "e": 53.619,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 53.739,
+            "e": 53.959,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "mijn",
+            "s": 54,
+            "e": 54.239,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "neef",
+            "s": 54.34,
+            "e": 54.879,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "woont",
+            "s": 54.959,
+            "e": 55.379,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "in",
+            "s": 55.899,
+            "e": 56.02,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Duitsland.",
+            "s": 56.119,
+            "e": 56.739,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Wij",
+            "s": 57.039,
+            "e": 57.279,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "samen,",
+            "s": 57.379,
+            "e": 57.899,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 58.559,
+            "e": 59.139,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "eten,",
+            "s": 59.259,
+            "e": 59.819,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "praten.",
+            "s": 60,
+            "e": 60.679,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Ik",
+            "s": 60.939,
+            "e": 61.079,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "ga",
+            "s": 61.159,
+            "e": 61.339,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "bezoek",
+            "s": 61.399,
+            "e": 61.779,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "daar.",
+            "s": 61.879,
+            "e": 62.279,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Gelukkig.",
+            "s": 62.759,
+            "e": 63.439,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Uh,",
+            "s": 64.76,
+            "e": 65.139,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "uh,",
+            "s": 65.439,
+            "e": 65.459,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "een",
+            "s": 65.58,
+            "e": 66.36,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "hele",
+            "s": 66.58,
+            "e": 66.959,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "fijne",
+            "s": 67.04,
+            "e": 67.4,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "vakantie.",
+            "s": 67.459,
+            "e": 68.159,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Hou",
+            "s": 68.22,
+            "e": 68.619,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "vast,",
+            "s": 68.639,
+            "e": 68.859,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "Roxana.",
+            "s": 68.9,
+            "e": 69.54,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "En",
+            "s": 70.199,
+            "e": 70.239,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "jij.",
+            "s": 70.319,
+            "e": 71.119,
+            "spk": "speaker_1"
+          },
+          {
+            "w": "Dank",
+            "s": 71.22,
+            "e": 71.479,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "je",
+            "s": 71.5,
+            "e": 71.539,
+            "spk": "speaker_0"
+          },
+          {
+            "w": "wel.",
+            "s": 71.639,
+            "e": 72.199,
+            "spk": "speaker_0"
+          }
+        ],
+        "azure_pron": "Gemiddelde uitspraak-accuratesse: 86/100, vloeiendheid: 79/100, volledigheid: 93/100.\nZwakst uitgesproken woorden: Uh (0), uh (0), uh (0), naar (5), man (18), gaan (25), vliegtuig (26), de (29), Iran (34), eten (45), jij (48), de (50)",
+        "azure_pron_detail": {
+          "overall": {
+            "accuracy": 86,
+            "fluency": 79,
+            "completeness": 93
+          },
+          "utterances": [
+            {
+              "text": "Hallo, Roxana, hoe gaat het? Gaan de Homeira Dank Goed en met jou Prima. Ga jij dit jaar op vakantie? Ja, Ik ga In de zomer naar Iran met mijn man En jij Ja, ik ook Gaan een naar vakantie met mijn man.",
+              "accuracy": 85,
+              "fluency": 83,
+              "completeness": 88,
+              "pronunciation": 84.4,
+              "words": [
+                {
+                  "word": "Hallo",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "Roxana",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 30
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 32
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "hoe",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "gaat",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "het",
+                  "accuracy": 84,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 79
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 25,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 32
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 33
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 50,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 41
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "Homeira",
+                  "accuracy": 56,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 16
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 76
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Dank",
+                  "accuracy": 65,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 53
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Goed",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 41
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 86.25
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "jou",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Prima",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Ga",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    }
+                  ]
+                },
+                {
+                  "word": "jij",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "dit",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 78
+                    }
+                  ]
+                },
+                {
+                  "word": "jaar",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "op",
+                  "accuracy": 86,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 62,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 28
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "ik",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 78,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "zomer",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 78,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 84
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 2
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "man",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "En",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 74.5
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97.23076923076923
+                    }
+                  ]
+                },
+                {
+                  "word": "jij",
+                  "accuracy": 48,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 77,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 59
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    }
+                  ]
+                },
+                {
+                  "word": "ik",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "ook",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 77
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Gaan",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "een",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 78.46153846153847
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 42
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 55
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "man",
+                  "accuracy": 18,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 20
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 13
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Hoe gaan jullie naar naar Duitsland? Wij gaan met de auto. Uh, Dat is makkelijk met de Hallo spoelen. Hoe gaan jullie naar Iran? Wij gaan met het vliegtuig naar Iran, want Dat is sneller. Wat gaan jullie doen in eten? We gaan naar strand en wandelen en bezoek naar uh, mijn familie En Ja.",
+              "accuracy": 82,
+              "fluency": 74,
+              "completeness": 87,
+              "pronunciation": 78.2,
+              "words": [
+                {
+                  "word": "Hoe",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 5,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 6
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 62
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 76
+                    }
+                  ]
+                },
+                {
+                  "word": "Wij",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 86
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 29,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 34
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "auto",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Uh",
+                  "accuracy": 0,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "dat",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 86
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "is",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "makkelijk",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 81,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 45
+                    }
+                  ]
+                },
+                {
+                  "word": "de",
+                  "accuracy": 80,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 70
+                    }
+                  ]
+                },
+                {
+                  "word": "hallo",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "spoelen",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 72
+                    }
+                  ]
+                },
+                {
+                  "word": "Hoe",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "wij",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 95,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "met",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 62
+                    }
+                  ]
+                },
+                {
+                  "word": "het",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 49
+                    }
+                  ]
+                },
+                {
+                  "word": "vliegtuig",
+                  "accuracy": 26,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 17
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 11
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 14
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "Iran",
+                  "accuracy": 34,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 1
+                    }
+                  ]
+                },
+                {
+                  "word": "want",
+                  "accuracy": 71,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 12
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 85
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "dat",
+                  "accuracy": 67,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 23
+                    }
+                  ]
+                },
+                {
+                  "word": "is",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "sneller",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "Wat",
+                  "accuracy": 83,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 68
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 95,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "jullie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "doen",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "eten",
+                  "accuracy": 45,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 15
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 60
+                    }
+                  ]
+                },
+                {
+                  "word": "We",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 69
+                    }
+                  ]
+                },
+                {
+                  "word": "gaan",
+                  "accuracy": 97,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 89
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 69,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 67
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "strand",
+                  "accuracy": 87,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 49
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 34
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 98.38461538461539
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 98.75
+                    }
+                  ]
+                },
+                {
+                  "word": "wandelen",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    }
+                  ]
+                },
+                {
+                  "word": "en",
+                  "accuracy": 91,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 81.5
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    }
+                  ]
+                },
+                {
+                  "word": "bezoek",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 83
+                    }
+                  ]
+                },
+                {
+                  "word": "uh",
+                  "accuracy": 0,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 89,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 77
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "familie",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "En",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 86.0909090909091
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97.6
+                    }
+                  ]
+                },
+                {
+                  "word": "Ja",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 35
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "Ik ook, ga naar Duitsland, want mijn neef woont in Duitsland Wij Samen uh eten praten. Ik ga bezoek daar.",
+              "accuracy": 88,
+              "fluency": 79,
+              "completeness": 95,
+              "pronunciation": 84,
+              "words": [
+                {
+                  "word": "ik",
+                  "accuracy": 76,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 55
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "ook",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 90,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 62
+                    }
+                  ]
+                },
+                {
+                  "word": "naar",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 87,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 51
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "want",
+                  "accuracy": 74,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 50
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 52
+                    }
+                  ]
+                },
+                {
+                  "word": "mijn",
+                  "accuracy": 81,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 54
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    }
+                  ]
+                },
+                {
+                  "word": "neef",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "woont",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "in",
+                  "accuracy": 88,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 64
+                    }
+                  ]
+                },
+                {
+                  "word": "Duitsland",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "Wij",
+                  "accuracy": 96,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 88
+                    }
+                  ]
+                },
+                {
+                  "word": "samen",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "uh",
+                  "accuracy": 0,
+                  "errorType": "Mispronunciation",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "eten",
+                  "accuracy": 95,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 92
+                    }
+                  ]
+                },
+                {
+                  "word": "praten",
+                  "accuracy": 94,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 74
+                    }
+                  ]
+                },
+                {
+                  "word": "Ik",
+                  "accuracy": 98,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 94
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "ga",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 98
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "bezoek",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "daar",
+                  "accuracy": 93,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 89
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "text": "In hele fijne vakantie. Hou vast Roxana. Dank je wel.",
+              "accuracy": 88,
+              "fluency": 78,
+              "completeness": 100,
+              "pronunciation": 84.4,
+              "words": [
+                {
+                  "word": "in",
+                  "accuracy": 86,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 75
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 93
+                    }
+                  ]
+                },
+                {
+                  "word": "hele",
+                  "accuracy": 92,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 81
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 96
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 87
+                    }
+                  ]
+                },
+                {
+                  "word": "fijne",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "vakantie",
+                  "accuracy": 99,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 97
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 95
+                    }
+                  ]
+                },
+                {
+                  "word": "Hou",
+                  "accuracy": 74,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 40
+                    }
+                  ]
+                },
+                {
+                  "word": "vast",
+                  "accuracy": 66,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 6
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 0
+                    }
+                  ]
+                },
+                {
+                  "word": "Roxana",
+                  "accuracy": 85,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 82
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 90
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 64
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 27
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 78
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 91
+                    }
+                  ]
+                },
+                {
+                  "word": "Dank",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                },
+                {
+                  "word": "je",
+                  "accuracy": 82,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 80
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 73
+                    }
+                  ]
+                },
+                {
+                  "word": "wel",
+                  "accuracy": 100,
+                  "errorType": "None",
+                  "phonemes": [
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 99
+                    },
+                    {
+                      "phoneme": "",
+                      "accuracy": 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     }
   ],

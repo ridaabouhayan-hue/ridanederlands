@@ -430,11 +430,11 @@
                     
                     <!-- Clickable Tabs -->
                     <div class="sub-tabs" style="margin-bottom: 12px;">
-                        <button id="tabBtn-transcript" class="sub-tab active" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
+                        <button id="tabBtn-azure" class="sub-tab active" onclick="switchViewerTab('azure')">🎯 Azure (uitspraak)</button>
+                        <button id="tabBtn-elevenlabs" class="sub-tab" onclick="switchViewerTab('elevenlabs')">🎙️ ElevenLabs (gehoord)</button>
+                        <button id="tabBtn-transcript" class="sub-tab" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
                         <button id="tabBtn-feedback" class="sub-tab" onclick="switchViewerTab('feedback')">📝 Feedbackbrief</button>
                         <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
-                        <button id="tabBtn-elevenlabs" class="sub-tab" onclick="switchViewerTab('elevenlabs')">🎙️ ElevenLabs (gehoord)</button>
-                        <button id="tabBtn-azure" class="sub-tab" onclick="switchViewerTab('azure')">🎯 Azure (uitspraak)</button>
                     </div>
 
                     <div class="viewer-layout" style="display: flex; flex-direction: column; grid-template-columns: none; gap: 0;">
@@ -639,7 +639,7 @@
             });
         }
 
-        let activeViewerTab = 'transcript';
+        let activeViewerTab = 'azure';
 
         function renderElevenLabsColumn() {
             const c = document.getElementById('col-elevenlabs');
@@ -652,7 +652,7 @@
             }
             const intro = document.createElement('div');
             intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord (letterlijke transcriptie met sprekers). Dit is de basis waarop de feedback is gemaakt.';
+            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord: de letterlijke transcriptie per spreker, inclusief uhms, herhalingen, valse starts, pauzes en wie wat zei. Dit is de basis waarop de feedback is gemaakt.';
             const pre = document.createElement('pre');
             pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.82rem;line-height:1.6;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
             pre.textContent = t;
@@ -663,20 +663,346 @@
         function renderAzureColumn() {
             const c = document.getElementById('col-azure');
             if (!c) return;
-            const r = (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.azure_pron) || '';
             c.innerHTML = '';
-            if (!r) {
-                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen Azure-uitspraakscores opgeslagen voor deze opname. Controleer of Azure aan staat (links onder de engine-keuze) en of je sleutel + regio in ⚙️ staan, en verwerk de opname dan opnieuw met ElevenLabs als engine.</div>';
+            const a = currentFileObject && currentFileObject.analyse;
+            const detail = a && a.azure_pron_detail;
+            const text = a && a.azure_pron;
+
+            if (!detail && !text) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen Azure-uitspraakscores opgeslagen voor deze opname. Controleer of Azure aan staat (links onder de engine-keuze) en of je sleutel + regio in &#9881;&#65039; staan, en verwerk de opname dan opnieuw met ElevenLabs als engine.</div>';
                 return;
             }
+
+            const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+            const scoreColor = s => s == null ? '#94a3b8' : (s >= 80 ? '#10b981' : (s >= 60 ? '#f59e0b' : '#ef4444'));
+            const errLabel = t => ({ Mispronunciation: 'verkeerd uitgesproken', Omission: 'overgeslagen', Insertion: 'extra ingevoegd', UnexpectedBreak: 'onverwachte pauze', MissingBreak: 'pauze gemist', Monotone: 'monotoon' }[t] || '');
+            const norm = s => String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+            const avgOf = arr => { const v = arr.filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
+
+            // Speel een fragment van de eigen opname af (zo klonk het bij de cursist).
+            let segStop = null, segPrev = null;
+            const playSegment = (s, e) => {
+                const p = document.getElementById('vAudio');
+                if (!p || s == null) return;
+                try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+                if (segStop && segPrev) { try { segPrev.removeEventListener('timeupdate', segStop); } catch (_) {} }
+                p.pause();
+                const end = (e != null ? e : s + 0.6) + 0.04;
+                try { p.currentTime = Math.max(0, s - 0.02); } catch (_) {}
+                segStop = () => { if (p.currentTime >= end) { p.pause(); try { p.removeEventListener('timeupdate', segStop); } catch (_) {} segStop = null; } };
+                segPrev = p;
+                p.addEventListener('timeupdate', segStop);
+                p.play().catch(() => {});
+            };
+            // Laat de browser het woord/de zin correct uitspreken (zo hoort het te klinken).
+            const speak = (t) => {
+                if (!('speechSynthesis' in window)) return;
+                const u = new SpeechSynthesisUtterance(String(t == null ? '' : t));
+                u.lang = 'nl-NL'; u.rate = 0.9;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(u);
+            };
+            // Kleine knop-helper.
+            const mkBtn = (label, title, onClick) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                b.title = title || '';
+                b.style.cssText = 'background:rgba(15,23,42,0.5);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:3px 8px;font-size:0.72rem;font-weight:700;cursor:pointer;';
+                b.addEventListener('click', (ev) => { ev.stopPropagation(); onClick(); });
+                return b;
+            };
+
             const intro = document.createElement('div');
-            intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.textContent = 'Objectieve uitspraakscores gemeten door Azure (0-100). Het meet de hele opname tegen de transcriptie, dus bij twee sprekers is dit een ruwe indicatie voor het geheel.';
-            const pre = document.createElement('pre');
-            pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-size:0.9rem;line-height:1.7;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
-            pre.textContent = r;
+            intro.style.cssText = 'padding:0 2px 12px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
+            intro.innerHTML = 'Objectieve uitspraakscores van Azure (0-100). <b style="color:#10b981;">Groen</b> = goed (80+), <b style="color:#f59e0b;">oranje</b> = let op (60-79), <b style="color:#ef4444;">rood</b> = zwak (onder 60). Elke klank krijgt een score (hoe dicht bij de juiste Nederlandse uitspraak); de <b>woordscore is het gemiddelde van de klankscores</b>. <b>Klik op een woord</b> om terug te luisteren hoe de cursist het zei, en gebruik <b>&#128266; Goed</b> om te horen hoe het hoort te klinken. Een woord met een puntje (.) kon niet aan de meting worden gekoppeld (vaak een "uh" of een woord dat Azure anders hoorde).';
             c.appendChild(intro);
-            c.appendChild(pre);
+
+            // Oude opnames zonder gedetailleerde data: toon de tekstsamenvatting.
+            if (!detail) {
+                const pre = document.createElement('pre');
+                pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-size:0.9rem;line-height:1.7;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
+                pre.textContent = text;
+                c.appendChild(pre);
+                return;
+            }
+
+            // Overzicht van de hele opname.
+            if (detail.overall) {
+                const o = detail.overall;
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'margin-bottom:18px;';
+                const lab = document.createElement('div');
+                lab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;';
+                lab.textContent = 'Hele opname';
+                wrap.appendChild(lab);
+                const bar = document.createElement('div');
+                bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
+                [['Nauwkeurigheid', o.accuracy], ['Vloeiendheid', o.fluency], ['Volledigheid', o.completeness]].forEach(([lbl, val]) => {
+                    const b = document.createElement('div');
+                    b.style.cssText = 'flex:1;min-width:90px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);';
+                    b.innerHTML = `<div style="font-size:1.4rem;font-weight:800;color:${scoreColor(val)};">${val != null ? val : '-'}</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">${lbl}</div>`;
+                    bar.appendChild(b);
+                });
+                wrap.appendChild(bar);
+                c.appendChild(wrap);
+            }
+
+            const gesprek = (a && a.gesprek) || [];
+
+            // Algemene volgorde-uitlijning (LCS) tussen twee woordreeksen. Robuust en monotoon.
+            const alignLCS = (A, B, onMatch) => {
+                const n = A.length, m = B.length;
+                if (!n || !m) return;
+                const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+                for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = (A[i] === B[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+                let i = 0, j = 0;
+                while (i < n && j < m) {
+                    if (A[i] === B[j]) { onMatch(i, j); i++; j++; }
+                    else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++;
+                }
+            };
+
+            // ===== NIEUW: per spreker en per zin, met de Azure-woordscores en tijdstempels erop gekoppeld =====
+            if (gesprek.length) {
+                // 1) Vlakke, chronologische stroom van alle door Azure gemeten woorden.
+                const stream = [];
+                (detail.utterances || []).forEach(u => (u.words || []).forEach(w => { if (w && w.word) stream.push({ word: w.word, accuracy: w.accuracy, errorType: w.errorType, phonemes: w.phonemes || [] }); }));
+
+                // 2) Vlakke lijst van gesprekswoorden (met verwijzing naar hun zin).
+                const toks = [];
+                const lijnen = gesprek.map(lijn => {
+                    const bron = lijn.zin_fonetisch || lijn.zin_correct || '';
+                    const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map(t => ({ label: t, accuracy: null, errorType: null, phonemes: [], matched: false, start: null, end: null }));
+                    woorden.forEach(w => toks.push(w));
+                    return { spreker: (lijn.spreker || 'Onbekend'), zin_correct: lijn.zin_correct || '', woorden: woorden };
+                });
+
+                // 3) Koppel de Azure-scores aan de juiste gesprekswoorden (volgorde-uitlijning, LCS).
+                alignLCS(toks.map(t => norm(t.label)), stream.map(w => norm(w.word)), (i, j) => {
+                    toks[i].accuracy = stream[j].accuracy; toks[i].errorType = stream[j].errorType; toks[i].phonemes = stream[j].phonemes; toks[i].matched = true;
+                });
+
+                // 4) Koppel de ElevenLabs-tijdstempels aan dezelfde woorden, zodat je per woord kunt terugluisteren.
+                const ew = (a.elevenlabs_words || []).filter(x => x && x.w != null && x.s != null);
+                if (ew.length) {
+                    alignLCS(toks.map(t => norm(t.label)), ew.map(x => norm(x.w)), (i, j) => { toks[i].start = ew[j].s; toks[i].end = ew[j].e; });
+                }
+                const hasTiming = toks.some(t => t.start != null);
+
+                // 5) Groeperen per spreker (volgorde van eerste optreden).
+                const order = [];
+                const bySpk = {};
+                lijnen.forEach(l => { if (!bySpk[l.spreker]) { bySpk[l.spreker] = []; order.push(l.spreker); } bySpk[l.spreker].push(l); });
+                const spkColors = ['var(--accent)', '#10b981', '#a855f7', '#f59e0b'];
+                const spkColor = {};
+                order.forEach((spk, i) => spkColor[spk] = spkColors[i % spkColors.length]);
+
+                // Weergavekeuze: standaard eerst het hele gesprek (om en om), daarna eventueel per cursist.
+                if (window.azureViewMode !== 'speaker' && window.azureViewMode !== 'chrono') {
+                    try { window.azureViewMode = localStorage.getItem('azureViewMode') || 'chrono'; } catch (_) { window.azureViewMode = 'chrono'; }
+                }
+                const viewMode = window.azureViewMode;
+                const setView = (mode) => { window.azureViewMode = mode; try { localStorage.setItem('azureViewMode', mode); } catch (_) {} renderAzureColumn(); };
+                const toggle = document.createElement('div');
+                toggle.style.cssText = 'display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;';
+                const mkToggle = (mode, label) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.textContent = label;
+                    const on = (viewMode === mode);
+                    b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
+                    b.addEventListener('click', () => setView(mode));
+                    return b;
+                };
+                toggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
+                toggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+                c.appendChild(toggle);
+
+                if (!hasTiming) {
+                    const note = document.createElement('div');
+                    note.style.cssText = 'margin-bottom:14px;padding:8px 12px;border:1px dashed var(--border);border-radius:6px;font-size:0.74rem;color:var(--text-muted);line-height:1.5;';
+                    note.innerHTML = 'Tip: voor deze opname zijn nog geen woord-tijdstempels opgeslagen, dus klikken op een woord om terug te luisteren werkt hier nog niet. Verwerk de opname opnieuw met ElevenLabs om dat aan te zetten. De knop &#128266; Goed (zo hoort het) werkt wel gewoon.';
+                    c.appendChild(note);
+                }
+
+                // Bouwt één zin-kaart. De spreker tonen we alleen in de chronologische weergave.
+                const buildCard = (l, numberLabel, speakerName, accentCol) => {
+                    const card = document.createElement('div');
+                    card.style.cssText = `border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:rgba(15,23,42,0.3);${speakerName ? 'border-left:4px solid ' + accentCol + ';' : ''}`;
+                    const zinAvg = avgOf(l.woorden.map(w => w.accuracy));
+
+                    const head = document.createElement('div');
+                    head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;';
+                    const headL = document.createElement('div');
+                    headL.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+                    if (speakerName) {
+                        const chip = document.createElement('span');
+                        chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};`;
+                        chip.textContent = speakerName;
+                        headL.appendChild(chip);
+                    }
+                    const num = document.createElement('span');
+                    num.style.cssText = 'font-weight:800;font-size:0.8rem;color:var(--text);';
+                    num.textContent = numberLabel;
+                    headL.appendChild(num);
+                    const headR = document.createElement('div');
+                    headR.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+                    const sc = document.createElement('span');
+                    sc.style.cssText = 'font-size:0.72rem;color:var(--text-muted);';
+                    sc.innerHTML = `Nauwkeurig: <b style="color:${scoreColor(zinAvg)}">${zinAvg != null ? zinAvg : '-'}</b>`;
+                    headR.appendChild(sc);
+                    const timed = l.woorden.filter(w => w.start != null);
+                    if (timed.length) {
+                        const s0 = Math.min.apply(null, timed.map(w => w.start));
+                        const e0 = Math.max.apply(null, timed.map(w => w.end != null ? w.end : w.start));
+                        headR.appendChild(mkBtn('▶ Jouw zin', 'Luister terug hoe de cursist deze zin zei', () => playSegment(s0, e0)));
+                    }
+                    headR.appendChild(mkBtn('🔊 Goed', 'Hoor hoe deze zin correct klinkt', () => speak(l.zin_correct || l.woorden.map(w => w.label).join(' '))));
+                    head.appendChild(headL); head.appendChild(headR);
+                    card.appendChild(head);
+
+                    const grid = document.createElement('div');
+                    grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
+                    l.woorden.forEach(w => {
+                        const wc = w.accuracy == null ? '#64748b' : scoreColor(w.accuracy);
+                        const pill = document.createElement('span');
+                        const clickable = (w.start != null);
+                        pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}1a;border:1px solid ${wc}55;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
+                        const phonTip = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map((p, pi) => `${p.phoneme ? p.phoneme : 'klank ' + (pi + 1)} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
+                        pill.title = (!w.matched ? 'Niet teruggevonden in de Azure-meting (geen score voor dit woord).' : phonTip) + (clickable ? '  |  Klik om dit woord terug te luisteren.' : '');
+                        pill.innerHTML = `<span>${esc(w.label)}</span><b style="color:${wc};font-size:0.72rem;">${w.accuracy != null ? Math.round(w.accuracy) : '&middot;'}</b>`;
+                        if (clickable) pill.addEventListener('click', () => playSegment(w.start, w.end));
+                        grid.appendChild(pill);
+                    });
+                    card.appendChild(grid);
+
+                    if (l.zin_correct) {
+                        const doel = document.createElement('div');
+                        doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
+                        doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
+                        card.appendChild(doel);
+                    }
+
+                    const weakWords = l.woorden.filter(w => w.accuracy != null && w.accuracy < 80 && w.phonemes && w.phonemes.length);
+                    if (weakWords.length) {
+                        const det = document.createElement('div');
+                        det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
+                        const title = document.createElement('div');
+                        title.style.cssText = 'font-weight:700;color:var(--text);margin-bottom:4px;';
+                        title.textContent = 'Waarom deze scores (klank voor klank):';
+                        det.appendChild(title);
+                        weakWords.forEach(w => {
+                            const row = document.createElement('div');
+                            row.style.cssText = 'margin-bottom:8px;';
+                            const phon = w.phonemes.map((p, pi) => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${p.phoneme ? esc(p.phoneme) : 'klank ' + (pi + 1)}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
+                            const lbl = errLabel(w.errorType);
+                            let lowIdx = -1, lowAcc = null;
+                            w.phonemes.forEach((p, pi) => { if (p.accuracy != null && (lowAcc == null || p.accuracy < lowAcc)) { lowAcc = p.accuracy; lowIdx = pi; } });
+                            let waarom = '';
+                            if (w.errorType === 'Omission') waarom = 'Dit woord is overgeslagen (niet of nauwelijks gezegd), daarom de lage score.';
+                            else if (w.errorType === 'Insertion') waarom = 'Dit was een extra woord dat niet in de doelzin hoort.';
+                            else {
+                                waarom = `De woordscore (${Math.round(w.accuracy)}) is het gemiddelde van de klankscores hierboven.`;
+                                if (lowIdx >= 0) waarom += ` Klank ${lowIdx + 1} was met ${Math.round(lowAcc)} het zwakst; die week het meest af van de juiste Nederlandse uitspraak.`;
+                                waarom += ' Een klank telt vanaf 80 als goed uitgesproken; daar mik je op.';
+                            }
+                            const top = document.createElement('div');
+                            top.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+                            const txt = document.createElement('span');
+                            txt.innerHTML = `<b style="color:var(--text);">${esc(w.label)}</b>${lbl ? ' (' + lbl + ')' : ''}: ${phon}`;
+                            top.appendChild(txt);
+                            top.appendChild(mkBtn('🔊', 'Hoor hoe dit woord correct klinkt', () => speak(w.label)));
+                            if (w.start != null) top.appendChild(mkBtn('▶', 'Luister terug hoe de cursist dit woord zei', () => playSegment(w.start, w.end)));
+                            row.appendChild(top);
+                            const why = document.createElement('div');
+                            why.style.cssText = 'margin-top:2px;color:var(--text-muted);';
+                            why.textContent = waarom;
+                            row.appendChild(why);
+                            det.appendChild(row);
+                        });
+                        card.appendChild(det);
+                    }
+                    return card;
+                };
+
+                if (viewMode === 'speaker') {
+                    order.forEach(spk => {
+                        const col = spkColor[spk];
+                        const allScores = [];
+                        bySpk[spk].forEach(l => l.woorden.forEach(w => { if (w.accuracy != null) allScores.push(w.accuracy); }));
+                        const spkAvg = avgOf(allScores);
+                        const section = document.createElement('div');
+                        section.style.cssText = 'margin-bottom:22px;';
+                        const sh = document.createElement('div');
+                        sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
+                        sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div><div style="font-size:0.72rem;color:var(--text-muted);">Gemiddelde uitspraak: <b style="color:${scoreColor(spkAvg)};">${spkAvg != null ? spkAvg : '-'}</b>/100</div>`;
+                        section.appendChild(sh);
+                        bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col)));
+                        c.appendChild(section);
+                    });
+                } else {
+                    lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)')));
+                }
+
+                // Wat de automatische spraakherkenning er letterlijk van maakte (handig om te zien wat de computer "hoorde").
+                const heard = (detail.utterances || []).map(u => u.text).filter(Boolean).join(' ');
+                if (heard) {
+                    const dets = document.createElement('details');
+                    dets.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
+                    const sum = document.createElement('summary');
+                    sum.style.cssText = 'cursor:pointer;font-weight:700;color:var(--text);';
+                    sum.textContent = 'Wat de computer hoorde (automatische herkenning)';
+                    dets.appendChild(sum);
+                    const body = document.createElement('div');
+                    body.style.cssText = 'margin-top:6px;line-height:1.6;font-style:italic;';
+                    body.textContent = '"' + heard + '"';
+                    dets.appendChild(body);
+                    c.appendChild(dets);
+                }
+                return;
+            }
+
+            // ===== Terugval: oude weergave per Azure-segment (als er geen gesprek beschikbaar is) =====
+            (detail.utterances || []).forEach((u, i) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;background:rgba(15,23,42,0.3);';
+
+                const head = document.createElement('div');
+                head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;';
+                head.innerHTML = `<div style="font-weight:800;font-size:0.8rem;color:var(--text);">Zin ${i + 1}</div><div style="font-size:0.72rem;color:var(--text-muted);display:flex;gap:10px;flex-wrap:wrap;"><span>Nauwkeurig: <b style="color:${scoreColor(u.accuracy)}">${u.accuracy != null ? u.accuracy : '-'}</b></span><span>Vloeiend: <b style="color:${scoreColor(u.fluency)}">${u.fluency != null ? u.fluency : '-'}</b></span></div>`;
+                card.appendChild(head);
+
+                const sent = document.createElement('div');
+                sent.style.cssText = 'font-size:0.85rem;color:var(--text);margin-bottom:10px;font-style:italic;';
+                sent.textContent = '"' + (u.text || '') + '"';
+                card.appendChild(sent);
+
+                const grid = document.createElement('div');
+                grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
+                (u.words || []).forEach(w => {
+                    const col = scoreColor(w.accuracy);
+                    const pill = document.createElement('span');
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${col}1a;border:1px solid ${col}55;font-size:0.8rem;color:var(--text);`;
+                    pill.title = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map(p => `${p.phoneme} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
+                    pill.innerHTML = `<span>${esc(w.word)}</span><b style="color:${col};font-size:0.72rem;">${w.accuracy != null ? Math.round(w.accuracy) : '-'}</b>`;
+                    grid.appendChild(pill);
+                });
+                card.appendChild(grid);
+
+                const weakWords = (u.words || []).filter(w => w.accuracy != null && w.accuracy < 80 && w.phonemes && w.phonemes.length);
+                if (weakWords.length) {
+                    const det = document.createElement('div');
+                    det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.9;';
+                    det.innerHTML = '<div style="font-weight:700;color:var(--text);margin-bottom:2px;">Klanken in lastige woorden:</div>' + weakWords.map(w => {
+                        const phon = w.phonemes.map(p => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${esc(p.phoneme)}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
+                        const lbl = errLabel(w.errorType);
+                        return `<div><b style="color:var(--text);">${esc(w.word)}</b>${lbl ? ' (' + lbl + ')' : ''}: ${phon}</div>`;
+                    }).join('');
+                    card.appendChild(det);
+                }
+                c.appendChild(card);
+            });
         }
 
         function switchViewerTab(tabName) {
@@ -1615,39 +1941,55 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
                 pronConfig.applyTo(recognizer);
 
-                const accs = [], flus = [], comps = [];
-                const weak = [];
+                const utterances = [];
                 recognizer.recognized = (s, e) => {
                     try {
                         if (e.result && e.result.reason === sdk.ResultReason.RecognizedSpeech) {
                             const pa = sdk.PronunciationAssessmentResult.fromResult(e.result);
-                            if (pa.accuracyScore != null) accs.push(pa.accuracyScore);
-                            if (pa.fluencyScore != null) flus.push(pa.fluencyScore);
-                            if (pa.completenessScore != null) comps.push(pa.completenessScore);
                             const raw = e.result.properties.getProperty(sdk.PropertyId.SpeechServiceResponse_JsonResult);
                             const j = JSON.parse(raw);
-                            const words = (j.NBest && j.NBest[0] && j.NBest[0].Words) || [];
-                            words.forEach(w => {
-                                const sc = w.PronunciationAssessment && w.PronunciationAssessment.AccuracyScore;
-                                if (sc != null && sc < 60) weak.push([w.Word, sc]);
+                            const nb = (j.NBest && j.NBest[0]) || {};
+                            const words = (nb.Words || []).map(w => ({
+                                word: w.Word,
+                                accuracy: w.PronunciationAssessment ? w.PronunciationAssessment.AccuracyScore : null,
+                                errorType: w.PronunciationAssessment ? w.PronunciationAssessment.ErrorType : null,
+                                phonemes: (w.Phonemes || []).map(p => ({
+                                    phoneme: p.Phoneme,
+                                    accuracy: p.PronunciationAssessment ? p.PronunciationAssessment.AccuracyScore : null
+                                }))
+                            }));
+                            utterances.push({
+                                text: e.result.text || nb.Display || '',
+                                accuracy: pa.accuracyScore != null ? pa.accuracyScore : null,
+                                fluency: pa.fluencyScore != null ? pa.fluencyScore : null,
+                                completeness: pa.completenessScore != null ? pa.completenessScore : null,
+                                pronunciation: pa.pronunciationScore != null ? pa.pronunciationScore : null,
+                                words: words
                             });
                         }
                     } catch (_) {}
                 };
 
                 const report = await new Promise((resolve) => {
-                    const timer = setTimeout(() => { console.warn('Azure: time-out na 90s, ga door zonder uitspraakscores.'); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); }, 90000);
                     const buildReport = () => {
-                        const avg = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : null;
-                        const acc = avg(accs), flu = avg(flus), comp = avg(comps);
-                        if (acc == null && flu == null) return null;
+                        if (!utterances.length) return null;
+                        const avg = arr => { const v = arr.filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
+                        const acc = avg(utterances.map(u => u.accuracy));
+                        const flu = avg(utterances.map(u => u.fluency));
+                        const comp = avg(utterances.map(u => u.completeness));
+                        const weak = [];
+                        utterances.forEach(u => u.words.forEach(w => { if (w.accuracy != null && w.accuracy < 60) weak.push([w.word, w.accuracy]); }));
                         let lines = [`Gemiddelde uitspraak-accuratesse: ${acc}/100, vloeiendheid: ${flu}/100, volledigheid: ${comp}/100.`];
                         if (weak.length) {
                             weak.sort((a, b) => a[1] - b[1]);
-                            lines.push('Zwakst uitgesproken woorden: ' + weak.slice(0, 10).map(w => `${w[0]} (${Math.round(w[1])})`).join(', '));
+                            lines.push('Zwakst uitgesproken woorden: ' + weak.slice(0, 12).map(w => `${w[0]} (${Math.round(w[1])})`).join(', '));
                         }
-                        return lines.join('\n');
+                        return {
+                            text: lines.join('\n'),
+                            detail: { overall: { accuracy: acc, fluency: flu, completeness: comp }, utterances: utterances }
+                        };
                     };
+                    const timer = setTimeout(() => { console.warn('Azure: time-out na 90s, ga door zonder uitspraakscores.'); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); }, 90000);
                     recognizer.sessionStopped = () => { clearTimeout(timer); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); };
                     recognizer.canceled = () => { clearTimeout(timer); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); };
                     recognizer.startContinuousRecognitionAsync(undefined, () => { clearTimeout(timer); resolve(null); });
@@ -2099,6 +2441,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
                 const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
                 let elevenLabsTranscript = "";
+                let elevenLabsWords = [];
 
                 if (selectedEngine === 'elevenlabs') {
                     item.status = 'transcribing (ElevenLabs)...';
@@ -2109,7 +2452,9 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                         throw new Error("Geen ElevenLabs API Key gevonden in instellingen (⚙️). Vul deze in om ElevenLabs te gebruiken.");
                     }
                     try {
-                        elevenLabsTranscript = await transcribeWithElevenLabs(fileToUpload, elevenApiKey);
+                        const elevenResult = await transcribeWithElevenLabs(fileToUpload, elevenApiKey);
+                        elevenLabsTranscript = (elevenResult && typeof elevenResult === 'object') ? (elevenResult.transcript || "") : (elevenResult || "");
+                        elevenLabsWords = (elevenResult && elevenResult.words) ? elevenResult.words : [];
                         console.log("ElevenLabs transcription complete:", elevenLabsTranscript);
                     } catch (elevenErr) {
                         console.warn("ElevenLabs transcription failed, falling back to direct Gemini audio perception:", elevenErr);
@@ -2149,12 +2494,15 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const targetLang = document.getElementById('targetLanguageInput').value.trim();
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport);
+                const azurePronText = azurePronReport ? azurePronReport.text : null;
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronText);
 
                 // Bewaar de ruwe ElevenLabs- en Azure-output zodat je ze los kunt bekijken.
                 if (analysisResult && typeof analysisResult === 'object') {
                     analysisResult.elevenlabs_transcript = elevenLabsTranscript || '';
-                    analysisResult.azure_pron = azurePronReport || '';
+                    analysisResult.elevenlabs_words = elevenLabsWords || [];
+                    analysisResult.azure_pron = azurePronText || '';
+                    analysisResult.azure_pron_detail = azurePronReport ? azurePronReport.detail : null;
                 }
 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
@@ -2494,7 +2842,7 @@ BELANGRIJK:
             const resJson = await response.json();
             const words = resJson.words || [];
             if (!words || words.length === 0) {
-                return resJson.text || "";
+                return { transcript: resJson.text || "", words: [] };
             }
             
             // Reconstruct turns
@@ -2527,7 +2875,14 @@ BELANGRIJK:
                 turns.push(`${currentSpeaker}: ${cleanText(currentTurnWords)}`);
             }
             
-            return turns.join("\n");
+            // Bewaar de woord-tijdstempels (start/eind in seconden) zodat we later per woord
+            // kunnen terugluisteren. We houden alleen echte woorden over (geen spaties/leestekens).
+            const r3 = x => (x == null ? null : Math.round(x * 1000) / 1000);
+            const wordTimings = words
+                .filter(w => w && (w.type ? w.type === 'word' : true) && /[A-Za-z0-9À-ɏ]/.test(w.text || ''))
+                .map(w => ({ w: w.text, s: r3(w.start), e: r3(w.end), spk: w.speaker_id || null }));
+
+            return { transcript: turns.join("\n"), words: wordTimings };
         }
 
         async function extractAudioToWav(file) {
