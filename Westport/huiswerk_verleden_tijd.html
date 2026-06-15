@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huiswerk: Verleden tijd</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2330;
+    --border: #2a3040;
+    --accent: #5b8ef0;
+    --accent-soft: #1e2d4a;
+    --green: #3ecf8e;
+    --green-soft: #0e2820;
+    --amber: #f5a623;
+    --amber-soft: #2a1f0a;
+    --text: #e8ecf4;
+    --muted: #7a8499;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-left: 3px solid var(--accent);
+    padding-left: 18px;
+    margin-bottom: 36px;
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .intro-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .intro-box strong {
+    color: var(--text);
+  }
+
+  .grammar-card {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+
+  .grammar-card h3 {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .grammar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .grammar-col h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .grammar-col ul {
+    list-style: none;
+    font-size: 0.88rem;
+    line-height: 2;
+  }
+
+  .grammar-col ul li span {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .section-tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .section-tag.werk {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .section-tag.prive {
+    background: var(--green-soft);
+    color: var(--green);
+    border: 1px solid var(--green);
+  }
+
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .step-body {
+    padding: 16px 20px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .step-body strong {
+    color: var(--text);
+  }
+
+  .questions {
+    list-style: none;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .questions li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .questions li::before {
+    content: "?";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: var(--amber-soft);
+    border: 1px solid var(--amber);
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--amber);
+    text-align: center;
+    line-height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .checklist {
+    background: var(--green-soft);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 32px;
+  }
+
+  .checklist h3 {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  .checklist ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .checklist ul li {
+    font-size: 0.88rem;
+    color: var(--text);
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .checklist ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .duration-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--amber-soft);
+    border: 1px solid var(--amber);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    color: var(--amber);
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  /* --- Vertaalknop & Pools --- */
+  .translate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    margin-top: 12px;
+  }
+
+  .translate-btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .translate-btn .flag {
+    font-size: 0.95rem;
+  }
+
+  .pl-text {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+
+  .pl-text.visible {
+    display: block;
+  }
+
+  .pl-text .pl-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+
+  .pl-text .questions li {
+    background: var(--bg);
+  }
+
+  .pl-text strong {
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="label">Huiswerk &mdash; Spreekopdracht</div>
+    <h1>De verleden tijd</h1>
+    <p class="subtitle">imperfectum &amp; perfectum &mdash; werk en privé</p>
+    <div class="duration-tag">&#9679; circa 3 minuten spreken</div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Wat is de opdracht?</strong><br>
+    Je spreekt Nederlands over dingen die je gedaan hebt of die gebeurden: gisteren, dit weekend, vorige week, vroeger. Eerst praat je over je <strong>werk</strong>, daarna over je <strong>privéleven</strong>. Je neemt jezelf op (voice memo) en stuurt het bestand naar Rida via WhatsApp.
+    <button class="translate-btn" onclick="togglePL('intro')">
+      <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+    </button>
+    <div class="pl-text" id="pl-intro">
+      <span class="pl-label">Po polsku</span><br>
+      <strong>Co to za zadanie?</strong><br>
+      Mówisz po niderlandzku o tym, co zrobiłeś/zrobiłaś lub co się wydarzyło: wczoraj, w ten weekend, w zeszłym tygodniu, dawniej. Najpierw mówisz o swojej <strong>pracy</strong>, potem o swoim <strong>życiu prywatnym</strong>. Nagrywasz siebie (notatka głosowa) i wysyłasz plik do Ridy przez WhatsApp.
+    </div>
+  </div>
+
+  <div class="grammar-card">
+    <h3>Hoe werkt de verleden tijd?</h3>
+    <div class="grammar-grid">
+      <div class="grammar-col">
+        <h4>imperfectum (regelmatig)</h4>
+        <ul>
+          <li>Ik <span>werkte</span></li>
+          <li>Ik <span>belde</span></li>
+          <li>Ik <span>controleerde</span></li>
+          <li>Ik <span>plande</span></li>
+        </ul>
+      </div>
+      <div class="grammar-col">
+        <h4>perfectum (hebben / zijn)</h4>
+        <ul>
+          <li>Ik <span>heb gewerkt</span></li>
+          <li>Ik <span>heb gebeld</span></li>
+          <li>Ik <span>ben gegaan</span></li>
+          <li>Ik <span>ben geweest</span></li>
+        </ul>
+      </div>
+    </div>
+    <button class="translate-btn" onclick="togglePL('grammar')">
+      <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+    </button>
+    <div class="pl-text" id="pl-grammar">
+      <span class="pl-label">Po polsku</span><br>
+      <strong>Imperfectum (czas przeszły prosty, regularny):</strong> używasz go do opisu powtarzających się czynności w przeszłości lub krótkiego opisu sytuacji, np. "Ik werkte" (Pracowałem/am).<br><br>
+      <strong>Perfectum (czas dokonany, hebben/zijn + voltooid deelwoord):</strong> używasz go najczęściej w mowie, gdy mówisz o czymś co się stało, np. "Ik heb gewerkt" (Pracowałem/am), "Ik ben gegaan" (Poszedłem/poszłam &ndash; czasowniki ruchu z "zijn").
+    </div>
+  </div>
+
+  <div class="section-title">
+    Deel 1: Op het werk
+    <span class="section-tag werk">Werk</span>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Gisteren op het werk</div>
+    </div>
+    <div class="step-body">
+      Vertel wat je gisteren bij Westport hebt gedaan. Denk aan: je taken, collega's, machines, pakketten, levering. Gebruik <strong>de verleden tijd</strong>.
+      <ul class="questions">
+        <li>Wat heb je gisteren gedaan op je werk?</li>
+        <li>Met wie heb je samengewerkt of gesproken?</li>
+        <li>Wat ging er goed of fout?</li>
+      </ul>
+      <button class="translate-btn" onclick="togglePL('step1')">
+        <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+      </button>
+      <div class="pl-text" id="pl-step1">
+        <span class="pl-label">Po polsku</span><br>
+        Opowiedz, co robiłeś/zrobiłaś wczoraj w pracy w Westport. Pomyśl o: swoich zadaniach, kolegach, maszynach, paczkach, dostawach. Użyj <strong>czasu przeszłego</strong>.
+        <ul class="questions">
+          <li>Co robiłeś/zrobiłaś wczoraj w pracy?</li>
+          <li>Z kim współpracowałeś/aś lub rozmawiałeś/aś?</li>
+          <li>Co poszło dobrze albo źle?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">Vorige week op het werk</div>
+    </div>
+    <div class="step-body">
+      Vertel over iets dat vorige week is gebeurd op je werk. Een probleem, een levering, een nieuwe collega, een speciale taak.
+      <ul class="questions">
+        <li>Wat is er vorige week gebeurd op je werk?</li>
+        <li>Heb je iets nieuws geleerd of gedaan?</li>
+        <li>Was er een probleem? Hoe heb je dat opgelost?</li>
+      </ul>
+      <button class="translate-btn" onclick="togglePL('step2')">
+        <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+      </button>
+      <div class="pl-text" id="pl-step2">
+        <span class="pl-label">Po polsku</span><br>
+        Opowiedz o czymś, co wydarzyło się w zeszłym tygodniu w pracy. Problem, dostawa, nowy kolega, specjalne zadanie.
+        <ul class="questions">
+          <li>Co się wydarzyło w zeszłym tygodniu w pracy?</li>
+          <li>Czy nauczyłeś/aś się czegoś nowego albo zrobiłeś/aś coś nowego?</li>
+          <li>Czy był problem? Jak go rozwiązałeś/aś?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    Deel 2: Privé
+    <span class="section-tag prive">Privé</span>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">Dit weekend</div>
+    </div>
+    <div class="step-body">
+      Vertel wat je dit weekend hebt gedaan. Sport? Familie? Boodschappen? Koken? Gebruik <strong>hebben en zijn</strong>.
+      <ul class="questions">
+        <li>Waar ben je dit weekend geweest?</li>
+        <li>Wat heb je thuis of buiten gedaan?</li>
+        <li>Met wie heb je tijd doorgebracht?</li>
+      </ul>
+      <button class="translate-btn" onclick="togglePL('step3')">
+        <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+      </button>
+      <div class="pl-text" id="pl-step3">
+        <span class="pl-label">Po polsku</span><br>
+        Opowiedz, co robiłeś/zrobiłaś w ten weekend. Sport? Rodzina? Zakupy? Gotowanie? Użyj <strong>hebben i zijn</strong>.
+        <ul class="questions">
+          <li>Gdzie byłeś/aś w ten weekend?</li>
+          <li>Co robiłeś/zrobiłaś w domu albo na zewnątrz?</li>
+          <li>Z kim spędziłeś/aś czas?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">Iets bijzonders vroeger</div>
+    </div>
+    <div class="step-body">
+      Vertel iets over een bijzondere ervaring uit je privéleven. Een reis, een feest, een verhuizing, een moment dat je onthoudt.
+      <ul class="questions">
+        <li>Waar ben je ooit naartoe gevlogen of gereisd?</li>
+        <li>Wat heb je daar gedaan of gezien?</li>
+        <li>Hoe lang ben je daar gebleven?</li>
+      </ul>
+      <button class="translate-btn" onclick="togglePL('step4')">
+        <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+      </button>
+      <div class="pl-text" id="pl-step4">
+        <span class="pl-label">Po polsku</span><br>
+        Opowiedz o szczególnym wydarzeniu z twojego życia prywatnego. Podróż, święto, przeprowadzka, moment, który pamiętasz.
+        <ul class="questions">
+          <li>Dokąd kiedyś poleciałeś/aś albo podróżowałeś/aś?</li>
+          <li>Co tam robiłeś/zrobiłaś albo zobaczyłeś/aś?</li>
+          <li>Jak długo tam zostałeś/aś?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h3>Zelfcheck: heb je dit gebruikt?</h3>
+    <ul>
+      <li>Heb je over <strong>werk</strong> én <strong>privé</strong> gesproken?</li>
+      <li>Heb je <strong>hebben</strong> gebruikt (voor de meeste werkwoorden)?</li>
+      <li>Heb je <strong>zijn</strong> gebruikt (voor beweging: gaan, komen, reizen)?</li>
+      <li>Heb je het voltooid deelwoord achteraan gezet (ge-...)?</li>
+      <li>Heb je meer dan alleen <em>en</em> als verbinding gebruikt?</li>
+    </ul>
+    <button class="translate-btn" onclick="togglePL('check')">
+      <span class="flag">&#127476;&#127473;</span> Vertaal naar Pools
+    </button>
+    <div class="pl-text" id="pl-check">
+      <span class="pl-label">Po polsku</span><br>
+      <strong>Samokontrola: czy to wykorzystałeś/aś?</strong>
+      <ul>
+        <li>Czy mówiłeś/aś o <strong>pracy</strong> i o <strong>życiu prywatnym</strong>?</li>
+        <li>Czy użyłeś/aś <strong>hebben</strong> (dla większości czasowników)?</li>
+        <li>Czy użyłeś/aś <strong>zijn</strong> (dla ruchu: gaan, komen, reizen)?</li>
+        <li>Czy umieściłeś/aś imiesłów (voltooid deelwoord) na końcu (ge-...)?</li>
+        <li>Czy użyłeś/aś więcej spójników niż tylko <em>en</em>?</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function togglePL(id) {
+    const el = document.getElementById('pl-' + id);
+    el.classList.toggle('visible');
+  }
+</script>
+</body>
+</html>
