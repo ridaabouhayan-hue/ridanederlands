@@ -1,5 +1,18 @@
 import os
 import sys
+
+# Ensure stdout/stderr use UTF-8 on Windows to prevent UnicodeEncodeError when printing emojis
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+if hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 import json
 import re
 import requests
@@ -9,13 +22,50 @@ from google import genai
 # CONFIGURATIE VOOR TRANSCRIPTIE
 # Service: "gemini" of "elevenlabs"
 # - "gemini": Directe multimodal transcriptie door Gemini (Pro of Flash).
-# - "elevenlabs": ElevenLabs Scribe v2 voor letterlijke transcriptie, waarna
-#                 Gemini de NT2-analyse en brieven genereert.
-TRANSCRIPTION_SERVICE = "gemini"
+# - "elevenlabs": ElevenLabs Scribe voor letterlijke transcriptie + diarization,
+#                 waarna Gemini de NT2-analyse en brieven genereert.
+#                 AANBEVOLEN: trouwere letterlijke transcriptie en betere
+#                 sprekersherkenning dan directe Gemini-audioperceptie.
+# Vereist een geldige sleutel in API_ELEVENLABS.txt in de hoofdmap.
+TRANSCRIPTION_SERVICE = "elevenlabs"
 
 # Model selectie voor Gemini (bijv. "gemini-2.5-pro" of "gemini-2.5-flash")
 # "gemini-2.5-pro" wordt sterk aanbevolen voor maximale nauwkeurigheid en correcte klankweergave.
 GEMINI_MODEL = "gemini-2.5-pro"
+# Fallback-model als GEMINI_MODEL niet beschikbaar is op deze API-sleutel (404).
+GEMINI_FALLBACK_MODEL = "gemini-2.5-flash"
+
+# ElevenLabs Speech-to-Text model id. Pas dit aan als jouw account een ander
+# model gebruikt (scribe_v2 is in 2026 het actuele model; scribe_v1 is deprecated).
+# Een verkeerde id geeft een fout en valt terug op Gemini-audio.
+ELEVENLABS_MODEL = "scribe_v2"
+
+# Maximum aantal pogingen per bestand voordat we het overslaan. Voorkomt dat een
+# tijdelijke fout of een afgekapte JSON-respons het script eindeloos laat hangen.
+MAX_ATTEMPTS = 4
+
+# Maximum aantal output-tokens voor Gemini. Hoog genoeg voor lange gesprekken met
+# twee sprekers (volledige transcriptie + twee brieven) zodat de JSON niet afkapt.
+GEMINI_MAX_OUTPUT_TOKENS = 32768
+
+# ---------------------------------------------------------------------
+# OPTIONELE EXTRA ANALYSELAGEN (standaard UIT). Zet op True zodra de
+# bijbehorende dienst draait en de sleutel/configuratie aanwezig is.
+# Beide lagen werken alleen in de 'elevenlabs'-modus (we hebben dan al
+# een letterlijke transcriptie als basis).
+
+# LanguageTool: regelgebaseerde grammatica-/spellingcontrole (self-hosted, gratis).
+# Start lokaal met Docker (zie SETUP_EXTRA_LAGEN.md), bijv.:
+#   docker run -d -p 8081:8010 --name languagetool erikvl87/languagetool
+ENABLE_LANGUAGETOOL = False
+LANGUAGETOOL_URL = "http://localhost:8081/v2/check"
+LANGUAGETOOL_LANG = "nl"
+
+# Azure Pronunciation Assessment: objectieve uitspraakscores per klank (nl-NL).
+# Vereist: pip install azure-cognitiveservices-speech  EN  ffmpeg geinstalleerd.
+# Sleutel + regio in API_AZURE.txt in de hoofdmap (zie SETUP_EXTRA_LAGEN.md).
+ENABLE_AZURE_PRONUNCIATION = False
+AZURE_PRON_LANG = "nl-NL"
 # =====================================================================
 
 # ================================================
@@ -43,6 +93,18 @@ ELEVENLABS_API_KEY = None
 if os.path.exists(eleven_key_path):
     with open(eleven_key_path, "r", encoding="utf-8") as f:
         ELEVENLABS_API_KEY = f.read().strip()
+
+# Azure Speech-sleutel (alleen nodig als ENABLE_AZURE_PRONUNCIATION = True)
+AZURE_SPEECH_KEY = None
+AZURE_SPEECH_REGION = None
+azure_key_path = os.path.join(parent_dir, "API_AZURE.txt")
+if os.path.exists(azure_key_path):
+    with open(azure_key_path, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("AZURE_SPEECH_KEY="):
+                AZURE_SPEECH_KEY = line.split("=", 1)[1].strip()
+            elif line.startswith("AZURE_SPEECH_REGION="):
+                AZURE_SPEECH_REGION = line.split("=", 1)[1].strip()
 
 audio_extensies = ('.mp3', '.m4a', '.wav', '.ogg', '.flac', '.3gp', '.aac', '.webm', '.mp4')
 
@@ -75,7 +137,7 @@ def transcribe_with_elevenlabs(filepath, api_key):
         "xi-api-key": api_key
     }
     data = {
-        "model_id": "scribe_v2",
+        "model_id": ELEVENLABS_MODEL,
         "diarize": "true"
     }
     
@@ -118,6 +180,132 @@ def transcribe_with_elevenlabs(filepath, api_key):
         turns.append(f"{current_speaker}: {turn_text}")
         
     return "\n".join(turns)
+
+def check_grammar_languagetool(text):
+    """Stuurt tekst naar een (self-hosted) LanguageTool-server en geeft een
+    compacte samenvatting van gevonden grammatica-/spelfouten terug.
+    Geeft None als de laag uit staat of de server onbereikbaar is."""
+    if not ENABLE_LANGUAGETOOL or not text:
+        return None
+    try:
+        resp = requests.post(
+            LANGUAGETOOL_URL,
+            data={"text": text, "language": LANGUAGETOOL_LANG},
+            timeout=30,
+        )
+        if resp.status_code != 200:
+            print(f"   \u26a0\ufe0f LanguageTool fout ({resp.status_code}). Draait de server? Stap overgeslagen.")
+            return None
+        matches = resp.json().get("matches", [])
+        if not matches:
+            return "LanguageTool vond geen grammatica-/spelfouten."
+        lines = []
+        for m in matches[:60]:
+            snippet = m.get("context", {}).get("text", "").strip()
+            msg = m.get("message", "")
+            repl = ", ".join(r.get("value", "") for r in m.get("replacements", [])[:3])
+            line = f'- "{snippet}" -> {msg}'
+            if repl:
+                line += f" (suggestie: {repl})"
+            lines.append(line)
+        print(f"   \u2139\ufe0f LanguageTool: {len(matches)} melding(en) gevonden.")
+        return "\n".join(lines)
+    except Exception as e:
+        print(f"   \u26a0\ufe0f LanguageTool niet bereikbaar: {e}. Stap overgeslagen.")
+        return None
+
+
+def _ensure_wav_16k_mono(filepath):
+    """Converteert audio naar WAV 16kHz mono (vereist door Azure) met ffmpeg.
+    Geeft het pad naar een tijdelijk wav-bestand terug."""
+    import subprocess, tempfile
+    base = os.path.splitext(os.path.basename(filepath))[0]
+    out = os.path.join(tempfile.gettempdir(), f"azure_pron_{base}.wav")
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", filepath, "-ar", "16000", "-ac", "1", out],
+        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    return out
+
+
+def assess_pronunciation_azure(filepath, reference_text):
+    """Meet de uitspraak met Azure Pronunciation Assessment (nl-NL) en geeft een
+    compacte scoresamenvatting terug (0-100). Geeft None bij uit/ontbrekende
+    configuratie/fout.
+    LET OP: scoort de hele opname tegen een referentietekst; het meest
+    betrouwbaar voor monologen. Bij twee sprekers zijn de scores een ruwe
+    indicatie van het geheel."""
+    if not ENABLE_AZURE_PRONUNCIATION or not reference_text:
+        return None
+    if not AZURE_SPEECH_KEY or not AZURE_SPEECH_REGION:
+        print("   \u26a0\ufe0f Azure niet geconfigureerd (API_AZURE.txt ontbreekt). Stap overgeslagen.")
+        return None
+    try:
+        import azure.cognitiveservices.speech as speechsdk
+    except ImportError:
+        print("   \u26a0\ufe0f Pakket 'azure-cognitiveservices-speech' ontbreekt (pip install). Stap overgeslagen.")
+        return None
+    try:
+        import time as _t, statistics
+        wav_path = _ensure_wav_16k_mono(filepath)
+        speech_config = speechsdk.SpeechConfig(subscription=AZURE_SPEECH_KEY, region=AZURE_SPEECH_REGION)
+        audio_config = speechsdk.audio.AudioConfig(filename=wav_path)
+        pron_config = speechsdk.PronunciationAssessmentConfig(
+            reference_text=reference_text,
+            grading_system=speechsdk.PronunciationAssessmentGradingSystem.HundredMark,
+            granularity=speechsdk.PronunciationAssessmentGranularity.Phoneme,
+            enable_miscue=False,
+        )
+        recognizer = speechsdk.SpeechRecognizer(
+            speech_config=speech_config, language=AZURE_PRON_LANG, audio_config=audio_config)
+        pron_config.apply_to(recognizer)
+
+        results = []
+        done = {"v": False}
+
+        def _recognized(evt):
+            try:
+                results.append(speechsdk.PronunciationAssessmentResult(evt.result))
+            except Exception:
+                pass
+
+        def _stop(evt):
+            done["v"] = True
+
+        recognizer.recognized.connect(_recognized)
+        recognizer.session_stopped.connect(_stop)
+        recognizer.canceled.connect(_stop)
+        recognizer.start_continuous_recognition()
+        waited = 0
+        while not done["v"] and waited < 300:
+            _t.sleep(1)
+            waited += 1
+        recognizer.stop_continuous_recognition()
+
+        if not results:
+            return None
+
+        def _avg(attr):
+            vals = [getattr(r, attr) for r in results if getattr(r, attr, None) is not None]
+            return round(statistics.mean(vals), 1) if vals else None
+
+        acc, flu, comp = _avg("accuracy_score"), _avg("fluency_score"), _avg("completeness_score")
+        weak = []
+        for r in results:
+            for w in (getattr(r, "words", None) or []):
+                score = getattr(w, "accuracy_score", None)
+                if score is not None and score < 60:
+                    weak.append((getattr(w, "word", "?"), score))
+        weak_sorted = sorted(weak, key=lambda x: x[1])[:10]
+        lines = [f"Gemiddelde uitspraak-accuratesse: {acc}/100, vloeiendheid: {flu}/100, volledigheid: {comp}/100."]
+        if weak_sorted:
+            lines.append("Zwakst uitgesproken woorden: " + ", ".join(f"{w} ({s:.0f})" for w, s in weak_sorted))
+        print(f"   \u2139\ufe0f Azure uitspraak: accuratesse {acc}, vloeiendheid {flu}.")
+        return "\n".join(lines)
+    except Exception as e:
+        print(f"   \u26a0\ufe0f Azure uitspraakanalyse mislukt: {e}. Stap overgeslagen.")
+        return None
+
 
 data_file = os.path.join(root_dir, "data.js")
 
@@ -229,7 +417,17 @@ def main():
                 print(f"   ⚠️ ElevenLabs transcriptie mislukt: {ee}")
                 print("   Vallen terug op directe Gemini-audioperceptie...")
 
-        while True:
+        # Optionele objectieve analyselagen (alleen zinvol als we al letterlijke
+        # tekst hebben). Beide geven None terug als hun vlag uit staat.
+        grammar_report = None
+        pron_report = None
+        if eleven_transcript:
+            grammar_report = check_grammar_languagetool(eleven_transcript)
+            pron_report = assess_pronunciation_azure(filepath, eleven_transcript)
+
+        attempt = 0
+        while attempt < MAX_ATTEMPTS:
+            attempt += 1
             try:
                 if not audio_file:
                     print("   Uploaden...")
@@ -265,6 +463,16 @@ Houd rekening met de volgende extra instructie bij het genereren van de feedback
 Je moet controleren of de cursist(en) de opdracht goed hebben gevolgd. Hier is de context/opdrachtomschrijving:
 "{assignment_context}"
 Evalueer kritisch of ze de opdracht correct hebben uitgevoerd en de juiste grammatica/woordenschat voor deze taak hebben gebruikt. Verwerk dit in hun feedbackbrief."""
+
+                if grammar_report:
+                    prompt += f"""\n\nOBJECTIEVE GRAMMATICACONTROLE (LanguageTool, regelgebaseerd):
+Hieronder staan automatisch gedetecteerde grammatica-/spelfouten in de letterlijke transcriptie. Gebruik dit als objectieve steun bij je grammatica-feedback, maar beoordeel zelf of een melding terecht is (spreektaal kan valse meldingen geven):
+{grammar_report}"""
+
+                if pron_report:
+                    prompt += f"""\n\nOBJECTIEVE UITSPRAAKSCORES (Azure Pronunciation Assessment, nl-NL):
+Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen in je uitspraakfeedback in plaats van te gissen hoe iets klonk:
+{pron_report}"""
 
                 prompt += f"""\n\nIDENTIFICATIE VAN DE SPREKERS:
 1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
@@ -330,20 +538,25 @@ BELANGRIJK:
                 
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.
+                gen_config = {
+                    'temperature': 0.1,
+                    'response_mime_type': 'application/json',
+                    'max_output_tokens': GEMINI_MAX_OUTPUT_TOKENS,
+                }
                 try:
                     response = client.models.generate_content(
                         model=GEMINI_MODEL,
                         contents=[audio_file, prompt],
-                        config={'temperature': 0.1, 'response_mime_type': 'application/json'}
+                        config=gen_config
                     )
                 except Exception as model_err:
                     err_lower = str(model_err).lower()
-                    if "404" in err_lower or "not found" in err_lower or "not_found" in err_lower:
-                        print(f"⚠️ Model '{GEMINI_MODEL}' niet ondersteund of niet gevonden op deze API-sleutel tier. Fallback naar 'gemini-2.5-pro'...")
+                    if ("404" in err_lower or "not found" in err_lower or "not_found" in err_lower) and GEMINI_FALLBACK_MODEL != GEMINI_MODEL:
+                        print(f"⚠️ Model '{GEMINI_MODEL}' niet beschikbaar op deze API-sleutel. Fallback naar '{GEMINI_FALLBACK_MODEL}'...")
                         response = client.models.generate_content(
-                            model='gemini-2.5-pro',
+                            model=GEMINI_FALLBACK_MODEL,
                             contents=[audio_file, prompt],
-                            config={'temperature': 0.1, 'response_mime_type': 'application/json'}
+                            config=gen_config
                         )
                     else:
                         raise model_err
@@ -356,7 +569,11 @@ BELANGRIJK:
                     result = json.loads(response.text.strip())
                 except json.JSONDecodeError as je:
                     raise Exception(f"Gemini returned invalid JSON (retryable): {je}")
-                
+
+                # Schema-controle: sla nooit een half/leeg resultaat op.
+                if not isinstance(result, dict) or not (result.get("gesprek") or result.get("feedback_brieven")):
+                    raise Exception("Gemini-respons mist 'gesprek'/'feedback_brieven' (retryable)")
+
                 # Haal bestandsdatum op (laatst gewijzigd)
                 mtime = os.path.getmtime(filepath)
                 file_date = time.strftime('%d-%m-%Y', time.localtime(mtime))
@@ -378,13 +595,18 @@ BELANGRIJK:
                 
             except Exception as e:
                 err_str = str(e)
-                print(f"❌ EXACT ERROR: {err_str}")
-                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "503" in err_str or "UNAVAILABLE" in err_str or "11001" in err_str or "getaddrinfo" in err_str or "Connection" in err_str or "retryable" in err_str:
-                    print(f"⏳ Tijdelijke fout of API-limiet. Even pauze (80 seconden) voordat we het opnieuw proberen...")
-                    time.sleep(80)
-                else:
-                    print(f"❌ Fout bij '{filename}': {err_str}")
-                    break # Stop bij een andere (onbekende) fout, ga naar volgende bestand
+                print(f"❌ EXACT ERROR (poging {attempt}/{MAX_ATTEMPTS}): {err_str}")
+                is_retryable = ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "503" in err_str
+                                or "UNAVAILABLE" in err_str or "11001" in err_str or "getaddrinfo" in err_str
+                                or "Connection" in err_str or "retryable" in err_str)
+                if not is_retryable:
+                    print(f"❌ Niet-herstelbare fout bij '{filename}': {err_str}. Bestand overgeslagen.")
+                    break  # Onbekende fout: ga naar volgende bestand
+                if attempt >= MAX_ATTEMPTS:
+                    print(f"❌ Na {MAX_ATTEMPTS} pogingen nog steeds een fout bij '{filename}'. Bestand overgeslagen.")
+                    break  # Pogingen op: niet eindeloos blijven hangen
+                print(f"⏳ Tijdelijke fout of API-limiet. Even pauze (80 seconden) voordat we het opnieuw proberen...")
+                time.sleep(80)
 
     print("\n🎉 Alle nieuwe bestanden zijn succesvol verwerkt!")
 

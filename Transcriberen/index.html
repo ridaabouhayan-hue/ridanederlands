@@ -338,10 +338,17 @@
                     <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                         <label for="transcriptionEngineSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Transcriptie Engine:</label>
                         <select id="transcriptionEngineSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.8); color: #fff; font-size: 0.8rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
-                            <option value="gemini-2.5-pro">Gemini 2.5 Pro (Aanbevolen)</option>
+                            <option value="elevenlabs">ElevenLabs Scribe v2 + Gemini (Aanbevolen)</option>
+                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
                             <option value="gemini-2.5-flash">Gemini 2.5 Flash (Snel & Goedkoop)</option>
-                            <option value="elevenlabs">ElevenLabs Scribe v2 + Gemini</option>
                         </select>
+                    </div>
+                    <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="azureEnabledToggle" onchange="toggleAzureEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                            🎯 Azure uitspraak-analyse
+                        </label>
+                        <span id="azureToggleHint" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4;"></span>
                     </div>
 
                     <!-- Target Language Panel -->
@@ -1066,7 +1073,8 @@ AANVULLENDE RICHTLIJNEN:
                     }],
                     generationConfig: {
                         temperature: 0.1,
-                        responseMimeType: "application/json"
+                        responseMimeType: "application/json",
+                        maxOutputTokens: 32768
                     }
                 };
 
@@ -1316,7 +1324,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     }],
                     generationConfig: {
                         temperature: 0.1,
-                        responseMimeType: "application/json"
+                        responseMimeType: "application/json",
+                        maxOutputTokens: 32768
                     }
                 };
 
@@ -1408,6 +1417,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             modal.style.pointerEvents = 'all';
             document.getElementById('apiKeyField').value = localStorage.getItem('user_gemini_api_key') || '';
             document.getElementById('elevenLabsKeyField').value = localStorage.getItem('user_elevenlabs_api_key') || '';
+            document.getElementById('azureKeyField').value = localStorage.getItem('user_azure_speech_key') || '';
+            document.getElementById('azureRegionField').value = localStorage.getItem('user_azure_region') || '';
         }
 
         function closeSettingsModal() {
@@ -1430,7 +1441,13 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             } else {
                 localStorage.removeItem('user_elevenlabs_api_key');
             }
+
+            const azureKey = document.getElementById('azureKeyField').value.trim();
+            const azureRegion = document.getElementById('azureRegionField').value.trim();
+            if (azureKey) { localStorage.setItem('user_azure_speech_key', azureKey); } else { localStorage.removeItem('user_azure_speech_key'); }
+            if (azureRegion) { localStorage.setItem('user_azure_region', azureRegion); } else { localStorage.removeItem('user_azure_region'); }
             closeSettingsModal();
+            updateAzureToggleUI();
         }
 
         function getApiKey() {
@@ -1439,6 +1456,156 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
         function getElevenLabsApiKey() {
             return localStorage.getItem('user_elevenlabs_api_key') || '';
+        }
+
+        function getAzureConfig() {
+            return {
+                key: localStorage.getItem('user_azure_speech_key') || '',
+                region: localStorage.getItem('user_azure_region') || '',
+                enabled: localStorage.getItem('user_azure_enabled') !== 'false'
+            };
+        }
+
+        // ── AZURE AAN/UIT-SCHAKELAAR (links bij de engine-keuze) ──
+        function toggleAzureEnabled(on) {
+            localStorage.setItem('user_azure_enabled', on ? 'true' : 'false');
+            updateAzureToggleUI();
+        }
+        function updateAzureToggleUI() {
+            const cfg = getAzureConfig();
+            const cb = document.getElementById('azureEnabledToggle');
+            if (cb) cb.checked = cfg.enabled;
+            const hint = document.getElementById('azureToggleHint');
+            if (hint) {
+                if (cfg.enabled && (!cfg.key || !cfg.region)) {
+                    hint.textContent = 'Staat AAN, maar sleutel/regio ontbreekt nog. Vul in via ⚙️.';
+                    hint.style.color = '#f59e0b';
+                } else if (cfg.enabled) {
+                    hint.textContent = 'AAN. Wordt gebruikt bij de ElevenLabs-engine.';
+                    hint.style.color = 'var(--text-muted)';
+                } else {
+                    hint.textContent = 'UIT.';
+                    hint.style.color = 'var(--text-muted)';
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', updateAzureToggleUI);
+
+        // ── AZURE PRONUNCIATION ASSESSMENT (optionele uitspraaklaag) ──
+        let _azureSdkPromise = null;
+        function loadAzureSdk() {
+            if (window.SpeechSDK) return Promise.resolve(window.SpeechSDK);
+            if (_azureSdkPromise) return _azureSdkPromise;
+            _azureSdkPromise = new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = 'https://aka.ms/csspeech/jsbrowserpackageraw';
+                s.onload = () => window.SpeechSDK ? resolve(window.SpeechSDK) : reject(new Error('Azure SDK geladen maar niet beschikbaar.'));
+                s.onerror = () => reject(new Error('Kon Azure Speech SDK niet laden.'));
+                document.head.appendChild(s);
+            });
+            return _azureSdkPromise;
+        }
+
+        // Decodeert een audio-Blob naar 16kHz mono 16-bit PCM (vereist door Azure).
+        async function decodeToPcm16kMono(blob) {
+            const arrayBuf = await blob.arrayBuffer();
+            const AC = window.AudioContext || window.webkitAudioContext;
+            const tmpCtx = new AC();
+            let decoded;
+            try {
+                decoded = await tmpCtx.decodeAudioData(arrayBuf.slice(0));
+            } finally {
+                tmpCtx.close();
+            }
+            const targetRate = 16000;
+            const frameCount = Math.ceil(decoded.duration * targetRate);
+            const offline = new OfflineAudioContext(1, frameCount, targetRate);
+            const src = offline.createBufferSource();
+            src.buffer = decoded;
+            src.connect(offline.destination);
+            src.start();
+            const rendered = await offline.startRendering();
+            const ch = rendered.getChannelData(0);
+            const pcm = new Int16Array(ch.length);
+            for (let i = 0; i < ch.length; i++) {
+                let s = Math.max(-1, Math.min(1, ch[i]));
+                pcm[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            return pcm.buffer;
+        }
+
+        // Voert Azure Pronunciation Assessment uit. Geeft een korte scoresamenvatting
+        // (string) terug, of null als de laag uit staat / iets misgaat.
+        // LET OP: scoort de hele opname tegen 1 referentietekst -> het meest
+        // betrouwbaar voor monologen; bij 2 sprekers is het een ruwe indicatie.
+        async function assessPronunciationAzure(blob, referenceText) {
+            const cfg = getAzureConfig();
+            if (!cfg.enabled || !cfg.key || !cfg.region || !referenceText) return null;
+            try {
+                const sdk = await loadAzureSdk();
+                const pcm = await decodeToPcm16kMono(blob);
+
+                const speechConfig = sdk.SpeechConfig.fromSubscription(cfg.key, cfg.region);
+                speechConfig.speechRecognitionLanguage = 'nl-NL';
+                const fmt = sdk.AudioStreamFormat.getWaveFormatPCM(16000, 16, 1);
+                const pushStream = sdk.AudioInputStream.createPushStream(fmt);
+                pushStream.write(pcm);
+                pushStream.close();
+                const audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
+
+                const pronConfig = new sdk.PronunciationAssessmentConfig(
+                    referenceText.slice(0, 4096),
+                    sdk.PronunciationAssessmentGradingSystem.HundredMark,
+                    sdk.PronunciationAssessmentGranularity.Phoneme,
+                    false
+                );
+                const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+                pronConfig.applyTo(recognizer);
+
+                const accs = [], flus = [], comps = [];
+                const weak = [];
+                recognizer.recognized = (s, e) => {
+                    try {
+                        if (e.result && e.result.reason === sdk.ResultReason.RecognizedSpeech) {
+                            const pa = sdk.PronunciationAssessmentResult.fromResult(e.result);
+                            if (pa.accuracyScore != null) accs.push(pa.accuracyScore);
+                            if (pa.fluencyScore != null) flus.push(pa.fluencyScore);
+                            if (pa.completenessScore != null) comps.push(pa.completenessScore);
+                            const raw = e.result.properties.getProperty(sdk.PropertyId.SpeechServiceResponse_JsonResult);
+                            const j = JSON.parse(raw);
+                            const words = (j.NBest && j.NBest[0] && j.NBest[0].Words) || [];
+                            words.forEach(w => {
+                                const sc = w.PronunciationAssessment && w.PronunciationAssessment.AccuracyScore;
+                                if (sc != null && sc < 60) weak.push([w.Word, sc]);
+                            });
+                        }
+                    } catch (_) {}
+                };
+
+                const report = await new Promise((resolve) => {
+                    const timer = setTimeout(() => { try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); }, 300000);
+                    const buildReport = () => {
+                        const avg = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) : null;
+                        const acc = avg(accs), flu = avg(flus), comp = avg(comps);
+                        if (acc == null && flu == null) return null;
+                        let lines = [`Gemiddelde uitspraak-accuratesse: ${acc}/100, vloeiendheid: ${flu}/100, volledigheid: ${comp}/100.`];
+                        if (weak.length) {
+                            weak.sort((a, b) => a[1] - b[1]);
+                            lines.push('Zwakst uitgesproken woorden: ' + weak.slice(0, 10).map(w => `${w[0]} (${Math.round(w[1])})`).join(', '));
+                        }
+                        return lines.join('\n');
+                    };
+                    recognizer.sessionStopped = () => { clearTimeout(timer); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); };
+                    recognizer.canceled = () => { clearTimeout(timer); try { recognizer.stopContinuousRecognitionAsync(); } catch (_) {} resolve(buildReport()); };
+                    recognizer.startContinuousRecognitionAsync(undefined, () => { clearTimeout(timer); resolve(null); });
+                });
+
+                try { recognizer.close(); } catch (_) {}
+                return report;
+            } catch (err) {
+                console.warn('Azure uitspraakanalyse overgeslagen:', err);
+                return null;
+            }
         }
 
         // ── INDEXEDDB FILE HANDLE STORAGE ──
@@ -1889,6 +2056,17 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     }
                 }
 
+                let azurePronReport = null;
+                if (selectedEngine === 'elevenlabs' && elevenLabsTranscript && getAzureConfig().enabled) {
+                    item.status = 'uitspraak meten (Azure)...';
+                    renderQueue();
+                    try {
+                        azurePronReport = await assessPronunciationAzure(fileToUpload, elevenLabsTranscript);
+                    } catch (azErr) {
+                        console.warn('Azure uitspraakanalyse overgeslagen:', azErr);
+                    }
+                }
+
                 item.status = 'uploading';
                 item.progress = 0;
                 renderQueue();
@@ -1911,7 +2089,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const targetLang = document.getElementById('targetLanguageInput').value.trim();
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript);
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport);
                 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
                 const newEntry = {
@@ -2046,7 +2224,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript) {
+        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport) {
             const finalLang = targetLang || 'Engels';
             let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "${filename}".`;
@@ -2069,6 +2247,12 @@ Houd rekening met de volgende extra instructie bij het genereren van de feedback
 Je moet controleren of de cursist(en) de opdracht goed hebben gevolgd. Hier is de context/opdrachtomschrijving:
 "${assignmentContext}"
 Evalueer kritisch of ze de opdracht correct hebben uitgevoerd en de juiste grammatica/woordenschat voor deze taak hebben gebruikt. Verwerk dit in hun feedbackbrief.`;
+            }
+
+            if (azurePronReport) {
+                systemPrompt += `\n\nOBJECTIEVE UITSPRAAKSCORES (Azure Pronunciation Assessment, nl-NL):
+Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen in je uitspraakfeedback in plaats van te gissen hoe iets klonk. Bij twee sprekers gelden de scores als ruwe indicatie voor het geheel:
+${azurePronReport}`;
             }
 
             systemPrompt += `\n\nIDENTIFICATIE VAN DE SPREKERS:
@@ -2153,7 +2337,8 @@ BELANGRIJK:
                 }],
                 generationConfig: {
                     temperature: 0.1,
-                    responseMimeType: "application/json"
+                    responseMimeType: "application/json",
+                    maxOutputTokens: 32768
                 }
             };
 
@@ -2451,6 +2636,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="display: flex; flex-direction: column; gap: 6px;">
                     <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">ElevenLabs API Key</label>
                     <input type="password" id="elevenLabsKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Plak je ElevenLabs key hier...">
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Azure uitspraak (sleutel + regio)</label>
+                    <input type="password" id="azureKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Azure Speech key...">
+                    <input type="text" id="azureRegionField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Regio, bijv. westeurope">
+                    <span style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">Werkt alleen samen met ElevenLabs als engine. Geeft objectieve uitspraakscores (nl-NL) mee aan de feedback. Gratis tot 5 uur/maand.</span>
                 </div>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 12px;">
