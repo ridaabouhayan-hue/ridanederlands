@@ -1033,6 +1033,190 @@
             gap: 8px;
             margin-bottom: 15px;
         }
+
+        /* ── RESULTS MODAL ── */
+        .results-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .results-modal {
+            background-color: #ffffff;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-modal-header {
+            background-color: var(--gov-blue);
+            color: #ffffff;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--gov-gold);
+        }
+
+        .results-modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .results-modal-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            font-weight: 700;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            line-height: 1;
+        }
+
+        .results-modal-close:hover {
+            opacity: 1;
+        }
+
+        .results-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex-grow: 1;
+            background-color: var(--bg-light);
+        }
+
+        .results-summary-box {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .results-score-large {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gov-blue);
+            margin: 10px 0;
+        }
+
+        .results-questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-question-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: border-color 0.2s;
+        }
+
+        .result-question-header {
+            padding: 14px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            background-color: #ffffff;
+            font-weight: 700;
+        }
+
+        .result-question-header:hover {
+            background-color: #f8fafc;
+        }
+
+        .result-question-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .result-status-indicator {
+            font-size: 1.1rem;
+        }
+
+        .result-question-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: #f8fafc;
+        }
+
+        .result-question-content.open {
+            display: block;
+        }
+
+        .result-passage-box {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .result-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .result-option-row {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #ffffff;
+        }
+
+        .result-option-row.correct {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.08);
+            color: var(--success-color);
+        }
+
+        .result-option-row.incorrect-selected {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+        }
     </style>
 </head>
 <body>
@@ -3975,7 +4159,8 @@
                         const score = calculateLezenScore(ex.id);
                         container.innerHTML = `
                             <span class="status-badge completed" style="margin-right:8px;">Voltooid (${score}/25)</span>
-                            <button class="btn-whatsapp-small" onclick="sendSingleExamReportToWhatsApp('${ex.type}', ${ex.id})">💬 Stuur via WhatsApp</button>
+                            <button class="btn-start-exam-secondary" style="background-color: var(--gov-blue); color: #ffffff; border: none; margin-right: 4px; padding: 8px 12px;" onclick="showExamResults('${ex.type}', ${ex.id})">🔎 Bekijk resultaten</button>
+                            <button class="btn-whatsapp-small" style="margin-right: 4px;" onclick="sendSingleExamReportToWhatsApp('${ex.type}', ${ex.id})">💬 Stuur via WhatsApp</button>
                             <button class="btn-start-exam-secondary" onclick="startExam('${ex.type}', ${ex.id})">Opnieuw</button>
                         `;
                     } else {
@@ -3999,7 +4184,7 @@
                     if (status === 'completed') {
                         if (ex.type === 'lezen') {
                             const score = calculateLezenScore(ex.id);
-                            sidebarItem.innerHTML = `<span style="color:var(--success-color)">✅ Voltooid (${score}/25)</span>`;
+                            sidebarItem.innerHTML = `<span style="color:var(--success-color); cursor:pointer; font-weight:700;" onclick="showExamResults('${ex.type}', ${ex.id})" title="Klik om resultaten te bekijken">✅ Voltooid (${score}/25) 🔎</span>`;
                         } else {
                             sidebarItem.innerHTML = `<span style="color:var(--success-color)">✅ Voltooid</span>`;
                         }
@@ -4159,7 +4344,14 @@
                 prevBtn.style.display = 'block';
                 nextBtn.style.display = 'block';
                 prevBtn.disabled = (index === 0);
-                nextBtn.disabled = (index === totalQuestions - 1);
+                
+                if (index === totalQuestions - 1) {
+                    nextBtn.disabled = false;
+                    nextBtn.textContent = 'Afronden & WhatsApp sturen ➡️';
+                } else {
+                    nextBtn.disabled = false;
+                    nextBtn.textContent = 'Volgende';
+                }
                 schrijvenNextBtn.style.display = 'none';
             }
 
@@ -4428,6 +4620,8 @@
             if (currentQuestionIndex < total - 1) {
                 currentQuestionIndex++;
                 renderWorkspace();
+            } else if (currentExam.type === 'lezen' && currentQuestionIndex === total - 1) {
+                finishExamPrompt();
             }
         }
 
@@ -4678,6 +4872,109 @@
             renderWorkspace();
         }
 
+        // ── RESULTS OVERVIEW MODAL LOGIC ──
+        function showExamResults(type, id) {
+            if (type !== 'lezen') return;
+            const config = EXAM_DATA.lezen[id];
+            const answers = getAnswers(type, id);
+            const correctKeys = config.correctKeys;
+            const score = calculateLezenScore(id);
+            const total = config.questions.length;
+            
+            document.getElementById('results-modal-title').textContent = `Resultaten - Lezen ${id}`;
+            document.getElementById('results-score-display').textContent = `${score} / ${total}`;
+            const percentage = Math.round((score / total) * 100);
+            document.getElementById('results-percentage-display').textContent = `${percentage}% goed beantwoord`;
+            
+            const listContainer = document.getElementById('results-questions-list');
+            listContainer.innerHTML = '';
+            
+            config.questions.forEach((q, i) => {
+                const qNum = i + 1;
+                const candidateAnswer = answers[qNum] || '-';
+                const correctAnswer = correctKeys[qNum];
+                const isCorrect = (candidateAnswer === correctAnswer);
+                
+                const card = document.createElement('div');
+                card.className = 'result-question-card';
+                
+                let textHtml = q.textContent || '';
+                if (q.usePreviousText !== undefined) {
+                    textHtml = config.questions[q.usePreviousText].textContent;
+                }
+                
+                let optionsHtml = '';
+                for (let optKey in q.options) {
+                    let optClass = 'result-option-row';
+                    if (optKey === correctAnswer) {
+                        optClass += ' correct';
+                    } else if (optKey === candidateAnswer && !isCorrect) {
+                        optClass += ' incorrect-selected';
+                    }
+                    
+                    let suffix = '';
+                    if (optKey === correctAnswer) {
+                        suffix = ' (Juist antwoord)';
+                    } else if (optKey === candidateAnswer && !isCorrect) {
+                        suffix = ' (Uw antwoord - Fout)';
+                    }
+                    
+                    optionsHtml += `
+                        <div class="${optClass}">
+                            <strong style="border: 1px solid currentColor; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">${optKey}</strong>
+                            <span>${q.options[optKey]} ${suffix}</span>
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    <div class="result-question-header" onclick="toggleResultQuestionDetail(this)">
+                        <div class="result-question-title">
+                            <span class="result-status-indicator">${isCorrect ? '✅' : '❌'}</span>
+                            <span>Vraag ${qNum}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: ${isCorrect ? 'var(--success-color)' : '#ef4444'}">
+                                Gekozen: [${candidateAnswer}] ${isCorrect ? '(Goed)' : `(Fout, juist is ${correctAnswer})`}
+                            </span>
+                            <span class="accordion-chevron" style="display: inline-block; font-size: 0.8rem; font-weight: 800; color: var(--gov-blue); transition: transform 0.2s;">▼</span>
+                        </div>
+                    </div>
+                    <div class="result-question-content">
+                        ${textHtml ? `
+                        <div style="font-size:0.85rem; font-weight:700; color:var(--text-dark); margin-bottom:5px;">Bijbehorende tekst:</div>
+                        <div class="result-passage-box">
+                            <strong>${q.textTitle || ''}</strong><br>
+                            ${textHtml}
+                        </div>
+                        ` : ''}
+                        <div style="font-size:0.95rem; font-weight:800; color:var(--text-dark); margin-bottom:12px;">${q.questionText}</div>
+                        <div class="result-options-list">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+            
+            document.getElementById('results-modal-overlay').style.display = 'flex';
+        }
+        
+        function toggleResultQuestionDetail(headerEl) {
+            const content = headerEl.nextElementSibling;
+            const chevron = headerEl.querySelector('.accordion-chevron');
+            content.classList.toggle('open');
+            if (content.classList.contains('open')) {
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        function closeResultsModal() {
+            document.getElementById('results-modal-overlay').style.display = 'none';
+        }
+
         // ── WHATSAPP EXPORT LOGIC (FULL EXAM FOR LEZEN / BACKUP FOR SCHRIJVEN) ──
         function sendSingleExamReportToWhatsApp(type, id) {
             const kandidaatNaam = localStorage.getItem('a2_kandidaat_naam');
@@ -4833,6 +5130,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
+
+    <!-- Results Modal Overlay -->
+    <div class="results-modal-overlay" id="results-modal-overlay" onclick="if(event.target === this) closeResultsModal()">
+        <div class="results-modal">
+            <div class="results-modal-header">
+                <h3 id="results-modal-title">Resultaten Oefenexamen</h3>
+                <button class="results-modal-close" onclick="closeResultsModal()">&times;</button>
+            </div>
+            <div class="results-modal-body">
+                <div class="results-summary-box">
+                    <p style="font-weight: 800; font-size: 1.1rem; color: var(--text-dark);">Uw score voor dit examen:</p>
+                    <div class="results-score-large" id="results-score-display">0 / 25</div>
+                    <p style="font-weight: 700; color: var(--text-muted);" id="results-percentage-display">0% goed beantwoord</p>
+                </div>
+                <h4 style="font-weight: 800; color: var(--gov-blue); margin-bottom: 12px;">Overzicht per vraag</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 600;">Klik op een vraag om de bijbehorende tekst, de vraag en de antwoordopties te bekijken.</p>
+                <div class="results-questions-list" id="results-questions-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
