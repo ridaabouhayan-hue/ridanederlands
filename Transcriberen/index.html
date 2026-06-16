@@ -1938,6 +1938,10 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     sdk.PronunciationAssessmentGranularity.Phoneme,
                     false
                 );
+                // LET OP: Azure ondersteunt het IPA-klankalfabet NIET voor nl-NL. Dat
+                // toch aanvragen brak de hele uitspraakanalyse (geen resultaat terug).
+                // We laten daarom de standaard staan: scores per klank werken wel,
+                // maar de losse klanknamen blijven bij Nederlands helaas leeg.
                 const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
                 pronConfig.applyTo(recognizer);
 
@@ -1978,11 +1982,25 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                         const flu = avg(utterances.map(u => u.fluency));
                         const comp = avg(utterances.map(u => u.completeness));
                         const weak = [];
-                        utterances.forEach(u => u.words.forEach(w => { if (w.accuracy != null && w.accuracy < 60) weak.push([w.word, w.accuracy]); }));
+                        utterances.forEach(u => u.words.forEach(w => {
+                            if (w.accuracy != null && w.accuracy < 60) {
+                                const lowPhon = (w.phonemes || [])
+                                    .map((p, pi) => ({ name: p.phoneme || ('klank ' + (pi + 1)), acc: p.accuracy }))
+                                    .filter(p => p.acc != null && p.acc < 60)
+                                    .sort((a, b) => a.acc - b.acc)
+                                    .slice(0, 4)
+                                    .map(p => `${p.name}=${Math.round(p.acc)}`)
+                                    .join(', ');
+                                weak.push({ word: w.word, acc: w.accuracy, low: lowPhon });
+                            }
+                        }));
                         let lines = [`Gemiddelde uitspraak-accuratesse: ${acc}/100, vloeiendheid: ${flu}/100, volledigheid: ${comp}/100.`];
                         if (weak.length) {
-                            weak.sort((a, b) => a[1] - b[1]);
-                            lines.push('Zwakst uitgesproken woorden: ' + weak.slice(0, 12).map(w => `${w[0]} (${Math.round(w[1])})`).join(', '));
+                            weak.sort((a, b) => a.acc - b.acc);
+                            lines.push('Zwakst uitgesproken woorden (met de zwakste klanken):');
+                            weak.slice(0, 12).forEach(w => {
+                                lines.push(`- ${w.word} (woordscore ${Math.round(w.acc)})${w.low ? '; zwakke klanken: ' + w.low : ''}`);
+                            });
                         }
                         return {
                             text: lines.join('\n'),
@@ -2457,7 +2475,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                         elevenLabsWords = (elevenResult && elevenResult.words) ? elevenResult.words : [];
                         console.log("ElevenLabs transcription complete:", elevenLabsTranscript);
                     } catch (elevenErr) {
-                        console.warn("ElevenLabs transcription failed, falling back to direct Gemini audio perception:", elevenErr);
+                        console.error("ElevenLabs-transcriptie mislukt:", elevenErr);
+                        throw new Error("ElevenLabs-transcriptie mislukt, dus de verwerking is gestopt om te voorkomen dat Gemini de tekst gaat verzinnen. Reden: " + (elevenErr.message || elevenErr) + " — Controleer je ElevenLabs-sleutel en tegoed in instellingen (⚙️), of kies tijdelijk een Gemini-engine als je bewust zonder ElevenLabs wilt werken.");
                     }
                 }
 
@@ -2666,7 +2685,9 @@ Evalueer kritisch of ze de opdracht correct hebben uitgevoerd en de juiste gramm
             if (azurePronReport) {
                 systemPrompt += `\n\nOBJECTIEVE UITSPRAAKSCORES (Azure Pronunciation Assessment, nl-NL):
 Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen in je uitspraakfeedback in plaats van te gissen hoe iets klonk. Bij twee sprekers gelden de scores als ruwe indicatie voor het geheel:
-${azurePronReport}`;
+${azurePronReport}
+
+Voor woorden met een lage score: leg in heel eenvoudige taal uit welke klank waarschijnlijk fout ging en hoe het hoort te klinken. Schrijf het concreet, bijvoorbeeld: "Het klonk waarschijnlijk als 'vliegtoig', maar het moet 'vliegtUIg' zijn; let op de 'ui'-klank." Baseer je op de zwakke klanken die hierboven per woord vermeld staan en verzin geen klanken die er niet bij staan. Houd het opbouwend en simpel (A1-A2 niveau).`;
             }
 
             systemPrompt += `\n\nIDENTIFICATIE VAN DE SPREKERS:
