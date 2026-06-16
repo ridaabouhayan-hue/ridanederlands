@@ -74,10 +74,10 @@
         .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
         /* ── LAYOUT ── */
-        .container { display: grid; grid-template-columns: 320px 1fr; gap: 24px; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1; min-height: calc(100vh - 130px); }
+        .container { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; padding: 24px; max-width: 1680px; margin: 0 auto; width: 100%; flex: 1; min-height: calc(100vh - 130px); }
         
         /* ── LEFT PANEL (LIST) ── */
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; min-width: 0; }
         .sidebar-top { display: flex; flex-direction: column; }
         .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); font-weight: 700; display: flex; justify-content: space-between; align-items: center; flex: 0 0 auto; }
         .file-list { list-style: none; padding: 10px; }
@@ -89,11 +89,11 @@
         .file-name { font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* ── RIGHT PANEL (VIEWER) ── */
-        .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: 24px; position: relative; }
+        .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: 24px; position: relative; min-width: 0; }
         .empty-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); }
         .empty-state h3 { color: var(--text); margin: 16px 0 8px; }
         
-        .viewer-content { display: none; flex-direction: column; height: 100%; }
+        .viewer-content { display: none; flex-direction: column; height: 100%; min-width: 0; }
         .viewer-content.active { display: flex; }
         .viewer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .viewer-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
@@ -232,6 +232,9 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            min-width: 0;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
         .transcript-card {
             background: rgba(255, 255, 255, 0.02);
@@ -288,6 +291,24 @@
             }
         }
     </style>
+    <!-- Firebase (cloud-opslag + sync tussen apparaten) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNaeNOUojWlz5CdQG7DaiTMTEeeih7sq8",
+            authDomain: "nt2rida.firebaseapp.com",
+            projectId: "nt2rida",
+            storageBucket: "nt2rida.firebasestorage.app",
+            messagingSenderId: "898183318324",
+            appId: "1:898183318324:web:d21130fc9b98d9e99eb361"
+        };
+        firebase.initializeApp(firebaseConfig);
+        window.fbAuth = firebase.auth();
+        window.fbDb = firebase.firestore();
+        try { window.fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch (e) { console.warn(e); }
+    </script>
 </head>
 <body>
 
@@ -295,10 +316,11 @@
     <div id="authOverlay">
         <div class="auth-card">
             <h2>✨ Gemini Transcriber</h2>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Voer je toegangscode in om door te gaan.</p>
-            <input type="password" id="pwdInput" class="auth-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter') checkAuth()">
-            <button class="auth-btn" onclick="checkAuth()">Inloggen</button>
-            <p id="authError" style="color: #ef4444; margin-top: 16px; font-size: 0.9rem; display: none;">Foutieve code, probeer het opnieuw.</p>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Log in met je e-mail en wachtwoord om door te gaan.</p>
+            <input type="email" id="emailInput" class="auth-input" placeholder="E-mailadres" autocomplete="username" onkeydown="if(event.key==='Enter') checkAuth()">
+            <input type="password" id="pwdInput" class="auth-input" placeholder="Wachtwoord" autocomplete="current-password" onkeydown="if(event.key==='Enter') checkAuth()">
+            <button class="auth-btn" id="loginBtn" onclick="checkAuth()">Inloggen</button>
+            <p id="authError" style="color: #ef4444; margin-top: 16px; font-size: 0.9rem; display: none;">Inloggen mislukt. Controleer je e-mail en wachtwoord.</p>
         </div>
     </div>
 
@@ -320,13 +342,13 @@
             <div class="sidebar">
                 <!-- Scrollable top section: settings + upload -->
                 <div class="sidebar-top">
-                    <!-- data.js Connection Panel -->
+                    <!-- Cloud-sync statuspaneel -->
                     <div id="connPanel" style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02);">
                         <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
-                            <span style="font-weight: 700; color: var(--text-muted);">Database Status:</span>
-                            <span id="connStatus" style="font-weight: 800; color: #ef4444;">🔴 Niet gekoppeld</span>
+                            <span style="font-weight: 700; color: var(--text-muted);">Cloud-sync:</span>
+                            <span id="connStatus" style="font-weight: 800; color: #f59e0b;">⏳ Verbinden...</span>
                         </div>
-                        <button class="auth-btn" id="btnConnect" onclick="checkAndActivateHandle()" style="padding: 8px 12px; font-size: 0.8rem; border-radius: 6px; width: 100%; height: auto; cursor: pointer; font-weight: 700;">🔗 Koppel data.js</button>
+                        <button class="auth-btn" id="btnBackup" onclick="downloadDataJsFallback()" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px; width: 100%; height: auto; cursor: pointer; font-weight: 700; background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border);" title="Download een lokale back-up van alle data">⬇️ Back-up downloaden</button>
                     </div>
 
                     <!-- Audio local warning -->
@@ -509,26 +531,35 @@
         let uploadQueue = [];
         let isProcessingQueue = false;
 
-        // ── AUTHENTICATION ──
-        function checkAuth() {
-            const pwd = document.getElementById('pwdInput').value;
-            if (pwd === 'qwerty') {
-                sessionStorage.setItem('gemini_auth', '1');
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('appContent').style.display = 'flex';
-                if (isDataLoaded) {
-                    initApp();
-                } else {
-                    showLoadingState();
+        // ── AUTHENTICATION (Firebase e-mail/wachtwoord) ──
+        let _dataSubscribed = false;
+
+        function checkAuth() { doFirebaseLogin(); }
+
+        async function doFirebaseLogin() {
+            const email = (document.getElementById('emailInput').value || '').trim();
+            const pwd = document.getElementById('pwdInput').value || '';
+            const errEl = document.getElementById('authError');
+            if (errEl) errEl.style.display = 'none';
+            const btn = document.getElementById('loginBtn');
+            if (btn) { btn.disabled = true; btn.textContent = 'Bezig met inloggen...'; }
+            try {
+                await window.fbAuth.signInWithEmailAndPassword(email, pwd);
+                // onAuthStateChanged handelt de rest af.
+            } catch (err) {
+                console.warn('Login mislukt:', err);
+                if (errEl) {
+                    errEl.textContent = 'Inloggen mislukt. Controleer je e-mail en wachtwoord.';
+                    errEl.style.display = 'block';
                 }
-            } else {
-                document.getElementById('authError').style.display = 'block';
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Inloggen'; }
             }
         }
 
         function logout() {
-            sessionStorage.removeItem('gemini_auth');
-            location.reload();
+            try { window.fbAuth.signOut(); } catch (e) {}
+            setTimeout(() => location.reload(), 200);
         }
 
         function showLoadingState() {
@@ -538,51 +569,89 @@
             }
         }
 
-        // Dynamisch data.js laden met cache-buster
-        function loadDataScript() {
+        // ── FIRESTORE OPSLAG (vervangt data.js; synct tussen apparaten) ──
+        function recCol() { return window.fbDb.collection('recordings'); }
+        function recId(group, filename) {
+            return (String(group) + '__' + String(filename)).replace(/[\/#?\[\]]/g, '_').slice(0, 1400);
+        }
+        async function saveEntry(entry, group) {
+            const g = group || activeGroup;
+            if (!entry || !entry.filename) return;
+            try {
+                await recCol().doc(recId(g, entry.filename)).set({
+                    group: g,
+                    filename: entry.filename,
+                    path: entry.path || (g + '/' + entry.filename),
+                    date: entry.date || '',
+                    analyse: JSON.stringify(entry.analyse || {}),
+                    updatedAt: Date.now()
+                });
+            } catch (e) {
+                console.error('Opslaan naar cloud mislukt:', e);
+                showToast('⚠️ Opslaan in cloud mislukt (internet/login?).');
+                throw e;
+            }
+        }
+        async function deleteEntryRemote(group, filename) {
+            try { await recCol().doc(recId(group, filename)).delete(); }
+            catch (e) { console.error('Verwijderen uit cloud mislukt:', e); }
+        }
+        // Compat: oude saveDatabase()-aanroepen slaan het actief geopende item op.
+        async function saveDatabase() {
+            try {
+                if (currentFileObject) { await saveEntry(currentFileObject, activeGroup); }
+            } catch (e) { /* toast is al getoond */ }
+        }
+
+        function subscribeData() {
+            if (_dataSubscribed) return;
+            _dataSubscribed = true;
             showLoadingState();
-            const script = document.createElement('script');
-            // Cache-buster met timestamp om Netlify caching te omzeilen
-            script.src = 'data.js?t=' + Date.now();
-            
-            script.onload = () => {
+            recCol().onSnapshot((snap) => {
+                const newDb = {};
+                snap.forEach((doc) => {
+                    const x = doc.data() || {};
+                    const g = x.group || 'Onbekend';
+                    if (!newDb[g]) newDb[g] = [];
+                    let analyse = {};
+                    try { analyse = JSON.parse(x.analyse || '{}'); } catch (_) {}
+                    newDb[g].push({ filename: x.filename, path: x.path, date: x.date, analyse: analyse });
+                });
+                db = newDb;
                 isDataLoaded = true;
-                db = window.geminiData || {};
-                
-                // Start bij de eerste groep die data heeft, anders de eerste groep
-                activeGroup = groepen.find(g => (db[g] || []).length > 0) || groepen[0];
-                
-                // Als ingelogd, direct initialiseren
-                if (sessionStorage.getItem('gemini_auth') === '1') {
-                    initApp();
+                if (!activeGroup || !(db[activeGroup] && db[activeGroup].length)) {
+                    activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
                 }
-            };
-            
-            script.onerror = () => {
-                console.error('data.js kon niet worden geladen!');
-                const list = document.getElementById('fileList');
-                if (list) {
-                    list.innerHTML = `<div style="padding:20px;text-align:center;color:#ef4444;">⚠️ Fout: data.js kon niet worden geladen. Controleer of het bestand bestaat en probeer de pagina te verversen.</div>`;
+                const cs = document.getElementById('connStatus');
+                if (cs) { cs.textContent = '🟢 Cloud-sync actief'; cs.style.color = '#10b981'; }
+                if (document.getElementById('appContent').style.display !== 'none') {
+                    renderTabs();
+                    renderList();
                 }
-            };
-            
-            document.body.appendChild(script);
+            }, (err) => {
+                console.error('Firestore luisteren mislukt:', err);
+                const cs = document.getElementById('connStatus');
+                if (cs) { cs.textContent = '🔴 Sync-fout'; cs.style.color = '#ef4444'; }
+                showToast('⚠️ Cloud-sync mislukt. Controleer je Firestore-regels.');
+            });
         }
 
-        // Start het laadproces
-        loadDataScript();
-
-        // Check if already logged in
-        if (sessionStorage.getItem('gemini_auth') === '1') {
-            document.getElementById('authOverlay').style.display = 'none';
-            document.getElementById('appContent').style.display = 'flex';
-        } else {
-            // Wacht heel even tot de DOM er is, dan focus
-            setTimeout(() => {
-                const pwdInput = document.getElementById('pwdInput');
-                if (pwdInput) pwdInput.focus();
-            }, 100);
-        }
+        // ── START: reageer op inlogstatus ──
+        window.fbAuth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').style.display = 'flex';
+                subscribeData();
+                initApp();
+            } else {
+                document.getElementById('authOverlay').style.display = 'flex';
+                document.getElementById('appContent').style.display = 'none';
+                setTimeout(() => {
+                    const em = document.getElementById('emailInput');
+                    if (em) em.focus();
+                }, 100);
+            }
+        });
 
         function initApp() {
             renderTabs();
@@ -1668,11 +1737,7 @@ ${activeFb.brief}`;
         async function deleteFile(e, filename) {
             e.stopPropagation();
             
-            if (!fileHandle) {
-                alert(`⚠️ Let op: data.js is NIET gekoppeld!\n\nAls je nu verwijdert, gaat dit verloren na de volgende pagina-refresh.\nKoppel eerst data.js via de knop linksboven, of ga door zonder opslaan.\n\nWil je toch doorgaan?`);
-                // If they cancel the second confirm, return
-                if (!confirm(`Toch '${filename}' verwijderen? (Niet persistent zonder koppeling!)`)) return;
-            } else if (!confirm(`Weet je zeker dat je de transcriptie van '${filename}' wilt verwijderen?`)) {
+            if (!confirm(`Weet je zeker dat je de transcriptie van '${filename}' wilt verwijderen?`)) {
                 return;
             }
             
@@ -1680,12 +1745,8 @@ ${activeFb.brief}`;
                 const idx = db[activeGroup].findIndex(f => f.filename === filename);
                 if (idx !== -1) {
                     db[activeGroup].splice(idx, 1);
-                    if (fileHandle) {
-                        await saveDatabase();
-                        showToast("Transcriptie verwijderd en opgeslagen!");
-                    } else {
-                        showToast("Verwijderd (niet opgeslagen — koppel data.js)!");
-                    }
+                    await deleteEntryRemote(activeGroup, filename);
+                    showToast("Transcriptie verwijderd!");
                     renderTabs();
                     renderList();
                     if (currentFileObject && currentFileObject.filename === filename) {
@@ -2333,25 +2394,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             }
         }
 
-        async function saveDatabase() {
-            if (!fileHandle) {
-                console.warn("Geen fileHandle gekoppeld. Proberen op te slaan via fallback download.");
-                downloadDataJsFallback();
-                return;
-            }
-            try {
-                const writable = await fileHandle.createWritable();
-                const content = "window.geminiData = " + JSON.stringify(db, null, 2) + ";\n";
-                await writable.write(content);
-                await writable.close();
-                console.log("Database succesvol weggeschreven naar data.js.");
-            } catch (err) {
-                console.error("Fout bij opslaan database:", err);
-                alert("Kon data.js niet automatisch opslaan. Klik op 'Download data.js' om handmatig op te slaan.");
-                downloadDataJsFallback();
-            }
-        }
-
+        // (Oude data.js-saveDatabase verwijderd; opslaan gaat via saveEntry -> Firestore.)
         function downloadDataJsFallback() {
             const content = "window.geminiData = " + JSON.stringify(db, null, 2) + ";\n";
             const blob = new Blob([content], { type: 'application/javascript' });
@@ -2391,8 +2434,9 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             if (!db[targetGroup]) db[targetGroup] = [];
             db[targetGroup].push(file);
             
-            // Sla database op
-            await saveDatabase();
+            // Cloud bijwerken: oude doc verwijderen, in nieuwe groep opslaan
+            await deleteEntryRemote(activeGroup, file.filename);
+            await saveEntry(file, targetGroup);
             
             // Switch naar de nieuwe groep en toon het bestand
             activeGroup = targetGroup;
@@ -2721,7 +2765,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 }
                 db[item.group].push(newEntry);
                 
-                await saveDatabase();
+                await saveEntry(newEntry, item.group);
                 
                 item.status = 'done';
                 renderQueue();
@@ -3151,23 +3195,7 @@ BELANGRIJK:
             return new Blob([bufferArray], { type: 'audio/wav' });
         }
 
-        // ── AUTO-CONNECT ON LOAD ──
-        window.addEventListener('DOMContentLoaded', async () => {
-            const stored = await getStoredHandle();
-            if (stored) {
-                try {
-                    if (await stored.queryPermission({ mode: 'readwrite' }) === 'granted') {
-                        fileHandle = stored;
-                        updateConnectionStatus(true);
-                        await reloadDatabaseFromFile();
-                    } else {
-                        updateConnectionStatus(false);
-                    }
-                } catch (e) {
-                    updateConnectionStatus(false);
-                }
-            }
-        });
+        // ── (Oude data.js auto-koppeling uitgeschakeld: opslag gaat nu via Firebase/Firestore.) ──
         
         // Expose settings variables/functions globally
         window.openSettingsModal = openSettingsModal;
