@@ -2388,16 +2388,16 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             }
 
             let cancelBtn = document.getElementById('btnCancelQueue');
-            if (isProcessingQueue) {
+            if (isProcessingQueue || hasActionable) {
                 if (!cancelBtn) {
                     cancelBtn = document.createElement('button');
                     cancelBtn.id = 'btnCancelQueue';
                     cancelBtn.className = 'auth-btn';
                     cancelBtn.style.cssText = 'margin-top: 10px; padding: 10px; font-size: 0.85rem; width: 100%; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444;';
-                    cancelBtn.innerHTML = '⏹️ Annuleren';
                     cancelBtn.onclick = cancelQueueProcessing;
                     container.appendChild(cancelBtn);
                 }
+                cancelBtn.innerHTML = isProcessingQueue ? '⏹️ Stop verwerking' : '⏹️ Stop / wis wachtrij';
             } else {
                 if (cancelBtn) {
                     cancelBtn.remove();
@@ -2424,6 +2424,9 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 showToast("Wachtrij gestart met maatwerk: \"" + customInstructions + "\"");
             }
 
+            // Zet eerdere fouten terug op 'pending' zodat ze bij Start opnieuw worden geprobeerd.
+            uploadQueue.forEach(it => { if (it.status === 'error') it.status = 'pending'; });
+
             isProcessingQueue = true;
             renderQueue();
             await processNextInQueue();
@@ -2432,11 +2435,12 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
         async function processNextInQueue() {
             if (!isProcessingQueue) return;
             
-            const item = uploadQueue.find(q => q.status === 'pending' || q.status === 'error');
+            const item = uploadQueue.find(q => q.status === 'pending');
             if (!item) {
                 isProcessingQueue = false;
                 renderQueue();
-                alert("Wachtrij succesvol verwerkt!");
+                const errCount = uploadQueue.filter(q => q.status === 'error').length;
+                alert(errCount ? `Wachtrij klaar. Let op: ${errCount} bestand(en) gaven een fout (zie de melding bij het bestand).` : "Wachtrij succesvol verwerkt!");
                 return;
             }
             
@@ -2812,13 +2816,13 @@ BELANGRIJK:
 
         function cancelQueueProcessing() {
             isProcessingQueue = false;
-            uploadQueue.forEach(item => {
-                if (item.status === 'uploading' || item.status === 'transcribing' || item.status === 'converting') {
-                    item.status = 'pending';
-                }
-            });
+            // Verwijder alle nog niet voltooide bestanden, zodat de verwerking echt
+            // stopt en er niets opnieuw wordt opgepakt.
+            for (let i = uploadQueue.length - 1; i >= 0; i--) {
+                if (uploadQueue[i].status !== 'done') uploadQueue.splice(i, 1);
+            }
             renderQueue();
-            alert("Verwerking geannuleerd.");
+            showToast("Verwerking gestopt en wachtrij geleegd.");
         }
 
         function handleLocateAudioFile() {
@@ -2920,54 +2924,45 @@ BELANGRIJK:
 
         function bufferToWav(buffer) {
             const numOfChan = buffer.numberOfChannels;
-            const length = buffer.length * 2 + 44;
-            const bufferArray = new ArrayBuffer(length);
+            const numFrames = buffer.length;
+            const sampleRate = buffer.sampleRate;
+            const dataLength = numFrames * numOfChan * 2;
+            const bufferArray = new ArrayBuffer(44 + dataLength);
             const view = new DataView(bufferArray);
-            const channels = [];
-            let i;
-            let sample;
-            let offset = 0;
             let pos = 0;
+            const writeStr = (str) => { for (let k = 0; k < str.length; k++) view.setUint8(pos++, str.charCodeAt(k)); };
+            const u16 = (d) => { view.setUint16(pos, d, true); pos += 2; };
+            const u32 = (d) => { view.setUint32(pos, d, true); pos += 4; };
 
-            setUint32(0x46464952);                         // "RIFF"
-            setUint32(length - 8);                         // file length - 8
-            setUint32(0x45564157);                         // "WAVE"
-            setUint32(0x20746d66);                         // "fmt " chunk
-            setUint32(16);                                 // chunk length
-            setUint16(1);                                  // sample format (raw PCM)
-            setUint16(numOfChan);                          // channel count
-            setUint32(buffer.sampleRate);                  // sample rate
-            setUint32(buffer.sampleRate * 2 * numOfChan);  // byte rate
-            setUint16(numOfChan * 2);                      // block align
-            setUint16(16);                                 // bits per sample
-            setUint32(0x61746164);                         // "data" chunk
-            setUint32(length - pos - 4);                   // chunk length
+            writeStr('RIFF');
+            u32(36 + dataLength);            // bestandslengte - 8
+            writeStr('WAVE');
+            writeStr('fmt ');
+            u32(16);                         // chunk-lengte
+            u16(1);                          // PCM
+            u16(numOfChan);                  // aantal kanalen
+            u32(sampleRate);                 // sample rate
+            u32(sampleRate * numOfChan * 2); // byte rate
+            u16(numOfChan * 2);              // block align
+            u16(16);                         // bits per sample
+            writeStr('data');
+            u32(dataLength);                 // data-lengte
 
-            for (i = 0; i < buffer.numberOfChannels; i++) {
-                channels.push(buffer.getChannelData(i));
-            }
+            const channels = [];
+            for (let i = 0; i < numOfChan; i++) channels.push(buffer.getChannelData(i));
 
-            while (pos < length - 44) {
-                for (i = 0; i < numOfChan; i++) {
-                    sample = Math.max(-1, Math.min(1, channels[i][offset]));
-                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF);
-                    view.setInt16(44 + pos, sample, true);
+            let offset = 0;
+            while (offset < numFrames) {
+                for (let i = 0; i < numOfChan; i++) {
+                    let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    view.setInt16(pos, sample, true);
                     pos += 2;
                 }
                 offset++;
             }
 
             return new Blob([bufferArray], { type: 'audio/wav' });
-
-            function setUint16(data) {
-                view.setUint16(44 + pos, data, true);
-                pos += 2;
-            }
-
-            function setUint32(data) {
-                view.setUint32(44 + pos, data, true);
-                pos += 4;
-            }
         }
 
         // ── AUTO-CONNECT ON LOAD ──
