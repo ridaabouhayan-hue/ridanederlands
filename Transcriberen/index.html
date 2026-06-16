@@ -699,6 +699,7 @@
                     html += '</div>';
                 });
             }
+            html += '<div style="margin-top:14px;font-size:0.72rem;color:var(--text-muted);">Grammaticacheck door <a href="https://languagetool.org" target="_blank" rel="noopener" style="color:#60a5fa;">LanguageTool</a>.</div>';
             html += '</div>';
             c.innerHTML = html;
         }
@@ -1944,14 +1945,14 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             if (cb) cb.checked = cfg.enabled;
             const hint = document.getElementById('languageToolToggleHint');
             if (hint) {
-                if (cfg.enabled && (!cfg.username || !cfg.key)) {
-                    hint.textContent = 'Staat AAN, maar gebruikersnaam/sleutel ontbreekt nog. Vul in via ⚙️.';
-                    hint.style.color = '#f59e0b';
+                if (cfg.enabled && cfg.username && cfg.key) {
+                    hint.textContent = 'AAN (Premium-sleutel). Wordt gebruikt bij de ElevenLabs-engine.';
+                    hint.style.color = 'var(--text-muted)';
                 } else if (cfg.enabled) {
-                    hint.textContent = 'AAN. Wordt gebruikt bij de ElevenLabs-engine.';
+                    hint.textContent = 'AAN (gratis modus, geen sleutel). Lagere limieten; werkt bij de ElevenLabs-engine.';
                     hint.style.color = 'var(--text-muted)';
                 } else {
-                    hint.textContent = 'UIT (standaard). Zet aan zodra je een LanguageTool-sleutel hebt.';
+                    hint.textContent = 'UIT (standaard). Aanzetten kan met of zonder sleutel (gratis modus).';
                     hint.style.color = 'var(--text-muted)';
                 }
             }
@@ -1965,18 +1966,26 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
         // gewoon door zonder grammatica-laag (Gemini doet het dan zoals voorheen).
         async function checkGrammarLanguageTool(text) {
             const cfg = getLanguageToolConfig();
-            if (!cfg.enabled || !cfg.username || !cfg.key || !text || !text.trim()) return null;
+            if (!cfg.enabled || !text || !text.trim()) return null;
+            // Twee modi:
+            //  - Premium  : gebruikersnaam + sleutel ingevuld -> api.languagetoolplus.com (hogere limieten).
+            //  - Gratis   : geen sleutel -> openbare api.languagetool.org (max 20KB/request, 20 req/min).
+            const premium = !!(cfg.username && cfg.key);
+            const endpoint = premium ? 'https://api.languagetoolplus.com/v2/check' : 'https://api.languagetool.org/v2/check';
             try {
-                console.log('LanguageTool: start grammaticacheck...');
-                // LanguageTool kent een limiet per request; knip heel lange tekst af.
-                const sample = text.length > 18000 ? text.slice(0, 18000) : text;
+                console.log('LanguageTool: start grammaticacheck (' + (premium ? 'Premium' : 'gratis') + ')...');
+                // De gratis API staat max 20 KB tekst per request toe; knip ruim daaronder af.
+                const cap = premium ? 18000 : 9000;
+                const sample = text.length > cap ? text.slice(0, cap) : text;
                 const params = new URLSearchParams();
                 params.set('text', sample);
                 params.set('language', 'nl');
-                params.set('username', cfg.username);
-                params.set('apiKey', cfg.key);
-                params.set('level', 'picky');
-                const resp = await fetch('https://api.languagetoolplus.com/v2/check', {
+                if (premium) {
+                    params.set('username', cfg.username);
+                    params.set('apiKey', cfg.key);
+                    params.set('level', 'picky');
+                }
+                const resp = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
                     body: params.toString()
@@ -3261,7 +3270,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">LanguageTool grammatica (gebruikersnaam + sleutel)</label>
                     <input type="text" id="ltUsernameField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="LanguageTool gebruikersnaam (inlog-e-mail)">
                     <input type="password" id="ltKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="LanguageTool API-sleutel...">
-                    <span style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">Optioneel. Objectieve, regelgebaseerde grammaticacheck (nl) die meegaat aan de feedback. Staat standaard UIT; zet aan via het vinkje links zodra je een Premium-sleutel hebt. Zonder sleutel verandert er niets.</span>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">Optioneel. Objectieve, regelgebaseerde grammaticacheck (nl) die meegaat aan de feedback. Staat standaard UIT. Aanzetten via het vinkje links: zonder sleutel werkt het gratis (lagere limieten), met een Premium-gebruikersnaam + sleutel hier krijg je hogere limieten.</span>
                 </div>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 12px;">
