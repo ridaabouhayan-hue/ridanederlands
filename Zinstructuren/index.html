@@ -3,102 +3,989 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZINSTRUCTUREN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Nederlandse Zinsstructuren - Leer-Dashboard</title>
+    <!-- Google Fonts: Outfit & Nunito for premium modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #f0ede6; --card-bg: #ffffff; --text-dark: #1e1e2e; --text-muted: #6b7280; --accent: #6C5CE7; --radius: 20px; }
-        body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text-dark); padding: 40px 20px; max-width: 800px; margin: 0 auto; }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--accent); }
-        .back-link { display: inline-block; margin-bottom: 30px; text-decoration: none; color: var(--text-muted); font-weight: bold; padding: 10px 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .card { background: white; padding: 25px; border-radius: var(--radius); text-decoration: none; color: var(--text-dark); font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; border-left: 6px solid var(--accent); display: flex; align-items: center; justify-content: space-between; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .card span { font-size: 1.5rem; }
+        :root {
+            --bg: #0f1729;
+            --card-bg: #182040;
+            --text-dark: #f0f2f8;
+            --text-muted: #a0aac4;
+            --accent: #6c5ce7;
+            --radius: 24px;
+            --border-glow: rgba(108, 92, 231, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 50px 20px 80px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(253, 121, 168, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ── HEADER & NAVIGATION ── */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            gap: 12px;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            padding: 12px 20px;
+            background: rgba(24, 32, 64, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            color: var(--text-dark);
+            background: rgba(24, 32, 64, 0.9);
+            transform: translateX(-3px);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        .old-version-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #fab1a0;
+            font-weight: 700;
+            padding: 12px 20px;
+            background: rgba(250, 177, 160, 0.08);
+            border: 1px solid rgba(250, 177, 160, 0.2);
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .old-version-btn:hover {
+            background: rgba(250, 177, 160, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(250, 177, 160, 0.1);
+        }
+
+        /* ── HERO HEADER ── */
+        .hero {
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, #fff 30%, #a29bfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        /* ── VERTICAL LIST LAYOUT ── */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-bottom: 40px;
+        }
+
+        /* ── CARD DESIGN ── */
+        .structure-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 26px 32px;
+            border: 1.5px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            overflow: hidden;
+        }
+
+        /* Left vertical accent line */
+        .structure-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--card-accent, var(--accent));
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .structure-card:hover {
+            transform: translateX(6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .card-icon-box {
+            font-size: 2.2rem;
+            background: rgba(255, 255, 255, 0.04);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .card-desc {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        /* Improved Warning/Tip Box Style */
+        .card-explanation {
+            font-size: 0.85rem;
+            color: #a29bfe;
+            background: rgba(108, 92, 231, 0.06);
+            border: 1px solid rgba(108, 92, 231, 0.12);
+            padding: 8px 16px;
+            border-radius: 10px;
+            display: inline-block;
+            align-self: flex-start;
+            margin-top: 6px;
+            letter-spacing: 0.2px;
+            font-weight: 600;
+        }
+
+        .card-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .card-formula {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            color: var(--card-accent, var(--accent));
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+
+        .card-arrow {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .structure-card:hover .card-arrow {
+            transform: translateX(4px);
+            color: #ffffff;
+        }
+
+        /* ── CUSTOM MODAL OVERLAY ── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 15, 30, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #182040;
+            border-radius: 28px;
+            max-width: 580px;
+            width: 100%;
+            padding: 36px 40px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #fd79a8;
+            background: rgba(253, 121, 168, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(253, 121, 168, 0.15);
+        }
+
+        .modal-icon-box {
+            font-size: 3.2rem;
+            margin-bottom: 14px;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .modal-formula-box {
+            margin: 16px 0 24px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 14px;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-formula-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: 0.6px;
+        }
+
+        .modal-formula-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #a29bfe;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-text {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #6c5ce7 0%, #8b7ef8 100%);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            width: 100%;
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+            margin-top: 10px;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .modal-close-x {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+        }
+
+        .modal-close-x:hover {
+            color: #ffffff;
+        }
+
+        /* ── MODAL FORMATTING CLASSES ── */
+        .modal-section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            text-align: left;
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        .modal-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .modal-list li {
+            font-size: 0.98rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+        }
+
+        .badge-o, .badge-ww, .badge-top, .badge-vw {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 8px;
+            color: #ffffff;
+            min-width: 68px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .badge-o { background: #4e8cff; }
+        .badge-ww { background: #1dd1a1; }
+        .badge-top { background: #fdcb6e; color: #1e1e2e; }
+        .badge-vw { background: #fd79a8; }
+
+        .hl-o, .hl-ww, .hl-top, .hl-vw {
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .hl-o { color: #4e8cff; background: rgba(78, 140, 255, 0.12); }
+        .hl-ww { color: #1dd1a1; background: rgba(29, 209, 161, 0.12); }
+        .hl-top { color: #fdcb6e; background: rgba(253, 203, 110, 0.08); }
+        .hl-vw { color: #fd79a8; background: rgba(253, 121, 168, 0.12); }
+
+        .example-box {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 1.08rem;
+            line-height: 1.6;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        /* Responsive design for standard sizes */
+        @media (max-width: 768px) {
+            .structure-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 22px;
+            }
+            .structure-card::before {
+                width: 100%;
+                height: 5px;
+            }
+            .card-right {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+        }
+    
+        /* Color system for grammatical elements */
+        .hl-o { color: #4e8cff !important; background: rgba(78, 140, 255, 0.12); font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .hl-ww { color: #1dd1a1 !important; background: rgba(29, 209, 161, 0.12); font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .hl-top { color: #fdcb6e !important; background: rgba(253, 203, 110, 0.08); font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .hl-vw { color: #fd79a8 !important; background: rgba(253, 121, 168, 0.12); font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        
+        .badge-o { background: #4e8cff !important; color: white !important; font-weight: 800; padding: 4px 10px; border-radius: 8px; font-size: 0.9rem; display: inline-block; }
+        .badge-ww { background: #1dd1a1 !important; color: white !important; font-weight: 800; padding: 4px 10px; border-radius: 8px; font-size: 0.9rem; display: inline-block; }
+        .badge-top { background: #fdcb6e !important; color: #1e1e2e !important; font-weight: 800; padding: 4px 10px; border-radius: 8px; font-size: 0.9rem; display: inline-block; }
+        .badge-vw { background: #fd79a8 !important; color: white !important; font-weight: 800; padding: 4px 10px; border-radius: 8px; font-size: 0.9rem; display: inline-block; }
     </style>
 </head>
 <body>
-    <a href="../index.html" class="back-link">← Terug naar Hoofdmenu</a>
-    <h1>📂 ZINSTRUCTUREN</h1>
-    <p style="margin-bottom: 30px; color: var(--text-muted); font-weight: 600;">Kies een oefening uit de lijst hieronder:</p>
-    
-    <div class="grid">
-        <a href="zinsstructuren_v2.html" class="card">Zinsstructuren V2 <span>→</span></a>
+    <div class="container">
         
+        <!-- HEADER BUTTONS -->
+        <div class="header-nav">
+            <a href="../index.html" class="back-link">
+                <span>←</span> Terug naar Hoofdmenu
+            </a>
+            <a href="zinsstructuren_v2.html" class="old-version-btn" title="Open de oude versie van de zinsstructuren oefeningen">
+                Oude versie (Zinsstructuren V2) <span>→</span>
+            </a>
+        </div>
+
+        <!-- HERO HEADER -->
+        <div class="hero">
+            <h1><span>🏗️</span> Zinsstructuren</h1>
+            <p>Klik op een van de onderstaande bouwstenen om de structuur te oefenen en de woordvolgorde in de Nederlandse zin te leren.</p>
+        </div>
+        
+        <!-- CARDS VERTICAL LIST -->
+        <div class="card-list">
+            
+            <!-- CARD 1: BASISZIN (1 ww) -->
+            <div class="structure-card" style="--card-accent: #4e8cff;" onclick="openStructureModal('basiszin_1ww')">
+                <div class="card-icon-box">🏠</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #4e8cff; background: rgba(78, 140, 255, 0.1);">A1 · BASISZIN</span>
+                        <h3 class="card-title">1. Basiszin (1 werkwoord)</h3>
+                    </div>
+                    <p class="card-desc">Simpele, normale zinnen met de standaard woordvolgorde.</p>
+                    <div class="card-explanation">💡 Betekenis: wie (O) + actie (WW) + wanneer wat/hoe/wie waar (TOP)</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">O + WW + TOP</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 2: BASISZIN (2 ww) -->
+            <div class="structure-card" style="--card-accent: #1dd1a1;" onclick="openStructureModal('basiszin_2ww')">
+                <div class="card-icon-box">🏃</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #1dd1a1; background: rgba(29, 209, 161, 0.1);">A1 · BASISZIN</span>
+                        <h3 class="card-title">2. Basiszin (2 werkwoorden)</h3>
+                    </div>
+                    <p class="card-desc">Zinnen met een hulpwerkwoord en een heel werkwoord / voltooid deelwoord.</p>
+                    <div class="card-explanation">💡 Betekenis: wie (O) + actie 1 (WW1) + wanneer wat/hoe/wie waar (TOP) + actie 2 (WW2)</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">O + WW1 + TOP + WW2</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 3: GESLOTEN VRAGEN -->
+            <div class="structure-card" style="--card-accent: #fdcb6e;" onclick="openStructureModal('gesloten_vraag')">
+                <div class="card-icon-box">❓</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #fdcb6e; background: rgba(253, 203, 110, 0.1);">A1 · VRAAGSTELLING</span>
+                        <h3 class="card-title">3. Gesloten vragen</h3>
+                    </div>
+                    <p class="card-desc">Ja/nee-vragen waarbij het werkwoord (de actie) helemaal vooraan staat.</p>
+                    <div class="card-explanation">💡 Betekenis: actie (WW) + wie (O) + wanneer wat/hoe/wie waar (TOP)?</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">WW + O + TOP?</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 4: OPEN VRAGEN -->
+            <div class="structure-card" style="--card-accent: #00cec9;" onclick="openStructureModal('open_vraag')">
+                <div class="card-icon-box">🔍</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #00cec9; background: rgba(0, 206, 201, 0.1);">A1 · VRAAGSTELLING</span>
+                        <h3 class="card-title">4. Open vragen</h3>
+                    </div>
+                    <p class="card-desc">Vragen die beginnen met een vraagwoord (wie, wat, waar, wanneer, hoe).</p>
+                    <div class="card-explanation">💡 Betekenis: vraagwoord + actie (WW) + wie (O) + wanneer wat/hoe/wie waar (TOP)?</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">Vw + WW + O + TOP?</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 5: INVERSIE -->
+            <div class="structure-card" style="--card-accent: #e17055;" onclick="openStructureModal('inversie')">
+                <div class="card-icon-box">🔄</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #e17055; background: rgba(225, 112, 85, 0.1);">A2 · INVERSIE</span>
+                        <h3 class="card-title">5. Inversie</h3>
+                    </div>
+                    <p class="card-desc">Woordvolgorde met Tijd of Plaats als eerste.</p>
+                    <div class="card-explanation">💡 Betekenis: wanneer/waar (Tijd/Plaats) + actie (WW) + wie (O) + wat/hoe/wie/waar (Object/Rest)</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">Tijd/Plaats + WW + O + Rest</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 6: VOEGWOORDEN -->
+            <div class="structure-card" style="--card-accent: #a29bfe;" onclick="openStructureModal('voegwoorden')">
+                <div class="card-icon-box">🔗</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #a29bfe; background: rgba(162, 155, 254, 0.1);">A2 · VERBINDING</span>
+                        <h3 class="card-title">6. Voegwoorden</h3>
+                    </div>
+                    <p class="card-desc">Normale zinnen koppelen met want, maar, dus, of, en.</p>
+                    <div class="card-explanation">💡 Betekenis: [Zin 1] + want/maar/dus/of/en + [Zin 2]</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">Hoofdzin + want/maar/dus/of/en + Hoofdzin</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 7: IMPERATIEF -->
+            <div class="structure-card" style="--card-accent: #0984e3;" onclick="openStructureModal('imperatief')">
+                <div class="card-icon-box">📢</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #0984e3; background: rgba(9, 132, 227, 0.1);">A2 · IMPERATIEF</span>
+                        <h3 class="card-title">7. Imperatief</h3>
+                    </div>
+                    <p class="card-desc">Gebiedende wijs om instructies of bevelen te geven.</p>
+                    <div class="card-explanation">💡 Betekenis: actie (WW) + wanneer wat/hoe/wie waar (TOP)! (geen onderwerp)</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">WW + TOP!</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+            <!-- CARD 8: BIJZINNEN -->
+            <div class="structure-card" style="--card-accent: #fd79a8;" onclick="openStructureModal('bijzinnen')">
+                <div class="card-icon-box">🧩</div>
+                <div class="card-content">
+                    <div class="card-header-row">
+                        <span class="card-tag" style="color: #fd79a8; background: rgba(253, 121, 168, 0.1);">A2 · BIJZINNEN</span>
+                        <h3 class="card-title">8. Bijzinnen</h3>
+                    </div>
+                    <p class="card-desc">Bijzinnen maken met voegwoorden omdat en als.</p>
+                    <div class="card-explanation">💡 Betekenis: hoofdzin + omdat/als + wie (O) + wanneer wat/hoe/wie waar (Rest) + actie (WW)</div>
+                </div>
+                <div class="card-right">
+                    <span class="card-formula">Hoofdzin + omdat/als + O + Rest + WW</span>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-<!-- SPEECH SYNTHESIS INJECTION -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    function speakNative(text) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'nl-NL';
-        u.rate = 0.9;
-        window.speechSynthesis.speak(u);
-    }
-    
-    function createSpeakBtn(text) {
-        let btn = document.createElement('button');
-        btn.innerHTML = '🔊';
-        btn.className = 'native-speak-btn';
-        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
-        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
-        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
-        btn.onmouseout = () => btn.style.transform = 'scale(1)';
-        return btn;
-    }
+    <!-- CUSTOM MODAL OVERLAY -->
+    <div id="coming-soon-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close-x" onclick="closeModal()">&times;</button>
+            <div class="modal-badge">⏳ Komt Binnenkort</div>
+            <div class="modal-icon-box" id="modal-icon">🏗️</div>
+            <h2 class="modal-title" id="modal-title">Zinsstructuur</h2>
+            
+            <div class="modal-formula-box">
+                <div class="modal-formula-label">Grammaticale Formule</div>
+                <div class="modal-formula-val" id="modal-formula">O + WW + TOP</div>
+            </div>
+            
+            <!-- Beautifully formatted HTML container for detail info -->
+            <div class="modal-text" id="modal-desc-container">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+            
+            <button class="modal-btn" style="margin-top: 15px;" onclick="closeModal()">Ik snap het!</button>
+        </div>
+    </div>
 
-    // 1. .vocab spans
-    document.querySelectorAll('.vocab').forEach(el => {
-        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
-            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
-        }
-    });
+    <!-- STRUCTURES DATA & MODAL CONTROLLER -->
+    <script>
+        const modal = document.getElementById('coming-soon-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalFormula = document.getElementById('modal-formula');
+        const modalDescContainer = document.getElementById('modal-desc-container');
+        const modalIcon = document.getElementById('modal-icon');
 
-    // 2. Conjugation tables (.conj-table, .ww-tabel)
-    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
-        if (row.cells.length >= 2) {
-            let targetCell = row.cells[1];
-            // If the target cell already has a button, skip
-            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
-                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+        // Detailed HTML structured content for all 8 categories
+        const structureDetails = {
+            'basiszin_1ww': {
+                title: 'Basiszin (1 werkwoord)',
+                emoji: '🏠',
+                formula: 'O + WW + TOP',
+                html: `
+                    <p>Dit is de meest eenvoudige en gangbare zinsbouw in het Nederlands.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-o">👤 O</span> Onderwerp = <strong>wie / wat</strong> (doet de actie)</li>
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord = <strong>actie</strong></li>
+                        <li><span class="badge-top">🧭 TOP</span> = <strong>wanneer</strong> (Tijd) &rarr; <strong>wat/hoe/wie</strong> (Object) &rarr; <strong>waar</strong> (Plaats)</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzin:</div>
+                    <div class="example-box">
+                        <span class="hl-o" title="Onderwerp (👤 O)">Ik</span> 
+                        <span class="hl-ww" title="Werkwoord (🏃 WW)">drink</span> 
+                        <span class="hl-top" title="Tijd (wanneer)">vandaag</span> 
+                        <span class="hl-top" title="Object (wat)">een kopje thee</span> 
+                        <span class="hl-top" title="Plaats (waar)">in de keuken</span>.
+                    </div>
+                `
+            },
+            'basiszin_2ww': {
+                title: 'Basiszin (2 werkwoorden)',
+                emoji: '🏃',
+                formula: 'O + WW1 + TOP + WW2',
+                html: `
+                    <p>Zinnen met twee werkwoorden, zoals een hulpwerkwoord + heel werkwoord (infinitief) of de verleden tijd met een voltooid deelwoord.</p>
+                    <p style="margin-top: 8px;">Het eerste werkwoord staat op de 2e positie. Het tweede werkwoord staat helemaal aan het einde van de zin (achter de TOP).</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-o">👤 O</span> Onderwerp = <strong>wie / wat</strong></li>
+                        <li><span class="badge-ww">🏃 WW1</span> Eerste werkwoord = <strong>actie 1</strong> (hulpwerkwoord)</li>
+                        <li><span class="badge-top">🧭 TOP</span> = Tijd, Object en/of Plaats</li>
+                        <li><span class="badge-ww">🏃 WW2</span> Tweede werkwoord = <strong>actie 2</strong> (heel werkwoord of voltooid deelwoord)</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzinnen:</div>
+                    <div class="example-box" style="margin-bottom: 12px;">
+                        <span class="hl-o">Ik</span> 
+                        <span class="hl-ww">wil</span> 
+                        <span class="hl-top">vandaag een kopje thee</span> 
+                        <span class="hl-ww">drinken</span>.
+                    </div>
+                    <div class="example-box">
+                        <span class="hl-o">Ik</span> 
+                        <span class="hl-ww">heb</span> 
+                        <span class="hl-top">gisteren een pizza</span> 
+                        <span class="hl-ww">gemaakt</span>.
+                    </div>
+                `
+            },
+            'gesloten_vraag': {
+                title: 'Gesloten Vraag',
+                emoji: '❓',
+                formula: 'WW + O + TOP?',
+                html: `
+                    <p>Dit zijn ja/nee-vragen. Omdat de vraag gesloten is, beginnen we altijd direct met de actie (het werkwoord). Het onderwerp staat op de tweede plaats.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord (Actie) &mdash; staat vooraan</li>
+                        <li><span class="badge-o">👤 O</span> Onderwerp (Wie/Wat)</li>
+                        <li><span class="badge-top">🧭 TOP</span> = Tijd, Object en/of Plaats</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzin:</div>
+                    <div class="example-box">
+                        <span class="hl-ww">Drink</span> 
+                        <span class="hl-o">jij</span> 
+                        <span class="hl-top">vandaag een kopje thee</span>?
+                    </div>
+                `
+            },
+            'open_vraag': {
+                title: 'Open Vraag',
+                emoji: '🔍',
+                formula: 'Vw + WW + O + TOP?',
+                html: `
+                    <p>Dit zijn vragen die beginnen met een vraagwoord (wie, wat, waar, wanneer, waarom, hoe). Het werkwoord staat op de tweede plaats, gevolgd door het onderwerp.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-vw">❓ Vw</span> Vraagwoord (wie, wat, waar, hoe, etc.)</li>
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord (Actie)</li>
+                        <li><span class="badge-o">👤 O</span> Onderwerp (Wie/Wat)</li>
+                        <li><span class="badge-top">🧭 TOP</span> = Tijd, Object en/of Plaats</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzin:</div>
+                    <div class="example-box">
+                        <span class="hl-vw">Wat</span> 
+                        <span class="hl-ww">drink</span> 
+                        <span class="hl-o">jij</span> 
+                        <span class="hl-top">vandaag</span>?
+                    </div>
+                `
+            },
+            'inversie': {
+                title: 'Inversie (T-O-P)',
+                emoji: '🔄',
+                formula: 'Tijd/Plaats + WW + O + Rest',
+                html: `
+                    <p>Als een element van Tijd of Plaats helemaal vooraan de zin staat, wisselen het onderwerp en het werkwoord van plaats. Dit zorgt voor de volgorde: Tijd/Plaats + Werkwoord + Onderwerp.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-top">🧭 Tijd/Plaats</span> Staat op positie 1 (wanneer / waar)</li>
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord (Actie)</li>
+                        <li><span class="badge-o">👤 O</span> Onderwerp (Wie/Wat)</li>
+                        <li><span class="badge-top">🧭 Rest</span> Object of overige informatie</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzinnen:</div>
+                    <div class="example-box" style="margin-bottom: 12px;">
+                        <span class="hl-top">Vandaag</span> 
+                        <span class="hl-ww">drink</span> 
+                        <span class="hl-o">ik</span> 
+                        <span class="hl-top">een kopje thee</span>.
+                    </div>
+                    <div class="example-box">
+                        <span class="hl-top">In het park</span> 
+                        <span class="hl-ww">wandel</span> 
+                        <span class="hl-o">ik</span> 
+                        <span class="hl-top">graag</span>.
+                    </div>
+                `
+            },
+            'voegwoorden': {
+                title: 'Voegwoorden',
+                emoji: '🔗',
+                formula: 'Hoofdzin + want/maar/dus/of/en + Hoofdzin',
+                html: `
+                    <p>Nevenschikkende voegwoorden (want, maar, dus, of, en) verbinden twee volwaardige hoofdzinnen. De woordvolgorde in beide zinnen blijft de normale basisvolgorde (O + WW + TOP).</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-o">👤 O</span> Onderwerp = <strong>wie / wat</strong></li>
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord = <strong>actie</strong></li>
+                        <li><span class="badge-top">🧭 TOP</span> = Tijd, Object en/of Plaats</li>
+                        <li><span class="badge-vw" style="background: #a29bfe;">🔗 Voegwoord</span> want, maar, dus, of, en</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzin:</div>
+                    <div class="example-box" style="line-height: 1.8;">
+                        <span class="hl-o">Ik</span> 
+                        <span class="hl-ww">drink</span> 
+                        <span class="hl-top">thee</span>, 
+                        <span class="hl-vw" style="color: #a29bfe; background: rgba(162, 155, 254, 0.12);">want</span> 
+                        <span class="hl-o">ik</span> 
+                        <span class="hl-ww">vind</span> 
+                        <span class="hl-top">koffie niet lekker</span>.
+                    </div>
+                `
+            },
+            'imperatief': {
+                title: 'Imperatief (Gebiedende Wijs)',
+                emoji: '📢',
+                formula: 'WW + TOP!',
+                html: `
+                    <p>De gebiedende wijs wordt gebruikt voor instructies, bevelen of adviezen. Er is <strong>geen onderwerp</strong> aanwezig in de zin. We gebruiken altijd de ik-vorm van het werkwoord.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord in de ik-vorm (zonder -t)</li>
+                        <li><span class="badge-top">🧭 TOP</span> = Tijd, Object en/of Plaats</li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzin:</div>
+                    <div class="example-box">
+                        <span class="hl-ww">Drink</span> 
+                        <span class="hl-top">nu je thee op</span>!
+                    </div>
+                `
+            },
+            'bijzinnen': {
+                title: 'Bijzinnen (omdat & als)',
+                emoji: '🧩',
+                formula: 'Hoofdzin + omdat/als + O + Rest + WW',
+                html: `
+                    <p>Bijzinnen met 'omdat' of 'als' plak je achter een hoofdzin. De woordvolgorde in de bijzin verandert drastisch: het onderwerp (S) staat vooraan in de bijzin, maar het werkwoord (actie) schuift helemaal naar het einde van de zin.</p>
+                    <div class="modal-section-title">Bouwstenen van de zin:</div>
+                    <ul class="modal-list">
+                        <li><span class="badge-vw">❓ omdat/als</span> Het voegwoord dat de bijzin start</li>
+                        <li><span class="badge-o">👤 O</span> Onderwerp = <strong>wie / wat</strong></li>
+                        <li><span class="badge-top">🧭 Rest</span> Tijd, object, plaats, etc.</li>
+                        <li><span class="badge-ww">🏃 WW</span> Werkwoord (Actie) &mdash; <strong>helemaal aan het einde!</strong></li>
+                    </ul>
+                    <div class="modal-section-title">Voorbeeldzinnen:</div>
+                    <div class="example-box" style="margin-bottom: 12px;">
+                        <span class="hl-o">Ik</span> <span class="hl-ww">drink</span> <span class="hl-top">thee</span> (Hoofdzin), 
+                        <span class="hl-vw">omdat</span> 
+                        <span class="hl-o">ik</span> 
+                        <span class="hl-top">het koud</span> 
+                        <span class="hl-ww">heb</span> (Bijzin).
+                    </div>
+                    <div class="example-box">
+                        <span class="hl-o">Ik</span> <span class="hl-ww">blijf</span> <span class="hl-top">thuis</span> (Hoofdzin), 
+                        <span class="hl-vw">als</span> 
+                        <span class="hl-o">het</span> 
+                        <span class="hl-top">morgen</span> 
+                        <span class="hl-ww">regent</span> (Bijzin).
+                    </div>
+                `
             }
+        };
+
+        function openStructureModal(key) {
+            const data = structureDetails[key];
+            if (!data) return;
+            
+            modalTitle.textContent = data.title;
+            modalFormula.textContent = data.formula;
+            modalDescContainer.innerHTML = data.html;
+            modalIcon.textContent = data.emoji;
+            modal.classList.add('active');
         }
-    });
 
-    // 3. Example sentences (.example)
-    document.querySelectorAll('.example').forEach(el => {
-        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
-            let clone = el.cloneNode(true);
-            let transl = clone.querySelector('.transl');
-            if (transl) transl.remove();
-            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
-            el.appendChild(createSpeakBtn(text));
+        function closeModal() {
+            modal.classList.remove('active');
         }
-    });
-});
-</script>
-<!-- /SPEECH SYNTHESIS INJECTION -->
 
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
 
-<!-- PROGRESS INJECTION -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('a').forEach(a => {
-        try {
-            let href = a.getAttribute('href');
-            if (href && !href.startsWith('http')) {
-                let filename = href.split('/').pop();
-                if (localStorage.getItem('completed_' + filename) === 'true') {
-                    a.innerHTML += ' <span style="font-size:0.95rem;margin-left:6px;" title="Voltooid">✅</span>';
+    <!-- SPEECH SYNTHESIS INJECTION -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function speakNative(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'nl-NL';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
+        }
+        
+        function createSpeakBtn(text) {
+            let btn = document.createElement('button');
+            btn.innerHTML = '🔊';
+            btn.className = 'native-speak-btn';
+            btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+            btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+            btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+            btn.onmouseout = () => btn.style.transform = 'scale(1)';
+            return btn;
+        }
+
+        // 1. .vocab spans
+        document.querySelectorAll('.vocab').forEach(el => {
+            if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+                el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+            }
+        });
+
+        // 2. Conjugation tables (.conj-table, .ww-tabel)
+        document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+            if (row.cells.length >= 2) {
+                let targetCell = row.cells[1];
+                if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                    targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
                 }
             }
-        } catch(e){}
+        });
+
+        // 3. Example sentences (.example)
+        document.querySelectorAll('.example').forEach(el => {
+            if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+                let clone = el.cloneNode(true);
+                let transl = clone.querySelector('.transl');
+                if (transl) transl.remove();
+                let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+                el.appendChild(createSpeakBtn(text));
+            }
+        });
     });
-});
-</script>
-<!-- /PROGRESS INJECTION -->
+    </script>
+    <!-- /SPEECH SYNTHESIS INJECTION -->
+
+    <!-- PROGRESS INJECTION -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a').forEach(a => {
+            try {
+                let href = a.getAttribute('href');
+                if (href && !href.startsWith('http') && href !== '../index.html') {
+                    let filename = href.split('/').pop();
+                    if (localStorage.getItem('completed_' + filename) === 'true') {
+                        a.innerHTML += ' <span style="font-size:0.95rem;margin-left:6px;" title="Voltooid">✅</span>';
+                    }
+                }
+            } catch(e){}
+        });
+    });
+    </script>
+    <!-- /PROGRESS INJECTION -->
 
 </body>
 </html>

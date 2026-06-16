@@ -350,6 +350,13 @@
                         </label>
                         <span id="azureToggleHint" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4;"></span>
                     </div>
+                    <div style="padding: 8px 16px 0; display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="languageToolEnabledToggle" onchange="toggleLanguageToolEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                            📝 LanguageTool grammatica-check
+                        </label>
+                        <span id="languageToolToggleHint" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4;"></span>
+                    </div>
 
                     <!-- Target Language Panel -->
                     <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
@@ -435,6 +442,7 @@
                         <button id="tabBtn-transcript" class="sub-tab" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
                         <button id="tabBtn-feedback" class="sub-tab" onclick="switchViewerTab('feedback')">📝 Feedbackbrief</button>
                         <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
+                        <button id="tabBtn-grammar" class="sub-tab" onclick="switchViewerTab('grammar')">📝 Grammatica (LanguageTool)</button>
                     </div>
 
                     <div class="viewer-layout" style="display: flex; flex-direction: column; grid-template-columns: none; gap: 0;">
@@ -469,6 +477,11 @@
                         <!-- Pane 5: Azure uitspraakscores -->
                         <div id="pane-azure" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-azure"></div>
+                        </div>
+
+                        <!-- Pane 6: LanguageTool grammaticapunten -->
+                        <div id="pane-grammar" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
+                            <div class="column-content" id="col-grammar"></div>
                         </div>
                     </div>
                 </div>
@@ -658,6 +671,36 @@
             pre.textContent = t;
             c.appendChild(intro);
             c.appendChild(pre);
+        }
+
+        function renderGrammarColumn() {
+            const c = document.getElementById('col-grammar');
+            if (!c) return;
+            const a = currentEntry && currentEntry.analyse;
+            const detail = a && a.grammar_lt_detail;
+            const text = a && a.grammar_lt;
+            if (!detail && !text) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen LanguageTool-grammaticapunten opgeslagen voor deze opname. Dit tabblad vult zich pas als je de LanguageTool-check aanzet (vinkje links onder de engine-keuze) én je gebruikersnaam + sleutel in ⚙️ staan, en de opname daarna opnieuw verwerkt met ElevenLabs als engine. Zonder dit blijft alles werken zoals voorheen.</div>';
+                return;
+            }
+            const items = (detail && Array.isArray(detail.items)) ? detail.items : [];
+            let html = '<div style="padding:0 4px 12px;">';
+            html += '<div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Objectieve, regelgebaseerde grammatica-, spelling- en stijlpunten van LanguageTool (nl) op de letterlijke transcriptie. Dit is een hulpmiddel dat meegaat in de feedback; niet elk punt is per se fout (spreektaal of transcriptiefoutjes kunnen meekomen). Aantal punten: <b>' + (detail ? detail.count : items.length) + '</b>.</div>';
+            if (!items.length) {
+                html += '<div style="padding:12px;color:#10b981;font-size:0.9rem;">Geen grammaticapunten gevonden — mooi resultaat.</div>';
+            } else {
+                items.forEach((it, i) => {
+                    const ctx = (it.context || '').replace(/\[\[/g, '<mark style="background:#fde68a;color:#78350f;padding:0 2px;border-radius:2px;">').replace(/\]\]/g, '</mark>');
+                    html += '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);">';
+                    html += '<div style="font-size:0.8rem;font-weight:700;color:#fff;">' + (i + 1) + '. ' + (it.message || it.shortMessage || 'Punt') + '</div>';
+                    if (it.category) html += '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;">' + it.category + '</div>';
+                    if (ctx) html += '<div style="font-size:0.82rem;color:var(--text);margin-top:6px;line-height:1.5;">' + ctx + '</div>';
+                    if (it.suggestions && it.suggestions.length) html += '<div style="font-size:0.8rem;color:#10b981;margin-top:6px;">→ Suggestie: ' + it.suggestions.join(' / ') + '</div>';
+                    html += '</div>';
+                });
+            }
+            html += '</div>';
+            c.innerHTML = html;
         }
 
         function renderAzureColumn() {
@@ -1018,7 +1061,7 @@
             });
             
             // Show/hide panes
-            const panes = ['transcript', 'feedback', 'complete', 'elevenlabs', 'azure'];
+            const panes = ['transcript', 'feedback', 'complete', 'elevenlabs', 'azure', 'grammar'];
             panes.forEach(p => {
                 const paneEl = document.getElementById(`pane-${p}`);
                 if (paneEl) {
@@ -1103,6 +1146,7 @@
             renderCompleteColumn();
             renderElevenLabsColumn();
             renderAzureColumn();
+            renderGrammarColumn();
 
             // Switch to active tab
             switchViewerTab(activeViewerTab);
@@ -1797,6 +1841,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             document.getElementById('elevenLabsKeyField').value = localStorage.getItem('user_elevenlabs_api_key') || '';
             document.getElementById('azureKeyField').value = localStorage.getItem('user_azure_speech_key') || '';
             document.getElementById('azureRegionField').value = localStorage.getItem('user_azure_region') || '';
+            document.getElementById('ltUsernameField').value = localStorage.getItem('user_lt_username') || '';
+            document.getElementById('ltKeyField').value = localStorage.getItem('user_lt_api_key') || '';
         }
 
         function closeSettingsModal() {
@@ -1824,8 +1870,15 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             const azureRegion = document.getElementById('azureRegionField').value.trim();
             if (azureKey) { localStorage.setItem('user_azure_speech_key', azureKey); } else { localStorage.removeItem('user_azure_speech_key'); }
             if (azureRegion) { localStorage.setItem('user_azure_region', azureRegion); } else { localStorage.removeItem('user_azure_region'); }
+
+            const ltUsername = document.getElementById('ltUsernameField').value.trim();
+            const ltKey = document.getElementById('ltKeyField').value.trim();
+            if (ltUsername) { localStorage.setItem('user_lt_username', ltUsername); } else { localStorage.removeItem('user_lt_username'); }
+            if (ltKey) { localStorage.setItem('user_lt_api_key', ltKey); } else { localStorage.removeItem('user_lt_api_key'); }
+
             closeSettingsModal();
             updateAzureToggleUI();
+            updateLanguageToolToggleUI();
         }
 
         function getApiKey() {
@@ -1868,6 +1921,108 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             }
         }
         window.addEventListener('DOMContentLoaded', updateAzureToggleUI);
+
+        // ── LANGUAGETOOL GRAMMATICA-CHECK (optionele, regelgebaseerde laag) ──
+        // Spiegelt de Azure-opzet: sleutel in instellingen, aan/uit-schakelaar links.
+        // BELANGRIJK: standaard UIT. Zonder sleutel of met de schakelaar uit verandert
+        // er niets aan de bestaande werking.
+        function getLanguageToolConfig() {
+            return {
+                username: localStorage.getItem('user_lt_username') || '',
+                key: localStorage.getItem('user_lt_api_key') || '',
+                // Standaard UIT (anders dan Azure): alleen aan als expliciet op 'true' gezet.
+                enabled: localStorage.getItem('user_lt_enabled') === 'true'
+            };
+        }
+        function toggleLanguageToolEnabled(on) {
+            localStorage.setItem('user_lt_enabled', on ? 'true' : 'false');
+            updateLanguageToolToggleUI();
+        }
+        function updateLanguageToolToggleUI() {
+            const cfg = getLanguageToolConfig();
+            const cb = document.getElementById('languageToolEnabledToggle');
+            if (cb) cb.checked = cfg.enabled;
+            const hint = document.getElementById('languageToolToggleHint');
+            if (hint) {
+                if (cfg.enabled && (!cfg.username || !cfg.key)) {
+                    hint.textContent = 'Staat AAN, maar gebruikersnaam/sleutel ontbreekt nog. Vul in via ⚙️.';
+                    hint.style.color = '#f59e0b';
+                } else if (cfg.enabled) {
+                    hint.textContent = 'AAN. Wordt gebruikt bij de ElevenLabs-engine.';
+                    hint.style.color = 'var(--text-muted)';
+                } else {
+                    hint.textContent = 'UIT (standaard). Zet aan zodra je een LanguageTool-sleutel hebt.';
+                    hint.style.color = 'var(--text-muted)';
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', updateLanguageToolToggleUI);
+
+        // Voert een objectieve grammaticacheck uit op de transcripttekst via de
+        // LanguageTool-cloud (Premium). Geeft een compacte samenvatting terug die mee
+        // gaat in de Gemini-prompt, plus een detailobject voor het grammatica-tabblad.
+        // Faalt veilig: bij twijfel geeft de functie null terug en gaat de verwerking
+        // gewoon door zonder grammatica-laag (Gemini doet het dan zoals voorheen).
+        async function checkGrammarLanguageTool(text) {
+            const cfg = getLanguageToolConfig();
+            if (!cfg.enabled || !cfg.username || !cfg.key || !text || !text.trim()) return null;
+            try {
+                console.log('LanguageTool: start grammaticacheck...');
+                // LanguageTool kent een limiet per request; knip heel lange tekst af.
+                const sample = text.length > 18000 ? text.slice(0, 18000) : text;
+                const params = new URLSearchParams();
+                params.set('text', sample);
+                params.set('language', 'nl');
+                params.set('username', cfg.username);
+                params.set('apiKey', cfg.key);
+                params.set('level', 'picky');
+                const resp = await fetch('https://api.languagetoolplus.com/v2/check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
+                    body: params.toString()
+                });
+                if (!resp.ok) {
+                    const t = await resp.text().catch(() => '');
+                    throw new Error('LanguageTool HTTP ' + resp.status + ' ' + t.slice(0, 200));
+                }
+                const data = await resp.json();
+                const matches = Array.isArray(data.matches) ? data.matches : [];
+                // Spelling laten we grotendeels aan ElevenLabs/Gemini over; focus op grammatica/stijl,
+                // maar we tonen alles in het detailtabblad.
+                const items = matches.map(m => {
+                    const ctx = (m.context && typeof m.context.text === 'string') ? m.context.text : '';
+                    let snippet = ctx;
+                    if (m.context && typeof m.context.offset === 'number' && typeof m.context.length === 'number') {
+                        const o = m.context.offset, l = m.context.length;
+                        snippet = ctx.slice(0, o) + '[[' + ctx.slice(o, o + l) + ']]' + ctx.slice(o + l);
+                    }
+                    const repl = (m.replacements || []).slice(0, 3).map(r => r.value).filter(Boolean);
+                    return {
+                        message: m.message || '',
+                        shortMessage: m.shortMessage || '',
+                        category: (m.rule && m.rule.category && m.rule.category.name) || '',
+                        ruleId: (m.rule && m.rule.id) || '',
+                        issueType: (m.rule && m.rule.issueType) || '',
+                        context: snippet,
+                        suggestions: repl
+                    };
+                });
+                // Bouw een compacte tekstsamenvatting voor Gemini.
+                let lines = ['Aantal gevonden punten: ' + items.length + '.'];
+                items.slice(0, 25).forEach((it, i) => {
+                    let line = (i + 1) + '. ' + (it.message || it.shortMessage || 'punt');
+                    if (it.category) line += ' [' + it.category + ']';
+                    if (it.context) line += ' | tekst: "' + it.context.replace(/\s+/g, ' ').trim() + '"';
+                    if (it.suggestions.length) line += ' | suggestie: ' + it.suggestions.join(' / ');
+                    lines.push(line);
+                });
+                console.log('LanguageTool: klaar,', items.length, 'punten.');
+                return { text: lines.join('\n'), detail: { count: items.length, items: items } };
+            } catch (err) {
+                console.warn('LanguageTool grammaticacheck overgeslagen:', err);
+                return null;
+            }
+        }
 
         // ── AZURE PRONUNCIATION ASSESSMENT (optionele uitspraaklaag) ──
         let _azureSdkPromise = null;
@@ -2495,6 +2650,17 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     }
                 }
 
+                let ltGrammarReport = null;
+                if (selectedEngine === 'elevenlabs' && elevenLabsTranscript && getLanguageToolConfig().enabled) {
+                    item.status = 'grammatica meten (LanguageTool)...';
+                    renderQueue();
+                    try {
+                        ltGrammarReport = await checkGrammarLanguageTool(elevenLabsTranscript);
+                    } catch (ltErr) {
+                        console.warn('LanguageTool grammaticacheck overgeslagen:', ltErr);
+                    }
+                }
+
                 item.status = 'uploading';
                 item.progress = 0;
                 renderQueue();
@@ -2518,7 +2684,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
                 const azurePronText = azurePronReport ? azurePronReport.text : null;
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronText);
+                const ltGrammarText = ltGrammarReport ? ltGrammarReport.text : null;
+                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronText, ltGrammarText);
 
                 // Bewaar de ruwe ElevenLabs- en Azure-output zodat je ze los kunt bekijken.
                 if (analysisResult && typeof analysisResult === 'object') {
@@ -2526,6 +2693,8 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     analysisResult.elevenlabs_words = elevenLabsWords || [];
                     analysisResult.azure_pron = azurePronText || '';
                     analysisResult.azure_pron_detail = azurePronReport ? azurePronReport.detail : null;
+                    analysisResult.grammar_lt = ltGrammarText || '';
+                    analysisResult.grammar_lt_detail = ltGrammarReport ? ltGrammarReport.detail : null;
                 }
 
                 const fileDate = new Date().toLocaleDateString('nl-NL').replace(/\//g, '-');
@@ -2661,7 +2830,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport) {
+        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport, ltGrammarReport) {
             const finalLang = targetLang || 'Engels';
             let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "${filename}".`;
@@ -2692,6 +2861,14 @@ Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen 
 ${azurePronReport}
 
 Voor woorden met een lage score: leg in heel eenvoudige taal uit welke klank waarschijnlijk fout ging en hoe het hoort te klinken. Schrijf het concreet, bijvoorbeeld: "Het klonk waarschijnlijk als 'vliegtoig', maar het moet 'vliegtUIg' zijn; let op de 'ui'-klank." Baseer je op de zwakke klanken die hierboven per woord vermeld staan en verzin geen klanken die er niet bij staan. Houd het opbouwend en simpel (A1-A2 niveau).`;
+            }
+
+            if (ltGrammarReport) {
+                systemPrompt += `\n\nOBJECTIEVE GRAMMATICAPUNTEN (LanguageTool, regelgebaseerd, nl):
+Dit zijn objectief gevonden grammatica-, spelling- en stijlpunten in de letterlijke transcriptie, gemeten door een regelgebaseerde checker (geen schatting). Tussen [[ ]] staat het exacte stuk tekst waar het punt zit. Gebruik deze punten om je grammatica-analyse en de samenvatting nauwkeuriger te maken in plaats van te gissen:
+${ltGrammarReport}
+
+Belangrijk: dit is een hulpmiddel, geen eindoordeel. De checker werkt op de automatische transcriptie en kan soms een correcte spreektaal-zin of een transcriptiefoutje als 'fout' markeren. Weeg elk punt af tegen wat je in de audio hoort. Verwerk alleen de terechte punten in je feedback, en leg ze uit in heel eenvoudige taal (A1-A2 niveau). Verzin geen regels die hier niet bij staan.`;
             }
 
             systemPrompt += `\n\nIDENTIFICATIE VAN DE SPREKERS:
@@ -3079,6 +3256,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="password" id="azureKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Azure Speech key...">
                     <input type="text" id="azureRegionField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="Regio, bijv. westeurope">
                     <span style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">Werkt alleen samen met ElevenLabs als engine. Geeft objectieve uitspraakscores (nl-NL) mee aan de feedback. Gratis tot 5 uur/maand.</span>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">LanguageTool grammatica (gebruikersnaam + sleutel)</label>
+                    <input type="text" id="ltUsernameField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="LanguageTool gebruikersnaam (inlog-e-mail)">
+                    <input type="password" id="ltKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="LanguageTool API-sleutel...">
+                    <span style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">Optioneel. Objectieve, regelgebaseerde grammaticacheck (nl) die meegaat aan de feedback. Staat standaard UIT; zet aan via het vinkje links zodra je een Premium-sleutel hebt. Zonder sleutel verandert er niets.</span>
                 </div>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 12px;">
