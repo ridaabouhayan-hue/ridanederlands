@@ -1217,6 +1217,11 @@
             background-color: rgba(239, 68, 68, 0.08);
             color: #ef4444;
         }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1239,12 +1244,15 @@
                 <p id="header-subtitle">Ministerie van Sociale Zaken en Werkgelegenheid</p>
             </div>
         </div>
-        <div class="header-actions" id="header-exam-actions" style="display: none;">
-            <div class="timer-display">
-                <span>⏱️</span>
-                <span id="timer-clock">45:00</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn-close-exam" id="btn-header-nakijken" style="background-color: var(--gov-gold); color: var(--gov-blue); border: none; font-weight: 800;" onclick="promptNakijken()">NAKIJKEN 📑</button>
+            <div class="header-actions" id="header-exam-actions" style="display: none;">
+                <div class="timer-display">
+                    <span>⏱️</span>
+                    <span id="timer-clock">45:00</span>
+                </div>
+                <button class="btn-close-exam" onclick="exitExam()">Sluiten & Opslaan</button>
             </div>
-            <button class="btn-close-exam" onclick="exitExam()">Sluiten & Opslaan</button>
         </div>
     </header>
 
@@ -1567,6 +1575,126 @@
 
             </div>
 
+        </div>
+
+        <!-- ═══ NAKIJKEN VIEW ═══ -->
+        <div id="nakijken-view" style="display: none; flex-direction: column; gap: 20px; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--gov-blue);">📑 AI Nakijkportaal Schrijven</h2>
+                <button class="btn-close-exam" style="background-color: var(--gov-blue); color: #ffffff;" onclick="closeNakijkenView()">⬅️ Terug naar Dashboard</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Input & Settings Panel -->
+                <div class="sidebar-panel" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="sidebar-card">
+                        <h3>1. Selecteer Opdracht</h3>
+                        <div class="form-group">
+                            <label for="nakijk-exam-select">Schrijfexamen</label>
+                            <select id="nakijk-exam-select" class="form-input" onchange="onNakijkExamChange()" style="font-weight: 700;">
+                                <option value="1">Schrijven 1</option>
+                                <option value="2">Schrijven 2</option>
+                                <option value="3">Schrijven 3</option>
+                                <option value="4">Schrijven 4</option>
+                                <option value="5">Schrijven 5</option>
+                                <option value="6">Schrijven 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nakijk-opgave-select">Opgave</label>
+                            <select id="nakijk-opgave-select" class="form-input" onchange="onNakijkOpgaveChange()" style="font-weight: 700;">
+                                <option value="1">Opgave 1</option>
+                                <option value="2">Opgave 2</option>
+                                <option value="3">Opgave 3</option>
+                                <option value="4">Opgave 4</option>
+                            </select>
+                        </div>
+                        <div id="nakijk-prompt-preview" style="background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; font-size: 0.82rem; max-height: 180px; overflow-y: auto; font-family: 'Inter', sans-serif;">
+                            <!-- Dynamically filled with instructions -->
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card">
+                        <h3>2. Gemini AI Instellingen</h3>
+                        <div class="form-group">
+                            <label for="gemini-api-key">Gemini API Key</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" id="gemini-api-key" class="form-input" placeholder="AI Studio API Key..." style="flex-grow: 1;">
+                                <button class="btn-start-exam-secondary" onclick="saveGeminiKey()" style="padding: 0 10px; font-weight: 800; border-color: var(--gov-blue); color: var(--gov-blue);">Opslaan</button>
+                            </div>
+                            <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-weight: 600;">
+                                Krijg een gratis sleutel op <a href="https://aistudio.google.com/" target="_blank" style="color: var(--gov-blue); text-decoration: underline;">Google AI Studio</a>. Sleutel wordt veilig lokaal opgeslagen.
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nakijk-taal">Feedback Taal</label>
+                            <select id="nakijk-taal" class="form-input" style="font-weight: 700;">
+                                <option value="Nederlands">Nederlands (Standaard)</option>
+                                <option value="Dari">Dari (Afghaans)</option>
+                                <option value="Farsi">Farsi (Perzisch)</option>
+                                <option value="Arabisch">Arabisch</option>
+                                <option value="Engels">Engels</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nakijk-striktheid">Striktheid van nakijken</label>
+                            <select id="nakijk-striktheid" class="form-input" style="font-weight: 700;">
+                                <option value="Mild (Aardig, focus op begrijpelijkheid en motivatie)">Mild (Aardig / Begrijpelijkheid)</option>
+                                <option value="Medium (Standaard A2 inburgeringsniveau)" selected>Medium (Standaard A2 niveau)</option>
+                                <option value="Streng (Strikte beoordeling van grammatica, lidwoorden en volgorde)">Streng (Strikte A2 beoordeling)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="font-weight: 700;">Focussen op</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
+                                    <input type="checkbox" id="focus-grammatica" checked> Grammatica
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
+                                    <input type="checkbox" id="focus-spelling" checked> Spelling
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
+                                    <input type="checkbox" id="focus-zinsbouw" checked> Zinsbouw
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
+                                    <input type="checkbox" id="focus-woordenschat" checked> Woordenschat
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Textarea & Output Panel -->
+                <div class="dashboard-main" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="welcome-card" style="margin-bottom: 0;">
+                        <h2>Invoer Kandidaattekst</h2>
+                        <p style="margin-bottom: 15px; font-weight: 600; color: var(--text-muted);">Plak hieronder de tekst die de kandidaat heeft ingestuurd (het WhatsApp-bericht mag ook compleet geplakt worden, de AI filtert het antwoord eruit).</p>
+                        <textarea id="nakijk-kandidaat-antwoord" class="form-input" style="min-height: 200px; font-family: inherit; font-size: 0.95rem; resize: vertical; line-height: 1.6;" placeholder="Plak de tekst hier..."></textarea>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn-whatsapp" id="btn-nakijken-run" onclick="runNakijkenAI()" style="flex-grow: 1; background-color: var(--gov-blue); box-shadow: 0 4px 10px rgba(0, 45, 98, 0.2); height: auto; padding: 12px 20px;">
+                                🚀 Feedback genereren met Gemini
+                            </button>
+                            <button class="btn-start-exam-secondary" onclick="generatePromptOnly()" style="font-weight: 800; border-color: var(--gov-blue); color: var(--gov-blue);">
+                                📋 Kopieer handmatige Prompt
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="welcome-card" id="nakijk-output-card" style="display: none; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 10px;">
+                            <h2 style="margin-bottom: 0;">AI Nakijkrapport</h2>
+                            <button class="btn-whatsapp-small" onclick="copyFeedbackToClipboard()">📋 Kopieer Feedback</button>
+                        </div>
+                        <div id="nakijk-feedback-container" style="font-family: 'Inter', sans-serif; line-height: 1.6; font-size: 0.95rem; display: flex; flex-direction: column; gap: 15px;">
+                            <!-- Gemini response will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ═══ EXAM PLAYER VIEW ═══ -->
@@ -4277,6 +4405,7 @@
             document.getElementById('header-main-title').textContent = examConfig.title;
             document.getElementById('header-subtitle').textContent = "Nederlandse Overheid - Officieel Oefenexamen A2";
             document.getElementById('header-exam-actions').style.display = 'flex';
+            document.getElementById('btn-header-nakijken').style.display = 'none';
 
             // Show timer
             startTimer(examConfig.timeLimit);
@@ -4298,6 +4427,7 @@
                 document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
                 document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
                 document.getElementById('header-exam-actions').style.display = 'none';
+                document.getElementById('btn-header-nakijken').style.display = 'block';
 
                 // Toggle screens
                 document.getElementById('exam-player-view').style.display = 'none';
@@ -4752,6 +4882,7 @@
             document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
             document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
             document.getElementById('header-exam-actions').style.display = 'none';
+            document.getElementById('btn-header-nakijken').style.display = 'block';
 
             // Toggle screens
             document.getElementById('exam-player-view').style.display = 'none';
@@ -4870,6 +5001,271 @@
 
             // Refresh UI to show updated button state
             renderWorkspace();
+        }
+
+        // ── NAKIJKEN PORTAAL FUNCTIONS ──
+        function promptNakijken() {
+            const code = prompt("Voer de toegangscode in om het nakijkportaal te openen:");
+            if (code === "qwerty") {
+                openNakijkenView();
+            } else if (code !== null) {
+                alert("Onjuiste toegangscode.");
+            }
+        }
+
+        function openNakijkenView() {
+            // Hide dashboard, hide exam player
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('exam-player-view').style.display = 'none';
+            document.getElementById('nakijken-view').style.display = 'flex';
+            
+            // Adjust headers
+            document.getElementById('header-main-title').textContent = "AI Nakijkportaal - Schrijven";
+            document.getElementById('header-subtitle').textContent = "Ingevoerde schrijfteksten controleren met Gemini";
+            document.getElementById('btn-header-nakijken').style.display = 'none';
+            
+            // Initialize selections
+            onNakijkExamChange();
+            
+            // Load Gemini API Key if saved
+            const savedKey = localStorage.getItem('a2_gemini_api_key');
+            if (savedKey) {
+                document.getElementById('gemini-api-key').value = savedKey;
+            }
+        }
+
+        function closeNakijkenView() {
+            document.getElementById('nakijken-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'flex';
+            
+            // Restore headers
+            document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
+            document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
+            document.getElementById('btn-header-nakijken').style.display = 'block';
+        }
+
+        function saveGeminiKey() {
+            const key = document.getElementById('gemini-api-key').value.trim();
+            if (key) {
+                localStorage.setItem('a2_gemini_api_key', key);
+                alert("Gemini API Key succesvol opgeslagen!");
+            } else {
+                localStorage.removeItem('a2_gemini_api_key');
+                alert("Gemini API Key gewist!");
+            }
+        }
+
+        function onNakijkExamChange() {
+            const examSelect = document.getElementById('nakijk-exam-select');
+            const opgaveSelect = document.getElementById('nakijk-opgave-select');
+            const examId = parseInt(examSelect.value);
+            
+            // Populate opgave dropdown (some might have different lengths but A2 Schrijven has 4)
+            const config = EXAM_DATA.schrijven[examId];
+            const totalOpgaven = config.opgaven.length;
+            
+            opgaveSelect.innerHTML = '';
+            for (let i = 1; i <= totalOpgaven; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `Opgave ${i} (${config.opgaven[i - 1].type})`;
+                opgaveSelect.appendChild(opt);
+            }
+            
+            onNakijkOpgaveChange();
+        }
+
+        function onNakijkOpgaveChange() {
+            const examId = parseInt(document.getElementById('nakijk-exam-select').value);
+            const opgaveIndex = parseInt(document.getElementById('nakijk-opgave-select').value) - 1;
+            const preview = document.getElementById('nakijk-prompt-preview');
+            
+            const config = EXAM_DATA.schrijven[examId];
+            if (config && config.opgaven[opgaveIndex]) {
+                const opg = config.opgaven[opgaveIndex];
+                let instructionsText = opg.instructions;
+                if (opg.promptText) {
+                    instructionsText += `<br><br><strong>Prompt:</strong> ${opg.promptText}`;
+                }
+                preview.innerHTML = `<strong>Titel:</strong> ${opg.title}<br><strong>Type:</strong> ${opg.type}<br><br>${instructionsText}`;
+            } else {
+                preview.innerHTML = "Opdracht niet gevonden.";
+            }
+        }
+
+        function getFeedbackPrompt() {
+            const examId = parseInt(document.getElementById('nakijk-exam-select').value);
+            const opgaveIndex = parseInt(document.getElementById('nakijk-opgave-select').value) - 1;
+            const config = EXAM_DATA.schrijven[examId];
+            const opg = config.opgaven[opgaveIndex];
+            
+            const candidateAnswer = document.getElementById('nakijk-kandidaat-antwoord').value.trim();
+            const feedbackTaal = document.getElementById('nakijk-taal').value;
+            const striktheid = document.getElementById('nakijk-striktheid').value;
+            
+            const focus = [];
+            if (document.getElementById('focus-grammatica').checked) focus.push('Grammatica');
+            if (document.getElementById('focus-spelling').checked) focus.push('Spelling');
+            if (document.getElementById('focus-zinsbouw').checked) focus.push('Zinsbouw / Woordvolgorde');
+            if (document.getElementById('focus-woordenschat').checked) focus.push('Woordenschat');
+            
+            let focusText = focus.length > 0 ? focus.join(', ') : 'Algemene A2 criteria';
+            
+            let cleanInstructions = opg.instructions.replace(/<[^>]*>/g, '');
+            let promptTextClean = opg.promptText ? opg.promptText.replace(/<[^>]*>/g, '') : '';
+            
+            return `Je bent een ervaren docent Nederlands als Tweede Taal (NT2), gespecialiseerd in het beoordelen van het Inburgeringsexamen Schrijven op A2-niveau.
+Jouw taak is om de geschreven tekst van een inburgeraar grondig en constructief te beoordelen op basis van de gegeven opdracht.
+
+Geef de feedback in de taal: ${feedbackTaal}.
+Hanteer de volgende striktheid van nakijken: ${striktheid}.
+Focus extra op de volgende gebieden: ${focusText}.
+
+Beoordeel de tekst op de officiële A2 Schrijven-criteria:
+1. Taakuitvoering (is de vraag beantwoord en zijn alle gevraagde punten behandeld?)
+2. Begrijpelijkheid en Samenhang (is de tekst logisch en te volgen?)
+3. Grammatica en Woordenschat (correctheid en passendheid op A2-niveau)
+
+Formatteer je antwoord in duidelijke paragrafen met de volgende onderdelen:
+- **Beoordeling**: [Onvoldoende / Twijfelachtig / Voldoende / Goed]
+- **Geschatte A2 Score**: [1 t/m 10] (waarbij 5.5 of hoger voldoende is)
+- **Algemene indruk**: Korte samenvatting van de prestatie.
+- **Sterke punten**: Wat ging er goed in de tekst?
+- **Verbeterpunten (met concrete voorbeelden)**: Wat kan er beter? Geef voorbeelden uit de tekst van de kandidaat, laat zien wat er fout is en leg uit hoe het gecorrigeerd moet worden.
+- **Gecorrigeerde tekst**: De volledige tekst herschreven in correct Nederlands op A2-niveau (zodat de cursist een perfect voorbeeld heeft).
+
+Hier is de opdracht:
+Titel: ${opg.title}
+Type: ${opg.type}
+Instructies/Vragen:
+${cleanInstructions}
+${promptTextClean ? `Vraag prompt:\n${promptTextClean}` : ''}
+
+Hier is het antwoord/de tekst van de kandidaat:
+"""
+${candidateAnswer}
+"""`;
+        }
+
+        function generatePromptOnly() {
+            const candidateAnswer = document.getElementById('nakijk-kandidaat-antwoord').value.trim();
+            if (!candidateAnswer) {
+                alert("Voer eerst de kandidaattekst in.");
+                return;
+            }
+            const prompt = getFeedbackPrompt();
+            navigator.clipboard.writeText(prompt).then(() => {
+                alert("De volledige prompt is gekopieerd naar je klembord! Je kunt deze direct in ChatGPT of Gemini plakken.");
+            }).catch(err => {
+                console.error("Fout bij kopiëren:", err);
+                alert("Kopiëren mislukt. Kopieer de prompt handmatig.");
+            });
+        }
+
+        function formatMarkdown(text) {
+            // Zeer simpele markdown-naar-html formatter
+            let html = text;
+            
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // Lists & bullet points
+            html = html.replace(/^\s*-\s*\*\*(.*?)\*\*:(.*)/gm, '<div style="margin-top:10px;"><strong>• $1</strong>:$2</div>');
+            html = html.replace(/^\s*-\s*(.*)/gm, '<li>$1</li>');
+            html = html.replace(/^\s*\*\s*(.*)/gm, '<li>$1</li>');
+            
+            // Code blocks
+            html = html.replace(/```([\s\S]*?)```/g, '<pre style="background-color:#e2e8f0; padding:10px; border-radius:4px; overflow-x:auto; font-family:monospace; margin: 10px 0; max-width: 100%;">$1</pre>');
+            
+            // Paragraph breaks
+            html = html.replace(/\n/g, '<br>');
+            
+            return html;
+        }
+
+        function runNakijkenAI() {
+            const candidateAnswer = document.getElementById('nakijk-kandidaat-antwoord').value.trim();
+            if (!candidateAnswer) {
+                alert("Voer eerst de kandidaattekst in.");
+                return;
+            }
+            
+            const apiKey = document.getElementById('gemini-api-key').value.trim();
+            if (!apiKey) {
+                alert("Voer een Gemini API Key in of klik op 'Kopieer handmatige Prompt' om de prompt handmatig in ChatGPT/Gemini te gebruiken.");
+                return;
+            }
+            
+            const runBtn = document.getElementById('btn-nakijken-run');
+            const outputCard = document.getElementById('nakijk-output-card');
+            const feedbackContainer = document.getElementById('nakijk-feedback-container');
+            
+            runBtn.disabled = true;
+            runBtn.innerHTML = "⌛ Beoordelen met Gemini... Een moment geduld...";
+            
+            outputCard.style.display = 'flex';
+            feedbackContainer.innerHTML = `<div style="text-align:center; padding:20px; font-weight:700;"><span style="display:inline-block; animation:spin 1s linear infinite; margin-right:8px;">⌛</span> Gemini is de tekst aan het beoordelen...</div>`;
+            
+            // Scroll to output
+            outputCard.scrollIntoView({ behavior: 'smooth' });
+            
+            const promptStr = getFeedbackPrompt();
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: promptStr }]
+                    }]
+                })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`API error: ${res.status} ${res.statusText}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    // Save response in a global variable for copying
+                    window.currentAIFeedback = responseText;
+                    feedbackContainer.innerHTML = formatMarkdown(responseText);
+                } else {
+                    throw new Error("Ongeldig antwoordformaat van Gemini API.");
+                }
+            })
+            .catch(err => {
+                console.error("Gemini API Error:", err);
+                feedbackContainer.innerHTML = `
+                    <div style="background-color:rgba(239, 68, 68, 0.1); border:1px solid #ef4444; border-radius:6px; padding:15px; color:#ef4444; font-weight:700;">
+                        ❌ Er is een fout opgetreden bij het verbinden met Gemini. Controleer uw internetverbinding en de API-sleutel.<br><br>
+                        <span style="font-size:0.8rem; font-family:monospace;">Foutmelding: ${err.message}</span>
+                    </div>
+                `;
+            })
+            .finally(() => {
+                runBtn.disabled = false;
+                runBtn.innerHTML = "🚀 Feedback genereren met Gemini";
+            });
+        }
+
+        function copyFeedbackToClipboard() {
+            if (!window.currentAIFeedback) {
+                alert("Er is nog geen feedback beschikbaar om te kopiëren.");
+                return;
+            }
+            
+            navigator.clipboard.writeText(window.currentAIFeedback).then(() => {
+                alert("De AI feedback is gekopieerd naar uw klembord! U kunt deze direct in WhatsApp plakken en naar de cursist sturen.");
+            }).catch(err => {
+                console.error("Fout bij kopiëren:", err);
+                alert("Kopiëren mislukt. Selecteer de tekst handmatig.");
+            });
         }
 
         // ── RESULTS OVERVIEW MODAL LOGIC ──
