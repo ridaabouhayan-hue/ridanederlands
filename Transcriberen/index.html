@@ -304,11 +304,10 @@
     <div id="authOverlay">
         <div class="auth-card">
             <h2>✨ Gemini Transcriber</h2>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Log in met je e-mail en wachtwoord om door te gaan.</p>
-            <input type="email" id="emailInput" class="auth-input" placeholder="E-mailadres" autocomplete="username" onkeydown="if(event.key==='Enter') checkAuth()">
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Voer het wachtwoord in om door te gaan.</p>
             <input type="password" id="pwdInput" class="auth-input" placeholder="Wachtwoord" autocomplete="current-password" onkeydown="if(event.key==='Enter') checkAuth()">
             <button class="auth-btn" id="loginBtn" onclick="checkAuth()">Inloggen</button>
-            <p id="authError" style="color: #ef4444; margin-top: 16px; font-size: 0.9rem; display: none;">Inloggen mislukt. Controleer je e-mail en wachtwoord.</p>
+            <p id="authError" style="color: #ef4444; margin-top: 16px; font-size: 0.9rem; display: none;">Foutief wachtwoord, probeer het opnieuw.</p>
         </div>
     </div>
 
@@ -519,33 +518,49 @@
         let uploadQueue = [];
         let isProcessingQueue = false;
 
-        // ── AUTHENTICATION (Firebase e-mail/wachtwoord) ──
+        // ── AUTHENTICATION (simpel wachtwoord + anonieme Firebase login) ──
         let _dataSubscribed = false;
+        const TOEGANG_CODE = 'rida2024';
 
-        function checkAuth() { doFirebaseLogin(); }
+        function checkAuth() { doSimpleLogin(); }
 
-        async function doFirebaseLogin() {
-            const email = (document.getElementById('emailInput').value || '').trim();
-            const pwd = document.getElementById('pwdInput').value || '';
+        async function doSimpleLogin() {
+            const pwd = (document.getElementById('pwdInput').value || '').trim();
             const errEl = document.getElementById('authError');
             if (errEl) errEl.style.display = 'none';
             const btn = document.getElementById('loginBtn');
-            if (btn) { btn.disabled = true; btn.textContent = 'Bezig met inloggen...'; }
+            if (pwd !== TOEGANG_CODE) {
+                if (errEl) errEl.style.display = 'block';
+                return;
+            }
+            if (btn) { btn.disabled = true; btn.textContent = 'Bezig...'; }
             try {
-                await window.fbAuth.signInWithEmailAndPassword(email, pwd);
-                // onAuthStateChanged handelt de rest af.
-            } catch (err) {
-                console.warn('Login mislukt:', err);
-                if (errEl) {
-                    errEl.textContent = 'Inloggen mislukt. Controleer je e-mail en wachtwoord.';
-                    errEl.style.display = 'block';
+                // Sla de sessie op zodat je niet elke keer hoeft in te loggen
+                sessionStorage.setItem('transcriber_auth', '1');
+                // Log anoniem in bij Firebase zodat Firestore werkt
+                const currentUser = window.fbAuth.currentUser;
+                if (!currentUser) {
+                    await window.fbAuth.signInAnonymously();
+                } else {
+                    // Al ingelogd: toon de app direct
+                    document.getElementById('authOverlay').style.display = 'none';
+                    document.getElementById('appContent').style.display = 'flex';
+                    subscribeData();
+                    initApp();
                 }
+            } catch (err) {
+                console.warn('Anonieme login mislukt:', err);
+                // Toch doorgaan zonder cloud-sync
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').style.display = 'flex';
+                initApp();
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'Inloggen'; }
             }
         }
 
         function logout() {
+            sessionStorage.removeItem('transcriber_auth');
             try { window.fbAuth.signOut(); } catch (e) {}
             setTimeout(() => location.reload(), 200);
         }
@@ -624,20 +639,37 @@
             });
         }
 
-        // ── START: reageer op inlogstatus ──
+        // ── START: reageer op Firebase auth status ──
         window.fbAuth.onAuthStateChanged((user) => {
             if (user) {
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('appContent').style.display = 'flex';
-                subscribeData();
-                initApp();
+                // Firebase anonieme sessie actief - toon app alleen als wachtwoord ook goed was
+                if (sessionStorage.getItem('transcriber_auth') === '1') {
+                    document.getElementById('authOverlay').style.display = 'none';
+                    document.getElementById('appContent').style.display = 'flex';
+                    subscribeData();
+                    initApp();
+                } else {
+                    // Vorige anonieme sessie maar geen geldig wachtwoord - toon login
+                    document.getElementById('authOverlay').style.display = 'flex';
+                    document.getElementById('appContent').style.display = 'none';
+                    setTimeout(() => {
+                        const pw = document.getElementById('pwdInput');
+                        if (pw) pw.focus();
+                    }, 100);
+                }
             } else {
-                document.getElementById('authOverlay').style.display = 'flex';
-                document.getElementById('appContent').style.display = 'none';
-                setTimeout(() => {
-                    const em = document.getElementById('emailInput');
-                    if (em) em.focus();
-                }, 100);
+                // Controleer of sessie nog geldig is (bijv. na pagina-refresh)
+                if (sessionStorage.getItem('transcriber_auth') === '1') {
+                    // Sessie is geldig, log anoniem in bij Firebase
+                    window.fbAuth.signInAnonymously().catch(() => {});
+                } else {
+                    document.getElementById('authOverlay').style.display = 'flex';
+                    document.getElementById('appContent').style.display = 'none';
+                    setTimeout(() => {
+                        const pw = document.getElementById('pwdInput');
+                        if (pw) pw.focus();
+                    }, 100);
+                }
             }
         });
 
