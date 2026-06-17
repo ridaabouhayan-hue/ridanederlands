@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOP Zinnenbouwer</title>
+<style>
+  :root{
+    --bg1:#1a1c3a; --bg2:#2d1b4e; --card:#ffffff;
+    --onderwerp:#3b82f6; --werkwoord:#f97316; --tijd:#a855f7;
+    --object:#ec4899; --plaats:#14b8a6; --werkwoord2:#f43f5e;
+    --ink:#1e213a; --muted:#6b7280; --soft:#f3f4f6;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Trebuchet MS',-apple-system,Segoe UI,system-ui,sans-serif;
+    min-height:100vh;color:var(--ink);
+    background:linear-gradient(135deg,#1a1c3a 0%,#2d1b4e 50%,#3b1d5e 100%);
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+
+  /* HEADER */
+  header{text-align:center;color:#fff;margin-bottom:22px}
+  header h1{font-size:2.4rem;letter-spacing:1px;text-shadow:0 3px 16px rgba(0,0,0,.4)}
+  .top-legend{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  .top-pill{
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    padding:7px 14px;border-radius:999px;font-size:.85rem;color:#fff;
+    display:flex;align-items:center;gap:7px;backdrop-filter:blur(6px)
+  }
+  .top-pill b{font-size:1.1rem}
+  .dot{width:11px;height:11px;border-radius:50%}
+
+  /* CARD */
+  .card{background:var(--card);border-radius:var(--radius);
+    box-shadow:0 18px 50px rgba(0,0,0,.35);padding:26px;margin-bottom:22px}
+
+  /* LIVE ZIN */
+  .live{
+    background:linear-gradient(135deg,#f8fafc,#eef2ff);
+    border:2px dashed #c7d2fe;border-radius:18px;
+    padding:26px 22px;min-height:96px;display:flex;align-items:center;
+    justify-content:center;flex-wrap:wrap;gap:8px;font-size:1.7rem;
+    line-height:1.4;text-align:center;transition:.2s
+  }
+  .live .ph{color:#aab;font-style:italic;font-size:1.1rem}
+  .tok{padding:3px 12px;border-radius:11px;color:#fff;font-weight:bold;
+    display:inline-block;animation:pop .25s ease}
+  .tok.onderwerp{background:var(--onderwerp)}
+  .tok.werkwoord{background:var(--werkwoord)}
+  .tok.tijd{background:var(--tijd)}
+  .tok.object{background:var(--object)}
+  .tok.plaats{background:var(--plaats)}
+  .tok.werkwoord2{background:var(--werkwoord2)}
+  .tok small{display:block;font-size:.5em;font-weight:normal;opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+  @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* INPUT GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:22px}
+  .slot{border:2px solid #e5e7eb;border-radius:16px;padding:14px;transition:.2s;position:relative}
+  .slot:focus-within{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.12)}
+  .slot.onderwerp{border-color:var(--onderwerp)}
+  .slot.werkwoord{border-color:var(--werkwoord)}
+  .slot.tijd{border-color:var(--tijd)}
+  .slot.object{border-color:var(--object)}
+  .slot.plaats{border-color:var(--plaats)}
+  .slot.werkwoord2{border-color:var(--werkwoord2)}
+  .slot label{display:flex;align-items:center;gap:7px;font-weight:bold;font-size:.95rem;margin-bottom:4px}
+  .slot .who{font-size:.72rem;color:var(--muted);margin-bottom:8px;font-weight:normal}
+  .slot input{width:100%;border:none;background:var(--soft);border-radius:10px;
+    padding:10px 12px;font-size:1rem;font-family:inherit;outline:none}
+  .slot input:focus{background:#fff;box-shadow:inset 0 0 0 2px currentColor}
+  .emoji{font-size:1.2rem}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .chips span{font-size:.78rem;background:#fff;border:1px solid #e5e7eb;
+    border-radius:8px;padding:3px 8px;cursor:pointer;transition:.15s}
+  .chips span:hover{background:var(--soft);transform:scale(1.06)}
+
+  /* BUTTONS */
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;justify-content:center}
+  button{font-family:inherit;font-weight:bold;border:none;border-radius:12px;
+    padding:13px 22px;font-size:1rem;cursor:pointer;transition:.18s;display:flex;align-items:center;gap:8px}
+  button:active{transform:scale(.96)}
+  .btn-save{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 6px 16px rgba(34,197,94,.4)}
+  .btn-save:hover{filter:brightness(1.08)}
+  .btn-clear{background:var(--soft);color:var(--ink)}
+  .btn-clear:hover{background:#e5e7eb}
+
+  /* KETTING */
+  .ketting-card h2{font-size:1.3rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .ketting-card .sub{color:var(--muted);font-size:.88rem;margin-bottom:16px}
+  .empty{text-align:center;color:#9ca3af;padding:30px;font-style:italic}
+  .chain-item{background:#f8fafc;border-radius:14px;padding:14px 16px;
+    display:flex;align-items:center;gap:12px;animation:slide .3s ease}
+  @keyframes slide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+  .chain-num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg2);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.85rem}
+  .chain-text{flex:1;font-size:1.12rem}
+  .chain-text .tok{font-size:1rem}
+  .chain-text .tok small{display:none}
+  .chain-del{background:none;color:#ef4444;padding:6px;font-size:1.1rem}
+  .chain-del:hover{transform:scale(1.2)}
+  .ketting-tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .btn-copy{background:var(--onderwerp);color:#fff}
+  .btn-reset{background:#fee2e2;color:#b91c1c}
+  /* TIMER */
+  .timer-card{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;padding:18px 26px}
+  .timer-display{font-size:3rem;font-weight:bold;font-variant-numeric:tabular-nums;
+    color:var(--ink);min-width:160px;text-align:center;letter-spacing:2px}
+  .timer-display.warn{color:#f97316}
+  .timer-display.done{color:#ef4444;animation:flash .5s steps(1) infinite}
+  @keyframes flash{50%{opacity:.25}}
+  .timer-set{display:flex;align-items:center;gap:8px}
+  .timer-set label{font-weight:bold;color:var(--muted);font-size:.9rem}
+  .timer-set input{width:62px;border:2px solid #e5e7eb;background:var(--soft);border-radius:10px;
+    padding:9px;font-size:1.1rem;font-family:inherit;text-align:center;outline:none}
+  .timer-set input:focus{border-color:var(--tijd);background:#fff}
+  .timer-presets{display:flex;gap:6px;flex-wrap:wrap}
+  .timer-presets span{font-size:.82rem;background:#fff;border:1px solid #e5e7eb;border-radius:8px;
+    padding:5px 11px;cursor:pointer;transition:.15s}
+  .timer-presets span:hover{background:var(--soft);transform:scale(1.06)}
+  .timer-btns{display:flex;gap:8px}
+  .btn-start{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;padding:11px 18px}
+  .btn-pause{background:var(--soft);color:var(--ink);padding:11px 18px}
+  .btn-reset-t{background:#fee2e2;color:#b91c1c;padding:11px 18px}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:#16a34a;color:#fff;padding:13px 24px;border-radius:999px;font-weight:bold;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);transition:.35s;z-index:50}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  footer{text-align:center;color:rgba(255,255,255,.5);font-size:.82rem;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🏗️ TOP Zinnenbouwer</h1>
+    <div class="top-legend">
+      <span class="top-pill"><span class="dot" style="background:var(--tijd)"></span><b>T</b> Tijd ⏰</span>
+      <span class="top-pill"><span class="dot" style="background:var(--object)"></span><b>O</b> Object 🎁</span>
+      <span class="top-pill"><span class="dot" style="background:var(--plaats)"></span><b>P</b> Plaats 📍</span>
+    </div>
+  </header>
+
+  <!-- TIMER -->
+  <div class="card timer-card">
+    <div class="timer-display" id="timer-display">00:00</div>
+    <div class="timer-set">
+      <label>min</label>
+      <input id="timer-min" type="number" min="0" max="99" value="2">
+      <label>sec</label>
+      <input id="timer-sec" type="number" min="0" max="59" value="0">
+    </div>
+    <div class="timer-presets" id="timer-presets">
+      <span data-s="30">30s</span><span data-s="60">1m</span><span data-s="120">2m</span><span data-s="300">5m</span>
+    </div>
+    <div class="timer-btns">
+      <button class="btn-start" id="timer-toggle" onclick="toggleTimer()">▶️ Start</button>
+      <button class="btn-reset-t" onclick="resetTimer()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- BOUWER -->
+  <div class="card">
+    <div class="live" id="live">
+      <span class="ph">De zin verschijnt hier terwijl jullie typen…</span>
+    </div>
+
+    <div class="grid">
+      <div class="slot onderwerp" style="color:var(--onderwerp)">
+        <label><span class="emoji">👤</span> Onderwerp</label>
+        <div class="who">👩‍🎓 Cursist 1</div>
+        <input id="in-onderwerp" placeholder="">
+        <div class="chips" data-target="in-onderwerp">
+          <span>Ik</span><span>Wij</span><span>De buurvrouw</span><span>Mijn dochter</span>
+        </div>
+      </div>
+
+      <div class="slot werkwoord" style="color:var(--werkwoord)">
+        <label><span class="emoji">⚡</span> Werkwoord</label>
+        <div class="who">🧑‍🎓 Cursist 2</div>
+        <input id="in-werkwoord" placeholder="">
+        <div class="chips" data-target="in-werkwoord">
+          <span>eet</span><span>koopt</span><span>fietst</span><span>belt</span><span>maakt</span>
+        </div>
+      </div>
+
+      <div class="slot tijd" style="color:var(--tijd)">
+        <label><span class="emoji">⏰</span> Tijd <small style="font-weight:normal">(T)</small></label>
+        <div class="who">🗣️ Jij / de groep</div>
+        <input id="in-tijd" placeholder="">
+        <div class="chips" data-target="in-tijd">
+          <span>vandaag</span><span>morgen</span><span>om 8 uur</span><span>elke dag</span><span>straks</span>
+        </div>
+      </div>
+
+      <div class="slot object" style="color:var(--object)">
+        <label><span class="emoji">🎁</span> Object <small style="font-weight:normal">(O)</small></label>
+        <div class="who">🗣️ Jij / de groep</div>
+        <input id="in-object" placeholder="">
+        <div class="chips" data-target="in-object">
+          <span>een appel</span><span>de krant</span><span>koffie</span><span>haar moeder</span>
+        </div>
+      </div>
+
+      <div class="slot plaats" style="color:var(--plaats)">
+        <label><span class="emoji">📍</span> Plaats <small style="font-weight:normal">(P)</small></label>
+        <div class="who">🗣️ Jij / de groep</div>
+        <input id="in-plaats" placeholder="">
+        <div class="chips" data-target="in-plaats">
+          <span>thuis</span><span>op school</span><span>in de stad</span><span>op het werk</span>
+        </div>
+      </div>
+
+      <div class="slot werkwoord2" style="color:var(--werkwoord2)">
+        <label><span class="emoji">🎬</span> 2e Werkwoord</label>
+        <div class="who">🗣️ Jij / de groep</div>
+        <input id="in-werkwoord2" placeholder="">
+        <div class="chips" data-target="in-werkwoord2">
+          <span>eten</span><span>kopen</span><span>fietsen</span><span>bellen</span><span>maken</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-save" onclick="saveSentence()">💾 Zin opslaan</button>
+      <button class="btn-clear" onclick="clearInputs()">🧹 Leegmaken</button>
+    </div>
+  </div>
+
+  <!-- KETTING -->
+  <div class="card ketting-card">
+    <h2>🔗 Opgeslagen zinnen</h2>
+    <div class="sub">Hieronder staan de gemaakte zinnen. Klik op kopiëren om ze allemaal te kopiëren.</div>
+    <div id="chain"><div class="empty">Nog geen zinnen. Bouw er hierboven eentje! 👆</div></div>
+    <div class="ketting-tools">
+      <button class="btn-copy" onclick="copyChain()">📋 Kopieer alle zinnen</button>
+      <button class="btn-reset" onclick="resetChain()">🗑️ Zinnen wissen</button>
+    </div>
+  </div>
+
+  <footer>TOP = Tijd · Object · Plaats &nbsp;|&nbsp; gemaakt voor de NT2-les ✨</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ORDER = ["onderwerp","werkwoord","tijd","object","plaats","werkwoord2"];
+const LABEL = {onderwerp:"onderwerp",werkwoord:"1e werkwoord",tijd:"tijd",object:"object",plaats:"plaats",werkwoord2:"2e werkwoord"};
+let chain = [];
+
+const inputs = {};
+ORDER.forEach((r, idx)=>{
+  inputs[r] = document.getElementById("in-"+r);
+  inputs[r].addEventListener("input", renderLive);
+  inputs[r].addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(idx < ORDER.length - 1){
+        inputs[ORDER[idx+1]].focus();
+      } else {
+        saveSentence();
+      }
+    }
+  });
+});
+
+// chip klikken vult het veld
+document.querySelectorAll(".chips").forEach(box=>{
+  const target = document.getElementById(box.dataset.target);
+  box.querySelectorAll("span").forEach(s=>{
+    s.addEventListener("click",()=>{ target.value = s.textContent; renderLive(); target.focus(); });
+  });
+});
+
+function currentParts(){
+  return ORDER.map(r=>({role:r, val:inputs[r].value.trim()})).filter(p=>p.val);
+}
+
+function tokenHTML(p, withLabel=true){
+  const lab = withLabel ? `<small>${LABEL[p.role]}</small>` : "";
+  return `<span class="tok ${p.role}">${escapeHTML(p.val)}${lab}</span>`;
+}
+
+function renderLive(){
+  const parts = currentParts();
+  const live = document.getElementById("live");
+  if(parts.length===0){
+    live.innerHTML = '<span class="ph">De zin verschijnt hier terwijl jullie typen…</span>';
+    return;
+  }
+  live.innerHTML = parts.map(p=>tokenHTML(p)).join(" ") + '<span style="font-size:1.5rem">.</span>';
+}
+
+function saveSentence(){
+  const parts = currentParts();
+  if(parts.length < 2){ toast("✋ Vul minstens onderwerp + werkwoord in"); return; }
+  chain.push({parts});
+  clearInputs();
+  renderChain();
+  toast("✅ Zin opgeslagen!");
+}
+
+function clearInputs(){
+  ORDER.forEach(r=> inputs[r].value="");
+  renderLive();
+  inputs.onderwerp.focus();
+}
+
+function plainSentence(parts){
+  let txt = parts.map(p=>p.val).join(" ");
+  return txt.charAt(0).toUpperCase()+txt.slice(1);
+}
+
+function renderChain(){
+  const box = document.getElementById("chain");
+  if(chain.length===0){
+    box.innerHTML = '<div class="empty">Nog geen zinnen. Bouw er hierboven eentje! 👆</div>';
+    return;
+  }
+  let html = "";
+  chain.forEach((item, i)=>{
+    html += `<div class="chain-item" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px; border-radius: 12px; border: 1px solid #e5e7eb;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="chain-num" style="width: 26px; height: 26px; background: var(--bg2); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;">${i+1}</div>
+        <div class="chain-text">${item.parts.map(p=>tokenHTML(p,false)).join(" ")}.</div>
+      </div>
+      <button class="chain-del" onclick="delItem(${i})" title="verwijder" style="background: none; color: #ef4444; border: none; font-size: 1.1rem; cursor: pointer;">🗑️</button>
+    </div>`;
+  });
+  box.innerHTML = html;
+}
+
+function delItem(i){ chain.splice(i,1); renderChain(); }
+function resetChain(){ if(chain.length && confirm("Alle zinnen wissen?")){ chain=[]; renderChain(); } }
+
+function copyChain(){
+  if(chain.length===0){ toast("Nog niets om te kopiëren"); return; }
+  let out = "";
+  chain.forEach((item)=>{
+    let s = item.parts.map(p=>p.val).join(" ");
+    out += s.charAt(0).toUpperCase() + s.slice(1) + ".\n";
+  });
+  out = out.trim();
+  navigator.clipboard.writeText(out).then(()=>toast("📋 Gekopieerd!")).catch(()=>toast(out));
+}
+
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+let toastT;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+renderLive();
+
+/* ===== TIMER ===== */
+let tRemaining=0, tTotal=0, tRunning=false, tInterval=null;
+const tDisp=document.getElementById("timer-display");
+const tMin=document.getElementById("timer-min");
+const tSec=document.getElementById("timer-sec");
+const tToggle=document.getElementById("timer-toggle");
+
+function fmt(s){const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,"0")+":"+String(x).padStart(2,"0");}
+
+function syncFromInputs(){
+  let m=Math.max(0,Math.min(99,parseInt(tMin.value)||0));
+  let s=Math.max(0,Math.min(59,parseInt(tSec.value)||0));
+  tTotal=tRemaining=m*60+s;
+  paintTimer();
+}
+function paintTimer(){
+  tDisp.textContent=fmt(tRemaining);
+  tDisp.classList.toggle("warn", tRunning && tRemaining<=10 && tRemaining>0);
+  tDisp.classList.toggle("done", tRemaining===0 && tTotal>0 && !tRunning && finished);
+}
+let finished=false;
+
+function toggleTimer(){
+  if(tRunning){ pauseTimer(); return; }
+  if(tRemaining<=0){ syncFromInputs(); }
+  if(tRemaining<=0){ toast("⏱️ Stel eerst een tijd in"); return; }
+  finished=false; tRunning=true;
+  tToggle.innerHTML="⏸️ Pauze"; tToggle.className="btn-pause";
+  tInterval=setInterval(()=>{
+    tRemaining--;
+    paintTimer();
+    if(tRemaining<=0){ timerDone(); }
+  },1000);
+}
+function pauseTimer(){
+  tRunning=false; clearInterval(tInterval);
+  tToggle.innerHTML="▶️ Verder"; tToggle.className="btn-start";
+  paintTimer();
+}
+function resetTimer(){
+  tRunning=false; finished=false; clearInterval(tInterval);
+  syncFromInputs();
+  tToggle.innerHTML="▶️ Start"; tToggle.className="btn-start";
+}
+function timerDone(){
+  tRunning=false; finished=true; clearInterval(tInterval);
+  tToggle.innerHTML="▶️ Start"; tToggle.className="btn-start";
+  paintTimer();
+  beep();
+  toast("⏰ Tijd is om!");
+}
+function beep(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.25,0.5].forEach(d=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=880;o.type="sine";
+      g.gain.setValueAtTime(0.001,ctx.currentTime+d);
+      g.gain.exponentialRampToValueAtTime(0.4,ctx.currentTime+d+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d+0.2);
+      o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+0.22);
+    });
+  }catch(e){}
+}
+tMin.addEventListener("input",()=>{ if(!tRunning){ finished=false; tDisp.classList.remove("done"); syncFromInputs(); }});
+tSec.addEventListener("input",()=>{ if(!tRunning){ finished=false; tDisp.classList.remove("done"); syncFromInputs(); }});
+document.querySelectorAll("#timer-presets span").forEach(p=>{
+  p.addEventListener("click",()=>{
+    const s=parseInt(p.dataset.s);
+    tMin.value=Math.floor(s/60); tSec.value=s%60;
+    if(tRunning) pauseTimer();
+    finished=false; tDisp.classList.remove("done");
+    syncFromInputs();
+    tToggle.innerHTML="▶️ Start"; tToggle.className="btn-start";
+  });
+});
+syncFromInputs();
+</script>
+</body>
+</html>

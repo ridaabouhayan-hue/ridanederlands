@@ -146,6 +146,29 @@
         .icon-goed { color: #10b981; font-weight: bold; }
         .icon-fout { color: #ef4444; font-weight: bold; }
 
+        /* ── STORAGE MODE BUTTONS ── */
+        .storage-mode-btns { display: flex; gap: 4px; }
+        .mode-btn {
+            flex: 1; padding: 6px 4px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.04); color: var(--text-muted);
+            border-radius: 8px; cursor: pointer; font-size: 0.72rem; font-weight: 700;
+            transition: var(--transition); text-align: center; outline: none;
+        }
+        .mode-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+        .mode-btn.active-cloud  { background: rgba(59,130,246,0.15); border-color: #3b82f6; color: #60a5fa; }
+        .mode-btn.active-local  { background: rgba(16,185,129,0.15); border-color: #10b981; color: #34d399; }
+        .mode-btn.active-hybrid { background: rgba(168,85,247,0.15); border-color: #a855f7; color: #c084fc; }
+
+        /* ── SYNC BADGE op file items ── */
+        .sync-badge {
+            font-size: 0.62rem; font-weight: 800; padding: 2px 5px;
+            border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+        }
+        .sync-badge.cloud  { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .sync-badge.local  { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+        .sync-badge.pending { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .sync-badge.error  { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
         /* Scrollbars */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -329,13 +352,22 @@
             <div class="sidebar">
                 <!-- Scrollable top section: settings + upload -->
                 <div class="sidebar-top">
-                    <!-- Cloud-sync statuspaneel -->
-                    <div id="connPanel" style="padding: 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02);">
-                        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
-                            <span style="font-weight: 700; color: var(--text-muted);">Cloud-sync:</span>
-                            <span id="connStatus" style="font-weight: 800; color: #f59e0b;">⏳ Verbinden...</span>
+                    <!-- Opslagmodus-paneel -->
+                    <div id="connPanel" style="padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02);">
+                        <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Opslagmodus</div>
+                        <!-- Drie knoppen -->
+                        <div class="storage-mode-btns">
+                            <button id="modeBtn-cloud"  class="mode-btn" onclick="setStorageMode('cloud')"  title="Alles via Firestore cloud — sync tussen apparaten">☁️ Cloud</button>
+                            <button id="modeBtn-local"  class="mode-btn" onclick="setStorageMode('local')"  title="Geen cloud — download/upload JSON-bestand">💾 Lokaal</button>
+                            <button id="modeBtn-hybrid" class="mode-btn" onclick="setStorageMode('hybrid')" title="Firestore + lokale buffer — badges tonen status">🔄 Hybride</button>
                         </div>
-                        <button class="auth-btn" id="btnBackup" onclick="downloadDataJsFallback()" style="padding: 6px 12px; font-size: 0.75rem; border-radius: 6px; width: 100%; height: auto; cursor: pointer; font-weight: 700; background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border);" title="Download een lokale back-up van alle data">⬇️ Back-up downloaden</button>
+                        <!-- Status -->
+                        <div id="connStatus" style="font-size: 0.78rem; font-weight: 700; color: #f59e0b;">⏳ Verbinden...</div>
+                        <!-- Actieknoppen -->
+                        <div style="display: flex; gap: 6px;">
+                            <button class="auth-btn" onclick="downloadDataJsFallback()" style="flex:1; padding: 5px 8px; font-size: 0.72rem; border-radius: 6px; height: auto; cursor: pointer; font-weight: 700; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border);" title="Download een back-up van alle data als JSON">⬇️ Back-up</button>
+                            <label id="importJsonLabel" style="flex:1; padding: 5px 8px; font-size: 0.72rem; border-radius: 6px; cursor: pointer; font-weight: 700; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); text-align:center; display:flex; align-items:center; justify-content:center; gap:4px;" title="Importeer een eerder gedownloade JSON back-up">⬆️ Importeer<input type="file" accept=".json" style="display:none" onchange="importJsonBackup(event)"></label>
+                        </div>
                     </div>
 
                     <!-- Audio local warning -->
@@ -543,9 +575,18 @@
         let activeStudentIdx = 0;
         let activeFeedbackLang = 'nl';
 
+        // ── OPSLAGMODUS ──
+        // 'cloud'  = alleen Firestore
+        // 'local'  = alleen JSON-download/upload, geen cloud
+        // 'hybrid' = Firestore primair + localStorage buffer + badges
+        let storageMode = localStorage.getItem('storage_mode') || 'hybrid';
+        // syncStatus[group][filename] = 'cloud' | 'local' | 'pending' | 'error'
+        let syncStatus = {};
+
         let fileHandle = null;
         let currentFileObject = null;
         let uploadQueue = [];
+
         let isProcessingQueue = false;
 
         // ── AUTHENTICATION (simpel wachtwoord + anonieme Firebase login) ──
@@ -597,25 +638,64 @@
 
         function showLoadingState() {
             const list = document.getElementById('fileList');
-            if (list) {
-                list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">⏳ Gegevens laden...</div>`;
+            if         // ── OPSLAGMODUS LOGICA ──
+        function recCol() { return window.fbDb.collection('recordings'); }
+        function recId(group, filename) {
+            return (String(group) + '__' + String(filename)).replace(/[\/\#?\[\]]/g, '_').slice(0, 1400);
+        }
+
+        // Sla de modus op en pas UI aan
+        function setStorageMode(mode) {
+            storageMode = mode;
+            localStorage.setItem('storage_mode', mode);
+            updateModeBtns();
+            updateConnStatus();
+            renderList(); // badges opnieuw tekenen
+            showToast(mode === 'cloud' ? '☁️ Opslagmodus: Cloud (Firestore)' :
+                      mode === 'local' ? '💾 Opslagmodus: Alleen lokaal (JSON)' :
+                                         '🔄 Opslagmodus: Hybride (Cloud + lokaal)');
+        }
+
+        function updateModeBtns() {
+            ['cloud', 'local', 'hybrid'].forEach(m => {
+                const btn = document.getElementById('modeBtn-' + m);
+                if (!btn) return;
+                btn.className = 'mode-btn' + (storageMode === m ? ' active-' + m : '');
+            });
+        }
+
+        function updateConnStatus(text, color) {
+            const el = document.getElementById('connStatus');
+            if (!el) return;
+            if (text) { el.textContent = text; if (color) el.style.color = color; return; }
+            if (storageMode === 'local') {
+                el.textContent = '💾 Lokale modus — geen cloud'; el.style.color = '#34d399';
+            } else if (storageMode === 'cloud') {
+                el.textContent = '☁️ Cloud modus (Firestore)'; el.style.color = '#60a5fa';
+            } else {
+                el.textContent = '🔄 Hybride — wacht op cloud...'; el.style.color = '#c084fc';
             }
         }
 
-        // ── FIRESTORE OPSLAG (vervangt data.js; synct tussen apparaten met lokale fallback) ──
-        function recCol() { return window.fbDb.collection('recordings'); }
-        function recId(group, filename) {
-            return (String(group) + '__' + String(filename)).replace(/[\/#?\[\]]/g, '_').slice(0, 1400);
+        // Zet een sync-badge per bestand
+        function setSyncStatus(group, filename, status) {
+            if (!syncStatus[group]) syncStatus[group] = {};
+            syncStatus[group][filename] = status;
         }
 
+        function getSyncStatus(group, filename) {
+            return (syncStatus[group] && syncStatus[group][filename]) || null;
+        }
+
+        // ── LOKALE DATA (localStorage cache) ──
         function loadLocalData() {
             try {
                 const localData = localStorage.getItem('local_transcriptions_db');
-                if (localData) {
-                    return JSON.parse(localData);
-                }
+                if (localData) return JSON.parse(localData);
             } catch (e) {
-                console.error('Lokaal inladen mislukt:', e);
+                console.error('Lokale cache beschadigd, wissen:', e);
+                try { localStorage.removeItem('local_transcriptions_db'); } catch (_) {}
+                setTimeout(() => showToast('⚠️ Lokale cache was beschadigd en is gewist. Cloud-data wordt geladen...'), 800);
             }
             return {};
         }
@@ -624,24 +704,16 @@
             try {
                 const localDb = loadLocalData();
                 if (!localDb[group]) localDb[group] = [];
-                
                 const idx = localDb[group].findIndex(f => f.filename === entry.filename);
-                if (idx !== -1) {
-                    localDb[group].splice(idx, 1);
-                }
-                
+                if (idx !== -1) localDb[group].splice(idx, 1);
                 localDb[group].push({
                     filename: entry.filename,
                     path: entry.path || (group + '/' + entry.filename),
                     date: entry.date || '',
                     analyse: entry.analyse || {}
                 });
-                
                 localStorage.setItem('local_transcriptions_db', JSON.stringify(localDb));
-                
-                if (!isDataLoaded) {
-                    db = localDb;
-                }
+                if (!isDataLoaded) db = localDb;
             } catch (e) {
                 console.error('Lokaal opslaan mislukt:', e);
             }
@@ -657,18 +729,31 @@
                         localStorage.setItem('local_transcriptions_db', JSON.stringify(localDb));
                     }
                 }
-            } catch (e) {
-                console.error('Lokaal verwijderen mislukt:', e);
-            }
+            } catch (e) { console.error('Lokaal verwijderen mislukt:', e); }
         }
 
+        // ── HOOFD-OPSLAGFUNCTIE (modus-bewust) ──
         async function saveEntry(entry, group) {
             const g = group || activeGroup;
             if (!entry || !entry.filename) return;
-            
-            // Sla altijd lokaal op als fallback
+
+            if (storageMode === 'local') {
+                // Lokale modus: alleen in-memory + localStorage
+                if (!db[g]) db[g] = [];
+                const idx = db[g].findIndex(f => f.filename === entry.filename);
+                if (idx !== -1) db[g].splice(idx, 1);
+                db[g].push({ filename: entry.filename, path: entry.path || (g + '/' + entry.filename), date: entry.date || '', analyse: entry.analyse || {} });
+                saveLocalEntry(entry, g);
+                setSyncStatus(g, entry.filename, 'local');
+                renderList();
+                return;
+            }
+
+            // Cloud of Hybride: altijd lokaal opslaan als buffer
             saveLocalEntry(entry, g);
-            
+            setSyncStatus(g, entry.filename, 'pending');
+            renderList();
+
             try {
                 await recCol().doc(recId(g, entry.filename)).set({
                     group: g,
@@ -678,20 +763,59 @@
                     analyse: JSON.stringify(entry.analyse || {}),
                     updatedAt: Date.now()
                 });
+                setSyncStatus(g, entry.filename, 'cloud');
+                renderList();
             } catch (e) {
-                console.error('Opslaan naar cloud mislukt, maar lokaal opgeslagen:', e);
-                showToast('ℹ️ Lokaal opgeslagen (cloud-sync is offline).');
-                // Gooi de fout niet op om te voorkomen dat de wachtrij stopt!
+                console.error('Cloud opslaan mislukt, lokaal opgeslagen:', e);
+                setSyncStatus(g, entry.filename, storageMode === 'hybrid' ? 'local' : 'error');
+                showToast(storageMode === 'hybrid' ? '💾 Lokaal opgeslagen (cloud tijdelijk offline).' : '❌ Cloud opslaan mislukt.');
+                renderList();
             }
         }
 
         async function deleteEntryRemote(group, filename) {
             deleteLocalEntry(group, filename);
-            try { await recCol().doc(recId(group, filename)).delete(); }
-            catch (e) { console.error('Verwijderen uit cloud mislukt:', e); }
+            if (syncStatus[group]) delete syncStatus[group][filename];
+            if (storageMode !== 'local') {
+                try { await recCol().doc(recId(group, filename)).delete(); }
+                catch (e) { console.error('Cloud verwijderen mislukt:', e); }
+            }
         }
 
         async function saveDatabase() {
+            try { if (currentFileObject) await saveEntry(currentFileObject, activeGroup); }
+            catch (e) { /* toast is al getoond */ }
+        }
+
+        // ── JSON IMPORTEREN (voor lokale modus of als herstel) ──
+        function importJsonBackup(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (typeof data !== 'object' || Array.isArray(data)) throw new Error('Ongeldig formaat');
+                    db = data;
+                    isDataLoaded = true;
+                    localStorage.setItem('local_transcriptions_db', JSON.stringify(db));
+                    // Markeer alles als lokaal gesynchroniseerd
+                    Object.keys(db).forEach(g => {
+                        (db[g] || []).forEach(f => setSyncStatus(g, f.filename, 'local'));
+                    });
+                    activeGroup = groepen.find(g => (db[g] || []).length > 0) || groepen[0];
+                    renderTabs();
+                    renderList();
+                    showToast('✅ JSON back-up succesvol geïmporteerd!');
+                } catch (err) {
+                    showToast('❌ Import mislukt: ongeldig JSON-bestand.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+     async function saveDatabase() {
             try {
                 if (currentFileObject) { await saveEntry(currentFileObject, activeGroup); }
             } catch (e) { /* toast is al getoond */ }
@@ -1673,21 +1797,22 @@ Je taak is om:
 }
 
 AANVULLENDE RICHTLIJNEN:
+- CRITICAL JSON VALIDITY RULE: Do NOT use unescaped double quotes (") inside the generated text for 'brief' or 'brief_en', as this will break JSON parsing. For all nested quotes within the feedback text (such as quotes around sentences or words), you MUST use single quotes (') instead. For example: *Zin 1:* 'Ik heet Ali'.
 - WhatsApp leesbaar: gebruik ENKELE asterisks (*) voor vetgedrukte teksten, nooit dubbele asterisks (**).
 - Zorg dat de uitleg simpel en opbouwend is (voor A1/A2 niveau, leg het uit als aan een kind van 6).
 - Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
 - Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
 - ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
-  * Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de 'feedback_brieven' array.
-  * In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
-  * Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
-    Jij zei
-    *Zin X:* "[Fonetische zin van ALI]"
-    👍 *Wat was goed:* [Compliment]
-    💡 *Correctie:* "[Correcte zin]" (alleen als correctie nodig is)
-    🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
+   * Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de 'feedback_brieven' array.
+   * In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
+   * Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
+     Jij zei
+     *Zin X:* '[Fonetische zin van ALI]'
+     👍 *Wat was goed:* [Compliment]
+     💡 *Correctie:* '[Correcte zin]' (alleen als correctie nodig is)
+     🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
    * Voor de zinnen die door de ANDERE cursist (bijv. SARAH) zijn uitgesproken, toon je UITSLUITEND de GECORRIGEERDE versie van haar zin (dus NIET de fonetische/foutieve versie). Als haar zin al correct was, toon je die gewoon. Gebruik dit format:
-    *SARAH vroeg/zei ongeveer:* "[Gecorrigeerde/correcte zin van Sarah]" (als het een vraag is, gebruik "vroeg", anders "zei"; gebruik "ongeveer" om aan te geven dat dit de bedoelde versie is)
+     *SARAH vroeg/zei ongeveer:* '[Gecorrigeerde/correcte zin van Sarah]' (als het een vraag is, gebruik "vroeg", anders "zei"; gebruik "ongeveer" om aan te geven dat dit de bedoelde versie is)
    * Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander — zodat ze niet per ongeluk de foute versie onthouden.
 - ${conversationFormatHelp}`;
 
@@ -3100,34 +3225,35 @@ Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat ter
   "feedback_brieven": [
     {
       "naam": "Naam van de cursist",
-      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* \\\"[Fonetische zin van cursist]\\\"\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* \\\"[Correcte zin]\\\" (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* \\\"[Fonetische zin 2]\\\"\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106\",
-      "brief_en": "De WhatsApp feedbackbrief vertaald naar de moedertaal van de cursist (${finalLang}). Vertaal alleen de docent-uitleg, tips, samenvattingen en inleidende/afsluitende zinnen naar het ${finalLang}. Houd alle originele en gecorrigeerde Nederlandse leerelementen (zoals de originele Nederlandse zinnen, de gecorrigeerde Nederlandse zinnen en grammatica/uitspraak feedbackkoppen) EXACT in het Nederlands! Vertaal deze dus absoluut NIET naar de moedertaal."
+      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* '...'\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* '...' (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* '...'\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
+      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* '...'\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* '...' (OMIT THIS AND THE WHY LINE BELOW COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🧠 *Why:* [Explanation of grammar rule or sound] (OMIT THIS AND the CORRECTION LINE ABOVE COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* '...'\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
     }
   ]
 }
 
 BELANGRIJK:
-1. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
-2. Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
-3. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
-4. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
-5. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
-   - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de \`feedback_brieven\` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in \`feedback_brieven\` aan: één voor Malwina en één voor Dorota.
+1. CRITICAL JSON VALIDITY RULE: Do NOT use unescaped double quotes (") inside the generated text for 'brief' or 'brief_en', as this will break JSON parsing. For all nested quotes within the feedback text (such as quotes around sentences or words), you MUST use single quotes (') instead. For example: *Zin 1:* 'Ik heet Ali'.
+2. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
+3. Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
+4. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
+5. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
+6. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
+   - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de \`feedback_brieven\` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in \`feedback_brieven\` aan: één voor Malwina and één voor Dorota.
    - In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
    - Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
      Jij zei
-     *Zin X:* "[Fonetische zin van ALI]"
+     *Zin X:* '[Fonetische zin van ALI]'
      👍 *Wat was goed:* [Compliment]
-     💡 *Correctie:* "[Correcte zin]" (alleen als correctie nodig is)
+     💡 *Correctie:* '[Correcte zin]' (alleen als correctie nodig is)
      🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
    - Voor de zinnen die door de ANDERE cursist (bijv. SARAH) zijn uitgesproken, toon je deze chronologisch tussendoor als context. Format:
-     *SARAH vroeg/zei toen:* "[Zin van Sarah]" (als het een vraag is, gebruik "vroeg", anders "zei")
+     *SARAH vroeg/zei toen:* '[Zin van Sarah]' (als het een vraag is, gebruik "vroeg", anders "zei")
    - Op deze manier leest de brief voor elke cursist als een chronologisch gesprek waarin hun eigen zinnen gedetailleerd geanalyseerd worden en de zinnen van de ander als pure context ertussen staan.
-6. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
+7. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
    - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
    - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
    - Zorg dat de vertaalde feedbackbrief (\`brief_en\`) die in het ${finalLang} is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
-7. MOEDERTAAL EN WA-IMPORT:
+8. MOEDERTAAL EN WA-IMPORT:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
             const model = document.getElementById('geminiModelSelect').value;
