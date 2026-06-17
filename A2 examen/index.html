@@ -1593,6 +1593,7 @@
                         <div class="form-group">
                             <label for="nakijk-exam-select">Schrijfexamen</label>
                             <select id="nakijk-exam-select" class="form-input" onchange="onNakijkExamChange()" style="font-weight: 700;">
+                                <option value="all" selected>Alle Schrijfexamens (Bulk)</option>
                                 <option value="1">Schrijven 1</option>
                                 <option value="2">Schrijven 2</option>
                                 <option value="3">Schrijven 3</option>
@@ -5127,6 +5128,17 @@
         function onNakijkExamChange() {
             const examSelect = document.getElementById('nakijk-exam-select');
             const opgaveSelect = document.getElementById('nakijk-opgave-select');
+            
+            if (examSelect.value === 'all') {
+                opgaveSelect.innerHTML = '';
+                const bulkOpt = document.createElement('option');
+                bulkOpt.value = 'all';
+                bulkOpt.textContent = `Alle opgaven in bulk nakijken`;
+                opgaveSelect.appendChild(bulkOpt);
+                onNakijkOpgaveChange();
+                return;
+            }
+            
             const examId = parseInt(examSelect.value);
             
             // Populate opgave dropdown (some might have different lengths but A2 Schrijven has 4)
@@ -5152,10 +5164,16 @@
         }
 
         function onNakijkOpgaveChange() {
-            const examId = parseInt(document.getElementById('nakijk-exam-select').value);
+            const examSelectVal = document.getElementById('nakijk-exam-select').value;
             const opgaveVal = document.getElementById('nakijk-opgave-select').value;
             const preview = document.getElementById('nakijk-prompt-preview');
             
+            if (examSelectVal === 'all') {
+                preview.innerHTML = `<strong>Titel:</strong> Alle Schrijfexamens (Algemene Bulk)<br><strong>Type:</strong> Bulk Nakijken<br><br>Plak de complete tekst van de kandidaat (met opgaven uit Schrijven 1 t/m 6). Gemini zal automatisch elke opdracht detecteren (aan de hand van woorden als 'feest', 'sportschool', 'boek lenen', etc.), beoordelen en de feedback per opdracht structureren in één overzicht.`;
+                return;
+            }
+            
+            const examId = parseInt(examSelectVal);
             const config = EXAM_DATA.schrijven[examId];
             if (opgaveVal === 'all') {
                 preview.innerHTML = `<strong>Titel:</strong> Volledig Schrijfexamen ${examId}<br><strong>Type:</strong> Bulk Nakijken<br><br>Plak de complete tekst van de kandidaat (bijvoorbeeld de volledige WhatsApp-rapportage met alle opgeslagen antwoorden). Gemini zal automatisch elke opdracht detecteren, beoordelen en de feedback per opdracht structureren in één overzicht.`;
@@ -5176,9 +5194,8 @@
         }
 
         function getFeedbackPrompt() {
-            const examId = parseInt(document.getElementById('nakijk-exam-select').value);
+            const examSelectVal = document.getElementById('nakijk-exam-select').value;
             const opgaveVal = document.getElementById('nakijk-opgave-select').value;
-            const config = EXAM_DATA.schrijven[examId];
             
             const candidateAnswer = document.getElementById('nakijk-kandidaat-antwoord').value.trim();
             const feedbackTaal = document.getElementById('nakijk-taal').value;
@@ -5191,6 +5208,90 @@
             if (document.getElementById('focus-woordenschat').checked) focus.push('Woordenschat');
             
             let focusText = focus.length > 0 ? focus.join(', ') : 'Algemene A2 criteria';
+            
+            if (examSelectVal === 'all') {
+                let promptHeader = `Je bent een ervaren docent Nederlands als Tweede Taal (NT2), gespecialiseerd in het beoordelen van het Inburgeringsexamen Schrijven op A2-niveau.
+Jouw taak is om de ingezonden antwoorden van een inburgeraar te beoordelen. De cursist kan antwoorden hebben ingeleverd van verschillende opgaven van verschillende schrijfexamens door elkaar.
+
+Geef de feedback in de taal: ${feedbackTaal}.
+Hanteer de volgende striktheid van nakijken: ${striktheid}.
+Focus extra op de volgende gebieden: ${focusText}.
+
+Beoordeel elk van de gedetecteerde opgaven op de officiële A2 Schrijven-criteria:
+1. Taakuitvoering (is de vraag beantwoord, zijn alle gevraagde punten behandeld, en klopt de communicatieve logica?):
+   - Let heeeel kritisch op de *communicatieve logica* van de opdrachten. Vraagt een instructie bijvoorbeeld om een nieuwe datum/tijd *voor te stellen*? Dan moet de cursist dit ook formuleren als een voorstel (bijv. "Zullen we afspreken op...", "Schikt het u op...", "Kan het op..."). Als de cursist stelt: "De nieuwe afspraak is op 19 juli om 1 uur", dan stelt hij niets voor, maar deelt hij het mee als een dictaat. Dit klopt logisch niet met de opdracht en kost punten bij Taakuitvoering! Leg dit dan ook uit als verbeterpunt onder een ⚠️/🟡 emoji.
+2. Begrijpelijkheid en Samenhang (is de tekst logisch en te volgen?)
+3. Grammatica en Woordenschat (correctheid en passendheid op A2-niveau)
+
+BELANGRIJKE INSTRUCTIES VOOR TOON EN INLEIDING:
+- Begin kort en bondig. Wees NIET overdreven langdradig of overdreven positief in het begin.
+- Gebruik een normale, vriendelijke aanhef: "Beste cursist, dank voor het maken van het examen, goed gedaan!" (Als je de naam van de student kunt vinden in de ingediende tekst, gebruik die dan in de aanhef, bijv. "Beste [Naam], ...").
+- Voeg in de inleiding de volgende belangrijke context toe: Dit is een oefenexamen en niet de echte toets. Dit is het niveau dat je moet kunnen als je klaar bent met het hele A2-oefenboek. Als je dit nu al redelijk kunt maken, ben je heel goed op weg! Gebruik de feedback om het komende jaar extra goed op deze punten te letten bij het schrijven.
+
+INSTRUCTIES VOOR DE STRUCTUUR EN EMOJIS:
+- Zorg dat de feedback niet te kaal of droog is, maar juist heel duidelijk en stap-voor-stap uitlegt wat er gebeurt.
+- Gebruik altijd duidelijke emojis voor de status van de leerelementen:
+  - ✅ of 👍 voor wat goed is.
+  - ❌ of 🔴 voor wat echt fout is en verbeterd moet worden.
+  - ⚠️ of 🟡 voor dingen waar de cursist op moet letten of voorzichtig mee moet zijn (oppassen/aandachtspunten).
+- Gebruik enkele sterretjes * voor vetgedrukte tekst (bijv. *Beoordeling:*, *Fout 1:*), NOOIT dubbele sterretjes **. Dit is cruciaal zodat het direct mooi wordt opgemaakt in WhatsApp!
+
+Hieronder vind je de officiële opdrachten en instructies van ALLE 6 Schrijfexamens (Schrijven 1 t/m Schrijven 6).
+Match elk ingezonden antwoord van de cursist aan de juiste opdracht hieronder op basis van de inhoud (de cursist vermeldt vaak 'schrijven 1', 'opgave 1', 'sportschool', 'feest', 'boek lenen', etc., of de inhoud komt overeen met de onderstaande onderwerpen):
+`;
+
+                for (let eId = 1; eId <= 6; eId++) {
+                    const config = EXAM_DATA.schrijven[eId];
+                    if (config) {
+                        promptHeader += `\n=== SCHRIJFEXAMEN ${eId} ===`;
+                        config.opgaven.forEach((opg, index) => {
+                            let cleanInstructions = opg.instructions.replace(/<[^>]*>/g, '');
+                            let promptTextClean = opg.promptText ? opg.promptText.replace(/<[^>]*>/g, '') : '';
+                            promptHeader += `\n--- OPDRACHT ${index + 1} ---
+Titel: ${opg.title}
+Type: ${opg.type}
+Instructies/Vragen:
+${cleanInstructions}
+${promptTextClean ? `Vraag prompt:\n${promptTextClean}` : ''}
+`;
+                        });
+                    }
+                }
+
+                promptHeader += `\nHier is de complete tekst/invoer die de cursist heeft ingeleverd:
+"""
+${candidateAnswer}
+"""
+
+Identificeer welke tekst/antwoorden bij welke opdracht horen. Beoordeel ze een voor een. Beoordeel ALLE gedetecteerde opgaven!
+
+Formatteer de feedbackbrief voor de cursist heel overzichtelijk in duidelijke secties:
+1. Start met de hierboven gevraagde algemene inleiding.
+2. Geef per gedetecteerde opdracht een aparte, duidelijk gemarkeerde beoordeling:
+   - *Opdracht X: [Titel]* (vermeld ook uit welk Schrijfexamen dit komt, bijv. "Sportschool uit Schrijven 1")
+   - *Beoordeling:* [Onvoldoende / Twijfelachtig / Voldoende / Goed]
+   - *Geschatte A2 Score:* [1 t/m 10]
+   - *Wat ging goed* (gebruik ✅/👍): Sterke punten.
+   - *Verbeterpunten (met concrete voorbeelden)*:
+     Splits ELK verbeterpunt of fout los op in een genummerd of apart item. Voeg ze absoluut niet samen in een alinea! Hanteer voor elk item strikt de volgende structuur onder elkaar:
+     
+     *Fout Y: [foutieve zin of woord van de cursist]*
+     ❌ *Wat ging er fout:* [uitleg in ${feedbackTaal} over wat er fout is gegaan]
+     *Hoe het wel moet:* [correcte versie van de zin/het woord in het Nederlands]
+     💡 *Voorbeeld:* [korte voorbeeldzin in het Nederlands]
+     
+     (Gebruik de term *Aandachtspunt Y:* in plaats van *Fout Y:* met een ⚠️ of 🟡 emoji als het geen harde grammatica/spellingfout is maar een communicatief advies of logische verbetering, zoals bij een onlogisch antwoord).
+     
+     BELANGRIJK VOOR VERTALEN:
+     De foutieve zin/het woord van de cursist, de correctie bij "Hoe het wel moet" en het voorbeeld bij "Voorbeeld" moeten ALTIJD in het Nederlands blijven. Alleen de uitleg bij "Wat ging er fout" of "Wat kan beter" mag worden vertaald naar de gevraagde taal (${feedbackTaal}).
+   - *Gecorrigeerde tekst:* De volledige tekst voor deze opdracht herschreven in correct Nederlands op A2-niveau.
+3. Sluit af met een motiverende conclusie en eventueel een totaalcijfer (gemiddelde geschatte A2 score).`;
+
+                return promptHeader;
+            }
+
+            const examId = parseInt(examSelectVal);
+            const config = EXAM_DATA.schrijven[examId];
             
             if (opgaveVal === 'all') {
                 let promptHeader = `Je bent een ervaren docent Nederlands als Tweede Taal (NT2), gespecialiseerd in het beoordelen van het Inburgeringsexamen Schrijven op A2-niveau.
@@ -5210,7 +5311,7 @@ Beoordeel elk van de gemaakte opgaven op de officiële A2 Schrijven-criteria:
 BELANGRIJKE INSTRUCTIES VOOR TOON EN INLEIDING:
 - Begin kort en bondig. Wees NIET overdreven langdradig of overdreven positief in het begin.
 - Gebruik een normale, vriendelijke aanhef: "Beste cursist, dank voor het maken van het examen, goed gedaan!" (Als je de naam van de student kunt vinden in de ingediende tekst, gebruik die dan in de aanhef, bijv. "Beste [Naam], ...").
-- Voeg in de inleiding de volgende belangrijke context toe: Dit is een oefenexamen en niet de echte toets. Dit is het niveau dat je moet kunnen als je klaar bent met het hele A2-oefenboek. Als je dit nu al redelijk kunt maken, ben je heel goed op weg! Gebruik de feedback om het komende jaar extra goed op deze punten te letten bij het schrijven.
+- Voeg in de inleiding de volgende belangrijke context toe: Dit is een oefenexamen en niet de echte toets. Dit is het niveau dat je moet kunnen als je klaar bent met het hele A2-oefenboek. Als je dit nu al redelijk kunt maken, ben je heel goed op weg! Gebruik the feedback om het komende jaar extra goed op deze punten te letten bij het schrijven.
 
 INSTRUCTIES VOOR DE STRUCTUUR EN EMOJIS:
 - Zorg dat de feedback niet te kaal of droog is, maar juist heel duidelijk en stap-voor-stap uitlegt wat er gebeurt.
