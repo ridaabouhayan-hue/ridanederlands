@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Spellenportaal — Leer Nederlands!</title>
+    <meta name="description" content="Interactieve spellen om Nederlandse woorden en grammatica te oefenen voor A1-niveau.">
+    
+    <!-- Google Font: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --card-bg: rgba(23, 28, 48, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #f97316; /* Orange flame */
+            --primary-glow: rgba(249, 115, 22, 0.4);
+            --success: #10b981; /* Green success */
+            --error: #ef4444; /* Red error */
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(0, 0, 0, 0.06);
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --primary: #ea580c;
+            --primary-glow: rgba(234, 88, 12, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animated background glow */
+        .bg-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            top: -200px;
+            z-index: -1;
+            filter: blur(80px);
+            pointer-events: none;
+            animation: floatGlow 10s infinite alternate;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .back-link:hover {
+            color: var(--primary);
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Theme toggle button */
+        .theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            z-index: 100;
+        }
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Help toggle button on desktop next to theme button */
+        .info-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            z-index: 100;
+        }
+        .info-toggle-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* View 1: Game Menu Dashboard */
+        .menu-container {
+            width: 100%;
+            max-width: 850px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            z-index: 10;
+        }
+
+        .game-menu-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .game-menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 35px var(--primary-glow);
+        }
+
+        .card-game-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: rgba(249, 115, 22, 0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .card-game-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+        }
+
+        .card-game-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            font-weight: 600;
+        }
+
+        .card-game-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: fit-content;
+            margin-top: auto;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            transition: var(--transition);
+        }
+
+        .game-menu-card:hover .card-game-btn {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+        }
+
+        /* View 2: Game Area Container */
+        .game-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* Language bar */
+        .language-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 50px;
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            width: fit-content;
+            max-width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            color: var(--text-color);
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        /* Flame display */
+        .flame-tracker-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .flame-count-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 22px;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+
+        .flame-icon {
+            font-size: 2rem;
+            display: inline-block;
+            animation: pulseFlame 1.5s infinite alternate;
+        }
+
+        @keyframes pulseFlame {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--primary)); }
+            100% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 8px var(--primary)); }
+        }
+
+        .flame-number {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .flame-goal {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .progress-bar-container {
+            width: 250px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #f97316, #ef4444);
+            border-radius: 50px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* The Game Card */
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 720px; /* Expanded for better focus and width */
+            border-radius: var(--radius-lg);
+            padding: 36px 40px; /* More padding/breathing room */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(16px);
+            position: relative;
+        }
+
+        .game-card.shake {
+            animation: shakeCard 0.4s ease-in-out;
+        }
+
+        @keyframes shakeCard {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .word-title-lbl {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .word-display {
+            font-size: 2.3rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 16px; /* Spaced out question */
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            word-break: break-word;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="light"] .word-display {
+            color: var(--text-color);
+        }
+
+        .translation-helper {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px; /* Extra room between translation/sentence helper and options */
+            font-style: italic;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px; /* Increased gap for better touch targets and layout */
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        /* Floating Flame +1 Rewards */
+        .floating-flame-reward {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            animation: floatUpFlame 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .floating-flame-emoji {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px var(--primary));
+            animation: pulseFlame 0.5s infinite alternate;
+        }
+
+        .floating-flame-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.6), 0 2px 4px rgba(0,0,0,0.5);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @keyframes floatUpFlame {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -100px) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -180px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-color);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        [data-theme="light"] .option-btn {
+            background: #fff;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px var(--primary-glow);
+            background: rgba(249, 115, 22, 0.03);
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: var(--success) !important;
+            color: var(--success) !important;
+            font-weight: 900;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .option-btn.wrong {
+            background: rgba(239, 68, 68, 0.12) !important;
+            border-color: var(--error) !important;
+            color: var(--error) !important;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-badge {
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .option-btn.correct .btn-badge,
+        .option-btn.wrong .btn-badge {
+            opacity: 1;
+        }
+
+        /* Next button section */
+        .next-section {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-message {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .feedback-message.err-msg {
+            color: var(--error);
+        }
+
+        .feedback-message strong {
+            font-size: 1.2rem;
+            color: var(--success);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #f97316, #ef4444);
+            border: none;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 8px 24px var(--primary-glow);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px var(--primary-glow);
+        }
+
+        /* 50 Steps visual tracker */
+        .steps-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 25px;
+            padding: 14px;
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        .steps-title {
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        [data-theme="light"] .step-dot {
+            background: rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+            border-color: transparent;
+        }
+
+        .step-badge-large {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #151a30;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+            transition: var(--transition);
+        }
+
+        [data-theme="light"] .step-badge-large {
+            background: #e2e8f0;
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #64748b;
+        }
+
+        .step-badge-large.active {
+            background: #ffedd5;
+            border-color: #f97316;
+            color: #ea580c;
+            transform: scale(1.15);
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+            font-weight: 900;
+        }
+
+        /* Confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Win Overlay */
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 15, 25, 0.95);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .win-card {
+            background: rgba(23, 28, 48, 0.9);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 50px rgba(249, 115, 22, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .win-emoji {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounceWin 1s infinite alternate;
+        }
+
+        @keyframes bounceWin {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        .win-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .win-desc {
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+            transition: var(--transition);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+        }
+
+
+        /* --- DUAL PANE LAYOUT & SIDEBAR --- */
+        .game-layout-container {
+            display: grid;
+            grid-template-columns: 1fr 180px; /* Ultra-compact 180px sidebar */
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px; /* Center-aligned premium width */
+            margin: 20px auto;
+            align-items: start;
+            z-index: 10;
+            transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .game-layout-container.sidebar-closed {
+            grid-template-columns: 1fr;
+        }
+
+        .game-layout-container.sidebar-closed .info-sidebar {
+            display: none;
+        }
+
+        .game-main-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .info-sidebar {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px; /* Compact padding */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            backdrop-filter: blur(16px);
+            color: var(--text-color);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Less space between sections */
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-icon {
+            font-size: 1rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.9rem; /* Smaller title */
+            font-weight: 800;
+            color: #fff;
+        }
+        [data-theme="light"] .sidebar-title {
+            color: var(--text-color);
+        }
+
+        .sidebar-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: var(--transition);
+            margin-left: auto;
+        }
+        .sidebar-close-btn:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border-color);
+            width: 100%;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.72rem; /* Smaller section title */
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--primary);
+        }
+
+        .sidebar-instruction {
+            font-size: 0.76rem; /* Compact instruction text */
+            line-height: 1.35;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .sidebar-rule-details {
+            font-size: 0.72rem; /* Compact rule text */
+            line-height: 1.35;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .sidebar-rule-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 4px 0;
+        }
+        .sidebar-rule-details th, .sidebar-rule-details td {
+            padding: 3px 4px; /* Narrow padding for narrow sidebar */
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 0.66rem; /* Much smaller font */
+        }
+        .sidebar-rule-details th {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sidebar-rule-details strong {
+            color: #fff;
+        }
+        [data-theme="light"] .sidebar-rule-details strong {
+            color: var(--text-color);
+        }
+
+        /* Float Toggle Button for Mobile */
+        .sidebar-toggle-btn {
+            display: none;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        .sidebar-toggle-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* --- GAME 1: WHACK-A-WORD (MEPPEN) --- */
+        .mep-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
+        }
+        .mep-prompt-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        [data-theme="light"] .mep-prompt-box {
+            color: var(--text-color);
+            background: #fff;
+        }
+        .mep-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 650px; /* Wider meppen grid */
+            margin: 10px 0;
+        }
+        .mep-hole {
+            background: #231912;
+            border: 4px solid #3d2b20;
+            border-radius: 50%;
+            height: 120px; /* Proportional height increase */
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 8px 16px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.4);
+            perspective: 800px;
+        }
+        [data-theme="light"] .mep-hole {
+            background: #3a2b20;
+            border-color: #5c4333;
+        }
+        .mep-mole {
+            background: linear-gradient(185deg, #f97316, #c2410c);
+            border-radius: 50% 50% 10px 10px;
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 0;
+            height: 85%;
+            transform: translateY(105%);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            text-align: center;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
+            user-select: none;
+        }
+        .mep-mole.up {
+            transform: translateY(10%);
+        }
+        .mep-mole-text {
+            color: #fff;
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            word-break: break-word;
+            line-height: 1.1;
+        }
+        .mep-mole.correct-hit {
+            background: linear-gradient(185deg, var(--success), #047857) !important;
+            transform: scale(0.9) translateY(10%);
+        }
+        .mep-mole.wrong-hit {
+            background: linear-gradient(185deg, var(--error), #b91c1c) !important;
+            transform: scale(0.9) translateY(10%);
+        }
+
+        /* --- GAME 8: WOORD-MEMORY (MEMORY) --- */
+        .memo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
+        }
+        .memo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px; /* Wider memory grid */
+            margin: 10px 0;
+        }
+        .memo-card {
+            aspect-ratio: 1;
+            perspective: 1000px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .memo-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.4s;
+            transform-style: preserve-3d;
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .memo-card.flipped .memo-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memo-card-front, .memo-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            line-height: 1.2;
+            transition: var(--transition);
+        }
+        .memo-card-front {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid var(--border-color);
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        [data-theme="light"] .memo-card-front {
+            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+        }
+        .memo-card-back {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: #fff;
+            transform: rotateY(180deg);
+            word-break: break-word;
+        }
+        [data-theme="light"] .memo-card-back {
+            background: #fff;
+            color: var(--text-color);
+        }
+        .memo-card.matched .memo-card-back {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+        [data-theme="light"] .memo-card.matched .memo-card-back {
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .memo-card.disabled {
+            pointer-events: none;
+        }
+
+        /* Responsive design for split pane layout */
+        @media (max-width: 900px) {
+            .game-layout-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .info-sidebar {
+                display: none; /* Collapsed by default on mobile, toggleable */
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 320px;
+                max-height: none;
+                z-index: 1000;
+                border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+                border-left: 2px solid var(--primary);
+                animation: slideInFromRight 0.3s ease-out;
+            }
+            .info-sidebar.mobile-show {
+                display: flex;
+            }
+            .sidebar-toggle-btn {
+                display: inline-flex;
+            }
+            #sidebar-close-btn {
+                display: flex !important;
+            }
+        }
+        @keyframes slideInFromRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .word-display { font-size: 1.9rem; min-height: 50px; }
+            .translation-helper { font-size: 0.95rem; }
+            .option-btn { font-size: 0.95rem; padding: 12px 14px; }
+            .game-card { padding: 20px; }
+            .step-dot { width: 9px; height: 9px; gap: 3px; }
+            .step-badge-large { width: 26px; height: 26px; font-size: 0.65rem; }
+            .mep-grid { gap: 10px; }
+            .mep-hole { height: 80px; }
+            .mep-mole-text { font-size: 0.8rem; }
+            .conn-board { gap: 30px; }
+            .conn-item { padding: 8px 10px; font-size: 0.85rem; min-height: 50px; }
+            .memo-grid { gap: 6px; }
+            .memo-card-front, .memo-card-back { font-size: 0.75rem; padding: 4px; }
+            .memo-card-front { font-size: 1.2rem; }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle Donker/Licht Thema">🌓</button>
+    <button id="info-toggle" class="info-toggle-btn" aria-label="Toon Uitleg & Regels" onclick="toggleSidebar()">💡</button>
+
+    <header>
+        <a id="header-back-btn" class="back-link" style="display:none;" onclick="showMenu()">← Terug naar Spellen</a>
+        <a id="header-root-btn" href="index.html" class="back-link">← Terug naar A1</a>
+        <h1 id="main-title">🎮 A1 Spellenportaal 🎮</h1>
+        <p class="subtitle" id="main-subtitle">Kies een spel om te beginnen met oefenen!</p>
+    <!-- VIEW 1: Game Menu Grid -->
+    <main class="menu-container" id="menu-view">
+        <!-- Vlammenspel Card (Woorden) -->
+        <div class="game-menu-card" onclick="startGame('vocab')">
+            <div class="card-tag">Woordenschat</div>
+            <div class="card-game-icon">🔥</div>
+            <h2 class="card-game-title">A1 Vlammenspel</h2>
+            <p class="card-game-desc">
+                Verzamel 50 vlammen door woorden uit Thema 1 & 2 correct te vertalen. Met meertalige ondersteuning!
+            </p>
+            <button class="card-game-btn">Speel Nu 🔥</button>
+        </div>
+
+        <!-- Grammatica Thema 1 Card -->
+        <div class="game-menu-card" onclick="startGame('gram1')">
+            <div class="card-tag">Grammatica · T1</div>
+            <div class="card-game-icon">✍️</div>
+            <h2 class="card-game-title">Grammatica Thema 1</h2>
+            <p class="card-game-desc">
+                Oefen de grammatica van Thema 1: *ik/jij/hij/wij*, *zijn*, *hebben* en de vraagwoorden *wie/wat/waar*.
+            </p>
+            <button class="card-game-btn" style="background:#8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);">Speel Nu ✍️</button>
+        </div>
+
+        <!-- Grammatica Thema 2 Card -->
+        <div class="game-menu-card" onclick="startGame('gram2')">
+            <div class="card-tag">Grammatica · T2</div>
+            <div class="card-game-icon">🏫</div>
+            <h2 class="card-game-title">Grammatica Thema 2</h2>
+            <p class="card-game-desc">
+                Oefen met werkwoordspelling (leren/leert), dagen van de week, maanden van het jaar en vraagwoorden.
+            </p>
+            <button class="card-game-btn" style="background:#10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">Speel Nu 🏫</button>
+        </div>
+
+        <!-- Game 1: Woorden Meppen -->
+        <div class="game-menu-card" onclick="startGame('meppen')">
+            <div class="card-tag">Spel · Thema 1</div>
+            <div class="card-game-icon">🔨</div>
+            <h2 class="card-game-title">Woorden Meppen</h2>
+            <p class="card-game-desc">
+                Sla zo snel mogelijk op de juiste mol met het Nederlandse woord. Volledig in het Nederlands!
+            </p>
+            <button class="card-game-btn" style="background:#e11d48; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);">Speel Nu 🔨</button>
+        </div>
+
+        <!-- Game 8: Woord-Memory -->
+        <div class="game-menu-card" onclick="startGame('memory')">
+            <div class="card-tag">Spel · Thema 1</div>
+            <div class="card-game-icon">🧠</div>
+            <h2 class="card-game-title">Woord-Memory</h2>
+            <p class="card-game-desc">
+                Train je geheugen en match de identieke Nederlandse woorden bij elkaar.
+            </p>
+            <button class="card-game-btn" style="background:#d97706; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);">Speel Nu 🧠</button>
+        </div>
+    </main>
+
+    <!-- VIEW 2: Vlammenspel Game Screen -->
+    <main class="game-area" id="game-view">
+        <!-- Floating Info Toggle for Mobile & Closed State -->
+        <button id="mobile-info-toggle" class="sidebar-toggle-btn" onclick="toggleSidebar()">
+            <span>💡</span> Uitleg & Regels
+        </button>
+
+        <!-- Language Selector Bar -->
+        <nav class="language-bar" aria-label="Taalkeuze" id="game-language-bar">
+            <button class="lang-btn active" data-lang="en">
+                <span>🇬🇧</span> English
+            </button>
+            <button class="lang-btn" data-lang="ar">
+                <span>🇸🇦</span> العربية
+            </button>
+            <button class="lang-btn" data-lang="tr">
+                <span>🇹🇷</span> Türkçe
+            </button>
+            <button class="lang-btn" data-lang="ps">
+                <span>🇦🇫</span> پښتو
+            </button>
+            <button class="lang-btn" data-lang="mar">
+                <span>Marokkaans</span> 🇲🇦
+            </button>
+        </nav>
+
+        <div class="game-layout-container">
+            <div class="game-main-column">
+                <!-- Flame display -->
+                <div class="flame-tracker-box">
+                    <div class="flame-count-wrapper">
+                        <span class="flame-icon">🔥</span>
+                        <span class="flame-number" id="score-display">0</span>
+                        <span class="flame-goal">/ 50</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="score-progress"></div>
+                    </div>
+                </div>
+
+                <!-- Main Game Card (Vlammenspel & Grammatica MCQ) -->
+                <div class="game-card" id="game-card">
+                    <div class="word-title-lbl" id="game-instruction-lbl">Vertaal dit woord:</div>
+                    <div class="word-display" id="question-word">...</div>
+                    <div class="translation-helper" id="translation-helper"></div>
+                    
+                    <div class="options-grid">
+                        <button class="option-btn" data-index="0" id="opt-0">
+                            <span class="btn-text">...</span>
+                            <span class="btn-badge"></span>
+                        </button>
+                        <button class="option-btn" data-index="1" id="opt-1">
+                            <span class="btn-text">...</span>
+                            <span class="btn-badge"></span>
+                        </button>
+                        <button class="option-btn" data-index="2" id="opt-2">
+                            <span class="btn-text">...</span>
+                            <span class="btn-badge"></span>
+                        </button>
+                    </div>
+
+                    <!-- Next section -->
+                    <div class="next-section" id="next-section">
+                        <div class="feedback-message" id="feedback-text"></div>
+                        <button class="next-btn" id="next-btn">
+                            Volgende <span>➔</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game 1: Woorden Meppen Container -->
+                <div id="mep-game-container" class="mep-container" style="display: none;">
+                    <!-- Speed control slider -->
+                    <div class="mep-controls" style="display:flex; align-items:center; gap:12px; margin-bottom:5px; background:rgba(255,255,255,0.03); padding:10px 20px; border-radius:50px; border:1px solid var(--border-color); width: 100%; justify-content: center;">
+                        <label for="mep-speed-slider" style="font-weight:700; font-size:0.85rem; color:var(--text-muted);">Weergavetijd:</label>
+                        <input type="range" id="mep-speed-slider" min="3" max="15" value="5" step="1" style="cursor:pointer; accent-color:var(--primary); width:150px;">
+                        <span id="mep-speed-val" style="font-weight:800; color:var(--primary); font-size:0.9rem; min-width:30px;">5s</span>
+                    </div>
+
+                    <div class="mep-prompt-box" id="mep-prompt">Laadt vraag...</div>
+                    <div class="mep-grid" id="mep-grid">
+                        <div class="mep-hole"><div class="mep-mole" id="mole-0"><span class="mep-mole-text">...</span></div></div>
+                        <div class="mep-hole"><div class="mep-mole" id="mole-1"><span class="mep-mole-text">...</span></div></div>
+                        <div class="mep-hole"><div class="mep-mole" id="mole-2"><span class="mep-mole-text">...</span></div></div>
+                        <div class="mep-hole"><div class="mep-mole" id="mole-3"><span class="mep-mole-text">...</span></div></div>
+                        <div class="mep-hole"><div class="mep-mole" id="mole-4"><span class="mep-mole-text">...</span></div></div>
+                        <div class="mep-hole"><div class="mep-mole" id="mole-5"><span class="mep-mole-text">...</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Game 8: Woord-Memory Container -->
+                <div id="memo-game-container" class="memo-container" style="display: none;">
+                    <div class="mep-prompt-box">Zoek twee keer hetzelfde Nederlandse woord bij elkaar</div>
+                    <div class="memo-grid" id="memo-grid">
+                        <!-- 16 cards dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- 50 Steps track visualizer -->
+                <div class="steps-container" id="game-steps-container">
+                    <div class="steps-title">Je Voortgang (50 stappen)</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center; align-items:center;" id="steps-track-container">
+                        <!-- Will be dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right-side Info & Explanation Sidebar -->
+            <aside class="info-sidebar" id="info-sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-icon">💡</span>
+                    <h3 class="sidebar-title">Uitleg & Regels</h3>
+                    <button class="sidebar-close-btn" id="sidebar-close-btn" onclick="toggleSidebar()">✕</button>
+                </div>
+                <div class="sidebar-divider"></div>
+                
+                <div class="sidebar-section">
+                    <h4 class="sidebar-section-title">🎮 Hoe werkt het?</h4>
+                    <p class="sidebar-instruction" id="sidebar-instruction-text">
+                        Kies een antwoord uit de opties hiernaast.
+                    </p>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h4 class="sidebar-section-title">📚 Grammatica & Regels</h4>
+                    <div class="sidebar-rule-details" id="sidebar-rules-text">
+                        Uitgebreide uitleg over de regels en grammatica...
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Win Overlay modal -->
+    <div class="win-overlay" id="win-overlay">
+        <div class="win-card">
+            <div class="win-emoji">🏆🎉</div>
+            <h2 class="win-title">Gefeliciteerd!</h2>
+            <p class="win-desc">Je hebt 50 vlammen verzameld en hebt gewonnen!</p>
+            <button class="restart-btn" id="restart-btn">Nog een keer spelen! 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // Vocabulary Database A1 (Thema 1 & Thema 2)
+        const VOCAB = [
+            { nl: 'hallo', en: 'hello', ar: 'مرحبا', tr: 'merhaba', ps: 'سلام', mar: 'السلام' },
+            { nl: 'de naam', en: 'name', ar: 'اسم', tr: 'isim / ad', ps: 'نوم', mar: 'السمية' },
+            { nl: 'de man', en: 'man', ar: 'رجل', tr: 'adam', ps: 'سړی', mar: 'الراجل' },
+            { nl: 'de vrouw', en: 'woman', ar: 'امرأة', tr: 'kadın', ps: 'ښځه', mar: 'المرا' },
+            { nl: 'het kind', en: 'child', ar: 'طفل', tr: 'çocuk', ps: 'ماشوم', mar: 'الدري' },
+            { nl: 'wonen', en: 'to live', ar: 'يسكن', tr: 'oturmak / yaşamak', ps: 'اوسېدل', mar: 'ساكن' },
+            { nl: 'Nederland', en: 'the Netherlands', ar: 'هولندا', tr: 'Hollanda', ps: 'هالنډ', mar: 'هولندا' },
+            { nl: 'getrouwd', en: 'married', ar: 'metزوج', tr: 'evli', ps: 'واده شوی', mar: 'مزوج' },
+            { nl: 'de vader', en: 'father', ar: 'أب', tr: 'baba', ps: 'پلار', mar: 'الوالد' },
+            { nl: 'de moeder', en: 'mother', ar: 'أم', tr: 'anne', ps: 'مور', mar: 'الوالدة' },
+            { nl: 'de broer', en: 'brother', ar: 'أخ', tr: 'erkek kardeş', ps: 'ورور', mar: 'الخو' },
+            { nl: 'de zus', en: 'sister', ar: 'أخت', tr: 'kız kardeş', ps: 'خور', mar: 'الخت' },
+            { nl: 'de school', en: 'school', ar: 'مدرسة', tr: 'okul', ps: 'ښوونځی', mar: 'المدرسة' },
+            { nl: 'de docent', en: 'teacher', ar: 'معلم', tr: 'öğretmen', ps: 'ښوونکی', mar: 'الأستاد' },
+            { nl: 'de cursist', en: 'student', ar: 'طالب / دارس', tr: 'öğrenci', ps: 'زده کوونکی', mar: 'التلميذ' },
+            { nl: 'de pauze', en: 'break', ar: 'استراحة', tr: 'mola', ps: 'تفریح', mar: 'الاستراحة' },
+            { nl: 'samen', en: 'together', ar: 'معاً', tr: 'birlikte', ps: 'یوځای', mar: 'مجموعين' },
+            { nl: 'binnen', en: 'inside', ar: 'في الداخل', tr: 'içeride', ps: 'دننه', mar: 'لداخل' },
+            { nl: 'buiten', en: 'outside', ar: 'في الخارج', tr: 'dışarıda', ps: 'بهر', mar: 'برا' },
+            { nl: 'gaan', en: 'to go', ar: 'يذهب', tr: 'gitmek', ps: 'تلل', mar: 'يمشي' },
+            { nl: 'lopen', en: 'to walk', ar: 'يمشي / يمشي على الأقدام', tr: 'yürümek', ps: 'مزل کول', mar: 'يتمشى' },
+            { nl: 'het huis', en: 'house', ar: 'بيت', tr: 'ev', ps: 'کور', mar: 'الدار' },
+            { nl: 'eten', en: 'to eat', ar: 'يأكل', tr: 'yemek yemek', ps: 'ډوډۍ خوړل', mar: 'الماكلة' },
+            { nl: 'drinken', en: 'to drink', ar: 'يشرب', tr: 'içmek', ps: 'څښل', mar: 'يشرب' },
+            { nl: 'het boek', en: 'book', ar: 'كتاب', tr: 'kitap', ps: 'کتاب', mar: 'الكتاب' },
+            { nl: 'tot ziens', en: 'goodbye', ar: 'إلى اللقاء', tr: 'görüşmek üzere', ps: 'د خدای پامان', mar: 'بسلامة' },
+            { nl: 'goedemorgen', en: 'good morning', ar: 'صباح الخير', tr: 'günaydın', ps: 'سهار په خیر', mar: 'صباح الخير' }
+        ];
+
+        // Grammatica Thema 1 Database
+        const GRAMMAR_T1 = [
+            { sentence: 'Ik ___ Julia.', nl: 'ben', options: ['ben', 'bent', 'is'], en: 'I am Julia.', ar: 'أنا جوليا.', tr: 'Ben Julia.', ps: 'زه جولیا یم.', mar: 'أنا جوليا' },
+            { sentence: 'Mijn naam ___ Julia.', nl: 'is', options: ['is', 'ben', 'zijn'], en: 'My name is Julia.', ar: 'اسمي جوليا.', tr: 'Benim adım Julia.', ps: 'زما نوم جولیا دی.', mar: 'سميتي جوليا' },
+            { sentence: '___ woon in Utrecht.', nl: 'Ik', options: ['Ik', 'Jij', 'Hij'], en: 'I live in Utrecht.', ar: 'أنا أسكن في أوترخت.', tr: 'Ben Utrecht\'te oturuyorum.', ps: 'زه په اوترخت کې اوسیږم.', mar: 'أنا ساكن ف أوترخت' },
+            { sentence: 'Waar kom ___ vandaan?', nl: 'jij', options: ['jij', 'hij', 'wij'], en: 'Where do you come from?', ar: 'من أين أنت؟', tr: 'Sen nerelisin?', ps: 'ته د کوم ځای یې؟', mar: 'منين نتا؟' },
+            { sentence: 'Wij ___ getrouwd.', nl: 'zijn', options: ['zijn', 'ben', 'is'], en: 'We are married.', ar: 'نحن متزوجون.', tr: 'Biz evliyiz.', ps: 'موږ واده شوي یو.', mar: 'حنا مزوجين' },
+            { sentence: 'Hij ___ twee kinderen.', nl: 'heeft', options: ['heeft', 'heb', 'hebben'], en: 'He has two children.', ar: 'هو لديه طفلان.', tr: 'Onun iki çocuğu var.', ps: 'هغه دوه ماشومان لري.', mar: 'هو عندو جوج دراري' },
+            { sentence: '___ is dat? - Dat is mijn broer.', nl: 'Wie', options: ['Wie', 'Wat', 'Waar'], en: 'Who is that? - That is my brother.', ar: 'من هذا؟ - هذا أخي.', tr: 'Bu kim? - Bu benim erkek kardeşim.', ps: 'هغه څوک دی؟ - هغه زما ورور دی.', mar: 'شكون هذاك؟ - هذاك خويا' },
+            { sentence: '___ woon jij? - In Amsterdam.', nl: 'Waar', options: ['Waar', 'Wie', 'Wat'], en: 'Where do you live? - In Amsterdam.', ar: 'أين تسكن؟ - في أمستردام.', tr: 'Nerede oturuyorsun? - Amsterdam\'da.', ps: 'ته چیرته اوسیږې؟ - په امستردام کې.', mar: 'فين ساkn؟ - ف أمستردام' },
+            { sentence: 'Jij ___ een zus.', nl: 'hebt', options: ['hebt', 'heb', 'heeft'], en: 'You have a sister.', ar: 'لديك أخت.', tr: 'Senin bir kız kardeşin var.', ps: 'ته خور لرې.', mar: 'عندك ختك' },
+            { sentence: 'Zij ___ Julia en zij komt uit Syrië.', nl: 'heet', options: ['heet', 'heten', 'ben'], en: 'Her name is Julia.', ar: 'اسمها جوليا.', tr: 'Onun adı Julia.', ps: 'د هغې نوم جولیا دی.', mar: 'سميتها جوليا' },
+            { sentence: '___ is jouw naam? - Mijn naam is Ahmed.', nl: 'Wat', options: ['Wat', 'Wie', 'Waar'], en: 'What is your name?', ar: 'ما اسمك؟', tr: 'Adın ne?', ps: 'ستا نوم څه دی؟', mar: 'شنو سميتك؟' },
+            { sentence: 'Jullie ___ in Nederland.', nl: 'wonen', options: ['wonen', 'woont', 'woon'], en: 'You all live in the Netherlands.', ar: 'أنتم تسكنون في هولندا.', tr: 'Siz Hollanda\'da yaşıyorsunuz.', ps: 'تاسو په هالنډ کې اوسیږئ.', mar: 'نتوما ساكنين ف هولندا' },
+            { sentence: 'Ik ___ geen kinderen.', nl: 'heb', options: ['heb', 'hebt', 'heeft'], en: 'I have no children.', ar: 'ليس لدي أطفال.', tr: 'Benim çocuğum yok.', ps: 'زه ماشومان نلرم.', mar: 'ما عنديش دراري' },
+            { sentence: '___ bent de docent.', nl: 'Jij', options: ['Jij', 'Ik', 'Hij'], en: 'You are the teacher.', ar: 'أنت المعلم.', tr: 'Sen öğretmensin.', ps: 'ته ښoونکي یې.', mar: 'نتا هو الأستاد' }
+        ];
+
+        // Grammatica Thema 2 Database
+        const GRAMMAR_T2 = [
+            { sentence: 'De cursisten ___ Nederlands in de klas.', nl: 'leren', options: ['leren', 'leert', 'leer'], en: 'The students learn Dutch in the class.', ar: 'الطلاب يتعلمون الهولندية في الفصل.', tr: 'Kursiyerler sınıfta Hollandaca öğreniyorlar.', ps: 'زده کوونکي په ټولګي کې هالنډي زده کوي.', mar: 'التلاميذ كيتعلمو الهولندية ف القسم' },
+            { sentence: 'De docent ___: "Goedemorgen!"', nl: 'zegt', options: ['zegt', 'zeggen', 'zeg'], en: 'The teacher says: "Good morning!"', ar: 'المعلم يقول: "صباح الخير!"', tr: 'Öğretmen diyor ki: "Günaydın!"', ps: 'ښوونکی وايي: "سهار په خیر!"', mar: 'الأستاد كيقول: "صباح الخير!"' },
+            { sentence: 'Ik ___ elke dag naar school. (te voet)', nl: 'loop', options: ['loop', 'loopt', 'lopen'], en: 'I walk to school every day.', ar: 'أنا أمشي إلى المدرسة كل يوم.', tr: 'Ben her gün okula yürüyorum.', ps: 'زه هره ورځ ښوونځي ته پلی ځم.', mar: 'أنا كنتمشى للمدرسة كل نhaar' },
+            { sentence: '___ dagen heeft een week? - Zeven dagen.', nl: 'Hoeveel', options: ['Hoeveel', 'Wanneer', 'Wat'], en: 'How many days in a week?', ar: 'كم يوماً في الأسبوع؟', tr: 'Bir haftada kaç gün var?', ps: 'یوه اونۍ څو ورځې لري؟', mar: 'شحال من نهار ف السيمانة؟' },
+            { sentence: '___ begint de les? - Om negen uur.', nl: 'Wanneer', options: ['Wanneer', 'Hoeveel', 'Wie'], en: 'When does the lesson start?', ar: 'متى يبدأ الدرس؟', tr: 'Ders ne zaman başlıyor?', ps: 'درس کله پیلیږي؟', mar: 'فوقاش كيبدا الدرس؟' },
+            { sentence: 'Gisteren was het maandag. Vandaag is het ___ .', nl: 'dinsdag', options: ['dinsdag', 'woensdag', 'vrijdag'], en: 'Yesterday was Monday. Today is Tuesday.', ar: 'البارحة كان الاثنين. اليوم هو الثلاثاء.', tr: 'Dün pazartesiydi. Bugün salı.', ps: 'پرون دوشنبې وه. نن سه شنبه ده.', mar: 'البارح كان التنين. اليوم الثلاثاء' },
+            { sentence: 'De pauze is om tien uur. We gaan naar ___ .', nl: 'buiten', options: ['buiten', 'binnen', 'samen'], en: 'The break is at ten. We go outside.', ar: 'الاستراحة في العاشرة. نذهب للخارج.', tr: 'Mola saat ondadır. Dışarı çıkıyoruz.', ps: 'تفریح په لسو بجو ده. موږ بهر ځو.', mar: 'الاستراحة ف العشرة. حنا خارجين لبرا' },
+            { sentence: 'Wij ___ thee in de pauze.', nl: 'drinken', options: ['drinken', 'drinkt', 'drink'], en: 'We drink tea during the break.', ar: 'نشرب الشاي في الاستراحة.', tr: 'Biz molada çay içiyoruz.', ps: 'موږ په تفریح کې چای څښو.', mar: 'كنشربو الأتاي ف الاستراحة' },
+            { sentence: 'Schrijf jij de zinnen? - Ja, ik ___ de zinnen.', nl: 'schrijf', options: ['schrijf', 'schrijft', 'schrijven'], en: 'Are you writing sentences? - Yes, I write.', ar: 'هل تكتب الجمل؟ - نعم، أنا أكتب.', tr: 'Cümleleri yazıyor musun? - Evet, yazıyorum.', ps: 'ایا ته جملې لیکې؟ - هو، زه لیکم.', mar: 'واش كتكتب الجمل؟ - إيه، كنكتب' },
+            { sentence: '___ eet een appel? - De docent.', nl: 'Wie', options: ['Wie', 'Wanneer', 'Hoeveel'], en: 'Who eats an apple? - The teacher.', ar: 'من يأكل تفاحة؟ - المعلم.', tr: 'Kim elma yiyor? - Öğretmen.', ps: 'څوک مڼه خوري؟ - ښوونکی.', mar: 'شكون كياكل تفاحة؟ - الأستاد' },
+            { sentence: 'Januari is de eerste ___ van het jaar.', nl: 'maand', options: ['maand', 'dag', 'week'], en: 'January is the first month.', ar: 'كانون الثاني هو الشهر الأول.', tr: 'Ocak yılın ilk ayıdır.', ps: 'جنوري د کال لومړۍ میاشت ده.', mar: 'يناير هو الشهر اللول ف العام' },
+            { sentence: '___ ga jij naar school? - Met de bus.', nl: 'Hoe', options: ['Hoe', 'Wat', 'Wie'], en: 'How do you go to school?', ar: 'كيف تذهب إلى المدرسة؟', tr: 'Okula nasıl gidiyorsun?', ps: 'ته څنګه ښوونځي ته ځې؟', mar: 'كيفاش كتمشي للمدرسة؟' },
+            { sentence: 'De cursisten ___ niet alleen, ze werken samen.', nl: 'werken', options: ['werken', 'werkt', 'werk'], en: 'The students work together.', ar: 'الطلاب لا يعملون بمفردهم، بل معاً.', tr: 'Kursiyerler yalnız çalışmıyorlar, birlikte çalışıyorlar.', ps: 'زده کوونکي په ګډه کار کوي.', mar: 'التلاميذ كيخدمو مجموعين' }
+        ];
+
+        // MEPS_QUESTIONS for Whack-a-word
+        const MEPS_QUESTIONS = [
+            { q: 'Hoi, ... (begroeting)', ans: 'hallo' },
+            { q: 'Mijn ... is Julia.', ans: 'de naam' },
+            { q: 'Een volwassen man (geen vrouw).', ans: 'de man' },
+            { q: 'Een volwassen vrouw (geen man).', ans: 'de vrouw' },
+            { q: 'Een jong mens (meervoud is kinderen).', ans: 'het kind' },
+            { q: 'Ik ... in Utrecht (in een huis).', ans: 'wonen' },
+            { q: 'Het land waar we nu zijn.', ans: 'Nederland' },
+            { q: 'Als je een man of vrouw hebt.', ans: 'getrouwd' },
+            { q: 'De mannelijke ouder.', ans: 'de vader' },
+            { q: 'De vrouwelijke ouder.', ans: 'de moeder' },
+            { q: 'De zoon van je vader en moeder.', ans: 'de broer' },
+            { q: 'De dochter van je vader en moeder.', ans: 'de zus' },
+            { q: 'De plaats waar de docent lesgeeft.', ans: 'de school' },
+            { q: 'De persoon die lesgeeft.', ans: 'de docent' },
+            { q: 'De persoon die leert in de klas.', ans: 'de cursist' },
+            { q: 'Tijd om even thee te drinken.', ans: 'de pauze' },
+            { q: 'Niet alleen, maar met andere mensen.', ans: 'samen' },
+            { q: 'Niet buiten, maar in het huis.', ans: 'binnen' },
+            { q: 'Niet binnen, maar in de tuin of op straat.', ans: 'buiten' },
+            { q: 'Bewegen of reizen naar een plaats.', ans: 'gaan' },
+            { q: 'Gaan met je voeten (wandelen).', ans: 'lopen' },
+            { q: 'Het gebouw waarin je woont.', ans: 'het huis' },
+            { q: 'Brood, fruit of warm eten nemen.', ans: 'eten' },
+            { q: 'Water, thee of koffie nemen.', ans: 'drinken' },
+            { q: 'Papieren om te lezen of uit te leren.', ans: 'het boek' },
+            { q: 'Wat zeg je als je weggaat?', ans: 'tot ziens' },
+            { q: 'Begroeting vroeg in de dag.', ans: 'goedemorgen' }
+        ];
+
+        // Game Config
+        let currentLang = 'en';
+        let activeGameType = 'vocab'; // 'vocab', 'gram1', 'gram2'
+        let score = 0;
+        let currentItem = null;
+        let answered = false;
+
+        // Native Audio Synthesizer
+        let audioCtx = null;
+        function playSound(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                const now = audioCtx.currentTime;
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                    osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                } else if (type === 'incorrect') {
+                    // Clean, quick double-tone electronic beep (no buzz/sawtooth)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(260, now); // note 1
+                    osc.frequency.setValueAtTime(180, now + 0.07); // note 2
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.setValueAtTime(0.12, now + 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00];
+                    notes.forEach((freq, idx) => {
+                        const noteTime = now + (idx * 0.06);
+                        osc.frequency.setValueAtTime(freq, noteTime);
+                    });
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+                    osc.start(now);
+                    osc.stop(now + 1.2);
+                }
+            } catch (e) {
+                console.error("Audio error:", e);
+            }
+        }
+
+        // Confetti Engine
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let confettiFrame = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function startConfetti() {
+            resizeCanvas();
+            particles = [];
+            for (let i = 0; i < 120; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 4,
+                    d: Math.random() * canvas.height,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngle: 0
+                });
+            }
+            if (confettiFrame) cancelAnimationFrame(confettiFrame);
+            animateConfetti();
+        }
+
+        function stopConfetti() {
+            if (confettiFrame) cancelAnimationFrame(confettiFrame);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.tiltAngle += p.tiltAngleIncremental;
+                p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                p.x += Math.sin(p.tiltAngle);
+                p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 5;
+
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                ctx.stroke();
+
+                if (p.y > canvas.height) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = -20;
+                    p.tilt = Math.random() * 10 - 5;
+                }
+            });
+            confettiFrame = requestAnimationFrame(animateConfetti);
+        }
+
+        // DOM Elements
+        const menuView = document.getElementById('menu-view');
+        const gameView = document.getElementById('game-view');
+        const headerBackBtn = document.getElementById('header-back-btn');
+        const headerRootBtn = document.getElementById('header-root-btn');
+        const mainTitle = document.getElementById('main-title');
+        const mainSubtitle = document.getElementById('main-subtitle');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreProgress = document.getElementById('score-progress');
+        const gameInstructionLbl = document.getElementById('game-instruction-lbl');
+        const questionWord = document.getElementById('question-word');
+        const translationHelper = document.getElementById('translation-helper');
+        const nextSection = document.getElementById('next-section');
+        const feedbackText = document.getElementById('feedback-text');
+        const nextBtn = document.getElementById('next-btn');
+        const gameCard = document.getElementById('game-card');
+        const winOverlay = document.getElementById('win-overlay');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // New Game Container Elements
+        const mepGameContainer = document.getElementById('mep-game-container');
+        const memoGameContainer = document.getElementById('memo-game-container');
+        const gameLanguageBar = document.getElementById('game-language-bar');
+        const mobileInfoToggle = document.getElementById('mobile-info-toggle');
+
+        // Navigation & Init Game
+        function startGame(type) {
+            activeGameType = type;
+            menuView.style.display = 'none';
+            gameView.style.display = 'flex';
+            headerBackBtn.style.display = 'inline-flex';
+            headerRootBtn.style.display = 'none';
+
+            // Clean up any whack-a-mole timer
+            if (mepTimer) clearTimeout(mepTimer);
+
+            // Configure title and show/hide corresponding panels based on game type
+            if (type === 'vocab') {
+                mainTitle.textContent = '🔥 A1 Vlammenspel (Woorden) 🔥';
+                mainSubtitle.textContent = 'Vertaal de woorden van Thema 1 & 2.';
+                gameInstructionLbl.textContent = 'Vertaal dit woord:';
+                
+                gameCard.style.display = 'flex';
+                mepGameContainer.style.display = 'none';
+                memoGameContainer.style.display = 'none';
+                gameLanguageBar.style.display = 'flex';
+            } else if (type === 'gram1') {
+                mainTitle.textContent = '✍️ Grammatica Thema 1 ✍️';
+                mainSubtitle.textContent = 'Kies het juiste grammatica-antwoord.';
+                gameInstructionLbl.textContent = 'Vul het goede woord in:';
+
+                gameCard.style.display = 'flex';
+                mepGameContainer.style.display = 'none';
+                memoGameContainer.style.display = 'none';
+                gameLanguageBar.style.display = 'flex';
+            } else if (type === 'gram2') {
+                mainTitle.textContent = '🏫 Grammatica Thema 2 🏫';
+                mainSubtitle.textContent = 'Kies het juiste grammatica-antwoord.';
+                gameInstructionLbl.textContent = 'Vul het goede woord in:';
+
+                gameCard.style.display = 'flex';
+                mepGameContainer.style.display = 'none';
+                memoGameContainer.style.display = 'none';
+                gameLanguageBar.style.display = 'flex';
+            } else if (type === 'meppen') {
+                mainTitle.textContent = '🔨 Woorden Meppen 🔨';
+                mainSubtitle.textContent = 'Sla zo snel mogelijk op de juiste mol!';
+                
+                gameCard.style.display = 'none';
+                mepGameContainer.style.display = 'flex';
+                memoGameContainer.style.display = 'none';
+                gameLanguageBar.style.display = 'none';
+            } else if (type === 'memory') {
+                mainTitle.textContent = '🧠 Woord-Memory 🧠';
+                mainSubtitle.textContent = 'Match de identieke kaarten bij elkaar.';
+                
+                gameCard.style.display = 'none';
+                mepGameContainer.style.display = 'none';
+                memoGameContainer.style.display = 'flex';
+                gameLanguageBar.style.display = 'none';
+            }
+            
+            updateSidebarContent(type);
+            generateStepTrack();
+            resetGame();
+            updateToggleBtnVisibility();
+        }
+
+        function showMenu() {
+            // Clean up timers
+            if (mepTimer) clearTimeout(mepTimer);
+            clearAutoNextTimer();
+
+            gameView.style.display = 'none';
+            menuView.style.display = 'grid';
+            headerBackBtn.style.display = 'none';
+            headerRootBtn.style.display = 'inline-flex';
+            mainTitle.textContent = '🎮 A1 Spellenportaal 🎮';
+            mainSubtitle.textContent = 'Kies een spel om te beginnen met oefenen!';
+            stopConfetti();
+            winOverlay.style.display = 'none';
+            
+            // Hide mobile sidebar
+            document.getElementById('info-sidebar').classList.remove('mobile-show');
+            updateToggleBtnVisibility();
+        }
+
+        function toggleSidebar() {
+            const container = document.querySelector('.game-layout-container');
+            const sidebar = document.getElementById('info-sidebar');
+            const isMobile = window.innerWidth <= 900;
+            
+            if (isMobile) {
+                if (sidebar) {
+                    sidebar.classList.toggle('mobile-show');
+                }
+            } else {
+                if (container) {
+                    container.classList.toggle('sidebar-closed');
+                    const closed = container.classList.contains('sidebar-closed');
+                    localStorage.setItem('sidebar-closed', closed ? 'true' : 'false');
+                }
+            }
+            updateToggleBtnVisibility();
+        }
+
+        function updateToggleBtnVisibility() {
+            const container = document.querySelector('.game-layout-container');
+            const mobileToggle = document.getElementById('mobile-info-toggle');
+            const desktopToggle = document.getElementById('info-toggle');
+            const sidebar = document.getElementById('info-sidebar');
+            
+            if (gameView.style.display === 'none' || gameView.style.display === '') {
+                if (mobileToggle) mobileToggle.style.display = 'none';
+                if (desktopToggle) desktopToggle.style.display = 'none';
+                return;
+            }
+
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                if (desktopToggle) desktopToggle.style.display = 'none';
+                if (mobileToggle) {
+                    if (sidebar && sidebar.classList.contains('mobile-show')) {
+                        mobileToggle.style.display = 'none';
+                    } else {
+                        mobileToggle.style.display = 'inline-flex';
+                    }
+                }
+            } else {
+                if (mobileToggle) mobileToggle.style.display = 'none';
+                if (container && container.classList.contains('sidebar-closed')) {
+                    if (desktopToggle) desktopToggle.style.display = 'flex';
+                } else {
+                    if (desktopToggle) desktopToggle.style.display = 'none';
+                }
+            }
+        }
+        window.addEventListener('resize', updateToggleBtnVisibility);
+
+        function initSidebarState() {
+            const sidebarClosed = localStorage.getItem('sidebar-closed') === 'true';
+            const container = document.querySelector('.game-layout-container');
+            if (sidebarClosed && container) {
+                container.classList.add('sidebar-closed');
+            }
+            updateToggleBtnVisibility();
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', initSidebarState);
+        } else {
+            initSidebarState();
+        }
+
+        function updateSidebarContent(type) {
+            const instructionText = document.getElementById('sidebar-instruction-text');
+            const rulesText = document.getElementById('sidebar-rules-text');
+
+            if (type === 'vocab') {
+                instructionText.textContent = 'Vertaal het getoonde woord correct naar het Nederlands. Selecteer het juiste antwoord uit de drie opties. Verzamel 50 vlammen om te winnen!';
+                rulesText.innerHTML = `
+                    <p>Hier oefen je de basiswoorden van <strong>Thema 1 (Hallo)</strong> en <strong>Thema 2 (De school)</strong>.</p>
+                    <br>
+                    <strong>Voorbeelden van introductie-woorden:</strong>
+                    <ul>
+                        <li><strong>hallo / goedemorgen</strong> — begroetingen</li>
+                        <li><strong>de naam</strong> — hoe je heet</li>
+                        <li><strong>wonen</strong> — in welke stad of huis je woont</li>
+                        <li><strong>getrouwd</strong> — als je een man of vrouw hebt</li>
+                    </ul>
+                    <br>
+                    <strong>Lidwoorden (de/het):</strong>
+                    <ul>
+                        <li><em>De</em> man, <em>de</em> vrouw, <em>de</em> school, <em>de</em> docent</li>
+                        <li><em>Het</em> kind, <em>het</em> huis, <em>het</em> boek</li>
+                    </ul>
+                `;
+            } else if (type === 'gram1') {
+                instructionText.textContent = 'Kies het juiste woord om de grammatica-zin compleet te maken. Klik op de opties en verzamel 50 vlammen!';
+                rulesText.innerHTML = `
+                    <p>In <strong>Thema 1</strong> leer je de basis van persoonlijke voornaamwoorden en twee hele belangrijke werkwoorden.</p>
+                    <br>
+                    <strong>1. Persoonlijke voornaamwoorden:</strong>
+                    <table>
+                        <tr><th>Enkelvoud</th><th>Meervoud</th></tr>
+                        <tr><td><strong>ik</strong> (I)</td><td><strong>wij</strong> (we)</td></tr>
+                        <tr><td><strong>jij</strong> (you)</td><td><strong>jullie</strong> (you all)</td></tr>
+                        <tr><td><strong>hij</strong> (he) / <strong>zij</strong> (she)</td><td><strong>zij</strong> (they)</td></tr>
+                    </table>
+                    <br>
+                    <strong>2. Het werkwoord ZIJN (to be):</strong>
+                    <ul>
+                        <li>Ik <strong>ben</strong> Julia.</li>
+                        <li>Jij <strong>bent</strong> Ahmed.</li>
+                        <li>Hij / zij / u <strong>is</strong> docent.</li>
+                        <li>Wij / jullie / zij <strong>zijn</strong> getrouwd.</li>
+                    </ul>
+                    <br>
+                    <strong>3. Het werkwoord HEBBEN (to have):</strong>
+                    <ul>
+                        <li>Ik <strong>heb</strong> een kind.</li>
+                        <li>Jij <strong>hebt</strong> een broer.</li>
+                        <li>Hij / zij / u <strong>heeft</strong> een zus.</li>
+                        <li>Wij / jullie / zij <strong>hebben</strong> een huis.</li>
+                    </ul>
+                    <br>
+                    <strong>4. Vraagwoorden:</strong>
+                    <ul>
+                        <li><strong>Wie</strong> is dat? (personen)</li>
+                        <li><strong>Wat</strong> is dat? (dingen/acties)</li>
+                        <li><strong>Waar</strong> woon jij? (plaatsen)</li>
+                    </ul>
+                `;
+            } else if (type === 'gram2') {
+                instructionText.textContent = 'Kies het juiste grammatica-antwoord om de zin compleet te maken. Verzamel 50 vlammen!';
+                rulesText.innerHTML = `
+                    <p>In <strong>Thema 2</strong> oefen je met de spelling van werkwoorden in de tegenwoordige tijd, vraagwoorden en tijdsaanduidingen.</p>
+                    <br>
+                    <strong>1. Werkwoordspelling (tegenwoordige tijd):</strong>
+                    <p>De algemene regel is: <em>Stam + t</em>, behalve bij 'ik' en als 'jij' achter het werkwoord staat.</p>
+                    <table>
+                        <tr><th>Persoon</th><th>Vorm</th><th>Voorbeeld</th></tr>
+                        <tr><td>ik</td><td>stam</td><td>ik <strong>werk</strong></td></tr>
+                        <tr><td>jij / hij / zij / u</td><td>stam + t</td><td>jij <strong>werkt</strong></td></tr>
+                        <tr><td>wij / jullie / zij</td><td>hele ww</td><td>wij <strong>werken</strong></td></tr>
+                    </table>
+                    <br>
+                    <strong>Let op bij inversie:</strong>
+                    <ul>
+                        <li>Jij <strong>werkt</strong> vandaag. → <strong>Werk</strong> jij vandaag? (geen -t!)</li>
+                        <li><em>U leert</em> Nederlands. → <strong>Leert</strong> u Nederlands? (u behoudt wél de -t)</li>
+                    </ul>
+                    <br>
+                    <strong>2. Dagen & Maanden:</strong>
+                    <ul>
+                        <li>maandag, dinsdag, woensdag, donderdag, vrijdag, zaterdag, zondag.</li>
+                        <li>januari, februari, maart, april, mei...</li>
+                    </ul>
+                    <br>
+                    <strong>3. Vraagwoorden:</strong>
+                    <ul>
+                        <li><strong>Hoeveel</strong> kinderen heb je? (aantal)</li>
+                        <li><strong>Wanneer</strong> begint de les? (tijd)</li>
+                        <li><strong>Hoe</strong> ga je naar school? (manier)</li>
+                    </ul>
+                `;
+            } else if (type === 'meppen') {
+                instructionText.textContent = 'Lees de omschrijving of invulzin bovenin. Sla (klik) zo snel mogelijk op de mol met het juiste Nederlandse woord. Haal 50 vlammen om te winnen!';
+                rulesText.innerHTML = `
+                    <p>Dit spel test hoe snel je de betekenissen van <strong>Thema 1</strong> herkent in het Nederlands.</p>
+                    <br>
+                    <strong>Spelregels:</strong>
+                    <ul>
+                        <li>Elke goede mol geeft <strong>+1 vlam</strong>.</li>
+                        <li>Elke foute mol kost <strong>-5 vlammen</strong>.</li>
+                        <li>De mollen veranderen regelmatig van positie!</li>
+                    </ul>
+                    <br>
+                    <strong>Voorbeelden:</strong>
+                    <ul>
+                        <li>Vraag: <em>"Niet alleen, maar met andere mensen"</em> → Mep op: <strong>samen</strong></li>
+                        <li>Vraag: <em>"De persoon die lesgeeft"</em> → Mep op: <strong>de docent</strong></li>
+                        <li>Vraag: <em>"Ik ... in Utrecht"</em> → Mep op: <strong>wonen</strong></li>
+                    </ul>
+                `;
+            } else if (type === 'memory') {
+                instructionText.textContent = 'Klik op de kaarten om ze om te draaien en zoek exact dezelfde Nederlandse woorden bij elkaar.';
+                rulesText.innerHTML = `
+                    <p>Train je geheugen en je woordenschat door identieke woorden te matchen.</p>
+                    <br>
+                    <strong>Spelregels:</strong>
+                    <ul>
+                        <li>Elk correct paar geeft <strong>+1 vlam</strong>.</li>
+                        <li>Elk foutief paar kost <strong>-5 vlammen</strong>.</li>
+                        <li>Gevonden kaarten blijven openliggen en worden groen.</li>
+                        <li>Als alle 8 paren zijn gevonden, start automatisch een nieuwe ronde.</li>
+                    </ul>
+                    <br>
+                    <strong>Voorbeelden:</strong>
+                    <ul>
+                        <li><strong>hallo</strong> ⟷ <strong>hallo</strong></li>
+                        <li><strong>wonen</strong> ⟷ <strong>wonen</strong></li>
+                        <li><strong>de docent</strong> ⟷ <strong>de docent</strong></li>
+                    </ul>
+                `;
+            }
+        }
+
+        // Language Buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                const target = e.currentTarget;
+                target.classList.add('active');
+                currentLang = target.getAttribute('data-lang');
+                
+                // Align helpers
+                if (currentLang === 'ar' || currentLang === 'ps' || currentLang === 'mar') {
+                    translationHelper.classList.add('rtl');
+                    if (activeGameType === 'vocab') {
+                        questionWord.classList.add('rtl');
+                    }
+                } else {
+                    translationHelper.classList.remove('rtl');
+                    questionWord.classList.remove('rtl');
+                }
+                
+                updateQuestionDisplay();
+            });
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('a1-theme', newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('a1-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Core Game Logic
+        function getActiveDatabase() {
+            if (activeGameType === 'vocab') return VOCAB;
+            if (activeGameType === 'gram1') return GRAMMAR_T1;
+            return GRAMMAR_T2;
+        }
+
+        function getRandomItem() {
+            const db = getActiveDatabase();
+            let item;
+            do {
+                item = db[Math.floor(Math.random() * db.length)];
+            } while (db.length > 1 && currentItem && (item.nl === currentItem.nl || item.sentence === currentItem.sentence));
+            return item;
+        }
+
+        function generateOptions(correctNl) {
+            const db = getActiveDatabase();
+            const options = [correctNl];
+            
+            // If the database has a predefined set of options (like Grammar databases), use those!
+            if (currentItem && currentItem.options) {
+                return [...currentItem.options].sort(() => Math.random() - 0.5);
+            }
+            
+            // Otherwise, get random wrong answers (like vocab database)
+            while (options.length < 3) {
+                const randomItem = db[Math.floor(Math.random() * db.length)];
+                if (!options.includes(randomItem.nl)) {
+                    options.push(randomItem.nl);
+                }
+            }
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        function updateQuestionDisplay() {
+            if (!currentItem) return;
+            
+            if (activeGameType === 'vocab') {
+                questionWord.textContent = currentItem[currentLang] || currentItem.en;
+                translationHelper.textContent = ''; // No sub-helper needed for vocab translation
+            } else {
+                // Grammar: show sentence in Dutch, and the translated sentence as a subtitle helper underneath!
+                questionWord.textContent = currentItem.sentence;
+                translationHelper.textContent = `(${currentItem[currentLang] || currentItem.en})`;
+            }
+        }
+
+        // Global variables for pacing timer
+        let autoNextTimer = null;
+        let autoNextCountdown = 15;
+        let autoNextInterval = null;
+
+        function startAutoNextTimer() {
+            clearAutoNextTimer();
+            autoNextCountdown = 15;
+            updateNextButtonText();
+            autoNextInterval = setInterval(() => {
+                autoNextCountdown--;
+                updateNextButtonText();
+                if (autoNextCountdown <= 0) {
+                    clearAutoNextTimer();
+                    triggerNextQuestion();
+                }
+            }, 1000);
+        }
+
+        function clearAutoNextTimer() {
+            if (autoNextInterval) {
+                clearInterval(autoNextInterval);
+                autoNextInterval = null;
+            }
+        }
+
+        function updateNextButtonText() {
+            const nextBtn = document.getElementById('next-btn');
+            if (nextBtn) {
+                nextBtn.innerHTML = `Volgende (${autoNextCountdown}s) <span>➔</span>`;
+            }
+        }
+
+        function triggerNextQuestion() {
+            if (score >= 50) {
+                triggerWin();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        // Spawn a rising flame and +1 text at click position
+        function spawnCorrectFlame(event, element) {
+            let x, y;
+            if (event && event.clientX && event.clientY) {
+                x = event.clientX;
+                y = event.clientY;
+            } else if (element) {
+                const rect = element.getBoundingClientRect();
+                x = rect.left + rect.width / 2;
+                y = rect.top + rect.height / 2;
+            } else {
+                x = window.innerWidth / 2;
+                y = window.innerHeight / 2;
+            }
+
+            const container = document.createElement('div');
+            container.className = 'floating-flame-reward';
+            container.style.left = `${x}px`;
+            container.style.top = `${y}px`;
+
+            const flame = document.createElement('span');
+            flame.className = 'floating-flame-emoji';
+            flame.textContent = '🔥';
+
+            const plusOne = document.createElement('span');
+            plusOne.className = 'floating-flame-text';
+            plusOne.textContent = '+1';
+
+            container.appendChild(flame);
+            container.appendChild(plusOne);
+            document.body.appendChild(container);
+
+            setTimeout(() => {
+                container.remove();
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            answered = false;
+            nextSection.style.display = 'none';
+            gameCard.classList.remove('shake');
+            clearAutoNextTimer();
+            
+            currentItem = getRandomItem();
+            updateQuestionDisplay();
+            
+            const options = generateOptions(currentItem.nl);
+            
+            for (let i = 0; i < 3; i++) {
+                const btn = document.getElementById('opt-' + i);
+                btn.disabled = false;
+                btn.className = 'option-btn';
+                
+                const textEl = btn.querySelector('.btn-text');
+                textEl.textContent = options[i];
+                
+                const badgeEl = btn.querySelector('.btn-badge');
+                badgeEl.textContent = '';
+            }
+        }
+
+        function handleAnswer(event, btn) {
+            if (answered) return;
+            answered = true;
+            
+            for (let i = 0; i < 3; i++) {
+                document.getElementById('opt-' + i).disabled = true;
+            }
+            
+            const selectedText = btn.querySelector('.btn-text').textContent;
+            const correctText = currentItem.nl;
+            
+            if (selectedText === correctText) {
+                btn.classList.add('correct');
+                btn.querySelector('.btn-badge').textContent = '✅';
+                playSound('correct');
+                
+                updateScore(1);
+                
+                feedbackText.innerHTML = `<span style="color:var(--success)">Goed zo!</span> <strong>${correctText}</strong>`;
+                nextSection.style.display = 'flex';
+                nextBtn.focus();
+                
+                // Spawn floating flame at click location
+                spawnCorrectFlame(event, btn);
+                
+                // Start 15-second automatic progression timer
+                startAutoNextTimer();
+            } else {
+                btn.classList.add('wrong');
+                btn.querySelector('.btn-badge').textContent = '❌';
+                gameCard.classList.add('shake');
+                playSound('incorrect');
+                
+                for (let i = 0; i < 3; i++) {
+                    const optionBtn = document.getElementById('opt-' + i);
+                    if (optionBtn.querySelector('.btn-text').textContent === correctText) {
+                        optionBtn.classList.add('correct');
+                        optionBtn.querySelector('.btn-badge').textContent = '✅';
+                    }
+                }
+                
+                updateScore(-5);
+                
+                feedbackText.innerHTML = `<span style="color:var(--error)">Oeps! Fout.</span><br>Het goede woord is: <strong>${correctText}</strong>`;
+                nextSection.style.display = 'flex';
+                nextBtn.focus();
+                
+                // Also start 15s timer for wrong answers so they eventually auto-advance if idle
+                startAutoNextTimer();
+            }
+        }
+
+        /* --- GAME 1: WHACK-A-WORD ENGINE --- */
+        let mepTimer = null;
+        let mepQuestion = null;
+        let mepActiveMoleIndex = -1;
+        let mepAnswered = false;
+
+        function startMepRound() {
+            if (activeGameType !== 'meppen') return;
+            mepAnswered = false;
+            
+            mepQuestion = MEPS_QUESTIONS[Math.floor(Math.random() * MEPS_QUESTIONS.length)];
+            document.getElementById('mep-prompt').textContent = mepQuestion.q;
+            
+            for (let i = 0; i < 6; i++) {
+                const mole = document.getElementById('mole-' + i);
+                mole.classList.remove('up', 'correct-hit', 'wrong-hit');
+                mole.style.pointerEvents = 'auto';
+            }
+
+            const correctWord = mepQuestion.ans;
+            const correctIndex = Math.floor(Math.random() * 6);
+            mepActiveMoleIndex = correctIndex;
+
+            const wrongWords = [];
+            while (wrongWords.length < 5) {
+                const randomWord = VOCAB[Math.floor(Math.random() * VOCAB.length)].nl;
+                if (randomWord !== correctWord && !wrongWords.includes(randomWord)) {
+                    wrongWords.push(randomWord);
+                }
+            }
+
+            let wrongPtr = 0;
+            for (let i = 0; i < 6; i++) {
+                const mole = document.getElementById('mole-' + i);
+                const textEl = mole.querySelector('.mep-mole-text');
+                if (i === correctIndex) {
+                    textEl.textContent = correctWord;
+                } else {
+                    textEl.textContent = wrongWords[wrongPtr++];
+                }
+            }
+
+            const popHoles = [correctIndex];
+            while (popHoles.length < 3) {
+                const randIndex = Math.floor(Math.random() * 6);
+                if (!popHoles.includes(randIndex)) {
+                    popHoles.push(randIndex);
+                }
+            }
+
+            popHoles.forEach(idx => {
+                document.getElementById('mole-' + idx).classList.add('up');
+            });
+
+            // Get display speed from slider
+            const speedSlider = document.getElementById('mep-speed-slider');
+            const moleDuration = (speedSlider ? parseInt(speedSlider.value) : 5) * 1000;
+
+            if (mepTimer) clearTimeout(mepTimer);
+            mepTimer = setTimeout(() => {
+                if (!mepAnswered && activeGameType === 'meppen') {
+                    popHoles.forEach(idx => {
+                        document.getElementById('mole-' + idx).classList.remove('up');
+                    });
+                    setTimeout(startMepRound, 600);
+                }
+            }, moleDuration);
+        }
+
+        function handleMepClick(event, index) {
+            if (mepAnswered) return;
+            mepAnswered = true;
+            if (mepTimer) clearTimeout(mepTimer);
+
+            const mole = document.getElementById('mole-' + index);
+            const isCorrect = (index === mepActiveMoleIndex);
+
+            for (let i = 0; i < 6; i++) {
+                document.getElementById('mole-' + i).style.pointerEvents = 'none';
+            }
+
+            if (isCorrect) {
+                mole.classList.add('correct-hit');
+                playSound('correct');
+                updateScore(1);
+                
+                // Spawn correct flame animation
+                spawnCorrectFlame(event, mole);
+
+                if (score >= 50) {
+                    triggerWin();
+                } else {
+                    // Slide down after 600ms so they slide down smoothly
+                    setTimeout(() => {
+                        for (let i = 0; i < 6; i++) {
+                            document.getElementById('mole-' + i).classList.remove('up');
+                        }
+                    }, 600);
+                    // Start next round after 1000ms
+                    setTimeout(startMepRound, 1000);
+                }
+            } else {
+                mole.classList.add('wrong-hit');
+                const correctMole = document.getElementById('mole-' + mepActiveMoleIndex);
+                if (correctMole) {
+                    correctMole.classList.add('correct-hit');
+                    correctMole.classList.add('up');
+                }
+                
+                playSound('incorrect');
+                updateScore(-5);
+
+                // Slide down after 1200ms
+                setTimeout(() => {
+                    for (let i = 0; i < 6; i++) {
+                        document.getElementById('mole-' + i).classList.remove('up');
+                    }
+                }, 1200);
+                // Start next round after 1800ms
+                setTimeout(startMepRound, 1800);
+            }
+        }
+
+        /* --- GAME 8: MEMORY ENGINE --- */
+        let memoCards = [];
+        let memoFlippedCards = [];
+        let memoMatchedPairsCount = 0;
+        let memoIsChecking = false;
+
+        function startMemoRound() {
+            if (activeGameType !== 'memory') return;
+            memoFlippedCards = [];
+            memoMatchedPairsCount = 0;
+            memoIsChecking = false;
+
+            // Pick 8 random words from VOCAB
+            const shuffledVocab = [...VOCAB].sort(() => Math.random() - 0.5);
+            const selectedWords = shuffledVocab.slice(0, 8);
+
+            const cardsData = [];
+            selectedWords.forEach((word, idx) => {
+                // Duplicate word to make a pair
+                cardsData.push({ text: word.nl, pairId: idx });
+                cardsData.push({ text: word.nl, pairId: idx });
+            });
+
+            // Shuffle cards
+            memoCards = cardsData.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('memo-grid');
+            grid.innerHTML = memoCards.map((card, idx) => `
+                <div class="memo-card" id="memo-card-${idx}" onclick="handleMemoClick(event, ${idx})">
+                    <div class="memo-card-inner">
+                        <div class="memo-card-front">❓</div>
+                        <div class="memo-card-back">${card.text}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleMemoClick(event, idx) {
+            if (activeGameType !== 'memory' || memoIsChecking) return;
+
+            const cardEl = document.getElementById('memo-card-' + idx);
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+
+            cardEl.classList.add('flipped');
+            memoFlippedCards.push(idx);
+
+            if (memoFlippedCards.length === 2) {
+                memoIsChecking = true;
+                checkMemoMatch();
+            }
+        }
+
+        function checkMemoMatch() {
+            const idx1 = memoFlippedCards[0];
+            const idx2 = memoFlippedCards[1];
+
+            const card1 = memoCards[idx1];
+            const card2 = memoCards[idx2];
+
+            const el1 = document.getElementById('memo-card-' + idx1);
+            const el2 = document.getElementById('memo-card-' + idx2);
+
+            if (card1.pairId === card2.pairId && idx1 !== idx2) {
+                setTimeout(() => {
+                    el1.classList.add('matched', 'disabled');
+                    el2.classList.add('matched', 'disabled');
+                    playSound('correct');
+                    
+                    updateScore(1);
+
+                    // Spawn correct flame at the flipped card position
+                    const rect = el2.getBoundingClientRect();
+                    const fakeEvent = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
+                    spawnCorrectFlame(fakeEvent, el2);
+                    
+                    memoFlippedCards = [];
+                    memoIsChecking = false;
+                    memoMatchedPairsCount++;
+
+                    if (score >= 50) {
+                        triggerWin();
+                    } else if (memoMatchedPairsCount === 8) {
+                        setTimeout(() => {
+                            startMemoRound();
+                        }, 1500);
+                    }
+                }, 300);
+            } else {
+                setTimeout(() => {
+                    el1.classList.remove('flipped');
+                    el2.classList.remove('flipped');
+                    playSound('incorrect');
+
+                    // Mismatch penalizes score by -5
+                    updateScore(-5);
+
+                    memoFlippedCards = [];
+                    memoIsChecking = false;
+                }, 1000);
+            }
+        }
+
+        /* --- GENERAL CONTROL FUNCTIONS --- */
+        function updateScore(amount) {
+            score = Math.max(0, Math.min(50, score + amount));
+            scoreDisplay.textContent = score;
+            scoreProgress.style.width = (score / 50 * 100) + '%';
+            updateStepTrack();
+        }
+
+        function generateStepTrack() {
+            const container = document.getElementById('steps-track-container');
+            if (container) {
+                container.innerHTML = '';
+                for (let i = 1; i <= 50; i++) {
+                    if (i % 10 === 0) {
+                        const badge = document.createElement('div');
+                        badge.className = 'step-badge-large';
+                        badge.id = `step-node-${i}`;
+                        badge.textContent = i === 50 ? '🏆' : i;
+                        container.appendChild(badge);
+                    } else {
+                        const dot = document.createElement('div');
+                        dot.className = 'step-dot';
+                        dot.id = `step-node-${i}`;
+                        dot.title = `Stap ${i}`;
+                        container.appendChild(dot);
+                    }
+                }
+            }
+        }
+
+        function updateStepTrack() {
+            for (let i = 1; i <= 50; i++) {
+                const node = document.getElementById(`step-node-${i}`);
+                if (!node) continue;
+                if (score >= i) {
+                    node.classList.add('active');
+                } else {
+                    node.classList.remove('active');
+                }
+            }
+        }
+
+        function triggerWin() {
+            playSound('win');
+            startConfetti();
+            setTimeout(() => {
+                winOverlay.style.display = 'flex';
+            }, 600);
+        }
+
+        function resetGame() {
+            score = 0;
+            updateScore(0);
+            stopConfetti();
+            winOverlay.style.display = 'none';
+            
+            if (activeGameType === 'vocab' || activeGameType === 'gram1' || activeGameType === 'gram2') {
+                loadQuestion();
+            } else if (activeGameType === 'meppen') {
+                startMepRound();
+            } else if (activeGameType === 'memory') {
+                startMemoRound();
+            }
+        }
+
+        // Bind Whack-a-Mole click listeners
+        for (let i = 0; i < 6; i++) {
+            const mole = document.getElementById('mole-' + i);
+            if (mole) {
+                mole.addEventListener('click', (e) => handleMepClick(e, i));
+            }
+        }
+
+        // MCQ Options click listeners
+        for (let i = 0; i < 3; i++) {
+            const btn = document.getElementById('opt-' + i);
+            if (btn) {
+                btn.addEventListener('click', (e) => handleAnswer(e, btn));
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            clearAutoNextTimer();
+            if (score >= 50) {
+                triggerWin();
+            } else {
+                loadQuestion();
+            }
+        });
+
+        // Whack-a-Mole Speed Slider listener
+        const mepSpeedSlider = document.getElementById('mep-speed-slider');
+        const mepSpeedVal = document.getElementById('mep-speed-val');
+        if (mepSpeedSlider && mepSpeedVal) {
+            mepSpeedSlider.addEventListener('input', (e) => {
+                mepSpeedVal.textContent = e.target.value + 's';
+            });
+        }
+
+        restartBtn.addEventListener('click', resetGame);
+    </script>
+</body>
+</html>
