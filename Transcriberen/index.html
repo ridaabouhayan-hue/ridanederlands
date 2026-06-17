@@ -386,8 +386,8 @@
                             <div id="geminiModelWrapper" style="padding-left: 24px; display: none; margin-top: 4px;">
                                 <label for="geminiModelSelect" style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Kies Gemini Model:</label>
                                 <select id="geminiModelSelect" onchange="changeGeminiModel(this.value)" style="width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.9); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
-                                    <option value="gemini-2.5-pro-preview-06-05">Gemini 2.5 Pro (meest nauwkeurig)</option>
-                                    <option value="gemini-2.5-flash-preview-05-20" selected>Gemini 2.5 Flash ⚡ (aanbevolen)</option>
+                                    <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash ⚡ (aanbevolen)</option>
+                                    <option value="gemini-2.5-pro">Gemini 2.5 Pro (meest nauwkeurig)</option>
                                     <option value="gemini-2.0-flash">Gemini 2.0 Flash (stabiel)</option>
                                     <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite (snel)</option>
                                     <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (betrouwbaar)</option>
@@ -3175,10 +3175,10 @@ BELANGRIJK:
                 return JSON.parse(text.trim());
             };
 
-            // Fallback volgorde: probeer elk model op volgorde bij 503/overbelasting
+            // Fallback volgorde: probeer elk model op volgorde bij 503/overbelasting/404
             const fallbackModels = [
                 model,
-                "gemini-2.5-flash-preview-05-20",
+                "gemini-2.5-flash",
                 "gemini-2.0-flash",
                 "gemini-1.5-pro-latest",
                 "gemini-1.5-flash-latest"
@@ -3193,9 +3193,9 @@ BELANGRIJK:
                     return await makeRequest(tryModel);
                 } catch (err) {
                     lastError = err;
-                    // Alleen doorgaan naar fallback bij 503 (overbelast) of 429 (rate limit)
-                    if (err.status === 503 || err.status === 429 || err.status === 500) {
-                        console.warn(`Model ${tryModel} overbelast (${err.status}), probeer volgend model...`);
+                    // Doorgaan naar fallback bij 503 (overbelast), 429 (rate limit), 404 (model niet gevonden), 500
+                    if (err.status === 503 || err.status === 429 || err.status === 500 || err.status === 404) {
+                        console.warn(`Model ${tryModel} fout (${err.status}), probeer volgend model...`);
                         // Wacht even voor rate limiting
                         if (err.status === 429) await new Promise(r => setTimeout(r, 2000));
                         continue;
