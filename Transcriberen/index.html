@@ -605,14 +605,73 @@
             }
         }
 
-        // ── FIRESTORE OPSLAG (vervangt data.js; synct tussen apparaten) ──
+        // ── FIRESTORE OPSLAG (vervangt data.js; synct tussen apparaten met lokale fallback) ──
         function recCol() { return window.fbDb.collection('recordings'); }
         function recId(group, filename) {
             return (String(group) + '__' + String(filename)).replace(/[\/#?\[\]]/g, '_').slice(0, 1400);
         }
+
+        function loadLocalData() {
+            try {
+                const localData = localStorage.getItem('local_transcriptions_db');
+                if (localData) {
+                    return JSON.parse(localData);
+                }
+            } catch (e) {
+                console.error('Lokaal inladen mislukt:', e);
+            }
+            return {};
+        }
+
+        function saveLocalEntry(entry, group) {
+            try {
+                const localDb = loadLocalData();
+                if (!localDb[group]) localDb[group] = [];
+                
+                const idx = localDb[group].findIndex(f => f.filename === entry.filename);
+                if (idx !== -1) {
+                    localDb[group].splice(idx, 1);
+                }
+                
+                localDb[group].push({
+                    filename: entry.filename,
+                    path: entry.path || (group + '/' + entry.filename),
+                    date: entry.date || '',
+                    analyse: entry.analyse || {}
+                });
+                
+                localStorage.setItem('local_transcriptions_db', JSON.stringify(localDb));
+                
+                if (!isDataLoaded) {
+                    db = localDb;
+                }
+            } catch (e) {
+                console.error('Lokaal opslaan mislukt:', e);
+            }
+        }
+
+        function deleteLocalEntry(group, filename) {
+            try {
+                const localDb = loadLocalData();
+                if (localDb[group]) {
+                    const idx = localDb[group].findIndex(f => f.filename === filename);
+                    if (idx !== -1) {
+                        localDb[group].splice(idx, 1);
+                        localStorage.setItem('local_transcriptions_db', JSON.stringify(localDb));
+                    }
+                }
+            } catch (e) {
+                console.error('Lokaal verwijderen mislukt:', e);
+            }
+        }
+
         async function saveEntry(entry, group) {
             const g = group || activeGroup;
             if (!entry || !entry.filename) return;
+            
+            // Sla altijd lokaal op als fallback
+            saveLocalEntry(entry, g);
+            
             try {
                 await recCol().doc(recId(g, entry.filename)).set({
                     group: g,
@@ -623,16 +682,18 @@
                     updatedAt: Date.now()
                 });
             } catch (e) {
-                console.error('Opslaan naar cloud mislukt:', e);
-                showToast('⚠️ Opslaan in cloud mislukt (internet/login?).');
-                throw e;
+                console.error('Opslaan naar cloud mislukt, maar lokaal opgeslagen:', e);
+                showToast('ℹ️ Lokaal opgeslagen (cloud-sync is offline).');
+                // Gooi de fout niet op om te voorkomen dat de wachtrij stopt!
             }
         }
+
         async function deleteEntryRemote(group, filename) {
+            deleteLocalEntry(group, filename);
             try { await recCol().doc(recId(group, filename)).delete(); }
             catch (e) { console.error('Verwijderen uit cloud mislukt:', e); }
         }
-        // Compat: oude saveDatabase()-aanroepen slaan het actief geopende item op.
+
         async function saveDatabase() {
             try {
                 if (currentFileObject) { await saveEntry(currentFileObject, activeGroup); }
@@ -642,7 +703,19 @@
         function subscribeData() {
             if (_dataSubscribed) return;
             _dataSubscribed = true;
-            showLoadingState();
+            
+            // Laad direct lokale data in zodat de app meteen werkt
+            const localDb = loadLocalData();
+            if (Object.keys(localDb).length > 0) {
+                db = localDb;
+                isDataLoaded = true;
+                activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
+                renderTabs();
+                renderList();
+            } else {
+                showLoadingState();
+            }
+
             recCol().onSnapshot((snap) => {
                 const newDb = {};
                 snap.forEach((doc) => {
@@ -653,8 +726,11 @@
                     try { analyse = JSON.parse(x.analyse || '{}'); } catch (_) {}
                     newDb[g].push({ filename: x.filename, path: x.path, date: x.date, analyse: analyse });
                 });
+                
                 db = newDb;
                 isDataLoaded = true;
+                localStorage.setItem('local_transcriptions_db', JSON.stringify(newDb));
+
                 if (!activeGroup || !(db[activeGroup] && db[activeGroup].length)) {
                     activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
                 }
@@ -667,8 +743,15 @@
             }, (err) => {
                 console.error('Firestore luisteren mislukt:', err);
                 const cs = document.getElementById('connStatus');
-                if (cs) { cs.textContent = '🔴 Sync-fout'; cs.style.color = '#ef4444'; }
-                showToast('⚠️ Cloud-sync mislukt. Controleer je Firestore-regels.');
+                if (cs) { cs.textContent = '🔴 Alleen lokaal actief'; cs.style.color = '#f59e0b'; }
+                showToast('ℹ️ Cloud-sync niet beschikbaar. Lokaal werken is actief.');
+                
+                if (!isDataLoaded) {
+                    db = loadLocalData();
+                    isDataLoaded = true;
+                    renderTabs();
+                    renderList();
+                }
             });
         }
 
