@@ -1245,6 +1245,7 @@
             </div>
         </div>
         <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn-close-exam" id="btn-header-clear-all" style="background-color: #ef4444; color: #ffffff; border: none; font-weight: 800;" onclick="clearAllExamData()">WISSEN 🗑️</button>
             <button class="btn-close-exam" id="btn-header-nakijken" style="background-color: var(--gov-gold); color: var(--gov-blue); border: none; font-weight: 800;" onclick="promptNakijken()">NAKIJKEN 📑</button>
             <div class="header-actions" id="header-exam-actions" style="display: none;">
                 <div class="timer-display">
@@ -4278,6 +4279,22 @@
             updateDashboardStatus();
         }
 
+        function clearAllExamData() {
+            if (confirm("⚠️ Weet u absoluut zeker dat u alle examenresultaten, antwoorden en naamgegevens wilt wissen? Dit kan niet ongedaan worden gemaakt.")) {
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('a2_') || key.startsWith('a2-theme'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(k => localStorage.removeItem(k));
+                
+                alert("🗑️ Alle gegevens succesvol gewist!");
+                location.reload();
+            }
+        }
+
         // ── DASHBOARD UI UPDATES ──
         function updateDashboardStatus() {
             const exams = [
@@ -4300,6 +4317,15 @@
                 
                 if (!container) return;
 
+                // Locked check: Schrijven exams must be done in order
+                let locked = false;
+                if (ex.type === 'schrijven' && ex.id > 1) {
+                    const prevStatus = getExamStatus('schrijven', ex.id - 1);
+                    if (prevStatus !== 'completed') {
+                        locked = true;
+                    }
+                }
+
                 if (status === 'completed') {
                     if (ex.type === 'lezen') {
                         const score = calculateLezenScore(ex.id);
@@ -4318,10 +4344,17 @@
                         `;
                     }
                 } else {
-                    container.innerHTML = `
-                        <span class="status-badge not-started" style="margin-right:8px;">Niet gestart</span>
-                        <button class="btn-start-exam" onclick="startExam('${ex.type}', ${ex.id})">Starten</button>
-                    `;
+                    if (locked) {
+                        container.innerHTML = `
+                            <span class="status-badge not-started" style="margin-right:8px; opacity: 0.6;">🔒 Gesloten</span>
+                            <button class="btn-start-exam" style="opacity: 0.5; cursor: not-allowed;" onclick="alert('U kunt pas beginnen aan Schrijven ${ex.id} als u Schrijven ${ex.id - 1} volledig heeft afgerond en ingeleverd!')">🔒 Starten</button>
+                        `;
+                    } else {
+                        container.innerHTML = `
+                            <span class="status-badge not-started" style="margin-right:8px;">Niet gestart</span>
+                            <button class="btn-start-exam" onclick="startExam('${ex.type}', ${ex.id})">Starten</button>
+                        `;
+                    }
                 }
 
                 // Update sidebar list
@@ -4335,7 +4368,11 @@
                             sidebarItem.innerHTML = `<span style="color:var(--success-color)">✅ Voltooid</span>`;
                         }
                     } else {
-                        sidebarItem.innerHTML = `<span style="color:var(--text-muted)">⏳ Niet gestart</span>`;
+                        if (locked) {
+                            sidebarItem.innerHTML = `<span style="color:var(--text-muted); opacity: 0.5;">🔒 Gesloten</span>`;
+                        } else {
+                            sidebarItem.innerHTML = `<span style="color:var(--text-muted)">⏳ Niet gestart</span>`;
+                        }
                     }
                 }
             });
@@ -4392,6 +4429,15 @@
                 return;
             }
 
+            // Sequential lock check: Cannot skip writing exams
+            if (type === 'schrijven' && id > 1) {
+                const prevStatus = getExamStatus('schrijven', id - 1);
+                if (prevStatus !== 'completed') {
+                    alert(`U kunt pas beginnen aan Schrijven ${id} als u Schrijven ${id - 1} volledig heeft afgerond en ingeleverd!`);
+                    return;
+                }
+            }
+
             const status = getExamStatus(type, id);
             if (status === 'completed') {
                 if (confirm("Weet u zeker dat u dit examen opnieuw wilt starten? Dit wist al uw eerdere antwoorden en verzendstatussen voor dit examen.")) {
@@ -4424,6 +4470,7 @@
             document.getElementById('header-subtitle').textContent = "Nederlandse Overheid - Officieel Oefenexamen A2";
             document.getElementById('header-exam-actions').style.display = 'flex';
             document.getElementById('btn-header-nakijken').style.display = 'none';
+            document.getElementById('btn-header-clear-all').style.display = 'none';
 
             // Show timer
             startTimer(examConfig.timeLimit);
@@ -4446,6 +4493,7 @@
                 document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
                 document.getElementById('header-exam-actions').style.display = 'none';
                 document.getElementById('btn-header-nakijken').style.display = 'block';
+                document.getElementById('btn-header-clear-all').style.display = 'block';
 
                 // Toggle screens
                 document.getElementById('exam-player-view').style.display = 'none';
@@ -4901,6 +4949,7 @@
             document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
             document.getElementById('header-exam-actions').style.display = 'none';
             document.getElementById('btn-header-nakijken').style.display = 'block';
+            document.getElementById('btn-header-clear-all').style.display = 'block';
 
             // Toggle screens
             document.getElementById('exam-player-view').style.display = 'none';
@@ -5041,6 +5090,7 @@
             document.getElementById('header-main-title').textContent = "AI Nakijkportaal - Schrijven";
             document.getElementById('header-subtitle').textContent = "Ingevoerde schrijfteksten controleren met Gemini";
             document.getElementById('btn-header-nakijken').style.display = 'none';
+            document.getElementById('btn-header-clear-all').style.display = 'none';
             
             // Initialize selections
             onNakijkExamChange();
@@ -5060,6 +5110,7 @@
             document.getElementById('header-main-title').textContent = "Examenportaal A2 - Inburgering";
             document.getElementById('header-subtitle').textContent = "Ministerie van Sociale Zaken en Werkgelegenheid";
             document.getElementById('btn-header-nakijken').style.display = 'block';
+            document.getElementById('btn-header-clear-all').style.display = 'block';
         }
 
         function saveGeminiKey() {
@@ -5189,6 +5240,9 @@ ${candidateAnswer}
 """
 
 Identificeer welke tekst/antwoorden bij welke opdracht horen (de kandidaat heeft ze vaak genummerd of onder elkaar gezet). Beoordeel ze een voor een.
+
+BELANGRIJKE INSTRUCTIE VOOR CHRONOLOGISCHE VOLGORDE:
+- Zelfs als de cursist de opgaven in een andere of willekeurige volgorde heeft ingeleverd in het tekstvak, moet jij de feedback **strikt chronologisch ordenen** (dus Opdracht 1, daarna Opdracht 2, daarna Opdracht 3, daarna Opdracht 4) in de uiteindelijke feedbackbrief. Volg altijd de volgorde: Opdracht 1 -> Opdracht 2 -> Opdracht 3 -> Opdracht 4.
 
 Formatteer de feedbackbrief voor de cursist heel overzichtelijk in duidelijke secties:
 1. Start met de hierboven gevraagde algemene inleiding.
