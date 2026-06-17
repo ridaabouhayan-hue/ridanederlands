@@ -5065,6 +5065,13 @@
             const totalOpgaven = config.opgaven.length;
             
             opgaveSelect.innerHTML = '';
+            
+            // Bulk option
+            const bulkOpt = document.createElement('option');
+            bulkOpt.value = 'all';
+            bulkOpt.textContent = `Alle opgaven in bulk nakijken`;
+            opgaveSelect.appendChild(bulkOpt);
+
             for (let i = 1; i <= totalOpgaven; i++) {
                 const opt = document.createElement('option');
                 opt.value = i;
@@ -5077,10 +5084,16 @@
 
         function onNakijkOpgaveChange() {
             const examId = parseInt(document.getElementById('nakijk-exam-select').value);
-            const opgaveIndex = parseInt(document.getElementById('nakijk-opgave-select').value) - 1;
+            const opgaveVal = document.getElementById('nakijk-opgave-select').value;
             const preview = document.getElementById('nakijk-prompt-preview');
             
             const config = EXAM_DATA.schrijven[examId];
+            if (opgaveVal === 'all') {
+                preview.innerHTML = `<strong>Titel:</strong> Volledig Schrijfexamen ${examId}<br><strong>Type:</strong> Bulk Nakijken<br><br>Plak de complete tekst van de kandidaat (bijvoorbeeld de volledige WhatsApp-rapportage met alle opgeslagen antwoorden). Gemini zal automatisch elke opdracht detecteren, beoordelen en de feedback per opdracht structureren in één overzicht.`;
+                return;
+            }
+
+            const opgaveIndex = parseInt(opgaveVal) - 1;
             if (config && config.opgaven[opgaveIndex]) {
                 const opg = config.opgaven[opgaveIndex];
                 let instructionsText = opg.instructions;
@@ -5095,9 +5108,8 @@
 
         function getFeedbackPrompt() {
             const examId = parseInt(document.getElementById('nakijk-exam-select').value);
-            const opgaveIndex = parseInt(document.getElementById('nakijk-opgave-select').value) - 1;
+            const opgaveVal = document.getElementById('nakijk-opgave-select').value;
             const config = EXAM_DATA.schrijven[examId];
-            const opg = config.opgaven[opgaveIndex];
             
             const candidateAnswer = document.getElementById('nakijk-kandidaat-antwoord').value.trim();
             const feedbackTaal = document.getElementById('nakijk-taal').value;
@@ -5110,6 +5122,59 @@
             if (document.getElementById('focus-woordenschat').checked) focus.push('Woordenschat');
             
             let focusText = focus.length > 0 ? focus.join(', ') : 'Algemene A2 criteria';
+            
+            if (opgaveVal === 'all') {
+                let promptHeader = `Je bent een ervaren docent Nederlands als Tweede Taal (NT2), gespecialiseerd in het beoordelen van het Inburgeringsexamen Schrijven op A2-niveau.
+Jouw taak is om de ingezonden antwoorden van een inburgeraar voor het gehele Schrijfexamen ${examId} in één keer te beoordelen.
+De cursist heeft een WhatsApp-bericht of een verzameling antwoorden ingestuurd waarin de verschillende opgaven onder elkaar staan.
+
+Geef de feedback in de taal: ${feedbackTaal}.
+Hanteer de volgende striktheid van nakijken: ${striktheid}.
+Focus extra op de volgende gebieden: ${focusText}.
+
+Beoordeel elk van de gemaakte opgaven op de officiële A2 Schrijven-criteria:
+1. Taakuitvoering (is de vraag beantwoord en zijn alle gevraagde punten behandeld?)
+2. Begrijpelijkheid en Samenhang (is de tekst logisch en te volgen?)
+3. Grammatica en Woordenschat (correctheid en passendheid op A2-niveau)
+
+Hier zijn de officiële opdrachten en instructies van Schrijfexamen ${examId} die de cursist moest maken:
+`;
+
+                config.opgaven.forEach((opg, index) => {
+                    let cleanInstructions = opg.instructions.replace(/<[^>]*>/g, '');
+                    let promptTextClean = opg.promptText ? opg.promptText.replace(/<[^>]*>/g, '') : '';
+                    promptHeader += `\n--- OPDRACHT ${index + 1} ---
+Titel: ${opg.title}
+Type: ${opg.type}
+Instructies/Vragen:
+${cleanInstructions}
+${promptTextClean ? `Vraag prompt:\n${promptTextClean}` : ''}
+`;
+                });
+
+                promptHeader += `\nHier is de complete tekst/invoer die de cursist heeft ingeleverd:
+"""
+${candidateAnswer}
+"""
+
+Identificeer welke tekst/antwoorden bij welke opdracht horen (de kandidaat heeft ze vaak genummerd of onder elkaar gezet). Beoordeel ze een voor een.
+
+Formatteer de feedbackbrief voor de cursist heel overzichtelijk in duidelijke secties:
+1. Start met een algemene inleiding (motiverend, vriendelijk en gericht aan de cursist).
+2. Geef per gedetecteerde opdracht een aparte, duidelijk gemarkeerde beoordeling:
+   - **Opdracht X: [Titel]**
+   - **Beoordeling**: [Onvoldoende / Twijfelachtig / Voldoende / Goed]
+   - **Geschatte A2 Score**: [1 t/m 10]
+   - **Wat ging goed**: Sterke punten.
+   - **Wat kan beter (met concrete voorbeelden)**: Wat kan er beter? Geef voorbeelden uit de tekst van de kandidaat, laat zien wat er fout is en leg uit hoe het gecorrigeerd moet worden.
+   - **Gecorrigeerde tekst**: De volledige tekst voor deze opdracht herschreven in correct Nederlands op A2-niveau.
+3. Sluit af met een motiverende conclusie en eventueel een totaalcijfer (gemiddelde geschatte A2 score).`;
+
+                return promptHeader;
+            }
+
+            const opgaveIndex = parseInt(opgaveVal) - 1;
+            const opg = config.opgaven[opgaveIndex];
             
             let cleanInstructions = opg.instructions.replace(/<[^>]*>/g, '');
             let promptTextClean = opg.promptText ? opg.promptText.replace(/<[^>]*>/g, '') : '';
