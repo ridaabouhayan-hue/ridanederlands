@@ -1689,8 +1689,26 @@
                             <h2 style="margin-bottom: 0;">AI Nakijkrapport</h2>
                             <button class="btn-whatsapp-small" onclick="copyFeedbackToClipboard()">📋 Kopieer Feedback</button>
                         </div>
+                        
+                        <!-- Status Confirmation Badge -->
+                        <div id="nakijk-status-badge" style="background-color: var(--bg-light); border-left: 4px solid var(--gov-gold); padding: 10px 14px; border-radius: 4px; font-size: 0.85rem; font-weight: 700; color: var(--text-dark); line-height: 1.4; display: none;">
+                            <!-- Filled dynamically -->
+                        </div>
+
                         <div id="nakijk-feedback-container" style="font-family: 'Inter', sans-serif; line-height: 1.6; font-size: 0.95rem; display: flex; flex-direction: column; gap: 15px;">
                             <!-- Gemini response will be populated here -->
+                        </div>
+
+                        <!-- Adjustment/Translation input -->
+                        <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                            <label for="nakijk-adjust-instructions" style="font-weight: 800; font-size: 0.95rem; color: var(--gov-blue);">✍️ Feedback aanpassen of vertalen</label>
+                            <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0; font-weight: 600;">Voer hieronder een instructie of taal in (bijv. "Vertaal naar het Arabisch" of "Maak de toon wat enthousiaster").</p>
+                            <div style="display: flex; gap: 8px; align-items: stretch;">
+                                <textarea id="nakijk-adjust-instructions" class="form-input" style="min-height: 50px; font-family: inherit; font-size: 0.92rem; resize: vertical; flex-grow: 1; padding: 8px; border-color: var(--border-color);" placeholder="Bijv. Vertaal naar het Arabisch..."></textarea>
+                                <button class="btn-whatsapp" id="btn-nakijk-adjust" onclick="runFeedbackAdjustmentAI()" style="height: auto; font-weight: 800; background-color: var(--gov-gold); color: var(--gov-blue); border: none; box-shadow: none; padding: 0 20px; transition: opacity 0.2s;">
+                                    Aanpassen ⚡
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -5264,6 +5282,9 @@ ${candidateAnswer}
             const runBtn = document.getElementById('btn-nakijken-run');
             const outputCard = document.getElementById('nakijk-output-card');
             const feedbackContainer = document.getElementById('nakijk-feedback-container');
+            const statusBadge = document.getElementById('nakijk-status-badge');
+            
+            if (statusBadge) statusBadge.style.display = 'none';
             
             runBtn.disabled = true;
             runBtn.innerHTML = "⌛ Beoordelen met Gemini... Een moment geduld...";
@@ -5300,6 +5321,16 @@ ${candidateAnswer}
                     // Save response in a global variable for copying
                     window.currentAIFeedback = responseText;
                     feedbackContainer.innerHTML = formatMarkdown(responseText);
+                    
+                    if (statusBadge) {
+                        statusBadge.style.display = 'block';
+                        statusBadge.style.borderLeftColor = 'var(--gov-gold)';
+                        const taal = document.getElementById('nakijk-taal').value;
+                        const striktheid = document.getElementById('nakijk-striktheid').value;
+                        const opgVal = document.getElementById('nakijk-opgave-select').value;
+                        const opgText = opgVal === 'all' ? 'Bulk Nakijken' : `Opgave ${opgVal}`;
+                        statusBadge.innerHTML = `🇳🇱 <strong>Status:</strong> Originele feedback gegenereerd<br>ℹ️ <strong>Taal:</strong> ${taal} | <strong>Beoordeling:</strong> ${opgText} (${striktheid.split(' ')[0]})`;
+                    }
                 } else {
                     throw new Error("Ongeldig antwoordformaat van Gemini API.");
                 }
@@ -5316,6 +5347,102 @@ ${candidateAnswer}
             .finally(() => {
                 runBtn.disabled = false;
                 runBtn.innerHTML = "🚀 Feedback genereren met Gemini";
+            });
+        }
+
+        function runFeedbackAdjustmentAI() {
+            const instructions = document.getElementById('nakijk-adjust-instructions').value.trim();
+            if (!instructions) {
+                alert("Voer eerst een instructie of taal in het tekstvak in.");
+                return;
+            }
+            
+            const apiKey = document.getElementById('gemini-api-key').value.trim();
+            if (!apiKey) {
+                alert("Voer een Gemini API Key in.");
+                return;
+            }
+            
+            const currentFeedback = window.currentAIFeedback;
+            if (!currentFeedback) {
+                alert("Genereer eerst het initiële nakijkrapport.");
+                return;
+            }
+            
+            const adjustBtn = document.getElementById('btn-nakijk-adjust');
+            const feedbackContainer = document.getElementById('nakijk-feedback-container');
+            const statusBadge = document.getElementById('nakijk-status-badge');
+            
+            adjustBtn.disabled = true;
+            adjustBtn.innerHTML = "⏳ Aanpassen...";
+            
+            const systemPrompt = `Je bent een ervaren NT2 docent. Jouw taak is om de bestaande A2 feedbackbrief aan te passen op basis van de instructies van de docent.
+            
+Hier is de huidige feedbackbrief van de docent voor de cursist:
+"""
+${currentFeedback}
+"""
+
+INSTRUCTIE VAN DE DOCENT VOOR DE AANPASSING:
+"${instructions}"
+
+Richtlijnen:
+1. Als de docent vraagt om te vertalen (bijvoorbeeld: "Vertaal naar het Arabisch" of "Vertaal naar het Dari"):
+   - Vertaal de feedbackbeschrijvingen, de docent-uitleg, de tips en de inleidende/afsluitende zinnen naar de gevraagde doeltaal.
+   - BELANGRIJK: Houd alle originele en gecorrigeerde Nederlandse tekstblokken (zoals de zinnen van de cursist en de perfecte A2-voorbeelden) EXACT in het Nederlands! Vertaal deze dus absoluut niet. Zo kan de cursist zijn eigen Nederlandse zinnen vergelijken met de verbeteringen.
+2. Als de docent vraagt om inhoudelijke aanpassingen (bijvoorbeeld: "maak de toon wat zachter" of "vermeld ook dat de spelling goed was"):
+   - Pas de feedbackbrieven aan om aan deze instructies te voldoen, met behoud van de rest van de structuur.
+3. Behoud de opmaak (sterretjes voor vetgedrukte letters, etc.) zodat het klaar is voor kopiëren naar WhatsApp.
+
+Retourneer de volledige aangepaste feedbackbrief.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: systemPrompt }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.2
+                    }
+                })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`API error: ${res.status} ${res.statusText}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    window.currentAIFeedback = responseText;
+                    
+                    feedbackContainer.innerHTML = formatMarkdown(responseText);
+                    
+                    // Show confirmation/status badge
+                    statusBadge.style.display = 'block';
+                    statusBadge.style.borderLeftColor = 'var(--success-color)';
+                    statusBadge.innerHTML = `✅ <strong>Status:</strong> Feedback succesvol aangepast!<br>ℹ️ <strong>Laatste aanpassing:</strong> "${instructions}"`;
+                    
+                    // Clear the instruction textarea
+                    document.getElementById('nakijk-adjust-instructions').value = '';
+                } else {
+                    throw new Error("Ongeldig antwoordformaat van Gemini API.");
+                }
+            })
+            .catch(err => {
+                console.error("Gemini API Error:", err);
+                alert("Er ging iets fout bij het aanpassen: " + err.message);
+            })
+            .finally(() => {
+                adjustBtn.disabled = false;
+                adjustBtn.innerHTML = "Aanpassen ⚡";
             });
         }
 
