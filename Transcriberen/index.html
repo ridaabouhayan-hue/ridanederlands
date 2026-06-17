@@ -348,8 +348,8 @@
                         <label for="transcriptionEngineSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Transcriptie Engine:</label>
                         <select id="transcriptionEngineSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.8); color: #fff; font-size: 0.8rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
                             <option value="elevenlabs">ElevenLabs Scribe v2 + Gemini (Aanbevolen)</option>
-                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Snel & Goedkoop)</option>
+                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Snel & Goedkoop)</option>
                         </select>
                     </div>
                     <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 4px;">
@@ -1578,7 +1578,7 @@ AANVULLENDE RICHTLIJNEN:
    * Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander — zodat ze niet per ongeluk de foute versie onthouden.
 - ${conversationFormatHelp}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1679,7 +1679,7 @@ RICHTLIJNEN VOOR DE VERTALING:
 BRIEF OM TE VERTAALEN:
 ${activeFb.brief}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -1821,7 +1821,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
   ]
 }`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 const payload = {
                     contents: [{
                         parts: [{ text: systemPrompt }]
@@ -3004,7 +3004,7 @@ BELANGRIJK:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
             const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
-            let model = selectedEngine === 'gemini-2.5-flash' ? 'gemini-2.5-flash' : 'gemini-2.5-pro';
+            let model = selectedEngine === 'gemini-1.5-flash' ? 'gemini-1.5-flash' : 'gemini-1.5-pro';
             let payload = {
                 contents: [{
                     parts: [
@@ -3050,11 +3050,11 @@ BELANGRIJK:
             try {
                 return await makeRequest(model);
             } catch (err) {
-                console.warn(`Genereren met ${model} mislukt, proberen met fallback model gemini-2.5-pro...`, err);
+                console.warn(`Genereren met ${model} mislukt, proberen met fallback model gemini-1.5-pro...`, err);
                 try {
-                    return await makeRequest("gemini-2.5-pro");
+                    return await makeRequest("gemini-1.5-pro");
                 } catch (fallbackErr) {
-                    throw new Error(`Zowel hoofdmodel (${model}: ${err.message || err}) als fallback-model (gemini-2.5-pro: ${fallbackErr.message || fallbackErr}) zijn mislukt.`);
+                    throw new Error(`Zowel hoofdmodel (${model}: ${err.message || err}) als fallback-model (gemini-1.5-pro: ${fallbackErr.message || fallbackErr}) zijn mislukt.`);
                 }
             }
         }

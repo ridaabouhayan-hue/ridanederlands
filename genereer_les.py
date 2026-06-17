@@ -175,8 +175,8 @@ Je MOET je antwoord geven in puur JSON formaat. Geen markdown block (```json), g
 """
 
     models_to_try = [
-        'gemini-2.5-pro',
-        'gemini-2.5-flash',
+        'gemini-1.5-pro',
+        'gemini-1.5-flash',
         'gemini-1.5-pro',
         'gemini-1.5-flash'
     ]
