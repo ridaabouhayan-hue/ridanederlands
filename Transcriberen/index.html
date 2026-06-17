@@ -344,29 +344,62 @@
                     </div>
 
                     <!-- Transcription Engine Selection Panel -->
-                    <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
-                        <label for="transcriptionEngineSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Transcriptie Engine:</label>
-                        <select id="transcriptionEngineSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.8); color: #fff; font-size: 0.8rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
-                            <option value="elevenlabs">ElevenLabs Scribe v2 + Gemini (Aanbevolen)</option>
-                            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Snel & Goedkoop)</option>
-                        </select>
+                    <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em;">Modulaire Stappen:</span>
+                        
+                        <!-- ElevenLabs Step -->
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="elevenlabsEnabledToggle" onchange="toggleElevenlabsEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                                🎙️ ElevenLabs Scribe (Transcript)
+                            </label>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); padding-left: 24px; line-height: 1.3;">Letterlijke transcriptie met sprekersherkenning.</span>
+                        </div>
+                        
+                        <!-- Azure Step -->
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="azureEnabledToggle" onchange="toggleAzureEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                                🎯 Azure Uitspraak-analyse
+                            </label>
+                            <span id="azureToggleHint" style="font-size: 0.7rem; color: var(--text-muted); padding-left: 24px; line-height: 1.3;">Uitspraakscores per klank/woord (werkt i.c.m. ElevenLabs).</span>
+                        </div>
+                        
+                        <!-- LanguageTool Step -->
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="languageToolEnabledToggle" onchange="toggleLanguageToolEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                                📝 LanguageTool Grammatica
+                            </label>
+                            <span id="languageToolToggleHint" style="font-size: 0.7rem; color: var(--text-muted); padding-left: 24px; line-height: 1.3;">Grammatica- en spellingcheck (werkt i.c.m. ElevenLabs).</span>
+                        </div>
+                        
+                        <!-- Gemini Step -->
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="geminiEnabledToggle" onchange="toggleGeminiEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                                ✨ Gemini NT2 Analyse & Brief
+                            </label>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); padding-left: 24px; line-height: 1.3;">Docenten-feedbackbrieven en gedetailleerde grammatica-analyse.</span>
+                            
+                            <!-- Gemini Model Dropdown (Sub-Panel) -->
+                            <div id="geminiModelWrapper" style="padding-left: 24px; display: none; margin-top: 4px;">
+                                <label for="geminiModelSelect" style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Kies Gemini Model:</label>
+                                <select id="geminiModelSelect" onchange="changeGeminiModel(this.value)" style="width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.9); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
+                                    <option value="gemini-2.5-pro">Gemini 2.5 Pro (Aanbevolen)</option>
+                                    <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                                    <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                                    <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro Preview</option>
+                                    <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite</option>
+                                    <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                                    <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</option>
+                                    <option value="gemini-pro-latest">Gemini Pro (Latest)</option>
+                                    <option value="gemini-flash-latest">Gemini Flash (Latest)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 4px;">
-                        <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="azureEnabledToggle" onchange="toggleAzureEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
-                            🎯 Azure uitspraak-analyse
-                        </label>
-                        <span id="azureToggleHint" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4;"></span>
-                    </div>
-                    <div style="padding: 8px 16px 0; display: flex; flex-direction: column; gap: 4px;">
-                        <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="languageToolEnabledToggle" onchange="toggleLanguageToolEnabled(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
-                            📝 LanguageTool grammatica-check
-                        </label>
-                        <span id="languageToolToggleHint" style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.4;"></span>
-                    </div>
-
+                    
                     <!-- Target Language Panel -->
                     <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                         <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
@@ -2013,7 +2046,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 username: localStorage.getItem('user_lt_username') || '',
                 key: localStorage.getItem('user_lt_api_key') || '',
                 // Standaard UIT (anders dan Azure): alleen aan als expliciet op 'true' gezet.
-                enabled: localStorage.getItem('user_lt_enabled') === 'true'
+                enabled: localStorage.getItem('user_lt_enabled') !== 'false'
             };
         }
         function toggleLanguageToolEnabled(on) {
@@ -2684,11 +2717,15 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
                 if (!isProcessingQueue) return;
 
-                const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
+                const elevenlabsEnabled = document.getElementById('elevenlabsEnabledToggle').checked;
+                const azureEnabled = document.getElementById('azureEnabledToggle').checked;
+                const languageToolEnabled = document.getElementById('languageToolEnabledToggle').checked;
+                const geminiEnabled = document.getElementById('geminiEnabledToggle').checked;
+
                 let elevenLabsTranscript = "";
                 let elevenLabsWords = [];
 
-                if (selectedEngine === 'elevenlabs') {
+                if (elevenlabsEnabled) {
                     item.status = 'transcribing (ElevenLabs)...';
                     renderQueue();
                     
@@ -2703,12 +2740,12 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                         console.log("ElevenLabs transcription complete:", elevenLabsTranscript);
                     } catch (elevenErr) {
                         console.error("ElevenLabs-transcriptie mislukt:", elevenErr);
-                        throw new Error("ElevenLabs-transcriptie mislukt, dus de verwerking is gestopt om te voorkomen dat Gemini de tekst gaat verzinnen. Reden: " + (elevenErr.message || elevenErr) + " — Controleer je ElevenLabs-sleutel en tegoed in instellingen (⚙️), of kies tijdelijk een Gemini-engine als je bewust zonder ElevenLabs wilt werken.");
+                        throw new Error("ElevenLabs-transcriptie mislukt, dus de verwerking is gestopt. Reden: " + (elevenErr.message || elevenErr));
                     }
                 }
 
                 let azurePronReport = null;
-                if (selectedEngine === 'elevenlabs' && elevenLabsTranscript && getAzureConfig().enabled) {
+                if (azureEnabled && elevenLabsTranscript) {
                     item.status = 'uitspraak meten (Azure)...';
                     renderQueue();
                     try {
@@ -2719,7 +2756,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 }
 
                 let ltGrammarReport = null;
-                if (selectedEngine === 'elevenlabs' && elevenLabsTranscript && getLanguageToolConfig().enabled) {
+                if (languageToolEnabled && elevenLabsTranscript) {
                     item.status = 'grammatica meten (LanguageTool)...';
                     renderQueue();
                     try {
@@ -2729,31 +2766,41 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     }
                 }
 
-                item.status = 'uploading';
-                item.progress = 0;
-                renderQueue();
-                
-                const apiKey = getApiKey();
-                const uploadInfo = await uploadToGeminiFileApi(fileToUpload, apiKey, (pct) => {
-                    item.progress = pct;
-                    renderQueue();
-                });
-                
-                if (!isProcessingQueue) return;
-
-                item.status = 'transcribing';
-                renderQueue();
-                
-                await pollFileState(uploadInfo.name, apiKey);
-                
-                if (!isProcessingQueue) return;
-
                 const targetLang = document.getElementById('targetLanguageInput').value.trim();
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
                 const azurePronText = azurePronReport ? azurePronReport.text : null;
                 const ltGrammarText = ltGrammarReport ? ltGrammarReport.text : null;
-                const analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronText, ltGrammarText);
+
+                let analysisResult = null;
+                if (geminiEnabled) {
+                    item.status = 'uploading';
+                    item.progress = 0;
+                    renderQueue();
+                    
+                    const apiKey = getApiKey();
+                    const uploadInfo = await uploadToGeminiFileApi(fileToUpload, apiKey, (pct) => {
+                        item.progress = pct;
+                        renderQueue();
+                    });
+                    
+                    if (!isProcessingQueue) return;
+
+                    item.status = 'transcribing';
+                    renderQueue();
+                    
+                    await pollFileState(uploadInfo.name, apiKey);
+                    
+                    if (!isProcessingQueue) return;
+                    
+                    analysisResult = await runTranscription(uploadInfo, item.file.name, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronText, ltGrammarText);
+                } else {
+                    analysisResult = {
+                        gesprek: [],
+                        feedback_brieven: [],
+                        letterlijk_transcript: elevenLabsTranscript || ""
+                    };
+                }
 
                 // Bewaar de ruwe ElevenLabs- en Azure-output zodat je ze los kunt bekijken.
                 if (analysisResult && typeof analysisResult === 'object') {
@@ -3003,8 +3050,7 @@ BELANGRIJK:
 7. MOEDERTAAL EN WA-IMPORT:
    - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
 
-            const selectedEngine = document.getElementById('transcriptionEngineSelect').value;
-            let model = selectedEngine === 'gemini-2.5-flash' ? 'gemini-2.5-flash' : 'gemini-2.5-pro';
+            const model = document.getElementById('geminiModelSelect').value;
             let payload = {
                 contents: [{
                     parts: [
