@@ -1988,8 +1988,8 @@
             }
         }
 
-        // Spawn a rising flame and +1 text at click position
-        function spawnCorrectFlame(event, element) {
+        // Spawn a rising flame and +1 (green) or -5 (red) text at click position
+        function spawnFlameFeedback(event, element, amount) {
             let x, y;
             if (event && event.clientX && event.clientY) {
                 x = event.clientX;
@@ -2012,12 +2012,20 @@
             flame.className = 'floating-flame-emoji';
             flame.textContent = '🔥';
 
-            const plusOne = document.createElement('span');
-            plusOne.className = 'floating-flame-text';
-            plusOne.textContent = '+1';
+            const scoreText = document.createElement('span');
+            scoreText.className = 'floating-flame-text';
+            if (amount > 0) {
+                scoreText.textContent = '+' + amount;
+                scoreText.style.color = '#10b981'; // Green
+                scoreText.style.textShadow = '0 0 10px rgba(16, 185, 129, 0.6), 0 2px 4px rgba(0,0,0,0.5)';
+            } else {
+                scoreText.textContent = amount;
+                scoreText.style.color = '#ef4444'; // Red
+                scoreText.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.6), 0 2px 4px rgba(0,0,0,0.5)';
+            }
 
             container.appendChild(flame);
-            container.appendChild(plusOne);
+            container.appendChild(scoreText);
             document.body.appendChild(container);
 
             setTimeout(() => {
@@ -2072,7 +2080,7 @@
                 nextBtn.focus();
                 
                 // Spawn floating flame at click location
-                spawnCorrectFlame(event, btn);
+                spawnFlameFeedback(event, btn, 1);
                 
                 // Start 15-second automatic progression timer
                 startAutoNextTimer();
@@ -2091,6 +2099,9 @@
                 }
                 
                 updateScore(-5);
+                
+                // Spawn floating penalty flame at click location
+                spawnFlameFeedback(event, btn, -5);
                 
                 feedbackText.innerHTML = `<span style="color:var(--error)">Oeps! Fout.</span><br>Het goede woord is: <strong>${correctText}</strong>`;
                 nextSection.style.display = 'flex';
@@ -2188,7 +2199,7 @@
                 updateScore(1);
                 
                 // Spawn correct flame animation
-                spawnCorrectFlame(event, mole);
+                spawnFlameFeedback(event, mole, 1);
 
                 if (score >= 50) {
                     triggerWin();
@@ -2212,6 +2223,9 @@
                 
                 playSound('incorrect');
                 updateScore(-5);
+
+                // Spawn penalty flame animation
+                spawnFlameFeedback(event, mole, -5);
 
                 // Slide down after 1200ms
                 setTimeout(() => {
@@ -2297,7 +2311,7 @@
                     // Spawn correct flame at the flipped card position
                     const rect = el2.getBoundingClientRect();
                     const fakeEvent = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
-                    spawnCorrectFlame(fakeEvent, el2);
+                    spawnFlameFeedback(fakeEvent, el2, 1);
                     
                     memoFlippedCards = [];
                     memoIsChecking = false;
@@ -2319,6 +2333,11 @@
 
                     // Mismatch penalizes score by -5
                     updateScore(-5);
+
+                    // Spawn penalty flame at the flipped card position
+                    const rect2 = el2.getBoundingClientRect();
+                    const fakeEvent2 = { clientX: rect2.left + rect2.width / 2, clientY: rect2.top + rect2.height / 2 };
+                    spawnFlameFeedback(fakeEvent2, el2, -5);
 
                     memoFlippedCards = [];
                     memoIsChecking = false;
