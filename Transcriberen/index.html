@@ -605,26 +605,24 @@
                 return;
             }
             if (btn) { btn.disabled = true; btn.textContent = 'Bezig...'; }
+            
+            // Sla de sessie op zodat je niet elke keer hoeft in te loggen
+            sessionStorage.setItem('transcriber_auth', '1');
+            
+            // Toon de app direct! Geen vertraging voor de gebruiker
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('appContent').style.display = 'flex';
+            subscribeData();
+            initApp();
+            
             try {
-                // Sla de sessie op zodat je niet elke keer hoeft in te loggen
-                sessionStorage.setItem('transcriber_auth', '1');
                 // Log anoniem in bij Firebase zodat Firestore werkt
-                const currentUser = window.fbAuth.currentUser;
-                if (!currentUser) {
+                const currentUser = window.fbAuth ? window.fbAuth.currentUser : null;
+                if (window.fbAuth && !currentUser) {
                     await window.fbAuth.signInAnonymously();
-                } else {
-                    // Al ingelogd: toon de app direct
-                    document.getElementById('authOverlay').style.display = 'none';
-                    document.getElementById('appContent').style.display = 'flex';
-                    subscribeData();
-                    initApp();
                 }
             } catch (err) {
                 console.warn('Anonieme login mislukt:', err);
-                // Toch doorgaan zonder cloud-sync
-                document.getElementById('authOverlay').style.display = 'none';
-                document.getElementById('appContent').style.display = 'flex';
-                initApp();
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'Inloggen'; }
             }
