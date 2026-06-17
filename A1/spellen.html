@@ -1440,6 +1440,7 @@
         let currentLang = 'en';
         let activeGameType = 'vocab'; // 'vocab', 'gram1', 'gram2'
         let score = 0;
+        let checkpoint = 0; // hoogste bereikte mijlpaal (10/20/30/40); score zakt nooit hieronder
         let currentItem = null;
         let answered = false;
 
@@ -1830,7 +1831,7 @@
                     <strong>Spelregels:</strong>
                     <ul>
                         <li>Elke goede mol geeft <strong>+1 vlam</strong>.</li>
-                        <li>Elke foute mol kost <strong>-5 vlammen</strong>.</li>
+                        <li>Elke foute mol kost <strong>-3 vlammen</strong>.</li>
                         <li>De mollen veranderen regelmatig van positie!</li>
                     </ul>
                     <br>
@@ -1849,7 +1850,7 @@
                     <strong>Spelregels:</strong>
                     <ul>
                         <li>Elk correct paar geeft <strong>+1 vlam</strong>.</li>
-                        <li>Elk foutief paar kost <strong>-5 vlammen</strong>.</li>
+                        <li>Een foutief paar kost <strong>geen vlammen</strong>.</li>
                         <li>Gevonden kaarten blijven openliggen en worden groen.</li>
                         <li>Als alle 8 paren zijn gevonden, start automatisch een nieuwe ronde.</li>
                     </ul>
@@ -1908,10 +1909,16 @@
 
         function getRandomItem() {
             const db = getActiveDatabase();
-            let item;
+            if (db.length <= 1) return db[0];
+            // Use a unique key per item; fall back safely so vocab (no .sentence)
+            // and grammar (no relevant .nl clash) never trigger an endless loop.
+            const keyOf = (it) => it ? (it.sentence || it.nl || JSON.stringify(it)) : null;
+            const prevKey = keyOf(currentItem);
+            let item, tries = 0;
             do {
                 item = db[Math.floor(Math.random() * db.length)];
-            } while (db.length > 1 && currentItem && (item.nl === currentItem.nl || item.sentence === currentItem.sentence));
+                tries++;
+            } while (keyOf(item) === prevKey && tries < 50);
             return item;
         }
 
@@ -2098,10 +2105,10 @@
                     }
                 }
                 
-                updateScore(-5);
+                updateScore(-3);
                 
                 // Spawn floating penalty flame at click location
-                spawnFlameFeedback(event, btn, -5);
+                spawnFlameFeedback(event, btn, -3);
                 
                 feedbackText.innerHTML = `<span style="color:var(--error)">Oeps! Fout.</span><br>Het goede woord is: <strong>${correctText}</strong>`;
                 nextSection.style.display = 'flex';
@@ -2222,10 +2229,10 @@
                 }
                 
                 playSound('incorrect');
-                updateScore(-5);
+                updateScore(-3);
 
                 // Spawn penalty flame animation
-                spawnFlameFeedback(event, mole, -5);
+                spawnFlameFeedback(event, mole, -3);
 
                 // Slide down after 1200ms
                 setTimeout(() => {
@@ -2331,13 +2338,7 @@
                     el2.classList.remove('flipped');
                     playSound('incorrect');
 
-                    // Mismatch penalizes score by -5
-                    updateScore(-5);
-
-                    // Spawn penalty flame at the flipped card position
-                    const rect2 = el2.getBoundingClientRect();
-                    const fakeEvent2 = { clientX: rect2.left + rect2.width / 2, clientY: rect2.top + rect2.height / 2 };
-                    spawnFlameFeedback(fakeEvent2, el2, -5);
+                    // Memory: geen puntenaftrek bij een misser
 
                     memoFlippedCards = [];
                     memoIsChecking = false;
@@ -2347,7 +2348,15 @@
 
         /* --- GENERAL CONTROL FUNCTIONS --- */
         function updateScore(amount) {
-            score = Math.max(0, Math.min(50, score + amount));
+            let next = score + amount;
+            // Checkpoint: bij verlies zak je nooit onder de hoogste bereikte mijlpaal (10/20/30/40)
+            if (amount < 0) {
+                next = Math.max(checkpoint, next);
+            }
+            score = Math.max(0, Math.min(50, next));
+            // Verhoog de checkpoint zodra je een tiental bereikt (max 40; 50 = winst)
+            const reached = Math.min(40, Math.floor(score / 10) * 10);
+            if (reached > checkpoint) checkpoint = reached;
             scoreDisplay.textContent = score;
             scoreProgress.style.width = (score / 50 * 100) + '%';
             updateStepTrack();
@@ -2397,6 +2406,7 @@
 
         function resetGame() {
             score = 0;
+            checkpoint = 0;
             updateScore(0);
             stopConfetti();
             winOverlay.style.display = 'none';
