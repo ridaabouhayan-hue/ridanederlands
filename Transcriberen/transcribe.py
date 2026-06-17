@@ -46,7 +46,7 @@ MAX_ATTEMPTS = 4
 
 # Maximum aantal output-tokens voor Gemini. Hoog genoeg voor lange gesprekken met
 # twee sprekers (volledige transcriptie + twee brieven) zodat de JSON niet afkapt.
-GEMINI_MAX_OUTPUT_TOKENS = 32768
+GEMINI_MAX_OUTPUT_TOKENS = 8192
 
 # ---------------------------------------------------------------------
 # OPTIONELE EXTRA ANALYSELAGEN (standaard UIT). Zet op True zodra de
