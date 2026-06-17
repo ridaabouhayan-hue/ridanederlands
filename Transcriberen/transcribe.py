@@ -29,11 +29,11 @@ from google import genai
 # Vereist een geldige sleutel in API_ELEVENLABS.txt in de hoofdmap.
 TRANSCRIPTION_SERVICE = "elevenlabs"
 
-# Model selectie voor Gemini (bijv. "gemini-1.5-pro" of "gemini-1.5-flash")
-# "gemini-1.5-pro" wordt sterk aanbevolen voor maximale nauwkeurigheid en correcte klankweergave.
-GEMINI_MODEL = "gemini-1.5-pro"
+# Model selectie voor Gemini (bijv. "gemini-2.5-pro" of "gemini-2.5-flash")
+# "gemini-2.5-pro" wordt sterk aanbevolen voor maximale nauwkeurigheid en correcte klankweergave.
+GEMINI_MODEL = "gemini-2.5-pro"
 # Fallback-model als GEMINI_MODEL niet beschikbaar is op deze API-sleutel (404).
-GEMINI_FALLBACK_MODEL = "gemini-1.5-flash"
+GEMINI_FALLBACK_MODEL = "gemini-2.5-flash"
 
 # ElevenLabs Speech-to-Text model id. Pas dit aan als jouw account een ander
 # model gebruikt (scribe_v2 is in 2026 het actuele model; scribe_v1 is deprecated).
