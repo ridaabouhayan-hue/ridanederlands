@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grote Grammatica Checklist & Zinnenbouwer — NT2</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f1729;
+            --bg-card: #182040;
+            --bg-card-light: #222b54;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #e67e22;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(148, 163, 184, 0.1);
+            --radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(ellipse at 10% 10%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 90%, rgba(230, 126, 34, 0.06) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Back button */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-3px);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+
+        /* Progress Bar Card */
+        .progress-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-green));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Grid */
+        .checklist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Checklist Item */
+        .checklist-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .checklist-checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4px;
+        }
+
+        .checklist-checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--text-secondary);
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist-checkbox:checked {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .checklist-checkbox:checked::after {
+            content: '✓';
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 900;
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .checklist-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .checklist-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .example-badge {
+            display: inline-block;
+            background: rgba(230, 126, 34, 0.12);
+            color: var(--accent-orange);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+        }
+
+        .lang-switch-inline {
+            display: flex;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .lang-switch-btn {
+            cursor: pointer;
+            font-weight: 800;
+            text-decoration: underline;
+        }
+        .lang-switch-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* ── SECTION ZINNENBOUWER ── */
+        .builder-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-top: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
+        .builder-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .builder-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .challenge-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-btn {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-card-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .challenge-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .challenge-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: var(--text-primary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+        }
+
+        .workspace {
+            background: var(--bg-dark);
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px dashed rgba(148, 163, 184, 0.2);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .workspace-placeholder {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .workspace-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .word-bank {
+            background: var(--bg-card-light);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bank-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .word-chip {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s;
+        }
+
+        .word-chip:hover {
+            border-color: var(--accent-blue);
+            transform: scale(1.03);
+            background: var(--bg-card-light);
+        }
+
+        .word-chip.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 10px 22px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            color: var(--text-primary);
+            background: rgba(148, 163, 184, 0.15);
+        }
+
+        .builder-feedback {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .builder-feedback.correct {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .builder-feedback.incorrect {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .speech-btn-inline {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-wrap: nowrap;
+            }
+            .challenge-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- TERUG LINK -->
+    <a href="index.html" class="back-link">← Terug naar Hoofdmenu</a>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📋 Grote Grammatica Checklist</h1>
+        <p>Volg je voortgang door alle 30 grammaticasystemen van de lesmethode af te vinken. Gebruik onderaan de zinnenbouwer om te oefenen!</p>
+    </div>
+
+    <!-- PROGRESS CARD -->
+    <div class="progress-card">
+        <div class="progress-info">
+            <span>Mijn Voortgang</span>
+            <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); text-align: right; font-weight: 600;">
+            <span id="completed-count">0</span> van de 30 onderwerpen beheerst
+        </div>
+    </div>
+
+    <!-- CATEGORY TABS -->
+    <div class="tabs" id="category-tabs">
+        <button class="tab-btn active" onclick="switchCategory('all')">Alles tonen</button>
+        <button class="tab-btn" onclick="switchCategory('cat1')">Tegenwoordige Tijd</button>
+        <button class="tab-btn" onclick="switchCategory('cat2')">Zinsbouw & Pronomen</button>
+        <button class="tab-btn" onclick="switchCategory('cat3')">Nouns & Modals</button>
+        <button class="tab-btn" onclick="switchCategory('cat4')">Voegwoorden & Verwijswoorden</button>
+        <button class="tab-btn" onclick="switchCategory('cat5')">Bijzinnen</button>
+        <button class="tab-btn" onclick="switchCategory('cat6')">Perfectum</button>
+    </div>
+
+    <!-- CHECKLIST GRID -->
+    <div class="checklist-grid" id="checklist-container">
+        <!-- Rendered dynamically by JS -->
+    </div>
+
+    <!-- ── INTERACTIEVE ZINNENBOUWER ── -->
+    <div class="builder-section">
+        <div class="builder-title">
+            <span>🏗️ Interactieve Zinnenbouwer</span>
+        </div>
+        <p class="builder-desc">
+            Combineer de verschillende grammaticasystemen! Selecteer hieronder een uitdaging en sleep of klik de woorden in de juiste volgorde om de zin te bouwen.
+        </p>
+
+        <!-- CHALLENGE SELECTOR TABS -->
+        <div class="challenge-tabs">
+            <button class="challenge-btn active" onclick="loadChallenge(0)">Uitdaging 1: Inversie + Modaal + Scheidbaar</button>
+            <button class="challenge-btn" onclick="loadChallenge(1)">Uitdaging 2: Voegwoord (want) + Ontkenning (niet)</button>
+            <button class="challenge-btn" onclick="loadChallenge(2)">Uitdaging 3: Bijzin (omdat) + Voltooide Tijd (met zijn)</button>
+        </div>
+
+        <!-- WORKSPACE (ZIN BOUWEN) -->
+        <div class="workspace" id="workspace">
+            <div class="workspace-placeholder" id="workspace-placeholder">⬇ Klik op de woorden hieronder om je zin te bouwen</div>
+            <div class="workspace-chips" id="workspace-chips"></div>
+        </div>
+
+        <!-- WORD BANK -->
+        <div class="word-bank">
+            <div class="bank-title">Beschikbare woorden</div>
+            <div class="bank-chips" id="bank-chips"></div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="control-row">
+            <button class="btn-action btn-secondary" onclick="resetWorkspace()">Opnieuw</button>
+            <button class="btn-action btn-primary" onclick="checkBuilderAnswer()">Controleer Zin</button>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div class="builder-feedback" id="builder-feedback"></div>
+    </div>
+
+</div>
+
+<!-- DATA AND SCRIPT LOGIC -->
+<script>
+    // 30 Grammar topics
+    const grammarTopics = [
+        // Categorie 1
+        { id: 1, cat: 'cat1', title: 'Tegenwoordige tijd enkelvoud', desc_nl: 'De stam + t bij jij, u, hij, zij, het (ik = stam).', desc_en: 'Present tense singular (stem + t, except for ik).', desc_pl: 'Czas teraźniejszy l. pojedyncza (temat + t, oprócz ik).', ex: 'Ik werk, hij werkt.' },
+        { id: 2, cat: 'cat1', title: 'Onderwerp enkelvoud', desc_nl: 'Het enkelvoudig onderwerp (ik, jij, hij, het boek) bepaalt de vorm van het werkwoord.', desc_en: 'Singular subject determines singular verb form.', desc_pl: 'Podmiot w liczbie pojedynczej określa formę czasownika.', ex: 'De man loopt op straat.' },
+        { id: 3, cat: 'cat1', title: 'Tegenwoordige tijd enkelvoud en meervoud', desc_nl: 'In het meervoud (wij, jullie, zij) is het werkwoord het hele werkwoord.', desc_en: 'Present tense plural uses the infinitive form.', desc_pl: 'Liczba mnoga w czasie teraźniejszym używa bezokolicznika.', ex: 'Wij werken vandaag.' },
+        { id: 4, cat: 'cat1', title: 'Onderwerp enkelvoud en meervoud', desc_nl: 'Het verschil herkennen tussen één of meer onderwerpen in de zin.', desc_en: 'Differentiating between singular and plural subjects.', desc_pl: 'Rozróżnianie podmiotu w liczbie pojedynczej i mnogiej.', ex: 'De baby slaapt / De baby\'s slapen.' },
+        { id: 5, cat: 'cat1', title: 'Hebben en zijn', desc_nl: 'De onregelmatige maar onmisbare werkwoorden hebben en zijn vervoegen.', desc_en: 'Conjugating the irregular auxiliary verbs hebben and zijn.', desc_pl: 'Odmiana nieregularnych czasowników pomocniczych hebben i zijn.', ex: 'Ik heb een kat. Zij is blij.' },
+        
+        // Categorie 2
+        { id: 6, cat: 'cat2', title: 'Zinsbouw: hoofdzin', desc_nl: 'Het werkwoord staat op positie 2 (Subject - Verb - rest).', desc_en: 'Main clause word order: Subject + Verb on position 2.', desc_pl: 'Szyk zdania głównego: Podmiot + Czasownik na 2. pozycji.', ex: 'Ik leer vandaag Nederlands.' },
+        { id: 7, cat: 'cat2', title: 'Bezittelijk voornaamwoord', desc_nl: 'Mijn, jouw, zijn, haar, ons/onze, jullie, hun.', desc_en: 'Possessive pronouns: my, your, his, her, our, their.', desc_pl: 'Zaimki dzierżawcze: mój, twój, jego, jej, nasz, ich.', ex: 'Dit is mijn boek en dat is haar tas.' },
+        { id: 8, cat: 'cat2', title: 'Vraagzinnen', desc_nl: 'Vraagzinnen met een vraagwoord (wie, wat, hoe) of ja/nee-vragen (inversie).', desc_en: 'Question sentences: using question words or yes/no questions.', desc_pl: 'Zdania pytające: z zaimkiem pytajnym lub pytania tak/nie.', ex: 'Waar woon je? / Werk je vandaag?' },
+        { id: 9, cat: 'cat2', title: 'Persoonlijk voornaamwoord: lijdend voorwerp / na voorzetsel', desc_nl: 'Mij, jou, hem, haar, ons, jullie, hen/hun.', desc_en: 'Object pronouns: me, you, him, her, us, them.', desc_pl: 'Zaimki osobowe w bierniku i po przyimkach: mnie, ciebie, jego, ją, nas.', ex: 'Ik zie hem. Zij praat met ons.' },
+        { id: 10, cat: 'cat2', title: 'Zinsbouw: normale hoofdzin / hoofdzin met inversie', desc_nl: 'Als Tijd of Plaats vooraan staat, wisselen onderwerp en werkwoord van plek.', desc_en: 'Inversion: when Time or Place starts the sentence, Subject and Verb swap.', desc_pl: 'Inwersja: gdy Czas lub Miejsce zaczyna zdanie, Podmiot i Czasownik zamieniają się miejscami.', ex: 'Morgen werk ik thuis.' },
+
+        // Categorie 3
+        { id: 11, cat: 'cat3', title: 'Zelfstandig naamwoord enkelvoud en meervoud', desc_nl: 'Meervoud maken met -en of -s.', desc_en: 'Forming plurals of nouns with endings -en or -s.', desc_pl: 'Tworzenie liczby mnogiej rzeczowników z końcówkami -en lub -s.', ex: 'Boek &rarr; boeken, Tafel &rarr; tafels.' },
+        { id: 12, cat: 'cat3', title: 'Lidwoorden: de / het / een', desc_nl: 'De-woorden, Het-woorden en het onbepaalde lidwoord een.', desc_en: 'Definite articles (de/het) and indefinite article (een).', desc_pl: 'Przedimki określone (de/het) i nieokreślone (een).', ex: 'De man, het kind, een boom.' },
+        { id: 13, cat: 'cat3', title: 'Ontkenning: niet / geen', desc_nl: 'Geen voor een onbepaald ding (een/geen lidwoord), niet voor de rest.', desc_en: 'Geen for indefinite nouns (een/no article), niet for verbs, adjectives, definite nouns.', desc_pl: 'Geen dla rzeczowników nieokreślonych, niet dla czasowników, przymiotników, określonych rzeczowników.', ex: 'Ik heb geen auto. Ik werk niet.' },
+        { id: 14, cat: 'cat3', title: 'Hulpwerkwoorden: kunnen, willen, moeten, mogen, zullen', desc_nl: 'Modale hulpwerkwoorden vervoegen + hoofdwerkwoord helemaal achteraan.', desc_en: 'Modal verbs conjugation + main verb goes to the end of the sentence.', desc_pl: 'Czasowniki modalne + główny czasownik na samym końcu zdania.', ex: 'Ik moet morgen werken.' },
+        { id: 15, cat: 'cat3', title: 'Bijvoeglijk naamwoord', desc_nl: 'Met of zonder -e (een mooi boek / het mooie boek).', desc_en: 'Adjective endings with or without -e depending on gender and article.', desc_pl: 'Przymiotnik z końcówką -e lub bez (w zależności od rodzaju i przedimka).', ex: 'Een grote auto / een groot huis.' },
+
+        // Categorie 4
+        { id: 16, cat: 'cat4', title: 'Er / hier / daar: plaats', desc_nl: 'Gebruik van er/hier/daar om een locatie aan te duiden.', desc_en: 'Using er/hier/daar to refer to locations.', desc_pl: 'Używanie er/hier/daar do odwoływania się do miejsc.', ex: 'Ik woon er. Kom hier!' },
+        { id: 17, cat: 'cat4', title: 'Herhaling voornaamwoorden', desc_nl: 'Overzicht en training van alle pronomen (subject, object, bezittelijk).', desc_en: 'Review of all pronouns (subject, object, possessive).', desc_pl: 'Przegląd wszystkich zaimków (podmiotowe, dopełnieniowe, dzierżawcze).', ex: 'Zij geeft haar jas aan mij.' },
+        { id: 18, cat: 'cat4', title: 'Zinsbouw: hoofdzin + hoofdzin', desc_nl: 'Twee hoofdzinnen koppelen met voegwoorden (en, of, maar, want, dus).', desc_en: 'Linking two main clauses. S-V order remains in both.', desc_pl: 'Łączenie dwóch zdań głównych. Szyk S-V pozostaje bez zmian w obu.', ex: 'Ik ben moe, want ik heb gewerkt.' },
+        { id: 19, cat: 'cat4', title: 'Voegwoorden met hoofdzin: en, of, maar, want, dus', desc_nl: 'Kiezen van het juiste nevenschikkende voegwoord.', desc_en: 'Choosing the correct coordinating conjunction.', desc_pl: 'Wybór odpowiedniego spójnika współrzędnego.', ex: 'Zij wil koffie en hij wil thee.' },
+        { id: 20, cat: 'cat4', title: 'Verwijswoorden voor dingen', desc_nl: 'Deze / die voor de-woorden, dit / dat voor het-woorden.', desc_en: 'Demonstrative pronouns: deze/die for de-words, dit/dat for het-words.', desc_pl: 'Zaimki wskazujące dla rzeczy: deze/die (rodzaj de), dit/dat (rodzaj het).', ex: 'Deze man en dit kind.' },
+
+        // Categorie 5
+        { id: 21, cat: 'cat5', title: 'Zinsbouw: hoofdzin + bijzin', desc_nl: 'In de bijzin staan alle werkwoorden helemaal achteraan.', desc_en: 'Main clause + subclause. In subclauses, all verbs go to the very end.', desc_pl: 'Zdanie główne + podrzędne. W zdaniu podrzędnym wszystkie czasowniki idą na sam koniec.', ex: 'Ik blijf thuis omdat ik ziek ben.' },
+        { id: 22, cat: 'cat5', title: 'Voegwoorden met bijzin: omdat, als, dat', desc_nl: 'Onderscheid maken en zinnen bouwen met subordinerende voegwoorden.', desc_en: 'Subordinating conjunctions that push verbs to the end.', desc_pl: 'Spójniki podrzędne, które spychają czasowniki na koniec zdania.', ex: 'Als het regent, blijf ik binnen.' },
+        { id: 23, cat: 'cat5', title: 'Vergelijking: vergrotende en overtreffende trap', desc_nl: 'Groot - groter - grootst (dan / als).', desc_en: 'Comparatives and superlatives (more/most).', desc_pl: 'Stopniowanie przymiotników (wyższy, najwyższy).', ex: 'Een auto is sneller dan een fiets.' },
+        { id: 24, cat: 'cat5', title: 'Imperatief (instructie geven)', desc_nl: 'Gebiedende wijs: alleen de stam van het werkwoord zonder onderwerp.', desc_en: 'Imperatives: using only the verb stem, no subject pronoun.', desc_pl: 'Tryb rozkazujący: użycie tylko tematu czasownika, bez zaimka osobowego.', ex: 'Sta op! Werk door!' },
+
+        // Categorie 6
+        { id: 25, cat: 'cat6', title: 'Introductie voltooide tijd', desc_nl: 'Hebben/zijn + ge- + stam + t/d (Perfectum).', desc_en: 'Introduction to present perfect tense (auxiliary + ge-participle).', desc_pl: 'Wprowadzenie do czasu przeszłego dokonanego (Perfectum).', ex: 'Ik heb een pizza gegeten.' },
+        { id: 26, cat: 'cat6', title: 'Herhaling er / daar = plaats', desc_nl: 'Verdieping en opfrissing van de plaats-functie van er.', desc_en: 'Deepening and review of er/daar for places.', desc_pl: 'Powtórzenie funkcji miejsca słówka er.', ex: 'Zij is er al.' },
+        { id: 27, cat: 'cat6', title: 'Introductie er + telwoord', desc_nl: 'Gebruik van er bij getallen om herhaling te voorkomen.', desc_en: 'Using er with numbers (e.g. Ik heb er twee).', desc_pl: 'Używanie er z liczbami, aby uniknąć powtarzania.', ex: 'Ik koop er vier.' },
+        { id: 28, cat: 'cat6', title: 'Voltooide tijd 2: met zijn en zonder ge-', desc_nl: 'Werkwoorden van beweging/verandering met zijn. Werkwoorden met be-/ver-/ont- krijgen geen ge-.', desc_en: 'Perfect tense 2: verbs of movement/change with zijn. Verbs starting with prefixes be-/ver-/ont- do not get ge-.', desc_pl: 'Perfectum 2: z zijn przy zmianie stanu/miejsca. Czasowniki z przedrostkami be-/ver-/ont- nie otrzymują ge-.', ex: 'Ik ben gekomen. Ik heb het betaald.' },
+        { id: 29, cat: 'cat6', title: 'Scheidbare werkwoorden', desc_nl: 'Opstaan &rarr; ik sta op (pres) / ik ben opgestaan (perf).', desc_en: 'Separable verbs in present (ik sta op) and perfect (opgestaan).', desc_pl: 'Czasowniki rozdzielnie złożone w czasie teraźniejszym (ik sta op) i przeszłym (opgestaan).', ex: 'Ik was de auto af.' },
+        { id: 30, cat: 'cat6', title: 'Herhaling voltooide tijd', desc_nl: 'Grote herhaling en mix van regelmatige en onregelmatige voltooide tijden.', desc_en: 'Comprehensive review and mix of regular/irregular participles.', desc_pl: 'Kompleksowe powtórzenie regularnych i nieregularnych form czasu przeszłego.', ex: 'We hebben veel gesproken.' }
+    ];
+
+    // Sentence builder challenges
+    const builderChallenges = [
+        {
+            words: ["Morgen", "moet", "ik", "vroeg", "opstaan"],
+            extra: ["op staat", "ik moet", "moet ik"],
+            correct: "Morgen moet ik vroeg opstaan",
+            explanation: {
+                nl: "Tijd ('Morgen') staat op 1 &rarr; Inversie: hulpwerkwoord ('moet') op 2, onderwerp ('ik') op 3. Het scheidbare werkwoord ('opstaan') staat als hele werkwoord achteraan.",
+                en: "Time ('Morgen') in pos 1 &rarr; Inversion: modal verb ('moet') in pos 2, subject ('ik') in pos 3. The separable main verb ('opstaan') goes to the end as infinitive."
+            }
+        },
+        {
+            words: ["Ik", "koop", "het boek", "niet", "want", "het", "is", "te duur"],
+            extra: ["geen", "omdat", "is het"],
+            correct: "Ik koop het boek niet want het is te duur", // will ignore commas in checks
+            explanation: {
+                nl: "De ontkenning 'niet' staat na het specifieke object 'het boek'. 'Want' verbindt twee hoofdzinnen, dus na 'want' volgt de normale volgorde: onderwerp ('het') + werkwoord ('is').",
+                en: "The negation 'niet' goes after the specific object 'het boek'. 'Want' connects two main clauses, so it is followed by normal Subject-Verb order: subject ('het') + verb ('is')."
+            }
+        },
+        {
+            words: ["Ik", "ben", "moe", "omdat", "ik", "naar Amsterdam", "ben", "gefietst"],
+            extra: ["heb", "gefietst ben"], // we allow variations via check logic
+            correct: "Ik ben moe omdat ik naar Amsterdam ben gefietst",
+            alternative: "Ik ben moe omdat ik naar Amsterdam gefietst ben",
+            explanation: {
+                nl: "'Omdat' start een bijzin, dus alle werkwoorden gaan naar het einde van de zin ('ben gefietst' of 'gefietst ben'). 'Fietsen' krijgt 'zijn' ('ben') omdat het een beweging naar een bestemming is.",
+                en: "'Omdat' starts a subclause, meaning all verbs go to the end of the sentence ('ben gefietst' or 'gefietst ben'). 'Fietsen' uses 'zijn' ('ben') because it expresses movement towards a specific destination."
+            }
+        }
+    ];
+
+    let activeChallengeIndex = 0;
+    let selectedWords = [];
+    let currentCategoryFilter = 'all';
+    let currentLang = 'nl'; // internal translation state for list item details
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadChecklistState();
+        renderChecklist();
+        loadChallenge(0);
+    });
+
+    // RENDER CHECKLIST
+    function renderChecklist() {
+        const container = document.getElementById('checklist-container');
+        container.innerHTML = '';
+
+        const filtered = grammarTopics.filter(t => currentCategoryFilter === 'all' || t.cat === currentCategoryFilter);
+
+        filtered.forEach(topic => {
+            const isCompleted = localStorage.getItem(`topic_${topic.id}`) === 'true';
+
+            const card = document.createElement('div');
+            card.className = 'checklist-item';
+            card.id = `item-${topic.id}`;
+
+            card.innerHTML = `
+                <div class="checklist-checkbox-wrapper">
+                    <input type="checkbox" class="checklist-checkbox" id="check-${topic.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTopic(${topic.id})">
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-title-row">
+                        <span class="checklist-title">${topic.id}. ${topic.title}</span>
+                        <span class="example-badge">Bijv: ${topic.ex}</span>
+                    </div>
+                    <div class="checklist-desc" id="desc-${topic.id}" data-nl="${topic.desc_nl}" data-en="${topic.desc_en}" data-pl="${topic.desc_pl}">
+                        ${topic.desc_nl}
+                    </div>
+                    <div class="lang-switch-inline">
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'nl')">Nederlands</span> · 
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'en')">🇬🇧 English</span> · 
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'pl')">🇵🇱 Polski</span>
+                        <button class="speech-btn-inline" onclick="speakText('${topic.ex.replace(/&rarr;/g, ' ')}')">🔊</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        updateProgressBar();
+    }
+
+    function setListItemLang(id, lang) {
+        const descDiv = document.getElementById(`desc-${id}`);
+        if (!descDiv) return;
+        const translation = descDiv.getAttribute('data-' + lang);
+        if (translation) {
+            descDiv.innerHTML = translation;
+        }
+    }
+
+    function switchCategory(cat) {
+        currentCategoryFilter = cat;
+        document.querySelectorAll('#category-tabs .tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Mark active button
+        const clickedBtn = Array.from(document.querySelectorAll('#category-tabs .tab-btn')).find(btn => 
+            btn.getAttribute('onclick').includes(`'${cat}'`)
+        );
+        if (clickedBtn) clickedBtn.classList.add('active');
+
+        renderChecklist();
+    }
+
+    function toggleTopic(id) {
+        const checkbox = document.getElementById(`check-${id}`);
+        localStorage.setItem(`topic_${id}`, checkbox.checked ? 'true' : 'false');
+        updateProgressBar();
+    }
+
+    function loadChecklistState() {
+        // Just loads from localStorage inside renderChecklist
+    }
+
+    function updateProgressBar() {
+        let completed = 0;
+        grammarTopics.forEach(t => {
+            if (localStorage.getItem(`topic_${t.id}`) === 'true') {
+                completed++;
+            }
+        });
+
+        const percent = Math.round((completed / grammarTopics.length) * 100);
+        document.getElementById('progress-bar').style.width = percent + '%';
+        document.getElementById('progress-percent').textContent = percent + '%';
+        document.getElementById('completed-count').textContent = completed;
+    }
+
+    // ── BUILDER LOGIC ──
+    function loadChallenge(index) {
+        activeChallengeIndex = index;
+        selectedWords = [];
+        
+        document.querySelectorAll('.challenge-tabs .challenge-btn').forEach((btn, idx) => {
+            if (idx === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        // Hide feedback
+        const fb = document.getElementById('builder-feedback');
+        fb.style.display = 'none';
+
+        // Set up workspace & bank
+        const challenge = builderChallenges[index];
+        const allWords = [...challenge.words, ...challenge.extra];
+        
+        // Shuffle the bank
+        shuffle(allWords);
+
+        // Render Bank Chips
+        const bankContainer = document.getElementById('bank-chips');
+        bankContainer.innerHTML = '';
+        allWords.forEach((word, wordIndex) => {
+            const chip = document.createElement('div');
+            chip.className = 'word-chip';
+            chip.textContent = word;
+            chip.id = `chip-bank-${wordIndex}`;
+            chip.onclick = () => addWordToWorkspace(word, `chip-bank-${wordIndex}`);
+            bankContainer.appendChild(chip);
+        });
+
+        updateWorkspaceUI();
+    }
+
+    function addWordToWorkspace(word, chipId) {
+        const chip = document.getElementById(chipId);
+        if (chip.classList.contains('used')) return;
+
+        chip.classList.add('used');
+        selectedWords.push({ word: word, sourceId: chipId });
+        
+        updateWorkspaceUI();
+    }
+
+    function removeWordFromWorkspace(index) {
+        const item = selectedWords[index];
+        const chip = document.getElementById(item.sourceId);
+        if (chip) chip.classList.remove('used');
+
+        selectedWords.splice(index, 1);
+        updateWorkspaceUI();
+    }
+
+    function updateWorkspaceUI() {
+        const container = document.getElementById('workspace-chips');
+        const placeholder = document.getElementById('workspace-placeholder');
+
+        container.innerHTML = '';
+        if (selectedWords.length === 0) {
+            placeholder.style.display = 'block';
+        } else {
+            placeholder.style.display = 'none';
+            selectedWords.forEach((item, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'word-chip';
+                chip.style.borderColor = 'var(--accent-blue)';
+                chip.textContent = item.word;
+                chip.onclick = () => removeWordFromWorkspace(index);
+                container.appendChild(chip);
+            });
+        }
+    }
+
+    function resetWorkspace() {
+        loadChallenge(activeChallengeIndex);
+    }
+
+    function checkBuilderAnswer() {
+        const attempt = selectedWords.map(item => item.word).join(' ').replace(/,/g, '').trim().toLowerCase();
+        const challenge = builderChallenges[activeChallengeIndex];
+        const correct = challenge.correct.replace(/,/g, '').trim().toLowerCase();
+        const alternative = challenge.alternative ? challenge.alternative.replace(/,/g, '').trim().toLowerCase() : null;
+
+        const fb = document.getElementById('builder-feedback');
+
+        if (attempt === correct || (alternative && attempt === alternative)) {
+            fb.className = 'builder-feedback correct';
+            fb.innerHTML = `🎉 Goed gedaan! Dit is de correcte zin.<br><br><strong>Uitleg:</strong> ${challenge.explanation.nl}<br><button class="speech-btn-inline" onclick="speakText('${challenge.correct}')" style="margin-top: 10px; font-size:1rem; cursor:pointer;">🔊 Beluister de zin</button>`;
+        } else {
+            fb.className = 'builder-feedback incorrect';
+            fb.innerHTML = `❌ Helaas, dat is niet de juiste woordvolgorde. Probeer het opnieuw!`;
+        }
+    }
+
+    // Speak helper
+    function speakText(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.88;
+        window.speechSynthesis.speak(u);
+    }
+
+    // Helper functions
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+</script>
+
+</body>
+</html>
