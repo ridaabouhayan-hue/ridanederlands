@@ -625,6 +625,19 @@
 
         const norm = s => String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
 
+        // Algemene volgorde-uitlijning (LCS) tussen twee woordreeksen. Robuust en monotoon.
+        const alignLCS = (A, B, onMatch) => {
+            const n = A.length, m = B.length;
+            if (!n || !m) return;
+            const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+            for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = (A[i] === B[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+            let i = 0, j = 0;
+            while (i < n && j < m) {
+                if (A[i] === B[j]) { onMatch(i, j); i++; j++; }
+                else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++;
+            }
+        };
+
         function levenshtein(a, b) {
             const tmp = [];
             for (let i = 0; i <= a.length; i++) {
@@ -2052,18 +2065,7 @@
                 c.appendChild(wrap);
             }
 
-            // Algemene volgorde-uitlijning (LCS) tussen twee woordreeksen. Robuust en monotoon.
-            const alignLCS = (A, B, onMatch) => {
-                const n = A.length, m = B.length;
-                if (!n || !m) return;
-                const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
-                for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = (A[i] === B[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
-                let i = 0, j = 0;
-                while (i < n && j < m) {
-                    if (A[i] === B[j]) { onMatch(i, j); i++; j++; }
-                    else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++;
-                }
-            };
+
 
             // ===== NIEUW: per spreker en per zin, met de Azure-woordscores en tijdstempels erop gekoppeld =====
             if (gesprek.length) {
