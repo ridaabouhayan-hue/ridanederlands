@@ -2398,6 +2398,43 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
         }
         window.addEventListener('DOMContentLoaded', updateAzureToggleUI);
 
+        // ── ELEVENLABS AAN/UIT (standaard AAN) ──
+        function toggleElevenlabsEnabled(on) {
+            localStorage.setItem('user_elevenlabs_enabled', on ? 'true' : 'false');
+            updateElevenlabsToggleUI();
+        }
+        function isElevenlabsEnabled() {
+            // Standaard AAN: alleen UIT als de gebruiker het expliciet heeft uitgezet
+            return localStorage.getItem('user_elevenlabs_enabled') !== 'false';
+        }
+        function updateElevenlabsToggleUI() {
+            const cb = document.getElementById('elevenlabsEnabledToggle');
+            if (cb) cb.checked = isElevenlabsEnabled();
+        }
+        window.addEventListener('DOMContentLoaded', updateElevenlabsToggleUI);
+
+        // ── GEMINI AAN/UIT (standaard AAN) ──
+        function toggleGeminiEnabled(on) {
+            localStorage.setItem('user_gemini_enabled', on ? 'true' : 'false');
+            updateGeminiToggleUI();
+        }
+        function isGeminiEnabled() {
+            // Standaard AAN: alleen UIT als de gebruiker het expliciet heeft uitgezet
+            return localStorage.getItem('user_gemini_enabled') !== 'false';
+        }
+        function updateGeminiToggleUI() {
+            const cb = document.getElementById('geminiEnabledToggle');
+            if (cb) cb.checked = isGeminiEnabled();
+            const wrapper = document.getElementById('geminiModelWrapper');
+            if (wrapper) wrapper.style.display = isGeminiEnabled() ? 'block' : 'none';
+        }
+        window.addEventListener('DOMContentLoaded', updateGeminiToggleUI);
+
+        // ── GEMINI MODEL WISSELEN ──
+        function changeGeminiModel(val) {
+            if (val) localStorage.setItem('user_gemini_model', val);
+        }
+
         // ── LANGUAGETOOL GRAMMATICA-CHECK (optionele, regelgebaseerde laag) ──
         // Spiegelt de Azure-opzet: sleutel in instellingen, aan/uit-schakelaar links.
         // BELANGRIJK: standaard UIT. Zonder sleutel of met de schakelaar uit verandert
@@ -3078,10 +3115,10 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
                 if (!isProcessingQueue) return;
 
-                const elevenlabsEnabled = document.getElementById('elevenlabsEnabledToggle').checked;
+                const elevenlabsEnabled = isElevenlabsEnabled();
                 const azureEnabled = document.getElementById('azureEnabledToggle').checked;
                 const languageToolEnabled = document.getElementById('languageToolEnabledToggle').checked;
-                const geminiEnabled = document.getElementById('geminiEnabledToggle').checked;
+                const geminiEnabled = isGeminiEnabled();
 
                 let elevenLabsTranscript = "";
                 let elevenLabsWords = [];
