@@ -429,6 +429,22 @@
                         </div>
                     </div>
                     
+                    <!-- Spreker Namen Panel -->
+                    <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Sprekers (vul in na transcriptie):</span>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 0.72rem; font-weight: 700; color: var(--accent); min-width: 54px;">Spreker 1:</span>
+                                <input type="text" id="spreker1Input" placeholder="Naam bijv. Ali" oninput="updateSprekerName(0, this.value)" style="flex:1; padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; transition: var(--transition);">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 0.72rem; font-weight: 700; color: #10b981; min-width: 54px;">Spreker 2:</span>
+                                <input type="text" id="spreker2Input" placeholder="Naam bijv. Sara" oninput="updateSprekerName(1, this.value)" style="flex:1; padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; transition: var(--transition);">
+                            </div>
+                        </div>
+                        <span style="font-size: 0.68rem; color: var(--text-muted); line-height: 1.4;">Worden automatisch gevuld vanuit de audio. Pas aan als nodig — Gemini gebruikt deze namen voor de feedbackbrief.</span>
+                    </div>
+
                     <!-- Target Language Panel -->
                     <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                         <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
@@ -593,6 +609,38 @@
         let _dataSubscribed = false;
         const TOEGANG_CODE = 'qwerty';
 
+        // Spreker-namen: worden gevuld vanuit ElevenLabs speaker_0/speaker_1 labels
+        // en kunnen handmatig worden overschreven door de docent.
+        let sprekerNamen = ['', '']; // index 0 = speaker_0, index 1 = speaker_1
+
+        function updateSprekerName(idx, val) {
+            sprekerNamen[idx] = val.trim();
+        }
+
+        function getSprekerNaamVoor(speakerId) {
+            // speaker_0 -> index 0, speaker_1 -> index 1, etc.
+            const match = speakerId && speakerId.match(/(\d+)$/);
+            const idx = match ? parseInt(match[1]) : 0;
+            return sprekerNamen[idx] || speakerId || 'Spreker';
+        }
+
+        function autoFillSprekerVelden(turns) {
+            // turns is een array van strings zoals "speaker_0: tekst"
+            const gevonden = [];
+            turns.forEach(t => {
+                const m = t.match(/^(speaker_\d+):/);
+                if (m && !gevonden.includes(m[1])) gevonden.push(m[1]);
+            });
+            // Vul de velden alleen in als ze nog leeg zijn
+            gevonden.forEach((spk, i) => {
+                const el = document.getElementById('spreker' + (i + 1) + 'Input');
+                if (el && !el.value) {
+                    // Laat leeg zodat docent zelf invult – maar zet placeholder op spreker-id
+                    el.placeholder = spk + ' (vul naam in)';
+                }
+            });
+        }
+
         function checkAuth() { doSimpleLogin(); }
 
         async function doSimpleLogin() {
@@ -636,8 +684,13 @@
 
         function showLoadingState() {
             const list = document.getElementById('fileList');
-            if         // ── OPSLAGMODUS LOGICA ──
-        function recCol() { return window.fbDb.collection('recordings'); }
+            if (list) {
+                list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 0.9rem;">⏳ Gegevens laden...</div>`;
+            }
+        }
+
+        // ── OPSLAGMODUS LOGICA ──
+        function recCol() { return window.fbDb ? window.fbDb.collection('recordings') : null; }
         function recId(group, filename) {
             return (String(group) + '__' + String(filename)).replace(/[\/\#?\[\]]/g, '_').slice(0, 1400);
         }
@@ -813,7 +866,7 @@
             event.target.value = '';
         }
 
-     async function saveDatabase() {
+        async function saveDatabase() {
             try {
                 if (currentFileObject) { await saveEntry(currentFileObject, activeGroup); }
             } catch (e) { /* toast is al getoond */ }
@@ -835,78 +888,109 @@
                 showLoadingState();
             }
 
-            recCol().onSnapshot((snap) => {
-                const newDb = {};
-                snap.forEach((doc) => {
-                    const x = doc.data() || {};
-                    const g = x.group || 'Onbekend';
-                    if (!newDb[g]) newDb[g] = [];
-                    let analyse = {};
-                    try { analyse = JSON.parse(x.analyse || '{}'); } catch (_) {}
-                    newDb[g].push({ filename: x.filename, path: x.path, date: x.date, analyse: analyse });
-                });
-                
-                db = newDb;
-                isDataLoaded = true;
-                localStorage.setItem('local_transcriptions_db', JSON.stringify(newDb));
+            const col = recCol();
+            if (col) {
+                col.onSnapshot((snap) => {
+                    const newDb = {};
+                    snap.forEach((doc) => {
+                        const x = doc.data() || {};
+                        const g = x.group || 'Onbekend';
+                        if (!newDb[g]) newDb[g] = [];
+                        let analyse = {};
+                        try { analyse = JSON.parse(x.analyse || '{}'); } catch (_) {}
+                        newDb[g].push({ filename: x.filename, path: x.path, date: x.date, analyse: analyse });
+                    });
+                    
+                    db = newDb;
+                    isDataLoaded = true;
+                    localStorage.setItem('local_transcriptions_db', JSON.stringify(newDb));
 
-                if (!activeGroup || !(db[activeGroup] && db[activeGroup].length)) {
-                    activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
-                }
+                    if (!activeGroup || !(db[activeGroup] && db[activeGroup].length)) {
+                        activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
+                    }
+                    const cs = document.getElementById('connStatus');
+                    if (cs) { cs.textContent = '🟢 Cloud-sync actief'; cs.style.color = '#10b981'; }
+                    if (document.getElementById('appContent').style.display !== 'none') {
+                        renderTabs();
+                        renderList();
+                    }
+                }, (err) => {
+                    console.error('Firestore luisteren mislukt:', err);
+                    const cs = document.getElementById('connStatus');
+                    if (cs) { cs.textContent = '🔴 Alleen lokaal actief'; cs.style.color = '#f59e0b'; }
+                    showToast('ℹ️ Cloud-sync niet beschikbaar. Lokaal werken is actief.');
+                    
+                    if (!isDataLoaded) {
+                        db = loadLocalData();
+                        isDataLoaded = true;
+                        renderTabs();
+                        renderList();
+                    }
+                });
+            } else {
+                console.warn('Firestore Database (fbDb) is niet beschikbaar.');
                 const cs = document.getElementById('connStatus');
-                if (cs) { cs.textContent = '🟢 Cloud-sync actief'; cs.style.color = '#10b981'; }
-                if (document.getElementById('appContent').style.display !== 'none') {
-                    renderTabs();
-                    renderList();
-                }
-            }, (err) => {
-                console.error('Firestore luisteren mislukt:', err);
-                const cs = document.getElementById('connStatus');
-                if (cs) { cs.textContent = '🔴 Alleen lokaal actief'; cs.style.color = '#f59e0b'; }
-                showToast('ℹ️ Cloud-sync niet beschikbaar. Lokaal werken is actief.');
-                
+                if (cs) { cs.textContent = '🔴 Alleen lokaal actief (geen database)'; cs.style.color = '#f59e0b'; }
                 if (!isDataLoaded) {
                     db = loadLocalData();
                     isDataLoaded = true;
                     renderTabs();
                     renderList();
                 }
-            });
+            }
         }
 
         // ── START: reageer op Firebase auth status ──
-        window.fbAuth.onAuthStateChanged((user) => {
-            if (user) {
-                // Firebase anonieme sessie actief - toon app alleen als wachtwoord ook goed was
-                if (sessionStorage.getItem('transcriber_auth') === '1') {
-                    document.getElementById('authOverlay').style.display = 'none';
-                    document.getElementById('appContent').style.display = 'flex';
-                    subscribeData();
-                    initApp();
+        if (window.fbAuth) {
+            window.fbAuth.onAuthStateChanged((user) => {
+                if (user) {
+                    // Firebase anonieme sessie actief - toon app alleen als wachtwoord ook goed was
+                    if (sessionStorage.getItem('transcriber_auth') === '1') {
+                        document.getElementById('authOverlay').style.display = 'none';
+                        document.getElementById('appContent').style.display = 'flex';
+                        subscribeData();
+                        initApp();
+                    } else {
+                        // Vorige anonieme sessie maar geen geldig wachtwoord - toon login
+                        document.getElementById('authOverlay').style.display = 'flex';
+                        document.getElementById('appContent').style.display = 'none';
+                        setTimeout(() => {
+                            const pw = document.getElementById('pwdInput');
+                            if (pw) pw.focus();
+                        }, 100);
+                    }
                 } else {
-                    // Vorige anonieme sessie maar geen geldig wachtwoord - toon login
-                    document.getElementById('authOverlay').style.display = 'flex';
-                    document.getElementById('appContent').style.display = 'none';
-                    setTimeout(() => {
-                        const pw = document.getElementById('pwdInput');
-                        if (pw) pw.focus();
-                    }, 100);
+                    // Controleer of sessie nog geldig is (bijv. na pagina-refresh)
+                    if (sessionStorage.getItem('transcriber_auth') === '1') {
+                        // Sessie is geldig, log anoniem in bij Firebase
+                        window.fbAuth.signInAnonymously().catch(() => {});
+                    } else {
+                        document.getElementById('authOverlay').style.display = 'flex';
+                        document.getElementById('appContent').style.display = 'none';
+                        setTimeout(() => {
+                            const pw = document.getElementById('pwdInput');
+                            if (pw) pw.focus();
+                        }, 100);
+                    }
                 }
+            });
+        } else {
+            // Geen Firebase beschikbaar (bijv. offline of adblocker)
+            // Maar check wel of de lokale sessie al geldig is
+            if (sessionStorage.getItem('transcriber_auth') === '1') {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('appContent').style.display = 'flex';
+                subscribeData();
+                initApp();
             } else {
-                // Controleer of sessie nog geldig is (bijv. na pagina-refresh)
-                if (sessionStorage.getItem('transcriber_auth') === '1') {
-                    // Sessie is geldig, log anoniem in bij Firebase
-                    window.fbAuth.signInAnonymously().catch(() => {});
-                } else {
-                    document.getElementById('authOverlay').style.display = 'flex';
-                    document.getElementById('appContent').style.display = 'none';
-                    setTimeout(() => {
-                        const pw = document.getElementById('pwdInput');
-                        if (pw) pw.focus();
-                    }, 100);
-                }
+                document.getElementById('authOverlay').style.display = 'flex';
+                document.getElementById('appContent').style.display = 'none';
+                setTimeout(() => {
+                    const pw = document.getElementById('pwdInput');
+                    if (pw) pw.focus();
+                }, 100);
             }
-        });
+        }
 
         function initApp() {
             renderTabs();
@@ -1495,91 +1579,104 @@
                 return;
             }
 
+            // Haal Azure-woordscores op voor directe weergave per zin
+            const azureDetail = currentFileObject.analyse && currentFileObject.analyse.azure_pron_detail;
+            const azureStream = [];
+            if (azureDetail) {
+                (azureDetail.utterances || []).forEach(u => (u.words || []).forEach(w => {
+                    if (w && w.word) azureStream.push(w);
+                }));
+            }
+            const scoreColor = s => s == null ? '#94a3b8' : (s >= 80 ? '#10b981' : (s >= 60 ? '#f59e0b' : '#ef4444'));
+
+            // Sprekerkleur-toewijzing
+            let knownSpeakers = {};
+            const spkColors = ['var(--accent)', '#10b981', '#a855f7', '#f59e0b'];
+
             const chatContainer = document.createElement('div');
             chatContainer.className = 'chat-container';
 
-            let knownSpeakers = {};
-            gesprek.forEach((lijn) => {
+            gesprek.forEach((lijn, zinIdx) => {
                 if (!lijn.spreker) return;
                 if (!knownSpeakers[lijn.spreker]) {
-                    knownSpeakers[lijn.spreker] = Object.keys(knownSpeakers).length % 2 === 0 ? 'speaker-a' : 'speaker-b';
+                    const idx = Object.keys(knownSpeakers).length;
+                    knownSpeakers[lijn.spreker] = {
+                        cls: idx % 2 === 0 ? 'speaker-a' : 'speaker-b',
+                        color: spkColors[idx % spkColors.length]
+                    };
                 }
-                const sClass = knownSpeakers[lijn.spreker];
-                
+                const spkInfo = knownSpeakers[lijn.spreker];
+
                 const bubble = document.createElement('div');
-                bubble.className = `chat-bubble ${sClass}`;
-                bubble.style.marginBottom = '12px';
-                
-                let bubbleHtml = `
-                    <div class="chat-name">${lijn.spreker}</div>
-                    <div class="chat-text">"${lijn.zin_fonetisch || ''}"</div>
-                    ${lijn.zin_correct ? `<div class="chat-correct">Doel: ${lijn.zin_correct}</div>` : ''}
-                `;
-                
-                let uAnalyse = lijn.uitspraak_analyse || {};
-                let gAnalyse = lijn.grammatica_analyse || {};
-                let lAnalyse = lijn.logica_analyse || {};
-                
-                let analysisBoxes = '';
-                
-                if (uAnalyse.fout) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-fout">🗣️ ❌</span>
-                                <div><strong>Uitspraak:</strong> ${uAnalyse.fout}<br><span style="color:#94a3b8">${uAnalyse.uitleg || ''}</span></div>
-                            </div>
-                        </div>`;
-                } else if (uAnalyse.goed) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-goed">🗣️ ✅</span>
-                                <div><strong>Uitspraak is goed</strong></div>
-                            </div>
-                        </div>`;
+                bubble.className = `chat-bubble ${spkInfo.cls}`;
+                bubble.style.marginBottom = '14px';
+
+                // ── Hoofd-HTML van de bubble ──
+                let bubbleHtml = `<div class="chat-name" style="color:${spkInfo.color};">${lijn.spreker}</div>`;
+
+                // Wat de cursist zei (fonetisch) + correcte versie
+                const zin = lijn.zin_fonetisch || '';
+                const zinCorrect = lijn.zin_correct || '';
+                bubbleHtml += `<div class="chat-text" style="font-style:italic;margin-bottom:6px;">"${zin}"</div>`;
+                if (zinCorrect && zinCorrect !== zin) {
+                    bubbleHtml += `<div style="font-size:0.82rem;color:#94a3b8;margin-bottom:8px;">✏️ <em>${zinCorrect}</em></div>`;
                 }
-                
+
+                // ── Azure uitspraak-badges per woord (snel overzicht) ──
+                if (azureStream.length > 0 && zin) {
+                    const zinWoorden = zin.split(/\s+/).filter(w => w.length > 0);
+                    const normW = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+                    if (zinWoorden.length > 0) {
+                        bubbleHtml += `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">`;
+                        zinWoorden.forEach(woord => {
+                            const match = azureStream.find(w => normW(w.word) === normW(woord));
+                            const acc = match ? Math.round(match.accuracy) : null;
+                            const col = scoreColor(acc);
+                            bubbleHtml += `<span title="Uitspraakscore: ${acc != null ? acc : 'onbekend'}" style="display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:5px;background:${col}1a;border:1px solid ${col}55;font-size:0.75rem;color:var(--text);">`;
+                            bubbleHtml += `${woord} <b style="color:${col};font-size:0.68rem;">${acc != null ? acc : '·'}</b></span>`;
+                        });
+                        bubbleHtml += `</div>`;
+                    }
+                }
+
+                // ── Analyse-boxen: uitspraak, grammatica, logica ──
+                const uAnalyse = lijn.uitspraak_analyse || {};
+                const gAnalyse = lijn.grammatica_analyse || {};
+                const lAnalyse = lijn.logica_analyse || {};
+
+                let analysisBoxes = '<div class="analysis-box" style="display:flex;flex-direction:column;gap:6px;">';
+                let hasAny = false;
+
+                if (uAnalyse.fout) {
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-fout">🗣️ ❌</span><div><strong>Uitspraak:</strong> ${uAnalyse.fout}<br><span style="color:#94a3b8;font-size:0.82rem;">${uAnalyse.uitleg || ''}</span></div></div>`;
+                } else if (uAnalyse.goed) {
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-goed">🗣️ ✅</span><div><strong>Uitspraak goed</strong></div></div>`;
+                }
+
                 if (gAnalyse.fout) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-fout">📚 ❌</span>
-                                <div><strong>Grammatica:</strong> ${gAnalyse.fout}<br><span style="color:#94a3b8">${gAnalyse.uitleg || ''}</span></div>
-                            </div>
-                        </div>`;
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-fout">📚 ❌</span><div><strong>Grammatica:</strong> ${gAnalyse.fout}<br><span style="color:#94a3b8;font-size:0.82rem;">${gAnalyse.uitleg || ''}</span></div></div>`;
                 } else if (gAnalyse.goed) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-goed">📚 ✅</span>
-                                <div><strong>Grammatica is goed</strong></div>
-                            </div>
-                        </div>`;
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-goed">📚 ✅</span><div><strong>Grammatica goed</strong></div></div>`;
                 }
 
                 if (lAnalyse.fout) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-fout">🧠 ❌</span>
-                                <div><strong>Logica / Samenhang:</strong> ${lAnalyse.fout}<br><span style="color:#94a3b8">${lAnalyse.uitleg || ''}</span></div>
-                            </div>
-                        </div>`;
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-fout">🧠 ❌</span><div><strong>Logica:</strong> ${lAnalyse.fout}<br><span style="color:#94a3b8;font-size:0.82rem;">${lAnalyse.uitleg || ''}</span></div></div>`;
                 } else if (lAnalyse.goed) {
-                    analysisBoxes += `
-                        <div class="analysis-box">
-                            <div class="analysis-item">
-                                <span class="icon-goed">🧠 ✅</span>
-                                <div><strong>Samenhang is goed</strong></div>
-                            </div>
-                        </div>`;
+                    hasAny = true;
+                    analysisBoxes += `<div class="analysis-item"><span class="icon-goed">🧠 ✅</span><div><strong>Samenhang goed</strong></div></div>`;
                 }
-                
-                bubble.innerHTML = bubbleHtml + analysisBoxes;
+
+                analysisBoxes += '</div>';
+
+                bubble.innerHTML = bubbleHtml + (hasAny ? analysisBoxes : '');
                 chatContainer.appendChild(bubble);
             });
-            
+
             container.appendChild(chatContainer);
         }
 
@@ -1617,10 +1714,12 @@
             }
 
             const activeFb = currentFeedbackBrieven[activeStudentIdx];
+            // Strip dubbele sterren ook in het bewerkingsvak
+            const stripDS = (t) => t ? t.replace(/\*\*([^*]+)\*\*/g, '*$1*') : '';
             html += `
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Bewerk Brief Tekst (Nederlands):</label>
-                    <textarea oninput="updateFeedbackBriefText(this.value)" style="width:100%; min-height:450px; padding:12px; background:rgba(15, 23, 42, 0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; line-height:1.6; resize:vertical;">${activeFb.brief || ''}</textarea>
+                    <textarea oninput="updateFeedbackBriefText(this.value)" style="width:100%; min-height:450px; padding:12px; background:rgba(15, 23, 42, 0.6); border:1px solid var(--border); border-radius:6px; color:#fff; font-family:inherit; font-size:0.9rem; line-height:1.6; resize:vertical;">${stripDS(activeFb.brief || '')}</textarea>
                 </div>
             `;
 
@@ -1706,8 +1805,13 @@
                 </button>
             `;
 
-            // Brief content display
-            const briefContent = isNl ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal en klik op \'Vertaal\'.');
+            // Brief content display – strip dubbele asterisks (**tekst**) naar enkelvoudige (*tekst*)
+            const stripDoubleStars = (txt) => {
+                if (!txt) return txt;
+                return txt.replace(/\*\*([^*]+)\*\*/g, '*$1*');
+            };
+            const rawContent = isNl ? activeFb.brief : (activeFb.brief_en || 'Geen vertaling beschikbaar. Typ hierboven een taal en klik op \'Vertaal\'.');
+            const briefContent = stripDoubleStars(rawContent);
             html += `
                 <div id="active-fb-text" style="white-space: pre-wrap; font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; min-height: 350px;">${briefContent}</div>
             `;
@@ -2941,6 +3045,10 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                         elevenLabsTranscript = (elevenResult && typeof elevenResult === 'object') ? (elevenResult.transcript || "") : (elevenResult || "");
                         elevenLabsWords = (elevenResult && elevenResult.words) ? elevenResult.words : [];
                         console.log("ElevenLabs transcription complete:", elevenLabsTranscript);
+                        // Auto-vul placeholder in de spreker-velden zodat de docent weet welke sprekers er zijn
+                        if (elevenLabsTranscript) {
+                            autoFillSprekerVelden(elevenLabsTranscript.split('\n'));
+                        }
                     } catch (elevenErr) {
                         console.error("ElevenLabs-transcriptie mislukt:", elevenErr);
                         throw new Error("ElevenLabs-transcriptie mislukt, dus de verwerking is gestopt. Reden: " + (elevenErr.message || elevenErr));
@@ -3153,11 +3261,23 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
 De bestandsnaam van de audio is "${filename}".`;
 
+            // Bouw een mapping van speaker_id -> echte naam vanuit de ingevulde velden
+            const spkMapping = [];
+            const s1 = (document.getElementById('spreker1Input') || {}).value || '';
+            const s2 = (document.getElementById('spreker2Input') || {}).value || '';
+            if (s1) spkMapping.push('speaker_0 = ' + s1.trim());
+            if (s2) spkMapping.push('speaker_1 = ' + s2.trim());
+            const spkMappingText = spkMapping.length
+                ? '\n\nSPREKER-NAMEN (al ingevuld door de docent – gebruik EXACT deze namen in het gesprek en in de brieven):\n' + spkMapping.join('\n')
+                : '';
+
             if (elevenLabsTranscript) {
-                systemPrompt += `\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model (gebruik dit als de 'ground truth' leidraad om te horen wat er exact werd gezegd, en koppel de speaker_id labels aan de echte namen):
+                systemPrompt += `\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model (gebruik dit als de 'ground truth' leidraad om te horen wat er exact werd gezegd, en koppel de speaker_id labels aan de echte namen):${spkMappingText}
 ---
 ${elevenLabsTranscript}
 ---`;
+            } else if (spkMappingText) {
+                systemPrompt += spkMappingText;
             }
 
             if (customInstructions) {
@@ -3367,6 +3487,8 @@ BELANGRIJK:
             formData.append("file", file);
             formData.append("model_id", "scribe_v2");
             formData.append("diarize", "true");
+            // Forceer Nederlands zodat ElevenLabs geen Engelse woorden 'hoort' in Nederlands gesproken audio
+            formData.append("language_code", "nl");
             
             const response = await fetch(url, {
                 method: "POST",
