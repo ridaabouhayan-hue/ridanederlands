@@ -429,26 +429,12 @@
                         </div>
                     </div>
                     
-                    <!-- Spreker Namen Panel -->
-                    <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Sprekers (vul in na transcriptie):</span>
-                        <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <span style="font-size: 0.72rem; font-weight: 700; color: var(--accent); min-width: 54px;">Spreker 1:</span>
-                                <input type="text" id="spreker1Input" placeholder="Naam bijv. Ali" oninput="updateSprekerName(0, this.value)" style="flex:1; padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; transition: var(--transition);">
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <span style="font-size: 0.72rem; font-weight: 700; color: #10b981; min-width: 54px;">Spreker 2:</span>
-                                <input type="text" id="spreker2Input" placeholder="Naam bijv. Sara" oninput="updateSprekerName(1, this.value)" style="flex:1; padding: 5px 8px; border-radius: 5px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; transition: var(--transition);">
-                            </div>
-                        </div>
-                        <span style="font-size: 0.68rem; color: var(--text-muted); line-height: 1.4;">Worden automatisch gevuld vanuit de audio. Pas aan als nodig — Gemini gebruikt deze namen voor de feedbackbrief.</span>
-                    </div>
-
-                    <!-- Target Language Panel -->
-                    <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 6px;">
-                        <label for="targetLanguageInput" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Moedertaal Vertaling (optioneel):</label>
-                        <input type="text" id="targetLanguageInput" placeholder="Bijv. Engels, Pools, Arabisch, Oekraïens" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition);">
+                    <!-- Opdracht Dropdown Panel -->
+                    <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 6px;">
+                        <label for="opdrachtSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">📚 Opdracht / Les (optioneel):</label>
+                        <select id="opdrachtSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); cursor: pointer; font-weight: 600;">
+                            <option value="none" style="background:#1e293b;" selected>Geen</option>
+                        </select>
                     </div>
 
                     <!-- Custom Instructions Panel -->
@@ -520,6 +506,21 @@
                         <span>🎙️ Audio is lokaal en wordt niet permanent opgeslagen. Het transcript blijft wel bewaard.</span>
                         <button onclick="handleLocateAudioFile()" style="background: var(--accent-gradient); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: var(--transition); white-space: nowrap;">Koppel Audio</button>
                         <input type="file" id="audioLocateInput" style="display: none;" accept="audio/*,video/*" onchange="locateAudioFileSelected(event)">
+                    </div>
+
+                    <!-- Sprekers live invulvelden -->
+                    <div id="speakerNamesViewerBar" style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md);">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; white-space: nowrap;">👤 Cursisten:</span>
+                        <div style="display: flex; gap: 12px; flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent); white-space: nowrap;">Spreker 1:</span>
+                                <input type="text" id="spreker1Input" placeholder="Ali" oninput="onSprekerNaamGewijzigd(0, this.value)" style="width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.82rem; outline: none; font-weight: 600; transition: var(--transition);">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                <span style="font-size: 0.75rem; font-weight: 700; color: #10b981; white-space: nowrap;">Spreker 2:</span>
+                                <input type="text" id="spreker2Input" placeholder="Sara" oninput="onSprekerNaamGewijzigd(1, this.value)" style="width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.82rem; outline: none; font-weight: 600; transition: var(--transition);">
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Clickable Tabs -->
@@ -613,32 +614,215 @@
         // en kunnen handmatig worden overschreven door de docent.
         let sprekerNamen = ['', '']; // index 0 = speaker_0, index 1 = speaker_1
 
-        function updateSprekerName(idx, val) {
-            sprekerNamen[idx] = val.trim();
+        const dutchPhonemeExamples = {
+            'a': 'aa in kaas',
+            'ɑ': 'a in kat',
+            'e': 'ee in veel',
+            'ɛ': 'e in bed',
+            'i': 'ie in wiel',
+            'ɪ': 'i in ik',
+            'o': 'oo in boot',
+            'ɔ': 'o in kop',
+            'y': 'uu in muur',
+            'ʏ': 'u in bus',
+            'ø': 'eu in neus',
+            'ə': 'e in de (stomme e)',
+            'u': 'oe in boek',
+            'œ': 'ui in huis',
+            'au': 'au/ou in blauw',
+            'ɛi': 'ei/ij in trein',
+            'œy': 'ui in huis',
+            'p': 'p in pen',
+            'b': 'b in boek',
+            't': 't in tak',
+            'd': 'd in dak',
+            'k': 'k in kat',
+            'g': 'g in zakdoek',
+            'f': 'f in fiets',
+            'v': 'v in vis',
+            's': 's in sok',
+            'z': 'z in zon',
+            'x': 'ch in lachen',
+            'ɣ': 'g in goed',
+            'h': 'h in hoed',
+            'm': 'm in man',
+            'n': 'n in nat',
+            'ŋ': 'ng in ring',
+            'r': 'r in rood',
+            'l': 'l in land',
+            'w': 'w in water',
+            'j': 'j in ja',
+            'ʃ': 'sj in sjaal',
+            'ʒ': 'j in journalist',
+            'dʒ': 'j in jazz',
+            'tʃ': 'tsj in tsjilpen'
+        };
+
+        let dynamicLessons = [];
+
+        function getAudioNames(filename) {
+            if (!filename) return [];
+            const base = filename.replace(/\.[^/.]+$/, "");
+            const parts = base.split(/[^a-zA-ZÀ-ɏ]+/);
+            return parts.filter(p => p.length >= 2 && !/^\d+$/.test(p));
         }
 
-        function getSprekerNaamVoor(speakerId) {
-            // speaker_0 -> index 0, speaker_1 -> index 1, etc.
-            const match = speakerId && speakerId.match(/(\d+)$/);
-            const idx = match ? parseInt(match[1]) : 0;
-            return sprekerNamen[idx] || speakerId || 'Spreker';
+        function onSprekerNaamGewijzigd(idx, val) {
+            const valClean = val.trim();
+            const oldName1 = sprekerNamen[0];
+            const oldName2 = sprekerNamen[1];
+            
+            sprekerNamen[idx] = valClean;
+            
+            // Auto-link other speaker name if possible
+            const audioNames = getAudioNames(currentFileObject ? currentFileObject.filename : '');
+            if (audioNames.length === 2) {
+                const otherIdx = idx === 0 ? 1 : 0;
+                const otherInput = document.getElementById(`spreker${otherIdx + 1}Input`);
+                
+                const matchIdx = audioNames.findIndex(n => n.toLowerCase() === valClean.toLowerCase());
+                if (matchIdx !== -1) {
+                    const otherName = audioNames[matchIdx === 0 ? 1 : 0];
+                    if (otherInput && !otherInput.value.trim()) {
+                        otherInput.value = otherName;
+                        sprekerNamen[otherIdx] = otherName;
+                    }
+                }
+            }
+
+            const name1 = sprekerNamen[0];
+            const name2 = sprekerNamen[1];
+
+            if (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.gesprek) {
+                const gesprek = currentFileObject.analyse.gesprek;
+                const uniqueSpeakers = [];
+                gesprek.forEach(lijn => {
+                    if (lijn.spreker && !uniqueSpeakers.includes(lijn.spreker)) {
+                        uniqueSpeakers.push(lijn.spreker);
+                    }
+                });
+                const currentSpk1 = uniqueSpeakers[0] || oldName1 || 'speaker_0';
+                const currentSpk2 = uniqueSpeakers[1] || oldName2 || 'speaker_1';
+                
+                gesprek.forEach(lijn => {
+                    if (lijn.spreker === currentSpk1 && name1) {
+                        lijn.spreker = name1;
+                    } else if (lijn.spreker === currentSpk2 && name2) {
+                        lijn.spreker = name2;
+                    }
+                });
+                
+                if (currentFileObject.analyse.feedback_brieven) {
+                    currentFileObject.analyse.feedback_brieven.forEach(fb => {
+                        if (fb.naam === currentSpk1 && name1) fb.naam = name1;
+                        else if (fb.naam === currentSpk2 && name2) fb.naam = name2;
+                    });
+                }
+            }
+
+            if (currentFileObject) {
+                const groupFiles = db[activeGroup] || [];
+                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                if (dbFile) {
+                    if (!dbFile.analyse) dbFile.analyse = {};
+                    dbFile.analyse.sprekerNamen = [...sprekerNamen];
+                    dbFile.analyse.gesprek = currentFileObject.analyse.gesprek;
+                    dbFile.analyse.feedback_brieven = currentFileObject.analyse.feedback_brieven;
+                    saveDatabase();
+                }
+            }
+            
+            renderElevenLabsColumn();
+            renderTranscriptColumn();
+            renderAzureColumn();
+            renderFeedbackColumn();
+            renderCompleteColumn();
+        }
+
+        async function loadDynamicLessons() {
+            const files = [
+                { url: '../praatplaat.html', type: 'A1 Praatplaat', level: 'A1' },
+                { url: '../praatplaat-a2.html', type: 'A2 Praatplaat', level: 'A2' },
+                { url: '../monologen.html', type: 'Monoloog', level: 'A1-A2' }
+            ];
+            
+            dynamicLessons = [];
+            
+            for (const f of files) {
+                try {
+                    const res = await fetch(f.url);
+                    if (!res.ok) {
+                        console.warn(`Could not load ${f.url}: ${res.statusText}`);
+                        continue;
+                    }
+                    const text = await res.text();
+                    
+                    const match = text.match(/(?:const|let|var)\s+themesData\s*=\s*\[([\s\S]*?)\]\s*(?:;|const|let|var|function|\n\s*\/\/|\n\s*const)/);
+                    if (match) {
+                        const arrayContent = match[1];
+                        const objs = arrayContent.split('}');
+                        objs.forEach(obj => {
+                            const id_m = obj.match(/id:\s*["'](.*?)["']/);
+                            const title_m = obj.match(/title:\s*["'](.*?)["']/);
+                            const desc_m = obj.match(/description:\s*["']([\s\S]*?)["']/);
+                            if (id_m && title_m && desc_m) {
+                                const id = id_m[1];
+                                const title = title_m[1];
+                                const description = desc_m[1].replace(/\r?\n/g, ' ').replace(/\s+/g, ' ').trim();
+                                
+                                const fullId = `${f.level}_${id}`;
+                                if (!dynamicLessons.some(l => l.id === fullId)) {
+                                    dynamicLessons.push({
+                                        id: fullId,
+                                        level: f.level,
+                                        type: f.type,
+                                        title: `${f.level} — ${f.type}: ${title}`,
+                                        description: description
+                                    });
+                                }
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(`Error loading lessons from ${f.url}:`, e);
+                }
+            }
+            
+            // Fallback hardcoded standard lessons if dynamic fetching fails (e.g. CORS on local file:// URL)
+            if (dynamicLessons.length === 0) {
+                dynamicLessons = [
+                    { id: "A1_dieren", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Dieren / dierentuin", description: "Praat over huisdieren, dieren in de dierentuin en je favoriete dier. Let op correcte lidwoorden (de/het) en woordenschat." },
+                    { id: "A1_familie-vrienden", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Familie", description: "Praat over je familie, gezin en vrienden. Let op bezittelijke voornaamwoorden en werkwoordspelling." },
+                    { id: "A1_eten-drinken", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Eten & drinken", description: "Vragen stellen en antwoorden geven over maaltijden, favoriet eten en boodschappen." },
+                    { id: "A1_jezelf-voorstellen", level: "A1", type: "Monoloog", title: "A1 — Monoloog: Jezelf voorstellen", description: "Stel jezelf voor (naam, leeftijd, herkomst, talen en waar je woont)." },
+                    { id: "A1_vrije-tijd", level: "A1", type: "Monoloog", title: "A1 — Monoloog: Vrije tijd & hobby's", description: "Vertel over hobby's en wat je doet in je vrije tijd." },
+                    { id: "A2_werk-beroep", level: "A2", type: "A2 Praatplaat", title: "A2 — Praatplaat: Werk & beroepen", description: "Bespreek jouw werk, jouw taken op het werk, en wat je belangrijk vindt." },
+                    { id: "A2_bij-de-huisarts", level: "A2", type: "A2 Praatplaat", title: "A2 — Praatplaat: Stad & omgeving", description: "Praat over de stad, winkels en openbaar vervoer. Redenen geven met omdat." },
+                    { id: "A2_wonen-thuis", level: "A2", type: "Monoloog", title: "A2 — Monoloog: Wonen & thuis", description: "Vertel over jouw woning, de kamers, en meubels. Let op er zijn." },
+                    { id: "A2_gezondheid-lichaam", level: "A2", type: "Monoloog", title: "A2 — Monoloog: Gezondheid & lichaam", description: "Vertel over gezondheid, sporten, klachten en ziek zijn." }
+                ];
+            }
+            
+            populateOpdrachtDropdown();
+        }
+
+        function populateOpdrachtDropdown() {
+            const select = document.getElementById('opdrachtSelect');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="none" style="background:#1e293b;" selected>Geen</option>';
+            
+            dynamicLessons.forEach(lesson => {
+                const opt = document.createElement('option');
+                opt.value = lesson.id;
+                opt.textContent = lesson.title;
+                opt.style.background = '#1e293b';
+                select.appendChild(opt);
+            });
         }
 
         function autoFillSprekerVelden(turns) {
-            // turns is een array van strings zoals "speaker_0: tekst"
-            const gevonden = [];
-            turns.forEach(t => {
-                const m = t.match(/^(speaker_\d+):/);
-                if (m && !gevonden.includes(m[1])) gevonden.push(m[1]);
-            });
-            // Vul de velden alleen in als ze nog leeg zijn
-            gevonden.forEach((spk, i) => {
-                const el = document.getElementById('spreker' + (i + 1) + 'Input');
-                if (el && !el.value) {
-                    // Laat leeg zodat docent zelf invult – maar zet placeholder op spreker-id
-                    el.placeholder = spk + ' (vul naam in)';
-                }
-            });
+            // Turns is background process, does not need to fill elements if not open
         }
 
         function checkAuth() { doSimpleLogin(); }
@@ -1068,15 +1252,22 @@
             const t = (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.elevenlabs_transcript) || '';
             c.innerHTML = '';
             if (!t) {
-                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen ElevenLabs-transcriptie opgeslagen voor deze opname. Dit gebeurt als de opname met een Gemini-engine is verwerkt, of vóór deze update. Verwerk de opname opnieuw met ElevenLabs als engine om te zien wat het model letterlijk heeft gehoord.</div>';
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen ElevenLabs-transcriptie opgeslagen voor deze opname.</div>';
                 return;
             }
             const intro = document.createElement('div');
             intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord: de letterlijke transcriptie per spreker, inclusief uhms, herhalingen, valse starts, pauzes en wie wat zei. Dit is de basis waarop de feedback is gemaakt.';
+            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord: de letterlijke transcriptie per spreker.';
+            
+            let updatedText = t;
+            const name1 = sprekerNamen[0] || 'speaker_0';
+            const name2 = sprekerNamen[1] || 'speaker_1';
+            updatedText = updatedText.replace(/speaker_0:/g, name1 + ':')
+                                     .replace(/speaker_1:/g, name2 + ':');
+
             const pre = document.createElement('pre');
             pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.82rem;line-height:1.6;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
-            pre.textContent = t;
+            pre.textContent = updatedText;
             c.appendChild(intro);
             c.appendChild(pre);
         }
@@ -1349,15 +1540,27 @@
                             row.style.cssText = 'margin-bottom:8px;';
                             const phon = w.phonemes.map((p, pi) => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${p.phoneme ? esc(p.phoneme) : 'klank ' + (pi + 1)}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
                             const lbl = errLabel(w.errorType);
-                            let lowIdx = -1, lowAcc = null;
-                            w.phonemes.forEach((p, pi) => { if (p.accuracy != null && (lowAcc == null || p.accuracy < lowAcc)) { lowAcc = p.accuracy; lowIdx = pi; } });
+                            let lowIdx = -1, lowAcc = null, lowPhoneme = '';
+                            w.phonemes.forEach((p, pi) => { 
+                                if (p.accuracy != null && (lowAcc == null || p.accuracy < lowAcc)) { 
+                                    lowAcc = p.accuracy; 
+                                    lowIdx = pi; 
+                                    lowPhoneme = p.phoneme || ''; 
+                                } 
+                            });
                             let waarom = '';
-                            if (w.errorType === 'Omission') waarom = 'Dit woord is overgeslagen (niet of nauwelijks gezegd), daarom de lage score.';
-                            else if (w.errorType === 'Insertion') waarom = 'Dit was een extra woord dat niet in de doelzin hoort.';
-                            else {
-                                waarom = `De woordscore (${Math.round(w.accuracy)}) is het gemiddelde van de klankscores hierboven.`;
-                                if (lowIdx >= 0) waarom += ` Klank ${lowIdx + 1} was met ${Math.round(lowAcc)} het zwakst; die week het meest af van de juiste Nederlandse uitspraak.`;
-                                waarom += ' Een klank telt vanaf 80 als goed uitgesproken; daar mik je op.';
+                            if (w.errorType === 'Omission') {
+                                waarom = 'Dit woord is overgeslagen (niet of nauwelijks gezegd).';
+                            } else if (w.errorType === 'Insertion') {
+                                waarom = 'Dit was een extra woord dat niet in de doelzin hoort.';
+                            } else {
+                                if (lowIdx >= 0) {
+                                    const ex = dutchPhonemeExamples[lowPhoneme.toLowerCase()] || dutchPhonemeExamples[lowPhoneme] || '';
+                                    const klankNaam = ex ? `'${lowPhoneme}' (${ex})` : `nummer ${lowIdx + 1} ('${lowPhoneme || '?'}')`;
+                                    waarom = `De klank ${klankNaam} was met ${Math.round(lowAcc)}/100 het zwakst; die week het meest af van de juiste Nederlandse uitspraak.`;
+                                } else {
+                                    waarom = `De uitspraakscore van dit woord is ${Math.round(w.accuracy)}/100.`;
+                                }
                             }
                             const top = document.createElement('div');
                             top.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
@@ -1550,6 +1753,35 @@
                 a.gesprek = [];
             }
 
+            // Initialize sprekerNamen for the open file
+            sprekerNamen = ['', ''];
+            if (a.sprekerNamen && a.sprekerNamen.length > 0) {
+                sprekerNamen = [...a.sprekerNamen];
+            } else if (a.gesprek && a.gesprek.length > 0) {
+                const spks = [...new Set(a.gesprek.map(l => l.spreker).filter(Boolean))];
+                if (spks[0]) sprekerNamen[0] = spks[0];
+                if (spks[1]) sprekerNamen[1] = spks[1];
+            } else if (a.elevenlabs_transcript) {
+                const turns = a.elevenlabs_transcript.split('\n');
+                const gevonden = [];
+                turns.forEach(t => {
+                    const m = t.match(/^(speaker_\d+):/);
+                    if (m && !gevonden.includes(m[1])) gevonden.push(m[1]);
+                });
+                if (gevonden[0]) sprekerNamen[0] = gevonden[0];
+                if (gevonden[1]) sprekerNamen[1] = gevonden[1];
+            } else {
+                const audioNames = getAudioNames(file.filename);
+                sprekerNamen[0] = audioNames[0] || 'speaker_0';
+                sprekerNamen[1] = audioNames[1] || 'speaker_1';
+            }
+
+            // Set input values in the viewer bar
+            const s1Input = document.getElementById('spreker1Input');
+            const s2Input = document.getElementById('spreker2Input');
+            if (s1Input) s1Input.value = sprekerNamen[0] || '';
+            if (s2Input) s2Input.value = sprekerNamen[1] || '';
+
             renderTranscriptColumn();
             renderFeedbackColumn();
             renderCompleteColumn();
@@ -1557,8 +1789,9 @@
             renderAzureColumn();
             renderGrammarColumn();
 
-            // Switch to active tab
-            switchViewerTab(activeViewerTab);
+            // Switch to active tab (always default to 'azure')
+            activeViewerTab = 'azure';
+            switchViewerTab('azure');
         }
 
         function renderTranscriptColumn() {
@@ -1845,115 +2078,46 @@
             }
 
             try {
-                const targetLang = document.getElementById('targetLanguageInput').value.trim() || 'Engels';
-                const customInstructions = document.getElementById('customInstructionsInput').value.trim();
-                const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
-                
-                if (customInstructions) {
-                    showToast("Brief genereren gestart met maatwerk: \"" + customInstructions + "\"");
-                }
-                
-                let sourceContent = "";
-                let conversationFormatHelp = "";
-                
-                if (currentFileObject.analyse.gesprek && currentFileObject.analyse.gesprek.length > 0) {
-                    sourceContent = `GEBEWERKT GESPREK IN JSON:\n${JSON.stringify(currentFileObject.analyse.gesprek, null, 2)}`;
-                    conversationFormatHelp = `Gebruik dit gesprek om de feedbackbrieven te genereren. Behoud alle sprekers en zinnen exact.`;
-                } else {
-                    const flatText = currentFileObject.analyse.letterlijk_transcript || currentFileObject.transcript || '';
-                    sourceContent = `RUW TRANSCRIPT:\n"${flatText}"`;
-                    conversationFormatHelp = `Segmenteer deze tekst eerst in afzonderlijke speaker-sentence zinnen in het 'gesprek' JSON veld, en genereer daarna de feedbackbrieven.`;
-                }
-
-                let systemPrompt = `Je bent een ervaren NT2 docent. De gebruiker heeft de transcriptie van een gesprek handmatig bewerkt en wil dat je nieuwe feedbackbrieven genereert op basis van deze bewerkte tekst.
-
-${sourceContent}
-
-DOELTAAL VOOR VERTALING: "${targetLang}"
-${customInstructions ? `BELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):\n"${customInstructions}"` : ''}
-${assignmentContext ? `OPDRACHT / CONTEXT VAN DE TAAK:\n"${assignmentContext}"\nEvalueer kritisch of de cursist(en) de opdracht goed hebben gevolgd, de juiste vragen hebben gesteld, of de gevraagde woordenschat is gebruikt. Verwerk dit in de feedback.` : ''}
-
-Je taak is om:
-1. Een zin-voor-zin analyse uit te voeren op het gesprek (uitspraak_analyse, grammatica_analyse, logica_analyse genereren/updaten).
-2. Een persoonlijke WhatsApp-feedbackbrief te genereren voor elke cursist/spreker in het gesprek.
-3. De feedbackbrieven te vertalen naar de moedertaal van de cursist (${targetLang}) en op te slaan in 'brief_en'. Volg de NT2-richtlijnen: houd alle originele Nederlandse zinnen, de correcties en de feedbackkoppen exact in het Nederlands, vertaal alleen de uitleg en tips.
-4. Het resultaat exact in het volgende JSON-formaat te retourneren:
-{
-  "gesprek": [
-    {
-      "spreker": "Naam van de spreker",
-      "zin_fonetisch": "zin van de student",
-      "zin_correct": "perfecte nederlandse versie",
-      "uitspraak_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." },
-      "grammatica_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." },
-      "logica_analyse": { "goed": true/false, "fout": "...", "uitleg": "..." }
-    }
-  ],
-  "feedback_brieven": [
-     {
-       "naam": "Naam van de cursist",
-       "brief": "Nederlandse feedbackbrief voor WhatsApp...",
-       "brief_en": "Vertaalde feedbackbrief..."
-     }
-  ]
-}
-
-AANVULLENDE RICHTLIJNEN:
-- CRITICAL JSON VALIDITY RULE: Do NOT use unescaped double quotes (") inside the generated text for 'brief' or 'brief_en', as this will break JSON parsing. For all nested quotes within the feedback text (such as quotes around sentences or words), you MUST use single quotes (') instead. For example: *Zin 1:* 'Ik heet Ali'.
-- WhatsApp leesbaar: gebruik ENKELE asterisks (*) voor vetgedrukte teksten, nooit dubbele asterisks (**).
-- Zorg dat de uitleg simpel en opbouwend is (voor A1/A2 niveau, leg het uit als aan een kind van 6).
-- Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
-- Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
-- ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
-   * Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de 'feedback_brieven' array.
-   * In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
-   * Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
-     Jij zei
-     *Zin X:* '[Fonetische zin van ALI]'
-     👍 *Wat was goed:* [Compliment]
-     💡 *Correctie:* '[Correcte zin]' (alleen als correctie nodig is)
-     🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
-   * Voor de zinnen die door de ANDERE cursist (bijv. SARAH) zijn uitgesproken, toon je UITSLUITEND de GECORRIGEERDE versie van haar zin (dus NIET de fonetische/foutieve versie). Als haar zin al correct was, toon je die gewoon. Gebruik dit format:
-     *SARAH vroeg/zei ongeveer:* '[Gecorrigeerde/correcte zin van Sarah]' (als het een vraag is, gebruik "vroeg", anders "zei"; gebruik "ongeveer" om aan te geven dat dit de bedoelde versie is)
-   * Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander — zodat ze niet per ongeluk de foute versie onthouden.
-- ${conversationFormatHelp}`;
-
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{
-                        parts: [{ text: systemPrompt }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.1,
-                        responseMimeType: "application/json",
-                        maxOutputTokens: 65536
+                const opdrachtSelect = document.getElementById('opdrachtSelect');
+                let finalAssignmentContext = '';
+                if (opdrachtSelect && opdrachtSelect.value !== 'none') {
+                    const selectedLesson = dynamicLessons.find(l => l.id === opdrachtSelect.value);
+                    if (selectedLesson) {
+                        finalAssignmentContext += `OPDRACHT THEMA CONTEXT:\nNiveau: ${selectedLesson.level}\nType: ${selectedLesson.type}\nOnderwerp: ${selectedLesson.title}\nBeschrijving: ${selectedLesson.description}\n\n`;
                     }
-                };
+                }
+                const textContext = document.getElementById('assignmentContextInput').value.trim();
+                if (textContext) {
+                    finalAssignmentContext += `AANVULLENDE OPDRACHT TEXT:\n${textContext}`;
+                }
 
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                const customInstructions = document.getElementById('customInstructionsInput').value.trim();
+                const model = document.getElementById('geminiModelSelect').value;
+
+                const existingGesprek = currentFileObject.analyse && currentFileObject.analyse.gesprek;
+                const elevenLabsTranscript = (currentFileObject.analyse && currentFileObject.analyse.elevenlabs_transcript) || currentFileObject.transcript || '';
+                const azurePronReport = (currentFileObject.analyse && currentFileObject.analyse.azure_pron) || '';
+                const ltGrammarReport = (currentFileObject.analyse && currentFileObject.analyse.grammar_lt) || '';
+
+                const result = await executeNT2AnalysisPipeline({
+                    apiKey,
+                    model,
+                    filename: currentFileObject.filename,
+                    elevenLabsTranscript,
+                    azurePronReport,
+                    ltGrammarReport,
+                    customInstructions,
+                    assignmentContext: finalAssignmentContext.trim(),
+                    existingGesprek
                 });
 
-                if (!res.ok) {
-                    throw new Error(`Generatie mislukt: ${res.statusText}`);
-                }
-
-                const data = await res.json();
-                const jsonResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!jsonResponse) {
-                    throw new Error("Geen antwoord ontvangen van Gemini.");
-                }
-
-                const result = repairAndParseJSON(jsonResponse.trim());
-                
                 // Update database
                 const groupFiles = db[activeGroup] || [];
                 const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
                 if (dbFile) {
                     dbFile.analyse.gesprek = result.gesprek;
                     dbFile.analyse.feedback_brieven = result.feedback_brieven;
+                    dbFile.analyse.sprekerNamen = result.sprekerNamen;
                     currentFileObject.analyse = dbFile.analyse;
                     await saveDatabase();
                 }
@@ -3168,9 +3332,22 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     }
                 }
 
-                const targetLang = document.getElementById('targetLanguageInput').value.trim();
+                const opdrachtSelect = document.getElementById('opdrachtSelect');
+                let finalAssignmentContext = '';
+                if (opdrachtSelect && opdrachtSelect.value !== 'none') {
+                    const selectedLesson = dynamicLessons.find(l => l.id === opdrachtSelect.value);
+                    if (selectedLesson) {
+                        finalAssignmentContext += `OPDRACHT THEMA CONTEXT:\nNiveau: ${selectedLesson.level}\nType: ${selectedLesson.type}\nOnderwerp: ${selectedLesson.title}\nBeschrijving: ${selectedLesson.description}\n\n`;
+                    }
+                }
+                const textContext = document.getElementById('assignmentContextInput').value.trim();
+                if (textContext) {
+                    finalAssignmentContext += `AANVULLENDE OPDRACHT TEXT:\n${textContext}`;
+                }
+
+                const targetLang = '';
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
-                const assignmentContext = document.getElementById('assignmentContextInput').value.trim();
+                const assignmentContext = finalAssignmentContext.trim();
                 const azurePronText = azurePronReport ? azurePronReport.text : null;
                 const ltGrammarText = ltGrammarReport ? ltGrammarReport.text : null;
 
@@ -3347,175 +3524,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             });
         }
 
-        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport, ltGrammarReport) {
-            const finalLang = targetLang || 'Engels';
-            let systemPrompt = `Je bent een strenge maar opbouwende NT2 docent (Nederlands als Tweede Taal).
-De bestandsnaam van de audio is "${filename}".`;
-
-            // Bouw een mapping van speaker_id -> echte naam vanuit de ingevulde velden
-            const spkMapping = [];
-            const s1 = (document.getElementById('spreker1Input') || {}).value || '';
-            const s2 = (document.getElementById('spreker2Input') || {}).value || '';
-            if (s1) spkMapping.push('speaker_0 = ' + s1.trim());
-            if (s2) spkMapping.push('speaker_1 = ' + s2.trim());
-            const spkMappingText = spkMapping.length
-                ? '\n\nSPREKER-NAMEN (al ingevuld door de docent – gebruik EXACT deze namen in het gesprek en in de brieven):\n' + spkMapping.join('\n')
-                : '';
-
-            if (elevenLabsTranscript) {
-                systemPrompt += `\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model (gebruik dit als de 'ground truth' leidraad om te horen wat er exact werd gezegd, en koppel de speaker_id labels aan de echte namen):${spkMappingText}
----
-${elevenLabsTranscript}
----`;
-            } else if (spkMappingText) {
-                systemPrompt += spkMappingText;
-            }
-
-            if (customInstructions) {
-                systemPrompt += `\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):
-Houd rekening met de volgende extra instructie bij het genereren van de feedback en de brieven:
-"${customInstructions}"`;
-            }
-
-            if (assignmentContext) {
-                systemPrompt += `\n\nOPDRACHT / CONTEXT VAN DE TAAK:
-Je moet controleren of de cursist(en) de opdracht goed hebben gevolgd. Hier is de context/opdrachtomschrijving:
-"${assignmentContext}"
-Evalueer kritisch of ze de opdracht correct hebben uitgevoerd en de juiste grammatica/woordenschat voor deze taak hebben gebruikt. Verwerk dit in hun feedbackbrief.`;
-            }
-
-            if (azurePronReport) {
-                systemPrompt += `\n\nOBJECTIEVE UITSPRAAKSCORES (Azure Pronunciation Assessment, nl-NL):
-Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen in je uitspraakfeedback in plaats van te gissen hoe iets klonk. Bij twee sprekers gelden de scores als ruwe indicatie voor het geheel:
-${azurePronReport}
-
-Voor woorden met een lage score: leg in heel eenvoudige taal uit welke klank waarschijnlijk fout ging en hoe het hoort te klinken. Schrijf het concreet, bijvoorbeeld: "Het klonk waarschijnlijk als 'vliegtoig', maar het moet 'vliegtUIg' zijn; let op de 'ui'-klank." Baseer je op de zwakke klanken die hierboven per woord vermeld staan en verzin geen klanken die er niet bij staan. Houd het opbouwend en simpel (A1-A2 niveau).`;
-            }
-
-            if (ltGrammarReport) {
-                systemPrompt += `\n\nOBJECTIEVE GRAMMATICAPUNTEN (LanguageTool, regelgebaseerd, nl):
-Dit zijn objectief gevonden grammatica-, spelling- en stijlpunten in de letterlijke transcriptie, gemeten door een regelgebaseerde checker (geen schatting). Tussen [[ ]] staat het exacte stuk tekst waar het punt zit. Gebruik deze punten om je grammatica-analyse en de samenvatting nauwkeuriger te maken in plaats van te gissen:
-${ltGrammarReport}
-
-Belangrijk: dit is een hulpmiddel, geen eindoordeel. De checker werkt op de automatische transcriptie en kan soms een correcte spreektaal-zin of een transcriptiefoutje als 'fout' markeren. Weeg elk punt af tegen wat je in de audio hoort. Verwerk alleen de terechte punten in je feedback, en leg ze uit in heel eenvoudige taal (A1-A2 niveau). Verzin geen regels die hier niet bij staan.`;
-            }
-
-            systemPrompt += `\n\nIDENTIFICATIE VAN DE SPREKERS:
-1. Luister heel goed en kritisch naar de audio om te bepalen wie er spreekt en de stemmen te koppelen aan de juiste namen.
-2. Vaak noemen de sprekers hun eigen naam in het gesprek (bijvoorbeeld: 'Hallo, ik ben Malwina' of 'Hoi, met Tomasz') of noemen ze elkaar bij naam (bijvoorbeeld: 'En jij, Malwina?'). Als er namen genoemd worden in de audio, gebruik die dan altijd om de sprekers te identificeren.
-3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "${filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
-4. Zorg dat je de sprekers correct identificeert en hun echte namen gebruikt in de 'gesprek' array (in de 'spreker' velden) in plaats van generieke aanduidingen zoals 'Spreker A' of 'Spreker B' of 'Spreker A/B'.
-
-Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat terug:
-
-{
-  "gesprek": [
-    {
-      "spreker": "Naam van de spreker",
-      "zin_fonetisch": "Schrijf exact en fonetisch uit wat er werd gezegd, inclusief stotteren, pauzes (uhm) of taalfouten.",
-      "zin_correct": "Hoe de cursist deze zin in perfect Nederlands had moeten uitspreken en formuleren.",
-      "uitspraak_analyse": {
-        "goed": true,
-        "fout": "Wat er fout klonk (of laat leeg als het goed was)",
-        "uitleg": "Waarom het fout is (bijv. verkeerde klank, klemtoon)"
-      },
-      "grammatica_analyse": {
-        "goed": false,
-        "fout": "Wat de grammaticale fout was (of laat leeg als het goed was)",
-        "uitleg": "De grammaticaregel (bijv. inversie, verkeerd lidwoord)"
-      },
-      "logica_analyse": {
-        "goed": false,
-        "fout": "Wat er onlogisch of vreemd was aan de betekenis/samenhang in the context (of laat leeg als het logisch was)",
-        "uitleg": "Waarom het onlogisch is in deze context en wat een betere logische verwoording is"
-      }
-    }
-  ],
-  "feedback_brieven": [
-    {
-      "naam": "Naam van de cursist",
-      "brief": "Hallo [Naam]! 👋\\n\\nWat goed dat je hebt geoefend! Hieronder heb ik jouw hele verhaal letterlijk zin voor zin uitgeschreven. Ik vertel je per zin wat er goed ging, en wat nog beter kan.\\n\\n🔍 *Zin-voor-Zin Analyse:*\\n\\n*Zin 1:* '...'\\n👍 *Wat was goed:* [Compliment over uitspraak of woordkeuze]\\n💡 *Correctie:* '...' (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🧠 *Waarom:* [Uitleg over de grammaticaregel of klank] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)\\n🤔 *Logica:* [Uitleg over waarom de zin qua betekenis/samenhang onlogisch of vreemd is in deze context, en wat het logische alternatief is. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS EN KLOPT IN DE CONTEXT! OOK GEEN LEGE REGELS DAARVOOR OVERLATEN]\\n\\n*Zin 2:* '...'\\n... [herhaal voor ALLE gesproken zinnen van deze cursist]\\n\\n🏁 *Samenvatting & Belangrijkste leerpunten:*\\n• *Grammatica:* [Gedetailleerde samenvatting van veelgemaakte grammaticafouten in de opname, wat er vaak misging en waarom]\\n• *Uitspraak:* [Gedetailleerde samenvatting van veelgemaakte uitspraakfouten of klanken die vaak verkeerd gingen, met concrete tips]\\n• *Samenhang & Logica:* [Samenvatting van zinnen die grammaticaal of qua uitspraak wel goed waren, maar die inhoudelijk niet logisch waren in het gesprek, met uitleg waarom]\\n\\n🧠 *Jouw volgende stap & advies:*\\n[Concreet advies over waar de cursist de komende tijd op moet letten om stappen te maken en een bemoedigende uitsmijter]. Ga zo door! 🚀\\n\\nGemaakt door Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106",
-      "brief_en": "Hello [Name]! 👋\\n\\nGreat job practicing! Below I have transcribed your entire story literally sentence by sentence. I will tell you per sentence what went well, and what could be improved.\\n\\n🔍 *Sentence-by-Sentence Analysis:*\\n\\n*Sentence 1:* '...'\\n👍 *What was good:* [Compliment on pronunciation or word choice]\\n💡 *Correction:* '...' (OMIT THIS AND THE WHY LINE BELOW COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🧠 *Why:* [Explanation of grammar rule or sound] (OMIT THIS AND the CORRECTION LINE ABOVE COMPLETELY IF THE SENTENCE IS ALREADY CORRECT!)\\n🤔 *Logic:* [Explanation of why the sentence is not logical or sounds strange in this context, and what the logical alternative is. OMIT THIS LINE COMPLETELY IF THE SENTENCE IS SEMANTICALLY LOGICAL AND MAKES SENSE IN CONTEXT! DO NOT LEAVE EMPTY LINES EITHER]\\n\\n*Sentence 2:* '...'\\n... [repeat for ALL spoken sentences of this student]\\n\\n🏁 *Summary & Key Takeaways:*\\n• *Grammar:* [Detailed summary of common grammatical errors in the recording, what went wrong often and why]\\n• *Pronunciation:* [Detailed summary of common pronunciation errors or sounds that went wrong often, with concrete tips]\\n• *Coherence & Logic:* [Summary of sentences that were grammatically correct but semantically illogical or weird in context, with explanation]\\n\\n🧠 *Your next step & advice:*\\n[Concrete advice on what the student should focus on in the near future to make progress, and an encouraging closing statement]. Keep it up! 🚀\\n\\nMade by Rida Abouhayan✉ r.abouhayan@hotmail.nl | 📱 +31 6 26211106"
-    }
-  ]
-}
-
-BELANGRIJK:
-1. CRITICAL JSON VALIDITY RULE: Do NOT use unescaped double quotes (") inside the generated text for 'brief' or 'brief_en', as this will break JSON parsing. For all nested quotes within the feedback text (such as quotes around sentences or words), you MUST use single quotes (') instead. For example: *Zin 1:* 'Ik heet Ali'.
-2. Zowel 'brief' als 'brief_en' moeten geformatteerd zijn voor WhatsApp: gebruik een enkele asterisk (*) voor vetgedrukte woorden (bijv. *Zin 1:* en *Correctie:* en *Waarom:*). Gebruik GEEN dubbele asterisks (**).
-3. Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
-4. Evalueer de betekenis en logica van elke zin in context. Als een zin grammaticaal correct en goed uitgesproken is, maar betekenisvol niet klopt in het lopende gesprek (bijvoorbeeld: "Ik wil naar huis gaan, maar ik heb geen extra tijd" in plaats van "Ik wil naar huis gaan, maar ik ben nog niet klaar"), rapporteer dit dan in 'logica_analyse' en leg uit wat een betere logische verwoording is.
-5. Je MOET absoluut feedback geven op ELKE zin die de cursist in het gesprek uitspreekt. Het is ten strengste verboden om zinnen over te slaan, samen te voegen of weg te laten uit de brieven! Als een zin grammaticaal correct is en er geen uitspraakfouten zijn (dus als er geen correctie nodig is), schrijf dan ALLEEN het compliment bij "👍 *Wat was goed:*". Laat de regels "💡 *Correctie:*" en "🧠 *Waarom:*" in dat geval volledig weg! Schrijf dus nooit een correctieopgave of waarom-uitleg als de zin al goed was.
-6. ALS ER MEERDERE SPREKERS/CURSISTEN ZIJN (bijvoorbeeld twee cursisten die met elkaar praten):
-   - Je MOET voor IEDERE cursist/spreker een APARTE feedbackbrief genereren in de \`feedback_brieven\` array. Dus als Malwina en Dorota praten, maak je EXACT twee objecten in \`feedback_brieven\` aan: één voor Malwina and één voor Dorota.
-   - In de feedbackbrief voor een specifieke cursist (bijv. ALI) toon je het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
-   - Voor de zinnen die door ALI zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
-     Jij zei
-     *Zin X:* '[Fonetische zin van ALI]'
-     👍 *Wat was goed:* [Compliment]
-     💡 *Correctie:* '[Correcte zin]' (alleen als correctie nodig is)
-     🧠 *Waarom:* [Uitleg] (alleen als correctie nodig is)
-   - Voor de zinnen die door de ANDERE cursist (bijv. SARAH) zijn uitgesproken, toon je deze chronologisch tussendoor als context. Format:
-     *SARAH vroeg/zei toen:* '[Zin van Sarah]' (als het een vraag is, gebruik "vroeg", anders "zei")
-   - Op deze manier leest de brief voor elke cursist als een chronologisch gesprek waarin hun eigen zinnen gedetailleerd geanalyseerd worden en de zinnen van de ander als pure context ertussen staan.
-7. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
-   - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
-   - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
-   - Zorg dat de vertaalde feedbackbrief (\`brief_en\`) die in het ${finalLang} is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
-8. MOEDERTAAL EN WA-IMPORT:
-   - Geef aan dat de moedertaal van de cursist ${finalLang} is of geef een korte toelichting gebaseerd op deze taal.`;
-
-            const model = document.getElementById('geminiModelSelect').value;
-            let payload = {
-                contents: [{
-                    parts: [
-                        {
-                            fileData: {
-                                fileUri: fileInfo.uri,
-                                mimeType: fileInfo.mimeType
-                            }
-                        },
-                        {
-                            text: systemPrompt
-                        }
-                    ]
-                }],
-                generationConfig: {
-                    temperature: 0.1,
-                    responseMimeType: "application/json",
-                    maxOutputTokens: 65536
-                }
-            };
-
-            const makeRequest = async (selectedModel) => {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-                if (!res.ok) {
-                    const errText = await res.text();
-                    const err = new Error(`Generation mislukt voor model ${selectedModel}: ${res.status} ${errText}`);
-                    err.status = res.status;
-                    throw err;
-                }
-                const data = await res.json();
-                if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0) {
-                    throw new Error("Ongeldig antwoord van Gemini: geen content kandidaten.");
-                }
-                const text = data.candidates[0].content.parts[0].text;
-                // Controleer of Gemini de output heeft afgekapt (finish_reason = MAX_TOKENS)
-                const finishReason = data.candidates[0].finishReason || '';
-                if (finishReason === 'MAX_TOKENS') {
-                    console.warn('Gemini: output afgekapt door token-limiet. Probeer een korter gesprek of verhoog maxOutputTokens.');
-                }
-                return repairAndParseJSON(text.trim());
-            };
-
-            // Fallback volgorde: probeer elk model op volgorde bij 503/overbelasting/404
+        async function makeGeminiCallWithFallback(apiKey, model, prompt, expectJson = false, fileInfo = null) {
             const fallbackModels = [
                 model,
                 "gemini-2.5-flash",
@@ -3523,28 +3532,223 @@ BELANGRIJK:
                 "gemini-1.5-pro-latest",
                 "gemini-1.5-flash-latest"
             ];
-            // Verwijder duplicaten
-            const modelsToTry = [...new Set(fallbackModels)];
-
+            const modelsToTry = [...new Set(fallbackModels)].filter(Boolean);
             let lastError = null;
+
             for (const tryModel of modelsToTry) {
                 try {
-                    console.log(`Gemini: proberen met model ${tryModel}...`);
-                    return await makeRequest(tryModel);
+                    console.log(`Gemini aanroep met model ${tryModel} (JSON expected: ${expectJson}, File: ${!!fileInfo})...`);
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${tryModel}:generateContent?key=${apiKey}`;
+                    
+                    const parts = [];
+                    if (fileInfo) {
+                        parts.push({
+                            fileData: {
+                                fileUri: fileInfo.uri,
+                                mimeType: fileInfo.mimeType
+                            }
+                        });
+                    }
+                    parts.push({ text: prompt });
+
+                    const payload = {
+                        contents: [{
+                            parts: parts
+                        }],
+                        generationConfig: {
+                            temperature: 0.1,
+                            maxOutputTokens: 65536
+                        }
+                    };
+
+                    if (expectJson) {
+                        payload.generationConfig.responseMimeType = "application/json";
+                    }
+
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) {
+                        const errText = await res.text();
+                        const err = new Error(`Request failed for model ${tryModel}: ${res.status} ${errText}`);
+                        err.status = res.status;
+                        throw err;
+                    }
+
+                    const data = await res.json();
+                    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0) {
+                        throw new Error("Ongeldig antwoord van Gemini: geen content.");
+                    }
+
+                    const text = data.candidates[0].content.parts[0].text.trim();
+                    
+                    if (expectJson) {
+                        return repairAndParseJSON(text);
+                    } else {
+                        return text;
+                    }
+
                 } catch (err) {
                     lastError = err;
-                    // Doorgaan naar fallback bij 503 (overbelast), 429 (rate limit), 404 (model niet gevonden), 500
                     if (err.status === 503 || err.status === 429 || err.status === 500 || err.status === 404) {
                         console.warn(`Model ${tryModel} fout (${err.status}), probeer volgend model...`);
-                        // Wacht even voor rate limiting
                         if (err.status === 429) await new Promise(r => setTimeout(r, 2000));
                         continue;
                     }
-                    // Bij andere fouten (400, 401, 403) direct stoppen — dat helpt niks te retrien
                     throw err;
                 }
             }
-            throw new Error(`Alle Gemini-modellen zijn overbelast of gaven een fout. Laatste fout: ${lastError?.message || lastError}`);
+            throw new Error(`Alle Gemini-modellen gaven een fout. Laatste fout: ${lastError?.message || lastError}`);
+        }
+
+        async function executeNT2AnalysisPipeline({
+            apiKey,
+            model,
+            filename,
+            elevenLabsTranscript,
+            azurePronReport,
+            ltGrammarReport,
+            customInstructions,
+            assignmentContext,
+            existingGesprek,
+            fileInfo = null
+        }) {
+            const targetModel = model || 'gemini-2.5-flash';
+            
+            const spkMapping = [];
+            const s1 = (document.getElementById('spreker1Input') || {}).value || '';
+            const s2 = (document.getElementById('spreker2Input') || {}).value || '';
+            if (s1) spkMapping.push('speaker_0 = ' + s1.trim());
+            if (s2) spkMapping.push('speaker_1 = ' + s2.trim());
+            const spkMappingText = spkMapping.length
+                ? '\n\nSPREKER-NAMEN (al ingevuld door de docent – gebruik EXACT deze namen in de "spreker" velden van het gesprek):\n' + spkMapping.join('\n')
+                : '';
+
+            let call1Prompt = `Je bent een professionele NT2 docent (Nederlands als Tweede Taal). De bestandsnaam is "${filename}".`;
+
+            if (existingGesprek && existingGesprek.length > 0) {
+                call1Prompt += `\n\nHier is het bestaande gesprek dat handmatig is bewerkt:
+${JSON.stringify(existingGesprek, null, 2)}
+Je taak is om de analyses (uitspraak_analyse, grammatica_analyse, logica_analyse) voor elke zin bij te werken op basis van de bewerkte teksten. Behoud de sprekers en zinnen exact.`;
+            } else {
+                call1Prompt += `\n\nHier is de letterlijke transcriptie van de audio, gegenereerd door een gespecialiseerd spraak-naar-tekst model. Gebruik dit als 'ground truth' leidraad:${spkMappingText}
+---
+${elevenLabsTranscript}
+---`;
+            }
+
+            if (customInstructions) {
+                call1Prompt += `\n\nBELANGRIJKE EXTRA DOCENT-INSTRUCTIE (MAATWERK):\n"${customInstructions}"`;
+            }
+            if (assignmentContext) {
+                call1Prompt += `\n\nOPDRACHT / CONTEXT VAN DE TAAK:\n"${assignmentContext}"\nEvalueer of de cursist(en) de opdracht goed hebben gevolgd, de juiste grammatica en woordenschat hebben gebruikt.`;
+            }
+            if (azurePronReport) {
+                call1Prompt += `\n\nOBJECTIEVE UITSPRAAKSCORES (Azure):\n${azurePronReport}`;
+            }
+            if (ltGrammarReport) {
+                call1Prompt += `\n\nOBJECTIEVE GRAMMATICAPUNTEN (LanguageTool):\n${ltGrammarReport}`;
+            }
+
+            call1Prompt += `
+
+Retourneer de output EXACT in het volgende JSON-formaat:
+{
+  "gesprek": [
+    {
+      "spreker": "Naam van de spreker",
+      "zin_fonetisch": "zin van de student zoals uitgesproken",
+      "zin_correct": "perfecte Nederlandse versie",
+      "uitspraak_analyse": { "goed": true/false, "fout": "foutomschrijving", "uitleg": "uitleg" },
+      "grammatica_analyse": { "goed": true/false, "fout": "foutomschrijving", "uitleg": "uitleg" },
+      "logica_analyse": { "goed": true/false, "fout": "foutomschrijving", "uitleg": "uitleg" }
+    }
+  ]
+}
+
+AANVULLENDE RICHTLIJNEN:
+- Zorg dat je de sprekers correct identificeert. Gebruik hun echte namen in het 'spreker' veld.
+- Als er geen uitspraakfouten/grammaticafouten zijn, zet "goed" op true en laat "fout" en "uitleg" leeg.
+- Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.`;
+
+            console.log("Calling Gemini for gesprek analysis (Call 1)...");
+            const call1Result = await makeGeminiCallWithFallback(apiKey, targetModel, call1Prompt, true, fileInfo);
+            if (!call1Result || !call1Result.gesprek) {
+                throw new Error("Ongeldig antwoord van Gemini: geen gesprek gevonden.");
+            }
+            
+            const gesprek = call1Result.gesprek;
+            
+            const sprekers = [...new Set(gesprek.map(l => l.spreker).filter(Boolean))];
+            console.log("Found speakers for feedback letters:", sprekers);
+            
+            const feedback_brieven = [];
+            for (const spreker of sprekers) {
+                console.log(`Calling Gemini for feedback letter of ${spreker} (Call 2)...`);
+                let call2Prompt = `Je bent een ervaren NT2 docent. Jouw taak is om een persoonlijke WhatsApp-feedbackbrief te schrijven voor cursist "${spreker}", gebaseerd op het onderstaande gesprek.
+                
+GESPREKSDATA:
+${JSON.stringify(gesprek, null, 2)}
+
+${customInstructions ? `AANVULLENDE DOCENT-INSTRUCTIE (MAATWERK):\n"${customInstructions}"\n` : ''}
+${assignmentContext ? `OPDRACHT / CONTEXT VAN DE TAAK:\n"${assignmentContext}"\n` : ''}
+
+RICHTLIJNEN VOOR DE BRIEF:
+1. Richt de brief rechtstreeks aan de cursist "${spreker}" (bijv. "Hallo ${spreker}!").
+2. Toon het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
+3. Voor de zinnen die door "${spreker}" zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
+   Jij zei
+   *Zin X:* '[Zin van ${spreker}]'
+   👍 *Wat was goed:* [Compliment]
+   💡 *Correctie:* '[Correcte zin]' (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS! SCHRIJF DUS NOOIT EEN CORRECTIE OF WAAROM ALS DE ZIN AL GOED WAS)
+   🧠 *Waarom:* [Uitleg over grammatica/klank] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)
+   🤔 *Logica:* [Uitleg over betekenis/samenhang, alleen als er een onlogische formulering was. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS!]
+4. Voor de zinnen die door de ANDERE cursist zijn uitgesproken, toon je UITSLUITEND de correcte/gecorrigeerde versie van hun zin als context. Format:
+   *[AnderenNaam] vroeg/zei toen:* '[Correcte zin van de ander]' (als het een vraag is, gebruik "vroeg", anders "zei")
+   Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander (zodat ze niet per ongeluk de foute versie onthouden).
+5. Bundel de samenvatting onder de kop "🏁 *Samenvatting & Belangrijkste leerpunten:*":
+   - Schrijf een vloeiend, kort en bemoedigend verhaal waarin je de belangrijkste uitspraak-, grammatica- en logica-aandachtspunten samenbrengt. Focus op de meest voorkomende fouten.
+   - Benoem expliciet wat er al heel goed ging!
+   - Concludeer met "🧠 *Jouw volgende stap & advies:*" en een bemoedigend advies.
+6. Houd de uitleg uiterst simpel (A1-A2 niveau, alsof je het uitlegt aan een kind van 6).
+7. Gebruik ENKELE asterisks (*) voor vetgedrukte woorden (bijv. *Zin 1:*), nooit dubbele (**).
+8. Retourneer de brief direct als platte tekst (geen JSON).`;
+
+                const briefText = await makeGeminiCallWithFallback(apiKey, targetModel, call2Prompt, false, null);
+                feedback_brieven.push({
+                    naam: spreker,
+                    brief: briefText.trim(),
+                    brief_en: ''
+                });
+            }
+            
+            return {
+                gesprek,
+                feedback_brieven,
+                sprekerNamen: [s1 || sprekers[0] || 'speaker_0', s2 || sprekers[1] || 'speaker_1']
+            };
+        }
+
+        async function runTranscription(fileInfo, filename, apiKey, targetLang, customInstructions, assignmentContext, elevenLabsTranscript, azurePronReport, ltGrammarReport) {
+            const model = document.getElementById('geminiModelSelect').value;
+            const analysisResult = await executeNT2AnalysisPipeline({
+                apiKey,
+                model,
+                filename,
+                elevenLabsTranscript,
+                azurePronReport,
+                ltGrammarReport,
+                customInstructions,
+                assignmentContext,
+                fileInfo
+            });
+            analysisResult.letterlijk_transcript = elevenLabsTranscript || "";
+            return analysisResult;
         }
 
         function cancelQueueProcessing() {
