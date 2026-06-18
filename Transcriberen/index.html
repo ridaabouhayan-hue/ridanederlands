@@ -1926,7 +1926,7 @@ AANVULLENDE RICHTLIJNEN:
                     generationConfig: {
                         temperature: 0.1,
                         responseMimeType: "application/json",
-                        maxOutputTokens: 8192
+                        maxOutputTokens: 65536
                     }
                 };
 
@@ -1946,7 +1946,7 @@ AANVULLENDE RICHTLIJNEN:
                     throw new Error("Geen antwoord ontvangen van Gemini.");
                 }
 
-                const result = JSON.parse(jsonResponse.trim());
+                const result = repairAndParseJSON(jsonResponse.trim());
                 
                 // Update database
                 const groupFiles = db[activeGroup] || [];
@@ -2169,7 +2169,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     generationConfig: {
                         temperature: 0.1,
                         responseMimeType: "application/json",
-                        maxOutputTokens: 8192
+                        maxOutputTokens: 65536
                     }
                 };
 
@@ -2189,7 +2189,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     throw new Error("Geen antwoord ontvangen van Gemini.");
                 }
 
-                const result = JSON.parse(jsonResponse.trim());
+                const result = repairAndParseJSON(jsonResponse.trim());
                 
                 // Update in-memory reference directly
                 if (currentFileObject && currentFileObject.analyse) {
@@ -2235,6 +2235,60 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     btn.disabled = false;
                 }
             }
+        }
+
+        // ── ROBUUSTE JSON-PARSER (vangt afgeknipte of licht beschadigde JSON op) ──
+        function repairAndParseJSON(raw) {
+            // 1. Probeer gewoon
+            try { return JSON.parse(raw); } catch (_) {}
+
+            // 2. Zoek het eerste { en probeer vanaf daar
+            const start = raw.indexOf('{');
+            if (start > 0) {
+                try { return JSON.parse(raw.slice(start)); } catch (_) {}
+            }
+
+            // 3. Probeer afgeknipte JSON te repareren door open structuren te sluiten
+            let s = start >= 0 ? raw.slice(start) : raw;
+            // Verwijder een eventuele onvolledige laatste regel
+            const lastNewline = s.lastIndexOf('\n');
+            if (lastNewline > s.length * 0.7) {
+                try { return JSON.parse(repairClose(s.slice(0, lastNewline))); } catch (_) {}
+            }
+            // Probeer met alles behalve de laatste paar tekens
+            for (const cutAt of [s.length, s.lastIndexOf('"}'), s.lastIndexOf('}')]) {
+                if (cutAt > 10) {
+                    try { return JSON.parse(repairClose(s.slice(0, cutAt + 1))); } catch (_) {}
+                }
+            }
+
+            // 4. Niets werkte – gooi de originele fout
+            throw new SyntaxError('Gemini stuurde ongeldige JSON. Probeer het opnieuw (kortere opname of minder sprekers).');
+        }
+
+        // Sluit openstaande JSON-structuren (haakjes/aanhalingstekens)
+        function repairClose(s) {
+            // Tel openstaande structuren
+            let inStr = false, escape = false;
+            const stack = [];
+            for (let i = 0; i < s.length; i++) {
+                const c = s[i];
+                if (escape) { escape = false; continue; }
+                if (c === '\\' && inStr) { escape = true; continue; }
+                if (c === '"') { inStr = !inStr; continue; }
+                if (inStr) continue;
+                if (c === '{' || c === '[') stack.push(c);
+                else if (c === '}' || c === ']') stack.pop();
+            }
+            // Sluit openstaande string
+            let out = s;
+            if (inStr) out += '"';
+            // Sluit openstaande structuren in omgekeerde volgorde
+            while (stack.length) {
+                const open = stack.pop();
+                out += open === '{' ? '}' : ']';
+            }
+            return out;
         }
 
         function switchPane(id, el) {
@@ -3392,7 +3446,7 @@ BELANGRIJK:
                 generationConfig: {
                     temperature: 0.1,
                     responseMimeType: "application/json",
-                    maxOutputTokens: 8192
+                    maxOutputTokens: 65536
                 }
             };
 
@@ -3416,7 +3470,12 @@ BELANGRIJK:
                     throw new Error("Ongeldig antwoord van Gemini: geen content kandidaten.");
                 }
                 const text = data.candidates[0].content.parts[0].text;
-                return JSON.parse(text.trim());
+                // Controleer of Gemini de output heeft afgekapt (finish_reason = MAX_TOKENS)
+                const finishReason = data.candidates[0].finishReason || '';
+                if (finishReason === 'MAX_TOKENS') {
+                    console.warn('Gemini: output afgekapt door token-limiet. Probeer een korter gesprek of verhoog maxOutputTokens.');
+                }
+                return repairAndParseJSON(text.trim());
             };
 
             // Fallback volgorde: probeer elk model op volgorde bij 503/overbelasting/404
