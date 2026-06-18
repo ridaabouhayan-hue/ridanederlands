@@ -7,6 +7,9 @@
     <!-- v2.1 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="../api_key.js"></script>
+    <!-- html2canvas & jsPDF for exporting reports -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -432,7 +435,7 @@
                     <!-- Opdracht Dropdown Panel -->
                     <div style="padding: 10px 16px 0; display: flex; flex-direction: column; gap: 6px;">
                         <label for="opdrachtSelect" style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">📚 Opdracht / Les (optioneel):</label>
-                        <select id="opdrachtSelect" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); cursor: pointer; font-weight: 600;">
+                        <select id="opdrachtSelect" onchange="onOpdrachtSelectChanged()" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.8rem; outline: none; transition: var(--transition); cursor: pointer; font-weight: 600;">
                             <option value="none" style="background:#1e293b;" selected>Geen</option>
                         </select>
                     </div>
@@ -737,6 +740,7 @@
             renderAzureColumn();
             renderFeedbackColumn();
             renderCompleteColumn();
+            renderGrammarColumn();
         }
 
         async function loadDynamicLessons() {
@@ -757,31 +761,65 @@
                     }
                     const text = await res.text();
                     
-                    const match = text.match(/(?:const|let|var)\s+themesData\s*=\s*\[([\s\S]*?)\]\s*(?:;|const|let|var|function|\n\s*\/\/|\n\s*const)/);
+                    // Zoek de themesData array in het HTML-bestand
+                    const match = text.match(/(?:const|let|var)\s+themesData\s*=\s*(\[[\s\S]*?\])\s*(?:;|const|let|var|function|\n\s*\/\/|\n\s*const)/);
                     if (match) {
-                        const arrayContent = match[1];
-                        const objs = arrayContent.split('}');
-                        objs.forEach(obj => {
-                            const id_m = obj.match(/id:\s*["'](.*?)["']/);
-                            const title_m = obj.match(/title:\s*["'](.*?)["']/);
-                            const desc_m = obj.match(/description:\s*["']([\s\S]*?)["']/);
-                            if (id_m && title_m && desc_m) {
-                                const id = id_m[1];
-                                const title = title_m[1];
-                                const description = desc_m[1].replace(/\r?\n/g, ' ').replace(/\s+/g, ' ').trim();
-                                
-                                const fullId = `${f.level}_${id}`;
-                                if (!dynamicLessons.some(l => l.id === fullId)) {
-                                    dynamicLessons.push({
-                                        id: fullId,
-                                        level: f.level,
-                                        type: f.type,
-                                        title: `${f.level} — ${f.type}: ${title}`,
-                                        description: description
-                                    });
-                                }
+                        const arrayStr = match[1];
+                        try {
+                            // Evalueer de JS-array veilig in de browser
+                            const parsedArray = new Function(`return ${arrayStr}`)();
+                            if (Array.isArray(parsedArray)) {
+                                parsedArray.forEach(theme => {
+                                    if (theme.id && theme.title) {
+                                        const title = theme.title;
+                                        const description = (theme.description || theme.goal || '').trim();
+                                        
+                                        // Bouw een gedetailleerde samenvatting van de context
+                                        let contextParts = [];
+                                        contextParts.push(`OPDRACHT THEMA CONTEXT:`);
+                                        contextParts.push(`Niveau: ${f.level}`);
+                                        contextParts.push(`Type: ${f.type}`);
+                                        contextParts.push(`Onderwerp: ${title}`);
+                                        contextParts.push(`Beschrijving: ${description}`);
+                                        
+                                        if (theme.goal) {
+                                            contextParts.push(`Doel: ${theme.goal}`);
+                                        }
+                                        
+                                        if (Array.isArray(theme.rules) && theme.rules.length) {
+                                            const rulesText = theme.rules.map(r => `- ${r.grammar}: ${r.explain} (bijv. "${r.example}")`).join('\n');
+                                            contextParts.push(`Grammatica Regels:\n${rulesText}`);
+                                        }
+                                        
+                                        if (Array.isArray(theme.questions) && theme.questions.length) {
+                                            const questionsText = theme.questions.map(q => `- ${q.text}`).join('\n');
+                                            contextParts.push(`Voorbeeld Vragen:\n${questionsText}`);
+                                        }
+                                        
+                                        if (Array.isArray(theme.vocabulary) && theme.vocabulary.length) {
+                                            const vocabText = theme.vocabulary.map(v => `- ${v.nl}`).join('\n');
+                                            contextParts.push(`Belangrijke Woordenschat:\n${vocabText}`);
+                                        }
+                                        
+                                        const contextSummary = contextParts.join('\n\n');
+                                        const fullId = `${f.level}_${theme.id}`;
+                                        
+                                        if (!dynamicLessons.some(l => l.id === fullId)) {
+                                            dynamicLessons.push({
+                                                id: fullId,
+                                                level: f.level,
+                                                type: f.type,
+                                                title: `${f.level} — ${f.type}: ${title}`,
+                                                description: description,
+                                                contextSummary: contextSummary
+                                            });
+                                        }
+                                    }
+                                });
                             }
-                        });
+                        } catch (parseError) {
+                            console.error("Fout bij het evalueren van themesData uit " + f.url, parseError);
+                        }
                     }
                 } catch (e) {
                     console.error(`Error loading lessons from ${f.url}:`, e);
@@ -791,15 +829,78 @@
             // Fallback hardcoded standard lessons if dynamic fetching fails (e.g. CORS on local file:// URL)
             if (dynamicLessons.length === 0) {
                 dynamicLessons = [
-                    { id: "A1_dieren", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Dieren / dierentuin", description: "Praat over huisdieren, dieren in de dierentuin en je favoriete dier. Let op correcte lidwoorden (de/het) en woordenschat." },
-                    { id: "A1_familie-vrienden", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Familie", description: "Praat over je familie, gezin en vrienden. Let op bezittelijke voornaamwoorden en werkwoordspelling." },
-                    { id: "A1_eten-drinken", level: "A1", type: "A1 Praatplaat", title: "A1 — Praatplaat: Eten & drinken", description: "Vragen stellen en antwoorden geven over maaltijden, favoriet eten en boodschappen." },
-                    { id: "A1_jezelf-voorstellen", level: "A1", type: "Monoloog", title: "A1 — Monoloog: Jezelf voorstellen", description: "Stel jezelf voor (naam, leeftijd, herkomst, talen en waar je woont)." },
-                    { id: "A1_vrije-tijd", level: "A1", type: "Monoloog", title: "A1 — Monoloog: Vrije tijd & hobby's", description: "Vertel over hobby's en wat je doet in je vrije tijd." },
-                    { id: "A2_werk-beroep", level: "A2", type: "A2 Praatplaat", title: "A2 — Praatplaat: Werk & beroepen", description: "Bespreek jouw werk, jouw taken op het werk, en wat je belangrijk vindt." },
-                    { id: "A2_bij-de-huisarts", level: "A2", type: "A2 Praatplaat", title: "A2 — Praatplaat: Stad & omgeving", description: "Praat over de stad, winkels en openbaar vervoer. Redenen geven met omdat." },
-                    { id: "A2_wonen-thuis", level: "A2", type: "Monoloog", title: "A2 — Monoloog: Wonen & thuis", description: "Vertel over jouw woning, de kamers, en meubels. Let op er zijn." },
-                    { id: "A2_gezondheid-lichaam", level: "A2", type: "Monoloog", title: "A2 — Monoloog: Gezondheid & lichaam", description: "Vertel over gezondheid, sporten, klachten en ziek zijn." }
+                    { 
+                        id: "A1_dieren", 
+                        level: "A1", 
+                        type: "A1 Praatplaat", 
+                        title: "A1 — Praatplaat: Dieren / dierentuin", 
+                        description: "Praat over huisdieren, dieren in de dierentuin en je favoriete dier. Let op correcte lidwoorden (de/het) en woordenschat.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A1\nType: A1 Praatplaat\nOnderwerp: Dieren / dierentuin\nBeschrijving: Praat over huisdieren, dieren in de dierentuin en je favoriete dier. Let op correcte lidwoorden (de/het) en woordenschat.\n\nBelangrijke Woordenschat:\n- de hond, de kat, de vogel, de vis, het konijn\n- de dierentuin, het dier, de olifant, de leeuw, de giraf\n- favoriete dier, houden van"
+                    },
+                    { 
+                        id: "A1_familie-vrienden", 
+                        level: "A1", 
+                        type: "A1 Praatplaat", 
+                        title: "A1 — Praatplaat: Familie", 
+                        description: "Praat over je familie, gezin en vrienden. Let op bezittelijke voornaamwoorden en werkwoordspelling.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A1\nType: A1 Praatplaat\nOnderwerp: Familie\nBeschrijving: Praat over je familie, gezin en vrienden. Let op bezittelijke voornaamwoorden en werkwoordspelling.\n\nBelangrijke Woordenschat:\n- de vader, de moeder, de broer, de zus, de ouders\n- de opa, de oma, de zoon, de dochter, het gezin, de vriend/vriendin\n- bezittelijk: mijn, jouw, zijn, haar, onze, jullie"
+                    },
+                    { 
+                        id: "A1_eten-drinken", 
+                        level: "A1", 
+                        type: "A1 Praatplaat", 
+                        title: "A1 — Praatplaat: Eten & drinken", 
+                        description: "Vragen stellen en antwoorden geven over maaltijden, favoriet eten en boodschappen.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A1\nType: A1 Praatplaat\nOnderwerp: Eten & drinken\nBeschrijving: Vragen stellen en antwoorden geven over maaltijden, favoriet eten, boodschappen en koken.\n\nVoorbeeld Vragen:\n- Wat vind jij lekker?\n- Wat drink jij 's ochtends?\n- Waar koop jij eten?\n- Kook jij zelf?\n\nBelangrijke Woordenschat:\n- de appel / het fruit\n- het brood / het ontbijt\n- het water / de melk\n- de groenten / het avondeten\n- koken / eten"
+                    },
+                    { 
+                        id: "A1_jezelf-voorstellen", 
+                        level: "A1", 
+                        type: "Monoloog", 
+                        title: "A1 — Monoloog: Jezelf voorstellen", 
+                        description: "Stel jezelf voor (naam, leeftijd, herkomst, talen en waar je woont).",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A1\nType: Monoloog\nOnderwerp: Jezelf voorstellen\nBeschrijving: Vertel over jezelf: je naam, land van herkomst, talen en waarom je Nederlands leert.\n\nVoorbeeld Vragen:\n- Hoe heet je?\n- Uit welk land kom je?\n- Welke talen spreek je?\n- Waar woon je nu?\n- Waarom leer je Nederlands?\n\nBelangrijke Woordenschat:\n- hallo / welkom\n- het land / de taal\n- de stad / wonen\n- de maand / het jaar\n- leren / werken"
+                    },
+                    { 
+                        id: "A1_vrije-tijd", 
+                        level: "A1", 
+                        type: "Monoloog", 
+                        title: "A1 — Monoloog: Vrije tijd & hobby's", 
+                        description: "Vertel over hobby's en wat je doet in je vrije tijd.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A1\nType: Monoloog\nOnderwerp: Vrije tijd & hobby's\nBeschrijving: Vertel over hobby's en wat je doet in je vrije tijd.\n\nBelangrijke Woordenschat:\n- de hobby, vrije tijd, sporten, fitness, wandelen, fietsen, reizen\n- de televisie, films, lezen, muziek luisteren, koken"
+                    },
+                    { 
+                        id: "A2_werk-beroep", 
+                        level: "A2", 
+                        type: "A2 Praatplaat", 
+                        title: "A2 — Praatplaat: Werk & beroepen", 
+                        description: "Bespreek jouw werk, jouw taken op het werk, en wat je belangrijk vindt.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A2\nType: A2 Praatplaat\nOnderwerp: Werk & beroepen\nBeschrijving: Bespreek jouw werk, jouw taken op het werk, en wat je belangrijk vindt.\n\nBelangrijke Woordenschat:\n- de baan, het beroep, de collega's, de baas/leidinggevende\n- taken, verantwoordelijkheden, pauze, werktijden, contract\n- de fabriek, de logistiek, productie, kantoor"
+                    },
+                    { 
+                        id: "A2_bij-de-huisarts", 
+                        level: "A2", 
+                        type: "A2 Praatplaat", 
+                        title: "A2 — Praatplaat: Stad & omgeving", 
+                        description: "Praat over de stad, winkels en openbaar vervoer. Redenen geven met omdat.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A2\nType: A2 Praatplaat\nOnderwerp: Stad & omgeving\nBeschrijving: Praat over de stad, winkels en openbaar vervoer. Redenen geven met omdat.\n\nBelangrijke Woordenschat:\n- de stad, de winkel, de supermarkt, de bibliotheek, het station\n- de bus, de trein, de tram, reizen, openbaar vervoer\n- omdat-zinsstructuur"
+                    },
+                    { 
+                        id: "A2_wonen-thuis", 
+                        level: "A2", 
+                        type: "Monoloog", 
+                        title: "A2 — Monoloog: Wonen & thuis", 
+                        description: "Vertel over jouw woning, de kamers, en meubels. Let op er zijn.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A2\nType: Monoloog\nOnderwerp: Wonen & thuis\nBeschrijving: Vertel over jouw woning, de kamers, en meubels. Let op er zijn.\n\nBelangrijke Woordenschat:\n- het appartement, de eengezinswoning, de kamers\n- de woonkamer, de slaapkamer, de keuken, de badkamer\n- de bank, de tafel, de stoelen, de kast, het bed, de televisie"
+                    },
+                    { 
+                        id: "A2_gezondheid-lichaam", 
+                        level: "A2", 
+                        type: "Monoloog", 
+                        title: "A2 — Monoloog: Gezondheid & lichaam", 
+                        description: "Vertel over gezondheid, sporten, klachten en ziek zijn.",
+                        contextSummary: "OPDRACHT THEMA CONTEXT:\nNiveau: A2\nType: Monoloog\nOnderwerp: Gezondheid & lichaam\nBeschrijving: Vertel over gezondheid, sporten, klachten en ziek zijn.\n\nBelangrijke Woordenschat:\n- de huisarts, de apotheek, het medicijn, ziek zijn\n- de buikpijn, de hoofdpijn, koorts, verkouden, de griep\n- het lichaam, de arm, het been, het hoofd, de rug, de hand"
+                    }
                 ];
             }
             
@@ -819,6 +920,109 @@
                 opt.style.background = '#1e293b';
                 select.appendChild(opt);
             });
+        }
+
+        function onOpdrachtSelectChanged() {
+            const select = document.getElementById('opdrachtSelect');
+            const textarea = document.getElementById('assignmentContextInput');
+            if (!select || !textarea) return;
+            
+            const val = select.value;
+            if (val === 'none') {
+                textarea.value = '';
+                return;
+            }
+            
+            const selectedLesson = dynamicLessons.find(l => l.id === val);
+            if (selectedLesson) {
+                textarea.value = selectedLesson.contextSummary || selectedLesson.description;
+            }
+        }
+
+        async function exportColumn(elementId, format) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            
+            const name = (currentFileObject && currentFileObject.filename) || 'rapport';
+            const cleanName = name.replace(/\.[^/.]+$/, "");
+            const fileSuffix = elementId.includes('azure') ? 'Uitspraak_Rapport' : 'Grammatica_Rapport';
+            const exportFileName = `${cleanName}_${fileSuffix}`;
+            
+            const controls = el.querySelectorAll('button, select, input, textarea');
+            controls.forEach(c => c.style.visibility = 'hidden');
+            
+            try {
+                const canvas = await html2canvas(el, {
+                    useCORS: true,
+                    backgroundColor: '#0f172a',
+                    scale: 2,
+                    scrollX: 0,
+                    scrollY: -window.scrollY,
+                    windowWidth: document.documentElement.offsetWidth,
+                    windowHeight: el.scrollHeight
+                });
+                
+                if (format === 'PNG') {
+                    const imgData = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = exportFileName + '.png';
+                    link.href = imgData;
+                    link.click();
+                } else if (format === 'PDF') {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 210;
+                    const pageHeight = 297;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    let heightLeft = imgHeight;
+                    let position = 0;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    pdf.save(exportFileName + '.pdf');
+                }
+            } catch (err) {
+                console.error('Fout bij exporteren:', err);
+                alert('Fout bij exporteren: ' + err.message);
+            } finally {
+                controls.forEach(c => c.style.visibility = 'visible');
+            }
+        }
+
+        function alignGrammarWords(wordsFonetisch, wordsCorrect) {
+            const A = wordsFonetisch.map(w => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, ''));
+            const B = wordsCorrect.map(w => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, ''));
+            const n = A.length, m = B.length;
+            const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+            for (let i = n - 1; i >= 0; i--) {
+                for (let j = m - 1; j >= 0; j--) {
+                    dp[i][j] = (A[i] === B[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+            const matchedFonetisch = new Array(n).fill(false);
+            let i = 0, j = 0;
+            while (i < n && j < m) {
+                if (A[i] === B[j]) {
+                    matchedFonetisch[i] = true;
+                    i++; j++;
+                } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+            return matchedFonetisch;
         }
 
         function autoFillSprekerVelden(turns) {
@@ -1017,10 +1221,7 @@
             }
         }
 
-        async function saveDatabase() {
-            try { if (currentFileObject) await saveEntry(currentFileObject, activeGroup); }
-            catch (e) { /* toast is al getoond */ }
-        }
+
 
         // ── JSON IMPORTEREN (voor lokale modus of als herstel) ──
         function importJsonBackup(event) {
@@ -1179,6 +1380,7 @@
         function initApp() {
             renderTabs();
             renderList();
+            loadDynamicLessons();
         }
 
         function renderTabs() {
@@ -1275,32 +1477,362 @@
         function renderGrammarColumn() {
             const c = document.getElementById('col-grammar');
             if (!c) return;
-            const a = currentEntry && currentEntry.analyse;
+            c.innerHTML = '';
+            
+            const a = currentFileObject && currentFileObject.analyse;
             const detail = a && a.grammar_lt_detail;
             const text = a && a.grammar_lt;
-            if (!detail && !text) {
+            const gesprek = a && a.gesprek;
+
+            // Fallback voor oude opnames zonder gesprek of als er geen grammatica-data is
+            if (!detail && !text && (!gesprek || gesprek.length === 0)) {
                 c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen LanguageTool-grammaticapunten opgeslagen voor deze opname. Dit tabblad vult zich pas als je de LanguageTool-check aanzet (vinkje links onder de engine-keuze) én je gebruikersnaam + sleutel in ⚙️ staan, en de opname daarna opnieuw verwerkt met ElevenLabs als engine. Zonder dit blijft alles werken zoals voorheen.</div>';
                 return;
             }
+
+            const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
             const items = (detail && Array.isArray(detail.items)) ? detail.items : [];
-            let html = '<div style="padding:0 4px 12px;">';
-            html += '<div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Objectieve, regelgebaseerde grammatica-, spelling- en stijlpunten van LanguageTool (nl) op de letterlijke transcriptie. Dit is een hulpmiddel dat meegaat in de feedback; niet elk punt is per se fout (spreektaal of transcriptiefoutjes kunnen meekomen). Aantal punten: <b>' + (detail ? detail.count : items.length) + '</b>.</div>';
-            if (!items.length) {
-                html += '<div style="padding:12px;color:#10b981;font-size:0.9rem;">Geen grammaticapunten gevonden — mooi resultaat.</div>';
-            } else {
-                items.forEach((it, i) => {
-                    const ctx = (it.context || '').replace(/\[\[/g, '<mark style="background:#fde68a;color:#78350f;padding:0 2px;border-radius:2px;">').replace(/\]\]/g, '</mark>');
-                    html += '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);">';
-                    html += '<div style="font-size:0.8rem;font-weight:700;color:#fff;">' + (i + 1) + '. ' + (it.message || it.shortMessage || 'Punt') + '</div>';
-                    if (it.category) html += '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;">' + it.category + '</div>';
-                    if (ctx) html += '<div style="font-size:0.82rem;color:var(--text);margin-top:6px;line-height:1.5;">' + ctx + '</div>';
-                    if (it.suggestions && it.suggestions.length) html += '<div style="font-size:0.8rem;color:#10b981;margin-top:6px;">→ Suggestie: ' + it.suggestions.join(' / ') + '</div>';
-                    html += '</div>';
-                });
+
+            // Speel fragment af helper (timing van ElevenLabs)
+            let segStop = null, segPrev = null;
+            const playSegment = (s, e) => {
+                const p = document.getElementById('vAudio');
+                if (!p || s == null) return;
+                try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+                if (segStop && segPrev) { try { segPrev.removeEventListener('timeupdate', segStop); } catch (_) {} }
+                p.pause();
+                const end = (e != null ? e : s + 0.6) + 0.04;
+                try { p.currentTime = Math.max(0, s - 0.02); } catch (_) {}
+                segStop = () => { if (p.currentTime >= end) { p.pause(); try { p.removeEventListener('timeupdate', segStop); } catch (_) {} segStop = null; } };
+                segPrev = p;
+                p.addEventListener('timeupdate', segStop);
+                p.play().catch(() => {});
+            };
+
+            const speak = (t) => {
+                if (!('speechSynthesis' in window)) return;
+                const u = new SpeechSynthesisUtterance(String(t == null ? '' : t));
+                u.lang = 'nl-NL'; u.rate = 0.9;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(u);
+            };
+
+            const mkBtn = (label, title, onClick) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                b.title = title || '';
+                b.style.cssText = 'background:rgba(15,23,42,0.5);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:3px 8px;font-size:0.72rem;font-weight:700;cursor:pointer;';
+                b.addEventListener('click', (ev) => { ev.stopPropagation(); onClick(); });
+                return b;
+            };
+
+            // 1. Render de intro
+            const intro = document.createElement('div');
+            intro.style.cssText = 'padding:0 2px 12px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
+            intro.innerHTML = 'Visuele grammatica- en spellingfeedback. <b style="color:#10b981;">Groen</b> = correct zinsdeel, <b style="color:#ef4444;">rood</b> = grammaticaal incorrect zinsdeel of hersteld woord, <b style="color:#f59e0b;">oranje</b> = spelling of stijlwaarschuwing. Klik op <b>🔊 Goed</b> om te horen hoe het hoort te klinken.';
+            c.appendChild(intro);
+
+            // 2. Als we geen gesprek hebben, tonen we de oude lijstweergave
+            if (!gesprek || gesprek.length === 0) {
+                const listWrap = document.createElement('div');
+                let html = '<div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Objectieve grammaticapunten van LanguageTool:</div>';
+                if (!items.length) {
+                    html += '<div style="padding:12px;color:#10b981;font-size:0.9rem;">Geen grammaticapunten gevonden.</div>';
+                } else {
+                    items.forEach((it, i) => {
+                        const ctx = (it.context || '').replace(/\[\[/g, '<mark style="background:#fde68a;color:#78350f;padding:0 2px;border-radius:2px;">').replace(/\]\]/g, '</mark>');
+                        html += '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);">';
+                        html += '<div style="font-size:0.8rem;font-weight:700;color:#fff;">' + (i + 1) + '. ' + (it.message || it.shortMessage || 'Punt') + '</div>';
+                        if (it.category) html += '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;">' + it.category + '</div>';
+                        if (ctx) html += '<div style="font-size:0.82rem;color:var(--text);margin-top:6px;line-height:1.5;">' + ctx + '</div>';
+                        if (it.suggestions && it.suggestions.length) html += '<div style="font-size:0.8rem;color:#10b981;margin-top:6px;">→ Suggestie: ' + it.suggestions.join(' / ') + '</div>';
+                        html += '</div>';
+                    });
+                }
+                listWrap.innerHTML = html;
+                c.appendChild(listWrap);
+                return;
             }
-            html += '<div style="margin-top:14px;font-size:0.72rem;color:var(--text-muted);">Grammaticacheck door <a href="https://languagetool.org" target="_blank" rel="noopener" style="color:#60a5fa;">LanguageTool</a>.</div>';
-            html += '</div>';
-            c.innerHTML = html;
+
+            // 3. Weergave van de grammaticascore (percentage correcte zinnen)
+            const totalSents = gesprek.length;
+            const correctSents = gesprek.filter(l => !l.grammatica_analyse || l.grammatica_analyse.goed).length;
+            const grammarScore = totalSents ? Math.round((correctSents / totalSents) * 100) : 100;
+
+            const scoreWrap = document.createElement('div');
+            scoreWrap.style.cssText = 'margin-bottom:18px;';
+            const scoreLab = document.createElement('div');
+            scoreLab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;';
+            scoreLab.textContent = 'Grammatica Analyse';
+            scoreWrap.appendChild(scoreLab);
+            
+            const scoreBar = document.createElement('div');
+            scoreBar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
+            
+            const colorClass = grammarScore >= 80 ? '#10b981' : (grammarScore >= 60 ? '#f59e0b' : '#ef4444');
+            scoreBar.innerHTML = `
+                <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
+                    <div style="font-size:1.4rem;font-weight:800;color:${colorClass};">${grammarScore}%</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Correcte Zinnen</div>
+                </div>
+                <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
+                    <div style="font-size:1.4rem;font-weight:800;color:#fff;">${totalSents}</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Zinnen Totaal</div>
+                </div>
+                <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
+                    <div style="font-size:1.4rem;font-weight:800;color:${grammarScore === 100 ? '#10b981' : '#f59e0b'};">${totalSents - correctSents}</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Aandachtspunten</div>
+                </div>
+            `;
+            scoreWrap.appendChild(scoreBar);
+            c.appendChild(scoreWrap);
+
+            // 4. Weergavetoggles + exportknoppen
+            if (window.grammarViewMode !== 'speaker' && window.grammarViewMode !== 'chrono') {
+                try { window.grammarViewMode = localStorage.getItem('grammarViewMode') || 'chrono'; } catch (_) { window.grammarViewMode = 'chrono'; }
+            }
+            const viewMode = window.grammarViewMode;
+            const setView = (mode) => { window.grammarViewMode = mode; try { localStorage.setItem('grammarViewMode', mode); } catch (_) {} renderGrammarColumn(); };
+            
+            const toggle = document.createElement('div');
+            toggle.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+            
+            const leftToggle = document.createElement('div');
+            leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+            const mkToggle = (mode, label) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                const on = (viewMode === mode);
+                b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
+                b.addEventListener('click', () => setView(mode));
+                return b;
+            };
+            leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
+            leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+            toggle.appendChild(leftToggle);
+            
+            const rightExport = document.createElement('div');
+            rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+            
+            const pngBtn = document.createElement('button');
+            pngBtn.type = 'button';
+            pngBtn.innerHTML = '📸 Afbeelding (PNG)';
+            pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pngBtn.addEventListener('click', () => exportColumn('col-grammar', 'PNG'));
+            
+            const pdfBtn = document.createElement('button');
+            pdfBtn.type = 'button';
+            pdfBtn.innerHTML = '📄 Rapport (PDF)';
+            pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pdfBtn.addEventListener('click', () => exportColumn('col-grammar', 'PDF'));
+            
+            rightExport.appendChild(pngBtn);
+            rightExport.appendChild(pdfBtn);
+            toggle.appendChild(rightExport);
+            c.appendChild(toggle);
+
+            // Spreker-kleuren koppelen
+            const spkColors = ['var(--accent)', '#10b981', '#a855f7', '#f59e0b'];
+            const spkColor = {};
+            const order = [];
+            const bySpk = {};
+            gesprek.forEach(l => { if (l.spreker && !bySpk[l.spreker]) { bySpk[l.spreker] = []; order.push(l.spreker); } if (l.spreker) bySpk[l.spreker].push(l); });
+            order.forEach((spk, i) => spkColor[spk] = spkColors[i % spkColors.length]);
+
+            // Koppel tijdstempels van ElevenLabs aan woorden indien beschikbaar
+            const toks = [];
+            const lijnen = gesprek.map(lijn => {
+                const bron = lijn.zin_fonetisch || '';
+                const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map(t => ({ label: t, start: null, end: null }));
+                woorden.forEach(w => toks.push(w));
+                return { ...lijn, woorden };
+            });
+            const ew = (a.elevenlabs_words || []).filter(x => x && x.w != null && x.s != null);
+            if (ew.length) {
+                alignLCS(toks.map(t => norm(t.label)), ew.map(x => norm(x.w)), (i, j) => { toks[i].start = ew[j].s; toks[i].end = ew[j].e; });
+            }
+
+            // Bouwer van de zin-kaart
+            const buildCard = (l, numberLabel, speakerName, accentCol) => {
+                const card = document.createElement('div');
+                const isIncorrect = l.grammatica_analyse && !l.grammatica_analyse.goed;
+                card.style.cssText = `border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:rgba(15,23,42,0.3);${speakerName ? 'border-left:4px solid ' + accentCol + ';' : ''}`;
+
+                const head = document.createElement('div');
+                head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;';
+                const headL = document.createElement('div');
+                headL.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+                if (speakerName) {
+                    const chip = document.createElement('span');
+                    chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};`;
+                    chip.textContent = speakerName;
+                    headL.appendChild(chip);
+                }
+                const num = document.createElement('span');
+                num.style.cssText = 'font-weight:800;font-size:0.8rem;color:var(--text);';
+                num.textContent = numberLabel;
+                headL.appendChild(num);
+                
+                const headR = document.createElement('div');
+                headR.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+                
+                const statusBadge = document.createElement('span');
+                statusBadge.style.cssText = `font-size:0.72rem;font-weight:800;padding:2px 8px;border-radius:4px;background:${isIncorrect ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)'};color:${isIncorrect ? '#ef4444' : '#10b981'};`;
+                statusBadge.textContent = isIncorrect ? 'Grammaticafout' : 'Correct';
+                headR.appendChild(statusBadge);
+
+                // Playback knoppen
+                const timed = l.woorden.filter(w => w.start != null);
+                if (timed.length) {
+                    const s0 = Math.min.apply(null, timed.map(w => w.start));
+                    const e0 = Math.max.apply(null, timed.map(w => w.end != null ? w.end : w.start));
+                    headR.appendChild(mkBtn('▶ Jouw zin', 'Luister terug hoe de cursist deze zin zei', () => playSegment(s0, e0)));
+                }
+                headR.appendChild(mkBtn('🔊 Goed', 'Hoor hoe deze zin correct klinkt', () => speak(l.zin_correct || l.woorden.map(w => w.label).join(' '))));
+                
+                head.appendChild(headL); head.appendChild(headR);
+                card.appendChild(head);
+
+                // Word alignment diff (LCS) tussen zin_fonetisch en zin_correct
+                const wordsFonetisch = l.zin_fonetisch ? l.zin_fonetisch.split(/\s+/) : [];
+                const wordsCorrect = l.zin_correct ? l.zin_correct.split(/\s+/) : [];
+                const matchedFonetisch = alignGrammarWords(wordsFonetisch, wordsCorrect);
+
+                // Filter LanguageTool items die bij deze zin horen
+                const matchedLTItems = items.filter(it => {
+                    if (!it.context) return false;
+                    const cleanCtx = norm(it.context.replace(/\[\[/g, '').replace(/\]\]/g, ''));
+                    const cleanSent = norm(l.zin_fonetisch || '');
+                    return cleanSent.includes(cleanCtx) || cleanCtx.includes(cleanSent);
+                });
+
+                // Helper om te kijken of een woord een LanguageTool match heeft
+                const getWordLTMatch = (word) => {
+                    const normWord = norm(word);
+                    return matchedLTItems.find(it => {
+                        const m = it.context.match(/\[\[(.*?)\]\]/);
+                        const errWord = m ? norm(m[1]) : '';
+                        return errWord === normWord;
+                    });
+                };
+
+                const grid = document.createElement('div');
+                grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
+                
+                wordsFonetisch.forEach((w, idx) => {
+                    const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w));
+                    const ltMatch = getWordLTMatch(w);
+                    
+                    let wc = '#10b981'; // standaard groen
+                    let isWarning = false;
+                    
+                    if (isHesitation) {
+                        wc = '#64748b'; // aarzeling is grijs
+                    } else if (!matchedFonetisch[idx]) {
+                        wc = '#ef4444'; // Gemini corrected woord is rood
+                    } else if (ltMatch) {
+                        // LanguageTool match
+                        const ruleId = (ltMatch.ruleId || '').toUpperCase();
+                        const cat = (ltMatch.category || '').toLowerCase();
+                        const spellingOrStyle = ruleId.includes('SPELLING') || ruleId.includes('TYPO') || cat.includes('spelling') || cat.includes('stijl') || cat.includes('style');
+                        wc = spellingOrStyle ? '#f59e0b' : '#ef4444'; // spelling/stijl is geel/oranje, grammatica is rood
+                        isWarning = true;
+                    }
+
+                    const pill = document.createElement('span');
+                    const wordTiming = l.woorden[idx];
+                    const clickable = (wordTiming && wordTiming.start != null);
+                    
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}1a;border:1px solid ${wc}55;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
+                    if (clickable) pill.addEventListener('click', () => playSegment(wordTiming.start, wordTiming.end));
+                    
+                    let titleText = isHesitation ? 'Aarzeling / vulwoord.' : '';
+                    if (ltMatch) {
+                        titleText += `${isWarning ? 'Waarschuwing' : 'Fout'}: ${ltMatch.message}`;
+                    } else if (!matchedFonetisch[idx]) {
+                        titleText += 'Aangepast/verwijderd in de correcte zin.';
+                    }
+                    if (clickable) titleText += (titleText ? ' | ' : '') + 'Klik om dit woord terug te luisteren.';
+                    pill.title = titleText;
+
+                    pill.innerHTML = `<span>${esc(w)}</span>`;
+                    grid.appendChild(pill);
+                });
+                card.appendChild(grid);
+
+                // Zo moet het
+                if (l.zin_correct && l.zin_correct !== l.zin_fonetisch) {
+                    const doel = document.createElement('div');
+                    doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
+                    doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
+                    card.appendChild(doel);
+                }
+
+                // Waarom deze grammatica
+                const hasGeminiError = l.grammatica_analyse && !l.grammatica_analyse.goed;
+                const hasLTError = matchedLTItems.length > 0;
+                
+                if (hasGeminiError || hasLTError) {
+                    const det = document.createElement('div');
+                    det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
+                    
+                    const title = document.createElement('div');
+                    title.style.cssText = 'font-weight:700;color:var(--text);margin-bottom:4px;';
+                    title.textContent = 'Grammatica toelichting:';
+                    det.appendChild(title);
+                    
+                    if (hasGeminiError) {
+                        const row = document.createElement('div');
+                        row.style.cssText = 'margin-bottom:6px;';
+                        row.innerHTML = `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(l.grammatica_analyse.fout)} &middot; <span style="color:var(--text-muted);">${esc(l.grammatica_analyse.uitleg)}</span>`;
+                        det.appendChild(row);
+                    }
+                    
+                    matchedLTItems.forEach(it => {
+                        const row = document.createElement('div');
+                        row.style.cssText = 'margin-bottom:6px;';
+                        const ruleId = (it.ruleId || '').toUpperCase();
+                        const spellingOrStyle = ruleId.includes('SPELLING') || ruleId.includes('TYPO') || (it.category || '').toLowerCase().includes('spelling') || (it.category || '').toLowerCase().includes('stijl');
+                        const emoji = spellingOrStyle ? '⚠️' : '❌';
+                        const col = spellingOrStyle ? '#f59e0b' : '#ef4444';
+                        
+                        row.innerHTML = `<b style="color:${col};">${emoji} ${esc(it.category || 'Regel')}:</b> ${esc(it.message)}`;
+                        if (it.suggestions && it.suggestions.length) {
+                            row.innerHTML += ` <span style="color:#10b981;">(Suggestie: ${esc(it.suggestions.join(' / '))})</span>`;
+                        }
+                        det.appendChild(row);
+                    });
+                    
+                    card.appendChild(det);
+                }
+
+                return card;
+            };
+
+            // Render op basis van viewMode
+            if (viewMode === 'speaker') {
+                order.forEach(spk => {
+                    const col = spkColor[spk];
+                    const section = document.createElement('div');
+                    section.style.cssText = 'margin-bottom:22px;';
+                    const sh = document.createElement('div');
+                    sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
+                    sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div>`;
+                    section.appendChild(sh);
+                    bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col)));
+                    c.appendChild(section);
+                });
+            } else {
+                lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)')));
+            }
+
+            // LanguageTool credit
+            const credit = document.createElement('div');
+            credit.style.cssText = 'margin-top:14px;font-size:0.72rem;color:var(--text-muted);';
+            credit.innerHTML = 'Grammaticacheck door <a href="https://languagetool.org" target="_blank" rel="noopener" style="color:#60a5fa;">LanguageTool</a> en Gemini.';
+            c.appendChild(credit);
         }
 
         function renderAzureColumn() {
@@ -1448,7 +1980,10 @@
                 const viewMode = window.azureViewMode;
                 const setView = (mode) => { window.azureViewMode = mode; try { localStorage.setItem('azureViewMode', mode); } catch (_) {} renderAzureColumn(); };
                 const toggle = document.createElement('div');
-                toggle.style.cssText = 'display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;';
+                toggle.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+                
+                const leftToggle = document.createElement('div');
+                leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
                 const mkToggle = (mode, label) => {
                     const b = document.createElement('button');
                     b.type = 'button';
@@ -1458,8 +1993,29 @@
                     b.addEventListener('click', () => setView(mode));
                     return b;
                 };
-                toggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
-                toggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+                leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
+                leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+                toggle.appendChild(leftToggle);
+                
+                const rightExport = document.createElement('div');
+                rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+                
+                const pngBtn = document.createElement('button');
+                pngBtn.type = 'button';
+                pngBtn.innerHTML = '📸 Afbeelding (PNG)';
+                pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+                pngBtn.addEventListener('click', () => exportColumn('col-azure', 'PNG'));
+                
+                const pdfBtn = document.createElement('button');
+                pdfBtn.type = 'button';
+                pdfBtn.innerHTML = '📄 Rapport (PDF)';
+                pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+                pdfBtn.addEventListener('click', () => exportColumn('col-azure', 'PDF'));
+                
+                rightExport.appendChild(pngBtn);
+                rightExport.appendChild(pdfBtn);
+                toggle.appendChild(rightExport);
+                
                 c.appendChild(toggle);
 
                 if (!hasTiming) {
@@ -1508,13 +2064,15 @@
                     const grid = document.createElement('div');
                     grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
                     l.woorden.forEach(w => {
-                        const wc = w.accuracy == null ? '#64748b' : scoreColor(w.accuracy);
+                        const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w.label));
+                        const wc = (w.accuracy == null || isHesitation) ? '#64748b' : scoreColor(w.accuracy);
                         const pill = document.createElement('span');
                         const clickable = (w.start != null);
                         pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}1a;border:1px solid ${wc}55;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
                         const phonTip = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map((p, pi) => `${p.phoneme ? p.phoneme : 'klank ' + (pi + 1)} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
-                        pill.title = (!w.matched ? 'Niet teruggevonden in de Azure-meting (geen score voor dit woord).' : phonTip) + (clickable ? '  |  Klik om dit woord terug te luisteren.' : '');
-                        pill.innerHTML = `<span>${esc(w.label)}</span><b style="color:${wc};font-size:0.72rem;">${w.accuracy != null ? Math.round(w.accuracy) : '&middot;'}</b>`;
+                        pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : (!w.matched ? 'Niet teruggevonden in de Azure-meting (geen score voor dit woord).' : phonTip)) + (clickable ? '  |  Klik om dit woord terug te luisteren.' : '');
+                        const displayScore = (w.accuracy != null && !isHesitation) ? Math.round(w.accuracy) : '&middot;';
+                        pill.innerHTML = `<span>${esc(w.label)}</span><b style="color:${wc};font-size:0.72rem;">${displayScore}</b>`;
                         if (clickable) pill.addEventListener('click', () => playSegment(w.start, w.end));
                         grid.appendChild(pill);
                     });
@@ -1636,11 +2194,13 @@
                 const grid = document.createElement('div');
                 grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
                 (u.words || []).forEach(w => {
-                    const col = scoreColor(w.accuracy);
+                    const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w.word));
+                    const col = (w.accuracy == null || isHesitation) ? '#64748b' : scoreColor(w.accuracy);
                     const pill = document.createElement('span');
                     pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${col}1a;border:1px solid ${col}55;font-size:0.8rem;color:var(--text);`;
-                    pill.title = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map(p => `${p.phoneme} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
-                    pill.innerHTML = `<span>${esc(w.word)}</span><b style="color:${col};font-size:0.72rem;">${w.accuracy != null ? Math.round(w.accuracy) : '-'}</b>`;
+                    pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : ((w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map(p => `${p.phoneme} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '')));
+                    const displayScore = (w.accuracy != null && !isHesitation) ? Math.round(w.accuracy) : '&middot;';
+                    pill.innerHTML = `<span>${esc(w.word)}</span><b style="color:${col};font-size:0.72rem;">${displayScore}</b>`;
                     grid.appendChild(pill);
                 });
                 card.appendChild(grid);
@@ -3674,6 +4234,7 @@ Retourneer de output EXACT in het volgende JSON-formaat:
 AANVULLENDE RICHTLIJNEN:
 - Zorg dat je de sprekers correct identificeert. Gebruik hun echte namen in het 'spreker' veld.
 - Als er geen uitspraakfouten/grammaticafouten zijn, zet "goed" op true en laat "fout" en "uitleg" leeg.
+- Soms herhaalt een spreker een woord achter elkaar omdat diegene zich herpakt (bijv. "ik ik ga" of "we we hebben"). Dit zijn GEEN grammaticafouten of logicafouten, maar herpakkingen. Keur dit niet af als fout in de "grammatica_analyse" of "logica_analyse".
 - Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.`;
 
             console.log("Calling Gemini for gesprek analysis (Call 1)...");
