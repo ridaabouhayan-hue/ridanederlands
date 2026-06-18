@@ -529,11 +529,12 @@
                     <!-- Clickable Tabs -->
                     <div class="sub-tabs" style="margin-bottom: 12px;">
                         <button id="tabBtn-azure" class="sub-tab active" onclick="switchViewerTab('azure')">🎯 Azure (uitspraak)</button>
+                        <button id="tabBtn-grammar" class="sub-tab" onclick="switchViewerTab('grammar')">📝 Grammatica</button>
                         <button id="tabBtn-elevenlabs" class="sub-tab" onclick="switchViewerTab('elevenlabs')">🎙️ ElevenLabs (gehoord)</button>
                         <button id="tabBtn-transcript" class="sub-tab" onclick="switchViewerTab('transcript')">💬 Transcript gesprek</button>
                         <button id="tabBtn-feedback" class="sub-tab" onclick="switchViewerTab('feedback')">📝 Feedbackbrief</button>
                         <button id="tabBtn-complete" class="sub-tab" onclick="switchViewerTab('complete')">✨ Complete brief & Vertaling</button>
-                        <button id="tabBtn-grammar" class="sub-tab" onclick="switchViewerTab('grammar')">📝 Grammatica (LanguageTool)</button>
+                        <button id="tabBtn-languagetool" class="sub-tab" onclick="switchViewerTab('languagetool')">⚙️ LanguageTool</button>
                     </div>
 
                     <div class="viewer-layout" style="display: flex; flex-direction: column; grid-template-columns: none; gap: 0;">
@@ -570,9 +571,14 @@
                             <div class="column-content" id="col-azure"></div>
                         </div>
 
-                        <!-- Pane 6: LanguageTool grammaticapunten -->
+                        <!-- Pane 6: Gemini grammatica -->
                         <div id="pane-grammar" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-grammar"></div>
+                        </div>
+
+                        <!-- Pane 7: LanguageTool grammaticapunten -->
+                        <div id="pane-languagetool" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
+                            <div class="column-content" id="col-languagetool"></div>
                         </div>
                     </div>
                 </div>
@@ -616,6 +622,28 @@
         // Spreker-namen: worden gevuld vanuit ElevenLabs speaker_0/speaker_1 labels
         // en kunnen handmatig worden overschreven door de docent.
         let sprekerNamen = ['', '']; // index 0 = speaker_0, index 1 = speaker_1
+
+        const norm = s => String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+
+        function levenshtein(a, b) {
+            const tmp = [];
+            for (let i = 0; i <= a.length; i++) {
+                tmp[i] = [i];
+            }
+            for (let j = 0; j <= b.length; j++) {
+                tmp[0][j] = j;
+            }
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    tmp[i][j] = Math.min(
+                        tmp[i - 1][j] + 1,
+                        tmp[i][j - 1] + 1,
+                        tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+                    );
+                }
+            }
+            return tmp[a.length][b.length];
+        }
 
         const dutchPhonemeExamples = {
             'a': 'aa in kaas',
@@ -741,6 +769,7 @@
             renderFeedbackColumn();
             renderCompleteColumn();
             renderGrammarColumn();
+            renderLanguageToolColumn();
         }
 
         async function loadDynamicLessons() {
@@ -945,11 +974,61 @@
             
             const name = (currentFileObject && currentFileObject.filename) || 'rapport';
             const cleanName = name.replace(/\.[^/.]+$/, "");
-            const fileSuffix = elementId.includes('azure') ? 'Uitspraak_Rapport' : 'Grammatica_Rapport';
+            
+            let fileSuffix = 'Rapport';
+            if (elementId.includes('azure')) fileSuffix = 'Uitspraak_Rapport';
+            else if (elementId.includes('grammar')) fileSuffix = 'Grammatica_Rapport';
+            else if (elementId.includes('languagetool')) fileSuffix = 'LanguageTool_Rapport';
+            
             const exportFileName = `${cleanName}_${fileSuffix}`;
             
             const controls = el.querySelectorAll('button, select, input, textarea');
             controls.forEach(c => c.style.visibility = 'hidden');
+            
+            const spacers = [];
+            if (format === 'PDF') {
+                const blocks = [];
+                const findBlocks = (node) => {
+                    if (!node) return;
+                    if (node.classList && node.classList.contains('no-export')) return;
+                    if (node.classList && (node.classList.contains('score-wrap') || node.classList.contains('speaker-header') || node.classList.contains('report-card'))) {
+                        blocks.push(node);
+                        return;
+                    }
+                    Array.from(node.children).forEach(child => {
+                        if (child.style.display !== 'none' && child.style.visibility !== 'hidden') {
+                            findBlocks(child);
+                        }
+                    });
+                };
+                findBlocks(el);
+                
+                const pxToMm = 210 / (el.offsetWidth || 800);
+                const usablePageHeight = 285; // mm (slightly less than 297 to leave a tiny margin)
+                
+                let currentHeightMm = 0;
+                
+                blocks.forEach(block => {
+                    const blockHeightMm = block.offsetHeight * pxToMm;
+                    
+                    if (currentHeightMm > 0 && currentHeightMm + blockHeightMm > usablePageHeight) {
+                        const spacerHeightMm = usablePageHeight - currentHeightMm;
+                        const spacerHeightPx = spacerHeightMm / pxToMm;
+                        
+                        const spacer = document.createElement('div');
+                        spacer.className = 'pdf-spacer';
+                        spacer.style.height = `${spacerHeightPx}px`;
+                        spacer.style.width = '100%';
+                        
+                        block.parentNode.insertBefore(spacer, block);
+                        spacers.push(spacer);
+                        
+                        currentHeightMm = blockHeightMm;
+                    } else {
+                        currentHeightMm += blockHeightMm;
+                    }
+                });
+            }
             
             try {
                 const canvas = await html2canvas(el, {
@@ -997,6 +1076,7 @@
                 alert('Fout bij exporteren: ' + err.message);
             } finally {
                 controls.forEach(c => c.style.visibility = 'visible');
+                spacers.forEach(s => s.remove());
             }
         }
 
@@ -1480,18 +1560,15 @@
             c.innerHTML = '';
             
             const a = currentFileObject && currentFileObject.analyse;
-            const detail = a && a.grammar_lt_detail;
-            const text = a && a.grammar_lt;
             const gesprek = a && a.gesprek;
 
-            // Fallback voor oude opnames zonder gesprek of als er geen grammatica-data is
-            if (!detail && !text && (!gesprek || gesprek.length === 0)) {
-                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen LanguageTool-grammaticapunten opgeslagen voor deze opname. Dit tabblad vult zich pas als je de LanguageTool-check aanzet (vinkje links onder de engine-keuze) én je gebruikersnaam + sleutel in ⚙️ staan, en de opname daarna opnieuw verwerkt met ElevenLabs als engine. Zonder dit blijft alles werken zoals voorheen.</div>';
+            // Fallback if no gesprek data at all
+            if (!gesprek || gesprek.length === 0) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen grammatica-analyse opgeslagen voor deze opname.</div>';
                 return;
             }
 
             const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-            const items = (detail && Array.isArray(detail.items)) ? detail.items : [];
 
             // Speel fragment af helper (timing van ElevenLabs)
             let segStop = null, segPrev = null;
@@ -1527,40 +1604,59 @@
                 return b;
             };
 
-            // 1. Render de intro
-            const intro = document.createElement('div');
-            intro.style.cssText = 'padding:0 2px 12px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.innerHTML = 'Visuele grammatica- en spellingfeedback. <b style="color:#10b981;">Groen</b> = correct zinsdeel, <b style="color:#ef4444;">rood</b> = grammaticaal incorrect zinsdeel of hersteld woord, <b style="color:#f59e0b;">oranje</b> = spelling of stijlwaarschuwing. Klik op <b>🔊 Goed</b> om te horen hoe het hoort te klinken.';
-            c.appendChild(intro);
-
-            // 2. Als we geen gesprek hebben, tonen we de oude lijstweergave
-            if (!gesprek || gesprek.length === 0) {
-                const listWrap = document.createElement('div');
-                let html = '<div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Objectieve grammaticapunten van LanguageTool:</div>';
-                if (!items.length) {
-                    html += '<div style="padding:12px;color:#10b981;font-size:0.9rem;">Geen grammaticapunten gevonden.</div>';
-                } else {
-                    items.forEach((it, i) => {
-                        const ctx = (it.context || '').replace(/\[\[/g, '<mark style="background:#fde68a;color:#78350f;padding:0 2px;border-radius:2px;">').replace(/\]\]/g, '</mark>');
-                        html += '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);">';
-                        html += '<div style="font-size:0.8rem;font-weight:700;color:#fff;">' + (i + 1) + '. ' + (it.message || it.shortMessage || 'Punt') + '</div>';
-                        if (it.category) html += '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;">' + it.category + '</div>';
-                        if (ctx) html += '<div style="font-size:0.82rem;color:var(--text);margin-top:6px;line-height:1.5;">' + ctx + '</div>';
-                        if (it.suggestions && it.suggestions.length) html += '<div style="font-size:0.8rem;color:#10b981;margin-top:6px;">→ Suggestie: ' + it.suggestions.join(' / ') + '</div>';
-                        html += '</div>';
-                    });
-                }
-                listWrap.innerHTML = html;
-                c.appendChild(listWrap);
-                return;
+            // 1. Render top bar (toggles & export buttons)
+            const topBar = document.createElement('div');
+            topBar.classList.add('no-export');
+            topBar.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+            
+            if (window.grammarViewMode !== 'speaker' && window.grammarViewMode !== 'chrono') {
+                try { window.grammarViewMode = localStorage.getItem('grammarViewMode') || 'chrono'; } catch (_) { window.grammarViewMode = 'chrono'; }
             }
-
-            // 3. Weergave van de grammaticascore (percentage correcte zinnen)
+            const viewMode = window.grammarViewMode;
+            const setView = (mode) => { window.grammarViewMode = mode; try { localStorage.setItem('grammarViewMode', mode); } catch (_) {} renderGrammarColumn(); };
+            
+            const leftToggle = document.createElement('div');
+            leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+            const mkToggle = (mode, label) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                const on = (viewMode === mode);
+                b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
+                b.addEventListener('click', () => setView(mode));
+                return b;
+            };
+            leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
+            leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+            topBar.appendChild(leftToggle);
+            
+            const rightExport = document.createElement('div');
+            rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;';
+            
+            const pngBtn = document.createElement('button');
+            pngBtn.type = 'button';
+            pngBtn.innerHTML = '📸 Afbeelding (PNG)';
+            pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pngBtn.addEventListener('click', () => exportColumn('col-grammar', 'PNG'));
+            
+            const pdfBtn = document.createElement('button');
+            pdfBtn.type = 'button';
+            pdfBtn.innerHTML = '📄 Rapport (PDF)';
+            pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pdfBtn.addEventListener('click', () => exportColumn('col-grammar', 'PDF'));
+            
+            rightExport.appendChild(pngBtn);
+            rightExport.appendChild(pdfBtn);
+            topBar.appendChild(rightExport);
+            c.appendChild(topBar);
+ 
+            // 2. Weergave van de grammaticascore (percentage correcte zinnen)
             const totalSents = gesprek.length;
             const correctSents = gesprek.filter(l => !l.grammatica_analyse || l.grammatica_analyse.goed).length;
             const grammarScore = totalSents ? Math.round((correctSents / totalSents) * 100) : 100;
-
+ 
             const scoreWrap = document.createElement('div');
+            scoreWrap.classList.add('score-wrap');
             scoreWrap.style.cssText = 'margin-bottom:18px;';
             const scoreLab = document.createElement('div');
             scoreLab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;';
@@ -1588,51 +1684,6 @@
             scoreWrap.appendChild(scoreBar);
             c.appendChild(scoreWrap);
 
-            // 4. Weergavetoggles + exportknoppen
-            if (window.grammarViewMode !== 'speaker' && window.grammarViewMode !== 'chrono') {
-                try { window.grammarViewMode = localStorage.getItem('grammarViewMode') || 'chrono'; } catch (_) { window.grammarViewMode = 'chrono'; }
-            }
-            const viewMode = window.grammarViewMode;
-            const setView = (mode) => { window.grammarViewMode = mode; try { localStorage.setItem('grammarViewMode', mode); } catch (_) {} renderGrammarColumn(); };
-            
-            const toggle = document.createElement('div');
-            toggle.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
-            
-            const leftToggle = document.createElement('div');
-            leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
-            const mkToggle = (mode, label) => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.textContent = label;
-                const on = (viewMode === mode);
-                b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
-                b.addEventListener('click', () => setView(mode));
-                return b;
-            };
-            leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
-            leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
-            toggle.appendChild(leftToggle);
-            
-            const rightExport = document.createElement('div');
-            rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
-            
-            const pngBtn = document.createElement('button');
-            pngBtn.type = 'button';
-            pngBtn.innerHTML = '📸 Afbeelding (PNG)';
-            pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
-            pngBtn.addEventListener('click', () => exportColumn('col-grammar', 'PNG'));
-            
-            const pdfBtn = document.createElement('button');
-            pdfBtn.type = 'button';
-            pdfBtn.innerHTML = '📄 Rapport (PDF)';
-            pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
-            pdfBtn.addEventListener('click', () => exportColumn('col-grammar', 'PDF'));
-            
-            rightExport.appendChild(pngBtn);
-            rightExport.appendChild(pdfBtn);
-            toggle.appendChild(rightExport);
-            c.appendChild(toggle);
-
             // Spreker-kleuren koppelen
             const spkColors = ['var(--accent)', '#10b981', '#a855f7', '#f59e0b'];
             const spkColor = {};
@@ -1657,6 +1708,7 @@
             // Bouwer van de zin-kaart
             const buildCard = (l, numberLabel, speakerName, accentCol) => {
                 const card = document.createElement('div');
+                card.classList.add('report-card');
                 const isIncorrect = l.grammatica_analyse && !l.grammatica_analyse.goed;
                 card.style.cssText = `border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:rgba(15,23,42,0.3);${speakerName ? 'border-left:4px solid ' + accentCol + ';' : ''}`;
 
@@ -1700,59 +1752,43 @@
                 const wordsCorrect = l.zin_correct ? l.zin_correct.split(/\s+/) : [];
                 const matchedFonetisch = alignGrammarWords(wordsFonetisch, wordsCorrect);
 
-                // Filter LanguageTool items die bij deze zin horen
-                const matchedLTItems = items.filter(it => {
-                    if (!it.context) return false;
-                    const cleanCtx = norm(it.context.replace(/\[\[/g, '').replace(/\]\]/g, ''));
-                    const cleanSent = norm(l.zin_fonetisch || '');
-                    return cleanSent.includes(cleanCtx) || cleanCtx.includes(cleanSent);
-                });
-
-                // Helper om te kijken of een woord een LanguageTool match heeft
-                const getWordLTMatch = (word) => {
-                    const normWord = norm(word);
-                    return matchedLTItems.find(it => {
-                        const m = it.context.match(/\[\[(.*?)\]\]/);
-                        const errWord = m ? norm(m[1]) : '';
-                        return errWord === normWord;
-                    });
-                };
-
                 const grid = document.createElement('div');
                 grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
                 
                 wordsFonetisch.forEach((w, idx) => {
-                    const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w));
-                    const ltMatch = getWordLTMatch(w);
+                    const normW = norm(w);
+                    const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(normW);
                     
                     let wc = '#10b981'; // standaard groen
-                    let isWarning = false;
                     
                     if (isHesitation) {
                         wc = '#64748b'; // aarzeling is grijs
                     } else if (!matchedFonetisch[idx]) {
-                        wc = '#ef4444'; // Gemini corrected woord is rood
-                    } else if (ltMatch) {
-                        // LanguageTool match
-                        const ruleId = (ltMatch.ruleId || '').toUpperCase();
-                        const cat = (ltMatch.category || '').toLowerCase();
-                        const spellingOrStyle = ruleId.includes('SPELLING') || ruleId.includes('TYPO') || cat.includes('spelling') || cat.includes('stijl') || cat.includes('style');
-                        wc = spellingOrStyle ? '#f59e0b' : '#ef4444'; // spelling/stijl is geel/oranje, grammatica is rood
-                        isWarning = true;
+                        // Word is unmatched. Check if it's a spelling typo or grammatical error.
+                        let isTypo = false;
+                        const startLook = Math.max(0, idx - 1);
+                        const endLook = Math.min(wordsCorrect.length - 1, idx + 1);
+                        for (let k = startLook; k <= endLook; k++) {
+                            const cW = wordsCorrect[k];
+                            if (cW && levenshtein(normW, norm(cW)) <= 2) {
+                                isTypo = true;
+                                break;
+                            }
+                        }
+                        wc = isTypo ? '#f59e0b' : '#ef4444'; // spelling/typo is oranje/geel, grammar error is rood
                     }
 
                     const pill = document.createElement('span');
                     const wordTiming = l.woorden[idx];
                     const clickable = (wordTiming && wordTiming.start != null);
                     
-                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}1a;border:1px solid ${wc}55;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
+                    // Feller colors: background 24% (3d), border 80% (cc)
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px solid ${wc}cc;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
                     if (clickable) pill.addEventListener('click', () => playSegment(wordTiming.start, wordTiming.end));
                     
                     let titleText = isHesitation ? 'Aarzeling / vulwoord.' : '';
-                    if (ltMatch) {
-                        titleText += `${isWarning ? 'Waarschuwing' : 'Fout'}: ${ltMatch.message}`;
-                    } else if (!matchedFonetisch[idx]) {
-                        titleText += 'Aangepast/verwijderd in de correcte zin.';
+                    if (!matchedFonetisch[idx]) {
+                        titleText += wc === '#f59e0b' ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast/verwijderd.';
                     }
                     if (clickable) titleText += (titleText ? ' | ' : '') + 'Klik om dit woord terug te luisteren.';
                     pill.title = titleText;
@@ -1772,9 +1808,8 @@
 
                 // Waarom deze grammatica
                 const hasGeminiError = l.grammatica_analyse && !l.grammatica_analyse.goed;
-                const hasLTError = matchedLTItems.length > 0;
                 
-                if (hasGeminiError || hasLTError) {
+                if (hasGeminiError) {
                     const det = document.createElement('div');
                     det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
                     
@@ -1783,27 +1818,10 @@
                     title.textContent = 'Grammatica toelichting:';
                     det.appendChild(title);
                     
-                    if (hasGeminiError) {
-                        const row = document.createElement('div');
-                        row.style.cssText = 'margin-bottom:6px;';
-                        row.innerHTML = `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(l.grammatica_analyse.fout)} &middot; <span style="color:var(--text-muted);">${esc(l.grammatica_analyse.uitleg)}</span>`;
-                        det.appendChild(row);
-                    }
-                    
-                    matchedLTItems.forEach(it => {
-                        const row = document.createElement('div');
-                        row.style.cssText = 'margin-bottom:6px;';
-                        const ruleId = (it.ruleId || '').toUpperCase();
-                        const spellingOrStyle = ruleId.includes('SPELLING') || ruleId.includes('TYPO') || (it.category || '').toLowerCase().includes('spelling') || (it.category || '').toLowerCase().includes('stijl');
-                        const emoji = spellingOrStyle ? '⚠️' : '❌';
-                        const col = spellingOrStyle ? '#f59e0b' : '#ef4444';
-                        
-                        row.innerHTML = `<b style="color:${col};">${emoji} ${esc(it.category || 'Regel')}:</b> ${esc(it.message)}`;
-                        if (it.suggestions && it.suggestions.length) {
-                            row.innerHTML += ` <span style="color:#10b981;">(Suggestie: ${esc(it.suggestions.join(' / '))})</span>`;
-                        }
-                        det.appendChild(row);
-                    });
+                    const row = document.createElement('div');
+                    row.style.cssText = 'margin-bottom:6px;';
+                    row.innerHTML = `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(l.grammatica_analyse.fout)} &middot; <span style="color:var(--text-muted);">${esc(l.grammatica_analyse.uitleg)}</span>`;
+                    det.appendChild(row);
                     
                     card.appendChild(det);
                 }
@@ -1818,6 +1836,7 @@
                     const section = document.createElement('div');
                     section.style.cssText = 'margin-bottom:22px;';
                     const sh = document.createElement('div');
+                    sh.classList.add('speaker-header');
                     sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
                     sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div>`;
                     section.appendChild(sh);
@@ -1828,10 +1847,76 @@
                 lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)')));
             }
 
-            // LanguageTool credit
             const credit = document.createElement('div');
             credit.style.cssText = 'margin-top:14px;font-size:0.72rem;color:var(--text-muted);';
-            credit.innerHTML = 'Grammaticacheck door <a href="https://languagetool.org" target="_blank" rel="noopener" style="color:#60a5fa;">LanguageTool</a> en Gemini.';
+            credit.innerHTML = 'Grammatica-analyse door Gemini.';
+            c.appendChild(credit);
+        }
+
+        function renderLanguageToolColumn() {
+            const c = document.getElementById('col-languagetool');
+            if (!c) return;
+            c.innerHTML = '';
+            
+            const a = currentFileObject && currentFileObject.analyse;
+            const detail = a && a.grammar_lt_detail;
+            const text = a && a.grammar_lt;
+
+            // Render export/toggles bar at the very top
+            const topBar = document.createElement('div');
+            topBar.style.cssText = 'display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+            
+            const rightExport = document.createElement('div');
+            rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+            
+            const pngBtn = document.createElement('button');
+            pngBtn.type = 'button';
+            pngBtn.innerHTML = '📸 Afbeelding (PNG)';
+            pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pngBtn.addEventListener('click', () => exportColumn('col-languagetool', 'PNG'));
+            
+            const pdfBtn = document.createElement('button');
+            pdfBtn.type = 'button';
+            pdfBtn.innerHTML = '📄 Rapport (PDF)';
+            pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pdfBtn.addEventListener('click', () => exportColumn('col-languagetool', 'PDF'));
+            
+            rightExport.appendChild(pngBtn);
+            rightExport.appendChild(pdfBtn);
+            topBar.appendChild(rightExport);
+            c.appendChild(topBar);
+
+            if (!detail && !text) {
+                const noData = document.createElement('div');
+                noData.style.cssText = 'padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;';
+                noData.textContent = 'Geen LanguageTool-grammaticapunten opgeslagen voor deze opname. Dit tabblad vult zich pas als je de LanguageTool-check aanzet (vinkje links onder de engine-keuze) én je gebruikersnaam + sleutel in ⚙️ staan, en de opname daarna opnieuw verwerkt met ElevenLabs als engine.';
+                c.appendChild(noData);
+                return;
+            }
+
+            const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+            const items = (detail && Array.isArray(detail.items)) ? detail.items : [];
+            const listWrap = document.createElement('div');
+            let html = '<div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:12px;">Objectieve grammaticapunten van LanguageTool:</div>';
+            if (!items.length) {
+                html += '<div style="padding:12px;color:#10b981;font-size:0.9rem;">Geen grammaticapunten gevonden.</div>';
+            } else {
+                items.forEach((it, i) => {
+                    const ctx = (it.context || '').replace(/\[\[/g, '<mark style="background:#fde68a;color:#78350f;padding:0 2px;border-radius:2px;">').replace(/\]\]/g, '</mark>');
+                    html += '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);">';
+                    html += '<div style="font-size:0.8rem;font-weight:700;color:#fff;">' + (i + 1) + '. ' + (it.message || it.shortMessage || 'Punt') + '</div>';
+                    if (it.category) html += '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.02em;">' + it.category + '</div>';
+                    if (ctx) html += '<div style="font-size:0.82rem;color:var(--text);margin-top:6px;line-height:1.5;">' + ctx + '</div>';
+                    if (it.suggestions && it.suggestions.length) html += '<div style="font-size:0.8rem;color:#10b981;margin-top:6px;">→ Suggestie: ' + it.suggestions.join(' / ') + '</div>';
+                    html += '</div>';
+                });
+            }
+            listWrap.innerHTML = html;
+            c.appendChild(listWrap);
+            
+            const credit = document.createElement('div');
+            credit.style.cssText = 'margin-top:14px;font-size:0.72rem;color:var(--text-muted);';
+            credit.innerHTML = 'Grammaticacheck door <a href="https://languagetool.org" target="_blank" rel="noopener" style="color:#60a5fa;">LanguageTool</a>.';
             c.appendChild(credit);
         }
 
@@ -1842,16 +1927,16 @@
             const a = currentFileObject && currentFileObject.analyse;
             const detail = a && a.azure_pron_detail;
             const text = a && a.azure_pron;
+            const gesprek = a && a.gesprek;
 
-            if (!detail && !text) {
-                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen Azure-uitspraakscores opgeslagen voor deze opname. Controleer of Azure aan staat (links onder de engine-keuze) en of je sleutel + regio in &#9881;&#65039; staan, en verwerk de opname dan opnieuw met ElevenLabs als engine.</div>';
+            if (!detail && !text && (!gesprek || gesprek.length === 0)) {
+                c.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:0.85rem;line-height:1.6;">Geen Azure-uitspraakscores opgeslagen voor deze opname.</div>';
                 return;
             }
 
             const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
             const scoreColor = s => s == null ? '#94a3b8' : (s >= 80 ? '#10b981' : (s >= 60 ? '#f59e0b' : '#ef4444'));
             const errLabel = t => ({ Mispronunciation: 'verkeerd uitgesproken', Omission: 'overgeslagen', Insertion: 'extra ingevoegd', UnexpectedBreak: 'onverwachte pauze', MissingBreak: 'pauze gemist', Monotone: 'monotoon' }[t] || '');
-            const norm = s => String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
             const avgOf = arr => { const v = arr.filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
 
             // Speel een fragment van de eigen opname af (zo klonk het bij de cursist).
@@ -1888,10 +1973,53 @@
                 return b;
             };
 
-            const intro = document.createElement('div');
-            intro.style.cssText = 'padding:0 2px 12px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.innerHTML = 'Objectieve uitspraakscores van Azure (0-100). <b style="color:#10b981;">Groen</b> = goed (80+), <b style="color:#f59e0b;">oranje</b> = let op (60-79), <b style="color:#ef4444;">rood</b> = zwak (onder 60). Elke klank krijgt een score (hoe dicht bij de juiste Nederlandse uitspraak); de <b>woordscore is het gemiddelde van de klankscores</b>. <b>Klik op een woord</b> om terug te luisteren hoe de cursist het zei, en gebruik <b>&#128266; Goed</b> om te horen hoe het hoort te klinken. Een woord met een puntje (.) kon niet aan de meting worden gekoppeld (vaak een "uh" of een woord dat Azure anders hoorde).';
-            c.appendChild(intro);
+            // 1. Render the top bar with toggles and export buttons
+            const topBar = document.createElement('div');
+            topBar.classList.add('no-export');
+            topBar.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+            
+            if (gesprek && gesprek.length > 0) {
+                if (window.azureViewMode !== 'speaker' && window.azureViewMode !== 'chrono') {
+                    try { window.azureViewMode = localStorage.getItem('azureViewMode') || 'chrono'; } catch (_) { window.azureViewMode = 'chrono'; }
+                }
+                const viewMode = window.azureViewMode;
+                const setView = (mode) => { window.azureViewMode = mode; try { localStorage.setItem('azureViewMode', mode); } catch (_) {} renderAzureColumn(); };
+                
+                const leftToggle = document.createElement('div');
+                leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+                const mkToggle = (mode, label) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.textContent = label;
+                    const on = (viewMode === mode);
+                    b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
+                    b.addEventListener('click', () => setView(mode));
+                    return b;
+                };
+                leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
+                leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
+                topBar.appendChild(leftToggle);
+            }
+            
+            const rightExport = document.createElement('div');
+            rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;';
+            
+            const pngBtn = document.createElement('button');
+            pngBtn.type = 'button';
+            pngBtn.innerHTML = '📸 Afbeelding (PNG)';
+            pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pngBtn.addEventListener('click', () => exportColumn('col-azure', 'PNG'));
+            
+            const pdfBtn = document.createElement('button');
+            pdfBtn.type = 'button';
+            pdfBtn.innerHTML = '📄 Rapport (PDF)';
+            pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
+            pdfBtn.addEventListener('click', () => exportColumn('col-azure', 'PDF'));
+            
+            rightExport.appendChild(pngBtn);
+            rightExport.appendChild(pdfBtn);
+            topBar.appendChild(rightExport);
+            c.appendChild(topBar);
 
             // Oude opnames zonder gedetailleerde data: toon de tekstsamenvatting.
             if (!detail) {
@@ -1906,6 +2034,7 @@
             if (detail.overall) {
                 const o = detail.overall;
                 const wrap = document.createElement('div');
+                wrap.classList.add('score-wrap');
                 wrap.style.cssText = 'margin-bottom:18px;';
                 const lab = document.createElement('div');
                 lab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;';
@@ -1922,8 +2051,6 @@
                 wrap.appendChild(bar);
                 c.appendChild(wrap);
             }
-
-            const gesprek = (a && a.gesprek) || [];
 
             // Algemene volgorde-uitlijning (LCS) tussen twee woordreeksen. Robuust en monotoon.
             const alignLCS = (A, B, onMatch) => {
@@ -1950,7 +2077,7 @@
                     const bron = lijn.zin_fonetisch || lijn.zin_correct || '';
                     const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map(t => ({ label: t, accuracy: null, errorType: null, phonemes: [], matched: false, start: null, end: null }));
                     woorden.forEach(w => toks.push(w));
-                    return { spreker: (lijn.spreker || 'Onbekend'), zin_correct: lijn.zin_correct || '', woorden: woorden };
+                    return { ...lijn, spreker: (lijn.spreker || 'Onbekend'), zin_correct: lijn.zin_correct || '', woorden: woorden };
                 });
 
                 // 3) Koppel de Azure-scores aan de juiste gesprekswoorden (volgorde-uitlijning, LCS).
@@ -1973,50 +2100,7 @@
                 const spkColor = {};
                 order.forEach((spk, i) => spkColor[spk] = spkColors[i % spkColors.length]);
 
-                // Weergavekeuze: standaard eerst het hele gesprek (om en om), daarna eventueel per cursist.
-                if (window.azureViewMode !== 'speaker' && window.azureViewMode !== 'chrono') {
-                    try { window.azureViewMode = localStorage.getItem('azureViewMode') || 'chrono'; } catch (_) { window.azureViewMode = 'chrono'; }
-                }
-                const viewMode = window.azureViewMode;
-                const setView = (mode) => { window.azureViewMode = mode; try { localStorage.setItem('azureViewMode', mode); } catch (_) {} renderAzureColumn(); };
-                const toggle = document.createElement('div');
-                toggle.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
-                
-                const leftToggle = document.createElement('div');
-                leftToggle.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
-                const mkToggle = (mode, label) => {
-                    const b = document.createElement('button');
-                    b.type = 'button';
-                    b.textContent = label;
-                    const on = (viewMode === mode);
-                    b.style.cssText = `border:1px solid ${on ? 'var(--accent)' : 'var(--border)'};background:${on ? 'var(--accent)' : 'rgba(15,23,42,0.5)'};color:${on ? '#fff' : 'var(--text)'};border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;`;
-                    b.addEventListener('click', () => setView(mode));
-                    return b;
-                };
-                leftToggle.appendChild(mkToggle('chrono', '💬 Hele gesprek (om en om)'));
-                leftToggle.appendChild(mkToggle('speaker', '👤 Per cursist'));
-                toggle.appendChild(leftToggle);
-                
-                const rightExport = document.createElement('div');
-                rightExport.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
-                
-                const pngBtn = document.createElement('button');
-                pngBtn.type = 'button';
-                pngBtn.innerHTML = '📸 Afbeelding (PNG)';
-                pngBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
-                pngBtn.addEventListener('click', () => exportColumn('col-azure', 'PNG'));
-                
-                const pdfBtn = document.createElement('button');
-                pdfBtn.type = 'button';
-                pdfBtn.innerHTML = '📄 Rapport (PDF)';
-                pdfBtn.style.cssText = 'border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:800;cursor:pointer;transition:var(--transition);';
-                pdfBtn.addEventListener('click', () => exportColumn('col-azure', 'PDF'));
-                
-                rightExport.appendChild(pngBtn);
-                rightExport.appendChild(pdfBtn);
-                toggle.appendChild(rightExport);
-                
-                c.appendChild(toggle);
+                const viewMode = window.azureViewMode || 'chrono';
 
                 if (!hasTiming) {
                     const note = document.createElement('div');
@@ -2028,6 +2112,7 @@
                 // Bouwt één zin-kaart. De spreker tonen we alleen in de chronologische weergave.
                 const buildCard = (l, numberLabel, speakerName, accentCol) => {
                     const card = document.createElement('div');
+                    card.classList.add('report-card');
                     card.style.cssText = `border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:rgba(15,23,42,0.3);${speakerName ? 'border-left:4px solid ' + accentCol + ';' : ''}`;
                     const zinAvg = avgOf(l.woorden.map(w => w.accuracy));
 
@@ -2068,7 +2153,8 @@
                         const wc = (w.accuracy == null || isHesitation) ? '#64748b' : scoreColor(w.accuracy);
                         const pill = document.createElement('span');
                         const clickable = (w.start != null);
-                        pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}1a;border:1px solid ${wc}55;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
+                        // Feller colors: background 24% (3d), border 80% (cc)
+                        pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px solid ${wc}cc;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
                         const phonTip = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map((p, pi) => `${p.phoneme ? p.phoneme : 'klank ' + (pi + 1)} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
                         pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : (!w.matched ? 'Niet teruggevonden in de Azure-meting (geen score voor dit woord).' : phonTip)) + (clickable ? '  |  Klik om dit woord terug te luisteren.' : '');
                         const displayScore = (w.accuracy != null && !isHesitation) ? Math.round(w.accuracy) : '&middot;';
@@ -2085,55 +2171,30 @@
                         card.appendChild(doel);
                     }
 
-                    const weakWords = l.woorden.filter(w => w.accuracy != null && w.accuracy < 80 && w.phonemes && w.phonemes.length);
-                    if (weakWords.length) {
+                    // Pronunciation feedback from Gemini (instead of the long phoneme-by-phoneme print!)
+                    const uAnalyse = l.uitspraak_analyse;
+                    const hasPronFeedback = uAnalyse && (uAnalyse.fout || uAnalyse.uitleg || !uAnalyse.goed);
+                    if (hasPronFeedback) {
                         const det = document.createElement('div');
                         det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
                         const title = document.createElement('div');
                         title.style.cssText = 'font-weight:700;color:var(--text);margin-bottom:4px;';
-                        title.textContent = 'Waarom deze scores (klank voor klank):';
+                        title.textContent = 'Uitspraak toelichting:';
                         det.appendChild(title);
-                        weakWords.forEach(w => {
-                            const row = document.createElement('div');
-                            row.style.cssText = 'margin-bottom:8px;';
-                            const phon = w.phonemes.map((p, pi) => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${p.phoneme ? esc(p.phoneme) : 'klank ' + (pi + 1)}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
-                            const lbl = errLabel(w.errorType);
-                            let lowIdx = -1, lowAcc = null, lowPhoneme = '';
-                            w.phonemes.forEach((p, pi) => { 
-                                if (p.accuracy != null && (lowAcc == null || p.accuracy < lowAcc)) { 
-                                    lowAcc = p.accuracy; 
-                                    lowIdx = pi; 
-                                    lowPhoneme = p.phoneme || ''; 
-                                } 
-                            });
-                            let waarom = '';
-                            if (w.errorType === 'Omission') {
-                                waarom = 'Dit woord is overgeslagen (niet of nauwelijks gezegd).';
-                            } else if (w.errorType === 'Insertion') {
-                                waarom = 'Dit was een extra woord dat niet in de doelzin hoort.';
-                            } else {
-                                if (lowIdx >= 0) {
-                                    const ex = dutchPhonemeExamples[lowPhoneme.toLowerCase()] || dutchPhonemeExamples[lowPhoneme] || '';
-                                    const klankNaam = ex ? `'${lowPhoneme}' (${ex})` : `nummer ${lowIdx + 1} ('${lowPhoneme || '?'}')`;
-                                    waarom = `De klank ${klankNaam} was met ${Math.round(lowAcc)}/100 het zwakst; die week het meest af van de juiste Nederlandse uitspraak.`;
-                                } else {
-                                    waarom = `De uitspraakscore van dit woord is ${Math.round(w.accuracy)}/100.`;
-                                }
-                            }
-                            const top = document.createElement('div');
-                            top.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
-                            const txt = document.createElement('span');
-                            txt.innerHTML = `<b style="color:var(--text);">${esc(w.label)}</b>${lbl ? ' (' + lbl + ')' : ''}: ${phon}`;
-                            top.appendChild(txt);
-                            top.appendChild(mkBtn('🔊', 'Hoor hoe dit woord correct klinkt', () => speak(w.label)));
-                            if (w.start != null) top.appendChild(mkBtn('▶', 'Luister terug hoe de cursist dit woord zei', () => playSegment(w.start, w.end)));
-                            row.appendChild(top);
-                            const why = document.createElement('div');
-                            why.style.cssText = 'margin-top:2px;color:var(--text-muted);';
-                            why.textContent = waarom;
-                            row.appendChild(why);
-                            det.appendChild(row);
-                        });
+
+                        const row = document.createElement('div');
+                        row.style.cssText = 'margin-bottom:6px;';
+                        let feedbackHtml = '';
+                        if (!uAnalyse.goed) {
+                            feedbackHtml += `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(uAnalyse.fout || 'Uitspraak niet helemaal duidelijk')}`;
+                        } else {
+                            feedbackHtml += `<b style="color:#10b981;">✅ Feedback:</b> ${esc(uAnalyse.fout || 'Duidelijk uitgesproken')}`;
+                        }
+                        if (uAnalyse.uitleg) {
+                            feedbackHtml += ` &middot; <span style="color:var(--text-muted);">${esc(uAnalyse.uitleg)}</span>`;
+                        }
+                        row.innerHTML = feedbackHtml;
+                        det.appendChild(row);
                         card.appendChild(det);
                     }
                     return card;
@@ -2148,6 +2209,7 @@
                         const section = document.createElement('div');
                         section.style.cssText = 'margin-bottom:22px;';
                         const sh = document.createElement('div');
+                        sh.classList.add('speaker-header');
                         sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
                         sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div><div style="font-size:0.72rem;color:var(--text-muted);">Gemiddelde uitspraak: <b style="color:${scoreColor(spkAvg)};">${spkAvg != null ? spkAvg : '-'}</b>/100</div>`;
                         section.appendChild(sh);
@@ -2179,6 +2241,7 @@
             // ===== Terugval: oude weergave per Azure-segment (als er geen gesprek beschikbaar is) =====
             (detail.utterances || []).forEach((u, i) => {
                 const card = document.createElement('div');
+                card.classList.add('report-card');
                 card.style.cssText = 'border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px;background:rgba(15,23,42,0.3);';
 
                 const head = document.createElement('div');
@@ -2197,8 +2260,9 @@
                     const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w.word));
                     const col = (w.accuracy == null || isHesitation) ? '#64748b' : scoreColor(w.accuracy);
                     const pill = document.createElement('span');
-                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${col}1a;border:1px solid ${col}55;font-size:0.8rem;color:var(--text);`;
-                    pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : ((w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map(p => `${p.phoneme} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '')));
+                    // Feller colors: background 24% (3d), border 80% (cc)
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${col}3d;border:1px solid ${col}cc;font-size:0.8rem;color:var(--text);`;
+                    pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : ((w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map((p, pi) => `${p.phoneme || 'klank ' + (pi + 1)} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '')));
                     const displayScore = (w.accuracy != null && !isHesitation) ? Math.round(w.accuracy) : '&middot;';
                     pill.innerHTML = `<span>${esc(w.word)}</span><b style="color:${col};font-size:0.72rem;">${displayScore}</b>`;
                     grid.appendChild(pill);
@@ -2210,7 +2274,7 @@
                     const det = document.createElement('div');
                     det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.9;';
                     det.innerHTML = '<div style="font-weight:700;color:var(--text);margin-bottom:2px;">Klanken in lastige woorden:</div>' + weakWords.map(w => {
-                        const phon = w.phonemes.map(p => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${esc(p.phoneme)}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
+                        const phon = w.phonemes.map((p, pi) => `<span style="color:${scoreColor(p.accuracy)};font-weight:700;">${esc(p.phoneme || 'klank ' + (pi + 1))}</span> ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join('  &middot;  ');
                         const lbl = errLabel(w.errorType);
                         return `<div><b style="color:var(--text);">${esc(w.word)}</b>${lbl ? ' (' + lbl + ')' : ''}: ${phon}</div>`;
                     }).join('');
@@ -2233,7 +2297,7 @@
             });
             
             // Show/hide panes
-            const panes = ['transcript', 'feedback', 'complete', 'elevenlabs', 'azure', 'grammar'];
+            const panes = ['transcript', 'feedback', 'complete', 'elevenlabs', 'azure', 'grammar', 'languagetool'];
             panes.forEach(p => {
                 const paneEl = document.getElementById(`pane-${p}`);
                 if (paneEl) {
@@ -2348,6 +2412,7 @@
             renderElevenLabsColumn();
             renderAzureColumn();
             renderGrammarColumn();
+            renderLanguageToolColumn();
 
             // Switch to active tab (always default to 'azure')
             activeViewerTab = 'azure';
@@ -3168,17 +3233,27 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 username: localStorage.getItem('user_lt_username') || '',
                 key: localStorage.getItem('user_lt_api_key') || '',
                 // Standaard UIT (anders dan Azure): alleen aan als expliciet op 'true' gezet.
-                enabled: localStorage.getItem('user_lt_enabled') !== 'false'
+                enabled: localStorage.getItem('user_lt_enabled') === 'true'
             };
         }
         function toggleLanguageToolEnabled(on) {
             localStorage.setItem('user_lt_enabled', on ? 'true' : 'false');
             updateLanguageToolToggleUI();
+            if (!on && activeViewerTab === 'languagetool') {
+                switchViewerTab('azure');
+            }
         }
         function updateLanguageToolToggleUI() {
             const cfg = getLanguageToolConfig();
             const cb = document.getElementById('languageToolEnabledToggle');
             if (cb) cb.checked = cfg.enabled;
+            
+            // Show/hide tabBtn-languagetool
+            const tabBtn = document.getElementById('tabBtn-languagetool');
+            if (tabBtn) {
+                tabBtn.style.display = cfg.enabled ? 'inline-block' : 'none';
+            }
+
             const hint = document.getElementById('languageToolToggleHint');
             if (hint) {
                 if (cfg.enabled && cfg.username && cfg.key) {
@@ -4234,6 +4309,7 @@ Retourneer de output EXACT in het volgende JSON-formaat:
 AANVULLENDE RICHTLIJNEN:
 - Zorg dat je de sprekers correct identificeert. Gebruik hun echte namen in het 'spreker' veld.
 - Als er geen uitspraakfouten/grammaticafouten zijn, zet "goed" op true en laat "fout" en "uitleg" leeg.
+- Voor "uitspraak_analyse", wees zeer specifiek en NT2-vriendelijk. Als er klanken of specifieke woorden zwak of onduidelijk zijn uitgesproken, zet "goed" op false en vul "fout" in met exact dit format: "Bij '[woord]' klonk de '[klank]'-klank niet helemaal duidelijk." (bijvoorbeeld: "Bij 'chauffeur' klonken de 'eu'-klank en de 'r'-klank niet helemaal duidelijk. Bij 'heeft' klonk de 'h' en de 'ee'-klank zwak. Bij 'vier' klonken de 'v'-klank en de 'r'-klank zwak."). Leg in "uitleg" bondig uit hoe dit verbeterd kan worden (bijv. tongpositie of lipronding).
 - Soms herhaalt een spreker een woord achter elkaar omdat diegene zich herpakt (bijv. "ik ik ga" of "we we hebben"). Dit zijn GEEN grammaticafouten of logicafouten, maar herpakkingen. Keur dit niet af als fout in de "grammatica_analyse" of "logica_analyse".
 - Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.`;
 
