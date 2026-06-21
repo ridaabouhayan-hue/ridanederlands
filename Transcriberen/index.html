@@ -608,6 +608,8 @@
         let storageMode = localStorage.getItem('storage_mode') || 'hybrid';
         // syncStatus[group][filename] = 'cloud' | 'local' | 'pending' | 'error'
         let syncStatus = {};
+        let isCloudConnected = false;
+        let cloudError = false;
 
         let fileHandle = null;
         let currentFileObject = null;
@@ -1210,11 +1212,23 @@
             if (!el) return;
             if (text) { el.textContent = text; if (color) el.style.color = color; return; }
             if (storageMode === 'local') {
-                el.textContent = '💾 Lokale modus — geen cloud'; el.style.color = '#34d399';
+                el.textContent = '🟢 Lokaal actief (geen cloud ✔️)'; el.style.color = '#10b981';
             } else if (storageMode === 'cloud') {
-                el.textContent = '☁️ Cloud modus (Firestore)'; el.style.color = '#60a5fa';
+                if (isCloudConnected) {
+                    el.textContent = '🟢 Cloud verbonden (Firestore ✔️)'; el.style.color = '#10b981';
+                } else if (cloudError) {
+                    el.textContent = '🔴 Cloud-sync mislukt (Firestore ❌)'; el.style.color = '#ef4444';
+                } else {
+                    el.textContent = '⏳ Cloud modus — verbinden...'; el.style.color = '#f59e0b';
+                }
             } else {
-                el.textContent = '🔄 Hybride — wacht op cloud...'; el.style.color = '#c084fc';
+                if (isCloudConnected) {
+                    el.textContent = '🟢 Hybride verbonden (Cloud + lokaal ✔️)'; el.style.color = '#10b981';
+                } else if (cloudError) {
+                    el.textContent = '⚠️ Hybride — cloud offline (lokaal ✔️)'; el.style.color = '#f59e0b';
+                } else {
+                    el.textContent = '⏳ Hybride — wacht op cloud...'; el.style.color = '#f59e0b';
+                }
             }
         }
 
@@ -1401,8 +1415,9 @@
                     if (!activeGroup || !(db[activeGroup] && db[activeGroup].length)) {
                         activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
                     }
-                    const cs = document.getElementById('connStatus');
-                    if (cs) { cs.textContent = '🟢 Cloud-sync actief'; cs.style.color = '#10b981'; }
+                    isCloudConnected = true;
+                    cloudError = false;
+                    updateConnStatus();
                     if (document.getElementById('appContent').style.display !== 'none') {
                         renderTabs();
                         renderList();
@@ -1428,8 +1443,9 @@
                     }
                 }, (err) => {
                     console.error('Firestore luisteren mislukt:', err);
-                    const cs = document.getElementById('connStatus');
-                    if (cs) { cs.textContent = '🔴 Alleen lokaal actief'; cs.style.color = '#f59e0b'; }
+                    isCloudConnected = false;
+                    cloudError = true;
+                    updateConnStatus();
                     showToast('ℹ️ Cloud-sync niet beschikbaar. Lokaal werken is actief.');
                     
                     if (!isDataLoaded) {
@@ -1441,8 +1457,9 @@
                 });
             } else {
                 console.warn('Firestore Database (fbDb) is niet beschikbaar.');
-                const cs = document.getElementById('connStatus');
-                if (cs) { cs.textContent = '🔴 Alleen lokaal actief (geen database)'; cs.style.color = '#f59e0b'; }
+                isCloudConnected = false;
+                cloudError = true;
+                updateConnStatus();
                 if (!isDataLoaded) {
                     db = loadLocalData();
                     isDataLoaded = true;
@@ -1505,6 +1522,8 @@
         }
 
         function initApp() {
+            updateModeBtns();
+            updateConnStatus();
             renderTabs();
             renderList();
             loadDynamicLessons();
