@@ -7,7 +7,7 @@
             'AIzaSyCNae',
             'NOUojWlz5C',
             'dQG7DaiTMT',
-            'Eeih7sq8'
+            'Eeeih7sq8'
         ].join(''),
         authDomain: "nt2rida.firebaseapp.com",
         projectId: "nt2rida",
