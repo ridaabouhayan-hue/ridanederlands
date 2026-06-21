@@ -492,6 +492,154 @@
                 flex-direction: column;
             }
         }
+
+        /* Expanded Practice Area Styles */
+        .checklist-item {
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+        .checklist-item.expanded {
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+        }
+        .expand-chevron {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s ease;
+            margin-left: 8px;
+            pointer-events: none;
+        }
+        .checklist-item.expanded .expand-chevron {
+            transform: rotate(180deg);
+            color: var(--accent-blue);
+        }
+        .practice-area {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: none;
+            cursor: default;
+            width: 100%;
+        }
+        .practice-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            margin-bottom: 10px;
+        }
+        .examples-wrap {
+            margin-bottom: 15px;
+        }
+        .example-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-green);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .example-text {
+            color: var(--text-primary);
+            font-style: italic;
+        }
+        .quiz-card {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 12px;
+        }
+        .quiz-q {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .quiz-opts {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .quiz-opt {
+            background: var(--bg-card-light);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: left;
+            color: var(--text-secondary);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            width: 100%;
+        }
+        .quiz-opt:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.08);
+        }
+        .quiz-opt.correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border-color: var(--accent-green) !important;
+            color: var(--accent-green) !important;
+        }
+        .quiz-opt.incorrect {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: #ef4444 !important;
+            color: #ef4444 !important;
+        }
+        .quiz-fb {
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .quiz-fb.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+        .quiz-fb.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        .quiz-btn {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: opacity 0.15s;
+        }
+        .quiz-btn:hover {
+            opacity: 0.9;
+        }
+        .quiz-score-view {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .quiz-score-view h4 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
     </style>
 </head>
 <body>
@@ -537,44 +685,6 @@
         <!-- Rendered dynamically by JS -->
     </div>
 
-    <!-- ── INTERACTIEVE ZINNENBOUWER ── -->
-    <div class="builder-section">
-        <div class="builder-title">
-            <span>🏗️ Interactieve Zinnenbouwer</span>
-        </div>
-        <p class="builder-desc">
-            Combineer de verschillende grammaticasystemen! Selecteer hieronder een uitdaging en sleep of klik de woorden in de juiste volgorde om de zin te bouwen.
-        </p>
-
-        <!-- CHALLENGE SELECTOR TABS -->
-        <div class="challenge-tabs">
-            <button class="challenge-btn active" onclick="loadChallenge(0)">Uitdaging 1: Inversie + Modaal + Scheidbaar</button>
-            <button class="challenge-btn" onclick="loadChallenge(1)">Uitdaging 2: Voegwoord (want) + Ontkenning (niet)</button>
-            <button class="challenge-btn" onclick="loadChallenge(2)">Uitdaging 3: Bijzin (omdat) + Voltooide Tijd (met zijn)</button>
-        </div>
-
-        <!-- WORKSPACE (ZIN BOUWEN) -->
-        <div class="workspace" id="workspace">
-            <div class="workspace-placeholder" id="workspace-placeholder">⬇ Klik op de woorden hieronder om je zin te bouwen</div>
-            <div class="workspace-chips" id="workspace-chips"></div>
-        </div>
-
-        <!-- WORD BANK -->
-        <div class="word-bank">
-            <div class="bank-title">Beschikbare woorden</div>
-            <div class="bank-chips" id="bank-chips"></div>
-        </div>
-
-        <!-- ACTIONS -->
-        <div class="control-row">
-            <button class="btn-action btn-secondary" onclick="resetWorkspace()">Opnieuw</button>
-            <button class="btn-action btn-primary" onclick="checkBuilderAnswer()">Controleer Zin</button>
-        </div>
-
-        <!-- FEEDBACK -->
-        <div class="builder-feedback" id="builder-feedback"></div>
-    </div>
-
 </div>
 
 <!-- DATA AND SCRIPT LOGIC -->
@@ -589,7 +699,7 @@
         { id: 5, cat: 'cat1', title: 'Hebben en zijn', desc_nl: 'De onregelmatige maar onmisbare werkwoorden hebben en zijn vervoegen.', desc_en: 'Conjugating the irregular auxiliary verbs hebben and zijn.', desc_pl: 'Odmiana nieregularnych czasowników pomocniczych hebben i zijn.', ex: 'Ik heb een kat. Zij is blij.' },
         
         // Categorie 2
-        { id: 6, cat: 'cat2', title: 'Zinsbouw: hoofdzin', desc_nl: 'Het werkwoord staat op positie 2 (Subject - Verb - rest).', desc_en: 'Main clause word order: Subject + Verb on position 2.', desc_pl: 'Szyk zdania głównego: Podmiot + Czasownik na 2. pozycji.', ex: 'Ik leer vandaag Nederlands.' },
+        { id: 6, cat: 'cat2', title: 'Zinsbouw: Hoofdzin (Onderwerp-Werkwoord-TOP)', desc_nl: 'Het werkwoord staat op positie 2 (Onderwerp - Werkwoord - TOP).', desc_en: 'Main clause word order (Subject + Verb on position 2).', desc_pl: 'Szyk zdania głównego (Podmiot + Czasownik na 2. pozycji).', ex: 'Ik leer vandaag Nederlands.' },
         { id: 7, cat: 'cat2', title: 'Bezittelijk voornaamwoord', desc_nl: 'Mijn, jouw, zijn, haar, ons/onze, jullie, hun.', desc_en: 'Possessive pronouns: my, your, his, her, our, their.', desc_pl: 'Zaimki dzierżawcze: mój, twój, jego, jej, nasz, ich.', ex: 'Dit is mijn boek en dat is haar tas.' },
         { id: 8, cat: 'cat2', title: 'Vraagzinnen', desc_nl: 'Vraagzinnen met een vraagwoord (wie, wat, hoe) of ja/nee-vragen (inversie).', desc_en: 'Question sentences: using question words or yes/no questions.', desc_pl: 'Zdania pytające: z zaimkiem pytajnym lub pytania tak/nie.', ex: 'Waar woon je? / Werk je vandaag?' },
         { id: 9, cat: 'cat2', title: 'Persoonlijk voornaamwoord: lijdend voorwerp / na voorzetsel', desc_nl: 'Mij, jou, hem, haar, ons, jullie, hen/hun.', desc_en: 'Object pronouns: me, you, him, her, us, them.', desc_pl: 'Zaimki osobowe w bierniku i po przyimkach: mnie, ciebie, jego, ją, nas.', ex: 'Ik zie hem. Zij praat met ons.' },
@@ -621,50 +731,258 @@
         { id: 27, cat: 'cat6', title: 'Introductie er + telwoord', desc_nl: 'Gebruik van er bij getallen om herhaling te voorkomen.', desc_en: 'Using er with numbers (e.g. Ik heb er twee).', desc_pl: 'Używanie er z liczbami, aby uniknąć powtarzania.', ex: 'Ik koop er vier.' },
         { id: 28, cat: 'cat6', title: 'Voltooide tijd 2: met zijn en zonder ge-', desc_nl: 'Werkwoorden van beweging/verandering met zijn. Werkwoorden met be-/ver-/ont- krijgen geen ge-.', desc_en: 'Perfect tense 2: verbs of movement/change with zijn. Verbs starting with prefixes be-/ver-/ont- do not get ge-.', desc_pl: 'Perfectum 2: z zijn przy zmianie stanu/miejsca. Czasowniki z przedrostkami be-/ver-/ont- nie otrzymują ge-.', ex: 'Ik ben gekomen. Ik heb het betaald.' },
         { id: 29, cat: 'cat6', title: 'Scheidbare werkwoorden', desc_nl: 'Opstaan &rarr; ik sta op (pres) / ik ben opgestaan (perf).', desc_en: 'Separable verbs in present (ik sta op) and perfect (opgestaan).', desc_pl: 'Czasowniki rozdzielnie złożone w czasie teraźniejszym (ik sta op) i przeszłym (opgestaan).', ex: 'Ik was de auto af.' },
-        { id: 30, cat: 'cat6', title: 'Herhaling voltooide tijd', desc_nl: 'Grote herhaling en mix van regelmatige en onregelmatige voltooide tijden.', desc_en: 'Comprehensive review and mix of regular/irregular participles.', desc_pl: 'Kompleksowe powtórzenie regularnych i nieregularnych form czasu przeszłego.', ex: 'We hebben veel gesproken.' }
+        { id: 30, cat: 'cat6', title: 'Herhaling voltooide tijd', desc_nl: 'Grote herhaling en mix van regelmatige en onregelmatige voltooide tijden.', desc_en: 'Comprehensive review and mix of regular/irregular participles.', desc_pl: 'Kompleksowe powtórzenie regularnych i nieregularnych.', ex: 'We hebben veel gesproken.' }
     ];
 
-    // Sentence builder challenges
-    const builderChallenges = [
-        {
-            words: ["Morgen", "moet", "ik", "vroeg", "opstaan"],
-            extra: ["op staat", "ik moet", "moet ik"],
-            correct: "Morgen moet ik vroeg opstaan",
-            explanation: {
-                nl: "Tijd ('Morgen') staat op 1 &rarr; Inversie: hulpwerkwoord ('moet') op 2, onderwerp ('ik') op 3. Het scheidbare werkwoord ('opstaan') staat als hele werkwoord achteraan.",
-                en: "Time ('Morgen') in pos 1 &rarr; Inversion: modal verb ('moet') in pos 2, subject ('ik') in pos 3. The separable main verb ('opstaan') goes to the end as infinitive."
-            }
+    const topicQuizData = {
+        1: {
+            examples: ["Ik werk.", "Hij werkt.", "Zij studeert."],
+            questions: [
+                { q: "Wat is de juiste vorm? 'Mijn collega ___ bij Westport.'", o: ["werk", "werkt", "werken"], c: 1, e: "Bij 'hij/zij' krijgt het werkwoord stam + t." },
+                { q: "Vul in: '___ jij ook vanavond?'", o: ["Werk", "Werkt", "Werken"], c: 0, e: "Als 'jij' achter het werkwoord staat, vervalt de 't'." },
+                { q: "Kies de juiste zin:", o: ["Zij studeerd hard.", "Zij studeert hard.", "Zij studeren hard."], c: 1, e: "Zij (enkelvoud) krijgt stam + t, gespeld met een t (studeert)." }
+            ]
         },
-        {
-            words: ["Ik", "koop", "het boek", "niet", "want", "het", "is", "te duur"],
-            extra: ["geen", "omdat", "is het"],
-            correct: "Ik koop het boek niet want het is te duur", // will ignore commas in checks
-            explanation: {
-                nl: "De ontkenning 'niet' staat na het specifieke object 'het boek'. 'Want' verbindt twee hoofdzinnen, dus na 'want' volgt de normale volgorde: onderwerp ('het') + werkwoord ('is').",
-                en: "The negation 'niet' goes after the specific object 'het boek'. 'Want' connects two main clauses, so it is followed by normal Subject-Verb order: subject ('het') + verb ('is')."
-            }
+        2: {
+            examples: ["De man loopt op straat.", "Het boek ligt op de tafel."],
+            questions: [
+                { q: "Wat is het onderwerp van: 'De jonge cursist leert Nederlands.'?", o: ["leert", "De jonge cursist", "Nederlands"], c: 1, e: "'De jonge cursist' voert de actie uit en is dus het onderwerp." },
+                { q: "Welke vorm krijgt het werkwoord bij een enkelvoudig onderwerp?", o: ["Stam", "Stam + t (behalve bij ik)", "Hele werkwoord"], c: 1, e: "Bij enkelvoudige onderwerpen (behalve 'ik') is de vorm stam + t." },
+                { q: "Vul in: '___ kookt vanavond.'", o: ["Zij", "Wij", "Jullie"], c: 0, e: "'kookt' is enkelvoud (stam + t), dus we gebruiken het enkelvoudige onderwerp 'Zij'." }
+            ]
         },
-        {
-            words: ["Ik", "ben", "moe", "omdat", "ik", "naar Amsterdam", "ben", "gefietst"],
-            extra: ["heb", "gefietst ben"], // we allow variations via check logic
-            correct: "Ik ben moe omdat ik naar Amsterdam ben gefietst",
-            alternative: "Ik ben moe omdat ik naar Amsterdam gefietst ben",
-            explanation: {
-                nl: "'Omdat' start een bijzin, dus alle werkwoorden gaan naar het einde van de zin ('ben gefietst' of 'gefietst ben'). 'Fietsen' krijgt 'zijn' ('ben') omdat het een beweging naar een bestemming is.",
-                en: "'Omdat' starts a subclause, meaning all verbs go to the end of the sentence ('ben gefietst' or 'gefietst ben'). 'Fietsen' uses 'zijn' ('ben') because it expresses movement towards a specific destination."
-            }
+        3: {
+            examples: ["Wij werken vandaag.", "Jullie drinken koffie.", "Zij eten een appel."],
+            questions: [
+                { q: "Wat is de juiste vorm? 'Wij ___ Nederlands.'", o: ["leer", "leert", "leren"], c: 2, e: "Bij meervoud (wij, jullie, zij) gebruiken we het hele werkwoord (infinitive)." },
+                { q: "Wat is de juiste vorm? 'Thomas en Sophie ___ in Utrecht.'", o: ["woon", "woont", "wonen"], c: 2, e: "Thomas en Sophie zijn meervoud (zij), dus hele werkwoord 'wonen'." },
+                { q: "Kies de juiste zin:", o: ["De cursisten maken een opdracht.", "De cursisten maakt een opdracht.", "De cursisten maak een opdracht."], c: 0, e: "'De cursisten' is meervoud, dus hele werkwoord 'maken'." }
+            ]
+        },
+        4: {
+            examples: ["De baby slaapt.", "De baby's slapen."],
+            questions: [
+                { q: "Is 'De docenten' enkelvoud of meervoud?", o: ["Enkelvoud", "Meervoud", "Geen van beide"], c: 1, e: "'De docenten' verwijst naar meerdere personen en is dus meervoud." },
+                { q: "Vul in: 'De ___ rennen in het park.'", o: ["kind", "kindt", "kinderen"], c: 2, e: "'kinderen' is de meervoudsvorm van 'kind' en past bij het meervoudige werkwoord 'rennen'." },
+                { q: "Kies de juiste vorm: 'De auto's ___ snel.'", o: ["rijdt", "rijden", "rijde"], c: 1, e: "Meervoud 'auto's' krijgt het hele werkwoord 'rijden'." }
+            ]
+        },
+        5: {
+            examples: ["Ik heb een kat.", "Zij is blij.", "Wij zijn moe."],
+            questions: [
+                { q: "Vul in: 'Thomas ___ een nieuwe fiets.'", o: ["hebt", "heeft", "is"], c: 1, e: "Thomas (hij) krijgt de vorm 'heeft'." },
+                { q: "Vul in: 'Jullie ___ erg vriendelijk.'", o: ["zijn", "bent", "is"], c: 0, e: "Bij 'jullie' (meervoud) hoort de vorm 'zijn'." },
+                { q: "Vul in: '___ jij gisteren ziek geweest?'", o: ["Heb", "Ben", "Bent"], c: 1, e: "Bij 'jij' na het werkwoord vervalt de 't' van 'bent', dus het wordt 'Ben'." }
+            ]
+        },
+        6: {
+            examples: ["Ik leer vandaag Nederlands.", "Wij drinken nu koffie."],
+            questions: [
+                { q: "Waar staat het vervoegde werkwoord in een normale hoofdzin?", o: ["Op de eerste plek", "Op de tweede plek", "Helemaal achteraan"], c: 1, e: "In een normale Nederlandse hoofdzin staat het werkwoord ALTIJD op de tweede plek." },
+                { q: "Kies de juiste volgorde:", o: ["Ik ga morgen naar kantoor.", "Ik morgen ga naar kantoor.", "Morgen ik ga naar kantoor."], c: 0, e: "Onderwerp ('Ik') + Werkwoord ('ga') op de 2e plek." },
+                { q: "Kies de juiste zin:", o: ["Zij drinken vanavond thee.", "Zij vanavond drinken thee.", "Vanavond zij drinken thee."], c: 0, e: "Onderwerp + Werkwoord + rest (vanavond thee)." }
+            ]
+        },
+        7: {
+            examples: ["Dit is mijn boek.", "Dat is haar tas.", "Is dit jullie huis?"],
+            questions: [
+                { q: "Vul in: 'Thomas zoekt ___ jas.'", o: ["zijn", "haar", "hun"], c: 0, e: "Thomas is een man, dus we gebruiken 'zijn'." },
+                { q: "Vul in: 'Wij wonen hier. Dit is ___ straat.'", o: ["ons", "onze", "ons'"], c: 1, e: "'straat' is een de-woord, dus gebruiken we 'onze'." },
+                { q: "Vul in: 'Thomas en Sophie zoeken ___ sleutels.'", o: ["hun", "zijn", "haar"], c: 0, e: "Thomas en Sophie (meervoud) krijgen het bezittelijk voornaamwoord 'hun'." }
+            ]
+        },
+        8: {
+            examples: ["Waar woon je?", "Werk je vandaag?", "Wie is dat?"],
+            questions: [
+                { q: "Kies de juiste ja/nee-vraag van 'Jij werkt morgen.':", o: ["Werkt jij morgen?", "Werk jij morgen?", "Jij werkt morgen?"], c: 1, e: "Bij inversie met 'jij' achter het werkwoord vervalt de 't' van de stam: 'Werk jij'." },
+                { q: "Welk vraagwoord hoort hier? '___ kost dit boek?' - 'Tien euro.'", o: ["Wat", "Hoeveel", "Hoe"], c: 1, e: "'Hoeveel' vraagt naar een prijs of aantal." },
+                { q: "Kies de juiste vraagzin:", o: ["Wanneer begint de les?", "Wanneer de les begint?", "Begint de les wanneer?"], c: 0, e: "Vraagwoord ('Wanneer') + Werkwoord ('begint') + Onderwerp ('de les')." }
+            ]
+        },
+        9: {
+            examples: ["Ik zie hem.", "Zij praat met ons.", "De docent helpt mij."],
+            questions: [
+                { q: "Wat is het object-pronomen van 'zij' (enkelvoud)?", o: ["hem", "haar", "ze"], c: 1, e: "Het object van 'zij' (zij/haar) is 'haar'." },
+                { q: "Vul in: 'Waar zijn de sleutels? Ik kan ___ niet vinden.'", o: ["ze", "hen", "hun"], c: 0, e: "Voor dingen (meervoud) gebruiken we 'ze'." },
+                { q: "Vul in: 'Thomas is een goede vriend. Ik spreek vaak met ___.'", o: ["hem", "haar", "ons"], c: 0, e: "Thomas is een man, dus we gebruiken 'hem' na een voorzetsel." }
+            ]
+        },
+        10: {
+            examples: ["Morgen werk ik thuis.", "Vandaag eten we pizza."],
+            questions: [
+                { q: "Wat gebeurt er bij inversie?", o: ["Het werkwoord verhuist naar het einde.", "Onderwerp en werkwoord wisselen van plek.", "Er is geen onderwerp meer."], c: 1, e: "Bij inversie komt het werkwoord direct vóór het onderwerp te staan." },
+                { q: "Kies de juiste zin:", o: ["Gisteren ik heb een film gekeken.", "Gisteren heb ik een film gekeken.", "Gisteren heb gekeken ik een film."], c: 1, e: "Tijd ('Gisteren') op 1 &rarr; werkwoord ('heb') op 2 &rarr; onderwerp ('ik') op 3." },
+                { q: "Kies de juiste zin met inversie:", o: ["In de ochtend drink ik koffie.", "In de ochtend ik drink koffie.", "Drink ik koffie in de ochtend."], c: 0, e: "In de ochtend (plaats/tijd) &rarr; drink (werkwoord) + ik (onderwerp)." }
+            ]
+        },
+        11: {
+            examples: ["Boek &rarr; boeken", "Tafel &rarr; tafels"],
+            questions: [
+                { q: "Wat is het meervoud van 'stoel'?", o: ["stoelen", "stoels", "stoelene"], c: 0, e: "Het meervoud is 'stoelen'." },
+                { q: "Wat is het meervoud van 'sleutel'?", o: ["sleutelen", "sleutels", "sleutelss"], c: 1, e: "Woorden die eindigen op -el krijgen meestal -s in het meervoud." },
+                { q: "Kies het juiste meervoud van 'kind':", o: ["kinden", "kinderen", "kinds"], c: 1, e: "'kind' is onregelmatig in het meervoud: 'kinderen'." }
+            ]
+        },
+        12: {
+            examples: ["De man", "Het kind", "Een boom"],
+            questions: [
+                { q: "Welk lidwoord hoort bij 'telefoon'?", o: ["de", "het", "een"], c: 0, e: "Het is 'de telefoon'." },
+                { q: "Welk lidwoord hoort bij 'bier'?", o: ["de", "het", "de/het allebei"], c: 1, e: "Het is 'het bier'." },
+                { q: "Kies de juiste meervoudszin:", o: ["De boeken zijn nieuw.", "Het boeken zijn nieuw.", "Een boeken zijn nieuw."], c: 0, e: "Alle meervouden krijgen het lidwoord 'de'." }
+            ]
+        },
+        13: {
+            examples: ["Ik heb geen auto.", "Ik werk niet."],
+            questions: [
+                { q: "Wanneer gebruik je 'geen'?", o: ["Voor werkwoorden", "Voor onbepaalde zelfstandige naamwoorden (met een/geen lidwoord)", "Voor bijvoeglijke naamwoorden"], c: 1, e: "Gebruik 'geen' bij onbepaalde dingen ('geen auto')." },
+                { q: "Vul in: 'Zij drinkt ___ bier.'", o: ["geen", "niet", "nee"], c: 0, e: "'bier' is onbepaald, dus 'geen bier'." },
+                { q: "Kies de juiste ontkennende zin:", o: ["Ik spreek niet Spaans.", "Ik spreek geen Spaans.", "Ik geen Spaans spreek."], c: 1, e: "Spaans (onbepaald object) &rarr; 'geen Spaans'." }
+            ]
+        },
+        14: {
+            examples: ["Ik moet morgen werken.", "Wij kunnen goed koken."],
+            questions: [
+                { q: "Waar staat het hoofdwerkwoord bij een modaal hulpwerkwoord?", o: ["Direct na het hulpwerkwoord", "Helemaal aan het einde van de zin", "Aan het begin van de zin"], c: 1, e: "Het hoofdwerkwoord ('werken', 'koken') staat helemaal aan het einde." },
+                { q: "Kies de juiste vorm: 'Hij ___ morgen komen.'", o: ["kan", "kun", "kunnen"], c: 0, e: "De vorm voor 'hij' is 'kan'." },
+                { q: "Kies de juiste zin:", o: ["Wij willen vanavond eten.", "Wij willen eten vanavond.", "Wij eten willen vanavond."], c: 0, e: "Modaal werkwoord op pos 2, hele werkwoord ('eten') aan het einde." }
+            ]
+        },
+        15: {
+            examples: ["Een grote auto", "Een groot huis", "Het mooie boek"],
+            questions: [
+                { q: "Welk adjectief krijgt GEEN -e?", o: ["Bij de-woorden met 'een' ervoor", "Bij het-woorden met 'een' of zonder lidwoord ervoor", "Bij meervoud"], c: 1, e: "Bijvoorbeeld: 'een groot huis' (het-woord, onbepaald)." },
+                { q: "Kies de juiste zin:", o: ["Ik koop een groene jas.", "Ik koop een groen jas.", "Ik koop de groen jas."], c: 0, e: "'jas' is een de-woord, dus altijd met een -e: 'groene jas'." },
+                { q: "Kies de juiste zin:", o: ["Dat is een mooi boek.", "Dat is een mooie boek.", "Dat is de mooi boek."], c: 0, e: "'boek' is een het-woord, dus na 'een' krijgt het adjectief GEEN -e." }
+            ]
+        },
+        16: {
+            examples: ["Ik woon er.", "Kom hier!"],
+            questions: [
+                { q: "Welk woord kan een plaats vervangen om herhaling te voorkomen?", o: ["er", "daar", "ze"], c: 0, e: "'er' kan verwijzen naar een plaats ('Ik woon er')." },
+                { q: "Vul in: 'Gaan jullie naar Utrecht?' - 'Ja, we gaan ___ morgen naartoe.'", o: ["daar", "er", "ze"], c: 1, e: "'er' + naartoe verwijst naar de plaats." },
+                { q: "Kies de juiste zin:", o: ["Ik loop er vaak.", "Ik loop vaak er.", "Er ik loop vaak."], c: 0, e: "'er' staat direct na de persoonsvorm ('loop')." }
+            ]
+        },
+        17: {
+            examples: ["Zij geeft haar jas aan mij."],
+            questions: [
+                { q: "Wat is het subject-pronomen van 'jullie'?", o: ["jullie", "ons", "wij"], c: 0, e: "Het is 'jullie' ('Jullie werken hard')." },
+                { q: "Wat is het bezittelijk pronomen voor 'zij' (meervoud)?", o: ["hun", "haar", "ons"], c: 0, e: "Thomas en Sophie &rarr; 'hun' sleutels." },
+                { q: "Vul in: 'Thomas helpt ___ met de opdracht' (wij-vorm).", o: ["wij", "ons", "onze"], c: 1, e: "Het lijdend voorwerp (object) van 'wij' is 'ons'." }
+            ]
+        },
+        18: {
+            examples: ["Ik ben moe, want ik heb gewerkt.", "Zij drinkt thee en hij drinkt koffie."],
+            questions: [
+                { q: "Wat is de woordvolgorde na het voegwoord 'want'?", o: ["Het werkwoord gaat naar het einde.", "Normale hoofdzinvolgorde (Onderwerp - Werkwoord - TOP).", "Het werkwoord staat op positie 1."], c: 1, e: "'want' verbindt hoofdzinnen, dus de volgorde blijft normaal." },
+                { q: "Kies de juiste zin:", o: ["Ik kom niet, want ik ben ziek.", "Ik kom niet, want ik ziek ben.", "Ik kom niet, want ben ik ziek."], c: 0, e: "Normale hoofdzinvolgorde na 'want'." },
+                { q: "Kies de juiste zin:", o: ["Hij leert Nederlands en zij leert Engels.", "Hij leert Nederlands en leert zij Engels.", "Hij leert Nederlands en zij Engels leert."], c: 0, e: "Normale hoofdzinnen gekoppeld door 'en'." }
+            ]
+        },
+        19: {
+            examples: ["Zij wil koffie en hij wil thee."],
+            questions: [
+                { q: "Welk voegwoord geeft een reden aan?", o: ["maar", "want", "dus"], c: 1, e: "'want' introduceert een reden." },
+                { q: "Welk voegwoord geeft een consequentie/gevolg aan?", o: ["maar", "want", "dus"], c: 2, e: "'dus' geeft een gevolg aan ('Ik ben ziek, dus ik blijf thuis')." },
+                { q: "Vul in: 'Ik wil komen, ___ ik heb geen tijd.'", o: ["en", "maar", "dus"], c: 1, e: "'maar' geeft een tegenstelling aan." }
+            ]
+        },
+        20: {
+            examples: ["Deze man en dit kind.", "Die boom en dat huis."],
+            questions: [
+                { q: "Welk aanwijzend voornaamwoord hoort bij het-woorden (ver weg)?", o: ["deze", "die", "dat"], c: 2, e: "Dit kantoor (dichtbij) &rarr; dat kantoor (ver weg)." },
+                { q: "Welk aanwijzend voornaamwoord hoort bij de-woorden (dichtbij)?", o: ["deze", "dit", "die"], c: 0, e: "De stoel &rarr; deze stoel." },
+                { q: "Vul in: '___ sleutels (meervoud) zijn van mij.'", o: ["Dit", "Deze", "Dat"], c: 1, e: "Meervouden krijgen altijd 'deze' of 'die'." }
+            ]
+        },
+        21: {
+            examples: ["Ik blijf thuis omdat ik ziek ben.", "Als het regent, blijf ik binnen."],
+            questions: [
+                { q: "Waar staan de werkwoorden in een bijzin?", o: ["Op de tweede plek", "Helemaal aan het einde van de bijzin", "Aan het begin"], c: 1, e: "In een bijzin (na omdat/als) verhuizen alle werkwoorden naar het einde." },
+                { q: "Kies de juiste zin:", o: ["Ik ga niet werken omdat ik ziek ben.", "Ik ga niet werken omdat ik ben ziek.", "Ik ga niet werken omdat ben ik ziek."], c: 0, e: "Het werkwoord ('ben') staat helemaal achteraan." },
+                { q: "Kies de juiste zin:", o: ["Als het koud is, draag ik een jas.", "Als het koud is, ik draag een jas.", "Als het koud is, draag me een jas."], c: 0, e: "Bij een bijzin vooraan begint de hoofdzin met inversie: werkwoord ('draag') + onderwerp ('ik')." }
+            ]
+        },
+        22: {
+            examples: ["Als het regent, blijf ik binnen."],
+            questions: [
+                { q: "Welk voegwoord introduceert een voorwaarde?", o: ["omdat", "als", "dat"], c: 1, e: "'als' introduceert een voorwaarde." },
+                { q: "Kies de juiste zin:", o: ["Ik weet dat hij morgen komt.", "Ik weet dat hij komt morgen.", "Ik weet dat komt hij morgen."], c: 0, e: "Bijzinvolgorde na 'dat': werkwoord 'komt' staat achteraan." },
+                { q: "Kies de juiste zin:", o: ["Ik leer Nederlands omdat ik hier woon.", "Ik leer Nederlands omdat ik woon hier.", "Ik leer Nederlands omdat woon ik hier."], c: 0, e: "Bijzinvolgorde na 'omdat'." }
+            ]
+        },
+        23: {
+            examples: ["Een auto is sneller dan een fiets.", "Dit boek is leuker."],
+            questions: [
+                { q: "Welk woord gebruik je bij een vergelijking (vergrotende trap)?", o: ["als", "dan", "of"], c: 1, e: "Vergrotende trap + 'dan' (groter dan, sneller dan)." },
+                { q: "Wat is de overtreffende trap van 'duur'?", o: ["duurder", "het duurst", "het meest duur"], c: 1, e: "duur - duurder - het duurst." },
+                { q: "Vul in: 'Hij is even groot ___ zijn broer.'", o: ["als", "dan", "of"], c: 0, e: "Bij gelijke vergelijkingen gebruiken we 'even ... als'." }
+            ]
+        },
+        24: {
+            examples: ["Sta op! Werk door!"],
+            questions: [
+                { q: "Hoe maak je de gebiedende wijs (imperatief)?", o: ["Je gebruikt het hele werkwoord.", "Je gebruikt alleen de stam van het werkwoord en GEEN onderwerp.", "Je gebruikt 'moeten'"], c: 1, e: "De imperatief gebruikt alleen de stam ('Kom!', 'Kijk!')." },
+                { q: "Kies de juiste gebiedende wijs voor 'luisteren':", o: ["Luister!", "Luister je!", "Luisteren!"], c: 0, e: "'Luister!' is de stam." },
+                { q: "Kies de juiste gebiedende wijs voor 'opletten':", o: ["Let op!", "Opletten!", "Je let op!"], c: 0, e: "Bij scheidbare werkwoorden gaat het voorvoegsel naar achteren: 'Let op!'." }
+            ]
+        },
+        25: {
+            examples: ["Ik heb een pizza gegeten.", "We hebben hard gewerkt."],
+            questions: [
+                { q: "Welke hulpwerkwoorden gebruiken we in de voltooide tijd (perfectum)?", o: ["hebben en zijn", "gaan en zullen", "willen en moeten"], c: 0, e: "Het perfectum wordt gevormd met hebben of zijn + voltooid deelwoord." },
+                { q: "Kies de juiste zin:", o: ["Ik heb gisteravond gekookt.", "Ik heb gekookt gisteravond.", "Ik gekookt heb gisteravond."], c: 0, e: "Hulpwerkwoord op pos 2, voltooid deelwoord helemaal achteraan." },
+                { q: "Wat is het voltooid deelwoord van 'maken'?", o: ["gemaakt", "gemaked", "maken"], c: 0, e: "gemaakt (ge- + stam 'maak' + t)." }
+            ]
+        },
+        26: {
+            examples: ["Zij is er al."],
+            questions: [
+                { q: "Welk woord vult een reeds bekende locatie in?", o: ["er", "daar", "ze"], c: 0, e: "'er' verwijst naar een locatie." },
+                { q: "Vul in: 'Ben je in Utrecht?' - 'Ja, ik woon ___.'", o: ["er", "daar", "ze"], c: 0, e: "Ja, ik woon er." },
+                { q: "Kies de juiste zin:", o: ["Ik ben er gisteren geweest.", "Ik ben gisteren geweest er.", "Er ik ben gisteren geweest."], c: 0, e: "'er' staat direct na het werkwoord." }
+            ]
+        },
+        27: {
+            examples: ["Ik koop er vier."],
+            questions: [
+                { q: "Waarom gebruiken we 'er' in: 'Ik heb er twee.'?", o: ["Om een plaats aan te geven", "Om het zelfstandig naamwoord te vervangen en herhaling te voorkomen", "Als onderwerp van de zin"], c: 1, e: "'er' + getal vervangt het zelfstandig naamwoord." },
+                { q: "Vul in: 'Heb jij boeken?' - 'Ja, ik heb ___ drie.'", o: ["er", "daar", "ze"], c: 0, e: "Ja, ik heb er drie." },
+                { q: "Kies de juiste zin:", o: ["Ik koop er vier.", "Ik koop vier.", "Er ik koop vier."], c: 0, e: "'er' staat direct na de persoonsvorm." }
+            ]
+        },
+        28: {
+            examples: ["Ik ben gekomen. Ik heb het betaald."],
+            questions: [
+                { q: "Welke werkwoorden krijgen GEEN 'ge-' in het perfectum?", o: ["Werkwoorden die beginnen met be-, ver-, ont-, ge-, her-", "Werkwoorden van beweging", "Onregelmatige werkwoorden"], c: 0, e: "Bijvoorbeeld: 'betaald' (van betalen), 'verkocht' (van verkopen)." },
+                { q: "Kies de juiste zin:", o: ["Zij is gisteren gekomen.", "Zij heeft gisteren gekomen.", "Zij is gekomen gisteren."], c: 0, e: "'komen' drukt beweging uit en krijgt het hulpwerkwoord 'zijn' ('is gekomen')." },
+                { q: "Wat is het voltooid deelwoord van 'betalen'?", o: ["gebetaald", "betaald", "betalen"], c: 1, e: "Begint met be-, dus krijgt geen ge-: 'betaald'." }
+            ]
+        },
+        29: {
+            examples: ["Ik was de auto af."],
+            questions: [
+                { q: "Wat gebeurt er met scheidbare werkwoorden in de tegenwoordige tijd hoofdzin?", o: ["Ze blijven aan elkaar.", "Het voorvoegsel verhuist naar het einde van de zin.", "Ze krijgen ge- in het midden."], c: 1, e: "Het voorvoegsel splitst en gaat naar het einde (bijv. 'ik sta op')." },
+                { q: "Kies de juiste zin voor 'opstaan':", o: ["Ik sta morgen vroeg op.", "Ik opsta morgen vroeg.", "Ik sta op morgen vroeg."], c: 0, e: "sta (pos 2) ... op (einde)." },
+                { q: "Wat is het voltooid deelwoord van 'opstaan'?", o: ["geopstaan", "opgestaan", "opgestand"], c: 1, e: "Bij scheidbare werkwoorden komt 'ge' tussen het voorvoegsel en de stam: 'op-ge-staan'." }
+            ]
+        },
+        30: {
+            examples: ["We hebben veel gesproken."],
+            questions: [
+                { q: "Wat is het voltooid deelwoord van 'spreken'?", o: ["gesprekt", "gesproken", "spreken"], c: 1, e: "'spreken' is een onregelmatig (sterk) werkwoord: 'gesproken'." },
+                { q: "Kies de juiste zin:", o: ["We hebben gisteren veel gelachen.", "We hebben gisteren veel gelacht.", "We hebben gisteren veel lachen."], c: 0, e: "'lachen' is sterk en krijgt 'gelachen'." },
+                { q: "Kies de correcte voltooide tijd:", o: ["Zij hebben de brief geschreven.", "Zij hebben de brief gescheven.", "Zij zijn de brief geschreven."], c: 0, e: "'schrijven' krijgt 'hebben' + 'geschreven'." }
+            ]
         }
-    ];
+    };
 
-    let activeChallengeIndex = 0;
-    let selectedWords = [];
+    let quizState = {};
     let currentCategoryFilter = 'all';
-    let currentLang = 'nl'; // internal translation state for list item details
 
     document.addEventListener('DOMContentLoaded', () => {
         loadChecklistState();
         renderChecklist();
-        loadChallenge(0);
     });
 
     // RENDER CHECKLIST
@@ -680,24 +998,25 @@
             const card = document.createElement('div');
             card.className = 'checklist-item';
             card.id = `item-${topic.id}`;
+            card.setAttribute('onclick', `expandTopic(${topic.id}, event)`);
 
             card.innerHTML = `
-                <div class="checklist-checkbox-wrapper">
-                    <input type="checkbox" class="checklist-checkbox" id="check-${topic.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTopic(${topic.id})">
+                <div class="checklist-checkbox-wrapper" onclick="event.stopPropagation();">
+                    <input type="checkbox" class="checklist-checkbox" id="check-${topic.id}" ${isCompleted ? 'checked' : ''} onclick="event.stopPropagation(); toggleTopic(${topic.id})">
                 </div>
                 <div class="checklist-content">
                     <div class="checklist-title-row">
-                        <span class="checklist-title">${topic.id}. ${topic.title}</span>
+                        <span class="checklist-title">${topic.id}. ${topic.title} <span class="expand-chevron">▼</span></span>
                         <span class="example-badge">Bijv: ${topic.ex}</span>
                     </div>
                     <div class="checklist-desc" id="desc-${topic.id}" data-nl="${topic.desc_nl}" data-en="${topic.desc_en}" data-pl="${topic.desc_pl}">
                         ${topic.desc_nl}
                     </div>
-                    <div class="lang-switch-inline">
-                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'nl')">Nederlands</span> · 
-                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'en')">🇬🇧 English</span> · 
-                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'pl')">🇵🇱 Polski</span>
-                        <button class="speech-btn-inline" onclick="speakText('${topic.ex.replace(/&rarr;/g, ' ')}')">🔊</button>
+                    <div class="lang-switch-inline" onclick="event.stopPropagation();">
+                        <span class="lang-switch-btn" onclick="event.stopPropagation(); setListItemLang(${topic.id}, 'nl')">Nederlands</span> · 
+                        <span class="lang-switch-btn" onclick="event.stopPropagation(); setListItemLang(${topic.id}, 'en')">🇬🇧 English</span> · 
+                        <span class="lang-switch-btn" onclick="event.stopPropagation(); setListItemLang(${topic.id}, 'pl')">🇵🇱 Polski</span>
+                        <button class="speech-btn-inline" onclick="event.stopPropagation(); speakText('${topic.ex.replace(/'/g, "\\'")}')">🔊</button>
                     </div>
                 </div>
             `;
@@ -722,7 +1041,6 @@
             btn.classList.remove('active');
         });
         
-        // Mark active button
         const clickedBtn = Array.from(document.querySelectorAll('#category-tabs .tab-btn')).find(btn => 
             btn.getAttribute('onclick').includes(`'${cat}'`)
         );
@@ -738,7 +1056,7 @@
     }
 
     function loadChecklistState() {
-        // Just loads from localStorage inside renderChecklist
+        // State loaded dynamically inside renderChecklist
     }
 
     function updateProgressBar() {
@@ -755,103 +1073,201 @@
         document.getElementById('completed-count').textContent = completed;
     }
 
-    // ── BUILDER LOGIC ──
-    function loadChallenge(index) {
-        activeChallengeIndex = index;
-        selectedWords = [];
+    // ── PRACTICE & QUIZ LOGIC ──
+    function expandTopic(id, event) {
+        if (event.target.closest('.checklist-checkbox') || 
+            event.target.closest('.lang-switch-inline') ||
+            event.target.closest('.checklist-checkbox-wrapper')) {
+            return;
+        }
         
-        document.querySelectorAll('.challenge-tabs .challenge-btn').forEach((btn, idx) => {
-            if (idx === index) btn.classList.add('active');
-            else btn.classList.remove('active');
+        const card = document.getElementById(`item-${id}`);
+        if (!card) return;
+        
+        const isExpanded = card.classList.contains('expanded');
+        
+        document.querySelectorAll('.checklist-item.expanded').forEach(el => {
+            if (el.id !== `item-${id}`) {
+                el.classList.remove('expanded');
+                const innerArea = el.querySelector('.practice-area');
+                if (innerArea) innerArea.style.display = 'none';
+            }
         });
-
-        // Hide feedback
-        const fb = document.getElementById('builder-feedback');
-        fb.style.display = 'none';
-
-        // Set up workspace & bank
-        const challenge = builderChallenges[index];
-        const allWords = [...challenge.words, ...challenge.extra];
         
-        // Shuffle the bank
-        shuffle(allWords);
-
-        // Render Bank Chips
-        const bankContainer = document.getElementById('bank-chips');
-        bankContainer.innerHTML = '';
-        allWords.forEach((word, wordIndex) => {
-            const chip = document.createElement('div');
-            chip.className = 'word-chip';
-            chip.textContent = word;
-            chip.id = `chip-bank-${wordIndex}`;
-            chip.onclick = () => addWordToWorkspace(word, `chip-bank-${wordIndex}`);
-            bankContainer.appendChild(chip);
-        });
-
-        updateWorkspaceUI();
-    }
-
-    function addWordToWorkspace(word, chipId) {
-        const chip = document.getElementById(chipId);
-        if (chip.classList.contains('used')) return;
-
-        chip.classList.add('used');
-        selectedWords.push({ word: word, sourceId: chipId });
-        
-        updateWorkspaceUI();
-    }
-
-    function removeWordFromWorkspace(index) {
-        const item = selectedWords[index];
-        const chip = document.getElementById(item.sourceId);
-        if (chip) chip.classList.remove('used');
-
-        selectedWords.splice(index, 1);
-        updateWorkspaceUI();
-    }
-
-    function updateWorkspaceUI() {
-        const container = document.getElementById('workspace-chips');
-        const placeholder = document.getElementById('workspace-placeholder');
-
-        container.innerHTML = '';
-        if (selectedWords.length === 0) {
-            placeholder.style.display = 'block';
+        if (isExpanded) {
+            card.classList.remove('expanded');
+            const practiceArea = card.querySelector('.practice-area');
+            if (practiceArea) practiceArea.style.display = 'none';
         } else {
-            placeholder.style.display = 'none';
-            selectedWords.forEach((item, index) => {
-                const chip = document.createElement('div');
-                chip.className = 'word-chip';
-                chip.style.borderColor = 'var(--accent-blue)';
-                chip.textContent = item.word;
-                chip.onclick = () => removeWordFromWorkspace(index);
-                container.appendChild(chip);
-            });
+            card.classList.add('expanded');
+            
+            let practiceArea = card.querySelector('.practice-area');
+            if (!practiceArea) {
+                practiceArea = document.createElement('div');
+                practiceArea.className = 'practice-area';
+                practiceArea.id = `practice-${id}`;
+                practiceArea.addEventListener('click', (e) => e.stopPropagation());
+                card.querySelector('.checklist-content').appendChild(practiceArea);
+            }
+            practiceArea.style.display = 'block';
+            
+            renderTopicPractice(id);
+            
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
         }
     }
 
-    function resetWorkspace() {
-        loadChallenge(activeChallengeIndex);
-    }
-
-    function checkBuilderAnswer() {
-        const attempt = selectedWords.map(item => item.word).join(' ').replace(/,/g, '').trim().toLowerCase();
-        const challenge = builderChallenges[activeChallengeIndex];
-        const correct = challenge.correct.replace(/,/g, '').trim().toLowerCase();
-        const alternative = challenge.alternative ? challenge.alternative.replace(/,/g, '').trim().toLowerCase() : null;
-
-        const fb = document.getElementById('builder-feedback');
-
-        if (attempt === correct || (alternative && attempt === alternative)) {
-            fb.className = 'builder-feedback correct';
-            fb.innerHTML = `🎉 Goed gedaan! Dit is de correcte zin.<br><br><strong>Uitleg:</strong> ${challenge.explanation.nl}<br><button class="speech-btn-inline" onclick="speakText('${challenge.correct}')" style="margin-top: 10px; font-size:1rem; cursor:pointer;">🔊 Beluister de zin</button>`;
+    function renderTopicPractice(id) {
+        const area = document.getElementById(`practice-${id}`);
+        if (!area) return;
+        
+        const data = topicQuizData[id];
+        if (!data) {
+            area.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;">Geen extra oefeningen beschikbaar voor dit onderwerp.</div>';
+            return;
+        }
+        
+        if (!quizState[id]) {
+            quizState[id] = {
+                currentQuestionIdx: 0,
+                correctCount: 0,
+                answered: false,
+                selectedOption: null
+            };
+        }
+        
+        const state = quizState[id];
+        
+        let html = `
+            <div class="practice-title">💡 Voorbeelden &amp; Oefeningen</div>
+            <div class="examples-wrap">
+                ${data.examples.map(ex => `
+                    <div class="example-item">
+                        <span class="example-text">${ex}</span>
+                        <button class="speech-btn-inline" onclick="event.stopPropagation(); speakText('${ex.replace(/'/g, "\\'")}')">🔊</button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        if (state.currentQuestionIdx < data.questions.length) {
+            const q = data.questions[state.currentQuestionIdx];
+            html += `
+                <div class="quiz-card">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-secondary); margin-bottom:8px; font-weight:800;">
+                        <span>VRAAG ${state.currentQuestionIdx + 1} VAN ${data.questions.length}</span>
+                        <span>Score: ${state.correctCount}/${state.currentQuestionIdx}</span>
+                    </div>
+                    <div class="quiz-q">${q.q}</div>
+                    <div class="quiz-opts">
+                        ${q.o.map((opt, oIdx) => {
+                            let cls = '';
+                            if (state.answered) {
+                                if (oIdx === q.c) cls = 'correct';
+                                else if (state.selectedOption === oIdx) cls = 'incorrect';
+                            }
+                            return `<button class="quiz-opt ${cls}" onclick="answerQuizQuestion(${id}, ${oIdx})" ${state.answered ? 'disabled' : ''}>${opt}</button>`;
+                        }).join('')}
+                    </div>
+                    
+                    <div class="quiz-fb" id="quiz-fb-${id}" style="display:${state.answered ? 'block' : 'none'};"></div>
+                    
+                    ${state.answered ? `
+                        <div style="text-align:right;">
+                            <button class="quiz-btn" onclick="nextQuizQuestion(${id})">
+                                ${state.currentQuestionIdx === data.questions.length - 1 ? 'Afronden' : 'Volgende vraag →'}
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
         } else {
-            fb.className = 'builder-feedback incorrect';
-            fb.innerHTML = `❌ Helaas, dat is niet de juiste woordvolgorde. Probeer het opnieuw!`;
+            const pass = state.correctCount === data.questions.length;
+            html += `
+                <div class="quiz-card quiz-score-view">
+                    <h4>Quiz Afgerond! 🎉</h4>
+                    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:12px;">
+                        Je scoorde <strong>${state.correctCount} van de ${data.questions.length}</strong> goed.
+                    </p>
+                    ${pass ? `
+                        <div style="color:var(--accent-green); font-weight:800; font-size:0.85rem; margin-bottom:12px;">
+                            Geweldig! Je beheerst dit onderwerp volledig! 🌟
+                        </div>
+                    ` : `
+                        <div style="color:var(--accent-orange); font-weight:800; font-size:0.85rem; margin-bottom:12px;">
+                            Tip: Oefen nog eens om een perfecte score te halen!
+                        </div>
+                    `}
+                    <div style="display:flex; gap:10px; justify-content:center;">
+                        <button class="quiz-btn" style="background:var(--bg-card-light); border:1px solid var(--border-color); color:var(--text-primary);" onclick="resetQuizState(${id})">
+                            Opnieuw Oefenen
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            if (pass) {
+                const checkbox = document.getElementById(`check-${id}`);
+                if (checkbox && !checkbox.checked) {
+                    checkbox.checked = true;
+                    toggleTopic(id);
+                }
+            }
+        }
+        
+        area.innerHTML = html;
+        
+        if (state.answered) {
+            const q = data.questions[state.currentQuestionIdx];
+            const isCorrect = state.selectedOption === q.c;
+            const fbEl = document.getElementById(`quiz-fb-${id}`);
+            if (fbEl) {
+                fbEl.className = `quiz-fb ${isCorrect ? 'correct' : 'incorrect'}`;
+                fbEl.innerHTML = isCorrect ? `🎉 Correct! ${q.e}` : `❌ Helaas, dat is niet juist. ${q.e}`;
+                fbEl.style.display = 'block';
+            }
         }
     }
 
-    // Speak helper
+    function answerQuizQuestion(id, optIdx) {
+        const state = quizState[id];
+        if (!state || state.answered) return;
+        
+        state.answered = true;
+        state.selectedOption = optIdx;
+        
+        const data = topicQuizData[id];
+        const q = data.questions[state.currentQuestionIdx];
+        if (optIdx === q.c) {
+            state.correctCount++;
+        }
+        
+        renderTopicPractice(id);
+    }
+
+    function nextQuizQuestion(id) {
+        const state = quizState[id];
+        if (!state) return;
+        
+        state.currentQuestionIdx++;
+        state.answered = false;
+        state.selectedOption = null;
+        
+        renderTopicPractice(id);
+    }
+
+    function resetQuizState(id) {
+        quizState[id] = {
+            currentQuestionIdx: 0,
+            correctCount: 0,
+            answered: false,
+            selectedOption: null
+        };
+        renderTopicPractice(id);
+    }
+
     function speakText(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel();

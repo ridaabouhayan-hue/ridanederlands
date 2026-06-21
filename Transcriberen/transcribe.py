@@ -654,7 +654,8 @@ BELANGRIJK:
 7. HOUD REKENING MET HET DOELNIVEAU (tussen A0 en B2):
    - De cursisten zijn NT2-leerders van lagere niveaus. De uitleg moet uiterst eenvoudig en begrijpelijk zijn (alsof je het uitlegt aan een kind van 6). Gebruik geen ingewikkeld grammaticaal jargon.
    - Als de cursist geen voorbeeldzin of geen vertaling heeft ingevuld (voor zover dat relevant is in de context van de spreekopdracht), meld dit dan expliciet met een let-op-teken (⚠️).
-   - Zorg dat de vertaalde feedbackbrief (`brief_en`) die in de doeltaal is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren."""
+   - Zorg dat de vertaalde feedbackbrief (`brief_en`) die in de doeltaal is geschreven, de Nederlandse termen (zoals de originele Nederlandse zinnen en correcties) in het Nederlands laat staan, zodat de cursisten niet hoeven te scrollen tussen talen om te zien wat de Nederlandse zinnen waren.
+8. Gebruik in de grammatica-uitleg NOOIT de termen "SVO", "S-V-O", "Subject", "Verb", "Object", "persoonsvorm", "rest" of andere Engelse zinsbouwtermen. Noem de basisvolgorde van een hoofdzin ALTIJD "Onderwerp-Werkwoord-TOP" en houd deze terminologie consequent aan voor alle zinsstructuren (gebruik termen als "2e werkwoord", "voegwoord", "vraagwoord" in plaats van grammaticale jargon)."""
                 
                 # Lage temperatuur (0.1) zorgt ervoor dat Gemini niet gaat 'gissen' of 'creatief' wordt.
                 # response_mime_type="application/json" dwingt Gemini om correcte JSON terug te geven.

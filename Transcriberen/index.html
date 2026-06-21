@@ -995,8 +995,14 @@
             
             const exportFileName = `${cleanName}_${fileSuffix}`;
             
-            const controls = el.querySelectorAll('button, select, input, textarea');
+            const controls = el.querySelectorAll('button, select, input, textarea, .no-export');
             controls.forEach(c => c.style.visibility = 'hidden');
+            
+            const exportHides = el.querySelectorAll('[data-export-hide="true"]');
+            exportHides.forEach(h => {
+                h.dataset.originalDisplay = h.style.display || '';
+                h.style.display = 'none';
+            });
             
             const spacers = [];
             if (format === 'PDF') {
@@ -1089,6 +1095,9 @@
                 alert('Fout bij exporteren: ' + err.message);
             } finally {
                 controls.forEach(c => c.style.visibility = 'visible');
+                exportHides.forEach(h => {
+                    h.style.display = h.dataset.originalDisplay || '';
+                });
                 spacers.forEach(s => s.remove());
             }
         }
@@ -1350,6 +1359,12 @@
             } catch (e) { /* toast is al getoond */ }
         }
 
+        function isFocusedWithin(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return false;
+            return container.contains(document.activeElement);
+        }
+
         function subscribeData() {
             if (_dataSubscribed) return;
             _dataSubscribed = true;
@@ -1391,6 +1406,25 @@
                     if (document.getElementById('appContent').style.display !== 'none') {
                         renderTabs();
                         renderList();
+                    }
+
+                    // Keep current file object in sync with latest database snapshot
+                    if (currentFileObject) {
+                        const groupFiles = db[activeGroup] || [];
+                        const updatedFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                        if (updatedFile) {
+                            currentFileObject = updatedFile;
+                            currentFeedbackBrieven = currentFileObject.analyse.feedback_brieven || [];
+                            
+                            // Re-render columns only if they are not currently being edited
+                            if (!isFocusedWithin('col-transcript')) renderTranscriptColumn();
+                            if (!isFocusedWithin('col-feedback')) renderFeedbackColumn();
+                            if (!isFocusedWithin('col-complete')) renderCompleteColumn();
+                            if (!isFocusedWithin('col-grammar')) renderGrammarColumn();
+                            if (!isFocusedWithin('col-azure')) renderAzureColumn();
+                            if (!isFocusedWithin('col-elevenlabs')) renderElevenLabsColumn();
+                            if (!isFocusedWithin('col-languagetool')) renderLanguageToolColumn();
+                        }
                     }
                 }, (err) => {
                     console.error('Firestore luisteren mislukt:', err);
@@ -1617,16 +1651,16 @@
                     const groupFiles = db[activeGroup] || [];
                     const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
                     if (dbFile) {
-                        dbFile.analyse.elevenlabs_transcript = cleanText;
-                        await saveDatabase();
+                        dbFile.analyse = currentFileObject.analyse;
                     }
+                    await saveDatabase();
                 }
 
                 // Toon een Bevestiging
                 showToast("Wijzigingen opgeslagen! Feedback wordt nu opnieuw berekend...");
 
-                // Start automatisch de feedback herberekening
-                await generateFeedbackFromTranscriptText();
+                // Start automatisch de feedback herberekening (ignore existing conversation to use new transcript)
+                await generateFeedbackFromTranscriptText(true);
 
             } catch (err) {
                 console.error("Fout bij opslaan en herberekenen:", err);
@@ -1799,11 +1833,11 @@
 
             // Koppel tijdstempels van ElevenLabs aan woorden indien beschikbaar
             const toks = [];
-            const lijnen = gesprek.map(lijn => {
+            const lijnen = gesprek.map((lijn, zinIdx) => {
                 const bron = lijn.zin_fonetisch || '';
                 const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map(t => ({ label: t, start: null, end: null }));
                 woorden.forEach(w => toks.push(w));
-                return { ...lijn, woorden };
+                return { ...lijn, woorden, origIdx: zinIdx };
             });
             const ew = (a.elevenlabs_words || []).filter(x => x && x.w != null && x.s != null);
             if (ew.length) {
@@ -1811,7 +1845,7 @@
             }
 
             // Bouwer van de zin-kaart
-            const buildCard = (l, numberLabel, speakerName, accentCol) => {
+            const buildCard = (l, numberLabel, speakerName, accentCol, origIdx) => {
                 const card = document.createElement('div');
                 card.classList.add('report-card');
                 const isIncorrect = l.grammatica_analyse && !l.grammatica_analyse.goed;
@@ -1912,22 +1946,98 @@
                 }
 
                 // Waarom deze grammatica
-                const hasGeminiError = l.grammatica_analyse && !l.grammatica_analyse.goed;
+                const gAnalyse = l.grammatica_analyse;
+                const hasGeminiError = gAnalyse && (gAnalyse.fout || gAnalyse.uitleg || !gAnalyse.goed);
                 
                 if (hasGeminiError) {
+                    const hideToelichting = gAnalyse.verberg === true;
                     const det = document.createElement('div');
                     det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
+                    if (hideToelichting) {
+                        det.setAttribute('data-export-hide', 'true');
+                        det.style.opacity = '0.4';
+                    }
+
+                    // Header with Eye Icon Toggle
+                    const titleLine = document.createElement('div');
+                    titleLine.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;';
                     
-                    const title = document.createElement('div');
-                    title.style.cssText = 'font-weight:700;color:var(--text);margin-bottom:4px;';
-                    title.textContent = 'Grammatica toelichting:';
-                    det.appendChild(title);
+                    const titleText = document.createElement('div');
+                    titleText.style.cssText = 'font-weight:700; color:var(--text);';
+                    titleText.textContent = hideToelichting ? 'Grammatica toelichting (verborgen in export):' : 'Grammatica toelichting:';
                     
+                    const visibilityBtn = document.createElement('button');
+                    visibilityBtn.type = 'button';
+                    visibilityBtn.className = 'no-export';
+                    visibilityBtn.style.cssText = 'background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:2px; display:inline-flex; align-items:center; outline:none;';
+                    visibilityBtn.title = hideToelichting ? 'Toon toelichting in export' : 'Verberg toelichting in export';
+                    visibilityBtn.textContent = hideToelichting ? '👁️‍🗨️' : '👁️';
+                    
+                    visibilityBtn.addEventListener('click', async (ev) => {
+                        ev.stopPropagation();
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn && actualLijn.grammatica_analyse) {
+                            actualLijn.grammatica_analyse.verberg = !hideToelichting;
+                            await saveDatabase();
+                            renderGrammarColumn();
+                        }
+                    });
+
+                    titleLine.appendChild(titleText);
+                    titleLine.appendChild(visibilityBtn);
+                    det.appendChild(titleLine);
+
+                    // Content Row with contenteditable text spans
                     const row = document.createElement('div');
-                    row.style.cssText = 'margin-bottom:6px;';
-                    row.innerHTML = `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(l.grammatica_analyse.fout)} &middot; <span style="color:var(--text-muted);">${esc(l.grammatica_analyse.uitleg)}</span>`;
-                    det.appendChild(row);
+                    row.style.cssText = 'margin-bottom:6px; display:flex; flex-direction:column; gap:6px;';
                     
+                    const statusColor = !gAnalyse.goed ? '#ef4444' : '#10b981';
+                    const statusIcon = !gAnalyse.goed ? '❌' : '✅';
+                    
+                    row.innerHTML = `
+                        <div style="display:flex; align-items:flex-start; gap:6px;">
+                            <span style="color:${statusColor}; font-weight:bold; cursor:pointer;" class="toelichting-status-toggle" title="Klik om status te wisselen">${statusIcon} Feedback:</span>
+                            <span contenteditable="true" class="editable-fout-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; color:#fff; outline:none; font-weight:500;">${esc(gAnalyse.fout || 'Grammaticaal niet helemaal correct')}</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:6px; padding-left:20px;">
+                            <span style="color:var(--text-muted); font-size:0.72rem; min-width:40px; margin-top:2px;">Uitleg:</span>
+                            <span contenteditable="true" class="editable-uitleg-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; outline:none; color:var(--text-muted);">${esc(gAnalyse.uitleg || '')}</span>
+                        </div>
+                    `;
+
+                    // Blur listener to save edits
+                    const foutSpan = row.querySelector('.editable-fout-text');
+                    foutSpan.addEventListener('blur', async () => {
+                        const newFoutText = foutSpan.textContent.trim();
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn && actualLijn.grammatica_analyse) {
+                            actualLijn.grammatica_analyse.fout = newFoutText;
+                            await saveDatabase();
+                        }
+                    });
+
+                    const uitlegSpan = row.querySelector('.editable-uitleg-text');
+                    uitlegSpan.addEventListener('blur', async () => {
+                        const newUitlegText = uitlegSpan.textContent.trim();
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn && actualLijn.grammatica_analyse) {
+                            actualLijn.grammatica_analyse.uitleg = newUitlegText;
+                            await saveDatabase();
+                        }
+                    });
+
+                    // Status Toggle Click listener
+                    const statusToggle = row.querySelector('.toelichting-status-toggle');
+                    statusToggle.addEventListener('click', async () => {
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn && actualLijn.grammatica_analyse) {
+                            actualLijn.grammatica_analyse.goed = !actualLijn.grammatica_analyse.goed;
+                            await saveDatabase();
+                            renderGrammarColumn();
+                        }
+                    });
+
+                    det.appendChild(row);
                     card.appendChild(det);
                 }
 
@@ -1945,11 +2055,11 @@
                     sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
                     sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div>`;
                     section.appendChild(sh);
-                    bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col)));
+                    bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col, l.origIdx)));
                     c.appendChild(section);
                 });
             } else {
-                lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)')));
+                lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)', l.origIdx)));
             }
 
             const credit = document.createElement('div');
@@ -2040,7 +2150,11 @@
             }
 
             const esc = (str) => String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-            const scoreColor = s => s == null ? '#94a3b8' : (s >= 80 ? '#10b981' : (s >= 60 ? '#f59e0b' : '#ef4444'));
+            
+            // Dynamic thresholds definition
+            const thresholds = (currentFileObject && currentFileObject.analyse && currentFileObject.analyse.thresholds) || { green: 80, orange: 60 };
+            const scoreColor = s => s == null ? '#94a3b8' : (s >= thresholds.green ? '#10b981' : (s >= thresholds.orange ? '#f59e0b' : '#ef4444'));
+            
             const errLabel = t => ({ Mispronunciation: 'verkeerd uitgesproken', Omission: 'overgeslagen', Insertion: 'extra ingevoegd', UnexpectedBreak: 'onverwachte pauze', MissingBreak: 'pauze gemist', Monotone: 'monotoon' }[t] || '');
             const avgOf = arr => { const v = arr.filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
 
@@ -2126,6 +2240,46 @@
             topBar.appendChild(rightExport);
             c.appendChild(topBar);
 
+            // Add custom thresholds setting panel
+            if (gesprek && gesprek.length > 0) {
+                const thresholdDiv = document.createElement('div');
+                thresholdDiv.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:10px 14px;border-radius:8px;font-size:0.8rem;color:var(--text-muted);flex-wrap:wrap;';
+                thresholdDiv.classList.add('no-export');
+                thresholdDiv.innerHTML = `
+                    <span style="font-weight:700;color:var(--text);">🎨 Kleurgrenzen:</span>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span style="display:inline-block;width:12px;height:12px;background:#10b981;border-radius:3px;"></span>
+                        <span>Groen vanaf:</span>
+                        <input type="number" id="thresholdGreen" value="${thresholds.green}" min="0" max="100" style="width:50px;background:rgba(15,23,42,0.6);border:1px solid var(--border);color:#fff;border-radius:4px;padding:2px 4px;font-size:0.78rem;text-align:center;"> %
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span style="display:inline-block;width:12px;height:12px;background:#f59e0b;border-radius:3px;"></span>
+                        <span>Oranje vanaf:</span>
+                        <input type="number" id="thresholdOrange" value="${thresholds.orange}" min="0" max="100" style="width:50px;background:rgba(15,23,42,0.6);border:1px solid var(--border);color:#fff;border-radius:4px;padding:2px 4px;font-size:0.78rem;text-align:center;"> %
+                    </div>
+                `;
+                // Save thresholds when changed
+                thresholdDiv.querySelector('#thresholdGreen').addEventListener('change', async (ev) => {
+                    let val = parseInt(ev.target.value, 10);
+                    if (!isNaN(val)) {
+                        if (!currentFileObject.analyse.thresholds) currentFileObject.analyse.thresholds = { green: 80, orange: 60 };
+                        currentFileObject.analyse.thresholds.green = Math.max(0, Math.min(100, val));
+                        await saveDatabase();
+                        renderAzureColumn();
+                    }
+                });
+                thresholdDiv.querySelector('#thresholdOrange').addEventListener('change', async (ev) => {
+                    let val = parseInt(ev.target.value, 10);
+                    if (!isNaN(val)) {
+                        if (!currentFileObject.analyse.thresholds) currentFileObject.analyse.thresholds = { green: 80, orange: 60 };
+                        currentFileObject.analyse.thresholds.orange = Math.max(0, Math.min(100, val));
+                        await saveDatabase();
+                        renderAzureColumn();
+                    }
+                });
+                c.appendChild(thresholdDiv);
+            }
+
             // Oude opnames zonder gedetailleerde data: toon de tekstsamenvatting.
             if (!detail) {
                 const pre = document.createElement('pre');
@@ -2157,26 +2311,52 @@
                 c.appendChild(wrap);
             }
 
-
-
             // ===== NIEUW: per spreker en per zin, met de Azure-woordscores en tijdstempels erop gekoppeld =====
             if (gesprek.length) {
                 // 1) Vlakke, chronologische stroom van alle door Azure gemeten woorden.
                 const stream = [];
                 (detail.utterances || []).forEach(u => (u.words || []).forEach(w => { if (w && w.word) stream.push({ word: w.word, accuracy: w.accuracy, errorType: w.errorType, phonemes: w.phonemes || [] }); }));
 
-                // 2) Vlakke lijst van gesprekswoorden (met verwijzing naar hun zin).
+                // 2) Vlakke lijst van gesprekswoorden (met verwijzing naar hun zin en handmatige overrides).
                 const toks = [];
-                const lijnen = gesprek.map(lijn => {
+                const lijnen = gesprek.map((lijn, zinIdx) => {
                     const bron = lijn.zin_fonetisch || lijn.zin_correct || '';
-                    const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map(t => ({ label: t, accuracy: null, errorType: null, phonemes: [], matched: false, start: null, end: null }));
+                    const woorden = bron.split(/\s+/).filter(t => norm(t).length > 0).map((t, wIdx) => {
+                        let accuracy = null;
+                        let isOverride = false;
+                        if (lijn.woord_overrides && lijn.woord_overrides[wIdx] !== undefined) {
+                            accuracy = lijn.woord_overrides[wIdx].accuracy;
+                            isOverride = true;
+                        }
+                        return { 
+                            label: t, 
+                            accuracy: accuracy, 
+                            errorType: null, 
+                            phonemes: [], 
+                            matched: false, 
+                            start: null, 
+                            end: null,
+                            isOverride: isOverride
+                        };
+                    });
                     woorden.forEach(w => toks.push(w));
-                    return { ...lijn, spreker: (lijn.spreker || 'Onbekend'), zin_correct: lijn.zin_correct || '', woorden: woorden };
+                    return { 
+                        ...lijn, 
+                        spreker: (lijn.spreker || 'Onbekend'), 
+                        zin_correct: lijn.zin_correct || '', 
+                        woorden: woorden,
+                        origIdx: zinIdx
+                    };
                 });
 
                 // 3) Koppel de Azure-scores aan de juiste gesprekswoorden (volgorde-uitlijning, LCS).
                 alignLCS(toks.map(t => norm(t.label)), stream.map(w => norm(w.word)), (i, j) => {
-                    toks[i].accuracy = stream[j].accuracy; toks[i].errorType = stream[j].errorType; toks[i].phonemes = stream[j].phonemes; toks[i].matched = true;
+                    if (!toks[i].isOverride) {
+                        toks[i].accuracy = stream[j].accuracy;
+                    }
+                    toks[i].errorType = stream[j].errorType; 
+                    toks[i].phonemes = stream[j].phonemes; 
+                    toks[i].matched = true;
                 });
 
                 // 4) Koppel de ElevenLabs-tijdstempels aan dezelfde woorden, zodat je per woord kunt terugluisteren.
@@ -2204,7 +2384,7 @@
                 }
 
                 // Bouwt één zin-kaart. De spreker tonen we alleen in de chronologische weergave.
-                const buildCard = (l, numberLabel, speakerName, accentCol) => {
+                const buildCard = (l, numberLabel, speakerName, accentCol, origIdx) => {
                     const card = document.createElement('div');
                     card.classList.add('report-card');
                     card.style.cssText = `border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:rgba(15,23,42,0.3);${speakerName ? 'border-left:4px solid ' + accentCol + ';' : ''}`;
@@ -2242,7 +2422,7 @@
 
                     const grid = document.createElement('div');
                     grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
-                    l.woorden.forEach(w => {
+                    l.woorden.forEach((w, wIdx) => {
                         const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(norm(w.label));
                         const wc = (w.accuracy == null || isHesitation) ? '#64748b' : scoreColor(w.accuracy);
                         const pill = document.createElement('span');
@@ -2252,8 +2432,61 @@
                         const phonTip = (w.errorType && w.errorType !== 'None' ? errLabel(w.errorType) + '. ' : '') + (w.phonemes && w.phonemes.length ? 'Klanken: ' + w.phonemes.map((p, pi) => `${p.phoneme ? p.phoneme : 'klank ' + (pi + 1)} ${p.accuracy != null ? Math.round(p.accuracy) : '-'}`).join(', ') : '');
                         pill.title = (isHesitation ? 'Aarzeling / vulwoord.' : (!w.matched ? 'Niet teruggevonden in de Azure-meting (geen score voor dit woord).' : phonTip)) + (clickable ? '  |  Klik om dit woord terug te luisteren.' : '');
                         const displayScore = (w.accuracy != null && !isHesitation) ? Math.round(w.accuracy) : '&middot;';
-                        pill.innerHTML = `<span>${esc(w.label)}</span><b style="color:${wc};font-size:0.72rem;">${displayScore}</b>`;
-                        if (clickable) pill.addEventListener('click', () => playSegment(w.start, w.end));
+                        pill.innerHTML = `<span>${esc(w.label)}</span><b class="word-score-badge" style="color:${wc};font-size:0.72rem;cursor:pointer;padding:0 2px;border-radius:3px;background:rgba(255,255,255,0.05);">${displayScore}</b>`;
+                        
+                        if (clickable) pill.addEventListener('click', (ev) => {
+                            if (ev.target.classList.contains('word-score-badge')) return;
+                            playSegment(w.start, w.end);
+                        });
+
+                        // Score cycling on click
+                        const badge = pill.querySelector('.word-score-badge');
+                        badge.addEventListener('click', async (ev) => {
+                            ev.stopPropagation();
+                            let currentAcc = w.accuracy;
+                            let nextAcc;
+                            if (currentAcc === null) {
+                                nextAcc = 95;
+                            } else if (currentAcc >= thresholds.green) {
+                                nextAcc = thresholds.orange + 5; // e.g. 65
+                            } else if (currentAcc >= thresholds.orange) {
+                                nextAcc = thresholds.orange - 25; // e.g. 35
+                            } else {
+                                nextAcc = null;
+                            }
+
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn) {
+                                if (!actualLijn.woord_overrides) actualLijn.woord_overrides = {};
+                                actualLijn.woord_overrides[wIdx] = { accuracy: nextAcc };
+                                await saveDatabase();
+                                renderAzureColumn();
+                            }
+                        });
+
+                        // Custom score editing on double click
+                        pill.addEventListener('dblclick', async (ev) => {
+                            ev.stopPropagation();
+                            let inputVal = prompt(`Voer een handmatige score in voor '${w.label}' (0-100) of laat leeg voor grijs:`, w.accuracy !== null ? Math.round(w.accuracy) : "");
+                            if (inputVal === null) return; // cancelled
+                            
+                            let nextAcc = null;
+                            if (inputVal.trim() !== "") {
+                                let parsed = parseInt(inputVal.trim(), 10);
+                                if (!isNaN(parsed)) {
+                                    nextAcc = Math.max(0, Math.min(100, parsed));
+                                }
+                            }
+                            
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn) {
+                                if (!actualLijn.woord_overrides) actualLijn.woord_overrides = {};
+                                actualLijn.woord_overrides[wIdx] = { accuracy: nextAcc };
+                                await saveDatabase();
+                                renderAzureColumn();
+                            }
+                        });
+
                         grid.appendChild(pill);
                     });
                     card.appendChild(grid);
@@ -2269,25 +2502,93 @@
                     const uAnalyse = l.uitspraak_analyse;
                     const hasPronFeedback = uAnalyse && (uAnalyse.fout || uAnalyse.uitleg || !uAnalyse.goed);
                     if (hasPronFeedback) {
+                        const hideToelichting = uAnalyse.verberg === true;
                         const det = document.createElement('div');
                         det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
-                        const title = document.createElement('div');
-                        title.style.cssText = 'font-weight:700;color:var(--text);margin-bottom:4px;';
-                        title.textContent = 'Uitspraak toelichting:';
-                        det.appendChild(title);
+                        if (hideToelichting) {
+                            det.setAttribute('data-export-hide', 'true');
+                            det.style.opacity = '0.4';
+                        }
 
+                        // Header with Eye Icon Toggle
+                        const titleLine = document.createElement('div');
+                        titleLine.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;';
+                        
+                        const titleText = document.createElement('div');
+                        titleText.style.cssText = 'font-weight:700; color:var(--text);';
+                        titleText.textContent = hideToelichting ? 'Uitspraak toelichting (verborgen in export):' : 'Uitspraak toelichting:';
+                        
+                        const visibilityBtn = document.createElement('button');
+                        visibilityBtn.type = 'button';
+                        visibilityBtn.className = 'no-export';
+                        visibilityBtn.style.cssText = 'background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:2px; display:inline-flex; align-items:center; outline:none;';
+                        visibilityBtn.title = hideToelichting ? 'Toon toelichting in export' : 'Verberg toelichting in export';
+                        visibilityBtn.textContent = hideToelichting ? '👁️‍🗨️' : '👁️';
+                        
+                        visibilityBtn.addEventListener('click', async (ev) => {
+                            ev.stopPropagation();
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn && actualLijn.uitspraak_analyse) {
+                                actualLijn.uitspraak_analyse.verberg = !hideToelichting;
+                                await saveDatabase();
+                                renderAzureColumn();
+                            }
+                        });
+
+                        titleLine.appendChild(titleText);
+                        titleLine.appendChild(visibilityBtn);
+                        det.appendChild(titleLine);
+
+                        // Content Row with contenteditable text spans
                         const row = document.createElement('div');
-                        row.style.cssText = 'margin-bottom:6px;';
-                        let feedbackHtml = '';
-                        if (!uAnalyse.goed) {
-                            feedbackHtml += `<b style="color:#ef4444;">❌ Feedback:</b> ${esc(uAnalyse.fout || 'Uitspraak niet helemaal duidelijk')}`;
-                        } else {
-                            feedbackHtml += `<b style="color:#10b981;">✅ Feedback:</b> ${esc(uAnalyse.fout || 'Duidelijk uitgesproken')}`;
-                        }
-                        if (uAnalyse.uitleg) {
-                            feedbackHtml += ` &middot; <span style="color:var(--text-muted);">${esc(uAnalyse.uitleg)}</span>`;
-                        }
-                        row.innerHTML = feedbackHtml;
+                        row.style.cssText = 'margin-bottom:6px; display:flex; flex-direction:column; gap:6px;';
+                        
+                        const statusColor = !uAnalyse.goed ? '#ef4444' : '#10b981';
+                        const statusIcon = !uAnalyse.goed ? '❌' : '✅';
+                        
+                        row.innerHTML = `
+                            <div style="display:flex; align-items:flex-start; gap:6px;">
+                                <span style="color:${statusColor}; font-weight:bold; cursor:pointer;" class="toelichting-status-toggle" title="Klik om status te wisselen">${statusIcon} Feedback:</span>
+                                <span contenteditable="true" class="editable-fout-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; color:#fff; outline:none; font-weight:500;">${esc(uAnalyse.fout || 'Uitspraak niet helemaal duidelijk')}</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:6px; padding-left:20px;">
+                                <span style="color:var(--text-muted); font-size:0.72rem; min-width:40px; margin-top:2px;">Uitleg:</span>
+                                <span contenteditable="true" class="editable-uitleg-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; outline:none; color:var(--text-muted);">${esc(uAnalyse.uitleg || '')}</span>
+                            </div>
+                        `;
+
+                        // Blur listener to save edits
+                        const foutSpan = row.querySelector('.editable-fout-text');
+                        foutSpan.addEventListener('blur', async () => {
+                            const newFoutText = foutSpan.textContent.trim();
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn && actualLijn.uitspraak_analyse) {
+                                actualLijn.uitspraak_analyse.fout = newFoutText;
+                                await saveDatabase();
+                            }
+                        });
+
+                        const uitlegSpan = row.querySelector('.editable-uitleg-text');
+                        uitlegSpan.addEventListener('blur', async () => {
+                            const newUitlegText = uitlegSpan.textContent.trim();
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn && actualLijn.uitspraak_analyse) {
+                                actualLijn.uitspraak_analyse.uitleg = newUitlegText;
+                                await saveDatabase();
+                            }
+                        });
+
+                        // Status Toggle Click listener
+                        const statusToggle = row.querySelector('.toelichting-status-toggle');
+                        statusToggle.addEventListener('click', async () => {
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn && actualLijn.uitspraak_analyse) {
+                                actualLijn.uitspraak_analyse.goed = !actualLijn.uitspraak_analyse.goed;
+                                await saveDatabase();
+                                renderAzureColumn();
+                            }
+                        });
+
                         det.appendChild(row);
                         card.appendChild(det);
                     }
@@ -2307,11 +2608,11 @@
                         sh.style.cssText = `display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;border-left:4px solid ${col};background:${col}14;border-radius:6px;`;
                         sh.innerHTML = `<div style="font-weight:800;font-size:0.95rem;color:var(--text);">${esc(spk)}</div><div style="font-size:0.72rem;color:var(--text-muted);">Gemiddelde uitspraak: <b style="color:${scoreColor(spkAvg)};">${spkAvg != null ? spkAvg : '-'}</b>/100</div>`;
                         section.appendChild(sh);
-                        bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col)));
+                        bySpk[spk].forEach((l, idx) => section.appendChild(buildCard(l, `Zin ${idx + 1}`, null, col, l.origIdx)));
                         c.appendChild(section);
                     });
                 } else {
-                    lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)')));
+                    lijnen.forEach((l, i) => c.appendChild(buildCard(l, `${i + 1}.`, l.spreker, spkColor[l.spreker] || 'var(--accent)', l.origIdx)));
                 }
 
                 // Wat de automatische spraakherkenning er letterlijk van maakte (handig om te zien wat de computer "hoorde").
@@ -2322,6 +2623,15 @@
                     const sum = document.createElement('summary');
                     sum.style.cssText = 'cursor:pointer;font-weight:700;color:var(--text);';
                     sum.textContent = 'Wat de computer hoorde (automatische herkenning)';
+                    dets.appendChild(sum);
+                    const body = document.createElement('div');
+                    body.style.cssText = 'margin-top:6px;line-height:1.6;font-style:italic;';
+                    body.textContent = '"' + heard + '"';
+                    dets.appendChild(body);
+                    c.appendChild(dets);
+                }
+                return;
+            }g)';
                     dets.appendChild(sum);
                     const body = document.createElement('div');
                     body.style.cssText = 'margin-top:6px;line-height:1.6;font-style:italic;';
@@ -2780,7 +3090,7 @@
             });
         }
 
-        async function generateFeedbackFromTranscriptText() {
+        async function generateFeedbackFromTranscriptText(ignoreExistingGesprek = false) {
             if (!currentFileObject) return;
             const apiKey = getApiKey();
             if (!apiKey) {
@@ -2813,7 +3123,7 @@
                 const customInstructions = document.getElementById('customInstructionsInput').value.trim();
                 const model = document.getElementById('geminiModelSelect').value;
 
-                const existingGesprek = currentFileObject.analyse && currentFileObject.analyse.gesprek;
+                const existingGesprek = ignoreExistingGesprek ? null : (currentFileObject.analyse && currentFileObject.analyse.gesprek);
                 const elevenLabsTranscript = (currentFileObject.analyse && currentFileObject.analyse.elevenlabs_transcript) || currentFileObject.transcript || '';
                 const azurePronReport = (currentFileObject.analyse && currentFileObject.analyse.azure_pron) || '';
                 const ltGrammarReport = (currentFileObject.analyse && currentFileObject.analyse.grammar_lt) || '';
@@ -2831,13 +3141,16 @@
                 });
 
                 // Update database
-                const groupFiles = db[activeGroup] || [];
-                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
-                if (dbFile) {
-                    dbFile.analyse.gesprek = result.gesprek;
-                    dbFile.analyse.feedback_brieven = result.feedback_brieven;
-                    dbFile.analyse.sprekerNamen = result.sprekerNamen;
-                    currentFileObject.analyse = dbFile.analyse;
+                if (currentFileObject && currentFileObject.analyse) {
+                    currentFileObject.analyse.gesprek = result.gesprek;
+                    currentFileObject.analyse.feedback_brieven = result.feedback_brieven;
+                    currentFileObject.analyse.sprekerNamen = result.sprekerNamen;
+                    
+                    const groupFiles = db[activeGroup] || [];
+                    const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                    if (dbFile) {
+                        dbFile.analyse = currentFileObject.analyse;
+                    }
                     await saveDatabase();
                 }
 
@@ -2849,6 +3162,10 @@
                 renderTranscriptColumn();
                 renderFeedbackColumn();
                 renderCompleteColumn();
+                renderGrammarColumn();
+                renderAzureColumn();
+                renderElevenLabsColumn();
+                renderLanguageToolColumn();
                 showToast("Feedbackbrieven succesvol gegenereerd!");
 
             } catch (err) {
@@ -4478,7 +4795,8 @@ AANVULLENDE RICHTLIJNEN:
 - Als er geen uitspraakfouten/grammaticafouten zijn, zet "goed" op true en laat "fout" en "uitleg" leeg.
 - Voor "uitspraak_analyse", wees zeer specifiek en NT2-vriendelijk. Als er klanken of specifieke woorden zwak of onduidelijk zijn uitgesproken, zet "goed" op false en vul "fout" in met exact dit format: "Bij '[woord]' klonk de '[klank]'-klank niet helemaal duidelijk." (bijvoorbeeld: "Bij 'chauffeur' klonken de 'eu'-klank en de 'r'-klank niet helemaal duidelijk. Bij 'heeft' klonk de 'h' en de 'ee'-klank zwak. Bij 'vier' klonken de 'v'-klank en de 'r'-klank zwak."). Leg in "uitleg" bondig uit hoe dit verbeterd kan worden (bijv. tongpositie of lipronding).
 - Soms herhaalt een spreker een woord achter elkaar omdat diegene zich herpakt (bijv. "ik ik ga" of "we we hebben"). Dit zijn GEEN grammaticafouten of logicafouten, maar herpakkingen. Keur dit niet af als fout in de "grammatica_analyse" of "logica_analyse".
-- Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.`;
+- Evalueer de uitspraak met reële verwachtingen voor NT2-beginners (A1-A2). Gebruik NOOIT termen als 'natuurlijk en vloeiend', 'perfect' of 'foutloos'. Zeg in plaats daarvan dat het 'goed uitgesproken', 'verstaanbaar', 'duidelijk' of 'begrijpelijk' is.
+- Gebruik in de grammatica-uitleg NOOIT de termen "SVO", "S-V-O", "Subject", "Verb", "Object", "persoonsvorm", "rest" of andere Engelse zinsbouwtermen. Noem de basisvolgorde van een hoofdzin ALTIJD "Onderwerp-Werkwoord-TOP" en houd deze terminologie consequent aan voor alle zinsstructuren (gebruik termen als "2e werkwoord", "voegwoord", "vraagwoord" in plaats van grammaticale jargon).`;
 
             console.log("Calling Gemini for gesprek analysis (Call 1)...");
             const call1Result = await makeGeminiCallWithFallback(apiKey, targetModel, call1Prompt, true, fileInfo);
