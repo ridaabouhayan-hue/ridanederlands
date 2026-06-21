@@ -619,6 +619,7 @@
 
         // ── AUTHENTICATION (simpel wachtwoord + anonieme Firebase login) ──
         let _dataSubscribed = false;
+        let _firestoreSubscribed = false;
         const TOEGANG_CODE = 'qwerty';
 
         // Spreker-namen: worden gevuld vanuit ElevenLabs speaker_0/speaker_1 labels
@@ -1162,7 +1163,10 @@
                     await window.fbAuth.signInAnonymously();
                 }
             } catch (err) {
-                console.warn('Anonieme login mislukt:', err);
+                console.error('Anonieme login mislukt:', err);
+                cloudError = true;
+                updateConnStatus();
+                showToast('⚠️ Firebase cloud-inlog mislukt: ' + err.message);
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'Inloggen'; }
             }
@@ -1380,23 +1384,34 @@
         }
 
         function subscribeData() {
-            if (_dataSubscribed) return;
-            _dataSubscribed = true;
-            
-            // Laad direct lokale data in zodat de app meteen werkt
-            const localDb = loadLocalData();
-            if (Object.keys(localDb).length > 0) {
-                db = localDb;
-                isDataLoaded = true;
-                activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
-                renderTabs();
-                renderList();
-            } else {
-                showLoadingState();
+            // 1. Laad direct lokale data in zodat de app meteen werkt
+            if (!_dataSubscribed) {
+                _dataSubscribed = true;
+                const localDb = loadLocalData();
+                if (Object.keys(localDb).length > 0) {
+                    db = localDb;
+                    isDataLoaded = true;
+                    activeGroup = groepen.find(g => (db[g] || []).length > 0) || activeGroup || groepen[0];
+                    renderTabs();
+                    renderList();
+                } else {
+                    showLoadingState();
+                }
             }
+
+            // 2. Als we Firebase Auth hebben, wacht dan met Firestore snapshot tot de inlog voltooid is
+            if (window.fbAuth && !window.fbAuth.currentUser) {
+                console.log('Wachten op Firebase authenticatie voor starten cloud-sync...');
+                return;
+            }
+
+            // Voorkom dubbele Firestore snapshot-listeners
+            if (_firestoreSubscribed) return;
 
             const col = recCol();
             if (col) {
+                _firestoreSubscribed = true;
+                console.log('Firebase geauthenticeerd, starten Firestore onSnapshot...');
                 col.onSnapshot((snap) => {
                     const newDb = {};
                     snap.forEach((doc) => {
@@ -1445,6 +1460,7 @@
                     console.error('Firestore luisteren mislukt:', err);
                     isCloudConnected = false;
                     cloudError = true;
+                    _firestoreSubscribed = false; // Reset to allow retry later
                     updateConnStatus();
                     showToast('ℹ️ Cloud-sync niet beschikbaar. Lokaal werken is actief.');
                     
@@ -1492,7 +1508,12 @@
                     // Controleer of sessie nog geldig is (bijv. na pagina-refresh)
                     if (sessionStorage.getItem('transcriber_auth') === '1') {
                         // Sessie is geldig, log anoniem in bij Firebase
-                        window.fbAuth.signInAnonymously().catch(() => {});
+                        window.fbAuth.signInAnonymously().catch((err) => {
+                            console.error('Firebase anonieme inlog mislukt:', err);
+                            cloudError = true;
+                            updateConnStatus();
+                            showToast('⚠️ Firebase cloud-inlog mislukt: ' + err.message);
+                        });
                     } else {
                         document.getElementById('authOverlay').style.display = 'flex';
                         document.getElementById('appContent').style.display = 'none';
