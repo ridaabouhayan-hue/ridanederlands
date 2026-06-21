@@ -1552,7 +1552,7 @@
             }
             const intro = document.createElement('div');
             intro.style.cssText = 'padding:0 2px 10px;color:var(--text-muted);font-size:0.78rem;line-height:1.5;';
-            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord: de letterlijke transcriptie per spreker.';
+            intro.textContent = 'Dit is exact wat ElevenLabs Scribe heeft gehoord: de letterlijke transcriptie per spreker. Je kunt de tekst hieronder bewerken om eventuele spraakfouten of namen te corrigeren.';
             
             let updatedText = t;
             const name1 = sprekerNamen[0] || 'speaker_0';
@@ -1560,11 +1560,83 @@
             updatedText = updatedText.replace(/speaker_0:/g, name1 + ':')
                                      .replace(/speaker_1:/g, name2 + ':');
 
-            const pre = document.createElement('pre');
-            pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.82rem;line-height:1.6;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
-            pre.textContent = updatedText;
+            const textarea = document.createElement('textarea');
+            textarea.id = 'elevenLabsTranscriptTextarea';
+            textarea.style.cssText = 'width:100%;min-height:300px;max-height:500px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.85rem;line-height:1.6;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;outline:none;transition:var(--transition);resize:vertical;';
+            textarea.value = updatedText;
+            textarea.addEventListener('focus', () => textarea.style.borderColor = 'var(--accent)');
+            textarea.addEventListener('blur', () => textarea.style.borderColor = 'var(--border)');
+
+            const saveBtn = document.createElement('button');
+            saveBtn.id = 'btnSaveElevenLabs';
+            saveBtn.className = 'auth-btn';
+            saveBtn.style.cssText = 'margin-top:12px;width:100%;font-size:0.85rem;font-weight:800;padding:12px;height:auto;cursor:pointer;';
+            saveBtn.innerHTML = '💾 Wijzigingen Opslaan & Feedback Herberekenen';
+            saveBtn.addEventListener('click', saveAndRegenerateFeedback);
+
             c.appendChild(intro);
-            c.appendChild(pre);
+            c.appendChild(textarea);
+            c.appendChild(saveBtn);
+        }
+
+        async function saveAndRegenerateFeedback() {
+            const textarea = document.getElementById('elevenLabsTranscriptTextarea');
+            if (!textarea) return;
+            const newText = textarea.value.trim();
+            if (!newText) {
+                alert("De transcriptie mag niet leeg zijn!");
+                return;
+            }
+
+            const btn = document.getElementById('btnSaveElevenLabs');
+            const originalBtnHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '⏳ Opslaan & feedback herberekenen...';
+                btn.disabled = true;
+            }
+
+            try {
+                const name1 = (sprekerNamen[0] || 'speaker_0').trim();
+                const name2 = (sprekerNamen[1] || 'speaker_1').trim();
+                
+                const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                
+                let cleanText = newText;
+                if (name1 && name1.toLowerCase() !== 'speaker_0') {
+                    cleanText = cleanText.replace(new RegExp('^' + escapeRegExp(name1) + ':', 'gm'), 'speaker_0:');
+                }
+                if (name2 && name2.toLowerCase() !== 'speaker_1') {
+                    cleanText = cleanText.replace(new RegExp('^' + escapeRegExp(name2) + ':', 'gm'), 'speaker_1:');
+                }
+
+                // Sla de aangepaste transcriptie op in het actieve bestand
+                if (currentFileObject && currentFileObject.analyse) {
+                    currentFileObject.analyse.elevenlabs_transcript = cleanText;
+                    
+                    // Sla ook op in de database
+                    const groupFiles = db[activeGroup] || [];
+                    const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                    if (dbFile) {
+                        dbFile.analyse.elevenlabs_transcript = cleanText;
+                        await saveDatabase();
+                    }
+                }
+
+                // Toon een Bevestiging
+                showToast("Wijzigingen opgeslagen! Feedback wordt nu opnieuw berekend...");
+
+                // Start automatisch de feedback herberekening
+                await generateFeedbackFromTranscriptText();
+
+            } catch (err) {
+                console.error("Fout bij opslaan en herberekenen:", err);
+                alert("Er ging iets fout bij het opslaan en herberekenen: " + err.message);
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalBtnHtml;
+                    btn.disabled = false;
+                }
+            }
         }
 
         function renderGrammarColumn() {
@@ -1663,10 +1735,30 @@
             topBar.appendChild(rightExport);
             c.appendChild(topBar);
  
-            // 2. Weergave van de grammaticascore (percentage correcte zinnen)
+            // 2. Weergave van de grammaticascore (motiverende woord-gebaseerde score via Levenshtein-afstand)
             const totalSents = gesprek.length;
             const correctSents = gesprek.filter(l => !l.grammatica_analyse || l.grammatica_analyse.goed).length;
-            const grammarScore = totalSents ? Math.round((correctSents / totalSents) * 100) : 100;
+            
+            let totalGrammarScoreSum = 0;
+            gesprek.forEach(l => {
+                if (!l.grammatica_analyse || l.grammatica_analyse.goed) {
+                    totalGrammarScoreSum += 1.0;
+                } else {
+                    const strA = (l.zin_fonetisch || '').toLowerCase().replace(/[.,!?;:]/g, '').trim();
+                    const strB = (l.zin_correct || '').toLowerCase().replace(/[.,!?;:]/g, '').trim();
+                    const wordsA = strA.split(/\s+/).filter(Boolean);
+                    const wordsB = strB.split(/\s+/).filter(Boolean);
+                    if (!wordsA.length || !wordsB.length) {
+                        totalGrammarScoreSum += 0.0;
+                    } else {
+                        const dist = levenshtein(wordsA, wordsB);
+                        const maxLength = Math.max(wordsA.length, wordsB.length);
+                        const sentenceScore = Math.max(0, 1 - (dist / maxLength));
+                        totalGrammarScoreSum += sentenceScore;
+                    }
+                }
+            });
+            const grammarScore = totalSents ? Math.round((totalGrammarScoreSum / totalSents) * 100) : 100;
  
             const scoreWrap = document.createElement('div');
             scoreWrap.classList.add('score-wrap');
@@ -1683,7 +1775,7 @@
             scoreBar.innerHTML = `
                 <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
                     <div style="font-size:1.4rem;font-weight:800;color:${colorClass};">${grammarScore}%</div>
-                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Correcte Zinnen</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Grammaticascore</div>
                 </div>
                 <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
                     <div style="font-size:1.4rem;font-weight:800;color:#fff;">${totalSents}</div>
