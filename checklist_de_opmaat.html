@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammatica Checklist & Zinnenbouwer (De Opmaat) — NT2</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f1729;
+            --bg-card: #182040;
+            --bg-card-light: #222b54;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #e67e22;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(148, 163, 184, 0.1);
+            --radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(ellipse at 10% 10%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 90%, rgba(230, 126, 34, 0.06) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Back button */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-3px);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+
+        /* Progress Bar Card */
+        .progress-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Grid */
+        .checklist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Checklist Item */
+        .checklist-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .checklist-checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4px;
+        }
+
+        .checklist-checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--text-secondary);
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist-checkbox:checked {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .checklist-checkbox:checked::after {
+            content: '✓';
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 900;
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .checklist-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .checklist-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .example-badge {
+            display: inline-block;
+            background: rgba(230, 126, 34, 0.12);
+            color: var(--accent-orange);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(230, 126, 34, 0.2);
+        }
+
+        .lang-switch-inline {
+            display: flex;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .lang-switch-btn {
+            cursor: pointer;
+            font-weight: 800;
+            text-decoration: underline;
+        }
+        .lang-switch-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* ── SECTION ZINNENBOUWER ── */
+        .builder-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-top: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
+        .builder-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .builder-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .challenge-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .challenge-btn {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-card-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .challenge-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .challenge-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: var(--text-primary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+        }
+
+        .workspace {
+            background: var(--bg-dark);
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px dashed rgba(148, 163, 184, 0.2);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .workspace-placeholder {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .workspace-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .word-bank {
+            background: var(--bg-card-light);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bank-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .word-chip {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s;
+        }
+
+        .word-chip:hover {
+            border-color: var(--accent-blue);
+            transform: scale(1.03);
+            background: var(--bg-card-light);
+        }
+
+        .word-chip.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 10px 22px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+        }
+
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            color: var(--text-primary);
+            background: rgba(148, 163, 184, 0.15);
+        }
+
+        .builder-feedback {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .builder-feedback.correct {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .builder-feedback.incorrect {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .speech-btn-inline {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-wrap: nowrap;
+            }
+            .challenge-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- TERUG LINK -->
+    <a href="index.html" class="back-link">← Terug naar Hoofdmenu</a>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📋 Grammatica Checklist (De Opmaat)</h1>
+        <p>Volg je voortgang door alle 31 grammaticasystemen van De Opmaat af te vinken. Gebruik onderaan de zinnenbouwer om te oefenen!</p>
+    </div>
+
+    <!-- PROGRESS CARD -->
+    <div class="progress-card">
+        <div class="progress-info">
+            <span>Mijn Voortgang</span>
+            <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); text-align: right; font-weight: 600;">
+            <span id="completed-count">0</span> van de 31 onderwerpen beheerst
+        </div>
+    </div>
+
+    <!-- CATEGORY TABS -->
+    <div class="tabs" id="category-tabs">
+        <button class="tab-btn active" onclick="switchCategory('all')">Alles tonen</button>
+        <button class="tab-btn" onclick="switchCategory('cat1')">Thema 1 & 2</button>
+        <button class="tab-btn" onclick="switchCategory('cat2')">Thema 3 & 4</button>
+        <button class="tab-btn" onclick="switchCategory('cat3')">Thema 5 & 6</button>
+        <button class="tab-btn" onclick="switchCategory('cat4')">Thema 7 & 8</button>
+        <button class="tab-btn" onclick="switchCategory('cat5')">Thema 9 & Werk</button>
+    </div>
+
+    <!-- CHECKLIST GRID -->
+    <div class="checklist-grid" id="checklist-container">
+        <!-- Rendered dynamically by JS -->
+    </div>
+
+    <!-- ── INTERACTIEVE ZINNENBOUWER ── -->
+    <div class="builder-section">
+        <div class="builder-title">
+            <span>🏗️ Interactieve Zinnenbouwer</span>
+        </div>
+        <p class="builder-desc">
+            Combineer de verschillende grammaticasystemen van De Opmaat! Selecteer hieronder een uitdaging en sleep of klik de woorden in de juiste volgorde om de zin te bouwen.
+        </p>
+
+        <!-- CHALLENGE SELECTOR TABS -->
+        <div class="challenge-tabs">
+            <button class="challenge-btn active" onclick="loadChallenge(0)">Uitdaging 1: Inversie + Modaal (Thema 1-3)</button>
+            <button class="challenge-btn" onclick="loadChallenge(1)">Uitdaging 2: Bijzin met 'omdat' + Voltooide Tijd (Thema 4-5)</button>
+            <button class="challenge-btn" onclick="loadChallenge(2)">Uitdaging 3: Om ... te + infinitief (Thema 9)</button>
+        </div>
+
+        <!-- WORKSPACE (ZIN BOUWEN) -->
+        <div class="workspace" id="workspace">
+            <div class="workspace-placeholder" id="workspace-placeholder">⬇ Klik op de woorden hieronder om je zin te bouwen</div>
+            <div class="workspace-chips" id="workspace-chips"></div>
+        </div>
+
+        <!-- WORD BANK -->
+        <div class="word-bank">
+            <div class="bank-title">Beschikbare woorden</div>
+            <div class="bank-chips" id="bank-chips"></div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="control-row">
+            <button class="btn-action btn-secondary" onclick="resetWorkspace()">Opnieuw</button>
+            <button class="btn-action btn-primary" onclick="checkBuilderAnswer()">Controleer Zin</button>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div class="builder-feedback" id="builder-feedback"></div>
+    </div>
+
+</div>
+
+<!-- DATA AND SCRIPT LOGIC -->
+<script>
+    // 31 Grammar topics for De Opmaat
+    const grammarTopics = [
+        // Categorie 1: Thema 1 & 2
+        { id: 1, cat: 'cat1', title: 'Verbum presens (Stam + t)', desc_nl: 'Vervoegen van werkwoorden in de tegenwoordige tijd (ik werk, jij werkt, hij werkt).', desc_en: 'Conjugating singular and plural verbs in the present tense (stem + t).', desc_pl: 'Odmiana czasowników w czasie teraźniejszym (temat + t).', ex: 'Ik heet Alex, jij woont in Amsterdam.' },
+        { id: 2, cat: 'cat1', title: 'Zinsbouw: Hoofdzin (S-V-O)', desc_nl: 'De normale zinsvolgorde in het Nederlands: het werkwoord staat ALTIJD op de tweede positie.', desc_en: 'Standard main clause word order: Verb is always in position 2.', desc_pl: 'Szyk zdania głównego: Czasownik zawsze na drugiej pozycji.', ex: 'Wij maken vandaag een afspraak.' },
+        { id: 3, cat: 'cat1', title: 'Zinsbouw: Vraagzinnen', desc_nl: 'Vraagzinnen maken met inversie (werkwoord vooraan) of met een interrogatief vraagwoord (wie, wat, hoe).', desc_en: 'Forming questions with inversion (verb first) or question words.', desc_pl: 'Tworzenie pytań przez inwersję lub zaimki pytajne.', ex: 'Kom je morgen? / Wat doe jij?' },
+        { id: 4, cat: 'cat1', title: 'Klokkijken (Deel 1)', desc_nl: 'De analoge klok aflezen en verwoorden (over, voor, half, kwart).', desc_en: 'Analog time telling (past, to, half, quarter).', desc_pl: 'Określanie czasu zegarowego (po, przed, wpół do).', ex: 'Het is half acht / Het is kwart over tien.' },
+        { id: 5, cat: 'cat1', title: 'Bezittelijk voornaamwoord (pronomen possessief)', desc_nl: 'Bezit aangeven met mijn, jouw, zijn, haar, ons/onze, jullie, hun.', desc_en: 'Possessive pronouns: my, your, his, her, our, their.', desc_pl: 'Zaimki dzierżawcze: mój, twój, jego, jej, nasz, ich.', ex: 'Dit is haar familie en dat is ons huis.' },
+        { id: 6, cat: 'cat1', title: 'Ontkenning: geen / niet', desc_nl: 'Gebruik \'geen\' voor onbepaalde zelfstandige naamwoorden (met een/geen lidwoord), en \'niet\' voor de rest.', desc_en: 'Use \'geen\' for indefinite nouns, \'niet\' for verbs, adjectives, and definite nouns.', desc_pl: 'Używaj \'geen\' dla rzeczowników nieokreślonych, \'niet\' w innych przypadkach.', ex: 'Ik heb geen kinderen. Ik feest niet.' },
+        { id: 7, cat: 'cat1', title: 'Lidwoorden: de / het / een', desc_nl: 'Gebruik van de juiste bepaalde lidwoorden (de/het) en het onbepaalde lidwoord (een).', desc_en: 'Definite articles (de/het) and the indefinite article (een).', desc_pl: 'Przedimki określone (de/het) i nieokreślony (een).', ex: 'De vader, het kind, een cadeau.' },
+        { id: 8, cat: 'cat1', title: 'Zinsbouw: Inversie', desc_nl: 'Werkwoord en onderwerp wisselen van plek als de zin met tijd of plaats begint.', desc_en: 'Subject and verb swap places when the sentence starts with time or place.', desc_pl: 'Czasownik i podmiot zamieniają się miejscami, gdy zdanie zaczyna się od czasu lub miejsca.', ex: 'Vandaag vieren we haar verjaardag.' },
+        { id: 9, cat: 'cat1', title: 'Modale verba (hulpwerkwoorden)', desc_nl: 'Moeten, kunnen, willen, mogen en zullen vervoegen met het hoofdwerkwoord helemaal achteraan.', desc_en: 'Conjugating modal verbs. The main verb goes to the end of the sentence.', desc_pl: 'Odmiana czasowników modalnych. Główny czasownik idzie na koniec zdania.', ex: 'Ik wil op jouw feestje komen.' },
+
+        // Categorie 2: Thema 3 & 4
+        { id: 10, cat: 'cat2', title: 'Adjectief (bijvoeglijk naamwoord)', desc_nl: 'Przymiotnik z końcówką -e (de groene broek) of zonder -e (een groot eetcafé bij het-woorden).', desc_en: 'Adjective endings with or without -e depending on the noun gender and article.', desc_pl: 'Przymiotnik z końcówką -e lub bez (w zależności od rodzaju i przedimka).', ex: 'Ik koop een groene broek en een mooi shirt.' },
+        { id: 11, cat: 'cat2', title: 'Er + numerale (getal)', desc_nl: 'Het woordje \'er\' gebruiken in combinatie met een getal of hoeveelheid om herhaling te voorkomen.', desc_en: 'Using \'er\' with numbers to replace a noun.', desc_pl: 'Używanie \'er\' z liczbami, aby uniknąć powtarzania rzeczownika.', ex: 'Hoeveel appels wil je? Ik wil er drie.' },
+        { id: 12, cat: 'cat2', title: 'Persoonlijk voornaamwoord (als object)', desc_nl: 'Mij, jou, hem, haar, ons, jullie, hen/hun gebruiken als lijdend/meewerkend voorwerp of na een voorzetsel.', desc_en: 'Object pronouns used as direct/indirect objects or after prepositions.', desc_pl: 'Zaimki osobowe w bierniku/celowniku lub po przyimkach.', ex: 'De ober brengt ons de menukaart. Ik praat met haar.' },
+        { id: 13, cat: 'cat2', title: 'Verwijzen naar dingen (deze/die/dit/dat)', desc_nl: 'Deze / die voor de-woorden, dit / dat voor het-woorden.', desc_en: 'Demonstrative pronouns: deze/die for de-words, dit/dat for het-words.', desc_pl: 'Zaimki wskazujące: deze/die dla słów de, dit/dat dla słów het.', ex: 'Deze kleding is duur, maar dat t-shirt is goedkoop.' },
+        { id: 14, cat: 'cat2', title: 'Nevenschikkende voegwoorden (want/maar/en/of/dus)', desc_nl: 'Twee hoofdzinnen koppelen zonder de woordvolgorde te veranderen.', desc_en: 'Connecting two main clauses (coordinating conjunctions). Verb stays in pos 2.', desc_pl: 'Łączenie dwóch zdań głównych (spójniki współrzędne). Czasownik na 2. pozycji.', ex: 'Ik reis met de trein, want het is sneller.' },
+        { id: 15, cat: 'cat2', title: 'Onderschikkende voegwoorden (omdat/als/dat)', desc_nl: 'Een bijzin inleiden, waarbij alle werkwoorden naar het einde van de bijzin verhuizen.', desc_en: 'Subordinating conjunctions that push all verbs to the end of the clause.', desc_pl: 'Spójniki podrzędne, które spychają wszystkie czasowniki na koniec zdania.', ex: 'Ik neem de auto als het hard regent.' },
+        { id: 16, cat: 'cat2', title: 'Perfectum (deel 1) - Voltooide tijd', desc_nl: 'De verleden tijd vormen met de hulpwerkwoorden hebben/zijn en het voltooid deelwoord (ge- + stam + t/d).', desc_en: 'Forming the perfect tense using have/be and the past participle.', desc_pl: 'Tworzenie czasu przeszłego dokonanego za pomocą hebben/zijn i imiesłowu.', ex: 'Ik heb met de bus gereisd.' },
+
+        // Categorie 3: Thema 5 & 6
+        { id: 17, cat: 'cat3', title: 'Tijdwoorden van frequentie', desc_nl: 'Het gebruik en de correcte plaats van frequentiewoorden zoals altijd, vaak, soms, nooit.', desc_en: 'Adverbs of frequency and their position in the sentence.', desc_pl: 'Przysłówki częstotliwości i ich miejsce w zdaniu.', ex: 'Ik ga soms in het weekend hardlopen.' },
+        { id: 18, cat: 'cat3', title: 'Klokkijken (deel 2) en Tijdsaanduidingen', desc_nl: 'Het digitale klokkijken en complexere tijden combineren met dagdelen (\'s avonds, \'s middags).', desc_en: 'Digital time telling and complex time indicators combined with days.', desc_pl: 'Cyfrowe określanie czasu i łączenie określeń czasu z porami dnia.', ex: 'De film begint om tien voor acht \'s avonds.' },
+        { id: 19, cat: 'cat3', title: 'Perfectum (deel 2) - Onregelmatig & Beweging', desc_nl: 'De voltooide tijd met het hulpwerkwoord \'zijn\' bij werkwoorden van beweging of verandering, en onregelmatige deelwoorden.', desc_en: 'Present perfect with movement verbs using \'zijn\' and irregular participles.', desc_pl: 'Czas przeszły dokonany z pomocniczym \'zijn\' i nieregularnymi formami.', ex: 'Zij is naar de sportschool gegaan.' },
+        { id: 20, cat: 'cat3', title: 'Comparatief en superlatief (vergelijkingen)', desc_nl: 'Vergelijkingen maken met de vergrotende (sneller dan) en overtreffende trap (het snelst / even snel als).', desc_en: 'Comparatives and superlatives for comparing adjectives.', desc_pl: 'Stopniowanie przymiotników do porównań (szybszy niż, najszybszy).', ex: 'Tennis is leuker dan voetbal, maar wielrennen is het leukst.' },
+        { id: 21, cat: 'cat3', title: 'Aanwijzend voornaamwoord (woning & inrichting)', desc_nl: 'Verwijzen naar meubels en kamers met deze/die/dit/dat.', desc_en: 'Using demonstrative pronouns to refer to furniture and rooms.', desc_pl: 'Używanie zaimków wskazujących do mebli i pomieszczeń.', ex: 'Deze bank zit lekkerder dan die stoel.' },
+        { id: 22, cat: 'cat3', title: 'Er = plaats', desc_nl: 'Gebruik van het woord \'er\' om te verwijzen naar een eerder genoemde plaats.', desc_en: 'Using \'er\' to refer to a previously mentioned location.', desc_pl: 'Używanie słówka \'er\' do odniesienia się do wcześniej wspomnianego miejsca.', ex: 'Daar woon ik niet, maar mijn vriend woont er wel.' },
+        { id: 23, cat: 'cat3', title: 'Voornaamwoordelijk bijwoord (ermee/erin/erop)', desc_nl: 'Voorzetsels combineren met \'er\' om naar dingen te verwijzen (met een pen -> ermee, in een kast -> erin).', desc_en: 'Combining prepositions with \'er\' to refer to objects (with it, in it).', desc_pl: 'Łączenie przyimków z \'er\' w celu odniesienia się do rzeczy (tym, w tym).', ex: 'Dat is een mooie kast, er liggen boeken in.' },
+
+        // Categorie 4: Thema 7 & 8
+        { id: 24, cat: 'cat4', title: 'Gebiedende wijs (imperatief - instructies)', desc_nl: 'Instructies of bevelen geven door alleen de stam van het werkwoord te gebruiken, zonder onderwerp.', desc_en: 'Giving commands or instructions using only the verb stem without a subject.', desc_pl: 'Tryb rozkazujący: używanie samego tematu czasownika, bez podmiotu.', ex: 'Neem dit medicijn drie keer per dag in.' },
+        { id: 25, cat: 'cat4', title: 'Indirecte rede (dat / of)', desc_nl: 'Een uitspraak of vraag van iemand anders navertellen. Dit gebruikt bijzinvolgorde (werkwoord achteraan).', desc_en: 'Reported speech using \'dat\' or \'of\'. Requires subclause word order.', desc_pl: 'Mowa zależna z użyciem \'dat\' lub \'of\'. Wymaga szyku zdania podrzędnego.', ex: 'De dokter vraagt of ik koorts heb.' },
+        { id: 26, cat: 'cat4', title: 'Scheidbare werkwoorden (separabele verba)', desc_nl: 'Werkwoorden die in de tegenwoordige tijd splitsen in de hoofdzin (opbellen -> ik bel de dokter op).', desc_en: 'Separable verbs split in a present tense main clause.', desc_pl: 'Czasowniki rozdzielne dzielą się w czasie teraźniejszym w zdaniu głównym.', ex: 'Ik kleed me snel aan / Ik was de auto af.' },
+        { id: 27, cat: 'cat4', title: 'Imperfectum (onvoltooid verleden tijd)', desc_nl: 'De verleden tijd gebruiken voor beschrijvingen (had/hadden, was/waren, stam + -te/-de).', desc_en: 'Simple past tense for habits, states, or descriptions in the past.', desc_pl: 'Czas przeszły niedokonany do opisywania stanów i nawyków w przeszłości.', ex: 'Vroeger had ik lang haar en droeg ik een bril.' },
+        { id: 28, cat: 'cat4', title: 'Reflexieve werkwoorden (wederkerend)', desc_nl: 'Werkwoorden die een wederkerend voornaamwoord vereisen (zich wassen, zich voelen, zich scheren).', desc_en: 'Reflexive verbs with reflexive pronouns matching the subject.', desc_pl: 'Czasowniki zwrotne wymagające zaimków zwrotnych.', ex: 'Ik scheer me elke ochtend / Hoe voel je je?' },
+        { id: 29, cat: 'cat4', title: 'Er + indefiniet subject (onbepaald onderwerp)', desc_nl: 'De zin beginnen met \'er\' wanneer het onderwerp onbepaald is (een man, mensen, geen werk).', desc_en: 'Starting sentences with \'er\' when the subject is indefinite.', desc_pl: 'Zaczynanie zdań od \'er\', gdy podmiot jest nieokreślony.', ex: 'Er staat een patiënt in de wachtkamer.' },
+
+        // Categorie 5: Thema 9 & Werk
+        { id: 30, cat: 'cat5', title: 'Om ... te + infinitief', desc_nl: 'Een doel of intentie uitdrukken met \'om ... te\' + het hele werkwoord helemaal achteraan.', desc_en: 'Expressing purpose or intent with \'om ... te\' + infinitive at the end.', desc_pl: 'Wyrażanie celu lub intencji za pomocą \'om ... te\' + bezokolicznik na końcu.', ex: 'Ik ga naar school om Nederlands te leren.' },
+        { id: 31, cat: 'cat5', title: 'Toekomende tijd (gaan / zullen)', desc_nl: 'Praten over de toekomst met het hulpwerkwoord \'gaan\' of \'zullen\' en het hoofdwerkwoord achteraan.', desc_en: 'Talking about the future using gaan/zullen + infinitive.', desc_pl: 'Rozmawianie o przyszłości za pomocą gaan/zullen + bezokolicznik.', ex: 'Volgend jaar ga ik een opleiding starten.' }
+    ];
+
+    // Sentence builder challenges for De Opmaat
+    const builderChallenges = [
+        {
+            words: ["Vandaag", "wil", "ik", "in", "het eetcafé", "betalen"],
+            extra: ["ik wil", "wil ik", "betaal", "in het"],
+            correct: "Vandaag wil ik in het eetcafé betalen",
+            explanation: {
+                nl: "De zin begint met tijd ('Vandaag'), dus volgt er inversie: het modale werkwoord ('wil') komt op de 2e plek, direct gevolgd door het onderwerp ('ik'). Het hele werkwoord ('betalen') staat helemaal aan het einde.",
+                en: "The sentence starts with Time ('Vandaag'), causing inversion: the modal verb ('wil') goes to position 2, followed by the subject ('ik'). The main verb infinitive ('betalen') goes to the very end."
+            }
+        },
+        {
+            words: ["Zij", "is", "moe", "omdat", "ze", "vandaag", "hard", "heeft", "gewerkt"],
+            extra: ["heeft ze", "is heeft", "gewerkt heeft", "vandaag ze"],
+            correct: "Zij is moe omdat ze vandaag hard heeft gewerkt",
+            alternative: "Zij is moe omdat ze vandaag hard gewerkt heeft",
+            explanation: {
+                nl: "'Omdat' leidt een bijzin in, wat betekent dat alle werkwoorden naar het einde worden verplaatst ('heeft gewerkt' of 'gewerkt heeft'). 'Werken' is regelmatig, dus het deelwoord is 'gewerkt'.",
+                en: "'Omdat' introduces a subclause, which pushes all verbs to the end ('heeft gewerkt' or 'gewerkt heeft')."
+            }
+        },
+        {
+            words: ["Ik", "leer", "Nederlands", "om", "een goede baan", "te", "vinden"],
+            extra: ["om te", "vinden te", "voor", "baan goede"],
+            correct: "Ik leer Nederlands om een goede baan te vinden",
+            explanation: {
+                nl: "Om een doel of intentie uit te drukken, gebruik je 'om [rest van de zin] te [infinitief]'. Het hele werkwoord ('vinden') staat dus helemaal achteraan na 'te'.",
+                en: "To express a purpose or intent, you use the 'om ... te' + infinitive structure. The verb ('vinden') goes to the very end after 'te'."
+            }
+        }
+    ];
+
+    let activeChallengeIndex = 0;
+    let selectedWords = [];
+    let currentCategoryFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadChecklistState();
+        renderChecklist();
+        loadChallenge(0);
+    });
+
+    // RENDER CHECKLIST
+    function renderChecklist() {
+        const container = document.getElementById('checklist-container');
+        container.innerHTML = '';
+
+        const filtered = grammarTopics.filter(t => currentCategoryFilter === 'all' || t.cat === currentCategoryFilter);
+
+        filtered.forEach(topic => {
+            const isCompleted = localStorage.getItem(`opmaat_topic_${topic.id}`) === 'true';
+
+            const card = document.createElement('div');
+            card.className = 'checklist-item';
+            card.id = `item-${topic.id}`;
+
+            card.innerHTML = `
+                <div class="checklist-checkbox-wrapper">
+                    <input type="checkbox" class="checklist-checkbox" id="check-${topic.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTopic(${topic.id})">
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-title-row">
+                        <span class="checklist-title">${topic.id}. ${topic.title}</span>
+                        <span class="example-badge">Bijv: ${topic.ex}</span>
+                    </div>
+                    <div class="checklist-desc" id="desc-${topic.id}" data-nl="${topic.desc_nl}" data-en="${topic.desc_en}" data-pl="${topic.desc_pl}">
+                        ${topic.desc_nl}
+                    </div>
+                    <div class="lang-switch-inline">
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'nl')">Nederlands</span> · 
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'en')">🇬🇧 English</span> · 
+                        <span class="lang-switch-btn" onclick="setListItemLang(${topic.id}, 'pl')">🇵🇱 Polski</span>
+                        <button class="speech-btn-inline" onclick="speakText('${topic.ex.replace(/&rarr;/g, ' ')}')">🔊</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        updateProgressBar();
+    }
+
+    function setListItemLang(id, lang) {
+        const descDiv = document.getElementById(`desc-${id}`);
+        if (!descDiv) return;
+        const translation = descDiv.getAttribute('data-' + lang);
+        if (translation) {
+            descDiv.innerHTML = translation;
+        }
+    }
+
+    function switchCategory(cat) {
+        currentCategoryFilter = cat;
+        document.querySelectorAll('#category-tabs .tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Mark active button
+        const clickedBtn = Array.from(document.querySelectorAll('#category-tabs .tab-btn')).find(btn => 
+            btn.getAttribute('onclick').includes(`'${cat}'`)
+        );
+        if (clickedBtn) clickedBtn.classList.add('active');
+
+        renderChecklist();
+    }
+
+    function toggleTopic(id) {
+        const checkbox = document.getElementById(`check-${id}`);
+        localStorage.setItem(`opmaat_topic_${id}`, checkbox.checked ? 'true' : 'false');
+        updateProgressBar();
+    }
+
+    function loadChecklistState() {
+        // State loaded dynamically inside renderChecklist
+    }
+
+    function updateProgressBar() {
+        let completed = 0;
+        grammarTopics.forEach(t => {
+            if (localStorage.getItem(`opmaat_topic_${t.id}`) === 'true') {
+                completed++;
+            }
+        });
+
+        const percent = Math.round((completed / grammarTopics.length) * 100);
+        document.getElementById('progress-bar').style.width = percent + '%';
+        document.getElementById('progress-percent').textContent = percent + '%';
+        document.getElementById('completed-count').textContent = completed;
+    }
+
+    // ── BUILDER LOGIC ──
+    function loadChallenge(index) {
+        activeChallengeIndex = index;
+        selectedWords = [];
+        
+        document.querySelectorAll('.challenge-tabs .challenge-btn').forEach((btn, idx) => {
+            if (idx === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        // Hide feedback
+        const fb = document.getElementById('builder-feedback');
+        fb.style.display = 'none';
+
+        // Set up workspace & bank
+        const challenge = builderChallenges[index];
+        const allWords = [...challenge.words, ...challenge.extra];
+        
+        // Shuffle the bank
+        shuffle(allWords);
+
+        // Render Bank Chips
+        const bankContainer = document.getElementById('bank-chips');
+        bankContainer.innerHTML = '';
+        allWords.forEach((word, wordIndex) => {
+            const chip = document.createElement('div');
+            chip.className = 'word-chip';
+            chip.textContent = word;
+            chip.id = `chip-bank-${wordIndex}`;
+            chip.onclick = () => addWordToWorkspace(word, `chip-bank-${wordIndex}`);
+            bankContainer.appendChild(chip);
+        });
+
+        updateWorkspaceUI();
+    }
+
+    function addWordToWorkspace(word, chipId) {
+        const chip = document.getElementById(chipId);
+        if (chip.classList.contains('used')) return;
+
+        chip.classList.add('used');
+        selectedWords.push({ word: word, sourceId: chipId });
+        updateWorkspaceUI();
+    }
+
+    function removeWordFromWorkspace(index) {
+        const item = selectedWords[index];
+        const chip = document.getElementById(item.sourceId);
+        if (chip) chip.classList.remove('used');
+
+        selectedWords.splice(index, 1);
+        updateWorkspaceUI();
+    }
+
+    function updateWorkspaceUI() {
+        const container = document.getElementById('workspace-chips');
+        const placeholder = document.getElementById('workspace-placeholder');
+
+        container.innerHTML = '';
+        if (selectedWords.length === 0) {
+            placeholder.style.display = 'block';
+        } else {
+            placeholder.style.display = 'none';
+            selectedWords.forEach((item, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'word-chip';
+                chip.style.borderColor = 'var(--accent-blue)';
+                chip.textContent = item.word;
+                chip.onclick = () => removeWordFromWorkspace(index);
+                container.appendChild(chip);
+            });
+        }
+    }
+
+    function resetWorkspace() {
+        loadChallenge(activeChallengeIndex);
+    }
+
+    function checkBuilderAnswer() {
+        const attempt = selectedWords.map(item => item.word).join(' ').replace(/,/g, '').trim().toLowerCase();
+        const challenge = builderChallenges[activeChallengeIndex];
+        const correct = challenge.correct.replace(/,/g, '').trim().toLowerCase();
+        const alternative = challenge.alternative ? challenge.alternative.replace(/,/g, '').trim().toLowerCase() : null;
+
+        const fb = document.getElementById('builder-feedback');
+
+        if (attempt === correct || (alternative && attempt === alternative)) {
+            fb.className = 'builder-feedback correct';
+            fb.innerHTML = `🎉 Goed gedaan! Dit is de correcte zin.<br><br><strong>Uitleg:</strong> ${challenge.explanation.nl}<br><button class="speech-btn-inline" onclick="speakText('${challenge.correct}')" style="margin-top: 10px; font-size:1rem; cursor:pointer;">🔊 Beluister de zin</button>`;
+        } else {
+            fb.className = 'builder-feedback incorrect';
+            fb.innerHTML = `❌ Helaas, dat is niet de juiste woordvolgorde. Probeer het opnieuw!`;
+        }
+    }
+
+    // Speak helper
+    function speakText(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.88;
+        window.speechSynthesis.speak(u);
+    }
+
+    // Helper functions
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+</script>
+
+</body>
+</html>
