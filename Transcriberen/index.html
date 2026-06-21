@@ -3030,17 +3030,36 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
         // ── ROBUUSTE JSON-PARSER (vangt afgeknipte of licht beschadigde JSON op) ──
         function repairAndParseJSON(raw) {
-            // 1. Probeer gewoon
-            try { return JSON.parse(raw); } catch (_) {}
+            let s = raw.trim();
+            
+            // Remove markdown code fences if present
+            if (s.startsWith("```json")) {
+                s = s.slice(7);
+            } else if (s.startsWith("```")) {
+                s = s.slice(3);
+            }
+            if (s.endsWith("```")) {
+                s = s.slice(0, -3);
+            }
+            s = s.trim();
 
-            // 2. Zoek het eerste { en probeer vanaf daar
-            const start = raw.indexOf('{');
-            if (start > 0) {
-                try { return JSON.parse(raw.slice(start)); } catch (_) {}
+            // Escape real newlines/tabs inside string literals
+            s = escapeJSONStrings(s);
+
+            // Remove trailing commas
+            s = s.replace(/,\s*([}\]])/g, '$1');
+
+            // 1. Probeer direct
+            try { return JSON.parse(s); } catch (_) {}
+
+            // 2. Zoek het eerste { en laatste } en probeer vanaf daar
+            const start = s.indexOf('{');
+            const end = s.lastIndexOf('}');
+            if (start >= 0 && end > start) {
+                try { return JSON.parse(s.slice(start, end + 1)); } catch (_) {}
             }
 
             // 3. Probeer afgeknipte JSON te repareren door open structuren te sluiten
-            let s = start >= 0 ? raw.slice(start) : raw;
             // Verwijder een eventuele onvolledige laatste regel
             const lastNewline = s.lastIndexOf('\n');
             if (lastNewline > s.length * 0.7) {
@@ -3055,6 +3074,44 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
             // 4. Niets werkte – gooi de originele fout
             throw new SyntaxError('Gemini stuurde ongeldige JSON. Probeer het opnieuw (kortere opname of minder sprekers).');
+        }
+
+        function escapeJSONStrings(str) {
+            let result = '';
+            let inString = false;
+            let escape = false;
+            for (let i = 0; i < str.length; i++) {
+                const c = str[i];
+                if (escape) {
+                    result += c;
+                    escape = false;
+                    continue;
+                }
+                if (c === '\\') {
+                    result += c;
+                    if (inString) escape = true;
+                    continue;
+                }
+                if (c === '"') {
+                    inString = !inString;
+                    result += c;
+                    continue;
+                }
+                if (inString) {
+                    if (c === '\n') {
+                        result += '\\n';
+                    } else if (c === '\r') {
+                        result += '\\r';
+                    } else if (c === '\t') {
+                        result += '\\t';
+                    } else {
+                        result += c;
+                    }
+                } else {
+                    result += c;
+                }
+            }
+            return result;
         }
 
         // Sluit openstaande JSON-structuren (haakjes/aanhalingstekens)
@@ -3308,7 +3365,22 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                     throw new Error('LanguageTool HTTP ' + resp.status + ' ' + t.slice(0, 200));
                 }
                 const data = await resp.json();
-                const matches = Array.isArray(data.matches) ? data.matches : [];
+                const rawMatches = Array.isArray(data.matches) ? data.matches : [];
+                const matches = rawMatches.filter(m => {
+                    if (!m.rule) return true;
+                    const catId = (m.rule.category && m.rule.category.id) || '';
+                    const ruleId = m.rule.id || '';
+                    if (catId === 'TYPOGRAPHY' || catId === 'CASING' || catId === 'PUNCTUATION') {
+                        return false;
+                    }
+                    if (ruleId === 'WHITESPACE' || ruleId === 'UPPERCASE_SENTENCE_START') {
+                        return false;
+                    }
+                    if (ruleId.includes('HOOFDLETTER') || ruleId.includes('SPACING') || ruleId.includes('SPACE')) {
+                        return false;
+                    }
+                    return true;
+                });
                 // Spelling laten we grotendeels aan ElevenLabs/Gemini over; focus op grammatica/stijl,
                 // maar we tonen alles in het detailtabblad.
                 const items = matches.map(m => {
@@ -4309,6 +4381,7 @@ Retourneer de output EXACT in het volgende JSON-formaat:
 }
 
 AANVULLENDE RICHTLIJNEN:
+- Splits de transcriptie ALTIJD op in losse, afzonderlijke zinnen in de "gesprek" array. Dit is met name cruciaal bij monologen (waarbij slechts één persoon praat): splits de tekst per zin op in losse objecten in de "gesprek" array, in plaats van de hele tekst als één lang element te retourneren. Elke zin krijgt dus zijn eigen object in de array met zijn eigen uitspraak-, grammatica- en logica-analyse. Dit zorgt voor een fatsoenlijk, zin-voor-zin overzicht.
 - Zorg dat je de sprekers correct identificeert. Gebruik hun echte namen in het 'spreker' veld.
 - Als er geen uitspraakfouten/grammaticafouten zijn, zet "goed" op true en laat "fout" en "uitleg" leeg.
 - Voor "uitspraak_analyse", wees zeer specifiek en NT2-vriendelijk. Als er klanken of specifieke woorden zwak of onduidelijk zijn uitgesproken, zet "goed" op false en vul "fout" in met exact dit format: "Bij '[woord]' klonk de '[klank]'-klank niet helemaal duidelijk." (bijvoorbeeld: "Bij 'chauffeur' klonken de 'eu'-klank en de 'r'-klank niet helemaal duidelijk. Bij 'heeft' klonk de 'h' en de 'ee'-klank zwak. Bij 'vier' klonken de 'v'-klank en de 'r'-klank zwak."). Leg in "uitleg" bondig uit hoe dit verbeterd kan worden (bijv. tongpositie of lipronding).

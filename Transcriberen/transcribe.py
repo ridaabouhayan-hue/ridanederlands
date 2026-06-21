@@ -127,6 +127,109 @@ def clean_reconstructed_text(word_list):
     text = re.sub(r"\s+([.,!?;:])", r"\1", text)
     return text
 
+def escape_json_strings(s):
+    result = []
+    in_string = False
+    escape = False
+    for c in s:
+        if escape:
+            result.append(c)
+            escape = False
+            continue
+        if c == '\\':
+            result.append(c)
+            if in_string:
+                escape = True
+            continue
+        if c == '"':
+            in_string = not in_string
+            result.append(c)
+            continue
+        if in_string:
+            if c == '\n':
+                result.append('\\n')
+            elif c == '\r':
+                result.append('\\r')
+            elif c == '\t':
+                result.append('\\t')
+            else:
+                result.append(c)
+        else:
+            result.append(c)
+    return "".join(result)
+
+def repair_close(s):
+    in_string = False
+    escape = False
+    stack = []
+    for c in s:
+        if escape:
+            escape = False
+            continue
+        if c == '\\' and in_string:
+            escape = True
+            continue
+        if c == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if c in ('{', '['):
+            stack.append(c)
+        elif c in ('}', ']'):
+            if stack:
+                stack.pop()
+    out = s
+    if in_string:
+        out += '"'
+    while stack:
+        open_c = stack.pop()
+        out += '}' if open_c == '{' else ']'
+    return out
+
+def repair_and_parse_json(raw):
+    s = raw.strip()
+    if s.startswith("```json"):
+        s = s[7:]
+    elif s.startswith("```"):
+        s = s[3:]
+    if s.endswith("```"):
+        s = s[:-3]
+    s = s.strip()
+    
+    s = escape_json_strings(s)
+    s = re.sub(r',\s*([}\]])', r'\1', s)
+    
+    try:
+        return json.loads(s)
+    except Exception:
+        pass
+        
+    start = s.find('{')
+    end = s.rfind('}')
+    if start >= 0 and end > start:
+        try:
+            return json.loads(s[start:end+1])
+        except Exception:
+            pass
+            
+    # Try closing brackets
+    last_newline = s.rfind('\n')
+    if last_newline > len(s) * 0.7:
+        try:
+            return json.loads(repair_close(s[:last_newline]))
+        except Exception:
+            pass
+            
+    for cut_at in (len(s), s.rfind('"}'), s.rfind('}')):
+        if cut_at > 10:
+            try:
+                return json.loads(repair_close(s[:cut_at+1]))
+            except Exception:
+                pass
+                
+    raise ValueError("Ongeldige JSON en kon deze niet automatisch repareren.")
+
 def transcribe_with_elevenlabs(filepath, api_key):
     """Transcribeert een audiobestand via ElevenLabs Speech-to-Text API met Scribe v2 en diarization."""
     if not api_key:
@@ -196,7 +299,23 @@ def check_grammar_languagetool(text):
         if resp.status_code != 200:
             print(f"   \u26a0\ufe0f LanguageTool fout ({resp.status_code}). Draait de server? Stap overgeslagen.")
             return None
-        matches = resp.json().get("matches", [])
+        raw_matches = resp.json().get("matches", [])
+        matches = []
+        for m in raw_matches:
+            rule = m.get("rule", {})
+            cat = rule.get("category", {})
+            cat_id = cat.get("id", "")
+            rule_id = rule.get("id", "")
+            
+            # Skip punctuation, typography, casing, and spacing rules
+            if cat_id in ("TYPOGRAPHY", "CASING", "PUNCTUATION"):
+                continue
+            if rule_id in ("WHITESPACE", "UPPERCASE_SENTENCE_START"):
+                continue
+            if "HOOFDLETTER" in rule_id or "SPACING" in rule_id or "SPACE" in rule_id:
+                continue
+            matches.append(m)
+            
         if not matches:
             return "LanguageTool vond geen grammatica-/spelfouten."
         lines = []
@@ -480,7 +599,7 @@ Dit zijn gemeten scores (0-100), geen schatting. Gebruik deze concrete getallen 
 3. Als er absoluut geen namen genoemd worden in de audio, kijk dan naar de bestandsnaam "{filename}". De namen in de bestandsnaam (bijvoorbeeld 'Malwina Dorota interview.mp3' of 'Kojo Emad 4-6.ogg') vertellen je wie de sprekers zijn en in welke volgorde ze praten. De eerste naam in de bestandsnaam begint meestal met praten, en de tweede reageert.
 4. Zorg dat je de sprekers correct identificeert en hun echte namen gebruikt in de 'gesprek' array (in de 'spreker' velden) in plaats van generieke aanduidingen zoals 'Spreker A' of 'Spreker B' of 'Spreker A/B'.
 
-Maak een grondige ZIN-VOOR-ZIN analyse. Geef EXACT het volgende JSON formaat terug:
+Maak een grondige ZIN-VOOR-ZIN analyse. Splits de transcriptie ALTIJD op in losse, afzonderlijke zinnen in de "gesprek" array. Dit is met name cruciaal bij monologen (waarbij slechts één persoon praat): splits de tekst per zin op in losse objecten in de "gesprek" array, in plaats van de hele tekst als één lang element te retourneren. Elke zin krijgt dus zijn eigen object met zijn eigen uitspraak-, grammatica- en logica-analyse. Geef EXACT het volgende JSON formaat terug:
 
 {{
   "gesprek": [
@@ -567,8 +686,8 @@ BELANGRIJK:
                     raise Exception("Gemini returned empty response.text (retryable)")
                     
                 try:
-                    result = json.loads(response.text.strip())
-                except json.JSONDecodeError as je:
+                    result = repair_and_parse_json(response.text)
+                except Exception as je:
                     raise Exception(f"Gemini returned invalid JSON (retryable): {je}")
 
                 # Schema-controle: sla nooit een half/leeg resultaat op.
