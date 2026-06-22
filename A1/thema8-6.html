@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 8.6: Een formulier invullen. Lezen en schrijven van basisgegevens.">
+    <title>8.6 Een formulier invullen — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4361ee; --theme-bg: rgba(67,97,238,0.08); }
+        .theme-groen  { --theme: #10b981; --theme-bg: rgba(16,185,129,0.08); }
+        .theme-oranje { --theme: #f59e0b; --theme-bg: rgba(245,158,11,0.08); }
+        .theme-paars  { --theme: #7209b7; --theme-bg: rgba(114,9,183,0.08); }
+        .theme-cyaan  { --theme: #06b6d4; --theme-bg: rgba(6,182,212,0.08); }
+        .theme-rood   { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.08); }
+        .theme-roze   { --theme: #ec4899; --theme-bg: rgba(236,72,153,0.08); }
+        .theme-geel   { --theme: #ca8a04; --theme-bg: rgba(202,138,4,0.08); }
+
+        /* Form styling */
+        .form-sim {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid var(--border-med);
+            border-radius: var(--radius-md);
+            background: var(--bg-glass, rgba(255,255,255,0.7));
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .form-sim h4 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        .form-row {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-row label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        .form-row input, .form-row select {
+            padding: 8px 12px;
+            border: 2px solid var(--border-med);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            background: var(--bg);
+            color: var(--text-dark);
+            transition: 0.2s;
+        }
+        .form-row input:focus, .form-row select:focus {
+            border-color: var(--primary);
+        }
+        .form-row input.correct {
+            border-color: #10b981;
+            background: rgba(16,185,129,0.06);
+        }
+        .form-row input.fout {
+            border-color: #ef4444;
+            background: rgba(239,68,68,0.06);
+        }
+        .form-hint {
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-top: 2px;
+        }
+
+        /* Dictee styles */
+        .dictee-list { list-style: none; padding: 0; margin: 0; }
+        .dictee-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            background: var(--bg-glass, rgba(67, 97, 238, 0.04));
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .dictee-list input {
+            flex: 1;
+            min-width: 180px;
+            border: 2px solid var(--border-med);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.92rem;
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .dictee-list input:focus { border-color: var(--theme, var(--primary)); }
+        .dictee-list input.correct { border-color: #10b981; background: rgba(16,185,129,0.08); color: #059669; font-weight: 700; }
+        .dictee-list input.fout { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #dc2626; }
+        .dictee-audio-btns { display: flex; gap: 6px; }
+        .dictee-btn {
+            background: var(--theme, var(--primary));
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+        .dictee-btn:hover { filter: brightness(1.1); }
+        .slow-speak-btn {
+            background: transparent;
+            border: 2px solid var(--theme, var(--primary));
+            color: var(--theme, var(--primary));
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .slow-speak-btn:hover { background: var(--theme-bg, rgba(67,97,238,0.08)); }
+
+        /* Levenshtein almost correct styling */
+        input.almost-correct, select.almost-correct {
+            border-color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #d97706 !important;
+            font-weight: 700;
+        }
+    </style>
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="border-color:var(--secondary);color:var(--secondary);">🌓</button>
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema8.html" class="back-link">← Terug naar Thema 8</a>
+        <header class="page-header">
+            <div class="breadcrumb">
+                <a href="index.html">Thema's</a><span>›</span>
+                <a href="thema8.html">Thema 8</a><span>›</span>
+                <span>8.6</span>
+            </div>
+            <h1>📋 Een formulier invullen</h1>
+            <p class="subtitle" data-translate="subtitle">Leer hoe je een formulier invult om je in te schrijven voor een cursus of club.</p>
+        </header>
+
+        <!-- WOORDENLIJST -->
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 8.6</h2>
+            <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">🔊</th>
+                            <th>🇳🇱 Nederlands</th>
+                            <th id="th-lang">🇳🇱 Nederlands</th>
+                            <th data-translate="thExample">Voorbeeldzin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- UITLEG -->
+        <section class="content-section animate-in">
+            <div id="uitleg-content"></div>
+        </section>
+
+        <!-- OPDRACHTEN -->
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2>Oefeningen</h2>
+
+            <!-- 1: MC over formuliergegevens -->
+            <div class="opdracht-card theme-blauw">
+                <h3>Vraag en antwoord</h3>
+                <p class="instructie" data-translate="instrMC">Welk onderdeel van het formulier hoort bij de tekst? Kies het juiste onderdeel.</p>
+                <ul class="mc-list" id="mc-vragen"></ul>
+                <span id="mc-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 2: Waar / niet waar -->
+            <div class="opdracht-card theme-groen">
+                <h3>Waar of niet waar?</h3>
+                <p class="instructie" data-translate="instrWNW">Lees de stelling over Nederlandse formulieren en postcodes. Klopt het?</p>
+                <div id="wnw-container"></div>
+                <span id="wnw-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetWNW()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 3: Invuloefening woordenschat -->
+            <div class="opdracht-card theme-oranje">
+                <h3>Vul het woord in</h3>
+                <p class="instructie" data-translate="instrInvul">Vul het juiste woord uit de woordenlijst in.</p>
+                <ul class="invul-list" id="invul-vragen"></ul>
+                <button class="check-btn" onclick="checkInvul()">Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 4: Formulier invullen simulation -->
+            <div class="opdracht-card theme-cyaan">
+                <h3>📋 Oefening: Formulier invullen</h3>
+                <p class="instructie" data-translate="instrForm">Vul de gegevens in. Let op de juiste postcode (bijv. 1234 AB) en e-mailadres!</p>
+                <div class="form-sim">
+                    <h4 data-translate="formHeader">Inschrijf Formulier — Sportclub Groen Gras</h4>
+                    <div class="form-row">
+                        <label for="f-vnaam">Voornaam</label>
+                        <input type="text" id="f-vnaam" placeholder="bijv. Fatima" autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <label for="f-anaam">Achternaam</label>
+                        <input type="text" id="f-anaam" placeholder="bijv. El Amine" autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <label for="f-adres">Adres (straat + huisnummer)</label>
+                        <input type="text" id="f-adres" placeholder="bijv. Kerkstraat 12" autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <label for="f-pcode">Postcode</label>
+                        <input type="text" id="f-pcode" placeholder="bijv. 1234 AB" autocomplete="off">
+                        <span class="form-hint">4 cijfers en 2 letters (bijv. 1234 AB)</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="f-plaats">Woonplaats</label>
+                        <input type="text" id="f-plaats" placeholder="bijv. Utrecht" autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <label for="f-gebdat">Geboortedatum</label>
+                        <input type="text" id="f-gebdat" placeholder="bijv. 15-08-1995" autocomplete="off">
+                        <span class="form-hint">Format: DD-MM-JJJJ</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="f-tel">Telefoonnummer</label>
+                        <input type="text" id="f-tel" placeholder="bijv. 0612345678" autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <label for="f-mail">E-mailadres</label>
+                        <input type="text" id="f-mail" placeholder="bijv. fatima@gmail.com" autocomplete="off">
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <button class="check-btn" onclick="checkForm()">Controleer Formulier</button>
+                    <span id="form-score" class="score-badge" style="display:none"></span>
+                    <button class="reset-btn" onclick="resetForm()">🔄 Opnieuw</button>
+                </div>
+            </div>
+
+            <!-- Dictee -->
+            <div class="opdracht-card theme-geel">
+                <h3 data-translate="dicteeTitle">🗣️ Dictee: Luister en typ</h3>
+                <p class="instructie" data-translate="instrDictee">Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.</p>
+                
+                <h4 style="margin-top:15px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeWordsHeader">Deel 1: Woorden</h4>
+                <ul class="dictee-list" id="dictee-woorden"></ul>
+                
+                <h4 style="margin-top:25px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeSentencesHeader">Deel 2: Zinnen</h4>
+                <ul class="dictee-list" id="dictee-zinnen"></ul>
+                
+                <button class="check-btn" onclick="checkDictee()">Controleer</button>
+                <span id="dictee-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetDictee()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 5: Schrijfopdracht -->
+            <div class="opdracht-card theme-rood">
+                <h3>Schrijf je in via WhatsApp</h3>
+                <p class="instructie" data-translate="instrSchrijf">Beantwoord de vragen en stuur je inschrijving naar de docent.</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="wa-btn" onclick="saveSchrijf()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Stuur naar docent via WhatsApp
+                </button>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄 Opnieuw</button>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <a href="thema8-5.html" class="nav-btn">⬅️ Vorige (8.5)</a>
+            <a href="thema8-7.html" class="nav-btn">Volgende (8.7) ➡️</a>
+        </div>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+<script>
+function levenshtein(a,b){if(a.length===0)return b.length;if(b.length===0)return a.length;var m=[];for(var i=0;i<=b.length;i++){m[i]=[i];}for(var j=0;j<=a.length;j++){m[0][j]=j;}for(var i=1;i<=b.length;i++){for(var j=1;j<=a.length;j++){if(b[i-1]==a[j-1]){m[i][j]=m[i-1][j-1];}else{m[i][j]=Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);}}}return m[b.length][a.length];}
+
+// ── VOCAB ──
+const VOCAB = [
+    {nl:'het adres (adressen)', en:'address', ar:'العنوان', tr:'adres', ex:'Wat is het adres van de school?'},
+    {nl:'de cursus (cursussen)', en:'course / class', ar:'دورة تعليمية (كورس)', tr:'kurs', ex:'Volg jij een cursus Nederlands?'},
+    {nl:'daarom', en:'therefore / that\'s why', ar:'لذلك (لهذا السبب)', tr:'bu yüzden / bu nedenle', ex:'Ik ben ziek, daarom ga ik niet naar school.'},
+    {nl:'het e-mailadres (e-mailadressen)', en:'e-mail address', ar:'البريد الإلكتروني', tr:'e-posta adresi', ex:'Typ hier uw e-mailadres.'},
+    {nl:'het formulier (formulieren)', en:'form', ar:'استمارة', tr:'form', ex:'Je moet het formulier invullen.'},
+    {nl:'de geboortedatum', en:'date of birth', ar:'تاريخ الميلاد', tr:'doğum tarihi', ex:'Mijn geboortedatum is 12-04-1990.'},
+    {nl:'inschrijven (ik schrijf in, …)', en:'to register / sign up', ar:'يسجل (اسم)', tr:'kaydolmak', ex:'Ik wil me graag inschrijven voor de cursus.'},
+    {nl:'invullen (ik vul in, …)', en:'to fill in', ar:'يملأ (استمارة)', tr:'doldurmak', ex:'Kunt u deze gegevens invullen?'},
+    {nl:'het nummer (nummers)', en:'number', ar:'الرقم', tr:'numara', ex:'Wat is uw telefoonnummer?'},
+    {nl:'de postcode (postcodes)', en:'zip code', ar:'الرمز البريدي', tr:'posta kodu', ex:'Mijn postcode is 1012 JS.'},
+    {nl:'starten (ik start, …)', en:'to start', ar:'يبدأ', tr:'başlamak', ex:'De voetbalwedstrijd start om half twee.'},
+    {nl:'de telefoon (telefoons)', en:'phone', ar:'الهاتف', tr:'telefon', ex:'Mag ik uw telefoon gebruiken?'}
+];
+
+const UI = {
+    nl: {
+        subtitle: 'Leer hoe je een formulier invult om je in te schrijven voor een cursus of club.',
+        vocabTitle: 'Woorden van paragraaf 8.6',
+        vocabIntro: 'Klik op een taal hierboven om de vertaling te zien.',
+        thExample: 'Voorbeeldzin',
+        thLang: '🇳🇱 Nederlands',
+        instrMC: 'Welk onderdeel van het formulier hoort bij de tekst? Kies het juiste onderdeel.',
+        instrWNW: 'Lees de stelling over Nederlandse formulieren en postcodes. Klopt het?',
+        instrInvul: 'Vul het juiste woord uit de woordenlijst in.',
+        instrForm: 'Vul de gegevens in. Let op de juiste postcode (bijv. 1234 AB) en e-mailadres!',
+        formHeader: 'Inschrijf Formulier — Sportclub Groen Gras',
+        dicteeTitle: '🗣️ Dictee: Luister en typ',
+        instrDictee: 'Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.',
+        dicteeWordsHeader: 'Deel 1: Woorden',
+        dicteeSentencesHeader: 'Deel 2: Zinnen',
+        instrSchrijf: 'Beantwoord de vragen en stuur je inschrijving naar de docent.',
+        q1: '1. Welke cursus wil jij volgen? (bijv. cursus Nederlands, cursus Engels, zwemles)',
+        q2: '2. Wat is jouw adres (straat, huisnummer, postcode en woonplaats)?',
+        q3: '3. Wat is jouw telefoonnummer en e-mailadres?',
+        q4: '4. Wat is jouw geboortedatum?'
+    },
+    en: {
+        subtitle: 'Learn how to fill in a form to register for a course or club.',
+        vocabTitle: 'Words of paragraph 8.6',
+        vocabIntro: 'Click a language above to see the translation.',
+        thExample: 'Example sentence',
+        thLang: '🇬🇧 English',
+        instrMC: 'Which part of the form matches the text? Choose the correct option.',
+        instrWNW: 'Read the statement about Dutch forms and postcodes. Is it correct?',
+        instrInvul: 'Fill in the correct word from the vocabulary list.',
+        instrForm: 'Fill in the details. Note the correct zip code format (e.g. 1234 AB) and e-mail!',
+        formHeader: 'Registration Form — Sports Club Groen Gras',
+        dicteeTitle: '🗣️ Dictation: Listen and type',
+        instrDictee: 'Click on the audio button and type the word or sentence exactly as you hear it.',
+        dicteeWordsHeader: 'Part 1: Words',
+        dicteeSentencesHeader: 'Part 2: Sentences',
+        instrSchrijf: 'Answer the questions and send your registration to the teacher.',
+        q1: '1. Which course do you want to take? (e.g. Dutch course, English course, swimming lessons)',
+        q2: '2. What is your address (street, house number, zip code and city)?',
+        q3: '3. What is your phone number and e-mail address?',
+        q4: '4. What is your date of birth?'
+    },
+    ar: {
+        subtitle: 'تعلم كيفية ملء استمارة للتسجيل في دورة أو نادٍ.',
+        vocabTitle: 'كلمات الفقرة 8.6',
+        vocabIntro: 'انقر على لغة أعلاه لرؤية الترجمة.',
+        thExample: 'جملة مثال',
+        thLang: '🇸🇦 العربية',
+        instrMC: 'أي جزء من الاستمارة يتطابق مع النص؟ اختر الخيار الصحيح.',
+        instrWNW: 'اقرأ العبارة حول الاستمارات والرموز البريدية الهولندية. هل هي صحيحة؟',
+        instrInvul: 'املأ الكلمة الصحيحة من قائمة المفردات.',
+        instrForm: 'املأ البيانات. انتبه لصيغة الرمز البريدي الصحيح (مثل 1234 AB) والبريد الإلكتروني!',
+        formHeader: 'استمارة التسجيل — نادي غرون غراس الرياضي',
+        dicteeTitle: '🗣️ الإملاء: استمع واكتب',
+        instrDictee: 'انقر على زر الصوت واكتب الكلمة أو الجملة كما تسمعها تمامًا.',
+        dicteeWordsHeader: 'الجزء الأول: الكلمات',
+        dicteeSentencesHeader: 'الجزء الثاني: الجمل',
+        instrSchrijf: 'أجب عن الأسئلة وأرسل تسجيلك للمدرس.',
+        q1: '1. ما هي الدورة التي تريد اتباعها؟ (مثل دورة اللغة الهولندية، دورة اللغة الإنجليزية، دروس السباحة)',
+        q2: '2. ما هو عنوانك (الشارع، رقم المنزل، الرمز البريدي، والمدينة)؟',
+        q3: '3. ما هو رقم هاتفك وعنوان بريدك الإلكتروني؟',
+        q4: '4. ما هو تاريخ ميلادك؟'
+    },
+    tr: {
+        subtitle: 'Bir kursa veya kulübe kaydolmak için bir formu nasıl dolduracağınızı öğrenin.',
+        vocabTitle: 'Paragraf 8.6\'in kelimeleri',
+        vocabIntro: 'Çeviriyi görmek için bir dil seçin.',
+        thExample: 'Örnek cümle',
+        thLang: '🇹🇷 Türkçe',
+        instrMC: 'Formun hangi kısmı metinle eşleşiyor? Doğru seçeneği seçin.',
+        instrWNW: 'Hollanda formları ve posta kodları hakkındaki ifadeyi okuyun. Doğru mu?',
+        instrInvul: 'Kelime listesindeki doğru kelimeyi doldurun.',
+        instrForm: 'Bilgileri doldurun. Doğru posta kodu biçimine (örn. 1234 AB) ve e-postaya dikkat edin!',
+        formHeader: 'Kayıt Formu — Groen Gras Spor Kulübü',
+        dicteeTitle: '🗣️ Dikte: Dinle ve Yaz',
+        instrDictee: 'Ses düğmesine tıklayın ve duyduğunuz kelimeyi veya cümleyi tam olarak yazın.',
+        dicteeWordsHeader: 'Bölüm 1: Kelimeler',
+        dicteeSentencesHeader: 'Bölüm 2: Cümleler',
+        instrSchrijf: 'Soruları yanıtlayın ve kaydınızı öğretmene gönderin.',
+        q1: '1. Hangi kursa katılmak istiyorsunuz? (örn. Hollandaca kursu, İngilizce kursu, yüzme dersi)',
+        q2: '2. Adresiniz nedir (sokak, ev numarası, posta kodu ve şehir)?',
+        q3: '3. Telefon numaranız ve e-posta adresiniz nedir?',
+        q4: '4. Doğum tarihiniz nedir?'
+    }
+};
+
+const UITLEG = {
+    nl: `<div class="uitleg-box">
+        <h3>📋 Een formulier invullen</h3>
+        <p>Als je wilt gaan sporten of een cursus wilt volgen, moet je je <strong>inschrijven</strong>. Dat doe je door een <strong>formulier in te vullen</strong>.</p>
+        <p>De belangrijkste gegevens op een formulier zijn:</p>
+        <ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2">
+            <li>📌 <strong>Voornaam & Achternaam</strong>: Je naam.</li>
+            <li>📌 <strong>Adres</strong>: De straatnaam en het huisnummer.</li>
+            <li>📌 <strong>Postcode</strong>: In Nederland bestaat dit altijd uit vier cijfers en twee letters, bijvoorbeeld <strong>1234 AB</strong> of <strong>3521 JS</strong>.</li>
+            <li>📌 <strong>Woonplaats</strong>: De stad of het dorp waar je woont (bijvoorbeeld Utrecht, Rotterdam).</li>
+            <li>📌 <strong>Geboortedatum</strong>: De dag waarop je geboren bent, geschreven als dag-maand-jaar (bijvoorbeeld 12-04-1990).</li>
+        </ul>
+    </div>`,
+    en: `<div class="uitleg-box">
+        <h3>📋 Filling in a form</h3>
+        <p>If you want to play sports or take a course, you need to <strong>register</strong> (inschrijven). You do this by <strong>filling out a form</strong> (formulier invullen).</p>
+        <p>The most important details are your Name, Address, Zip code (postcode: 4 digits + 2 letters, e.g. 1234 AB), City/Town (woonplaats), and Date of Birth (geboortedatum: DD-MM-YYYY).</p>
+    </div>`,
+    ar: `<div class="uitleg-box" dir="rtl">
+        <h3>📋 ملء الاستمارة</h3>
+        <p>إذا كنت ترغب في ممارسة الرياضة أو اتباع دورة تعليمية، فيجب عليك <strong>التسجيل (inschrijven)</strong>. تقوم بذلك عن طريق <strong>ملء الاستمارة (formulier invullen)</strong>.</p>
+        <p>أهم البيانات هي: الاسم، العنوان، الرمز البريدي (postcode: يتكون من 4 أرقام وحرفين، مثل 1234 AB)، المدينة (woonplaats)، وتاريخ الميلاد (geboortedatum: يوم-شهر-سنة).</p>
+    </div>`,
+    tr: `<div class="uitleg-box">
+        <h3>📋 Form doldurmak</h3>
+        <p>Spor yapmak veya bir kursa katılmak istiyorsanız <strong>kaydolmanız</strong> (inschrijven) gerekir. Bunu bir <strong>form doldurarak</strong> (formulier invullen) yaparsınız.</p>
+        <p>En önemli bilgiler Adınız, Adresiniz, Posta kodunuz (postcode: 4 rakam + 2 harf, örn. 1234 AB), Yaşadığınız yer (woonplaats) ve Doğum tarihinizdir (geboortedatum: GG-AA-YYYY).</p>
+    </div>`
+};
+
+let _ttsAudio=null;
+function speak(text, isSlow=false){
+    if(!text)return;
+    if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}
+    let processedText = text;
+    if(isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    const rate = isSlow ? 0.6 : 0.9;
+    _ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+processedText)}`);
+    _ttsAudio.play().catch(()=>{
+        if('speechSynthesis'in window){
+            window.speechSynthesis.cancel();
+            const u=new SpeechSynthesisUtterance(text);
+            u.lang='nl-NL';
+            u.rate=rate;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+
+function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+
+function setLang(l){
+    document.querySelectorAll('.lang-bar .lang-btn').forEach(b=>b.classList.remove('active'));
+    event.target.closest('.lang-btn').classList.add('active');
+    document.querySelectorAll('[data-translate]').forEach(el=>{
+        const k=el.getAttribute('data-translate');
+        if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
+    });
+    buildTable(l);
+    document.getElementById('uitleg-content').innerHTML=l==='nl'?UITLEG.nl:(UITLEG[l]?UITLEG.nl+'<div style="margin-top:18px;padding-top:14px;border-top:2px dashed rgba(67,97,238,0.2);">'+UITLEG[l]+'</div>':UITLEG.nl);
+    buildSchrijf(l);
+}
+
+// ── OPDRACHT 1: MC ──
+const mcData=[
+    {vraag:'Wat is "12-04-1990"?', ant:'b', opties:{a:'de postcode',b:'de geboortedatum',c:'de telefoon'}},
+    {vraag:'Wat is "1012 JS"?', ant:'a', opties:{a:'de postcode',b:'de cursus',c:'het adres'}},
+    {vraag:'Wat is "Kerkstraat 15"?', ant:'c', opties:{a:'het e-mailadres',b:'het nummer',c:'het adres'}},
+    {vraag:'Wat is "06-12345678"?', ant:'b', opties:{a:'de geboortedatum',b:'de telefoon',c:'de postcode'}},
+    {vraag:'Waarom vult Leo een formulier in?', ant:'a', opties:{a:'om zich in te schrijven',b:'om te bellen',c:'om te gaan reizen'}}
+];
+const mcC={};
+function buildMC(){const ul=document.getElementById('mc-vragen');ul.innerHTML='';mcData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" data-val="${k}" onclick="checkMCItem(this,'${k}','${item.ant}','mc-vragen','mc-score',${mcData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCItem(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcC[key])mcC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.dataset.val===ant)b.classList.add('correct');});}mcC[key].done++;if(mcC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMC(){delete mcC['mc-vragen'];buildMC();document.getElementById('mc-score').style.display='none';}
+
+// ── OPDRACHT 2: WAAR / NIET WAAR ──
+const wnwData=[
+    {zin:'Een postcode in Nederland heeft 4 cijfers en 2 letters.', ans:true},
+    {zin:'Het e-mailadres bevat altijd het symbool "@".', ans:true},
+    {zin:'Met "woonplaats" bedoelen we het adres van de school.', ans:false},
+    {zin:'Als je een formulier invult, schrijf je informatie op.', ans:true},
+    {zin:'Het woord "daarom" geeft een reden of oorzaak aan.', ans:true}
+];
+function buildWNW(){const c=document.getElementById('wnw-container');c.innerHTML='';wnwData.forEach((item,i)=>{c.innerHTML+=`<div class="wnw-item" id="wnw-item-${i}" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;background:var(--white);"><span style="flex:1;font-size:.9rem;">${i+1}. ${item.zin}</span><button class="mc-btn" style="min-width:50px;" onclick="answerWNW(${i},true,this)">✅ Waar</button><button class="mc-btn" style="min-width:80px;" onclick="answerWNW(${i},false,this)">❌ Niet waar</button></div>`;});}
+const wnwC={done:0,score:0};
+function answerWNW(i,keuze,btn){const item=wnwData[i];const row=document.getElementById('wnw-item-'+i);if(row.dataset.done)return;row.dataset.done='1';const btns=row.querySelectorAll('button');btns.forEach(b=>b.disabled=true);if(!wnwC.score&&wnwC.score!==0)wnwC.score=0;if(keuze===item.ans){btn.style.background='rgba(16,185,129,0.15)';btn.style.borderColor='#10b981';btn.style.color='#059669';wnwC.score++;}else{btn.style.background='rgba(239,68,68,0.1)';btn.style.borderColor='#ef4444';btn.style.color='#dc2626';btns.forEach(b=>{if((b.textContent.includes('Waar')&&item.ans)||(b.textContent.includes('Niet waar')&&!item.ans)){b.style.background='rgba(16,185,129,0.15)';b.style.borderColor='#10b981';b.style.color='#059669';}});}wnwC.done++;if(wnwC.done===wnwData.length){const sc=document.getElementById('wnw-score');sc.style.display='inline-block';sc.textContent=`${wnwC.score}/${wnwData.length}`;sc.className='score-badge '+(wnwC.score===wnwData.length?'score-goed':wnwC.score>=3?'score-midden':'score-slecht');}}
+function resetWNW(){wnwC.done=0;wnwC.score=0;buildWNW();document.getElementById('wnw-score').style.display='none';}
+
+// ── OPDRACHT 3: INVULOEFENING ──
+const invulData=[
+    {zin:'Ik wil me ___ voor de cursus Nederlands. (inschrijven)', ans:'inschrijven', alts:['inschrijven']},
+    {zin:'Kunt u dit ___ met uw naam en adres invullen? (formulier)', ans:'formulier', alts:['formulier']},
+    {zin:'Mijn ___ is 25 december 1993. (geboortedatum)', ans:'geboortedatum', alts:['geboortedatum']},
+    {zin:'Wat is het ___ van uw huis in Rotterdam? (adres)', ans:'adres', alts:['adres']},
+    {zin:'De nieuwe ___ Nederlands start in september. (cursus)', ans:'cursus', alts:['cursus']},
+    {zin:'Ik heb hoofdpijn, ___ neem ik een aspirine. (daarom)', ans:'daarom', alts:['daarom']}
+];
+function buildInvul(){const ul=document.getElementById('invul-vragen');ul.innerHTML=invulData.map((item,i)=>`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="invr-${i}" autocomplete="off" placeholder="…">`)}</li>`).join('');}
+function checkInvul(){
+    let good=0;
+    invulData.forEach((item,i)=>{
+        const inp=document.getElementById('invr-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        const val=inp.value.trim().toLowerCase();
+        let exactMatch = false;
+        let fuzzyMatch = false;
+        item.alts.forEach(a => {
+            const d = levenshtein(val, a.toLowerCase());
+            if (d === 0) exactMatch = true;
+            else if (d <= 1) fuzzyMatch = true;
+        });
+        if(exactMatch){
+            inp.classList.add('correct');
+            good++;
+        } else if(fuzzyMatch && val.length > 0){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent=`Let op: ${item.ans}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('invul-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${invulData.length}`;
+    sc.className='score-badge '+(good===invulData.length?'score-goed':good>=4?'score-midden':'score-slecht');
+}
+function resetInvul(){buildInvul();document.getElementById('invul-score').style.display='none';}
+
+// ── OPDRACHT 4: FORMULIER SIMULATION CHECK ──
+function checkForm(){
+    const ids = ['vnaam', 'anaam', 'adres', 'pcode', 'plaats', 'gebdat', 'tel', 'mail'];
+    let good = 0;
+    
+    ids.forEach(id => {
+        const inp = document.getElementById('f-' + id);
+        inp.classList.remove('correct', 'fout');
+        const val = inp.value.trim();
+        
+        let ok = false;
+        if (id === 'vnaam' || id === 'anaam') {
+            ok = val.length >= 2;
+        } else if (id === 'adres') {
+            ok = val.length >= 5 && /\d/.test(val); // has numbers (house number)
+        } else if (id === 'pcode') {
+            // Postcode: 4 digits + optionally space + 2 letters
+            ok = /^\d{4}\s?[A-Za-z]{2}$/.test(val);
+        } else if (id === 'plaats') {
+            ok = val.length >= 3;
+        } else if (id === 'gebdat') {
+            // Date format: DD-MM-YYYY or DD-MM-JJJJ
+            ok = /^\d{2}[-\/.]\d{2}[-\/.]\d{4}$/.test(val);
+        } else if (id === 'tel') {
+            ok = val.replace(/[-\s]/g, '').length >= 8 && /^\+?\d+$/.test(val.replace(/[-\s]/g, ''));
+        } else if (id === 'mail') {
+            ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        }
+        
+        if (ok) {
+            inp.classList.add('correct');
+            good++;
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    
+    const sc = document.getElementById('form-score');
+    sc.style.display = 'inline-block';
+    sc.textContent = `${good}/${ids.length}`;
+    sc.className = 'score-badge ' + (good === ids.length ? 'score-goed' : good >= 5 ? 'score-midden' : 'score-slecht');
+}
+function resetForm(){
+    const ids = ['vnaam', 'anaam', 'adres', 'pcode', 'plaats', 'gebdat', 'tel', 'mail'];
+    ids.forEach(id => {
+        const inp = document.getElementById('f-' + id);
+        inp.value = '';
+        inp.classList.remove('correct', 'fout');
+    });
+    document.getElementById('form-score').style.display = 'none';
+}
+
+// ── DICETEE ──
+const dicteeWoorden = [
+    "het formulier",
+    "de geboortedatum",
+    "de postcode",
+    "inschrijven",
+    "invullen",
+    "de cursus"
+];
+const dicteeZinnen = [
+    "Wat is jouw e-mailadres?",
+    "De cursus start in september.",
+    "Je moet het formulier invullen."
+];
+function buildDictee(){
+    const ulW = document.getElementById('dictee-woorden');
+    const ulZ = document.getElementById('dictee-zinnen');
+    ulW.innerHTML = '';
+    ulZ.innerHTML = '';
+    
+    dicteeWoorden.forEach((item, i) => {
+        ulW.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-w-${i}" placeholder="Typ het woord…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        ulZ.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-z-${i}" placeholder="Typ de zin…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+}
+function checkDictee(){
+    let good = 0;
+    const total = dicteeWoorden.length + dicteeZinnen.length;
+    
+    dicteeWoorden.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-w-${i}`);
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 1 && userVal.length > 3){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
+        }
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-z-${i}`);
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 2 && userVal.length > 8){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
+        }
+    });
+    
+    const sc = document.getElementById('dictee-score');
+    sc.style.display = 'inline-block';
+    sc.textContent = `${good}/${total}`;
+    sc.className = 'score-badge ' + (good === total ? 'score-goed' : good >= total * 0.6 ? 'score-midden' : 'score-slecht');
+}
+function resetDictee(){buildDictee();document.getElementById('dictee-score').style.display='none';}
+
+// ── OPDRACHT 5: SCHRIJVEN ──
+function buildSchrijf(lang){
+    const ul=document.getElementById('schrijf1');
+    ul.innerHTML='';
+    const questions = [UI[lang].q1, UI[lang].q2, UI[lang].q3, UI[lang].q4];
+    questions.forEach((v,i)=>{
+        ul.innerHTML+=`<li style="margin-bottom:15px;">
+            <label style="font-weight:700;display:block;margin-bottom:6px;">${v}</label>
+            <textarea id="schrijf-${i}" style="width:100%;height:70px;border-radius:6px;border:1px solid var(--border);padding:8px;" placeholder="Schrijf hier je antwoord…"></textarea>
+        </li>`;
+    });
+}
+function saveSchrijf(){
+    let msg=`*Thema 8.6 — Schrijfopdracht (Inschrijving)*\n`;
+    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const questions = [UI[activeLang].q1, UI[activeLang].q2, UI[activeLang].q3, UI[activeLang].q4];
+    questions.forEach((v,i)=>{
+        const val=document.getElementById('schrijf-'+i).value.trim();
+        msg+=`\n*${v}*\n${val||'(geen antwoord)'}`;
+    });
+    window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function resetSchrijf(){
+    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    buildSchrijf(activeLang);
+}
+
+// ── THEME TOGGLE ──
+(function(){
+    const t=document.getElementById('theme-toggle');
+    if(!t)return;
+    t.addEventListener('click',()=>{
+        let th=document.documentElement.getAttribute('data-theme')||'light';
+        let nt=th==='light'?'dark':'light';
+        document.documentElement.setAttribute('data-theme',nt);
+        localStorage.setItem('a1-theme',nt);
+    });
+})();
+
+// ── INIT ──
+buildTable('nl');
+document.getElementById('uitleg-content').innerHTML=UITLEG.nl;
+buildMC();
+buildWNW();
+buildInvul();
+buildDictee();
+buildSchrijf('nl');
+</script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+</body>
+</html>

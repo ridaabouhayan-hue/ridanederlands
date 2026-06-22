@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulieren invullen - Thema 8</title>
+<style>
+  :root{
+    --bg1:#eef2f7; --bg2:#e3e9f2;
+    --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --soft:#f3f4f6; --line:#e5e7eb; --ok:#16a34a; --err:#ef4444;
+    --accent:#0d9488;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',-apple-system,system-ui,sans-serif;
+    color:var(--ink);min-height:100vh;padding:24px 14px 70px;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  }
+  .wrap{max-width:680px;margin:0 auto}
+
+  header{text-align:center;margin-bottom:18px}
+  header h1{font-size:1.7rem;color:#111827}
+  header p{color:var(--muted);margin-top:4px;font-size:.95rem}
+
+  /* progress */
+  .progress{display:flex;gap:6px;margin:18px 0 6px;flex-wrap:wrap;justify-content:center}
+  .pdot{width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:bold;color:var(--muted);transition:.2s}
+  .pdot.active{border-color:var(--accent);color:var(--accent);transform:scale(1.12)}
+  .pdot.done{background:var(--ok);border-color:var(--ok);color:#fff}
+  .pcount{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:14px}
+
+  /* card */
+  .form-card{background:var(--card);border-radius:var(--radius);box-shadow:0 12px 34px rgba(0,0,0,.10);
+    overflow:hidden;border-top:6px solid var(--accent)}
+  .form-head{padding:20px 22px 14px;display:flex;align-items:center;gap:14px;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%,#fff),#fff)}
+  .form-icon{width:52px;height:52px;flex:none;border-radius:14px;background:color-mix(in srgb,var(--accent) 16%,#fff);
+    display:flex;align-items:center;justify-content:center;font-size:1.7rem}
+  .form-head h2{font-size:1.25rem}
+  .form-head .place{color:var(--accent);font-weight:bold;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+  .form-intro{padding:0 22px;color:var(--muted);font-size:.95rem;margin-bottom:6px}
+  .badge-lvl{display:inline-block;margin-left:auto;background:color-mix(in srgb,var(--accent) 14%,#fff);
+    color:var(--accent);font-size:.72rem;font-weight:bold;padding:4px 10px;border-radius:999px}
+
+  form{padding:16px 22px 22px}
+  .fields{display:grid;grid-template-columns:1fr;gap:14px}
+  .fields.two{grid-template-columns:1fr 1fr}
+  .field.full{grid-column:1 / -1}
+  @media(max-width:520px){.fields.two{grid-template-columns:1fr}}
+
+  label{display:block;font-weight:600;font-size:.9rem;margin-bottom:5px}
+  label .req{color:var(--err)}
+  .hint{font-weight:normal;color:var(--muted);font-size:.78rem;margin-left:4px}
+  input,select{width:100%;border:2px solid var(--line);border-radius:10px;padding:11px 12px;
+    font-size:1rem;font-family:inherit;background:#fff;outline:none;transition:.15s}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+  input.bad,select.bad{border-color:var(--err);background:#fef2f2}
+  input.good,select.good{border-color:var(--ok)}
+  .msg{font-size:.78rem;margin-top:4px;min-height:1em}
+  .msg.bad{color:var(--err)}
+  .msg.good{color:var(--ok)}
+
+  .check-row{display:flex;align-items:flex-start;gap:10px;background:var(--soft);padding:12px;border-radius:10px}
+  .check-row input{width:20px;height:20px;flex:none;margin-top:2px}
+  .check-row label{font-weight:normal;font-size:.9rem;margin:0}
+
+  .actions{display:flex;gap:10px;margin-top:20px;align-items:center}
+  button{font-family:inherit;font-weight:bold;border:none;border-radius:11px;padding:12px 20px;
+    font-size:1rem;cursor:pointer;transition:.15s}
+  button:active{transform:scale(.97)}
+  .btn-check{background:var(--accent);color:#fff;flex:1}
+  .btn-check:hover{filter:brightness(1.07)}
+  .btn-prev{background:var(--soft);color:var(--ink)}
+  .btn-prev:hover{background:#e5e7eb}
+  .btn-prev:disabled{opacity:.4;cursor:not-allowed}
+
+  .success-note{display:none;margin-top:16px;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;
+    padding:14px;border-radius:12px;font-weight:600;text-align:center}
+  .success-note.show{display:block;animation:pop .3s ease}
+  @keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* finish */
+  .finish{display:none;text-align:center;background:var(--card);border-radius:var(--radius);
+    box-shadow:0 12px 34px rgba(0,0,0,.10);padding:40px 24px}
+  .finish.show{display:block}
+  .finish .big{font-size:3.4rem}
+  .finish h2{margin:10px 0 6px;font-size:1.6rem}
+  .finish p{color:var(--muted);margin-bottom:18px}
+  .btn-restart{background:#0d9488;color:#fff;display:inline-block}
+  footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📝 Formulieren invullen</h1>
+    <p>Thema 8 - Vul de gegevens correct in. Elk formulier wordt iets moeilijker.</p>
+  </header>
+
+  <div class="progress" id="progress"></div>
+  <div class="pcount" id="pcount"></div>
+
+  <div class="form-card" id="card"></div>
+
+  <div class="finish" id="finish">
+    <div class="big">🎉</div>
+    <h2>Goed gedaan!</h2>
+    <p>Je hebt alle 10 formulieren correct ingevuld.</p>
+    
+    <div style="margin-top: 30px; border-top: 2px dashed var(--line); padding-top: 24px; text-align: left;">
+      <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: var(--accent);">🚀 Extra Uitdaging: Officiële Aanvragen</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 20px;">
+        Kies een grote aanvraag hieronder, vul de gegevens in en stuur ze rechtstreeks naar de docent via WhatsApp ter controle!
+      </p>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <button type="button" class="btn-prev" onclick="startChallenge(1)" style="flex: 1; padding: 10px; background: color-mix(in srgb, var(--accent) 10%, #fff); color: var(--accent); border: 2px solid var(--accent);">🚗 Parkeervergunning</button>
+        <button type="button" class="btn-prev" onclick="startChallenge(2)" style="flex: 1; padding: 10px; background: color-mix(in srgb, var(--accent) 10%, #fff); color: var(--accent); border: 2px solid var(--accent);">🏠 Huurtoeslag</button>
+      </div>
+      
+      <div id="challenge-box" style="display: none; padding: 22px; border: 2px solid var(--line); border-radius: 12px; background: #fafafa; margin-bottom: 20px;">
+        <!-- Dynamic Challenge Form goes here -->
+      </div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">Opnieuw beginnen</button>
+  </div>
+
+  <footer>NT2 - A1 - Thema 8 - oefenen met formulieren</footer>
+</div>
+
+<script>
+// ====== DATA: 10 formulieren, oplopend in moeilijkheid ======
+// Veldtypes: text, date (dd-mm-jjjj), postcode (1234 AB), email, phone, bsn (9 cijfers),
+//            number, select (met opties), checkbox
+const FORMS = [
+  {
+    place:"Bibliotheek", title:"Lidmaatschap aanvragen", icon:"📚", accent:"#0d9488", level:"Makkelijk",
+    intro:"Je wilt lid worden van de bibliotheek. Vul je gegevens in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Bijvoorbeeld: Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Bijvoorbeeld: Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+    ]
+  },
+  {
+    place:"Sportschool", title:"Inschrijfformulier", icon:"🏋️", accent:"#f97316", level:"Makkelijk",
+    intro:"Je gaat sporten. Vul het inschrijfformulier in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678", hint:"10 cijfers"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"sport", label:"Welke sport?", type:"select", options:["Fitness","Zwemmen","Voetbal","Yoga","Anders"]},
+    ]
+  },
+  {
+    place:"Huisarts", title:"Nieuwe patiënt", icon:"🩺", accent:"#16a34a", level:"Makkelijk",
+    intro:"Je schrijft je in bij de huisarts. Vul je gegevens in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"geslacht", label:"Geslacht", type:"select", options:["Vrouw","Man","Anders"]},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678", hint:"10 cijfers"},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+    ]
+  },
+  {
+    place:"Taalschool", title:"Aanmelden voor een cursus", icon:"🎓", accent:"#2563eb", level:"Iets moeilijker",
+    intro:"Je meldt je aan voor een taalcursus. Vul al je gegevens in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678"},
+      {id:"taal", label:"Moedertaal", type:"select", options:["Turks","Arabisch","Pasjto","Tigrinya","Oekraïens","Anders"]},
+      {id:"niveau", label:"Welk niveau?", type:"select", options:["A1","A2","B1","Weet ik niet"]},
+    ]
+  },
+  {
+    place:"Pakketdienst", title:"Bezorgadres", icon:"📦", accent:"#b45309", level:"Iets moeilijker",
+    intro:"Je bestelt iets online. Vul je bezorggegevens in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"pc", label:"Postcode", type:"postcode", placeholder:"1234 AB", hint:"4 cijfers + 2 letters"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678", hint:"voor de bezorger"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"moment", label:"Bezorgmoment", type:"select", options:["Overdag","'s Avonds","In het weekend"]},
+    ]
+  },
+  {
+    place:"Bank", title:"Rekening openen", icon:"🏦", accent:"#4f46e5", level:"Gemiddeld",
+    intro:"Je opent een bankrekening. De bank vraagt veel gegevens.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"geslacht", label:"Geslacht", type:"select", options:["Vrouw","Man","Anders"]},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"gbplaats", label:"Geboorteplaats", type:"text", placeholder:"Istanbul"},
+      {id:"nat", label:"Nationaliteit", type:"text", placeholder:"Turks"},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"pc", label:"Postcode", type:"postcode", placeholder:"1234 AB"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678"},
+    ]
+  },
+  {
+    place:"Hotel", title:"Inchecken", icon:"🏨", accent:"#9333ea", level:"Gemiddeld",
+    intro:"Je checkt in bij een hotel. Vul het inschrijfformulier in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"land", label:"Land", type:"text", placeholder:"Nederland"},
+      {id:"nat", label:"Nationaliteit", type:"text", placeholder:"Turks"},
+      {id:"paspoort", label:"Paspoortnummer", type:"text", placeholder:"NL1234567", hint:"staat in je paspoort"},
+      {id:"aankomst", label:"Datum van aankomst", type:"date", placeholder:"20-06-2026", hint:"dag-maand-jaar"},
+      {id:"vertrek", label:"Datum van vertrek", type:"date", placeholder:"23-06-2026", hint:"dag-maand-jaar"},
+      {id:"personen", label:"Aantal personen", type:"select", options:["1","2","3","4 of meer"]},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+    ]
+  },
+  {
+    place:"Werk", title:"Sollicitatieformulier", icon:"💼", accent:"#0369a1", level:"Moeilijk",
+    intro:"Je solliciteert op een baan. Vul je gegevens, opleiding en wensen in.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"pc", label:"Postcode", type:"postcode", placeholder:"1234 AB"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678"},
+      {id:"opleiding", label:"Hoogste opleiding", type:"select", options:["Basisschool","Middelbare school","MBO","HBO","Universiteit"]},
+      {id:"rijbewijs", label:"Heb je een rijbewijs?", type:"select", options:["Ja","Nee"]},
+      {id:"start", label:"Beschikbaar vanaf", type:"date", placeholder:"01-07-2026", hint:"dag-maand-jaar"},
+    ]
+  },
+  {
+    place:"Gemeente", title:"Inschrijven in de gemeente", icon:"🏛️", accent:"#1d4ed8", level:"Moeilijk",
+    intro:"Je schrijft je in bij de gemeente. Dit is een officieel formulier met veel gegevens.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"geslacht", label:"Geslacht", type:"select", options:["Vrouw","Man","Anders"]},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"gbplaats", label:"Geboorteplaats", type:"text", placeholder:"Istanbul"},
+      {id:"gbland", label:"Geboorteland", type:"text", placeholder:"Turkije"},
+      {id:"nat", label:"Nationaliteit", type:"text", placeholder:"Turks"},
+      {id:"bsn", label:"Burgerservicenummer (BSN)", type:"bsn", placeholder:"123456789", hint:"9 cijfers"},
+      {id:"staat", label:"Burgerlijke staat", type:"select", options:["Ongehuwd","Gehuwd","Gescheiden","Weduwe / weduwnaar"]},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"pc", label:"Postcode", type:"postcode", placeholder:"1234 AB", hint:"4 cijfers + 2 letters"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+    ]
+  },
+  {
+    place:"Verzekering", title:"Zorgverzekering aanvragen", icon:"🛡️", accent:"#047857", level:"Het moeilijkst",
+    intro:"Je vraagt een zorgverzekering aan. Vul alles in en zet je handtekening.",
+    fields:[
+      {id:"vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"geslacht", label:"Geslacht", type:"select", options:["Vrouw","Man","Anders"]},
+      {id:"gb", label:"Geboortedatum", type:"date", placeholder:"15-03-1995", hint:"dag-maand-jaar"},
+      {id:"gbland", label:"Geboorteland", type:"text", placeholder:"Turkije"},
+      {id:"nat", label:"Nationaliteit", type:"text", placeholder:"Turks"},
+      {id:"bsn", label:"Burgerservicenummer (BSN)", type:"bsn", placeholder:"123456789", hint:"9 cijfers"},
+      {id:"straat", label:"Straat en huisnummer", type:"text", placeholder:"Dorpsstraat 12"},
+      {id:"pc", label:"Postcode", type:"postcode", placeholder:"1234 AB"},
+      {id:"plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"email", label:"E-mailadres", type:"email", placeholder:"sara@email.nl"},
+      {id:"tel", label:"Telefoonnummer", type:"phone", placeholder:"06 12345678"},
+      {id:"ingang", label:"Ingangsdatum verzekering", type:"date", placeholder:"01-01-2027", hint:"dag-maand-jaar"},
+      {id:"risico", label:"Eigen risico", type:"select", options:["385 euro","585 euro","885 euro"]},
+      {id:"akkoord", label:"Ik vul deze gegevens eerlijk in.", type:"checkbox", full:true},
+      {id:"handtekening", label:"Handtekening (typ je volledige naam)", type:"text", placeholder:"Sara Yilmaz", full:true},
+    ]
+  },
+];
+
+// ====== CONTROLE: Geavanceerde formaat & inhoudscontrole ======
+function validateField(f, value){
+  if (f.type === "checkbox"){
+    return value === true ? {ok:true} : {ok:false, msg:"Zet een vinkje."};
+  }
+  const v = (value || "").toString().trim();
+  if (v === "") return {ok:false, msg:"Vul dit veld in."};
+  
+  if (f.type === "email") {
+    const emailPat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPat.test(v)) return {ok:false, msg: "Ongeldig e-mailadres. Gebruik naam@domein.nl"};
+  }
+  
+  if (f.type === "phone") {
+    const cleanPhone = v.replace(/[-\s]/g, '').replace(/^\+31/, '0');
+    if (!/^0[1-9]\d{8}$/.test(cleanPhone)) {
+      return {ok:false, msg: "Ongeldig telefoonnummer. Gebruik 10 cijfers (bijv. 06 12345678)."};
+    }
+  }
+  
+  if (f.type === "postcode") {
+    if (!/^\d{4}\s?[A-Za-z]{2}$/.test(v)) {
+      return {ok:false, msg: "Ongeldige postcode. Gebruik het formaat 1234 AB."};
+    }
+  }
+  
+  if (f.type === "bsn") {
+    if (!/^\d{9}$/.test(v)) {
+      return {ok:false, msg: "Ongeldig BSN. Gebruik exact 9 cijfers."};
+    }
+  }
+  
+  if (f.type === "date") {
+    if (!/^\d{2}[-\/.]\d{2}[-\/.]\d{4}$/.test(v)) {
+      return {ok:false, msg: "Ongeldige datum. Gebruik dd-mm-jjjj."};
+    }
+  }
+
+  // Naamcontrole op basis van ID (voornaam, achternaam, nationaliteit, etc.)
+  if (f.id === "vn" || f.id === "an" || f.id === "gbplaats" || f.id === "nat" || f.id === "land" || f.id === "gbland") {
+    if (!/^[A-Za-zÀ-ÿ\s'-]{2,}$/.test(v)) {
+      return {ok:false, msg: "Gebruik alleen letters (minimaal 2)."};
+    }
+  }
+  
+  // Adrescontrole (moet straat én huisnummer bevatten)
+  if (f.id === "straat") {
+    if (!/^(?=.*[A-Za-zÀ-ÿ])(?=.*\d).{5,}$/.test(v)) {
+      return {ok:false, msg: "Vul een geldige straatnaam én huisnummer in."};
+    }
+  }
+  
+  return {ok:true};
+}
+
+// ====== RENDER ======
+let current = 0;
+const card = document.getElementById("card");
+const finish = document.getElementById("finish");
+
+function buildProgress(){
+  const p = document.getElementById("progress");
+  p.innerHTML = "";
+  FORMS.forEach((_, i)=>{
+    const d = document.createElement("div");
+    d.className = "pdot" + (i<current?" done":"") + (i===current?" active":"");
+    d.textContent = i<current ? "✓" : (i+1);
+    p.appendChild(d);
+  });
+  document.getElementById("pcount").textContent = `Formulier ${current+1} van ${FORMS.length}`;
+}
+
+function renderForm(){
+  const f = FORMS[current];
+  document.documentElement.style.setProperty("--accent", f.accent);
+  buildProgress();
+
+  const twoCol = f.fields.filter(x=>x.type!=="checkbox").length >= 5;
+  let inner = `
+    <div class="form-head">
+      <div class="form-icon">${f.icon}</div>
+      <div>
+        <div class="place">${f.place}</div>
+        <h2>${f.title}</h2>
+      </div>
+      <span class="badge-lvl">${f.level}</span>
+    </div>
+    <p class="form-intro">${f.intro}</p>
+    <form id="theform" autocomplete="off" novalidate>
+      <div class="fields ${twoCol?"two":""}">
+  `;
+  f.fields.forEach(field=>{
+    const full = field.full || field.type==="checkbox" ? " full" : "";
+    if(field.type==="checkbox"){
+      inner += `
+        <div class="field${full}">
+          <div class="check-row">
+            <input type="checkbox" id="f_${field.id}">
+            <label for="f_${field.id}">${field.label}</label>
+          </div>
+          <div class="msg" id="m_${field.id}"></div>
+        </div>`;
+    } else if(field.type==="select"){
+      const opts = ['<option value="">Kies...</option>'].concat(field.options.map(o=>`<option>${o}</option>`)).join("");
+      inner += `
+        <div class="field${full}">
+          <label for="f_${field.id}">${field.label} <span class="req">*</span></label>
+          <select id="f_${field.id}">${opts}</select>
+          <div class="msg" id="m_${field.id}"></div>
+        </div>`;
+    } else {
+      const hint = field.hint ? `<span class="hint">(${field.hint})</span>` : "";
+      inner += `
+        <div class="field${full}">
+          <label for="f_${field.id}">${field.label} <span class="req">*</span>${hint}</label>
+          <input type="text" id="f_${field.id}" placeholder="${field.placeholder||""}">
+          <div class="msg" id="m_${field.id}"></div>
+        </div>`;
+    }
+  });
+  inner += `
+      </div>
+      <div class="success-note" id="successNote">✅ Alles is correct ingevuld! Ga door naar het volgende formulier.</div>
+      <div class="actions">
+        <button type="button" class="btn-prev" id="prevBtn" onclick="prev()" ${current===0?"disabled":""}>← Vorige</button>
+        <button type="submit" class="btn-check">Controleer ✓</button>
+      </div>
+    </form>
+  `;
+  card.style.display = "block";
+  card.innerHTML = inner;
+  document.getElementById("theform").addEventListener("submit", (e)=>{ e.preventDefault(); checkForm(); });
+}
+
+function checkForm(){
+  const f = FORMS[current];
+  let allOk = true;
+  f.fields.forEach(field=>{
+    const el = document.getElementById("f_"+field.id);
+    const msg = document.getElementById("m_"+field.id);
+    const value = field.type==="checkbox" ? el.checked : el.value;
+    const res = validateField(field, value);
+    if(res.ok){
+      el.classList.remove("bad"); el.classList.add("good");
+      msg.textContent = ""; msg.className = "msg good";
+    } else {
+      el.classList.remove("good"); el.classList.add("bad");
+      msg.textContent = res.msg; msg.className = "msg bad";
+      allOk = false;
+    }
+  });
+  const note = document.getElementById("successNote");
+  if(allOk){
+    note.classList.add("show");
+    const btn = document.querySelector(".btn-check");
+    if(current < FORMS.length-1){
+      btn.textContent = "Volgende formulier →";
+      btn.onclick = (e)=>{ e.preventDefault(); next(); };
+    } else {
+      btn.textContent = "Klaar! 🎉";
+      btn.onclick = (e)=>{ e.preventDefault(); showFinish(); };
+    }
+  } else {
+    note.classList.remove("show");
+  }
+}
+
+function next(){ if(current < FORMS.length-1){ current++; renderForm(); window.scrollTo({top:0,behavior:"smooth"}); } }
+function prev(){ if(current > 0){ current--; renderForm(); window.scrollTo({top:0,behavior:"smooth"}); } }
+
+function showFinish(){
+  card.style.display = "none";
+  document.getElementById("progress").innerHTML = "";
+  document.getElementById("pcount").textContent = "";
+  current = FORMS.length;
+  buildProgress();
+  document.getElementById("pcount").textContent = "Klaar!";
+  finish.classList.add("show");
+  document.getElementById("challenge-box").style.display = "none";
+}
+
+function restart(){ current = 0; finish.classList.remove("show"); renderForm(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+// ====== UITDAGINGEN ======
+const CHALLENGES = {
+  1: {
+    title: "Aanvraag Parkeervergunning (Bewoners)",
+    icon: "🚗",
+    accent: "#0d9488",
+    intro: "Je wilt een parkeervergunning aanvragen voor je auto bij jouw huis. Vul het officiële gemeentelijke formulier in.",
+    fields: [
+      {id:"c_vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"c_an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"c_bsn", label:"Burgerservicenummer (BSN)", type:"bsn", placeholder:"123456789"},
+      {id:"c_straat", label:"Straat en Huisnummer", type:"straat", placeholder:"Dorpsstraat 12"},
+      {id:"c_pc", label:"Postcode", type:"postcode", placeholder:"1234 AB"},
+      {id:"c_plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"c_kenteken", label:"Kenteken auto", type:"kenteken", placeholder:"AB-123-CD"},
+      {id:"c_reden", label:"Reden van aanvraag", type:"select", options:["Ik ben bewoner", "Ik heb een bedrijf in de buurt", "Bezoeker vergunning"]},
+      {id:"c_ingang", label:"Ingangsdatum vergunning", type:"date", placeholder:"01-07-2026"}
+    ]
+  },
+  2: {
+    title: "Aanvraag Huurtoeslag (Belastingdienst)",
+    icon: "🏠",
+    accent: "#0d9488",
+    intro: "Je wilt huurtoeslag aanvragen voor je huidige woning. Vul je gegevens, huurprijs en inkomen in.",
+    fields: [
+      {id:"c_vn", label:"Voornaam", type:"text", placeholder:"Sara"},
+      {id:"c_an", label:"Achternaam", type:"text", placeholder:"Yilmaz"},
+      {id:"c_bsn", label:"Burgerservicenummer (BSN)", type:"bsn", placeholder:"123456789"},
+      {id:"c_straat", label:"Straat en Huisnummer", type:"straat", placeholder:"Dorpsstraat 12"},
+      {id:"c_pc", label:"Postcode", type:"postcode", placeholder:"1234 AB"},
+      {id:"c_plaats", label:"Woonplaats", type:"text", placeholder:"Utrecht"},
+      {id:"c_huur", label:"Maandelijkse kale huurprijs (€)", type:"number", placeholder:"650"},
+      {id:"c_iban", label:"Rekeningnummer (IBAN)", type:"iban", placeholder:"NL99 INGB 0123 4567 89"},
+      {id:"c_inkomen", label:"Uw bruto jaarinkomen", type:"select", options:["Minder dan 25.000 euro", "Tussen 25.000 en 35.000 euro", "Meer dan 35.000 euro"]},
+      {id:"c_akkoord", label:"Ik verklaar dat ik dit formulier eerlijk heb ingevuld.", type:"checkbox"}
+    ]
+  }
+};
+
+let activeChallengeNum = null;
+
+function startChallenge(num) {
+  activeChallengeNum = num;
+  const c = CHALLENGES[num];
+  const box = document.getElementById("challenge-box");
+  box.style.display = "block";
+  
+  let html = `
+    <h4 style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--accent);">
+      <span style="font-size:1.5rem;">${c.icon}</span> ${c.title}
+    </h4>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 18px; line-height:1.4;">${c.intro}</p>
+    <div class="fields two">
+  `;
+  
+  c.fields.forEach(f => {
+    const full = f.type === "checkbox" ? " full" : "";
+    if (f.type === "checkbox") {
+      html += `
+        <div class="field${full}">
+          <div class="check-row" style="padding: 10px; font-size: 0.85rem;">
+            <input type="checkbox" id="f_${f.id}">
+            <label for="f_${f.id}">${f.label}</label>
+          </div>
+          <div class="msg" id="m_${f.id}" style="font-size: 0.75rem;"></div>
+        </div>`;
+    } else if (f.type === "select") {
+      const opts = ['<option value="">Kies...</option>'].concat(f.options.map(o=>`<option>${o}</option>`)).join("");
+      html += `
+        <div class="field${full}">
+          <label for="f_${f.id}" style="font-size: 0.85rem;">${f.label} <span style="color:var(--err)">*</span></label>
+          <select id="f_${f.id}" style="padding: 10px; font-size: 0.95rem;">${opts}</select>
+          <div class="msg" id="m_${f.id}" style="font-size: 0.75rem;"></div>
+        </div>`;
+    } else {
+      html += `
+        <div class="field${full}">
+          <label for="f_${f.id}" style="font-size: 0.85rem;">${f.label} <span style="color:var(--err)">*</span></label>
+          <input type="text" id="f_${f.id}" placeholder="${f.placeholder}" style="padding: 10px; font-size: 0.95rem;">
+          <div class="msg" id="m_${f.id}" style="font-size: 0.75rem;"></div>
+        </div>`;
+    }
+  });
+  
+  html += `
+    </div>
+    <button type="button" onclick="submitChallenge()" style="margin-top: 20px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #075e54; color: #fff; padding: 12px; border-radius:10px; font-size:1rem; font-weight:bold;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      Versturen via WhatsApp
+    </button>
+  `;
+  box.innerHTML = html;
+}
+
+function submitChallenge() {
+  const c = CHALLENGES[activeChallengeNum];
+  let allOk = true;
+  let msgText = `*Formulieren Oefening — ${c.title}*\n`;
+  
+  c.fields.forEach(field => {
+    const el = document.getElementById("f_" + field.id);
+    const msg = document.getElementById("m_" + field.id);
+    const value = field.type === "checkbox" ? el.checked : el.value;
+    
+    let res = { ok: true };
+    const v = (value || "").toString().trim();
+    
+    if (field.type === "checkbox") {
+      res = value === true ? { ok: true } : { ok: false, msg: "Zet een vinkje." };
+    } else if (v === "") {
+      res = { ok: false, msg: "Vul dit veld in." };
+    } else if (field.id === "c_vn" || field.id === "c_an" || field.id === "c_plaats") {
+      if (!/^[A-Za-zÀ-ÿ\s'-]{2,}$/.test(v)) {
+        res = { ok: false, msg: "Gebruik alleen letters (min. 2)." };
+      }
+    } else if (field.type === "bsn") {
+      if (!/^\d{9}$/.test(v)) {
+        res = { ok: false, msg: "BSN moet exact 9 cijfers zijn." };
+      }
+    } else if (field.type === "postcode") {
+      if (!/^\d{4}\s?[A-Za-z]{2}$/.test(v)) {
+        res = { ok: false, msg: "Gebruik het formaat 1234 AB." };
+      }
+    } else if (field.type === "date") {
+      if (!/^\d{2}[-\/.]\d{2}[-\/.]\d{4}$/.test(v)) {
+        res = { ok: false, msg: "Gebruik dd-mm-jjjj." };
+      }
+    } else if (field.type === "kenteken") {
+      if (v.replace(/-/g, '').length < 6 || !/^[A-Za-z0-9-]+$/.test(v)) {
+        res = { ok: false, msg: "Ongeldig kenteken (bijv. AB-123-CD)." };
+      }
+    } else if (field.type === "number") {
+      if (isNaN(v) || parseInt(v) <= 0) {
+        res = { ok: false, msg: "Vul een geldig getal in." };
+      }
+    } else if (field.type === "iban") {
+      const cleanIban = v.replace(/\s/g, '').toUpperCase();
+      if (!/^NL\d{2}[A-Z]{4}\d{10}$/.test(cleanIban)) {
+        res = { ok: false, msg: "Ongeldig IBAN (bijv. NL99 INGB 0123 4567 89)." };
+      }
+    } else if (field.type === "straat") {
+      if (!/^(?=.*[A-Za-zÀ-ÿ])(?=.*\d).{5,}$/.test(v)) {
+        res = { ok: false, msg: "Vul een geldige straatnaam én huisnummer in." };
+      }
+    }
+    
+    if (res.ok) {
+      el.classList.remove("bad"); el.classList.add("good");
+      msg.textContent = ""; msg.className = "msg good";
+      msgText += `\n*${field.label}*: ${value}`;
+    } else {
+      el.classList.remove("good"); el.classList.add("bad");
+      msg.textContent = res.msg; msg.className = "msg bad";
+      allOk = false;
+    }
+  });
+  
+  if (allOk) {
+    window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msgText)}`, '_blank');
+  }
+}
+
+renderForm();
+</script>
+</body>
+</html>
