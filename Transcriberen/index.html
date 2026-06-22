@@ -419,7 +419,7 @@
                             
                             <!-- Gemini Model Dropdown (Sub-Panel) -->
                             <div id="geminiModelWrapper" style="padding-left: 24px; display: none; margin-top: 4px;">
-                                <label for="geminiModelSelect" style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Kies Gemini Model:</label>
+                                <label for="geminiModelSelect" style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Kies Model (Gemini / Claude):</label>
                                 <select id="geminiModelSelect" onchange="changeGeminiModel(this.value)" style="width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: rgba(30, 41, 59, 0.9); color: #fff; font-size: 0.78rem; outline: none; font-weight: 600; cursor: pointer; transition: var(--transition);">
                                     <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash ⚡ (aanbevolen / stabiel)</option>
                                     <option value="gemini-2.5-pro">Gemini 2.5 Pro (meest nauwkeurig)</option>
@@ -427,6 +427,8 @@
                                     <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
                                     <option value="gemini-pro-latest">Gemini 1.5 Pro</option>
                                     <option value="gemini-flash-latest">Gemini 1.5 Flash</option>
+                                    <option value="claude-3-5-sonnet-latest">Claude 3.5 Sonnet 🎭 (zeer nauwkeurig)</option>
+                                    <option value="claude-3-5-haiku-latest">Claude 3.5 Haiku 🚀 (snel)</option>
                                 </select>
                             </div>
                         </div>
@@ -3341,10 +3343,21 @@
             }
 
             const apiKey = getApiKey();
-            if (!apiKey) {
-                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
-                openSettingsModal();
-                return;
+            const claudeKey = getClaudeApiKey();
+            const model = document.getElementById('geminiModelSelect').value;
+
+            if (model.startsWith('claude-')) {
+                if (!claudeKey) {
+                    alert("Voer eerst een geldige Claude API Key in via de instellingen (⚙️).");
+                    openSettingsModal();
+                    return;
+                }
+            } else {
+                if (!apiKey) {
+                    alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                    openSettingsModal();
+                    return;
+                }
             }
 
             const btn = event ? event.target : null;
@@ -3366,30 +3379,9 @@ RICHTLIJNEN VOOR DE VERTALING:
 BRIEF OM TE VERTAALEN:
 ${activeFb.brief}`;
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{
-                        parts: [{ text: systemPrompt }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.1
-                    }
-                };
-
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!res.ok) {
-                    throw new Error(`Vertaling mislukt: ${res.statusText}`);
-                }
-
-                const data = await res.json();
-                const translatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                const translatedText = await makeGeminiCallWithFallback(apiKey, model, systemPrompt, false, null);
                 if (!translatedText) {
-                    throw new Error("Geen vertaling ontvangen van Gemini.");
+                    throw new Error("Geen vertaling ontvangen.");
                 }
 
                 // Sla de vertaling op in het actieve object en in de database
@@ -3718,6 +3710,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
             modal.style.opacity = '1';
             modal.style.pointerEvents = 'all';
             document.getElementById('apiKeyField').value = localStorage.getItem('user_gemini_api_key') || '';
+            document.getElementById('claudeApiKeyField').value = localStorage.getItem('user_claude_api_key') || '';
             document.getElementById('elevenLabsKeyField').value = localStorage.getItem('user_elevenlabs_api_key') || '';
             document.getElementById('azureKeyField').value = localStorage.getItem('user_azure_speech_key') || '';
             document.getElementById('azureRegionField').value = localStorage.getItem('user_azure_region') || '';
@@ -3737,6 +3730,13 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 localStorage.setItem('user_gemini_api_key', val);
             } else {
                 localStorage.removeItem('user_gemini_api_key');
+            }
+
+            const claudeVal = document.getElementById('claudeApiKeyField').value.trim();
+            if (claudeVal) {
+                localStorage.setItem('user_claude_api_key', claudeVal);
+            } else {
+                localStorage.removeItem('user_claude_api_key');
             }
 
             const elevenVal = document.getElementById('elevenLabsKeyField').value.trim();
@@ -3763,6 +3763,10 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
 
         function getApiKey() {
             return localStorage.getItem('user_gemini_api_key') || window.GEMINI_API_KEY || '';
+        }
+
+        function getClaudeApiKey() {
+            return localStorage.getItem('user_claude_api_key') || '';
         }
 
         function getElevenLabsApiKey() {
@@ -4798,6 +4802,7 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
         }
 
         async function makeGeminiCallWithFallback(apiKey, model, prompt, expectJson = false, fileInfo = null) {
+            const claudeKey = localStorage.getItem('user_claude_api_key') || '';
             const fallbackModels = [
                 model,
                 "gemini-2.5-flash",
@@ -4806,78 +4811,123 @@ Je taak is om de bestaande gespreksanalyse en/of feedbackbrieven aan te passen v
                 "gemini-2.0-flash",
                 "gemini-flash-latest"
             ];
+            if (claudeKey) {
+                fallbackModels.push("claude-3-5-sonnet-latest");
+                fallbackModels.push("claude-3-5-haiku-latest");
+            }
             const modelsToTry = [...new Set(fallbackModels)].filter(Boolean);
             let lastError = null;
 
             for (const tryModel of modelsToTry) {
                 try {
-                    console.log(`Gemini aanroep met model ${tryModel} (JSON expected: ${expectJson}, File: ${!!fileInfo})...`);
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${tryModel}:generateContent?key=${apiKey}`;
-                    
-                    const parts = [];
-                    if (fileInfo) {
-                        parts.push({
-                            fileData: {
-                                fileUri: fileInfo.uri,
-                                mimeType: fileInfo.mimeType
-                            }
-                        });
-                    }
-                    parts.push({ text: prompt });
-
-                    const payload = {
-                        contents: [{
-                            parts: parts
-                        }],
-                        generationConfig: {
-                            temperature: 0.1,
-                            maxOutputTokens: 65536
+                    if (tryModel.startsWith('claude-')) {
+                        if (!claudeKey) {
+                            throw new Error("Geen Claude API key geconfigureerd in instellingen.");
                         }
-                    };
-
-                    if (expectJson) {
-                        payload.generationConfig.responseMimeType = "application/json";
-                    }
-
-                    const res = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!res.ok) {
-                        const errText = await res.text();
-                        const err = new Error(`Request failed for model ${tryModel}: ${res.status} ${errText}`);
-                        err.status = res.status;
-                        throw err;
-                    }
-
-                    const data = await res.json();
-                    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0) {
-                        throw new Error("Ongeldig antwoord van Gemini: geen content.");
-                    }
-
-                    const text = data.candidates[0].content.parts[0].text.trim();
-                    
-                    if (expectJson) {
-                        return repairAndParseJSON(text);
+                        console.log(`Claude aanroep met model ${tryModel} (JSON expected: ${expectJson})...`);
+                        const url = "https://api.anthropic.com/v1/messages";
+                        const headers = {
+                            "x-api-key": claudeKey,
+                            "anthropic-version": "2023-06-01",
+                            "content-type": "application/json",
+                            "anthropic-dangerous-direct-browser-access": "true"
+                        };
+                        
+                        let systemPrompt = "Je bent een professionele NT2-docent.";
+                        let userPrompt = prompt;
+                        if (expectJson) {
+                            systemPrompt += " Antwoord strikt met valide JSON. Voeg geen markdown code-block opmaak (zoals ```json ... ```) toe. Retourneer uitsluitend het ruwe JSON-object.";
+                        }
+                        
+                        const payload = {
+                            model: tryModel,
+                            max_tokens: 4096,
+                            system: systemPrompt,
+                            messages: [{ role: "user", content: userPrompt }]
+                        };
+                        
+                        const res = await fetch(url, {
+                            method: "POST",
+                            headers: headers,
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        if (!res.ok) {
+                            const errText = await res.text();
+                            throw new Error(`Claude API error for model ${tryModel}: ${res.status} ${errText}`);
+                        }
+                        
+                        const data = await res.json();
+                        let text = data.content?.[0]?.text || '';
+                        if (!text) {
+                            throw new Error(`Leeg antwoord van Claude model ${tryModel}`);
+                        }
+                        if (expectJson) {
+                            text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                            return repairAndParseJSON(text);
+                        }
+                        return text;
                     } else {
+                        if (!apiKey) {
+                            throw new Error("Geen Gemini API key geconfigureerd in instellingen.");
+                        }
+                        console.log(`Gemini aanroep met model ${tryModel} (JSON expected: ${expectJson}, File: ${!!fileInfo})...`);
+                        const url = `https://generativelanguage.googleapis.com/v1beta/models/${tryModel}:generateContent?key=${apiKey}`;
+                        
+                        const parts = [];
+                        if (fileInfo) {
+                            parts.push({
+                                fileData: {
+                                    fileUri: fileInfo.uri,
+                                    mimeType: fileInfo.mimeType
+                                }
+                            });
+                        }
+                        parts.push({ text: prompt });
+
+                        const payload = {
+                            contents: [{
+                                parts: parts
+                            }],
+                            generationConfig: {
+                                temperature: expectJson ? 0.1 : 0.2
+                            }
+                        };
+                        if (expectJson) {
+                            payload.generationConfig.responseMimeType = "application/json";
+                        }
+
+                        const res = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!res.ok) {
+                            const errBody = await res.json().catch(() => ({}));
+                            const errMsg = errBody.error?.message || res.statusText;
+                            throw new Error(`Request failed for model ${tryModel}: ${res.status} ${errMsg}`);
+                        }
+
+                        const data = await res.json();
+                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (!text) {
+                            throw new Error(`Empty response for model ${tryModel}`);
+                        }
+                        if (expectJson) {
+                            return repairAndParseJSON(text.trim());
+                        }
                         return text;
                     }
-
                 } catch (err) {
+                    console.warn(`Model ${tryModel} faalde:`, err);
                     lastError = err;
-                    if (err.status === 503 || err.status === 429 || err.status === 500 || err.status === 404) {
-                        console.warn(`Model ${tryModel} fout (${err.status}), probeer volgend model...`);
-                        if (err.status === 429) await new Promise(r => setTimeout(r, 2000));
-                        continue;
-                    }
-                    throw err;
+                    continue;
                 }
             }
-            throw new Error(`Alle Gemini-modellen gaven een fout. Laatste fout: ${lastError?.message || lastError}`);
+            throw new Error(`Alle AI-modellen gaven een fout. Laatste fout: ${lastError?.message || lastError}`);
         }
 
         async function executeNT2AnalysisPipeline({
@@ -5280,6 +5330,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="display: flex; flex-direction: column; gap: 6px;">
                     <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Gemini API Key</label>
                     <input type="password" id="apiKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="AIzaSy...">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Claude (Anthropic) API Key</label>
+                    <input type="password" id="claudeApiKeyField" class="auth-input" style="text-align: left; margin-bottom: 0;" placeholder="sk-ant-...">
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 6px;">
                     <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">ElevenLabs API Key</label>
