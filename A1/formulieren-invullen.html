@@ -351,6 +351,7 @@ function validateField(f, value){
 
 // ====== RENDER ======
 let current = 0;
+let formSent = false;
 const card = document.getElementById("card");
 const finish = document.getElementById("finish");
 
@@ -367,6 +368,7 @@ function buildProgress(){
 }
 
 function renderForm(){
+  formSent = false;
   const f = FORMS[current];
   document.documentElement.style.setProperty("--accent", f.accent);
   buildProgress();
@@ -447,17 +449,43 @@ function checkForm(){
   });
   const note = document.getElementById("successNote");
   if(allOk){
+    note.innerHTML = "✅ Alles is correct ingevuld! Klik op de knop hieronder om je formulier naar de docent te sturen via WhatsApp ter controle.";
     note.classList.add("show");
+    
     const btn = document.querySelector(".btn-check");
-    if(current < FORMS.length-1){
-      btn.textContent = "Volgende formulier →";
-      btn.onclick = (e)=>{ e.preventDefault(); next(); };
-    } else {
-      btn.textContent = "Klaar! 🎉";
-      btn.onclick = (e)=>{ e.preventDefault(); showFinish(); };
-    }
+    btn.textContent = "Verstuur naar docent via WhatsApp 💬";
+    btn.style.background = "#075e54"; // WhatsApp green
+    btn.onclick = (e)=>{ e.preventDefault(); sendFormToTeacher(); };
   } else {
     note.classList.remove("show");
+  }
+}
+
+function sendFormToTeacher() {
+  const f = FORMS[current];
+  let msgText = `*Formulier ${current + 1}: ${f.place} - ${f.title}*\n`;
+  
+  f.fields.forEach(field => {
+    const el = document.getElementById("f_" + field.id);
+    const value = field.type === "checkbox" ? (el.checked ? "Ja" : "Nee") : el.value;
+    msgText += `\n*${field.label}*: ${value}`;
+  });
+  
+  window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msgText)}`, '_blank');
+  
+  formSent = true;
+  
+  const note = document.getElementById("successNote");
+  note.innerHTML = "✅ Geopend in WhatsApp! Klik hieronder om door te gaan naar de volgende opdracht.";
+  
+  const btn = document.querySelector(".btn-check");
+  btn.style.background = ""; // reset inline style to allow CSS class styles
+  if(current < FORMS.length-1){
+    btn.textContent = "Volgende formulier →";
+    btn.onclick = (e)=>{ e.preventDefault(); next(); };
+  } else {
+    btn.textContent = "Klaar! 🎉";
+    btn.onclick = (e)=>{ e.preventDefault(); showFinish(); };
   }
 }
 
