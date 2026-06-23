@@ -2646,11 +2646,37 @@
                 row.className = "qa-row";
                 row.id = `qa-row-${idx}`;
                 
-                // Question side translations
-                const qTransl = (currentLang !== 'nl' && q.translations && q.translations[currentLang])
-                    ? `<span class="qa-translation-text">${q.translations[currentLang]}</span>`
-                    : '';
+                // Helper to split Dutch question and translations into main and sub questions if parentheses are present
+                const splitQuestion = (text) => {
+                    if (!text) return { main: '', sub: '' };
+                    const match = text.match(/^(.*?)\s*[（(](.*?)[）)]\s*$/);
+                    if (match) {
+                        return { main: match[1].trim(), sub: match[2].trim() };
+                    }
+                    return { main: text, sub: '' };
+                };
+
+                const qParts = splitQuestion(q.text);
                 const qDir = (currentLang === 'ar' || currentLang === 'ps') ? 'dir="rtl"' : 'dir="auto"';
+
+                // Question side content html
+                let questionHtml = `<span class="qa-nl-text"><span class="question-emoji">${q.emoji}</span> ${qParts.main}</span>`;
+                if (qParts.sub) {
+                    questionHtml += `<span class="qa-sub-text" style="font-size: 0.92rem; font-weight: 600; opacity: 0.85; padding-inline-start: 28px; color: var(--text-dark);">${qParts.sub}</span>`;
+                }
+
+                // Question side translations
+                let qTransl = '';
+                if (currentLang !== 'nl' && q.translations && q.translations[currentLang]) {
+                    const transText = q.translations[currentLang];
+                    const transParts = splitQuestion(transText);
+                    if (transParts.sub) {
+                        qTransl = `<span class="qa-translation-text" ${qDir}>${transParts.main}</span>
+                                   <span class="qa-translation-text" ${qDir} style="font-size: 0.78rem; font-style: italic; color: var(--text-muted); font-weight: 500; opacity: 0.85; padding-inline-start: 28px;">${transParts.sub}</span>`;
+                    } else {
+                        qTransl = `<span class="qa-translation-text" ${qDir}>${transText}</span>`;
+                    }
+                }
                 
                 // Starter side translations
                 const sTransl = (currentLang !== 'nl' && q.starter && q.starter[currentLang])
@@ -2661,7 +2687,7 @@
                     <!-- Left: Question column -->
                     <div class="qa-col-question" onclick="handleAudioPlayClick(\`${q.text}\`, this, event)">
                         <div class="qa-text-container">
-                            <span class="qa-nl-text"><span class="question-emoji">${q.emoji}</span> ${q.text}</span>
+                            ${questionHtml}
                             ${qTransl}
                         </div>
                         <div class="qa-btn-container">
@@ -2841,8 +2867,11 @@
                 speakBtn.classList.add("speaking-active-icon");
             }
 
+            // Clean parentheses for natural speech synthesis
+            var cleanText = text ? text.replace(/[()（）]/g, ' ') : '';
+
             // Synchronous: stays within gesture call stack (iOS requirement)
-            speakNow(text, function() { clearSpeechStyles(); });
+            speakNow(cleanText, function() { clearSpeechStyles(); });
         }
 
         function clearSpeechStyles() {

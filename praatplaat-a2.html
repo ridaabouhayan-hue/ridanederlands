@@ -3831,22 +3831,50 @@
 
             // Render Questions
             activeQuestionsList.innerHTML = "";
+            
+            // Helper to split Dutch question and translations into main and sub questions if parentheses are present
+            const splitQuestion = (text) => {
+                if (!text) return { main: '', sub: '' };
+                const match = text.match(/^(.*?)\s*[（(](.*?)[）)]\s*$/);
+                if (match) {
+                    return { main: match[1].trim(), sub: match[2].trim() };
+                }
+                return { main: text, sub: '' };
+            };
+
             theme.questions.forEach((q, idx) => {
                 const li = document.createElement("li");
                 li.className = "question-item";
                 li.id = `q-item-${idx}`;
                 li.onclick = (e) => handleAudioPlayClick(q.text, li, e);
                 
+                const qParts = splitQuestion(q.text);
+                const qTextHtml = qParts.sub
+                    ? `<span class="question-emoji">${q.emoji}</span>
+                       <span class="question-text">${qParts.main}</span>
+                       <span class="question-sub-text" style="font-size: 0.95rem; font-weight: 600; opacity: 0.8; padding-inline-start: 28px; display: block; margin-top: 2px; color: var(--text-dark);">${qParts.sub}</span>`
+                    : `<span class="question-emoji">${q.emoji}</span>
+                       <span class="question-text">${qParts.main}</span>`;
+                
                 const hasTransl = (currentLang !== 'nl' && q.translations && q.translations[currentLang]);
                 const dirAttr = (currentLang === 'da' || currentLang === 'fa') ? 'dir="rtl"' : 'dir="auto"';
-                const translationHtml = hasTransl
-                    ? `<span class="translation-text" ${dirAttr}>${q.translations[currentLang]}</span>`
-                    : '';
+                let translationHtml = '';
+                if (hasTransl) {
+                    const transText = q.translations[currentLang];
+                    const transParts = splitQuestion(transText);
+                    if (transParts.sub) {
+                        translationHtml = `<span class="translation-text" ${dirAttr} style="display: block; font-size: 0.85rem; font-style: italic; color: #64748b; font-weight: 600; margin-top: 2px;">${transParts.main}</span>
+                                           <span class="translation-text" ${dirAttr} style="display: block; font-size: 0.78rem; font-style: italic; color: #64748b; font-weight: 500; opacity: 0.85; padding-inline-start: 28px; margin-top: 1px;">${transParts.sub}</span>`;
+                    } else {
+                        translationHtml = `<span class="translation-text" ${dirAttr} style="display: block; font-size: 0.85rem; font-style: italic; color: #64748b; font-weight: 600; margin-top: 2px;">${transText}</span>`;
+                    }
+                }
 
                 li.innerHTML = `
-                    <div style="flex-grow: 1;">
-                        <span class="question-emoji">${q.emoji}</span>
-                        <span class="question-text">${q.text}</span>
+                    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 4px;">
+                        <div>
+                            ${qTextHtml}
+                        </div>
                         ${translationHtml}
                     </div>
                     <button class="audio-btn" title="Luister slow-audio">🔊</button>
@@ -4037,7 +4065,10 @@
                 speakBtn.classList.add("speaking-active-icon");
             }
 
-            speakNow(text, function() { clearSpeechStyles(); });
+            // Clean parentheses for natural speech synthesis
+            var cleanText = text ? text.replace(/[()（）]/g, ' ') : '';
+
+            speakNow(cleanText, function() { clearSpeechStyles(); });
         }
 
         function clearSpeechStyles() {
