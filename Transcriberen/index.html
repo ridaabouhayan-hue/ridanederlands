@@ -544,8 +544,9 @@
                         <!-- Pane 1: Transcript Gesprek -->
                         <div id="pane-transcript" class="viewer-column" style="display: flex; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-transcript"></div>
-                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
-                                <button id="btnRegenFeedback" onclick="generateFeedbackFromTranscriptText()" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">🔄 Genereer Feedbackbrief</button>
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: 20px; display: flex; flex-direction: column; gap: 8px;">
+                                <button id="btnRegenFeedback" onclick="generateFeedbackFromTranscriptText()" class="auth-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto;">🔄 AI Analyseer & Regenereer Brief</button>
+                                <button id="btnRegenFeedbackFromEdits" onclick="regenerateFeedbackFromEdits()" class="auth-btn finish-editing-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto; background-color: #10b981; border-color: #10b981;">✍️ Okee, ik ben klaar met alles bewerken!</button>
                             </div>
                         </div>
 
@@ -572,11 +573,17 @@
                         <!-- Pane 5: Azure uitspraakscores -->
                         <div id="pane-azure" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-azure"></div>
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+                                <button onclick="regenerateFeedbackFromEdits()" class="auth-btn finish-editing-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto; background-color: #10b981; border-color: #10b981;">✍️ Okee, ik ben klaar met alles bewerken!</button>
+                            </div>
                         </div>
 
                         <!-- Pane 6: Gemini grammatica -->
                         <div id="pane-grammar" class="viewer-column" style="display: none; flex-direction: column; background: none; border: none; padding: 0;">
                             <div class="column-content" id="col-grammar"></div>
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+                                <button onclick="regenerateFeedbackFromEdits()" class="auth-btn finish-editing-btn" style="width: 100%; font-size: 0.8rem; font-weight: 800; padding: 10px; height: auto; background-color: #10b981; border-color: #10b981;">✍️ Okee, ik ben klaar met alles bewerken!</button>
+                            </div>
                         </div>
 
                         <!-- Pane 7: LanguageTool grammaticapunten -->
@@ -1244,6 +1251,138 @@
                 }
             }
             return matchedFonetisch;
+        }
+
+        function alignSentences(wordsFonetisch, wordsCorrect) {
+            const A = wordsFonetisch;
+            const B = wordsCorrect;
+            const n = A.length;
+            const m = B.length;
+            
+            const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+            for (let i = n - 1; i >= 0; i--) {
+                for (let j = m - 1; j >= 0; j--) {
+                    const normA = A[i].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+                    const normB = B[j].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+                    if (normA === normB) {
+                        dp[i][j] = dp[i + 1][j + 1] + 1;
+                    } else {
+                        dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+                    }
+                }
+            }
+            
+            const slots = [];
+            let i = 0, j = 0;
+            while (i < n || j < m) {
+                if (i < n && j < m) {
+                    const normA = A[i].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+                    const normB = B[j].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+                    if (normA === normB) {
+                        slots.push({
+                            type: 'match',
+                            wordFonetisch: A[i],
+                            wordCorrect: B[j],
+                            idxFonetisch: i,
+                            idxCorrect: j
+                        });
+                        i++; j++;
+                        continue;
+                    }
+                }
+                
+                if (i < n && (j >= m || dp[i + 1][j] >= dp[i][j + 1])) {
+                    slots.push({
+                        type: 'delete',
+                        wordFonetisch: A[i],
+                        idxFonetisch: i
+                    });
+                    i++;
+                } else {
+                    slots.push({
+                        type: 'insert',
+                        wordCorrect: B[j],
+                        idxCorrect: j
+                    });
+                    j++;
+                }
+            }
+            return slots;
+        }
+
+        function mergeSlots(slots) {
+            const merged = [];
+            let k = 0;
+            while (k < slots.length) {
+                if (k < slots.length - 1 && slots[k].type === 'delete' && slots[k+1].type === 'insert') {
+                    merged.push({
+                        type: 'substitute',
+                        wordFonetisch: slots[k].wordFonetisch,
+                        wordCorrect: slots[k+1].wordCorrect,
+                        idxFonetisch: slots[k].idxFonetisch,
+                        idxCorrect: slots[k+1].idxCorrect
+                    });
+                    k += 2;
+                } else {
+                    merged.push(slots[k]);
+                    k++;
+                }
+            }
+            return merged;
+        }
+
+        function alignAndFormatWord(wA, wB) {
+            const n = wA.length;
+            const m = wB.length;
+            const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+            for (let i = n - 1; i >= 0; i--) {
+                for (let j = m - 1; j >= 0; j--) {
+                    dp[i][j] = (wA[i] === wB[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+            
+            const ops = [];
+            let i = 0, j = 0;
+            while (i < n || j < m) {
+                if (i < n && j < m && wA[i] === wB[j]) {
+                    ops.push({ type: 'match', char: wA[i] });
+                    i++; j++;
+                } else {
+                    if (i < n && (j >= m || dp[i + 1][j] >= dp[i][j + 1])) {
+                        ops.push({ type: 'delete', char: wA[i] });
+                        i++;
+                    } else {
+                        ops.push({ type: 'insert', char: wB[j] });
+                        j++;
+                    }
+                }
+            }
+            
+            let html = '';
+            let currentType = null;
+            let currentStr = '';
+            
+            function flush() {
+                if (!currentStr) return;
+                if (currentType === 'match') {
+                    html += currentStr;
+                } else if (currentType === 'delete') {
+                    html += `<span style="text-decoration:line-through; color:#ef4444; opacity:0.85;">${currentStr}</span>`;
+                } else if (currentType === 'insert') {
+                    html += `<span style="color:#ef4444; font-weight:800;">[${currentStr}]</span>`;
+                }
+                currentStr = '';
+            }
+            
+            for (const op of ops) {
+                if (op.type !== currentType) {
+                    flush();
+                    currentType = op.type;
+                }
+                currentStr += op.char;
+            }
+            flush();
+            return html;
         }
 
         function autoFillSprekerVelden(turns) {
@@ -2045,49 +2184,66 @@
                 // Word alignment diff (LCS) tussen zin_fonetisch en zin_correct
                 const wordsFonetisch = l.zin_fonetisch ? l.zin_fonetisch.split(/\s+/) : [];
                 const wordsCorrect = l.zin_correct ? l.zin_correct.split(/\s+/) : [];
-                const matchedFonetisch = alignGrammarWords(wordsFonetisch, wordsCorrect);
+                
+                const rawSlots = alignSentences(wordsFonetisch, wordsCorrect);
+                const slots = mergeSlots(rawSlots);
 
                 const grid = document.createElement('div');
                 grid.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
                 
-                wordsFonetisch.forEach((w, idx) => {
-                    const normW = norm(w);
-                    const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(normW);
-                    
+                slots.forEach((slot) => {
                     let wc = '#10b981'; // standaard groen
+                    let label = '';
+                    let titleText = '';
+                    let borderStyle = 'solid';
                     
-                    if (isHesitation) {
-                        wc = '#64748b'; // aarzeling is grijs
-                    } else if (!matchedFonetisch[idx]) {
-                        // Word is unmatched. Check if it's a spelling typo or grammatical error.
-                        let isTypo = false;
-                        const startLook = Math.max(0, idx - 1);
-                        const endLook = Math.min(wordsCorrect.length - 1, idx + 1);
-                        for (let k = startLook; k <= endLook; k++) {
-                            const cW = wordsCorrect[k];
-                            if (cW && levenshtein(normW, norm(cW)) <= 2) {
-                                isTypo = true;
-                                break;
-                            }
+                    // Determine override key: either idxFonetisch or 'insert_' + idxCorrect
+                    const overrideKey = slot.idxFonetisch !== undefined ? slot.idxFonetisch : 'insert_' + slot.idxCorrect;
+                    
+                    if (slot.type === 'match') {
+                        wc = '#10b981';
+                        label = esc(slot.wordFonetisch);
+                        titleText = 'Correct geuit.';
+                    } else if (slot.type === 'delete') {
+                        const normW = norm(slot.wordFonetisch);
+                        const isHesitation = ['uh', 'uhm', 'eh', 'he', 'ah', 'ahm'].includes(normW);
+                        if (isHesitation) {
+                            wc = '#64748b'; // aarzeling is grijs
+                            titleText = 'Aarzeling / vulwoord.';
+                        } else {
+                            wc = '#ef4444'; // extra woord is rood
+                            titleText = 'Overbodig of weggelaten woord.';
                         }
+                        label = esc(slot.wordFonetisch);
+                    } else if (slot.type === 'insert') {
+                        wc = '#ef4444'; // vergeten woord is rood
+                        borderStyle = 'dashed';
+                        label = `[${esc(slot.wordCorrect)}]`;
+                        titleText = 'Vergeten/missend woord.';
+                    } else if (slot.type === 'substitute') {
+                        const normA = norm(slot.wordFonetisch);
+                        const normB = norm(slot.wordCorrect);
+                        const isTypo = levenshtein(normA, normB) <= 2;
                         wc = isTypo ? '#f59e0b' : '#ef4444'; // spelling/typo is oranje/geel, grammar error is rood
+                        label = alignAndFormatWord(slot.wordFonetisch, slot.wordCorrect);
+                        titleText = isTypo ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast.';
                     }
 
                     // Apply manual color override if exists
-                    if (l.grammar_word_overrides && l.grammar_word_overrides[idx]) {
-                        wc = l.grammar_word_overrides[idx];
+                    if (l.grammar_word_overrides && l.grammar_word_overrides[overrideKey] !== undefined) {
+                        wc = l.grammar_word_overrides[overrideKey];
                     }
 
                     const pill = document.createElement('span');
                     
                     // Feller colors: background 24% (3d), border 80% (cc)
-                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px solid ${wc}cc;font-size:0.8rem;color:var(--text);cursor:pointer;user-select:none;`;
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px ${borderStyle} ${wc}cc;font-size:0.8rem;color:var(--text);cursor:pointer;user-select:none;`;
                     
                     // Cycle color on single click: default -> gray -> green -> orange -> red -> default
                     pill.addEventListener('click', async (ev) => {
                         ev.stopPropagation();
                         const colors = ['#64748b', '#10b981', '#f59e0b', '#ef4444'];
-                        let currentOverride = (l.grammar_word_overrides && l.grammar_word_overrides[idx]) || null;
+                        let currentOverride = (l.grammar_word_overrides && l.grammar_word_overrides[overrideKey]) || null;
                         
                         let nextOverride;
                         if (currentOverride === null) {
@@ -2105,9 +2261,9 @@
                         if (actualLijn) {
                             if (!actualLijn.grammar_word_overrides) actualLijn.grammar_word_overrides = {};
                             if (nextOverride === null) {
-                                delete actualLijn.grammar_word_overrides[idx];
+                                delete actualLijn.grammar_word_overrides[overrideKey];
                             } else {
-                                actualLijn.grammar_word_overrides[idx] = nextOverride;
+                                actualLijn.grammar_word_overrides[overrideKey] = nextOverride;
                             }
                             await saveDatabase();
                             renderGrammarColumn();
@@ -2117,37 +2273,49 @@
                     // Edit word on double click
                     pill.addEventListener('dblclick', async (ev) => {
                         ev.stopPropagation();
-                        let inputVal = prompt(`Bewerk het woord:`, w);
-                        if (inputVal === null) return; // cancelled
-                        
-                        const actualLijn = gesprek[origIdx];
-                        if (actualLijn) {
-                            const currentWords = actualLijn.zin_fonetisch ? actualLijn.zin_fonetisch.split(/\s+/) : [];
-                            if (inputVal.trim() === '') {
-                                currentWords.splice(idx, 1);
-                            } else {
-                                currentWords[idx] = inputVal.trim();
+                        if (slot.type === 'insert') {
+                            let inputVal = prompt(`Bewerk het vergeten woord:`, slot.wordCorrect);
+                            if (inputVal === null) return;
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn) {
+                                const currentCorrect = actualLijn.zin_correct ? actualLijn.zin_correct.split(/\s+/) : [];
+                                if (inputVal.trim() === '') {
+                                    currentCorrect.splice(slot.idxCorrect, 1);
+                                } else {
+                                    currentCorrect[slot.idxCorrect] = inputVal.trim();
+                                }
+                                actualLijn.zin_correct = currentCorrect.join(' ');
+                                await saveDatabase();
+                                renderGrammarColumn();
                             }
-                            actualLijn.zin_fonetisch = currentWords.join(' ');
-                            
-                            // Remove override at this index since the word changed
-                            if (actualLijn.grammar_word_overrides) {
-                                delete actualLijn.grammar_word_overrides[idx];
+                        } else {
+                            let inputVal = prompt(`Bewerk het gesproken woord:`, slot.wordFonetisch);
+                            if (inputVal === null) return;
+                            const actualLijn = gesprek[origIdx];
+                            if (actualLijn) {
+                                const currentWords = actualLijn.zin_fonetisch ? actualLijn.zin_fonetisch.split(/\s+/) : [];
+                                if (inputVal.trim() === '') {
+                                    currentWords.splice(slot.idxFonetisch, 1);
+                                } else {
+                                    currentWords[slot.idxFonetisch] = inputVal.trim();
+                                }
+                                actualLijn.zin_fonetisch = currentWords.join(' ');
+                                
+                                // Remove override since word changed
+                                if (actualLijn.grammar_word_overrides) {
+                                    delete actualLijn.grammar_word_overrides[overrideKey];
+                                }
+                                
+                                await saveDatabase();
+                                renderGrammarColumn();
                             }
-                            
-                            await saveDatabase();
-                            renderGrammarColumn();
                         }
                     });
                     
-                    let titleText = isHesitation ? 'Aarzeling / vulwoord.' : '';
-                    if (!matchedFonetisch[idx]) {
-                        titleText += wc === '#f59e0b' ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast/verwijderd.';
-                    }
                     titleText += (titleText ? ' | ' : '') + 'Klik: kleur wijzigen. Dubbelklik: tekst bewerken.';
                     pill.title = titleText;
 
-                    pill.innerHTML = `<span>${esc(w)}</span>`;
+                    pill.innerHTML = `<span>${label}</span>`;
                     grid.appendChild(pill);
                 });
                 grid.style.marginBottom = '6px';
@@ -3398,6 +3566,118 @@
                     btn.innerHTML = originalBtnText;
                     btn.disabled = false;
                 }
+            }
+        }
+
+        async function regenerateFeedbackFromEdits() {
+            if (!currentFileObject || !currentFileObject.analyse) return;
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert("Voer eerst een geldige Gemini API Key in via de instellingen (⚙️).");
+                openSettingsModal();
+                return;
+            }
+
+            const btns = document.querySelectorAll('.finish-editing-btn');
+            const originalBtnTexts = Array.from(btns).map(b => b.innerHTML);
+            btns.forEach(b => {
+                b.innerHTML = '⏳ Bezig met bijwerken...';
+                b.disabled = true;
+            });
+
+            try {
+                const model = document.getElementById('geminiModelSelect').value;
+                const targetModel = model || 'gemini-2.5-flash';
+                
+                const gesprek = currentFileObject.analyse.gesprek;
+                if (!gesprek || gesprek.length === 0) {
+                    alert("Geen gesprek data gevonden om feedback voor te genereren.");
+                    return;
+                }
+
+                const sprekers = [...new Set(gesprek.map(l => l.spreker).filter(Boolean))];
+                console.log("Generating feedback letters from edited data for speakers:", sprekers);
+                
+                const feedback_brieven = [];
+                for (const spreker of sprekers) {
+                    console.log(`Calling Gemini for feedback letter of ${spreker} from edits...`);
+                    
+                    const customInstructions = document.getElementById('customInstructionsInput').value.trim();
+                    
+                    const opdrachtSelect = document.getElementById('opdrachtSelect');
+                    let assignmentContext = '';
+                    if (opdrachtSelect && opdrachtSelect.value !== 'none') {
+                        const selectedLesson = dynamicLessons.find(l => l.id === opdrachtSelect.value);
+                        if (selectedLesson) {
+                            assignmentContext += `OPDRACHT THEMA CONTEXT:\nNiveau: ${selectedLesson.level}\nType: ${selectedLesson.type}\nOnderwerp: ${selectedLesson.title}\nBeschrijving: ${selectedLesson.description}\n\n`;
+                        }
+                    }
+                    const textContext = document.getElementById('assignmentContextInput').value.trim();
+                    if (textContext) {
+                        assignmentContext += `AANVULLENDE OPDRACHT TEXT:\n${textContext}`;
+                    }
+
+                    let call2Prompt = `Je bent een ervaren NT2 docent. Jouw taak is om een persoonlijke WhatsApp-feedbackbrief te schrijven voor cursist "${spreker}", gebaseerd op het onderstaande gesprek.
+                    
+GESPREKSDATA (DIT IS DE GROUND TRUTH, INCLUSIEF ALLE HANDMATIGE CORRECTIES EN ANALYSES VAN DE DOCENT):
+${JSON.stringify(gesprek, null, 2)}
+
+${customInstructions ? `AANVULLENDE DOCENT-INSTRUCTIE (MAATWERK):\n"${customInstructions}"\n` : ''}
+${assignmentContext ? `OPDRACHT / CONTEXT VAN DE TAAK:\n"${assignmentContext}"\n` : ''}
+
+RICHTLIJNEN VOOR DE BRIEF:
+1. Richt de brief rechtstreeks aan de cursist "${spreker}" (bijv. "Hallo ${spreker}!").
+2. Toon het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
+3. Voor de zinnen die door "${spreker}" zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Gebruik EXACT de 'uitspraak_analyse' en 'grammatica_analyse' uit de GESPREKSDATA bij het formuleren van de uitleg. Bedenk zelf geen nieuwe uitspraak- of grammaticafouten of correcties die niet in de GESPREKSDATA staan. Format:
+   Jij zei
+   *Zin X:* '[Zin van ${spreker}]'
+   👍 *Wat was goed:* [Compliment]
+   💡 *Correctie:* '[Correcte zin]' (LAAT DEZE EN DE REGEL HIERONDER WEG ALS DE ZIN AL GOED EN CORRECT IS! SCHRIJF DUS NOOIT EEN CORRECTIE OF WAAROM ALS DE ZIN AL GOED WAS)
+   🧠 *Waarom:* [Uitleg over grammatica/klank op basis van de uitspraak_analyse/grammatica_analyse in de GESPREKSDATA] (LAAT DEZE EN DE REGEL HIERBOVEN WEG ALS DE ZIN AL GOED EN CORRECT IS!)
+   🤔 *Logica:* [Uitleg over betekenis/samenhang, alleen als er een onlogische formulering was. LAAT DEZE REGEL COMPLEET WEG ALS DE ZIN LOGISCH IS!]
+4. Voor de zinnen die door de ANDERE cursist zijn uitgesproken, toon je UITSLUITEND de correcte/gecorrigeerde versie van hun zin als context. Format:
+   *[AnderenNaam] vroeg/zei toen:* '[Correcte zin van de ander]' (als het een vraag is, gebruik "vroeg", anders "zei")
+   Op deze manier leest de brief voor elke cursist als een chronologisch gesprek, maar zien zij ALLEEN correcte Nederlandse zinnen van de ander (zodat ze niet per ongeluk de foute versie onthouden).
+5. Bundel de samenvatting onder de kop "🏁 *Samenvatting & Belangrijkste leerpunten:*":
+   - Schrijf een vloeiend, kort en bemoedigend verhaal waarin je de belangrijkste uitspraak-, grammatica- en logica-aandachtspunten samenbrengt op basis van de GESPREKSDATA. Focus op de meest voorkomende fouten.
+   - Benoem expliciet wat er al heel goed ging!
+   - Concludeer met "🧠 *Jouw volgende stap & advies:*" en een bemoedigend advies.
+6. Houd de uitleg uiterst simpel (A1-A2 niveau, alsof je het uitlegt aan een kind van 6).
+7. Gebruik ENKELE asterisks (*) voor vetgedrukte woorden (bijv. *Zin 1:*), nooit dubbele (**).
+8. Retourneer de brief direct als platte tekst (geen JSON).`;
+
+                    const briefText = await makeGeminiCallWithFallback(apiKey, targetModel, call2Prompt, false, null);
+                    feedback_brieven.push({
+                        naam: spreker,
+                        brief: briefText.trim(),
+                        brief_en: ''
+                    });
+                }
+
+                currentFileObject.analyse.feedback_brieven = feedback_brieven;
+                
+                const groupFiles = db[activeGroup] || [];
+                const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+                if (dbFile) {
+                    dbFile.analyse = currentFileObject.analyse;
+                }
+                await saveDatabase();
+
+                currentFeedbackBrieven = currentFileObject.analyse.feedback_brieven || [];
+                activeStudentIdx = 0;
+                activeFeedbackLang = 'nl';
+                
+                renderFeedbackColumn();
+                renderCompleteColumn();
+                showToast("Feedbackbrieven succesvol bijgewerkt op basis van uw bewerkingen!");
+            } catch (err) {
+                console.error("Fout bij genereren van bewerkingen:", err);
+                alert("Er ging iets fout bij het genereren: " + err.message);
+            } finally {
+                btns.forEach((b, idx) => {
+                    b.innerHTML = originalBtnTexts[idx];
+                    b.disabled = false;
+                });
             }
         }
 
@@ -5111,7 +5391,7 @@ ${assignmentContext ? `OPDRACHT / CONTEXT VAN DE TAAK:\n"${assignmentContext}"\n
 RICHTLIJNEN VOOR DE BRIEF:
 1. Richt de brief rechtstreeks aan de cursist "${spreker}" (bijv. "Hallo ${spreker}!").
 2. Toon het GEHELE gesprek in chronologische volgorde zodat de volgorde van de dialoog duidelijk is.
-3. Voor de zinnen die door "${spreker}" zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Format:
+3. Voor de zinnen die door "${spreker}" zelf zijn uitgesproken, nummer je ze (bijv. *Zin 1:*, *Zin 2:*) en geef je gedetailleerde feedback. Gebruik EXACT de 'uitspraak_analyse' en 'grammatica_analyse' uit de GESPREKSDATA bij het formuleren van de uitleg. Bedenk zelf geen nieuwe uitspraak- of grammaticafouten of correcties die niet in de GESPREKSDATA staan. Format:
    Jij zei
    *Zin X:* '[Zin van ${spreker}]'
    👍 *Wat was goed:* [Compliment]
