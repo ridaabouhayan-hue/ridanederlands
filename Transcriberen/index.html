@@ -2073,33 +2073,106 @@
                         wc = isTypo ? '#f59e0b' : '#ef4444'; // spelling/typo is oranje/geel, grammar error is rood
                     }
 
+                    // Apply manual color override if exists
+                    if (l.grammar_word_overrides && l.grammar_word_overrides[idx]) {
+                        wc = l.grammar_word_overrides[idx];
+                    }
+
                     const pill = document.createElement('span');
-                    const wordTiming = l.woorden[idx];
-                    const clickable = (wordTiming && wordTiming.start != null);
                     
                     // Feller colors: background 24% (3d), border 80% (cc)
-                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px solid ${wc}cc;font-size:0.8rem;color:var(--text);${clickable ? 'cursor:pointer;' : ''}`;
-                    if (clickable) pill.addEventListener('click', () => playSegment(wordTiming.start, wordTiming.end));
+                    pill.style.cssText = `display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${wc}3d;border:1px solid ${wc}cc;font-size:0.8rem;color:var(--text);cursor:pointer;user-select:none;`;
+                    
+                    // Cycle color on single click: default -> gray -> green -> orange -> red -> default
+                    pill.addEventListener('click', async (ev) => {
+                        ev.stopPropagation();
+                        const colors = ['#64748b', '#10b981', '#f59e0b', '#ef4444'];
+                        let currentOverride = (l.grammar_word_overrides && l.grammar_word_overrides[idx]) || null;
+                        
+                        let nextOverride;
+                        if (currentOverride === null) {
+                            nextOverride = '#64748b'; // start with gray
+                        } else {
+                            const curIdx = colors.indexOf(currentOverride);
+                            if (curIdx === -1 || curIdx === colors.length - 1) {
+                                nextOverride = null; // clear override to return to default auto color
+                            } else {
+                                nextOverride = colors[curIdx + 1];
+                            }
+                        }
+
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn) {
+                            if (!actualLijn.grammar_word_overrides) actualLijn.grammar_word_overrides = {};
+                            if (nextOverride === null) {
+                                delete actualLijn.grammar_word_overrides[idx];
+                            } else {
+                                actualLijn.grammar_word_overrides[idx] = nextOverride;
+                            }
+                            await saveDatabase();
+                            renderGrammarColumn();
+                        }
+                    });
+
+                    // Edit word on double click
+                    pill.addEventListener('dblclick', async (ev) => {
+                        ev.stopPropagation();
+                        let inputVal = prompt(`Bewerk het woord:`, w);
+                        if (inputVal === null) return; // cancelled
+                        
+                        const actualLijn = gesprek[origIdx];
+                        if (actualLijn) {
+                            const currentWords = actualLijn.zin_fonetisch ? actualLijn.zin_fonetisch.split(/\s+/) : [];
+                            if (inputVal.trim() === '') {
+                                currentWords.splice(idx, 1);
+                            } else {
+                                currentWords[idx] = inputVal.trim();
+                            }
+                            actualLijn.zin_fonetisch = currentWords.join(' ');
+                            
+                            // Remove override at this index since the word changed
+                            if (actualLijn.grammar_word_overrides) {
+                                delete actualLijn.grammar_word_overrides[idx];
+                            }
+                            
+                            await saveDatabase();
+                            renderGrammarColumn();
+                        }
+                    });
                     
                     let titleText = isHesitation ? 'Aarzeling / vulwoord.' : '';
                     if (!matchedFonetisch[idx]) {
                         titleText += wc === '#f59e0b' ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast/verwijderd.';
                     }
-                    if (clickable) titleText += (titleText ? ' | ' : '') + 'Klik om dit woord terug te luisteren.';
+                    titleText += (titleText ? ' | ' : '') + 'Klik: kleur wijzigen. Dubbelklik: tekst bewerken.';
                     pill.title = titleText;
 
                     pill.innerHTML = `<span>${esc(w)}</span>`;
                     grid.appendChild(pill);
                 });
+                grid.style.marginBottom = '6px';
                 card.appendChild(grid);
 
-                // Zo moet het
-                if (l.zin_correct && l.zin_correct !== l.zin_fonetisch) {
-                    const doel = document.createElement('div');
-                    doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
-                    doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
-                    card.appendChild(doel);
-                }
+                // Zo moet het (corrected sentence)
+                const correctText = l.zin_correct || l.zin_fonetisch || '';
+                const doel = document.createElement('div');
+                doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
+                doel.innerHTML = `<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic; cursor:pointer;" title="Dubbelklik om de gecorrigeerde zin te bewerken">${esc(correctText)}</span>`;
+                
+                const correctSpan = doel.querySelector('span');
+                correctSpan.addEventListener('dblclick', async (ev) => {
+                    ev.stopPropagation();
+                    let inputVal = prompt(`Bewerk de gecorrigeerde zin:`, correctText);
+                    if (inputVal === null) return; // cancelled
+                    
+                    const actualLijn = gesprek[origIdx];
+                    if (actualLijn) {
+                        actualLijn.zin_correct = inputVal.trim();
+                        await saveDatabase();
+                        renderGrammarColumn();
+                    }
+                });
+                card.appendChild(doel);
 
                 // Waarom deze grammatica
                 const gAnalyse = l.grammatica_analyse;
