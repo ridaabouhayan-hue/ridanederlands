@@ -813,6 +813,36 @@
             renderLanguageToolColumn();
         }
 
+        async function changeSpeakerAndAlternate(origIdx, newSpeakerName) {
+            if (!currentFileObject || !currentFileObject.analyse || !currentFileObject.analyse.gesprek) return;
+            const gesprek = currentFileObject.analyse.gesprek;
+            gesprek[origIdx].spreker = newSpeakerName;
+            
+            const name1 = (sprekerNamen[0] || 'speaker_0').trim();
+            const name2 = (sprekerNamen[1] || 'speaker_1').trim();
+            
+            let nextSpeaker = (newSpeakerName === name1) ? name2 : name1;
+            for (let i = origIdx + 1; i < gesprek.length; i++) {
+                gesprek[i].spreker = nextSpeaker;
+                nextSpeaker = (nextSpeaker === name1) ? name2 : name1;
+            }
+            
+            const groupFiles = db[activeGroup] || [];
+            const dbFile = groupFiles.find(f => f.filename === currentFileObject.filename);
+            if (dbFile) {
+                dbFile.analyse.gesprek = currentFileObject.analyse.gesprek;
+                await saveDatabase();
+            }
+            
+            renderElevenLabsColumn();
+            renderTranscriptColumn();
+            renderAzureColumn();
+            renderFeedbackColumn();
+            renderCompleteColumn();
+            renderGrammarColumn();
+            renderLanguageToolColumn();
+        }
+
         async function forceUpdateSpeakerNamesInTexts() {
             if (!currentFileObject || !currentFileObject.analyse) {
                 alert("Geen actief bestand geladen.");
@@ -2152,8 +2182,15 @@
                 headL.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
                 if (speakerName) {
                     const chip = document.createElement('span');
-                    chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};`;
-                    chip.textContent = speakerName;
+                    chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};cursor:pointer;border-bottom:1px dashed ${accentCol};padding-bottom:1px;user-select:none;`;
+                    chip.title = "Klik om te wisselen van spreker en de rest om en om te sorteren";
+                    chip.innerHTML = `${esc(speakerName)} <span style="font-size:0.6rem;opacity:0.7;margin-left:2px;">▼</span>`;
+                    chip.addEventListener('click', () => {
+                        const name1 = (sprekerNamen[0] || 'speaker_0').trim();
+                        const name2 = (sprekerNamen[1] || 'speaker_1').trim();
+                        const newSpeaker = (speakerName === name1) ? name2 : name1;
+                        changeSpeakerAndAlternate(origIdx, newSpeaker);
+                    });
                     headL.appendChild(chip);
                 }
                 const num = document.createElement('span');
@@ -2793,8 +2830,15 @@
                     headL.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
                     if (speakerName) {
                         const chip = document.createElement('span');
-                        chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};`;
-                        chip.textContent = speakerName;
+                        chip.style.cssText = `font-weight:800;font-size:0.82rem;color:${accentCol};cursor:pointer;border-bottom:1px dashed ${accentCol};padding-bottom:1px;user-select:none;`;
+                        chip.title = "Klik om te wisselen van spreker en de rest om en om te sorteren";
+                        chip.innerHTML = `${esc(speakerName)} <span style="font-size:0.6rem;opacity:0.7;margin-left:2px;">▼</span>`;
+                        chip.addEventListener('click', () => {
+                            const name1 = (sprekerNamen[0] || 'speaker_0').trim();
+                            const name2 = (sprekerNamen[1] || 'speaker_1').trim();
+                            const newSpeaker = (speakerName === name1) ? name2 : name1;
+                            changeSpeakerAndAlternate(origIdx, newSpeaker);
+                        });
                         headL.appendChild(chip);
                     }
                     const num = document.createElement('span');
@@ -3264,7 +3308,7 @@
                 bubble.style.marginBottom = '14px';
 
                 // ── Hoofd-HTML van de bubble ──
-                let bubbleHtml = `<div class="chat-name" style="color:${spkInfo.color};">${lijn.spreker}</div>`;
+                let bubbleHtml = `<div class="chat-name" style="color:${spkInfo.color}; cursor:pointer; display:inline-block; border-bottom:1px dashed ${spkInfo.color}; padding-bottom:1px; margin-bottom:8px; user-select:none;" title="Klik om te wisselen van spreker en de rest om en om te sorteren">${lijn.spreker} <span style="font-size:0.6rem; opacity:0.7; margin-left:2px;">▼</span></div>`;
 
                 // Wat de cursist zei (fonetisch) + correcte versie
                 const zin = lijn.zin_fonetisch || '';
@@ -3326,6 +3370,17 @@
                 analysisBoxes += '</div>';
 
                 bubble.innerHTML = bubbleHtml + (hasAny ? analysisBoxes : '');
+                
+                const chatNameEl = bubble.querySelector('.chat-name');
+                if (chatNameEl) {
+                    chatNameEl.addEventListener('click', () => {
+                        const name1 = (sprekerNamen[0] || 'speaker_0').trim();
+                        const name2 = (sprekerNamen[1] || 'speaker_1').trim();
+                        const newSpeaker = (lijn.spreker === name1) ? name2 : name1;
+                        changeSpeakerAndAlternate(zinIdx, newSpeaker);
+                    });
+                }
+                
                 chatContainer.appendChild(bubble);
             });
 
