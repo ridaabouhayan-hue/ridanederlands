@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 8.10: Op vakantie. Een ansichtkaart lezen en schrijven. Vakantiewoordenschat.">
+    <title>8.10 Op vakantie — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .theme-blauw  { --theme: #4361ee; --theme-bg: rgba(67,97,238,0.08); }
+        .theme-groen  { --theme: #10b981; --theme-bg: rgba(16,185,129,0.08); }
+        .theme-oranje { --theme: #f59e0b; --theme-bg: rgba(245,158,11,0.08); }
+        .theme-paars  { --theme: #7209b7; --theme-bg: rgba(114,9,183,0.08); }
+        .theme-cyaan  { --theme: #06b6d4; --theme-bg: rgba(6,182,212,0.08); }
+        .theme-rood   { --theme: #ef4444; --theme-bg: rgba(239,68,68,0.08); }
+        .theme-roze   { --theme: #ec4899; --theme-bg: rgba(236,72,153,0.08); }
+        .theme-geel   { --theme: #ca8a04; --theme-bg: rgba(202,138,4,0.08); }
+
+        /* Postcard display styles */
+        .postcard-box {
+            background: #fffcf4;
+            border: 2px solid #e7d8b8;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-family: 'Nunito', sans-serif;
+            color: #4a3e29;
+            max-width: 550px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .postcard-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #bba882;
+            background: #f7f1e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            transform: rotate(5deg);
+        }
+        .postcard-content {
+            margin-top: 20px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        /* Dictee styles */
+        .dictee-list { list-style: none; padding: 0; margin: 0; }
+        .dictee-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            background: var(--bg-glass, rgba(67, 97, 238, 0.04));
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .dictee-list input {
+            flex: 1;
+            min-width: 180px;
+            border: 2px solid var(--border-med);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.92rem;
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .dictee-list input:focus { border-color: var(--theme, var(--primary)); }
+        .dictee-list input.correct { border-color: #10b981; background: rgba(16,185,129,0.08); color: #059669; font-weight: 700; }
+        .dictee-list input.fout { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #dc2626; }
+        .dictee-audio-btns { display: flex; gap: 6px; }
+        .dictee-btn {
+            background: var(--theme, var(--primary));
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+        .dictee-btn:hover { filter: brightness(1.1); }
+        .slow-speak-btn {
+            background: transparent;
+            border: 2px solid var(--theme, var(--primary));
+            color: var(--theme, var(--primary));
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .slow-speak-btn:hover { background: var(--theme-bg, rgba(67,97,238,0.08)); }
+
+        input.almost-correct, select.almost-correct {
+            border-color: #f59e0b !important;
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #d97706 !important;
+            font-weight: 700;
+        }
+    </style>
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="border-color:var(--secondary);color:var(--secondary);">🌓</button>
+        <span class="label">🌐 Taal:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema8.html" class="back-link">← Terug naar Thema 8</a>
+        <header class="page-header">
+            <div class="breadcrumb">
+                <a href="index.html">Thema's</a><span>›</span>
+                <a href="thema8.html">Thema 8</a><span>›</span>
+                <span>8.10</span>
+            </div>
+            <h1>✈️ Op vakantie</h1>
+            <p class="subtitle" data-translate="subtitle">Lees de ansichtkaart van Sofie uit Spanje en leer hoe je zelf een ansichtkaart schrijft.</p>
+        </header>
+
+        <!-- WOORDENLIJST -->
+        <section class="content-section animate-in">
+            <span class="section-label blue">📚 Woordenlijst</span>
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 8.10</h2>
+            <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+            <div class="vocab-table-wrap">
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">🔊</th>
+                            <th>🇳🇱 Nederlands</th>
+                            <th id="th-lang">🇳🇱 Nederlands</th>
+                            <th data-translate="thExample">Voorbeeldzin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocab-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- LEESKAART -->
+        <section class="content-section animate-in">
+            <span class="section-label groen">📖 Lezen</span>
+            <h2 data-translate="postcardTitle">De ansichtkaart van Sofie</h2>
+            <div id="uitleg-content" style="margin-top:20px;"></div>
+        </section>
+
+        <!-- OPDRACHTEN -->
+        <section class="content-section animate-in">
+            <span class="section-label orange">✏️ Opdrachten</span>
+            <h2>Oefeningen</h2>
+
+            <!-- 1: MC over ansichtkaart -->
+            <div class="opdracht-card theme-blauw">
+                <h3>Vragen over de kaart</h3>
+                <p class="instructie" data-translate="instrMC">Kies het juiste antwoord over de ansichtkaart van Sofie.</p>
+                <ul class="mc-list" id="mc-vragen"></ul>
+                <span id="mc-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetMC()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 2: Waar / niet waar -->
+            <div class="opdracht-card theme-groen">
+                <h3>Waar of niet waar?</h3>
+                <p class="instructie" data-translate="instrWNW">Klopt de bewering over de ansichtkaart? Klik op ✅ (waar) of ❌ (niet waar).</p>
+                <div id="wnw-container"></div>
+                <span id="wnw-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetWNW()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 3: Invuloefening woorden kaart -->
+            <div class="opdracht-card theme-oranje">
+                <h3>Vul de ontbrekende woorden in</h3>
+                <p class="instructie" data-translate="instrInvul">Vul de zinnen aan met woorden uit de ansichtkaart.</p>
+                <ul class="invul-list" id="invul-vragen"></ul>
+                <button class="check-btn" onclick="checkInvul()">Controleer</button>
+                <span id="invul-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 4: Invuloefening grammatica reizen -->
+            <div class="opdracht-card theme-roze">
+                <h3>Preposities en werkwoorden</h3>
+                <p class="instructie" data-translate="instrInvul2">Schrijf de juiste voorzetsels of werkwoordvormen in de zinnen.</p>
+                <ul class="invul-list" id="invul-vragen-2"></ul>
+                <button class="check-btn" onclick="checkInvul2()">Controleer</button>
+                <span id="invul-score-2" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetInvul2()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- Dictee -->
+            <div class="opdracht-card theme-geel">
+                <h3 data-translate="dicteeTitle">🗣️ Dictee: Luister en typ</h3>
+                <p class="instructie" data-translate="instrDictee">Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.</p>
+                
+                <h4 style="margin-top:15px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeWordsHeader">Deel 1: Woorden</h4>
+                <ul class="dictee-list" id="dictee-woorden"></ul>
+                
+                <h4 style="margin-top:25px; margin-bottom:10px; color:var(--text-dark);" data-translate="dicteeSentencesHeader">Deel 2: Zinnen</h4>
+                <ul class="dictee-list" id="dictee-zinnen"></ul>
+                
+                <button class="check-btn" onclick="checkDictee()">Controleer</button>
+                <span id="dictee-score" class="score-badge" style="display:none"></span>
+                <button class="reset-btn" onclick="resetDictee()">🔄 Opnieuw</button>
+            </div>
+
+            <!-- 5: Schrijfopdracht -->
+            <div class="opdracht-card theme-rood">
+                <h3>Schrijf een ansichtkaart</h3>
+                <p class="instructie" data-translate="instrSchrijf">Schrijf een ansichtkaart naar de docent. Gebruik volledige zinnen.</p>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <button class="wa-btn" onclick="saveSchrijf()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    Stuur naar docent via WhatsApp
+                </button>
+                <button class="reset-btn" onclick="resetSchrijf()">🔄 Opnieuw</button>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <a href="thema8-9.html" class="nav-btn">⬅️ Vorige (8.9)</a>
+            <a href="thema8.html" class="nav-btn">Terug naar overzicht (Thema 8) ➡️</a>
+        </div>
+    </main>
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+<script>
+function levenshtein(a,b){if(a.length===0)return b.length;if(b.length===0)return a.length;var m=[];for(var i=0;i<=b.length;i++){m[i]=[i];}for(var j=0;j<=a.length;j++){m[0][j]=j;}for(var i=1;i<=b.length;i++){for(var j=1;j<=a.length;j++){if(b[i-1]==a[j-1]){m[i][j]=m[i-1][j-1];}else{m[i][j]=Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);}}}return m[b.length][a.length];}
+
+// ── VOCAB ──
+const VOCAB = [
+    {nl:'de vakantie', en:'holiday / vacation', ar:'الإجازة / العطلة', tr:'tatil', ex:'Wij gaan in de zomer op vakantie.'},
+    {nl:'de ansichtkaart', en:'postcard', ar:'بطاقة بريدية', tr:'kartpostal', ex:'Ik stuur een ansichtkaart naar mijn opa.'},
+    {nl:'sturen (ik stuur)', en:'to send', ar:'يرسل', tr:'göndermek', ex:'Zij sturen de brief vandaag.'},
+    {nl:'schrijven (ik schrijf)', en:'to write', ar:'يكتب', tr:'yazmak', ex:'Ik schrijf een kaart uit Spanje.'},
+    {nl:'het hotel', en:'hotel', ar:'الفندق', tr:'otel', ex:'We slapen in een groot hotel.'},
+    {nl:'kamperen (ik kampeer)', en:'to camp', ar:'يخيم', tr:'kamp yapmak', ex:'Kamperen in de bergen is leuk.'},
+    {nl:'de groeten', en:'greetings', ar:'التحيات', tr:'selamlar', ex:'De groeten uit het zonnige Spanje!'}
+];
+
+const UI = {
+    nl: {
+        subtitle: 'Lees de ansichtkaart van Sofie uit Spanje en leer hoe je zelf een ansichtkaart schrijft.',
+        vocabTitle: 'Woorden van paragraaf 8.10',
+        vocabIntro: 'Klik op een taal hierboven om de vertaling te zien.',
+        thExample: 'Voorbeeldzin',
+        thLang: '🇳🇱 Nederlands',
+        postcardTitle: 'De ansichtkaart van Sofie',
+        instrMC: 'Kies het juiste antwoord over de ansichtkaart van Sofie.',
+        instrWNW: 'Klopt de bewering over de ansichtkaart? Klik op ✅ (waar) of ❌ (niet waar).',
+        instrInvul: 'Vul de zinnen aan met woorden uit de ansichtkaart.',
+        instrInvul2: 'Schrijf de juiste voorzetsels of werkwoordvormen in de zinnen.',
+        dicteeTitle: '🗣️ Dictee: Luister en typ',
+        instrDictee: 'Klik op de audioknop en typ het woord of de zin precies zoals je het hoort.',
+        dicteeWordsHeader: 'Deel 1: Woorden',
+        dicteeSentencesHeader: 'Deel 2: Zinnen',
+        instrSchrijf: 'Schrijf een ansichtkaart naar de docent. Gebruik volledige zinnen.',
+        q1: '1. Waar ben je op vakantie? (Schrijf: Lieve docent, ik ben...)',
+        q2: '2. Hoe is het weer daar? (Schrijf: Het weer is...)',
+        q3: '3. Waar slaap je? (Schrijf: Ik slaap in...)',
+        q4: '4. Wat doe je overdag? (Schrijf: Overdag ga ik...)',
+        q5: '5. Sluit af met de groeten. (Schrijf: De groeten van...)'
+    },
+    en: {
+        subtitle: 'Read Sofie\'s postcard from Spain and learn to write your own postcard.',
+        vocabTitle: 'Words of paragraph 8.10',
+        vocabIntro: 'Click a language above to see the translation.',
+        thExample: 'Example sentence',
+        thLang: '🇬🇧 English',
+        postcardTitle: 'Postcard from Sofie',
+        instrMC: 'Choose the correct answer about Sofie\'s postcard.',
+        instrWNW: 'Is the statement about the postcard correct? Click ✅ (true) or ❌ (false).',
+        instrInvul: 'Complete the sentences with words from the postcard.',
+        instrInvul2: 'Write the correct prepositions or verb forms in the sentences.',
+        dicteeTitle: '🗣️ Dictation: Listen and type',
+        instrDictee: 'Click on the audio button and type the word or sentence exactly as you hear it.',
+        dicteeWordsHeader: 'Part 1: Words',
+        dicteeSentencesHeader: 'Part 2: Sentences',
+        instrSchrijf: 'Write a postcard to the teacher. Use full sentences.',
+        q1: '1. Where are you on holiday? (Write: Lieve docent, ik ben...)',
+        q2: '2. How is the weather there? (Write: Het weer is...)',
+        q3: '3. Where do you sleep? (Write: Ik slaap in...)',
+        q4: '4. What do you do during the day? (Write: Overdag ga ik...)',
+        q5: '5. End with greetings. (Write: De groeten van...)'
+    },
+    ar: {
+        subtitle: 'اقرأ البطاقة البريدية لصوفيا من إسبانيا وتعلم كيفية كتابة بطاقة بريدية بنفسك.',
+        vocabTitle: 'كلمات الفقرة 8.10',
+        vocabIntro: 'انقر على لغة أعلاه لرؤية الترجمة.',
+        thExample: 'جملة مثال',
+        thLang: '🇸🇦 العربية',
+        postcardTitle: 'بطاقة بريدية من صوفيا',
+        instrMC: 'اختر الإجابة الصحيحة عن بطاقة صوفيا البريدية.',
+        instrWNW: 'هل العبارة عن البطاقة البريدية صحيحة؟ اضغط ✅ (صح) أو ❌ (خطأ).',
+        instrInvul: 'أكمل الجمل بكلمات من البطاقة البريدية.',
+        instrInvul2: 'اكتب حروف الجر أو تصريفات الأفعال الصحيحة في الجمل.',
+        dicteeTitle: '🗣️ الإملاء: استمع واكتب',
+        instrDictee: 'انقر على زر الصوت واكتب الكلمة أو الجملة كما تسمعها تمامًا.',
+        dicteeWordsHeader: 'الجزء الأول: الكلمات',
+        dicteeSentencesHeader: 'الجزء الثاني: الجمل',
+        instrSchrijf: 'اكتب بطاقة بريدية إلى المعلم. استخدم جملاً كاملة.',
+        q1: '1. أين أنت في الإجازة؟ (اكتب: Lieve docent, ik ben...)',
+        q2: '2. كيف حال الطقس هناك؟ (اكتب: Het weer is...)',
+        q3: '3. أين تنام؟ (اكتب: Ik slaap in...)',
+        q4: '4. ماذا تفعل نهاراً؟ (اكتب: Overdag ga ik...)',
+        q5: '5. اختم بالتحيات. (اكتب: De groeten van...)'
+    },
+    tr: {
+        subtitle: 'Sofie\'nin İspanya\'dan gönderdiği kartpostalı okuyun ve kendi kartpostalınızı nasıl yazacağınızı öğrenin.',
+        vocabTitle: 'Paragraf 8.10\'un kelimeleri',
+        vocabIntro: 'Çeviriyi görmek için bir dil seçin.',
+        thExample: 'Örnek cümle',
+        thLang: '🇹🇷 Türkçe',
+        postcardTitle: 'Sofie\'den Kartpostal',
+        instrMC: 'Sofie\'nin kartpostalı hakkında doğru cevabı seçin.',
+        instrWNW: 'Kartpostal hakkındaki ifade doğru mu? ✅ (doğru) veya ❌ (yanlış) seçeneğine tıklayın.',
+        instrInvul: 'Kartpostaldaki kelimelerle cümleleri tamamlayın.',
+        instrInvul2: 'Cümlelerdeki doğru edatları veya fiil çekimlerini yazın.',
+        dicteeTitle: '🗣️ Dikte: Dinle ve Yaz',
+        instrDictee: 'Ses düğmesine tıklayın ve duyduğunuz kelimeyi veya cümleyi tam olarak yazın.',
+        dicteeWordsHeader: 'Bölüm 1: Kelimeler',
+        dicteeSentencesHeader: 'Bölüm 2: Cümleler',
+        instrSchrijf: 'Öğretmene bir kartpostal yazın. Tam cümleler kullanın.',
+        q1: '1. Nerede tatildesiniz? (Yazın: Lieve docent, ik ben...)',
+        q2: '2. Orada hava nasıl? (Yazın: Het weer is...)',
+        q3: '3. Nerede kalıyorsunuz? (Yazın: Ik slaap in...)',
+        q4: '4. Gün içinde ne yapıyorsunuz? (Yazın: Overdag ga ik...)',
+        q5: '5. Selamla bitirin. (Yazın: De groeten van...)'
+    }
+};
+
+const POSTCARD = {
+    nl: `<div class="postcard-box">
+        <div class="postcard-stamp">🇪🇸</div>
+        <div class="postcard-content">
+            <p style="margin-bottom:10px;">Lieve familie,</p>
+            <p class="example" style="line-height:1.7;">
+                Ik ben nu <strong>op vakantie</strong> in Spanje. Het is hier prachtig en heel zonnig. We slapen in een leuk <strong>hotel</strong> vlakbij het strand. Overdag gaan we <strong>zwemmen</strong> in de zee en <strong>wandelen</strong> in de bergen. 's Avonds eten we lekkere tapas. Ik <strong>schrijf</strong> jullie deze <strong>ansichtkaart</strong>.
+            </p>
+            <p style="margin-top:15px; font-weight:700;">Veel liefs en de groeten uit Spanje!</p>
+            <p style="font-weight:700; margin-top:5px;">Sofie</p>
+        </div>
+    </div>`,
+    en: `<div class="uitleg-box" style="max-width:550px; margin:15px auto 0;">
+        <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);">
+            Dear family,<br>
+            I am now on holiday in Spain. It is beautiful here and very sunny. We sleep in a nice hotel near the beach. During the day we swim in the sea and walk in the mountains. In the evening we eat tasty tapas. I write you this postcard.<br>
+            Lots of love and greetings from Spain!<br>
+            Sofie
+        </p>
+    </div>`,
+    ar: `<div class="uitleg-box" dir="rtl" style="max-width:550px; margin:15px auto 0;">
+        <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);">
+            عائلتي العزيزة،<br>
+            أنا الآن في إجازة في إسبانيا. المكان هنا جميل ومشمس جداً. نحن ننام في فندق جميل بالقرب من الشاطئ. نهاراً نذهب للسباحة في البحر والمشي في الجبال. مساءً نأكل التاباس اللذيذة. أكتب لكم هذه البطاقة البريدية.<br>
+            مع الكثير من الحب وتحياتي من إسبانيا!<br>
+            صوفيا
+        </p>
+    </div>`,
+    tr: `<div class="uitleg-box" style="max-width:550px; margin:15px auto 0;">
+        <p style="font-size:0.95rem;line-height:1.7;color:var(--text-muted);">
+            Sevgili ailem,<br>
+            Şu an İspanya'da tatildeyim. Burası çok güzel ve hava güneşli. Plajın yakınında güzel bir otelde kalıyoruz. Gün boyunca denizde yüzüyoruz ve dağlarda yürüyoruz. Akşamları lezzetli tapaslar yiyoruz. Size bu kartpostalı yazıyorum.<br>
+            İspanya'dan sevgiler ve selamlar!<br>
+            Sofie
+        </p>
+    </div>`
+};
+
+let _ttsAudio=null;
+function speak(text, isSlow=false){
+    if(!text)return;
+    if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}
+    let processedText = text;
+    if(isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    const rate = isSlow ? 0.6 : 0.9;
+    _ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(". . . . . . "+processedText)}`);
+    _ttsAudio.play().catch(()=>{
+        if('speechSynthesis'in window){
+            window.speechSynthesis.cancel();
+            const u=new SpeechSynthesisUtterance(text);
+            u.lang='nl-NL';
+            u.rate=rate;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+
+function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+
+function setLang(l){
+    document.querySelectorAll('.lang-bar .lang-btn').forEach(b=>b.classList.remove('active'));
+    event.target.closest('.lang-btn').classList.add('active');
+    document.querySelectorAll('[data-translate]').forEach(el=>{
+        const k=el.getAttribute('data-translate');
+        if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
+    });
+    buildTable(l);
+    document.getElementById('uitleg-content').innerHTML=l==='nl'?POSTCARD.nl:(POSTCARD[l]?POSTCARD.nl+'<div style="margin-top:18px;padding-top:14px;border-top:2px dashed rgba(67,97,238,0.2);">'+POSTCARD[l]+'</div>':POSTCARD.nl);
+    buildSchrijf(l);
+}
+
+// ── OPDRACHT 1: MC ──
+const mcData=[
+    {vraag:'Waar is Sofie op vakantie?', ant:'c', opties:{a:'in Frankrijk',b:'in Italië',c:'in Spanje'}},
+    {vraag:'Hoe is het weer in Spanje?', ant:'a', opties:{a:'zonnig',b:'koud',c:'winderig'}},
+    {vraag:'Waar slapen ze?', ant:'b', opties:{a:'in een tent',b:'in een hotel',c:'in de auto'}},
+    {vraag:'Wat eten ze in de avond?', ant:'c', opties:{a:'patat',b:'brood',c:'tapas'}},
+    {vraag:'Wat stopt Sofie in de brievenbus?', ant:'b', opties:{a:'een boek',b:'een ansichtkaart',c:'een koffer'}}
+];
+const mcC={};
+function buildMC(){const ul=document.getElementById('mc-vragen');ul.innerHTML='';mcData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" data-val="${k}" onclick="checkMCItem(this,'${k}','${item.ant}','mc-vragen','mc-score',${mcData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
+function checkMCItem(btn,keuze,ant,key,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!mcC[key])mcC[key]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');mcC[key].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.dataset.val===ant)b.classList.add('correct');});}mcC[key].done++;if(mcC[key].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=mcC[key].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=total*.6?'score-midden':'score-slecht');}}
+function resetMC(){delete mcC['mc-vragen'];buildMC();document.getElementById('mc-score').style.display='none';}
+
+// ── OPDRACHT 2: WAAR / NIET WAAR ──
+const wnwData=[
+    {zin:'Sofie is op vakantie in Frankrijk.', ans:false},
+    {zin:'Het hotel van Sofie ligt vlakbij het strand.', ans:true},
+    {zin:'Overdag gaan ze wandelen in de bergen.', ans:true},
+    {zin:'Sofie schrijft een brief aan haar vriendin.', ans:false}, // het is een ansichtkaart
+    {zin:'De ansichtkaart eindigt met: "Veel liefs en de groeten".', ans:true}
+];
+function buildWNW(){const c=document.getElementById('wnw-container');c.innerHTML='';wnwData.forEach((item,i)=>{c.innerHTML+=`<div class="wnw-item" id="wnw-item-${i}" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;background:var(--white);"><span style="flex:1;font-size:.9rem;">${i+1}. ${item.zin}</span><button class="mc-btn" style="min-width:50px;" onclick="answerWNW(${i},true,this)">✅ Waar</button><button class="mc-btn" style="min-width:80px;" onclick="answerWNW(${i},false,this)">❌ Niet waar</button></div>`;});}
+const wnwC={done:0,score:0};
+function answerWNW(i,keuze,btn){const item=wnwData[i];const row=document.getElementById('wnw-item-'+i);if(row.dataset.done)return;row.dataset.done='1';const btns=row.querySelectorAll('button');btns.forEach(b=>b.disabled=true);if(!wnwC.score&&wnwC.score!==0)wnwC.score=0;if(keuze===item.ans){btn.style.background='rgba(16,185,129,0.15)';btn.style.borderColor='#10b981';btn.style.color='#059669';wnwC.score++;}else{btn.style.background='rgba(239,68,68,0.1)';btn.style.borderColor='#ef4444';btn.style.color='#dc2626';btns.forEach(b=>{if((b.textContent.includes('Waar')&&item.ans)||(b.textContent.includes('Niet waar')&&!item.ans)){b.style.background='rgba(16,185,129,0.15)';b.style.borderColor='#10b981';b.style.color='#059669';}});}wnwC.done++;if(wnwC.done===wnwData.length){const sc=document.getElementById('wnw-score');sc.style.display='inline-block';sc.textContent=`${wnwC.score}/${wnwData.length}`;sc.className='score-badge '+(wnwC.score===wnwData.length?'score-goed':wnwC.score>=3?'score-midden':'score-slecht');}}
+function resetWNW(){wnwC.done=0;wnwC.score=0;buildWNW();document.getElementById('wnw-score').style.display='none';}
+
+// ── OPDRACHT 3: INVULOEFENING 1 ──
+const invulData=[
+    {zin:'Sofie is op vakantie in ___. (Spanje / Duitsland)', ans:'spanje', alts:['spanje']},
+    {zin:'We slapen in een leuk ___ vlakbij het strand. (hotel / tent)', ans:'hotel', alts:['hotel']},
+    {zin:'Het weer in Spanje is heel ___. (zonnig / koud)', ans:'zonnig', alts:['zonnig']},
+    {zin:'Overdag gaan we ___ in de zee. (zwemmen / lopen)', ans:'zwemmen', alts:['zwemmen']},
+    {zin:'Sofie stopt de ___ in de brievenbus. (ansichtkaart / koffer)', ans:'ansichtkaart', alts:['ansichtkaart']}
+];
+function buildInvul(){const ul=document.getElementById('invul-vragen');ul.innerHTML=invulData.map((item,i)=>`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="invr-${i}" autocomplete="off" placeholder="…">`)}</li>`).join('');}
+function checkInvul(){
+    let good=0;
+    invulData.forEach((item,i)=>{
+        const inp=document.getElementById('invr-'+i);
+        inp.classList.remove('correct','fout','almost-correct');
+        const note=inp.parentNode.querySelector('.fz-note');
+        if(note)note.remove();
+        const val=inp.value.trim().toLowerCase();
+        let exactMatch = false;
+        let fuzzyMatch = false;
+        item.alts.forEach(a => {
+            const d = levenshtein(val, a.toLowerCase());
+            if (d === 0) exactMatch = true;
+            else if (d <= 1) fuzzyMatch = true;
+        });
+        if(exactMatch){
+            inp.classList.add('correct');
+            good++;
+        } else if(fuzzyMatch && val.length > 0){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz=document.createElement('span');
+            fz.className='fz-note';
+            fz.style.cssText='color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent=`Let op: ${item.ans}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc=document.getElementById('invul-score');
+    sc.style.display='inline-block';
+    sc.textContent=`${good}/${invulData.length}`;
+    sc.className='score-badge '+(good===invulData.length?'score-goed':good>=3?'score-midden':'score-slecht');
+}
+function resetInvul(){buildInvul();document.getElementById('invul-score').style.display='none';}
+
+// ── OPDRACHT 4: INVULOEFENING 2 ──
+const invulData2=[
+    {zin:'Zij gaan ___ vakantie naar Italië. (op / in)', ans:'op', alts:['op']},
+    {zin:'Ik ___ een ansichtkaart naar mijn familie. (schrijven / schrijf)', ans:'schrijf', alts:['schrijf']},
+    {zin:'Mats en John ___ een brief naar de gemeente. (sturen)', ans:'sturen', alts:['sturen']},
+    {zin:'Wij slapen ___ een mooi hotel in Rome. (in / op)', ans:'in', alts:['in']},
+    {zin:'Veel liefs en de ___ uit Parijs! (groeten)', ans:'groeten', alts:['groeten']}
+];
+function buildInvul2(){
+    const ul=document.getElementById('invul-vragen-2');
+    ul.innerHTML = `
+        <li>1. Zij gaan <input type="text" id="invr2-0" style="width:70px;" placeholder="…"> vakantie naar Italië. (op / in)</li>
+        <li>2. Ik <input type="text" id="invr2-1" style="width:100px;" placeholder="…"> een ansichtkaart naar mijn familie. (schrijven / schrijf)</li>
+        <li>3. Mats en John <input type="text" id="invr2-2" style="width:110px;" placeholder="…"> een brief naar de gemeente. (sturen)</li>
+        <li>4. Wij slapen <input type="text" id="invr2-3" style="width:70px;" placeholder="…"> een mooi hotel in Rome. (in / op)</li>
+        <li>5. Veel liefs en de <input type="text" id="invr2-4" style="width:100px;" placeholder="…"> uit Parijs! (groeten)</li>
+    `;
+}
+function checkInvul2(){
+    let good = 0;
+    const checks = [
+        {id:'invr2-0', ans:'op'},
+        {id:'invr2-1', ans:'schrijf'},
+        {id:'invr2-2', ans:'sturen'},
+        {id:'invr2-3', ans:'in'},
+        {id:'invr2-4', ans:'groeten'}
+    ];
+    checks.forEach(c => {
+        const inp = document.getElementById(c.id);
+        inp.classList.remove('correct','fout');
+        if(inp.value.trim().toLowerCase() === c.ans){
+            inp.classList.add('correct');
+            good++;
+        } else {
+            inp.classList.add('fout');
+        }
+    });
+    const sc2 = document.getElementById('invul-score-2');
+    sc2.style.display = 'inline-block';
+    sc2.textContent = `${good}/${checks.length}`;
+    sc2.className = 'score-badge ' + (good === checks.length ? 'score-goed' : good >= 3 ? 'score-midden' : 'score-slecht');
+}
+function resetInvul2(){buildInvul2();document.getElementById('invul-score-2').style.display='none';}
+
+// ── DICTEE ──
+const dicteeWoorden = [
+    "op vakantie",
+    "de ansichtkaart",
+    "sturen",
+    "schrijven",
+    "het hotel",
+    "de groeten"
+];
+const dicteeZinnen = [
+    "Ik schrijf een kaart.",
+    "Het weer is heel zonnig.",
+    "Veel groeten uit Spanje."
+];
+function buildDictee(){
+    const ulW = document.getElementById('dictee-woorden');
+    const ulZ = document.getElementById('dictee-zinnen');
+    ulW.innerHTML = '';
+    ulZ.innerHTML = '';
+    
+    dicteeWoorden.forEach((item, i) => {
+        ulW.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-w-${i}" placeholder="Typ het woord…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        ulZ.innerHTML += `<li>
+            <span style="font-weight:700; min-width:24px;">${i+1}.</span>
+            <div class="dictee-audio-btns">
+                <button class="dictee-btn" onclick="speak('${item.replace(/'/g, "\\'")}', false)">🔊 Luister</button>
+                <button class="slow-speak-btn" onclick="speak('${item.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            </div>
+            <input type="text" id="dictee-z-${i}" placeholder="Typ de zin…" autocomplete="off" spellcheck="false">
+        </li>`;
+    });
+}
+function checkDictee(){
+    let good = 0;
+    const total = dicteeWoorden.length + dicteeZinnen.length;
+    
+    dicteeWoorden.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-w-${i}`);
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 1 && userVal.length > 3){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
+        }
+    });
+    
+    dicteeZinnen.forEach((item, i) => {
+        const inp = document.getElementById(`dictee-z-${i}`);
+        inp.classList.remove('correct', 'fout', 'almost-correct');
+        const note = inp.parentNode.querySelector('.fz-note');
+        if(note) note.remove();
+        
+        const userVal = inp.value.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const correctVal = item.trim().toLowerCase().replace(/[.,?!]/g, '').replace(/\s+/g, ' ');
+        const dist = levenshtein(userVal, correctVal);
+        if(dist === 0){
+            inp.classList.add('correct');
+            good++;
+        } else if(dist <= 2 && userVal.length > 8){
+            inp.classList.add('almost-correct');
+            good++;
+            const fz = document.createElement('span');
+            fz.className = 'fz-note';
+            fz.style.cssText = 'color:#d97706;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            fz.textContent = `Let op: ${item}`;
+            inp.parentNode.appendChild(fz);
+        } else {
+            inp.classList.add('fout');
+            const wr = document.createElement('span');
+            wr.className = 'fz-note';
+            wr.style.cssText = 'color:#dc2626;font-size:0.82rem;margin-left:8px;font-weight:700;';
+            wr.textContent = `Correct: ${item}`;
+            inp.parentNode.appendChild(wr);
+        }
+    });
+    
+    const sc = document.getElementById('dictee-score');
+    sc.style.display = 'inline-block';
+    sc.textContent = `${good}/${total}`;
+    sc.className = 'score-badge ' + (good === total ? 'score-goed' : good >= total * 0.6 ? 'score-midden' : 'score-slecht');
+}
+function resetDictee(){buildDictee();document.getElementById('dictee-score').style.display='none';}
+
+// ── OPDRACHT 5: SCHRIJVEN ──
+function buildSchrijf(lang){
+    const ul=document.getElementById('schrijf1');
+    ul.innerHTML='';
+    const questions = [UI[lang].q1, UI[lang].q2, UI[lang].q3, UI[lang].q4, UI[lang].q5];
+    questions.forEach((v,i)=>{
+        ul.innerHTML+=`<li style="margin-bottom:15px;">
+            <label style="font-weight:700;display:block;margin-bottom:6px;">${v}</label>
+            <textarea id="schrijf-${i}" style="width:100%;height:70px;border-radius:6px;border:1px solid var(--border);padding:8px;" placeholder="Schrijf hier je antwoord…"></textarea>
+        </li>`;
+    });
+}
+function saveSchrijf(){
+    let msg=`*Thema 8.10 — Schrijfopdracht (Ansichtkaart)*\n`;
+    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const questions = [UI[activeLang].q1, UI[activeLang].q2, UI[activeLang].q3, UI[activeLang].q4, UI[activeLang].q5];
+    questions.forEach((v,i)=>{
+        const val=document.getElementById('schrijf-'+i).value.trim();
+        msg+=`\n*${v}*\n${val||'(geen antwoord)'}`;
+    });
+    window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function resetSchrijf(){
+    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    buildSchrijf(activeLang);
+}
+
+// ── THEME TOGGLE ──
+(function(){
+    const t=document.getElementById('theme-toggle');
+    if(!t)return;
+    t.addEventListener('click',()=>{
+        let th=document.documentElement.getAttribute('data-theme')||'light';
+        let nt=th==='light'?'dark':'light';
+        document.documentElement.setAttribute('data-theme',nt);
+        localStorage.setItem('a1-theme',nt);
+    });
+})();
+
+// ── INIT ──
+buildTable('nl');
+document.getElementById('uitleg-content').innerHTML=POSTCARD.nl;
+buildMC();
+buildWNW();
+buildInvul();
+buildInvul2();
+buildDictee();
+buildSchrijf('nl');
+</script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+    document.querySelectorAll('.vocab').forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
+        if (row.cells.length >= 2) {
+            let targetCell = row.cells[1];
+            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
+                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
+            }
+        }
+    });
+    document.querySelectorAll('.example').forEach(el => {
+        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector('.transl');
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+</body>
+</html>
