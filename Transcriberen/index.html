@@ -2262,7 +2262,12 @@
                         const normB = norm(slot.wordCorrect);
                         const isTypo = levenshtein(normA, normB) <= 2;
                         wc = isTypo ? '#f59e0b' : '#ef4444'; // spelling/typo is oranje/geel, grammar error is rood
-                        label = alignAndFormatWord(slot.wordFonetisch, slot.wordCorrect);
+                        label = `
+                            <div style="display:inline-flex; flex-direction:column; align-items:center; line-height:1.1; vertical-align:middle; padding:2px 0;">
+                                <span style="color:#10b981; font-weight:800; font-size:0.85rem;">${esc(slot.wordCorrect)}</span>
+                                <span style="text-decoration:line-through; color:#ef4444; opacity:0.8; font-size:0.75rem;">${esc(slot.wordFonetisch)}</span>
+                            </div>
+                        `;
                         titleText = isTypo ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast.';
                     }
 
@@ -2352,7 +2357,11 @@
                     titleText += (titleText ? ' | ' : '') + 'Klik: kleur wijzigen. Dubbelklik: tekst bewerken.';
                     pill.title = titleText;
 
-                    pill.innerHTML = `<span>${label}</span>`;
+                    if (slot.type === 'substitute') {
+                        pill.innerHTML = label;
+                    } else {
+                        pill.innerHTML = `<span>${label}</span>`;
+                    }
                     grid.appendChild(pill);
                 });
                 grid.style.marginBottom = '6px';
