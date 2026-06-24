@@ -226,6 +226,37 @@
             transform: translateY(0);
         }
 
+        /* ── STUDENT MODE ── */
+        body.student-mode .sidebar {
+            display: none !important;
+        }
+        body.student-mode .container {
+            grid-template-columns: 1fr !important;
+            max-width: 1200px !important;
+        }
+        .student-view-btn {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .student-view-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--accent);
+        }
+        .student-view-btn.active {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: transparent;
+        }
+
         /* ── WORKSPACE 3-COLUMN LAYOUT ── */
         .viewer-layout {
             display: grid;
@@ -344,6 +375,7 @@
                 <span class="brand-icon">✨</span> Gemini Transcriber
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="student-view-btn" id="studentViewBtn" onclick="toggleStudentView()" title="Schakel studentenview in/uit">🎓 Studentenview</button>
                 <button onclick="openSettingsModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem; transition: var(--transition);" title="Gemini API Key Instellingen">⚙️</button>
                 <button class="logout-btn" onclick="logout()">Uitloggen</button>
             </div>
@@ -1461,6 +1493,15 @@
             sessionStorage.removeItem('transcriber_auth');
             try { window.fbAuth.signOut(); } catch (e) {}
             setTimeout(() => location.reload(), 200);
+        }
+
+        function toggleStudentView() {
+            const body = document.body;
+            const btn = document.getElementById('studentViewBtn');
+            if (body && btn) {
+                body.classList.toggle('student-mode');
+                btn.classList.toggle('active');
+            }
         }
 
         function showLoadingState() {
