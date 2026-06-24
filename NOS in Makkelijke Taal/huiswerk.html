@@ -6,6 +6,11 @@
     <title>NOS in Makkelijke Taal — Huiswerk Nakijken</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="../api_key.js"></script>
+    <!-- Firebase SDKs compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../firebase_config.js"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -487,9 +492,165 @@
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.15) transparent;
         }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 320px;
+            height: 100vh;
+            background: rgba(30, 41, 59, 0.98);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border);
+            z-index: 1500;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .sidebar.open {
+            transform: translateX(320px);
+        }
+
+        .sidebar-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
+        }
+
+        .sidebar-close:hover {
+            color: var(--text);
+            transform: scale(1.1);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Sidebar item card */
+        .history-item {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .history-item:hover {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .history-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-item-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .history-item-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.05rem;
+            padding: 6px;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .history-item-delete:hover {
+            color: var(--red);
+            background: var(--red-bg);
+        }
+
+        /* Sidebar overlay when open */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 1400;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="historySidebar">
+        <div class="sidebar-header">
+            <h2>📜 Geschiedenis</h2>
+            <button class="sidebar-close" onclick="closeSidebar()" title="Sluiten">✕</button>
+        </div>
+        <div class="sidebar-content" id="historyList">
+            <div style="color:var(--text-muted); text-align:center; padding: 20px; font-weight: 600;">Laden...</div>
+        </div>
+    </div>
 
     <!-- WACHTWOORD INTRODUCTIE SCHERM -->
     <div class="login-container" id="loginSection" style="max-width: 400px; margin: 100px auto 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none;">
@@ -518,6 +679,9 @@
                 <p>NOS in Makkelijke Taal — Corrigeer ingeleverd woorden-huiswerk met Gemini</p>
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
+                <button class="btn btn-secondary" onclick="toggleSidebar()" id="btnToggleSidebar" style="padding: 10px 16px; display: flex; align-items: center; gap: 8px;">
+                    🕒 Geschiedenis
+                </button>
                 <button class="settings-toggle" onclick="openSettingsModal()" title="Gemini Instellingen">⚙️</button>
                 <a href="index.html" class="btn-back">← Terug</a>
             </div>
@@ -594,6 +758,7 @@
 
                 <div style="display:flex; gap:12px; flex-wrap:wrap;">
                     <button class="btn btn-accent" onclick="copyFeedbackText()">📋 Kopieer Brief</button>
+                    <button class="btn btn-accent" id="btnSaveToHistory" onclick="saveToHistory()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); border: none;">💾 Opslaan in geschiedenis</button>
                     <a href="#" id="btnShareWhatsapp" class="btn" target="_blank" style="text-decoration:none; background:#25d366; border:none; color:white; font-weight:800;">💬 Stuur via WhatsApp</a>
                     <button class="btn btn-secondary" onclick="resetGrading()">↩️ Nieuw Huiswerk Nakijken</button>
                 </div>
@@ -685,6 +850,9 @@ Naam: Malwina
         let feedbackBriefNl = '';
         let feedbackBriefMoedertaal = '';
         let detectedMoedertaalName = 'Moedertaal';
+        let currentResult = null;
+        let lastHomeworkText = '';
+        let historyUnsubscribe = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('gemini_api_key');
@@ -700,6 +868,7 @@ Naam: Malwina
             // Check page auth
             if (sessionStorage.getItem('nos_grading_auth') === '1') {
                 showMainPage();
+                initFirebaseAndLoadHistory();
             } else {
                 showLoginPage();
             }
@@ -747,6 +916,7 @@ Naam: Malwina
             if (entered.toUpperCase() === 'NOS') {
                 sessionStorage.setItem('nos_grading_auth', '1');
                 showMainPage();
+                initFirebaseAndLoadHistory();
             } else {
                 errorMsg.style.opacity = '1';
                 setTimeout(() => {
@@ -1009,6 +1179,7 @@ Naam: Malwina
 
         // START AI GRADING
         async function runAiGrading(homeworkText) {
+            lastHomeworkText = homeworkText;
             const btn = document.getElementById('btnGrading');
             btn.innerHTML = '⏳ Bezig met nakijken via Gemini...';
             btn.disabled = true;
@@ -1170,6 +1341,7 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
 
         // RENDER RESULTS
         function renderResults(result) {
+            currentResult = result;
             // Vul Student info
             document.getElementById('bannerStudentName').textContent = result.naam || "Cursist";
             detectedMoedertaalName = result.moedertaal || "Gedetecteerd";
@@ -1307,6 +1479,202 @@ Retourneer je antwoord in EXACT het volgende JSON-formaat:
             }).catch(err => {
                 alert("Fout bij kopiëren: " + err);
             });
+        }
+
+        // FIREBASE & HISTORY FUNCTIONS
+        function initFirebaseAndLoadHistory() {
+            if (typeof firebase !== 'undefined' && window.fbAuth) {
+                window.fbAuth.signInAnonymously()
+                    .then(() => {
+                        console.log("Firebase anoniem ingelogd.");
+                        listenToHistory();
+                    })
+                    .catch(err => {
+                        console.error("Firebase signin error:", err);
+                        showToast("⚠️ Cloud-inlog mislukt: " + err.message);
+                    });
+            } else {
+                console.warn("Firebase config/SDK niet geladen.");
+            }
+        }
+
+        function listenToHistory() {
+            if (!window.fbDb) return;
+            
+            if (historyUnsubscribe) historyUnsubscribe();
+            
+            historyUnsubscribe = window.fbDb.collection('nos_huiswerk_history')
+                .orderBy('timestamp', 'desc')
+                .limit(50)
+                .onSnapshot(snapshot => {
+                    const listEl = document.getElementById('historyList');
+                    if (!listEl) return;
+                    
+                    listEl.innerHTML = '';
+                    if (snapshot.empty) {
+                        listEl.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding: 20px; font-weight: 600;">Geen geschiedenis gevonden.</div>';
+                        return;
+                    }
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const id = doc.id;
+                        
+                        let name = data.naam || "Onbekend";
+                        let lang = data.moedertaal || "Onbekend";
+                        
+                        let dateStr = "";
+                        if (data.timestamp) {
+                            const date = data.timestamp.toDate();
+                            dateStr = date.toLocaleDateString('nl-NL', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        } else {
+                            dateStr = "Zojuist";
+                        }
+                        
+                        const item = document.createElement('div');
+                        item.className = 'history-item';
+                        item.innerHTML = `
+                            <div class="history-item-info" onclick="loadHistoryItem('${id}')">
+                                <span class="history-item-name">${name}</span>
+                                <span class="history-item-meta">🗣️ ${lang} | 🕒 ${dateStr}</span>
+                            </div>
+                            <button class="history-item-delete" onclick="deleteHistoryItem('${id}', event)" title="Verwijderen uit geschiedenis">🗑️</button>
+                        `;
+                        listEl.appendChild(item);
+                    });
+                }, err => {
+                    console.error("Firestore error:", err);
+                });
+        }
+
+        async function saveToHistory() {
+            if (!currentResult) {
+                showToast("⚠️ Geen resultaat om op te slaan.");
+                return;
+            }
+            if (typeof firebase === 'undefined' || !window.fbDb) {
+                showToast("⚠️ Database niet verbonden.");
+                return;
+            }
+            
+            const btn = document.getElementById('btnSaveToHistory');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Opslaan...';
+            }
+            
+            try {
+                const docData = {
+                    naam: currentResult.naam || "Cursist",
+                    moedertaal: currentResult.moedertaal || detectedMoedertaalName,
+                    woorden_analyse: currentResult.woorden_analyse || [],
+                    feedback_brief_nl: feedbackBriefNl,
+                    feedback_brief_moedertaal: feedbackBriefMoedertaal,
+                    homeworkText: lastHomeworkText,
+                    geminiModel: document.getElementById('geminiModelSelect').value,
+                    transcriptContext: document.getElementById('transcriptContextSelect').value,
+                    customInstructions: document.getElementById('customInstructionsInput').value.trim(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await window.fbDb.collection('nos_huiswerk_history').add(docData);
+                showToast("💾 Opgeslagen in geschiedenis!");
+            } catch (err) {
+                console.error("Opslaan mislukt:", err);
+                showToast("❌ Opslaan mislukt: " + err.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '💾 Opslaan in geschiedenis';
+                }
+            }
+        }
+
+        async function loadHistoryItem(id) {
+            if (!window.fbDb) return;
+            try {
+                showToast("⏳ Laden...");
+                const doc = await window.fbDb.collection('nos_huiswerk_history').doc(id).get();
+                if (!doc.exists) {
+                    showToast("⚠️ Item bestaat niet meer.");
+                    return;
+                }
+                const data = doc.data();
+                
+                document.getElementById('homeworkTextarea').value = data.homeworkText || '';
+                document.getElementById('targetLanguageInput').value = data.moedertaal || '';
+                
+                if (data.transcriptContext !== undefined) {
+                    document.getElementById('transcriptContextSelect').value = data.transcriptContext;
+                }
+                if (data.geminiModel) {
+                    document.getElementById('geminiModelSelect').value = data.geminiModel;
+                }
+                if (data.customInstructions !== undefined) {
+                    document.getElementById('customInstructionsInput').value = data.customInstructions;
+                }
+                
+                lastHomeworkText = data.homeworkText || '';
+                detectedMoedertaalName = data.moedertaal || 'Moedertaal';
+                feedbackBriefNl = data.feedback_brief_nl || '';
+                feedbackBriefMoedertaal = data.feedback_brief_moedertaal || '';
+                
+                currentResult = {
+                    naam: data.naam || 'Cursist',
+                    moedertaal: data.moedertaal || 'Moedertaal',
+                    woorden_analyse: data.woorden_analyse || [],
+                    feedback_brief_nl: feedbackBriefNl,
+                    feedback_brief_moedertaal: feedbackBriefMoedertaal
+                };
+                
+                renderResults(currentResult);
+                closeSidebar();
+                showToast("💾 Geschiedenis geladen!");
+            } catch (err) {
+                console.error("Fout bij laden history item:", err);
+                showToast("❌ Laden mislukt: " + err.message);
+            }
+        }
+
+        async function deleteHistoryItem(id, event) {
+            event.stopPropagation();
+            if (!window.fbDb) return;
+            if (!confirm("Weet je zeker dat je deze nakijk-versie wilt verwijderen uit de geschiedenis?")) return;
+            
+            try {
+                await window.fbDb.collection('nos_huiswerk_history').doc(id).delete();
+                showToast("🗑️ Verwijderd uit geschiedenis!");
+            } catch (err) {
+                console.error("Fout bij verwijderen item:", err);
+                showToast("❌ Verwijderen mislukt: " + err.message);
+            }
+        }
+
+        // SIDEBAR TOGGLERS
+        function toggleSidebar() {
+            const sidebar = document.getElementById('historySidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar || !overlay) return;
+            
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('historySidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
         }
     </script>
 </body>
