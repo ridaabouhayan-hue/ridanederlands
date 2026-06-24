@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aanwijzende Voornaamwoorden (Demonstrative Pronouns)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f1419;
+      --bg-card: #1a1f2e;
+      --bg-card-light: #242b3d;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-orange: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #334155;
+      --primary-glow: rgba(59, 130, 246, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+
+    .header .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      padding: 8px 20px;
+      border: 2px solid var(--accent-blue);
+      background: transparent;
+      color: var(--accent-blue);
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .lang-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .lang-btn.active {
+      background: var(--accent-blue);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Main Grid Layout */
+    .grammar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .grammar-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 2.5rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+    }
+
+    .card.de-words::before {
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    }
+
+    .card.het-words::before {
+      background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+    }
+
+    .card.plural-words::before {
+      background: linear-gradient(90deg, var(--accent-green), #06b6d4);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+    }
+
+    .card.de-words .card-icon {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    }
+
+    .card.het-words .card-icon {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+    }
+
+    .card.plural-words .card-icon {
+      background: linear-gradient(135deg, var(--accent-green), #06b6d4);
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .card-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Grammar Rules Blocks */
+    .rule-item {
+      background: var(--bg-card-light);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: transform 0.2s ease;
+    }
+
+    .rule-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    .rule-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rule-word {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card.de-words .rule-word { color: #60a5fa; }
+    .card.het-words .rule-word { color: #fb923c; }
+    .card.plural-words .rule-word { color: #34d399; }
+
+    .rule-badge {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-near { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+    .badge-far { background: rgba(245, 158, 11, 0.15); color: var(--accent-orange); }
+    .badge-kind { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+
+    .rule-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .rule-example {
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-left: 3px solid var(--border-color);
+      padding-left: 12px;
+      color: var(--text-primary);
+      margin-top: 4px;
+    }
+
+    .card.de-words .rule-example { border-left-color: var(--accent-blue); }
+    .card.het-words .rule-example { border-left-color: var(--accent-orange); }
+    .card.plural-words .rule-example { border-left-color: var(--accent-green); }
+
+    .rule-translation {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Vocabulary translations tooltips */
+    .vocab {
+      position: relative;
+      cursor: pointer;
+      border-bottom: 2px dashed var(--accent-blue);
+      font-weight: 700;
+      color: var(--accent-blue);
+      transition: all 0.2s;
+      display: inline-block;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    .vocab:hover {
+      background-color: var(--primary-glow);
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 100;
+      pointer-events: none;
+      border: 1px solid var(--border-color);
+    }
+
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: #1e293b transparent transparent transparent;
+    }
+
+    .vocab.show-tooltip .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Full width Plural card */
+    .full-width-card {
+      grid-column: 1 / -1;
+    }
+
+    .plural-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .plural-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Interactive Exercises Section */
+    .exercise-section {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 3rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      margin-top: 3rem;
+    }
+
+    .exercise-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .exercise-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .exercise-block {
+      background: var(--bg-card-light);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .exercise-block h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--accent-orange);
+    }
+
+    .question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .question-item {
+      font-size: 1.15rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      line-height: 1.6;
+    }
+
+    .question-num {
+      font-weight: 800;
+      color: var(--text-muted);
+      width: 25px;
+    }
+
+    .fill-input {
+      background: var(--bg-dark);
+      border: 2px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      width: 100px;
+      text-align: center;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .fill-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+    }
+
+    .fill-input.correct {
+      border-color: var(--accent-green);
+      background-color: rgba(16, 185, 129, 0.08);
+      color: #34d399;
+    }
+
+    .fill-input.wrong {
+      border-color: var(--accent-red);
+      background-color: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+    }
+
+    .hint-label {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      background: rgba(255,255,255,0.04);
+      padding: 2px 10px;
+      border-radius: 6px;
+      border: 1px dashed var(--border-color);
+    }
+
+    .q-translation {
+      width: 100%;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding-left: 25px;
+      margin-top: 2px;
+    }
+
+    .check-btn {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+      margin-top: 15px;
+      font-family: inherit;
+    }
+
+    .check-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
+
+    .score-result {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-top: 20px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* WhatsApp homework sharing */
+    .wa-share-box {
+      border-top: 1px solid var(--border-color);
+      padding-top: 2rem;
+      margin-top: 2.5rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .wa-share-box label {
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .wa-share-box input {
+      background: var(--bg-card-light);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      min-width: 220px;
+      outline: none;
+    }
+
+    .wa-share-box input:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .wa-btn {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+    }
+
+    .wa-btn:hover {
+      background-color: #128C7E;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Header -->
+    <header class="header">
+      <h1>Aanwijzende Voornaamwoorden</h1>
+      <p class="subtitle">Demonstrative Pronouns — Dit, deze, dat, die, zo'n &amp; zulke</p>
+      
+      <!-- Multilingual Switcher -->
+      <div class="lang-switcher" aria-label="Taalkeuze">
+        <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+        <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+        <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
+      </div>
+    </header>
+
+    <!-- Grammar Grid -->
+    <div class="grammar-grid">
+      
+      <!-- Card: DE-woorden -->
+      <div class="card de-words">
+        <div class="card-header">
+          <div class="card-icon">🔵</div>
+          <div>
+            <div class="card-title">DE-woorden (Enkelvoud)</div>
+            <div class="card-subtitle">
+              Gebruik deze regels voor <span class="vocab" data-en="singular" data-tr="tekil" data-ar="مفرد">enkelvoud</span> de-woorden (de bal, de man)
+            </div>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">DEZE</span>
+            <span class="rule-badge badge-near">Dichtbij</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #60a5fa;">deze</strong> voor een de-woord dat <span class="vocab" data-en="close / nearby" data-tr="yakın" data-ar="قريب">dichtbij</span> is.
+          </p>
+          <div class="rule-example">Deze bal is rood.</div>
+          <div class="rule-translation" data-en="This ball is red." data-tr="Bu top kırmızı." data-ar="هذه الكرة حمراء.">This ball is red.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">DIE</span>
+            <span class="rule-badge badge-far">Veraf</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #60a5fa;">die</strong> voor een de-woord dat <span class="vocab" data-en="far away" data-tr="uzak" data-ar="بعيد">veraf</span> is.
+          </p>
+          <div class="rule-example">Die bal is groen.</div>
+          <div class="rule-translation" data-en="That ball is green." data-tr="Şu top yeşil." data-ar="تلك الكرة خضراء.">That ball is green.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">ZO'N</span>
+            <span class="rule-badge badge-kind">Kwaliteit / Soort</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #60a5fa;">zo'n</strong> (zo een) om te verwijzen naar een soortgelijke eigenschap of kwaliteit.
+          </p>
+          <div class="rule-example">Ik heb ook zo'n bal.</div>
+          <div class="rule-translation" data-en="I also have a ball like that / such a ball." data-tr="Bende de böyle bir top var." data-ar="عندي أيضاً كرة مثل هذه.">I also have a ball like that / such a ball.</div>
+        </div>
+      </div>
+
+      <!-- Card: HET-woorden -->
+      <div class="card het-words">
+        <div class="card-header">
+          <div class="card-icon">🟠</div>
+          <div>
+            <div class="card-title">HET-woorden (Enkelvoud)</div>
+            <div class="card-subtitle">
+              Gebruik deze regels voor <span class="vocab" data-en="singular" data-tr="tekil" data-ar="مفرد">enkelvoud</span> het-woorden (het boek, het kind)
+            </div>
+          </div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">DIT</span>
+            <span class="rule-badge badge-near">Dichtbij</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #fb923c;">dit</strong> voor een het-woord dat <span class="vocab" data-en="close / nearby" data-tr="yakın" data-ar="قريب">dichtbij</span> is.
+          </p>
+          <div class="rule-example">Dit boek is rood.</div>
+          <div class="rule-translation" data-en="This book is red." data-tr="Bu kitap kırmızı." data-ar="هذا الكتاب أحمر.">This book is red.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">DAT</span>
+            <span class="rule-badge badge-far">Veraf</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #fb923c;">dat</strong> voor een het-woord dat <span class="vocab" data-en="far away" data-tr="uzak" data-ar="بعيد">veraf</span> is.
+          </p>
+          <div class="rule-example">Dat boek is groen.</div>
+          <div class="rule-translation" data-en="That book is green." data-tr="Şu kitap yeşil." data-ar="ذلك الكتاب أخضر.">That book is green.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-header">
+            <span class="rule-word">ZO'N</span>
+            <span class="rule-badge badge-kind">Kwaliteit / Soort</span>
+          </div>
+          <p class="rule-desc">
+            Gebruik <strong style="color: #fb923c;">zo'n</strong> (zo een) ook bij het-woorden voor een soortgelijke kwaliteit.
+          </p>
+          <div class="rule-example">Ik heb ook zo'n boek.</div>
+          <div class="rule-translation" data-en="I also have a book like that / such a book." data-tr="Bende de böyle bir kitap var." data-ar="عندي أيضاً كتاب مثل هذا.">I also have a book like that / such a book.</div>
+        </div>
+      </div>
+
+      <!-- Card: Meervoud -->
+      <div class="card plural-words full-width-card">
+        <div class="card-header">
+          <div class="card-icon">🟢</div>
+          <div>
+            <div class="card-title">Meervoud (Plural)</div>
+            <div class="card-subtitle">
+              In het <span class="vocab" data-en="plural" data-tr="çoğul" data-ar="جمع">meervoud</span> maakt het type woord (de of het) NIET uit!
+            </div>
+          </div>
+        </div>
+
+        <div class="plural-grid">
+          <div class="rule-item">
+            <div class="rule-header">
+              <span class="rule-word">DEZE</span>
+              <span class="rule-badge badge-near">Dichtbij</span>
+            </div>
+            <p class="rule-desc">
+              Voor alle meervoudige woorden die <span class="vocab" data-en="close / nearby" data-tr="yakın" data-ar="قريب">dichtbij</span> staan.
+            </p>
+            <div class="rule-example">Deze ballen zijn geel.</div>
+            <div class="rule-example">Deze boeken zijn geel.</div>
+            <div class="rule-translation" data-en="These balls / books are yellow." data-tr="Bu toplar / kitaplar sarı." data-ar="هذه الكرات / الكتب صفراء.">These balls / books are yellow.</div>
+          </div>
+
+          <div class="rule-item">
+            <div class="rule-header">
+              <span class="rule-word">DIE</span>
+              <span class="rule-badge badge-far">Veraf</span>
+            </div>
+            <p class="rule-desc">
+              Voor alle meervoudige woorden die <span class="vocab" data-en="far away" data-tr="uzak" data-ar="بعيد">veraf</span> staan.
+            </p>
+            <div class="rule-example">Die ballen zijn geel.</div>
+            <div class="rule-example">Die boeken zijn geel.</div>
+            <div class="rule-translation" data-en="Those balls / books are yellow." data-tr="Şu toplar / kitaplar sarı." data-ar="تلك الكرات / الكتب صفراء.">Those balls / books are yellow.</div>
+          </div>
+
+          <div class="rule-item">
+            <div class="rule-header">
+              <span class="rule-word">ZULKE</span>
+              <span class="rule-badge badge-kind">Kwaliteit / Soort</span>
+            </div>
+            <p class="rule-desc">
+              Voor meervoudige woorden om te verwijzen naar een soort of kwaliteit.
+            </p>
+            <div class="rule-example">Ik heb ook zulke ballen.</div>
+            <div class="rule-example">Ik heb ook zulke boeken.</div>
+            <div class="rule-translation" data-en="I also have such balls / books." data-tr="Bende de böyle toplar / kitaplar var." data-ar="عندي أيضاً كرات / كتب مثل هذه.">I also have such balls / books.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Exercises -->
+    <section class="exercise-section">
+      <h2>📝 Oefeningen — Test jezelf!</h2>
+      <p class="exercise-subtitle">Vul het juiste aanwijzend voornaamwoord in: <strong>deze, dit, die, dat, zo'n of zulke</strong>.</p>
+      
+      <!-- Exercise 1 -->
+      <div class="exercise-block" id="ex-block-1">
+        <h3>Deel 1: Enkelvoud (Dit, deze, die, dat)</h3>
+        
+        <div class="question-list">
+          <div class="question-item">
+            <span class="question-num">1.</span>
+            Kijk daar! <input type="text" class="fill-input" data-answer="die"> man loopt heel hard. 
+            <span class="hint-label">(de man - veraf)</span>
+            <div class="q-translation" data-en="Look there! That man is running very fast." data-tr="Oraya bak! Şu adam çok hızlı koşuyor." data-ar="انظر هناك! ذلك الرجل يجري بسرعة كبيرة.">Look there! That man is running very fast.</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">2.</span>
+            Ik vind <input type="text" class="fill-input" data-answer="dit"> boek hier erg leuk. 
+            <span class="hint-label">(het boek - dichtbij)</span>
+            <div class="q-translation" data-en="I find this book here very nice." data-tr="Buradaki bu kitabı çok seviyorum." data-ar="أجد هذا الكتاب هنا لطيفاً جداً.">I find this book here very nice.</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">3.</span>
+            Wat kost <input type="text" class="fill-input" data-answer="deze"> fiets hier in de winkel? 
+            <span class="hint-label">(de fiets - dichtbij)</span>
+            <div class="q-translation" data-en="How much does this bicycle here in the shop cost?" data-tr="Dükkandaki bu bisiklet ne kadar?" data-ar="كم سعر هذه الدراجة هنا في المحل؟">How much does this bicycle here in the shop cost?</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">4.</span>
+            Kun je mij <input type="text" class="fill-input" data-answer="dat"> glas daar op tafel geven? 
+            <span class="hint-label">(het glas - veraf)</span>
+            <div class="q-translation" data-en="Can you give me that glass on the table over there?" data-tr="Masadaki şu bardağı bana verebilir misin?" data-ar="هل يمكنك إعطائي ذلك الكوب هناك على الطاولة؟">Can you give me that glass on the table over there?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise 2 -->
+      <div class="exercise-block" id="ex-block-2">
+        <h3>Deel 2: Meervoud &amp; Soort (Deze, die, zo'n, zulke)</h3>
+        
+        <div class="question-list">
+          <div class="question-item">
+            <span class="question-num">5.</span>
+            Ik hou niet van <input type="text" class="fill-input" data-answer="zulke"> mensen. Ze liegen altijd. 
+            <span class="hint-label">(meervoud - soort/kwaliteit)</span>
+            <div class="q-translation" data-en="I don't like people like that. They always lie." data-tr="Böyle insanları sevmem. Her zaman yalan söylerler." data-ar="لا أحب أشخاصاً مثل هؤلاء. إنهم يكذبون دائماً.">I don't like people like that. They always lie.</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">6.</span>
+            Kijk naar <input type="text" class="fill-input" data-answer="die"> vogels daarboven in de lucht! 
+            <span class="hint-label">(meervoud - veraf)</span>
+            <div class="q-translation" data-en="Look at those birds up there in the sky!" data-tr="Gökyüzündeki şu kuşlara bak!" data-ar="انظر إلى تلك الطيور هناك في السماء!">Look at those birds up there in the sky!</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">7.</span>
+            Wauw, ik wil ook wel <input type="text" class="fill-input" data-answer="zo'n"> mooie auto kopen! 
+            <span class="hint-label">(enkelvoud - soort/kwaliteit)</span>
+            <div class="q-translation" data-en="Wow, I also want to buy a beautiful car like that!" data-tr="Vay canına, ben de böyle güzel bir araba almak istiyorum!" data-ar="واو، أريد أيضاً شراء سيارة جميلة مثل هذه!">Wow, I also want to buy a beautiful car like that!</div>
+          </div>
+
+          <div class="question-item">
+            <span class="question-num">8.</span>
+            Zijn <input type="text" class="fill-input" data-answer="deze"> schoenen aan mijn voeten nieuw? 
+            <span class="hint-label">(meervoud - dichtbij)</span>
+            <div class="q-translation" data-en="Are these shoes on my feet new?" data-tr="Ayağımdaki bu ayakkabılar yeni mi?" data-ar="هل هذه الأحذية في قدمي جديدة؟">Are these shoes on my feet new?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button class="check-btn" onclick="checkAnswers()">✅ Controleer mijn antwoorden</button>
+      <div id="exercise-score" class="score-result"></div>
+
+      <!-- WhatsApp share homework -->
+      <div class="wa-share-box">
+        <label for="studentName">Jouw naam:</label>
+        <input type="text" id="studentName" placeholder="Vul je naam in">
+        <button class="wa-btn" onclick="sendHomework()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.005-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+            </svg>
+            Huiswerk naar de docent sturen
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Tooltip and language switching logic
+    let currentLang = 'nl';
+    
+    const langBtns = document.querySelectorAll('.lang-btn');
+    const vocabWords = document.querySelectorAll('.vocab');
+    const translations = document.querySelectorAll('.rule-translation, .q-translation');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLang = btn.getAttribute('data-lang');
+
+        // Close all tooltips on lang change
+        vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+
+        // Toggle page translations block
+        translations.forEach(trans => {
+          if (currentLang === 'nl') {
+            trans.style.display = 'none';
+          } else {
+            const transText = trans.getAttribute('data-' + currentLang);
+            if (transText) {
+              trans.textContent = transText;
+              trans.style.display = 'block';
+            } else {
+              trans.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+
+    // Setup clickable vocabulary spans with translation tooltips
+    vocabWords.forEach(word => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      word.appendChild(tooltip);
+
+      word.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        vocabWords.forEach(w => {
+          if (w !== word) w.classList.remove('show-tooltip');
+        });
+
+        if (currentLang === 'nl') return;
+
+        const trans = word.getAttribute('data-' + currentLang);
+        if (trans) {
+          tooltip.textContent = trans;
+          word.classList.toggle('show-tooltip');
+        }
+      });
+    });
+
+    document.addEventListener('click', () => {
+      vocabWords.forEach(w => w.classList.remove('show-tooltip'));
+    });
+
+    // Hide translations initially
+    translations.forEach(trans => {
+      trans.style.display = 'none';
+    });
+
+    // Exercise Answer Check Logic
+    function checkAnswers() {
+      const inputs = document.querySelectorAll('.fill-input');
+      let score = 0;
+      let total = inputs.length;
+
+      inputs.forEach(input => {
+        const value = input.value.trim().toLowerCase();
+        const answer = input.getAttribute('data-answer');
+
+        if (value === answer) {
+          score++;
+          input.className = 'fill-input correct';
+        } else {
+          input.className = 'fill-input wrong';
+        }
+      });
+
+      const scoreDiv = document.getElementById('exercise-score');
+      scoreDiv.style.display = 'block';
+      
+      if (score === total) {
+        scoreDiv.innerHTML = `🎉 Perfect! Alle antwoorden zijn goed (${score}/${total}).`;
+        scoreDiv.style.color = '#34d399';
+        scoreDiv.style.background = 'rgba(16, 185, 129, 0.15)';
+      } else if (score >= total / 2) {
+        scoreDiv.innerHTML = `👍 Goed gedaan! Je score is ${score}/${total}. Probeer de fouten te verbeteren.`;
+        scoreDiv.style.color = '#fb923c';
+        scoreDiv.style.background = 'rgba(245, 158, 11, 0.15)';
+      } else {
+        scoreDiv.innerHTML = `💪 Blijf oefenen! Je score is ${score}/${total}. Kijk nog eens goed naar de regels.`;
+        scoreDiv.style.color = '#f87171';
+        scoreDiv.style.background = 'rgba(239, 68, 68, 0.15)';
+      }
+    }
+
+    // Send Homework to WhatsApp
+    function sendHomework() {
+      const studentName = document.getElementById('studentName').value.trim() || 'Onbekend';
+      const inputs = document.querySelectorAll('.fill-input');
+      
+      let message = `Huiswerk Aanwijzende Voornaamwoorden\nNaam: ${studentName}\n\n`;
+      let answers = [];
+      let filled = false;
+
+      inputs.forEach((input, index) => {
+        const val = input.value.trim();
+        const isCorrect = val.toLowerCase() === input.getAttribute('data-answer');
+        if(val) filled = true;
+        answers.push(`Vraag ${index + 1}: "${val || 'geen antwoord'}" (${isCorrect ? 'Correct' : 'Fout'})`);
+      });
+
+      if (!filled) {
+        alert('Vul eerst wat antwoorden in voor je het huiswerk opstuurt!');
+        return;
+      }
+
+      message += answers.join('\n');
+      const encodedMsg = encodeURIComponent(message);
+      const waLink = `https://wa.me/31626211106?text=${encodedMsg}`;
+      window.open(waLink, '_blank');
+    }
+  </script>
+
+  <!-- SPEECH SYNTHESIS INJECTION -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+      function speakNative(text) {
+          if (!window.speechSynthesis) return;
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'nl-NL';
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+      }
+      
+      function createSpeakBtn(text) {
+          let btn = document.createElement('button');
+          btn.innerHTML = '🔊';
+          btn.className = 'native-speak-btn';
+          btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+          btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+          btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+          btn.onmouseout = () => btn.style.transform = 'scale(1)';
+          return btn;
+      }
+
+      // Add speak button to all rule-examples and exercise questions
+      document.querySelectorAll('.rule-example').forEach(el => {
+          el.appendChild(createSpeakBtn(el.textContent.trim()));
+      });
+  });
+  </script>
+</body>
+</html>

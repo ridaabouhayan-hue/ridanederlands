@@ -131,13 +131,13 @@ def genereer_les_data(prompt, niveau, gemini_key, aantal_regels=10, aantal_vrage
     
     stijl_instructie = ""
     if stijl == "Vriendelijk & Enthousiast":
-        stijl_instructie = "- De toon van het gesprek moet erg vriendelijk, hartelijk en enthousiast zijn. Gebruik enthousiaste woorden en uitroepteken-interpunctie (!)."
+        stijl_instructie = "- De toon of the conversation must be very friendly, warm and enthusiastic. Use enthusiastic words and exclamation points (!)."
     elif stijl == "Bezorgd / Serieus":
-        stijl_instructie = "- De toon moet serieus, bezorgd of meevoelend zijn. Ideaal voor onderwerpen zoals een doktersbezoek of een probleem bespreken."
+        stijl_instructie = "- De toon must be serious, worried or empathetic. Ideal for topics like doctor visits or discussing a problem."
     elif stijl == "Levendig & Expressief (met aarzelingen)":
-        stijl_instructie = "- Schrijf een zeer levendige en natuurlijke conversatie. Gebruik expressieve elementen zoals aarzelingen of nadenk-momenten ('eh...', 'nou,', 'tja,', 'hmmm'), kleine uitroepen ('oh!', 'hé!'), en veelzeggende interpunctie ('...', '?!'). Dit zorgt ervoor dat de ElevenLabs stemmen heel levendig, menselijk en emotioneel klinken."
+        stijl_instructie = "- Write a very lively and natural conversation. Use expressive elements such as hesitations or thinking moments ('eh...', 'nou,', 'tja,', 'hmmm'), small exclamations ('oh!', 'hé!'), and expressive punctuation ('...', '?!'). This makes the ElevenLabs voices sound very natural and human."
     else:
-        stijl_instructie = "- De toon moet standaard, duidelijk, neutraal en beleefd zijn. Zeer geschikt voor formele oefenexamens."
+        stijl_instructie = "- De toon must be standard, clear, neutral and polite. Suitable for practice exams."
 
     systeem_prompt = f"""Je bent een expert in het schrijven van lesmateriaal voor NT2 (Nederlands als tweede taal).
 Schrijf een conversatie op ERK-niveau {niveau} over het volgende onderwerp/situatie: "{prompt}".
@@ -150,6 +150,16 @@ Belangrijke regels voor de opbouw en logica:
 - Voor niveau A2: Iets langer en gevarieerder, maar nog steeds eenvoudig en helder van structuur.
 - Schrijf exact {aantal_regels} regels dialoog in totaal.
 - Bedenk daarnaast {aantal_vragen} multiple choice luistervragen over dit gesprek die de luistervaardigheid echt testen (3 opties per vraag, en geef het juiste antwoord-index, beginnend bij 0).
+- Identificeer ook 5 tot 10 belangrijke of mogelijk moeilijke woorden uit de tekst en vertaal ze naar:
+  - en (Engels)
+  - tr (Turks)
+  - ar (Arabisch)
+  - fa (Farsi / Perzisch)
+  - da (Dari)
+  - vi (Vietnamees)
+  - pl (Pools)
+
+*STRIKTE REGEL VOOR DARI (da)*: Gebruik ECHT Dari. Dari is een Afghaanse taal die heel erg lijkt op Farsi (Perzisch). Gebruik ABSOLUUT GEEN Pashto! Pashto is een andere Afghaanse taal. Pashto bevat letters zoals ګ, ۍ, ڼ, ټ, ډ, ړ, ږ en uitgangen zoals -ول, -یدل, -ونه, -ستنه. Als je die letters of uitgangen ziet, is het Pashto en is het FOUT. Zorg dat Dari-vertalingen echt Dari zijn.
 {stijl_instructie}
 
 Je MOET je antwoord geven in puur JSON formaat. Geen markdown block (```json), geen extra tekst. Alleen de JSON. Gebruik exact dit format:
@@ -163,6 +173,20 @@ Je MOET je antwoord geven in puur JSON formaat. Geen markdown block (```json), g
   "conversatie": [
     {{"speaker": "naam_persoon_1", "text": "Hallo, hoe gaat het?"}},
     {{"speaker": "naam_persoon_2", "text": "Goed, en met jou?"}}
+  ],
+  "vocabulaire": [
+    {{
+      "woord": "regering",
+      "translations": {{
+        "en": "government",
+        "tr": "hükümet",
+        "ar": "حكومة",
+        "fa": "دولت",
+        "da": "دولت",
+        "vi": "chính phủ",
+        "pl": "rząd"
+      }}
+    }}
   ],
   "vragen": [
     {{
@@ -264,189 +288,196 @@ def opslaan_in_database(les_data):
         
     return les_data['id']
 
-# ─── GUI LOGICA ───
+# ─── API SERVER BACKEND ───
 
-def run_gui():
-    root = tk.Tk()
-    root.title("Les Generator - Luisterportaal")
-    root.geometry("540x485")
-    root.resizable(False, False)
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+import urllib.parse
 
-    try:
-        root.iconbitmap('favicon.ico')
-    except:
-        pass
+class LocalHTTPHandler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # Enable CORS for file:// local access as a fallback
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        super().end_headers()
 
-    style = ttk.Style()
-    style.theme_use('clam')
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.end_headers()
 
-    # Fonts
-    font_large = ('Segoe UI', 11)
-    font_bold = ('Segoe UI', 11, 'bold')
+    def do_POST(self):
+        if self.path == '/api/draft':
+            self.handle_draft()
+        elif self.path == '/api/generate':
+            self.handle_generate()
+        else:
+            super().do_POST()
 
-    frame = tk.Frame(root, bg="#f0f4f8", padx=20, pady=20)
-    frame.pack(fill=tk.BOTH, expand=True)
+    def do_GET(self):
+        if self.path == '/api/get-voices':
+            self.handle_get_voices()
+        elif self.path == '/' or self.path == '':
+            # Redirect root to Luisterlessen
+            self.send_response(302)
+            self.send_header('Location', '/Luisterlessen/index.html')
+            self.end_headers()
+        else:
+            super().do_GET()
 
-    tk.Label(frame, text="Maak een nieuwe Luisterles", font=('Segoe UI', 15, 'bold'), bg="#f0f4f8", fg="#1e293b").pack(anchor=tk.W, pady=(0, 15))
+    def handle_get_voices(self):
+        try:
+            voices = load_voices()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(voices).encode('utf-8'))
+        except Exception as e:
+            self.send_error_response(500, str(e))
 
-    # Onderwerp
-    tk.Label(frame, text="Onderwerp (bijv. in de supermarkt):", font=font_large, bg="#f0f4f8").pack(anchor=tk.W)
-    subject_var = tk.StringVar()
-    subject_entry = ttk.Entry(frame, textvariable=subject_var, width=45, font=font_large)
-    subject_entry.pack(fill=tk.X, pady=(5, 12))
+    def handle_draft(self):
+        try:
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            params = json.loads(post_data.decode('utf-8'))
 
-    # Niveau
-    tk.Label(frame, text="Niveau:", font=font_large, bg="#f0f4f8").pack(anchor=tk.W)
-    level_var = tk.StringVar(value="A1")
-    level_combo = ttk.Combobox(frame, textvariable=level_var, values=["Pre-A1", "A1", "A2", "B1", "B2", "C1", "C2"], state="readonly", font=font_large)
-    level_combo.pack(fill=tk.X, pady=(5, 12))
+            prompt = params.get('prompt', '').strip()
+            niveau = params.get('niveau', 'A1').upper()
+            aantal_regels = int(params.get('aantal_regels', 10))
+            aantal_vragen = int(params.get('aantal_vragen', 3))
+            stijl = params.get('stijl', 'Standaard')
 
-    # Extra Opties Frame
-    options_frame = tk.LabelFrame(frame, text="Instellingen voor de Les", bg="#f0f4f8", font=font_bold, fg="#1e293b", padx=10, pady=10)
-    options_frame.pack(fill=tk.X, pady=(0, 12))
+            if not prompt:
+                raise ValueError("Onderwerp is verplicht.")
+
+            gemini_key = load_gemini_key()
+            les_data = genereer_les_data(prompt, niveau, gemini_key, aantal_regels, aantal_vragen, stijl)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(les_data).encode('utf-8'))
+        except Exception as e:
+            self.send_error_response(500, str(e))
+
+    def handle_generate(self):
+        try:
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            les_data = json.loads(post_data.decode('utf-8'))
+
+            pause_seconds = float(les_data.get('pause_seconds', 2.0))
+            
+            if not os.path.exists(TEMP_DIR): os.makedirs(TEMP_DIR)
+            if not os.path.exists(AUDIO_DIR): os.makedirs(AUDIO_DIR)
+
+            eleven_key = load_eleven_key()
+            voices = load_voices()
+
+            # Map speaker names to assigned voice_ids
+            speaker_to_voiceid = {}
+            for name, info in les_data['sprekers'].items():
+                if 'voice_id' in info and info['voice_id']:
+                    speaker_to_voiceid[name] = info['voice_id']
+
+            # Auto-assign voices to any speaker lacking one
+            missing_speakers = {name: info for name, info in les_data['sprekers'].items() if name not in speaker_to_voiceid}
+            if missing_speakers:
+                assigned = assign_speaker_voices(missing_speakers, voices)
+                for name, vid in assigned.items():
+                    speaker_to_voiceid[name] = vid
+                    les_data['sprekers'][name]['voice_id'] = vid
+
+            # Generate audio segment by segment
+            audio_segments = []
+            silence_duration_ms = int(pause_seconds * 1000)
+            silence = AudioSegment.silent(duration=silence_duration_ms)
+            
+            conversatie = les_data['conversatie']
+            current_time_ms = 0
+            for i, zin in enumerate(conversatie):
+                speaker = zin['speaker']
+                text = zin['text']
+                voice_id = speaker_to_voiceid.get(speaker)
+                
+                temp_file = os.path.join(TEMP_DIR, f"line_{i}.mp3")
+                print(f"Geluidsfragment {i+1}/{len(conversatie)} genereren via ElevenLabs ({speaker})...")
+                
+                genereer_audio_elevenlabs(text, voice_id, eleven_key, temp_file)
+                seg = AudioSegment.from_mp3(temp_file)
+                duration_ms = len(seg)
+                
+                if i > 0:
+                    current_time_ms += silence_duration_ms
+                
+                zin['start_ms'] = current_time_ms
+                zin['end_ms'] = current_time_ms + duration_ms
+                
+                if audio_segments:
+                    audio_segments.append(silence)
+                audio_segments.append(seg)
+                
+                current_time_ms = zin['end_ms']
+                time.sleep(0.5)
+
+            # Combine audios
+            print("Samenvoegen van de audiobestanden...")
+            combined = AudioSegment.empty()
+            for seg in audio_segments:
+                combined += seg
+                
+            niveau = les_data['niveau']
+            slug = re.sub(r'[^a-zA-Z0-9]', '_', les_data['thema'])[:25].strip('_').lower()
+            mp3_filename = f"{niveau}_{slug}_{int(time.time())}.mp3"
+            mp3_path = os.path.join(AUDIO_DIR, mp3_filename)
+            
+            combined.export(mp3_path, format="mp3")
+            
+            les_data['audio_url'] = f"audio/{mp3_filename}"
+            les_id = opslaan_in_database(les_data)
+            les_data['id'] = les_id
+
+            print(f"Klaar! Les opgeslagen onder ID: {les_id}")
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(les_data).encode('utf-8'))
+        except Exception as e:
+            print("Fout bij genereren:", e)
+            self.send_error_response(500, str(e))
+
+    def send_error_response(self, code, message):
+        self.send_response(code)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps({'error': message}).encode('utf-8'))
+
+def start_server():
+    port = 8012
+    # Ensure correct working directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
+
+    server_address = ('', port)
+    httpd = HTTPServer(server_address, LocalHTTPHandler)
     
-    options_frame.columnconfigure(1, weight=1)
-    options_frame.columnconfigure(3, weight=1)
+    print(f"\n==================================================")
+    print(f"  Luisterportaal API Server actief!")
+    print(f"  - Website: http://localhost:{port}/Luisterlessen/index.html")
+    print(f"  - API:     http://localhost:{port}/api/draft")
+    print(f"==================================================")
+    print(f"Sluit dit venster om de server te stoppen.\n")
     
-    # Aantal regels
-    tk.Label(options_frame, text="Aantal regels:", bg="#f0f4f8", font=font_large).grid(row=0, column=0, sticky="w", padx=(5,5), pady=5)
-    regels_var = tk.IntVar(value=10)
-    regels_spin = ttk.Spinbox(options_frame, from_=6, to=20, textvariable=regels_var, width=5, font=font_large)
-    regels_spin.grid(row=0, column=1, sticky="w", padx=(0,15), pady=5)
-    
-    # Aantal vragen
-    tk.Label(options_frame, text="Vragen:", bg="#f0f4f8", font=font_large).grid(row=0, column=2, sticky="w", padx=(5,5), pady=5)
-    vragen_var = tk.IntVar(value=3)
-    vragen_spin = ttk.Spinbox(options_frame, from_=1, to=6, textvariable=vragen_var, width=5, font=font_large)
-    vragen_spin.grid(row=0, column=3, sticky="w", padx=0, pady=5)
-    
-    # Pauze tussen zinnen
-    tk.Label(options_frame, text="Pauze (sec):", bg="#f0f4f8", font=font_large).grid(row=1, column=0, sticky="w", padx=(5,5), pady=5)
-    pauze_var = tk.StringVar(value="2.0")
-    pauze_combo = ttk.Combobox(options_frame, textvariable=pauze_var, values=["0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "4.0"], state="readonly", width=5, font=font_large)
-    pauze_combo.grid(row=1, column=1, sticky="w", padx=(0,15), pady=5)
-    
-    # Emotie/Stijl
-    tk.Label(options_frame, text="Emotie/Stijl:", bg="#f0f4f8", font=font_large).grid(row=1, column=2, sticky="w", padx=(5,5), pady=5)
-    stijl_var = tk.StringVar(value="Standaard")
-    stijl_combo = ttk.Combobox(options_frame, textvariable=stijl_var, values=[
-        "Standaard", 
-        "Vriendelijk & Enthousiast", 
-        "Bezorgd / Serieus", 
-        "Levendig & Expressief (met aarzelingen)"
-    ], state="readonly", width=15, font=font_large)
-    stijl_combo.grid(row=1, column=3, sticky="ew", padx=0, pady=5)
-
-    # Status
-    status_var = tk.StringVar(value="")
-    status_label = tk.Label(frame, textvariable=status_var, fg="#3b82f6", bg="#f0f4f8", font=font_large)
-    status_label.pack(anchor=tk.W, pady=(0, 5))
-
-    def on_generate():
-        prompt = subject_var.get().strip()
-        niveau = level_var.get()
-        aantal_regels = regels_var.get()
-        aantal_vragen = vragen_var.get()
-        stijl = stijl_var.get()
+    def open_browser():
+        time.sleep(1.0)
+        webbrowser.open(f"http://localhost:{port}/Luisterlessen/index.html")
         
-        if not prompt:
-            messagebox.showwarning("Waarschuwing", "Vul a.u.b. een onderwerp in.")
-            return
-
-        generate_btn.config(state=tk.DISABLED)
-        status_var.set("Starten...")
-
-        def worker():
-            try:
-                if not os.path.exists(TEMP_DIR): os.makedirs(TEMP_DIR)
-                if not os.path.exists(AUDIO_DIR): os.makedirs(AUDIO_DIR)
-
-                status_var.set("API sleutels inladen...")
-                gemini_key = load_gemini_key()
-                eleven_key = load_eleven_key()
-                voices = load_voices()
-
-                # Stap 1
-                status_var.set("1/3: AI schrijft het script en de vragen...")
-                les_data = genereer_les_data(prompt, niveau, gemini_key, aantal_regels, aantal_vragen, stijl)
-                
-                speaker_to_voiceid = assign_speaker_voices(les_data['sprekers'], voices)
-
-                # Stap 2
-                status_var.set("2/3: Audio genereren met ElevenLabs...")
-                audio_segments = []
-                
-                try:
-                    pause_seconds = float(pauze_var.get())
-                except:
-                    pause_seconds = 2.0
-                silence_duration_ms = int(pause_seconds * 1000)
-                silence = AudioSegment.silent(duration=silence_duration_ms)
-                
-                conversatie = les_data['conversatie']
-                current_time_ms = 0
-                for i, zin in enumerate(conversatie):
-                    speaker = zin['speaker']
-                    text = zin['text']
-                    voice_id = speaker_to_voiceid.get(speaker)
-                    temp_file = os.path.join(TEMP_DIR, f"line_{i}.mp3")
-                    
-                    status_var.set(f"2/3: Audio opnemen regel {i+1} van {len(conversatie)}...")
-                    genereer_audio_elevenlabs(text, voice_id, eleven_key, temp_file)
-                    
-                    seg = AudioSegment.from_mp3(temp_file)
-                    duration_ms = len(seg)
-                    
-                    if i > 0:
-                        current_time_ms += silence_duration_ms
-                    
-                    zin['start_ms'] = current_time_ms
-                    zin['end_ms'] = current_time_ms + duration_ms
-                    
-                    if audio_segments:
-                        audio_segments.append(silence)
-                    audio_segments.append(seg)
-                    
-                    current_time_ms = zin['end_ms']
-                    time.sleep(0.5)
-
-                # Stap 3
-                status_var.set("3/3: Audio samenvoegen en opslaan...")
-                combined = AudioSegment.empty()
-                for seg in audio_segments:
-                    combined += seg
-                    
-                slug = re.sub(r'[^a-zA-Z0-9]', '_', les_data['thema'])[:25].strip('_').lower()
-                mp3_filename = f"{niveau}_{slug}_{int(time.time())}.mp3"
-                mp3_path = os.path.join(AUDIO_DIR, mp3_filename)
-                
-                combined.export(mp3_path, format="mp3")
-                
-                les_data['audio_url'] = f"audio/{mp3_filename}"
-                opslaan_in_database(les_data)
-
-                status_var.set("✅ Klaar! Les is opgeslagen.")
-                messagebox.showinfo("Succes!", f"Les '{les_data['thema']}' is succesvol gegenereerd en toegevoegd aan het portaal!")
-                
-                # Probeer lokaal de website te openen
-                portal_path = os.path.abspath(os.path.join(OUTPUT_DIR, "index.html"))
-                webbrowser.open(f"file:///{portal_path.replace(chr(92), '/')}")
-
-            except LesGeneratorError as e:
-                status_var.set("❌ Fout opgetreden.")
-                messagebox.showerror("Fout", str(e))
-            except Exception as e:
-                status_var.set("❌ Fout opgetreden.")
-                messagebox.showerror("Systeem Fout", str(e))
-            finally:
-                generate_btn.config(state=tk.NORMAL)
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    generate_btn = tk.Button(frame, text="🚀 Genereer Les", bg="#3b82f6", fg="white", font=font_bold, cursor="hand2", relief="flat", command=on_generate)
-    generate_btn.pack(fill=tk.X, ipady=8, pady=(5, 0))
-
-    root.mainloop()
+    threading.Thread(target=open_browser, daemon=True).start()
+    
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServer gestopt door gebruiker.")
 
 # ─── COMMAND LINE LOGICA ───
 
@@ -536,5 +567,5 @@ if __name__ == "__main__":
             sys.exit(1)
         run_cli()
     else:
-        # Geen argumenten? Open de grafische Windows interface!
-        run_gui()
+        # Geen argumenten? Open de lokale API en webserver!
+        start_server()
