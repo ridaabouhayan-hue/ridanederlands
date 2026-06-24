@@ -225,6 +225,10 @@
         .toast.show {
             transform: translateY(0);
         }
+        #fileSortSelect:hover {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.1) !important;
+        }
 
         /* ── STUDENT MODE ── */
         body.student-mode .sidebar {
@@ -505,9 +509,17 @@
                 </div>
 
                 <!-- Fixed bottom: file list -->
-                <div class="sidebar-header" style="border-top: 1px solid var(--border);">
-                    <span>Opnames</span>
-                    <span id="fileCount" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px; font-size: 0.8rem;">0</span>
+                <div class="sidebar-header" style="border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>Opnames</span>
+                        <span id="fileCount" style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px; font-size: 0.8rem;">0</span>
+                    </div>
+                    <select id="fileSortSelect" onchange="changeFileSort(this.value)" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 4px 8px; cursor: pointer; outline: none; font-size: 0.75rem; font-weight: 700; transition: var(--transition);" title="Sorteer bestanden">
+                        <option value="date-desc" style="background: #1e293b;">📅 Nieuwste</option>
+                        <option value="date-asc" style="background: #1e293b;">📅 Oudste</option>
+                        <option value="name-asc" style="background: #1e293b;">🔤 Naam A-Z</option>
+                        <option value="name-desc" style="background: #1e293b;">🔤 Naam Z-A</option>
+                    </select>
                 </div>
                 <ul class="file-list" id="fileList"></ul>
             </div>
@@ -1595,6 +1607,7 @@
                     filename: entry.filename,
                     path: entry.path || (group + '/' + entry.filename),
                     date: entry.date || '',
+                    updatedAt: entry.updatedAt || Date.now(),
                     analyse: entry.analyse || {}
                 });
                 localStorage.setItem('local_transcriptions_db', JSON.stringify(localDb));
@@ -1627,7 +1640,7 @@
                 if (!db[g]) db[g] = [];
                 const idx = db[g].findIndex(f => f.filename === entry.filename);
                 if (idx !== -1) db[g].splice(idx, 1);
-                db[g].push({ filename: entry.filename, path: entry.path || (g + '/' + entry.filename), date: entry.date || '', analyse: entry.analyse || {} });
+                db[g].push({ filename: entry.filename, path: entry.path || (g + '/' + entry.filename), date: entry.date || '', updatedAt: entry.updatedAt || Date.now(), analyse: entry.analyse || {} });
                 saveLocalEntry(entry, g);
                 setSyncStatus(g, entry.filename, 'local');
                 renderList();
@@ -1746,7 +1759,7 @@
                         if (!newDb[g]) newDb[g] = [];
                         let analyse = {};
                         try { analyse = JSON.parse(x.analyse || '{}'); } catch (_) {}
-                        newDb[g].push({ filename: x.filename, path: x.path, date: x.date, analyse: analyse });
+                        newDb[g].push({ filename: x.filename, path: x.path, date: x.date, updatedAt: x.updatedAt || 0, analyse: analyse });
                     });
                     
                     db = newDb;
@@ -1871,6 +1884,10 @@
         function initApp() {
             updateModeBtns();
             updateConnStatus();
+            const sortSelect = document.getElementById('fileSortSelect');
+            if (sortSelect) {
+                sortSelect.value = currentFileSort;
+            }
             renderTabs();
             renderList();
             loadDynamicLessons();
@@ -1889,9 +1906,41 @@
             });
         }
 
+        let currentFileSort = localStorage.getItem('file_sort_order') || 'date-desc';
+
+        function changeFileSort(val) {
+            currentFileSort = val;
+            localStorage.setItem('file_sort_order', val);
+            renderList();
+        }
+
         function renderList() {
             const list = document.getElementById('fileList');
-            const files = [...(db[activeGroup] || [])].reverse();
+            let files = [...(db[activeGroup] || [])];
+            
+            const getFileTimestamp = (file) => {
+                if (file.updatedAt) return file.updatedAt;
+                if (file.date) {
+                    const parts = file.date.split('-');
+                    if (parts.length === 3) {
+                        return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+                    }
+                }
+                return 0;
+            };
+
+            if (currentFileSort === 'date-desc') {
+                files.sort((a, b) => getFileTimestamp(b) - getFileTimestamp(a));
+            } else if (currentFileSort === 'date-asc') {
+                files.sort((a, b) => getFileTimestamp(a) - getFileTimestamp(b));
+            } else if (currentFileSort === 'name-asc') {
+                files.sort((a, b) => a.filename.localeCompare(b.filename));
+            } else if (currentFileSort === 'name-desc') {
+                files.sort((a, b) => b.filename.localeCompare(a.filename));
+            } else {
+                files.reverse();
+            }
+
             document.getElementById('fileCount').textContent = files.length;
             list.innerHTML = '';
 
