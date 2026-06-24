@@ -1206,7 +1206,7 @@
     <button id="info-toggle" class="info-toggle-btn" aria-label="Toon Uitleg & Regels" onclick="toggleSidebar()">💡</button>
 
     <header>
-        <a id="header-back-btn" class="back-link" style="display:none;" onclick="showMenu()">← Terug naar Spellen</a>
+        <a id="header-back-btn" class="back-link" style="display:none;" onclick="goBackToMenu()">← Terug naar Spellen</a>
         <a id="header-root-btn" href="index.html" class="back-link">← Terug naar A1</a>
         <h1 id="main-title">🎮 A1 Spellenportaal 🎮</h1>
         <p class="subtitle" id="main-subtitle">Kies een spel om te beginnen met oefenen!</p>
@@ -1439,7 +1439,13 @@
             <div class="win-emoji">🏆🎉</div>
             <h2 class="win-title">Gefeliciteerd!</h2>
             <p class="win-desc">Je hebt 50 vlammen verzameld en hebt gewonnen!</p>
-            <button class="restart-btn" id="restart-btn">Nog een keer spelen! 🔄</button>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; width:100%;">
+                <button class="restart-btn" id="win-next-btn" style="background: linear-gradient(135deg, #f97316, #ef4444); box-shadow: 0 8px 24px var(--primary-glow); width: 100%;">Volgend Thema ➔</button>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%;">
+                    <button class="restart-btn" id="win-back-btn" style="background:#475569; box-shadow:0 8px 24px rgba(71,85,105,0.3); font-size:1rem; padding:12px 20px; width: 100%;">🠔 Terug</button>
+                    <button class="restart-btn" id="restart-btn" style="background:linear-gradient(135deg,#10b981,#059669); font-size:1rem; padding:12px 20px; width: 100%;">Opnieuw 🔄</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -8881,6 +8887,8 @@
         const nextBtn = document.getElementById('next-btn');
         const gameCard = document.getElementById('game-card');
         const winOverlay = document.getElementById('win-overlay');
+        const winNextBtn = document.getElementById('win-next-btn');
+        const winBackBtn = document.getElementById('win-back-btn');
         const restartBtn = document.getElementById('restart-btn');
 
         // New Game Container Elements
@@ -8901,6 +8909,13 @@
             gameView.style.display = 'flex';
             headerBackBtn.style.display = 'inline-flex';
             headerRootBtn.style.display = 'none';
+
+            // Push or replace state for back navigation
+            if (!history.state || history.state.view !== 'game') {
+                history.pushState({ view: 'game', type: type }, '');
+            } else if (history.state.type !== type) {
+                history.replaceState({ view: 'game', type: type }, '');
+            }
 
             // Clean up any whack-a-mole timer
             if (mepTimer) clearTimeout(mepTimer);
@@ -8968,6 +8983,14 @@
             generateStepTrack();
             resetGame();
             updateToggleBtnVisibility();
+        }
+
+        function goBackToMenu() {
+            if (history.state && history.state.view === 'game') {
+                history.back();
+            } else {
+                showMenu();
+            }
         }
 
         function showMenu() {
@@ -9050,10 +9073,19 @@
             updateToggleBtnVisibility();
         }
 
-        if (document.readyState === 'loading') {
-            window.addEventListener('DOMContentLoaded', initSidebarState);
-        } else {
+        function initPageState() {
             initSidebarState();
+            if (history.state && history.state.view === 'game') {
+                startGame(history.state.type);
+            } else {
+                showMenu();
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', initPageState);
+        } else {
+            initPageState();
         }
 
 
@@ -9783,9 +9815,48 @@
             }
         }
 
+        function getNextGameType(currentType) {
+            if (!currentType) return null;
+            const match = currentType.match(/^([a-z]+_t)(\d+)$/);
+            if (!match) return null;
+            const prefix = match[1];
+            const num = parseInt(match[2], 10);
+            const nextNum = num + 1;
+            
+            if (prefix === 'vocab_t' && nextNum <= 5) return prefix + nextNum;
+            if (prefix === 'gram_t' && nextNum <= 5) return prefix + nextNum;
+            if (prefix === 'mep_t' && nextNum <= 2) return prefix + nextNum;
+            if (prefix === 'memo_t' && nextNum <= 3) return prefix + nextNum;
+            return null;
+        }
+
         function triggerWin() {
             playSound('win');
             startConfetti();
+            
+            const nextType = getNextGameType(activeGameType);
+            if (winNextBtn) {
+                if (nextType) {
+                    const match = nextType.match(/_t(\d+)$/);
+                    const nextThemeNum = match ? match[1] : '';
+                    winNextBtn.style.display = 'block';
+                    winNextBtn.textContent = `THEMA ${nextThemeNum} ➔`;
+                    winNextBtn.onclick = () => {
+                        winOverlay.style.display = 'none';
+                        startGame(nextType);
+                    };
+                } else {
+                    winNextBtn.style.display = 'none';
+                }
+            }
+            
+            if (winBackBtn) {
+                winBackBtn.onclick = () => {
+                    winOverlay.style.display = 'none';
+                    goBackToMenu();
+                };
+            }
+            
             setTimeout(() => {
                 winOverlay.style.display = 'flex';
             }, 600);
@@ -9842,6 +9913,14 @@
         }
 
         restartBtn.addEventListener('click', resetGame);
+
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.view === 'game') {
+                startGame(event.state.type);
+            } else {
+                showMenu();
+            }
+        });
     </script>
 </body>
 </html>
