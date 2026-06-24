@@ -372,6 +372,44 @@ const UITLEG = {
     </div>`
 };
 
+
+let _ttsAudio=null;
+function speak(text, isSlow=false){
+    if(!text)return;
+    if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}
+    let processedText = text;
+    if(isSlow) {
+        processedText = processedText.split(' ').join(', , ');
+    }
+    const rate = isSlow ? 0.6 : 0.9;
+    _ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(processedText)}`);
+    _ttsAudio.play().catch(()=>{
+        if('speechSynthesis'in window){
+            window.speechSynthesis.cancel();
+            const u=new SpeechSynthesisUtterance(text);
+            u.lang='nl-NL';
+            u.rate=rate;
+            window.speechSynthesis.speak(u);
+        }
+    });
+}
+
+function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
+
+function setLang(l){
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+    event.target.closest('.lang-btn').classList.add('active');
+    document.querySelectorAll('[data-translate]').forEach(el=>{
+        const k=el.getAttribute('data-translate');
+        if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
+    });
+    buildTable(l);
+    document.getElementById('uitleg-content').innerHTML=l==='nl'?UITLEG.nl:(UITLEG[l]?UITLEG.nl+'<div style="margin-top:18px;padding-top:14px;border-top:2px dashed rgba(67,97,238,0.2);">'+UITLEG[l]+'</div>':UITLEG.nl);
+    
+    // Update labels of the writing questions dynamically
+    buildSchrijf(l);
+}
+
 // ── OPDRACHT 1: VERBINDEN ──
 const vbData=[
     {woord:'zwemmen',     def:'In het water bewegen en vooruitkomen.'},
