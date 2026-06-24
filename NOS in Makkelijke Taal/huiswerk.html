@@ -761,9 +761,13 @@ Naam: Malwina
                 if (links.length > 0) {
                     selectEl.innerHTML = '<option value="">Geen (geen extra context meesturen)</option>';
                     
+                    let addedCount = 0;
                     links.forEach(link => {
                         const href = link.getAttribute('href');
-                        const match = href.match(/transcript_nos_(.+?)\.html/);
+                        if (!href) return;
+                        
+                        // Robust match that works with or without .html extension (e.g. Netlify Pretty URLs)
+                        const match = href.match(/transcript_nos_([^./?#]+)/);
                         if (match) {
                             const val = match[1];
                             let text = link.textContent.replace('→', '').trim();
@@ -777,8 +781,13 @@ Naam: Malwina
                             opt.value = val;
                             opt.textContent = text;
                             selectEl.appendChild(opt);
+                            addedCount++;
                         }
                     });
+                    
+                    if (addedCount === 0) {
+                        throw new Error("Geen transcripts succesvol gekoppeld");
+                    }
                 } else {
                     throw new Error("Geen links gevonden");
                 }
