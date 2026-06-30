@@ -250,10 +250,24 @@
     };
 
     function setLang(l, event) {
-        document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
-        if (event) event.target.closest('.lang-tab').classList.add('active');
-        
-        document.querySelectorAll('[data-translate]').forEach(el => {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l, event + "'") || attr.includes('"' + l, event + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el => {
             const k = el.getAttribute('data-translate');
             if (UI[l][k]) el.textContent = UI[l][k];
         });

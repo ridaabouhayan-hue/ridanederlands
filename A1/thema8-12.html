@@ -323,8 +323,8 @@ const UITLEG = {
             <thead>
                 <tr style="border-bottom:2px solid var(--border-med); text-align:left;">
                     <th style="padding:6px;">Lidwoord</th>
-                    <th style="padding:6px;">Dichtbij (Here)</th>
-                    <th style="padding:6px;">Ver weg (There)</th>
+                    <th style="padding:6px;">Dichtbij</th>
+                    <th style="padding:6px;">Ver weg</th>
                 </tr>
             </thead>
             <tbody>
@@ -341,7 +341,7 @@ const UITLEG = {
             </tbody>
         </table>
         <div class="tip-blok" style="margin-top:15px;">
-            <strong>Tip:</strong> Voor meervoud (plural) gebruiken we ALTIJD <strong>deze</strong> (dichtbij) of <strong>die</strong> (ver weg), omdat alle meervoudswoorden de-woorden zijn! Bijvoorbeeld: <em>deze boeken</em> of <em>die jassen</em>.
+            <strong>Tip:</strong> Voor meervoud gebruiken we ALTIJD <strong>deze</strong> (dichtbij) of <strong>die</strong> (ver weg), omdat alle meervoudswoorden de-woorden zijn! Bijvoorbeeld: <em>deze boeken</em> of <em>die jassen</em>.
         </div>
     </div>`,
     en: `<div class="uitleg-box">
@@ -396,9 +396,24 @@ function speak(text, isSlow=false){
 
 function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 
-function setLang(l){
-    document.querySelectorAll('.lang-bar .lang-btn').forEach(b=>b.classList.remove('active'));
-    event.target.closest('.lang-btn').classList.add('active');
+function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
     document.querySelectorAll('[data-translate]').forEach(el=>{
         const k=el.getAttribute('data-translate');
         if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
@@ -652,9 +667,9 @@ function buildSchrijf(lang){
 }
 function saveSchrijf(){
     let msg=`*Thema 8.12 — Schrijfopdracht (Dit boek / Dat boek)*\n`;
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
      const questions = [UI[activeLang].q1, UI[activeLang].q2, UI[activeLang].q3, UI[activeLang].q4];
     questions.forEach((v,i)=>{
         const val=document.getElementById('schrijf-'+i).value.trim();
@@ -663,9 +678,9 @@ function saveSchrijf(){
     window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function resetSchrijf(){
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
     buildSchrijf(activeLang);
 }
 

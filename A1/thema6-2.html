@@ -287,10 +287,25 @@ function speak(text, isSlow = false) {
       ar:`<div class="uitleg-box" dir="rtl"><h3>أداتا التعريف: de وhet</h3><p>في الفقرة 6.2 تتعلم متى تستخدم <strong>de</strong> أو <strong>het</strong>. لا توجد قاعدة منطقية ثابتة، لكن هناك أنماط:</p><table class="lw-tabel"><thead><tr><th>أداة التعريف</th><th>متى؟</th><th>أمثلة (ملابس)</th></tr></thead><tbody><tr><td><strong>de</strong></td><td>~75% من جميع الكلمات</td><td>de broek, de jas, de rok, de trui</td></tr><tr><td><strong>het</strong></td><td>~25% من جميع الكلمات</td><td>het hemd, het T-shirt, het vest</td></tr><tr><td><strong>de</strong></td><td>دائماً للجمع</td><td>de broeken, de hemden, de T-shirts</td></tr><tr><td><strong>het</strong></td><td>دائماً للتصغير (-je)</td><td>het jasje, het broekje, het sokje</td></tr></tbody></table></div><div class="voorbeeld-blok" dir="rtl"><strong>أمثلة:</strong><ul style="margin:.4rem 0 0;padding-right:1.3em;font-size:.92rem;line-height:2"><li><strong>De</strong> broek is blauw (البنطلون أزرق).</li><li><strong>Het</strong> overhemd is wit (القميص أبيض).</li><li>الجمع: <strong>De</strong> overhemden zijn duur. <em>(دائماً de!)</em></li><li>التصغير: <strong>Het</strong> jasje is te klein. <em>(دائماً het!)</em></li></ul></div><div class="tip-blok" dir="rtl"><strong>نصيحة:</strong> لا توجد قاعدة. تعلم الأداة دائماً مع الكلمة: اكتب <em>de broek</em> وليس <em>broek</em> فقط. راجع القاموس!</div>`,
       ps:`<div class="uitleg-box" dir="rtl"><h3>دوه لیدوورد: de او het</h3><p>د پراګراف 6.2 کې زده کوئ چې کله <strong>de</strong> یا <strong>het</strong> وکاروئ. هیڅ ثابت قاعده نشته، خو ځینې نمونې شته:</p><table class="lw-tabel"><thead><tr><th>لیدووردونه</th><th>کله؟</th><th>بیلګې (جامې)</th></tr></thead><tbody><tr><td><strong>de</strong></td><td>~75% د ټولو کلمو</td><td>de broek, de jas, de rok, de trui</td></tr><tr><td><strong>het</strong></td><td>~25% د ټولو کلمو</td><td>het hemd, het T-shirt, het vest</td></tr><tr><td><strong>de</strong></td><td>تل د جمع لپاره</td><td>de broeken, de hemden, de T-shirts</td></tr><tr><td><strong>het</strong></td><td>تل د کوچنۍ بڼې لپاره (-je)</td><td>het jasje, het broekje, het sokje</td></tr></tbody></table></div><div class="voorbeeld-blok" dir="rtl"><strong>د بیلګې جملې:</strong><ul style="margin:.4rem 0 0;padding-right:1.3em;font-size:.92rem;line-height:2"><li><strong>De</strong> broek is blauw (پتلون شین دی).</li><li><strong>Het</strong> overhemd is wit (پیراهن سپین دی).</li><li>جمع: <strong>De</strong> overhemden zijn duur. <em>(تل de!)</em></li><li>کوچنۍ بڼه: <strong>Het</strong> jasje is te klein. <em>(تل het!)</em></li></ul></div><div class="tip-blok" dir="rtl"><strong>لارښود:</strong> قاعده نشته. انتقال د لیدووردو سره یاد کړئ: <em>de broek</em> ولیکئ، نه یواځې <em>broek</em>. قاموس وکتل!</div>`
     };
-    function setLang(l){
-        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-        event.target.closest('.lang-btn').classList.add('active');
-        document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
+    function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
         buildTable(l);
         if(UITLEG[l])document.getElementById('uitleg-content').innerHTML=UITLEG[l];
     }

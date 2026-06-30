@@ -546,7 +546,26 @@ function speak(text, isSlow = false) {
         };
 
         let currentLang = 'nl';
-        function setLang(l) { currentLang = l; document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); event.target.closest('.lang-btn').classList.add('active'); document.querySelectorAll('[data-translate]').forEach(el => { const k = el.getAttribute('data-translate'); if (T[l] && T[l][k]) el.innerHTML = T[l][k]; }); }
+        function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    currentLang = l; document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active')); event.target.closest('.lang-btn').classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el => { const k = el.getAttribute('data-translate'); if (T[l] && T[l][k]) el.innerHTML = T[l][k]; }); }
 
         function checkMC(btn, ok, qid) { const q = document.getElementById(qid), os = q.querySelectorAll('.quiz-option'), fb = document.getElementById(qid + '-fb'); os.forEach(o => o.style.pointerEvents = 'none'); if (ok) { btn.classList.add('correct'); fb.textContent = T[currentLang].fbCorrect; fb.className = 'quiz-feedback correct'; } else { btn.classList.add('wrong'); os.forEach(o => { if (o.getAttribute('onclick').includes('true')) o.classList.add('correct'); }); const c = [...os].find(o => o.getAttribute('onclick').includes('true')); fb.textContent = T[currentLang].fbWrong + c.textContent; fb.className = 'quiz-feedback wrong'; } }
 

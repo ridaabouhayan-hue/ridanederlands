@@ -156,7 +156,25 @@ function speak(text, isSlow = false) {
     });
 }
     function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(row=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="nl-word">${row.nl}</td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell">${row.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
-    function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));event.target.closest('.lang-btn').classList.add('active');document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});buildTable(l);if(UITLEG[l])document.getElementById('uitleg-content').innerHTML=UITLEG[l];}
+    function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});buildTable(l);if(UITLEG[l])document.getElementById('uitleg-content').innerHTML=UITLEG[l];}
 
     const _mc={};
     function checkMCq(btn,keuze,ant,scoreId,total){const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');if([...groep].some(b=>b.classList.contains('correct')||b.classList.contains('fout')))return;groep.forEach(b=>b.disabled=true);if(!_mc[scoreId])_mc[scoreId]={done:0,score:0};if(keuze===ant){btn.classList.add('correct');_mc[scoreId].score++;}else{btn.classList.add('fout');groep.forEach(b=>{if(b.textContent===ant)b.classList.add('correct');});}_mc[scoreId].done++;if(_mc[scoreId].done===total){const sc=document.getElementById(scoreId);sc.style.display='inline-block';const s=_mc[scoreId].score;sc.textContent=`${s}/${total}`;sc.className='score-badge '+(s===total?'score-goed':s>=7?'score-midden':'score-slecht');}}

@@ -291,10 +291,25 @@ function speak(text, isSlow = false) {
       ar:`<div class="uitleg-box" dir="rtl"><h3>ما الفرق؟</h3><p>بعض الكلمات تبدو متشابهة. انتبه للفروق:</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>het hemd</strong> = فانيلة داخلية (تُلبس تحت الملابس الأخرى)</li><li><strong>het overhemd</strong> = قميص رسمي بأزرار (للعمل)</li><li><strong>het vest</strong> = سترة مفتوحة بدون غطاء رأس</li><li><strong>de trui</strong> = بلوزة دافئة من الصوف أو القطن</li></ul></div><div class="voorbeeld-blok" dir="rtl"><strong>أمثلة:</strong><ul style="margin:.4rem 0 0;padding-right:1.3em;font-size:.92rem;line-height:2"><li>الجو بارد → أحضر معطفي (<strong>jas</strong>).</li><li>يذهب للعمل → يرتدي <strong>overhemd</strong> و<strong>broek</strong>.</li><li>ترتدي تنورة حمراء (<strong>rok</strong>) في الحفلة.</li><li>الحقيبة (<strong>tas</strong>) ثقيلة. بها كتب كثيرة.</li></ul></div><div class="tip-blok" dir="rtl"><strong>انتبه لأداة التعريف!</strong> معظم كلمات الملابس تأخذ <em>de</em>. لكن: <em>het hemd، het overhemd، het T-shirt، het vest</em> تأخذ <em>het</em>.</div>`,
       ps:`<div class="uitleg-box" dir="rtl"><h3>توپیر څه دی؟</h3><p>ځینې کلمې سره ورته ښکاري. توپیر ته پام وکړئ:</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li><strong>het hemd</strong> = زیرکوریۍ (د نورې جامې لاندې اغوستل کیږي)</li><li><strong>het overhemd</strong> = رسمي پیراهن د تڼیو سره (د کار لپاره)</li><li><strong>het vest</strong> = خلاص کوټ، بې کپوچ</li><li><strong>de trui</strong> = ګرم بلوز، اکثرًا د وړۍ یا کاټن</li></ul></div><div class="voorbeeld-blok" dir="rtl"><strong>د بیلګې جملې:</strong><ul style="margin:.4rem 0 0;padding-right:1.3em;font-size:.92rem;line-height:2"><li>سوړ دی → زما کوټ (<strong>jas</strong>) اخلم.</li><li>کار ته ځي → <strong>overhemd</strong> او <strong>broek</strong> اغوندي.</li><li>د مجلس پر مهال سره سکرټ (<strong>rok</strong>) اغوندي.</li><li>کڅوړه (<strong>tas</strong>) درنه ده. ډیر کتابونه پکې دي.</li></ul></div><div class="tip-blok" dir="rtl"><strong>لیدووردو ته پام وکړه!</strong> ټولې د جامو کلمې <em>de</em> اخلي. مګر: <em>het hemd، het overhemd، het T-shirt، het vest</em> → <em>het</em> اخلي.</div>`
     };
-    function setLang(l){
-        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-        event.target.closest('.lang-btn').classList.add('active');
-        document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
+    function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
         buildTable(l);
         if(UITLEG[l])document.getElementById('uitleg-content').innerHTML=UITLEG[l];
     }

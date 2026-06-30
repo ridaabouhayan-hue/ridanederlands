@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNM – Familiedagen, Vrije tijd & Vrijheid</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --red: #c0392b;
+    --gold: #d4a017;
+    --navy: #1c2e4a;
+    --muted: #7a6e5f;
+    --border: #c8bba8;
+    --green: #2d6a4f;
+    --purple: #5b4fcf;
+    --purple-light: #eeecfb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: "Nunito", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hero {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 80px);
+  }
+  .hero-label {
+    font-family: "DM Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: "Nunito", sans-serif;
+    font-size: clamp(28px, 5.5vw, 58px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.7);
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .nav-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .pill {
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 18px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    background: transparent;
+  }
+  .pill:hover, .pill.active { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 50px 24px 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .section-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .icon-red  { background: var(--red); }
+  .icon-navy { background: var(--navy); }
+  .icon-gold { background: var(--gold); }
+  .section-header h2 { font-size: 30px; font-weight: 900; }
+  .section-header small {
+    display: block;
+    font-family: "DM Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .lead { font-size: 17px; font-weight: 400; line-height: 1.85; color: #2a2420; margin-bottom: 36px; max-width: 720px; }
+  .subheading { font-size: 21px; font-weight: 800; margin-top: 30px; margin-bottom: 18px; }
+
+  /* METAPHOR BOX */
+  .metaphor {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0 28px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .metaphor-emoji { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .metaphor strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metaphor p { font-size: 14.5px; color: #2a2060; line-height: 1.65; }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-warn    { background: #fff8e6; border-left: 5px solid var(--gold); }
+  .callout-info    { background: #eef2f8; border-left: 5px solid var(--navy); }
+  .callout-success { background: #eef7f2; border-left: 5px solid var(--green); }
+  .callout-emoji { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .callout p { font-size: 14.5px; color: #3a3228; line-height: 1.65; }
+
+  /* EVENTS GRID */
+  .events-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+  .event-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .event-card:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,46,74,0.1); }
+  .event-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+  .event-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .event-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+  /* EXAM SECTION */
+  .exam-section { background: var(--navy); color: var(--paper); border-radius: 16px; padding: 30px 32px; margin-top: 44px; }
+  .exam-section h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; color: var(--gold); }
+  .exam-tips-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .exam-tips-list li { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 11px 15px; font-size: 13.5px; line-height: 1.5; display: flex; gap: 10px; }
+  .tip-icon { flex-shrink: 0; }
+
+  /* QUIZ */
+  .quiz-block { background: var(--cream); border: 2px dashed var(--border); border-radius: 16px; padding: 32px; margin-top: 40px; }
+  .quiz-block h3 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .quiz-q { margin-bottom: 20px; padding: 16px 20px; background: white; border-radius: 10px; border: 1.5px solid var(--border); }
+  .q-num { font-family: "DM Mono", monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .q-text { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-opt { background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 9px 14px; font-size: 14px; cursor: pointer; transition: all 0.15s; text-align: left; font-family: "Nunito", sans-serif; font-weight: 600; }
+  .quiz-opt:hover { background: var(--navy); color: white; border-color: var(--navy); }
+  .quiz-opt.correct { background: #d4edda; border-color: var(--green); color: var(--green); font-weight: 700; }
+  .quiz-opt.wrong   { background: #f8d7da; border-color: var(--red);   color: var(--red); }
+  .q-feedback { margin-top: 10px; font-size: 13px; font-style: italic; color: var(--muted); display: none; padding: 8px 12px; background: var(--cream); border-radius: 6px; line-height: 1.55; }
+  .q-feedback.show { display: block; }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .lang-btn {
+    padding: 7px 16px;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: "Nunito", sans-serif;
+  }
+  .lang-btn:hover { background: rgba(28,46,74,0.08); }
+  .lang-btn.active { background: var(--navy); color: var(--paper); box-shadow: 0 4px 10px rgba(28,46,74,0.25); }
+
+  /* VOCAB TOOLTIPS */
+  .vocab {
+    position: relative;
+    cursor: pointer;
+    border-bottom: 2px dashed var(--navy);
+    font-weight: 700;
+    color: var(--navy);
+    transition: all 0.2s;
+    display: inline;
+  }
+  .vocab:hover { background-color: rgba(28,46,74,0.08); border-radius: 4px; }
+  .tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: var(--navy);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    pointer-events: none;
+  }
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--navy) transparent transparent transparent;
+  }
+  .vocab.show-tooltip .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .footer { text-align: center; padding: 32px; font-family: "DM Mono", monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 1px; margin-top: 60px; }
+
+  @media (max-width: 640px) {
+    .events-grid, .exam-tips-list { grid-template-columns: 1fr; }
+    .main { padding: 28px 16px 60px; }
+  }
+
+  /* TWO-COLUMN LAYOUT SYSTEM FOR SIDEBAR SUMMARIES */
+  .section-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 992px) {
+    .main {
+      max-width: 1100px;
+      transition: max-width 0.3s ease;
+    }
+    .section-layout {
+      grid-template-columns: 1.8fr 1fr;
+    }
+  }
+  .summary-sidebar {
+    align-self: start;
+  }
+  @media (min-width: 992px) {
+    .summary-sidebar {
+      position: sticky;
+      top: 24px;
+    }
+  }
+  .summary-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .summary-card.red-border {
+    border-left: 4px solid var(--red);
+  }
+  .summary-card.gold-border {
+    border-left: 4px solid var(--gold);
+  }
+  .summary-card.navy-border {
+    border-left: 4px solid var(--navy);
+  }
+  .summary-card h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-card p {
+    margin: 0 0 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .summary-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+  }
+  .summary-card li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .summary-card.rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  .summary-card.rtl ul {
+    padding-left: 0;
+    padding-right: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">KNM · Thema 2 · Modules 2.4 - 2.6</div>
+  <h1>Familiedagen, Vrije tijd<br>&amp; Vrijheid</h1>
+  <p>Verken de familiegebeurtenissen, vrijetijdsbesteding en de fundamentele rechten in Nederland</p>
+</div>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" data-lang="nl">Geen Vertaling</button>
+  <button class="lang-btn" data-lang="en">🇬🇧 ENG</button>
+  <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+  <button class="lang-btn" data-lang="vi">🇻🇳 VN</button>
+  <button class="lang-btn" data-lang="fa">🇮🇷 Farsi</button>
+  <button class="lang-btn" data-lang="da">🇦🇫 Dari</button>
+  <button class="lang-btn" data-lang="ar">🇸🇦 AR</button>
+  <button class="lang-btn" data-lang="th">🇹🇭 TH</button>
+</div>
+
+<div class="nav-pills">
+  <a href="#familie"  class="pill active">👪 Familiedagen &amp; Feesten</a>
+  <a href="#vrijetijd" class="pill">⚽ Vrije tijd &amp; Verenigingen</a>
+  <a href="#vrijheid"  class="pill">🗽 Vrijheid &amp; Emancipatie</a>
+  <a href="#quiz"       class="pill">🧠 Oefenvragen</a>
+</div>
+
+<div class="main">
+
+<!-- FAMILIEDAGEN -->
+<div id="familie">
+  <div class="section-header">
+    <div class="section-icon icon-navy">👪</div>
+    <div>
+      <h2>Familiedagen &amp; Feesten</h2>
+      <small>Topic 2.4 · Belangrijke momenten in het leven</small>
+    </div>
+  </div>
+
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">In het leven van een mens zijn er belangrijke momenten die met de familie gevierd worden, zoals een <span class="vocab" data-en="birthday" data-tr="doğum günü" data-vi="sinh nhật" data-fa="تولد" data-da="سالگره" data-ar="عيد ميلاد" data-th="วันเกิด">verjaardag</span>, een <span class="vocab" data-en="wedding" data-tr="düğün" data-vi="đám cưới" data-fa="عروسی" data-da="عروسی" data-ar="زفاف" data-th="งานแต่งงาน">bruiloft</span>, of de <span class="vocab" data-en="birth" data-tr="doğum" data-vi="sự sinh đẻ / chào đời" data-fa="تولد نوزاد" data-da="تولد نوزاد" data-ar="ولادة" data-th="การเกิด">geboorte</span> van een baby.</p>
+
+      <div class="events-grid">
+        <div class="event-card">
+          <span class="event-emoji">🎂</span>
+          <div class="event-name">Verjaardag</div>
+          <div class="event-desc">Als je jarig bent, feliciteer je de jarige én vaak ook de rest van de familie. Op school of werk mag je <span class="vocab" data-en="to treat (give snacks)" data-tr="ikram etmek" data-vi="đãi bánh kẹo" data-fa="شیرینی دادن" data-da="شیرینی دادن" data-ar="تقديم ضيافة" data-th="เลี้ยงแจกขนม">trakteren</span> op taart of snoep. Typisch Nederlands is de verjaardagskring: gasten zitten in een grote kring van stoelen.</div>
+        </div>
+        <div class="event-card">
+          <span class="event-emoji">👰</span>
+          <div class="event-name">Bruiloft (Huwelijk)</div>
+          <div class="event-desc">Om officieel getrouwd te zijn, moet je in Nederland eerst 'voor de wet' trouwen bij de gemeente. Dit heet het <strong>burgerlijk huwelijk</strong>. Daarna kun je eventueel ook in de kerk trouwen. Als cadeau geven gasten vaak een kaart met geld erin.</div>
+        </div>
+        <div class="event-card">
+          <span class="event-emoji">👶</span>
+          <div class="event-name">Geboorte</div>
+          <div class="event-desc">Als er een baby is geboren, sturen de ouders geboortekaartjes. Bezoekers die langskomen (de <strong>kraamvisite</strong>) krijgen traditiegetrouw <strong>beschuit met muisjes</strong> (anijsbolletjes): blauw/wit voor een jongen en roze/wit voor een meisje.</div>
+        </div>
+        <div class="event-card">
+          <span class="event-emoji">✉️</span>
+          <div class="event-name">Kaarten Sturen</div>
+          <div class="event-desc">Nederlanders sturen heel graag kaarten per post: een verjaardagskaart, een felicitatiekaart voor een geboorte of huwelijk, of een condoleancekaart (sterktekaart) als er iemand is overleden om hun medeleven te tonen.</div>
+        </div>
+      </div>
+
+      <div class="metaphor">
+        <span class="metaphor-emoji">💭</span>
+        <div>
+          <strong>Denk het zo – Beschuit met Muisjes</strong>
+          <p>Waarom muisjes? De anijszaadjes die erop zitten stonden vroeger symbool voor vruchtbaarheid en werden gegeven om de boze geesten weg te jagen. Nu is het de ultieme traktatie bij een geboorte!</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="summary-sidebar">
+      <!-- NL Summary -->
+      <div class="summary-card red-border i18n-el" data-lang="nl">
+        <h4>⚡ 2.4 Familiedagen</h4>
+        <ul>
+          <li><strong>Verjaardag:</strong> Traktatie op werk/school en feliciteren.</li>
+          <li><strong>Bruiloft:</strong> Altijd eerst trouwen voor de wet (burgerlijk huwelijk).</li>
+          <li><strong>Geboorte:</strong> Kraamvisite eet beschuit met muisjes (roze of blauw).</li>
+        </ul>
+      </div>
+      <!-- EN Summary -->
+      <div class="summary-card red-border i18n-el" data-lang="en" style="display: none;">
+        <h4>⚡ 2.4 Life Events</h4>
+        <ul>
+          <li><strong>Birthdays:</strong> Celebrate by treating classmates/colleagues.</li>
+          <li><strong>Weddings:</strong> Legal wedding (civil marriage) at the city hall must come first.</li>
+          <li><strong>Births:</strong> Guests eat rusks with blue or pink aniseed sprinkles.</li>
+        </ul>
+      </div>
+      <!-- TR Summary -->
+      <div class="summary-card red-border i18n-el" data-lang="tr" style="display: none;">
+        <h4>⚡ 2.4 Hayat Olayları</h4>
+        <ul>
+          <li><strong>Doğum Günü:</strong> Okulda/işte ikramda bulunulur ve tebrik edilir.</li>
+          <li><strong>Düğün:</strong> Her zaman önce belediyede resmi nikah kıyılır.</li>
+          <li><strong>Doğum:</strong> Bebek ziyaretinde pembe veya mavi anasonlu bisküvi yenir.</li>
+        </ul>
+      </div>
+      <!-- VI Summary -->
+      <div class="summary-card red-border i18n-el" data-lang="vi" style="display: none;">
+        <h4>⚡ 2.4 Sự Kiện Đời Người</h4>
+        <ul>
+          <li><strong>Sinh nhật:</strong> Đãi bánh kẹo tại nơi làm việc hoặc trường học.</li>
+          <li><strong>Đám cưới:</strong> Bắt buộc phải đăng ký kết hôn dân sự tại tòa thị chính trước.</li>
+          <li><strong>Sinh con:</strong> Khách đến thăm ăn bánh mì nướng muisjes màu hồng/xanh.</li>
+        </ul>
+      </div>
+      <!-- FA Summary -->
+      <div class="summary-card red-border i18n-el rtl" data-lang="fa" style="display: none;">
+        <h4>⚡ ۲.۴ رویدادهای مهم زندگی</h4>
+        <ul>
+          <li><strong>تولد:</strong> پخش شیرینی در مدرسه یا محل کار و تبریک گفتن.</li>
+          <li><strong>عروسی:</strong> همیشه ابتدا ازدواج رسمی در شهرداری انجام می‌شود.</li>
+          <li><strong>تولد نوزاد:</strong> مهمانان نان سوخاری با نقل‌های صورتی یا آبی می‌خورند.</li>
+        </ul>
+      </div>
+      <!-- DA Summary -->
+      <div class="summary-card red-border i18n-el rtl" data-lang="da" style="display: none;">
+        <h4>⚡ ۲.۴ حوادث مهم فامیلی</h4>
+        <ul>
+          <li><strong>سالگره:</strong> توزیع شیرینی در صنف یا وظیفه و تبریک گفتن.</li>
+          <li><strong>عروسی:</strong> همیشه اول عقد رسمی در شاروالی صورت می‌گیرد.</li>
+          <li><strong>تولد طفل:</strong> مهمانان نان سوخاری مخصوص (beschuit met muisjes) می‌خورند.</li>
+        </ul>
+      </div>
+      <!-- AR Summary -->
+      <div class="summary-card red-border i18n-el rtl" data-lang="ar" style="display: none;">
+        <h4>⚡ 2.4 مناسبات عائلية</h4>
+        <ul>
+          <li><strong>أعياد الميلاد:</strong> تقديم الحلوى والضيافة في المدرسة أو العمل للزملاء.</li>
+          <li><strong>الزفاف:</strong> يجب دائماً الزواج قانونياً في البلدية أولاً (الزواج المدني).</li>
+          <li><strong>الولادة:</strong> يأكل الزوار مقرمشات باليانسون باللون الوردي أو الأزرق.</li>
+        </ul>
+      </div>
+      <!-- TH Summary -->
+      <div class="summary-card red-border i18n-el" data-lang="th" style="display: none;">
+        <h4>⚡ 2.4 ช่วงเวลาชีวิต</h4>
+        <ul>
+          <li><strong>วันเกิด:</strong> เลี้ยงขนมที่โรงเรียน/ที่ทำงาน และอวยพรวันเกิด</li>
+          <li><strong>งานแต่งงาน:</strong> ต้องจดทะเบียนสมรสต่อหน้ากฎหมายที่เขต/เทศบาลก่อนเสมอ</li>
+          <li><strong>การคลอดบุตร:</strong> ผู้มาเยี่ยมจะทานขนมปังอบโรยน้ำตาลสีชมพูหรือสีฟ้า</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="section-divider">
+  <div class="divider-symbol">⚽ VRIJE TIJD ⚽</div>
+</div>
+
+<!-- VRIJE TIJD -->
+<div id="vrijetijd">
+  <div class="section-header">
+    <div class="section-icon icon-red">⚽</div>
+    <div>
+      <h2>Vrije tijd &amp; Verenigingen</h2>
+      <small>Topic 2.5 · Ontspannen en meedoen</small>
+    </div>
+  </div>
+
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">Nederlanders zijn graag actief in hun vrije tijd. Ze zijn vaak lid van een vereniging of doen mee aan sociale activiteiten.</p>
+
+      <div class="subheading">🏆 Sportverenigingen</div>
+      <p>Veel Nederlanders sporten bij een <span class="vocab" data-en="sports club / association" data-tr="spor kulübü / derneği" data-vi="câu lạc bộ thể thao" data-fa="باشگاه ورزشی / انجمن" data-da="کلپ ورزشی / انجمن" data-ar="نادي رياضي" data-th="สโมสรกีฬา">sportvereniging</span> (zoals een voetbalclub, tennisclub of hockeyclub). Je betaalt contributie (geld) om lid te zijn. Sportverenigingen draaien bijna helemaal op de inzet van <strong>vrijwilligers</strong> – mensen die gratis helpen om de club te organiseren.</p>
+
+      <div class="subheading">🏢 Het Buurthuis</div>
+      <p>Een <span class="vocab" data-en="community center" data-tr="mahalle evi" data-vi="nhà văn hóa cộng đồng" data-fa="سرای محله" data-da="مرکز اجتماعی محله" data-ar="مركز اجتماعي محلي" data-th="ศูนย์ชุมชน">buurthuis</span> is een plek in de wijk waar buurtbewoners elkaar kunnen ontmoeten. Er worden goedkope cursussen gegeven, zoals taallessen of computerlessen. Ook is er ruimte voor hobby's, koffiedrinken en kinderactiviteiten.</p>
+
+      <div class="subheading">🤝 Vrijwilligerswerk</div>
+      <p>Een <span class="vocab" data-en="volunteer" data-tr="gönüllü" data-vi="tình nguyện viên" data-fa="داوطلب" data-da="رضاکار / داوطلب" data-ar="متطوع" data-th="อาสาสมัคร">vrijwilliger</span> doet werk zonder dat hij daar geld voor krijgt. Veel Nederlanders doen vrijwilligerswerk, bijvoorbeeld in het buurthuis, bij een sportclub, of door ouderen te helpen. Het is een uitstekende manier om Nederlands te leren en mensen te ontmoeten.</p>
+
+      <div class="subheading">💳 Geld overmaken (IBAN)</div>
+      <p>Als je betaalt voor een activiteit, club of verhuur, maak je vaak geld over via internetbankieren. Hiervoor heb je het <strong>IBAN</strong>-nummer nodig (je bankrekeningnummer) en moet je invullen op wiens naam de rekening staat (<strong>ten name van</strong>).</p>
+    </div>
+
+    <aside class="summary-sidebar">
+      <!-- NL Summary -->
+      <div class="summary-card gold-border i18n-el" data-lang="nl">
+        <h4>⚡ 2.5 Vrije tijd</h4>
+        <ul>
+          <li><strong>Verenigingen:</strong> Lid worden van sportclubs is heel gewoon.</li>
+          <li><strong>Vrijwilligers:</strong> Verenigingen bestaan dankzij onbetaalde hulp.</li>
+          <li><strong>Buurthuis:</strong> Plek in de wijk voor ontmoeting en cursussen.</li>
+        </ul>
+      </div>
+      <!-- EN Summary -->
+      <div class="summary-card gold-border i18n-el" data-lang="en" style="display: none;">
+        <h4>⚡ 2.5 Leisure Time</h4>
+        <ul>
+          <li><strong>Clubs:</strong> Being a member of a sports club is very popular.</li>
+          <li><strong>Volunteers:</strong> Clubs run on unpaid voluntary help.</li>
+          <li><strong>Community Center:</strong> Neighborhood hub for courses and social gatherings.</li>
+        </ul>
+      </div>
+      <!-- TR Summary -->
+      <div class="summary-card gold-border i18n-el" data-lang="tr" style="display: none;">
+        <h4>⚡ 2.5 Boş Vakit</h4>
+        <ul>
+          <li><strong>Kulüpler:</strong> Spor kulüplerine üye olmak çok yaygındır.</li>
+          <li><strong>Gönüllüler:</strong> Kulüpler ücretsiz gönüllü yardımıyla ayakta kalır.</li>
+          <li><strong>Mahalle Evi:</strong> Karşılaşma ve uygun fiyatlı kursların yeridir.</li>
+        </ul>
+      </div>
+      <!-- VI Summary -->
+      <div class="summary-card gold-border i18n-el" data-lang="vi" style="display: none;">
+        <h4>⚡ 2.5 Thời Gian Rảnh</h4>
+        <ul>
+          <li><strong>Câu lạc bộ:</strong> Rất phổ biến khi tham gia câu lạc bộ thể thao.</li>
+          <li><strong>Tình nguyện:</strong> Các CLB hoạt động nhờ sự hỗ trợ không lương.</li>
+          <li><strong>Nhà cộng đồng:</strong> Nơi gặp gỡ và học các khóa học giá rẻ.</li>
+        </ul>
+      </div>
+      <!-- FA Summary -->
+      <div class="summary-card gold-border i18n-el rtl" data-lang="fa" style="display: none;">
+        <h4>⚡ ۲.۵ اوقات فراغت</h4>
+        <ul>
+          <li><strong>باشگاه‌ها:</strong> عضویت در باشگاه‌های ورزشی بسیار مرسوم است.</li>
+          <li><strong>کار داوطلبانه:</strong> باشگاه‌ها و انجمن‌ها به کمک داوطلبان اداره می‌شوند.</li>
+          <li><strong>سرای محله:</strong> مکانی برای کلاس‌های ارزان‌قیمت و دیدارهای اجتماعی.</li>
+        </ul>
+      </div>
+      <!-- DA Summary -->
+      <div class="summary-card gold-border i18n-el rtl" data-lang="da" style="display: none;">
+        <h4>⚡ ۲.۵ اوقات فراغت</h4>
+        <ul>
+          <li><strong>کلپ‌ها:</strong> عضویت در کلپ‌های ورزشی میان مردم بسیار عام است.</li>
+          <li><strong>رضاکاران:</strong> کلپ‌ها با کمک‌های بدون مزد رضاکاران اداره می‌شوند.</li>
+          <li><strong>مرکز محله:</strong> محلی در منطقه برای ملاقات مردم و یادگیری صنوف ارزان.</li>
+        </ul>
+      </div>
+      <!-- AR Summary -->
+      <div class="summary-card gold-border i18n-el rtl" data-lang="ar" style="display: none;">
+        <h4>⚡ 2.5 أوقات الفراغ</h4>
+        <ul>
+          <li><strong>الأندية:</strong> الاشتراك في النوادي الرياضية أمر شائع جداً.</li>
+          <li><strong>المتطوعون:</strong> تعمل النوادي بفضل المساعدات التطوعية غير المدفوعة.</li>
+          <li><strong>المركز الاجتماعي:</strong> مكان في الحي للقاءات والأنشطة والدورات البسيطة.</li>
+        </ul>
+      </div>
+      <!-- TH Summary -->
+      <div class="summary-card gold-border i18n-el" data-lang="th" style="display: none;">
+        <h4>⚡ 2.5 เวลาว่าง</h4>
+        <ul>
+          <li><strong>สมาคมกีฬา:</strong> การเป็นสมาชิกสโมสรกีฬาเป็นเรื่องปกติธรรมดามาก</li>
+          <li><strong>อาสาสมัคร:</strong> สโมสรขับเคลื่อนได้ด้วยความช่วยเหลือแบบไม่รับค่าจ้าง</li>
+          <li><strong>ศูนย์ชุมชน:</strong> สถานที่พบปะและเรียนหลักสูตรราคาย่อมเยาในชุมชน</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="section-divider">
+  <div class="divider-symbol">🗽 VRIJHEID 🗽</div>
+</div>
+
+<!-- VRIJHEID -->
+<div id="vrijheid">
+  <div class="section-header">
+    <div class="section-icon icon-gold">🗽</div>
+    <div>
+      <h2>Vrijheid &amp; Emancipatie</h2>
+      <small>Topic 2.6 · Jouw keuzes en rechten</small>
+    </div>
+  </div>
+
+  <div class="section-layout">
+    <div class="main-content">
+      <p class="lead">In Nederland is <span class="vocab" data-en="freedom / liberty" data-tr="özgürlük" data-vi="sự tự do" data-fa="آزادی" data-da="آزادی" data-ar="حرية" data-th="เสรีภาพ">vrijheid</span> een heel belangrijke waarde. Mensen mogen hun eigen keuzes maken, zolang ze de wet niet overtreden en anderen niet schaden.</p>
+
+      <div class="subheading">⚖️ Gelijkheid</div>
+      <p>In artikel 1 van de Nederlandse grondwet staat dat iedereen in Nederland gelijk is. Discriminatie is verboden. Mannen en vrouwen hebben precies dezelfde rechten. Zij zijn gelijkwaardig. Dit noemen we <span class="vocab" data-en="equality" data-tr="eşitlik" data-vi="sự bình đẳng" data-fa="برابری" data-da="مساوات / برابری" data-ar="مساواة" data-th="ความเท่าเทียมกัน">gelijkheid</span> of <strong>emancipatie</strong>.</p>
+      <p style="margin-top: 10px;">Een vrouw mag dus zelf beslissen of ze wil werken, welke opleiding ze kiest en met wie ze trouwt. Het is ook heel gewoon dat een vrouw meer verdient dan haar man of dat de man thuis voor de kinderen zorgt.</p>
+
+      <div class="subheading">🏳️‍🌈 Homohuwelijk</div>
+      <p>Sinds 2001 is Nederland het eerste land ter wereld waar twee mannen of twee vrouwen met elkaar mogen trouwen. Dit heet het <span class="vocab" data-en="same-sex marriage" data-tr="eşcinsel evlilik" data-vi="hôn nhân đồng giới" data-fa="ازدواج همجنس‌گرایان" data-da="ازدواج همجنس‌گرایان" data-ar="زواج المثليين" data-th="การแต่งงานของคนเพศเดียวกัน">homohuwelijk</span>. In Nederland is het heel normaal dat mensen van hetzelfde geslacht verliefd op elkaar zijn en samenwonen. Je moet elkaars geaardheid respecteren.</p>
+
+      <div class="subheading">⛪ Vrijheid van Geloof &amp; Mening</div>
+      <p>Je bent vrij om te geloven wat je wilt (islam, christendom, jodendom, etc.), of om helemaal niet in een god te geloven. De overheid mag zich hier niet mee bemoeien (scheiding van kerk en staat). Ook mag je vrij je mening geven, mits je anderen niet beledigt of aanzet tot haat.</p>
+
+      <div class="subheading">⚠️ Veiligheid op Straat &amp; Lastigvallen</div>
+      <p>Hoewel er veel vrijheid is, is er ook een grens. Je mag anderen niet lastigvallen. In grote steden zoals Amsterdam en Rotterdam is straatintimidatie (zoals het naroepen of nafluiten van vrouwen) strafbaar. Je kunt er een hoge boete voor krijgen.</p>
+    </div>
+
+    <aside class="summary-sidebar">
+      <!-- NL Summary -->
+      <div class="summary-card navy-border i18n-el">
+        <h4>⚡ 2.6 Vrijheid</h4>
+        <ul>
+          <li><strong>Grondrechten:</strong> Vrijheid van geloof, mening en gelijke rechten voor iedereen.</li>
+          <li><strong>Homohuwelijk:</strong> Twee mannen of vrouwen mogen trouwen (sinds 2001).</li>
+          <li><strong>Respect:</strong> Je mag anderen niet lastigvallen op straat.</li>
+        </ul>
+      </div>
+      <!-- EN Summary -->
+      <div class="summary-card navy-border i18n-el" data-lang="en" style="display: none;">
+        <h4>⚡ 2.6 Rights & Freedom</h4>
+        <ul>
+          <li><strong>Equal Rights:</strong> Equality for men &amp; women. Freedom of belief/expression.</li>
+          <li><strong>Same-Sex Marriage:</strong> Legal since 2001. Equal rights for LGBT.</li>
+          <li><strong>Safety:</strong> Street harassment is illegal and punishable by fines.</li>
+        </ul>
+      </div>
+      <!-- TR Summary -->
+      <div class="summary-card navy-border i18n-el" data-lang="tr" style="display: none;">
+        <h4>⚡ 2.6 Özgürlük & Eşitlik</h4>
+        <ul>
+          <li><strong>Temel Haklar:</strong> Din, vicdan ve ifade özgürlüğü. Kadın-erkek eşitliği.</li>
+          <li><strong>Eşcinsel Evlilik:</strong> 2001'den beri yasaldır ve saygı gösterilmelidir.</li>
+          <li><strong>Sokak Güvenliği:</strong> Sokakta insanları rahatsız etmek/sözlü taciz yasaktır.</li>
+        </ul>
+      </div>
+      <!-- VI Summary -->
+      <div class="summary-card navy-border i18n-el" data-lang="vi" style="display: none;">
+        <h4>⚡ 2.6 Tự do & Bình đẳng</h4>
+        <ul>
+          <li><strong>Bình đẳng nam nữ:</strong> Quyền tự do tín ngưỡng, ngôn luận và bình đẳng giới.</li>
+          <li><strong>Hôn nhân đồng giới:</strong> Được pháp luật công nhận từ năm 2001.</li>
+          <li><strong>Trật tự đường phố:</strong> Hành vi quấy rối, chọc ghẹo trên đường là bất hợp pháp.</li>
+        </ul>
+      </div>
+      <!-- FA Summary -->
+      <div class="summary-card navy-border i18n-el rtl" data-lang="fa" style="display: none;">
+        <h4>⚡ ۲.۶ آزادی و برابری</h4>
+        <ul>
+          <li><strong>حقوق برابر:</strong> برابری زن و مرد. آزادی عقیده، مذهب و بیان.</li>
+          <li><strong>ازدواج همجنس‌گرایان:</strong> از سال ۲۰۰۱ قانونی است و باید محترم شمرده شود.</li>
+          <li><strong>امنیت خیابانی:</strong> متلک‌پرانی یا ایجاد مزاحمت خیابانی جرم است و جریمه دارد.</li>
+        </ul>
+      </div>
+      <!-- DA Summary -->
+      <div class="summary-card navy-border i18n-el rtl" data-lang="da" style="display: none;">
+        <h4>⚡ ۲.۶ آزادی‌ها</h4>
+        <ul>
+          <li><strong>حقوق مساوی:</strong> مساوات میان زن و مرد. آزادی بیان و مذهب.</li>
+          <li><strong>ازدواج همجنس‌گرایان:</strong> از سال ۲۰۰۱ قانونی است و باید احترام گذاشته شود.</li>
+          <li><strong>امنیت اجتماعی:</strong> مزاحمت‌های سرک برای خانم‌ها غیرقانونی بوده و جریمه نقدی دارد.</li>
+        </ul>
+      </div>
+      <!-- AR Summary -->
+      <div class="summary-card navy-border i18n-el rtl" data-lang="ar" style="display: none;">
+        <h4>⚡ 2.6 الحرية والمساواة</h4>
+        <ul>
+          <li><strong>حقوق متساوية:</strong> المساواة بين الجنسين. حرية التعبير والمعتقد.</li>
+          <li><strong>زواج المثليين:</strong> مسموح به قانونياً منذ عام 2001 ويجب احترامه.</li>
+          <li><strong>الأمن:</strong> التحرش والمضايقات في الشوارع غير قانونية وتستوجب الغرامة.</li>
+        </ul>
+      </div>
+      <!-- TH Summary -->
+      <div class="summary-card navy-border i18n-el" data-lang="th" style="display: none;">
+        <h4>⚡ 2.6 เสรีภาพและความเท่าเทียม</h4>
+        <ul>
+          <li><strong>ความเท่าเทียม:</strong> สิทธิเท่าเทียมระหว่างหญิงและชาย เสรีภาพทางความเชื่อ</li>
+          <li><strong>สมรสเท่าเทียม:</strong> กฎหมายรับรองตั้งแต่ปี 2544 และต้องเคารพซึ่งกันและกัน</li>
+          <li><strong>ความปลอดภัย:</strong> การก่อกวนคุกคามบนท้องถนนเป็นสิ่งผิดกฎหมายและมีโทษปรับ</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="quiz-block">
+  <h3>🧠 Oefenvragen – Test jezelf (30 vragen)</h3>
+  <p style="margin-bottom: 20px; font-size: 14px; color: var(--muted);">Bereid je grondig voor op het KNM-examen. Klik op het juiste antwoord.</p>
+
+        <div class="quiz-q" id="q1">
+          <div class="q-num">VRAAG 01 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Je collega is jarig. Wat is gebruikelijk op een Nederlandse werkplek?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, dat hoeft niet.')">A. De collega verwacht dat jij taart voor hem koopt.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q1', 'Correct! Wie jarig is, trakteert in Nederland op school of werk.')">B. De jarige collega trakteert zelf op taart of iets lekkers.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, dat is niet verplicht.')">C. Iedereen moet verplicht geld inleveren voor een groot feest.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q1', 'Nee, gewoon werken.')">D. Er wordt niet gewerkt op die dag.</button>
+          </div>
+          <div class="q-feedback" id="q1-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q2">
+          <div class="q-num">VRAAG 02 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Je komt op een Nederlandse verjaardag. Wat is de 'verjaardagskring'?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee.')">A. Een dans die iedereen moet doen.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q2', 'Correct! De verjaardagskring is een bekend en typisch Nederlands fenomeen.')">B. Stoelen die in een grote kring in de huiskamer staan waar iedereen in zit.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee.')">C. Een cirkel buiten in de tuin om te barbecueën.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q2', 'Nee.')">D. Een spelletje voor kinderen.</button>
+          </div>
+          <div class="q-feedback" id="q2-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q3">
+          <div class="q-num">VRAAG 03 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Je wilt in Nederland trouwen. Welk huwelijk is wettelijk verplicht om officieel getrouwd te zijn?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, de kerk heeft geen wettelijke macht.')">A. Het kerkelijk huwelijk.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q3', 'Correct! Het burgerlijk huwelijk voor de wet is verplicht. Een kerkelijk huwelijk mag daarna pas.')">B. Het burgerlijk huwelijk bij de gemeente.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, dat kan niet.')">C. Een huwelijk via een online formulier.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q3', 'Nee, samenwonen is niet hetzelfde als een huwelijk.')">D. Er is geen verplichting, samenwonen is wettelijk hetzelfde.</button>
+          </div>
+          <div class="q-feedback" id="q3-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q4">
+          <div class="q-num">VRAAG 04 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Wat eten bezoekers traditioneel bij een kraamvisite na de geboorte van een baby?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee, die zijn voor Oud en Nieuw.')">A. Oliebollen met suiker.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q4', 'Correct! Beschuit met muisjes (anijszaadjes) is de traditionele geboortetraktatie.')">B. Beschuit met muisjes.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee.')">C. Pannenkoeken met stroop.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q4', 'Nee.')">D. Brood met kaas.</button>
+          </div>
+          <div class="q-feedback" id="q4-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q5">
+          <div class="q-num">VRAAG 05 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Wat betekenen de kleuren van de muisjes op de beschuit bij een geboorte?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee.')">A. Rood/wit voor een meisje, groen/wit voor een jongen.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q5', 'Correct! Roze staat traditioneel voor meisjes, blauw voor jongens.')">B. Roze/wit voor een meisje, blauw/wit voor een jongen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee.')">C. Geel/wit voor een meisje, zwart/wit voor een jongen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q5', 'Nee.')">D. Ze hebben geen betekenis.</button>
+          </div>
+          <div class="q-feedback" id="q5-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q6">
+          <div class="q-num">VRAAG 06 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Wat sturen Nederlanders als er iemand is overleden?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, natuurlijk niet.')">A. Een uitnodiging voor een feest.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q6', 'Correct! Het sturen van een kaart is een belangrijk gebaar van medeleven.')">B. Een condoleancekaart (sterktekaart) om medeleven te tonen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, dat is ongebruikelijk bij overlijden.')">C. Een brief met geld.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q6', 'Nee, je stuurt juist wel een kaart.')">D. Niets, dat is niet beleefd.</button>
+          </div>
+          <div class="q-feedback" id="q6-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q7">
+          <div class="q-num">VRAAG 07 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Wanneer sturen Nederlanders elkaar kaarten per post?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q7', 'Nee, ook bij andere gelegenheden.')">A. Alleen met Kerstmis.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q7', 'Correct! Kaarten sturen is een brede traditie in Nederland.')">B. Bij geboorte, huwelijk, verjaardagen, ziekte en overlijden.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q7', 'Nee, ook mensen met internet sturen kaarten.')">C. Alleen als ze geen internet hebben.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q7', 'Nee, het gebeurt nog veel.')">D. Nooit, dat doet niemand meer.</button>
+          </div>
+          <div class="q-feedback" id="q7-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q8">
+          <div class="q-num">VRAAG 08 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Wat is een kraamvisite?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q8', 'Nee.')">A. Een bezoek aan de huisarts.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q8', 'Correct! Kraamvisite is babybezoek in de eerste weken na de geboorte.')">B. Op bezoek gaan bij de kersverse ouders om de baby te bewonderen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q8', 'Nee.')">C. Een controle in het ziekenhuis.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q8', 'Nee, dat is een babyshower.')">D. Een feest voor zwangere vrouwen.</button>
+          </div>
+          <div class="q-feedback" id="q8-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q9">
+          <div class="q-num">VRAAG 09 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Als je naar een bruiloft gaat, wat geef je dan vaak cadeau?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q9', 'Nee.')">A. Een doos met oud speelgoed.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q9', 'Correct! Geld is een heel gebruikelijk cadeau op bruiloften.')">B. Een kaart met daarin een envelop met geld voor het bruidspaar.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q9', 'Nee, een cadeau meenemen is de norm.')">C. Niets, het feest is gratis.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q9', 'Nee.')">D. Een fles kraanwater.</button>
+          </div>
+          <div class="q-feedback" id="q9-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q10">
+          <div class="q-num">VRAAG 10 / 30 · 2.1 Gewoonten</div>
+          <div class="q-text">Welke felicitatie zeg je tegen de ouders van een pasgeboren baby?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q10', 'Nee, gecondoleerd zeg je bij overlijden!')">A. Gecondoleerd met uw baby.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q10', 'Correct! Gefeliciteerd is de standaard felicitatie bij geboorte.')">B. Gefeliciteerd met de geboorte van uw zoon/dochter!</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q10', 'Nee, dat is voor Kerst/Nieuwjaar.')">C. Fijne feestdagen gewenst.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q10', 'Nee, dat is te negatief.')">D. Veel sterkte ermee.</button>
+          </div>
+          <div class="q-feedback" id="q10-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q11">
+          <div class="q-num">VRAAG 11 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Je wilt lid worden van een sportvereniging. Wat moet je betalen?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q11', 'Nee.')">A. Belasting aan de staat.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q11', 'Correct! Leden betalen contributie om de kosten van de vereniging te dekken.')">B. Contributie (lidmaatschapsgeld) aan de vereniging.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q11', 'Nee, lidmaatschap kost geld.')">C. Niets, sporten is gratis in Nederland.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q11', 'Nee.')">D. Een boete.</button>
+          </div>
+          <div class="q-feedback" id="q11-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q12">
+          <div class="q-num">VRAAG 12 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Op wie of wat draaien de meeste sportverenigingen in Nederland?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q12', 'Nee, die zijn er zelden bij amateurclubs.')">A. Op professionele, duurbetaalde managers.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q12', 'Correct! Vrijwilligers zijn essentieel voor het voortbestaan van sportclubs.')">B. Op de inzet van vrijwilligers (onbetaalde helpers).</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q12', 'Nee.')">C. Op subsidies van de Europese Unie.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q12', 'Nee.')">D. Op militairen van het leger.</button>
+          </div>
+          <div class="q-feedback" id="q12-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q13">
+          <div class="q-num">VRAAG 13 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat is een buurthuis?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q13', 'Nee.')">A. Een kantoor van de politie.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q13', 'Correct! Een buurthuis is er voor de buurtbewoners.')">B. Een ontmoetingsplek in de wijk met sociale activiteiten en goedkope cursussen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q13', 'Nee, dat is een meubelboulevard.')">C. Een winkel waar je meubels kunt kopen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q13', 'Nee, dat is maatschappelijke opvang.')">D. Een opvang voor daklozen.</button>
+          </div>
+          <div class="q-feedback" id="q13-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q14">
+          <div class="q-num">VRAAG 14 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat is vrijwilligerswerk?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q14', 'Nee, dat is niet vrijwillig.')">A. Werk waarvoor je verplicht wordt door de gemeente.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q14', 'Correct! Vrijwilligerswerk doe je uit vrije wil en zonder loon.')">B. Werk dat je onbetaald doet om anderen of de samenleving te helpen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q14', 'Nee, dat is betaald werk.')">C. Werk in een fabriek voor een minimumloon.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q14', 'Nee.')">D. Werk dat je alleen in de gevangenis doet.</button>
+          </div>
+          <div class="q-feedback" id="q14-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q15">
+          <div class="q-num">VRAAG 15 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat heb je nodig om geld over te maken via internetbankieren?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q15', 'Nee, die is geheim!')">A. De pincode van de ontvanger.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q15', 'Correct! Je hebt het IBAN en de naam (ten name van) nodig.')">B. Het IBAN-nummer (bankrekeningnummer) en de naam van de ontvanger.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q15', 'Nee.')">C. Een brief van de Belastingdienst.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q15', 'Nee.')">D. Een handtekening van de burgemeester.</button>
+          </div>
+          <div class="q-feedback" id="q15-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q16">
+          <div class="q-num">VRAAG 16 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat doen veel Nederlanders in het weekend om te ontspannen?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q16', 'Nee.')">A. Ze blijven de hele dag verplicht binnen.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q16', 'Correct! Actief buiten zijn is erg populair onder Nederlanders.')">B. Ze gaan wandelen of fietsen in de natuur (bos, duinen of strand).</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q16', 'Nee, de meesten gaan niet meer wekelijks.')">C. Ze gaan uitsluitend naar de kerk.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q16', 'Nee, dat is werk.')">D. Ze gaan werken op het land.</button>
+          </div>
+          <div class="q-feedback" id="q16-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q17">
+          <div class="q-num">VRAAG 17 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat betekent de term 'polderen' in de Nederlandse cultuur?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q17', 'Nee.')">A. Het bouwen van hele hoge dijken.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q17', 'Correct! Polderen is de Nederlandse overlegcultuur.')">B. Samen overleggen en compromissen sluiten tot iedereen tevreden is.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q17', 'Nee, dat is de letterlijke betekenis, maar cultuur-politiek betekent het overleg.')">C. Het droogmalen van water met windmolens.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q17', 'Nee.')">D. Kaas maken van koeienmelk.</button>
+          </div>
+          <div class="q-feedback" id="q17-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q18">
+          <div class="q-num">VRAAG 18 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Kan vrijwilligerswerk je helpen om sneller een betaalde baan te vinden?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q18', 'Nee, het helpt juist wel.')">A. Nee, want je verdient er geen geld mee.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q18', 'Correct! Vrijwilligerswerk is een goede stap naar betaald werk.')">B. Ja, je leert de taal, bouwt een netwerk op en krijgt werkervaring.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q18', 'Nee, het helpt algemeen.')">C. Alleen als je de directeur persoonlijk kent.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q18', 'Nee, het mag en wordt gestimuleerd.')">D. Nee, dat is verboden voor inburgeraars.</button>
+          </div>
+          <div class="q-feedback" id="q18-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q19">
+          <div class="q-num">VRAAG 19 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Wat kun je doen als je de contributie voor de sportclub van je kind niet kunt betalen?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q19', 'Nee, er zijn vaak regelingen.')">A. Je kind mag niet meer sporten.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q19', 'Correct! Er zijn fondsen die sporten voor arme gezinnen betalen.')">B. Je kunt hulp vragen bij de gemeente of het Jeugdfonds Sport & Cultuur.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q19', 'Nee, dat is niet verstandig en onnodig.')">C. Je moet geld lenen bij de bank.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q19', 'Nee, dat mag niet (kinderarbeid).')">D. Je kind moet gaan werken om het te betalen.</button>
+          </div>
+          <div class="q-feedback" id="q19-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q20">
+          <div class="q-num">VRAAG 20 / 30 · 2.2 Feestdagen</div>
+          <div class="q-text">Waar vind je informatie over activiteiten in jouw buurt?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, true, 'q20', 'Correct! Dit zijn de standaard plekken voor lokale informatie.')">A. In het buurthuis, de lokale krant of op de website van de gemeente.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q20', 'Nee, de politie is er voor veiligheid.')">B. Op het politiebureau.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q20', 'Nee.')">C. Alleen op televisie.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q20', 'Nee.')">D. Nergens, die informatie is geheim.</button>
+          </div>
+          <div class="q-feedback" id="q20-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q21">
+          <div class="q-num">VRAAG 21 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wat staat er in artikel 1 van de Nederlandse grondwet?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q21', 'Nee, de Koning heeft weinig politieke macht.')">A. Dat de Koning de baas is over iedereen.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q21', 'Correct! Artikel 1 is het gelijkheidsbeginsel en discriminatieverbod.')">B. Dat iedereen in Nederland gelijk is en discriminatie verboden is.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q21', 'Nee, dat staat in andere wetten.')">C. Dat je verplicht bent om belasting te betalen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q21', 'Nee.')">D. Dat iedereen gratis auto moet kunnen rijden.</button>
+          </div>
+          <div class="q-feedback" id="q21-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q22">
+          <div class="q-num">VRAAG 22 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Hebben mannen en vrouwen in Nederland dezelfde rechten?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q22', 'Nee, absoluut niet.')">A. Nee, mannen hebben meer rechten volgens de wet.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q22', 'Correct! Mannen en vrouwen zijn gelijk voor de wet.')">B. Ja, zij zijn volledig gelijkwaardig voor de wet (emancipatie).</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q22', 'Nee, ook ongetrouwde mannen en vrouwen zijn gelijk.')">C. Alleen als ze getrouwd zijn.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q22', 'Nee, overal.')">D. Alleen op het werk, niet thuis.</button>
+          </div>
+          <div class="q-feedback" id="q22-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q23">
+          <div class="q-num">VRAAG 23 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Een vrouw verdient meer geld dan haar man. Wat vinden Nederlanders hiervan?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q23', 'Nee, dat mag gewoon.')">A. Dat is verboden bij wet.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q23', 'Correct! Dit is volkomen geaccepteerd en normaal.')">B. Dat is heel normaal; iedereen maakt zijn eigen keuzes over werk en inkomen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q23', 'Nee.')">C. De man moet direct ontslag nemen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q23', 'Nee.')">D. De vrouw moet extra belasting betalen.</button>
+          </div>
+          <div class="q-feedback" id="q23-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q24">
+          <div class="q-num">VRAAG 24 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wat is het homohuwelijk, dat sinds 2001 in Nederland legaal is?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q24', 'Nee.')">A. Een huwelijk tussen twee broers.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q24', 'Correct! Nederland was het eerste land ter wereld dat dit openstelde.')">B. Het recht voor twee mensen van hetzelfde geslacht (mannen of vrouwen) om te trouwen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q24', 'Nee, het is juist een burgerlijk huwelijk.')">C. Een huwelijk dat alleen in de kerk mag.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q24', 'Nee, dat is een gemengd huwelijk.')">D. Een huwelijk tussen mensen van verschillende culturen.</button>
+          </div>
+          <div class="q-feedback" id="q24-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q25">
+          <div class="q-num">VRAAG 25 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wat houdt de 'vrijheid van godsdienst' in Nederland in?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q25', 'Nee.')">A. Je moet verplicht naar een christelijke kerk gaan.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q25', 'Correct! Geloof is een persoonlijke, vrije keuze.')">B. Je mag zelf kiezen wat je gelooft, en je mag ook niet geloven.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q25', 'Nee, iedereen.')">C. Alleen de koning mag zijn geloof kiezen.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q25', 'Nee.')">D. Geloof is verboden in Nederland.</button>
+          </div>
+          <div class="q-feedback" id="q25-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q26">
+          <div class="q-num">VRAAG 26 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wat betekent de 'scheiding van kerk en staat'?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q26', 'Nee, dat is fysieke afstand.')">A. Dat kerken en overheidsgebouwen ver uit elkaar moeten staan.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q26', 'Correct! Religie en politiek zijn gescheiden in Nederland.')">B. Dat de regering de wetten maakt en religieuze leiders geen politieke macht hebben.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q26', 'Nee, dat mag wel, er zijn zelfs christelijke partijen.')">C. Dat gelovigen niet in de politiek mogen werken.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q26', 'Nee, dat doet de Belastingdienst.')">D. Dat de kerk belasting heft.</button>
+          </div>
+          <div class="q-feedback" id="q26-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q27">
+          <div class="q-num">VRAAG 27 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wat zijn de grenzen van de 'vrijheid van meningsuiting'?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q27', 'Nee, haat zaaien en discriminatie zijn strafbaar.')">A. Je mag alles zeggen, ook als je aanzet tot haat, geweld of discriminatie.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q27', 'Correct! Vrijheid van meningsuiting is niet onbegrensd; de wet stelt grenzen.')">B. Je mag je mening geven, zolang je de wet niet overtreedt (geen discriminatie, haatzaaien of bedreiging).</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q27', 'Nee, kritiek op de regering mag juist wel.')">C. Je mag alleen positieve dingen zeggen over de regering.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q27', 'Nee.')">D. Je mag alleen anoniem je mening geven.</button>
+          </div>
+          <div class="q-feedback" id="q27-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q28">
+          <div class="q-num">VRAAG 28 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">In steden als Amsterdam en Rotterdam is straatintimidatie (zoals nafluiten of naroepen van vrouwen) strafbaar. Wat kun je hiervoor krijgen?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q28', 'Nee, natuurlijk niet.')">A. Een beloning van de politie.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q28', 'Correct! Straatintimidatie is strafbaar en er staan flinke boetes op.')">B. Een hoge geldboete.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q28', 'Nee, dat is te zwaar voor dit vergrijp.')">C. Een gevangenisstraf van tien jaar.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q28', 'Nee, het wordt serieus genomen als overlast.')">D. Niets, het is een grapje.</button>
+          </div>
+          <div class="q-feedback" id="q28-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q29">
+          <div class="q-num">VRAAG 29 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Je woont ongetrouwd samen met je vriend of vriendin in één huis. Hoe denkt de Nederlandse wet hierover?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q29', 'Nee, absoluut niet.')">A. Dat is verboden en strafbaar.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q29', 'Correct! Samenwonen zonder huwelijk is volledig geaccepteerd.')">B. Dat mag gewoon en is heel gebruikelijk in Nederland.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q29', 'Nee.')">C. Je moet toestemming vragen aan de buren.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q29', 'Nee.')">D. Alleen toegestaan voor mensen boven de 50.</button>
+          </div>
+          <div class="q-feedback" id="q29-fb"></div>
+        </div>
+
+        <div class="quiz-q" id="q30">
+          <div class="q-num">VRAAG 30 / 30 · 2.3 Het Wilhelmus</div>
+          <div class="q-text">Wie bepaalt in Nederland met wie jij trouwt?</div>
+<div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this, false, 'q30', 'Nee, zij hebben geen stemrecht hierin.')">A. Je ouders en familie.</button>
+            <button class="quiz-opt" onclick="answer(this, true, 'q30', 'Correct! Iedereen kiest zijn of haar eigen partner in vrijheid.')">B. Jij bepaalt dat helemaal zelf; er is vrije partnerkeuze.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q30', 'Nee.')">C. De burgemeester.</button>
+            <button class="quiz-opt" onclick="answer(this, false, 'q30', 'Nee.')">D. De Belastingdienst.</button>
+          </div>
+          <div class="q-feedback" id="q30-fb"></div>
+        </div>
+
+</div>
+
+<div class="module-nav" style="display: flex; gap: 10px; justify-content: center; padding: 40px 20px 0; flex-wrap: wrap;">
+  <a href="knm-randstad-waterland.html" class="pill">Mod 1/2: Randstad &amp; Water</a>
+  <a href="knm-oranje-gouden-eeuw-kolonien.html" class="pill">Mod 3-5: Historie</a>
+  <a href="knm-woii-modern-nederland.html" class="pill">Mod 6/7: WOII &amp; Modern</a>
+  <a href="knm-gewoonten-feestdagen-wilhelmus.html" class="pill">Th 2.1-2.3: Gewoonten &amp; Feest</a>
+  <a href="knm-familiedagen-vrijetijd-vrijheid.html" class="pill active">Th 2.4-2.6: Familie &amp; Vrijheid</a>
+</div>
+
+<div class="footer">
+  KNM Lesmateriaal · Thema 2 · Modules 2.4 - 2.6 · Y&amp;S Coaching · 2026
+</div>
+
+</div>
+
+<script>
+  function answer(btn, correct, qId, feedback) {
+    document.getElementById(qId).querySelectorAll(".quiz-opt").forEach(o => o.disabled = true);
+    btn.classList.add(correct ? "correct" : "wrong");
+    const fb = document.getElementById(qId + "-fb");
+    fb.textContent = (correct ? "✅ " : "❌ ") + feedback;
+    fb.classList.add("show");
+    checkPageCompletion();
+  }
+
+  function checkPageCompletion() {
+    const totalQuestions = document.querySelectorAll(".quiz-q").length;
+    const answeredQuestions = document.querySelectorAll(".q-feedback.show").length;
+    if (totalQuestions === answeredQuestions) {
+      localStorage.setItem("completed_knm-familiedagen-vrijetijd-vrijheid.html", "true");
+    }
+  }
+
+  document.querySelectorAll(".pill").forEach(pill => {
+    pill.addEventListener("click", (e) => {
+      const href = pill.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        e.preventDefault();
+        document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+
+  // === VOCAB TOOLTIP & LANGUAGE SWITCHER ===
+  let currentLang = "nl";
+  const langBtns = document.querySelectorAll(".lang-btn");
+  const vocabWords = document.querySelectorAll(".vocab");
+
+  langBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      langBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentLang = btn.getAttribute("data-lang");
+      vocabWords.forEach(w => w.classList.remove("show-tooltip"));
+
+      // Show/hide summaries in active language
+      document.querySelectorAll(".i18n-el").forEach(el => {
+        if (el.getAttribute("data-lang") === currentLang) {
+          el.style.display = "block";
+        } else {
+          el.style.display = "none";
+        }
+      });
+    });
+  });
+
+  vocabWords.forEach(word => {
+    const tooltip = document.createElement("div");
+    tooltip.className = "tooltip";
+    word.appendChild(tooltip);
+
+    word.addEventListener("click", (e) => {
+      e.stopPropagation();
+      vocabWords.forEach(w => {
+        if (w !== word) w.classList.remove("show-tooltip");
+      });
+      if (currentLang === "nl") return;
+      const translation = word.getAttribute("data-" + currentLang);
+      if (translation) {
+        tooltip.textContent = translation;
+        if (["ar", "fa", "da"].includes(currentLang)) {
+          tooltip.style.direction = "rtl";
+          tooltip.style.textAlign = "right";
+        } else {
+          tooltip.style.direction = "ltr";
+          tooltip.style.textAlign = "left";
+        }
+        word.classList.toggle("show-tooltip");
+      }
+    });
+  });
+
+  document.addEventListener("click", () => {
+    vocabWords.forEach(w => w.classList.remove("show-tooltip"));
+  });
+</script>
+
+<!-- SPEECH SYNTHESIS INJECTION -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "nl-NL";
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
+    
+    function createSpeakBtn(text) {
+        let btn = document.createElement("button");
+        btn.innerHTML = "🔊";
+        btn.className = "native-speak-btn";
+        btn.style.cssText = "background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;";
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = "scale(1.2)";
+        btn.onmouseout = () => btn.style.transform = "scale(1)";
+        return btn;
+    }
+
+    // 1. .vocab spans
+    document.querySelectorAll(".vocab").forEach(el => {
+        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains("native-speak-btn")) {
+            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
+        }
+    });
+
+    // 2. Example sentences
+    document.querySelectorAll(".example").forEach(el => {
+        if (!el.querySelector(".native-speak-btn") && !el.querySelector("button")) {
+            let clone = el.cloneNode(true);
+            let transl = clone.querySelector(".transl");
+            if (transl) transl.remove();
+            let text = clone.textContent.replace(/\([^)]+\)/g, "").trim();
+            el.appendChild(createSpeakBtn(text));
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -321,11 +321,11 @@ const UITLEG = {
         <h3>🤔 Ik begrijp het niet</h3>
         <p>Als je Nederlands leert, is het heel normaal dat je soms iets niet begrijpt of niet verstaat. Je kunt dan de volgende zinnen gebruiken:</p>
         <ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2">
-            <li>📢 <strong>Ik begrijp het niet.</strong> of <strong>Ik snap het niet.</strong> (I do not understand)</li>
-            <li>📢 <strong>Kunt u dat herhalen?</strong> (Can you repeat that?)</li>
-            <li>📢 <strong>Kunt u langzamer spreken?</strong> (Can you speak slower?)</li>
-            <li>📢 <strong>Wat betekent dit woord?</strong> (What does this word mean?)</li>
-            <li>📢 <strong>Hoe zeg je dat in het Nederlands?</strong> (How do you say that in Dutch?)</li>
+            <li>📢 <strong>Ik begrijp het niet.</strong> of <strong>Ik snap het niet.</strong></li>
+            <li>📢 <strong>Kunt u dat herhalen?</strong></li>
+            <li>📢 <strong>Kunt u langzamer spreken?</strong></li>
+            <li>📢 <strong>Wat betekent dit woord?</strong></li>
+            <li>📢 <strong>Hoe zeg je dat in het Nederlands?</strong></li>
         </ul>
         <div class="tip-blok" style="margin-top:15px;">
             <strong>Tip:</strong> Mensen vinden het fijn als je beleefd vraagt: <em>"Kunt u dat alstublieft herhalen?"</em>
@@ -336,9 +336,9 @@ const UITLEG = {
         <p>If you don't understand something in Dutch, use these key phrases to ask for help:</p>
         <ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2">
             <li>📢 <strong>Ik begrijp het niet. / Ik snap het niet.</strong> (I don't understand.)</li>
-            <li>📢 <strong>Kunt u dat herhalen?</strong> (Can you repeat that?)</li>
-            <li>📢 <strong>Kunt u langzamer spreken?</strong> (Can you speak slower?)</li>
-            <li>📢 <strong>Wat betekent dit woord?</strong> (What does this word mean?)</li>
+            <li>📢 <strong>Kunt u dat herhalen?</strong></li>
+            <li>📢 <strong>Kunt u langzamer spreken?</strong></li>
+            <li>📢 <strong>Wat betekent dit woord?</strong></li>
         </ul>
     </div>`,
     ar: `<div class="uitleg-box" dir="rtl">
@@ -386,9 +386,24 @@ function speak(text, isSlow=false){
 
 function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 
-function setLang(l){
-    document.querySelectorAll('.lang-bar .lang-btn').forEach(b=>b.classList.remove('active'));
-    event.target.closest('.lang-btn').classList.add('active');
+function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
     document.querySelectorAll('[data-translate]').forEach(el=>{
         const k=el.getAttribute('data-translate');
         if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
@@ -642,9 +657,9 @@ function buildSchrijf(lang){
 }
 function saveSchrijf(){
     let msg=`*Thema 8.11 — Schrijfopdracht (Ik begrijp het niet)*\n`;
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
     const questions = [UI[activeLang].q1, UI[activeLang].q2, UI[activeLang].q3, UI[activeLang].q4];
     questions.forEach((v,i)=>{
         const val=document.getElementById('schrijf-'+i).value.trim();
@@ -653,9 +668,9 @@ function saveSchrijf(){
     window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function resetSchrijf(){
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
     buildSchrijf(activeLang);
 }
 

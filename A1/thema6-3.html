@@ -289,10 +289,25 @@ function speak(text, isSlow = false) {
       ar:`<div class="uitleg-box" dir="rtl"><h3>الفعل mogen — طلب الإذن بأدب</h3><p><strong>mogen</strong> تعني "مسموح له / يجوز". تستخدمها لطلب الإذن بأدب. دائماً تليها مصدر الفعل:</p><table class="ww-tabel"><thead><tr><th>الضمير</th><th>mogen</th><th>مثال</th></tr></thead><tbody><tr><td>ik (أنا)</td><td><strong>mag</strong></td><td>Mag ik dit passen? (هل يمكنني تجربة هذا؟)</td></tr><tr><td>jij/hij/zij</td><td><strong>mag</strong></td><td>Hij mag dit ruilen. (يمكنه استبدال هذا.)</td></tr><tr><td>wij/jullie/zij</td><td><strong>mogen</strong></td><td>Mogen wij betalen? (هل يمكننا الدفع؟)</td></tr></tbody></table><p style="margin-top:.8rem"><strong>passen</strong> له معنيان: (1) تجربة في غرفة القياس؛ (2) أن يكون المقاس مناسباً.  <strong>te</strong> + صفة = أكثر من اللازم: <em>te groot (كبير جداً)، te klein (صغير جداً)، te duur (غالٍ جداً)</em>.</p></div><div class="dialog-blok" dir="rtl"><strong>📝 حوار في المتجر:</strong><div class="sp"><span class="rol">الموظف:</span><span>Kan ik u helpen? (هل يمكنني مساعدتك؟)</span></div><div class="sp"><span class="rol">الزبون:</span><span>Mag ik deze bloes passen? (هل يمكنني تجربة هذه البلوزة؟)</span></div><div class="sp"><span class="rol">الزبون:</span><span>Maat 38. De bloes is te groot.</span></div><div class="sp"><span class="rol">الموظف:</span><span>Hier is maat 36.</span></div><div class="sp"><span class="rol">الزبون:</span><span>Perfect. Ik neem hem mee.</span></div></div><div class="tip-blok" dir="rtl"><strong>جمل مفيدة:</strong> Kan ik u helpen? &middot; Mag ik dit passen? &middot; Welke maat? &middot; De jas is te groot/klein. &middot; Ik neem het mee.</div>`,
       ps:`<div class="uitleg-box" dir="rtl"><h3>فعل mogen — د اجازې غوښتنه</h3><p><strong>mogen</strong> د "اجازه لرل" معنا لري. د ادب سره د اجازې غوښتنې لپاره کارول کیږي. تل د بل فعل سره کارول کیږي:</p><table class="ww-tabel"><thead><tr><th>ضمیر</th><th>mogen</th><th>بیلګه</th></tr></thead><tbody><tr><td>ik (زه)</td><td><strong>mag</strong></td><td>Mag ik dit passen? (ایا کولای شم دا اندازه کړم؟)</td></tr><tr><td>jij/hij/zij</td><td><strong>mag</strong></td><td>Hij mag dit ruilen. (هغه کولای شي دا بدل کړي.)</td></tr><tr><td>wij/jullie/zij</td><td><strong>mogen</strong></td><td>Mogen wij betalen? (ایا موږ پیسې ورکولی شو؟)</td></tr></tbody></table><p style="margin-top:.8rem"><strong>passen</strong> دوه معناوې لري: (1) د اندازه اخیستو خونه کې آزمویل؛ (2) سم سایز لرل.  <strong>te</strong> + صفت = ډیر: <em>te groot (ډیر لوی)، te klein (ډیر کوچنی)، te duur (ډیر ګران)</em>.</p></div><div class="dialog-blok" dir="rtl"><strong>📝 د پلورنځي خبرې:</strong><div class="sp"><span class="rol">کارمند:</span><span>Kan ik u helpen? (ایا مرسته کولی شم؟)</span></div><div class="sp"><span class="rol">پیرودونکی:</span><span>Mag ik deze bloes passen? (ایا دا بلوز اندازه کولی شم؟)</span></div><div class="sp"><span class="rol">پیرودونکی:</span><span>Maat 38. De bloes is te groot.</span></div><div class="sp"><span class="rol">کارمند:</span><span>Hier is maat 36.</span></div><div class="sp"><span class="rol">پیرودونکی:</span><span>Perfect. Ik neem hem mee.</span></div></div><div class="tip-blok" dir="rtl"><strong>ګټورې جملې:</strong> Kan ik u helpen? &middot; Mag ik dit passen? &middot; Welke maat? &middot; De jas is te groot/klein. &middot; Ik neem het mee.</div>`
     };
-    function setLang(l){
-        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-        event.target.closest('.lang-btn').classList.add('active');
-        document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
+    function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el=>{const k=el.getAttribute('data-translate');if(UI[l]&&UI[l][k])el.innerHTML=UI[l][k];});
         buildTable(l);
         if(UITLEG3[l])document.getElementById('uitleg-content').innerHTML=UITLEG3[l];
     }

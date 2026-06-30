@@ -322,20 +322,20 @@ const UITLEG = {
         <h3>👫 Afspreken en uitnodigen</h3>
         <p>Als je met vrienden wilt afspreken of hen wilt uitnodigen voor een activiteit, kun je de volgende handige zinnen gebruiken:</p>
         <ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2">
-            <li>📢 <strong>Zullen we afspreken?</strong> (Shall we meet up?)</li>
-            <li>📢 <strong>Heb je zin om mee te gaan?</strong> (Do you feel like coming along?)</li>
-            <li>📢 <strong>Zullen we samen naar de bioscoop gaan?</strong> (Shall we go to the cinema together?)</li>
-            <li>📢 <strong>Ik nodig je uit voor mijn verjaardag.</strong> (I invite you to my birthday.)</li>
-            <li>📢 <strong>Ja, gezellig!</strong> of <strong>Ja, leuk!</strong> (Yes, that sounds fun/cozy!)</li>
-            <li>📢 <strong>Nee, sorry, ik kan niet.</strong> (No, sorry, I cannot make it.)</li>
+            <li>📢 <strong>Zullen we afspreken?</strong></li>
+            <li>📢 <strong>Heb je zin om mee te gaan?</strong></li>
+            <li>📢 <strong>Zullen we samen naar de bioscoop gaan?</strong></li>
+            <li>📢 <strong>Ik nodig je uit voor mijn verjaardag.</strong></li>
+            <li>📢 <strong>Ja, gezellig!</strong> of <strong>Ja, leuk!</strong></li>
+            <li>📢 <strong>Nee, sorry, ik kan niet.</strong></li>
         </ul>
     </div>`,
     en: `<div class="uitleg-box">
         <h3>👫 Making plans & Inviting friends</h3>
         <p>Use these phrases to invite friends or make plans to meet up:</p>
         <ul style="margin:.6rem 0;padding-left:1.3em;font-size:.93rem;line-height:2.2">
-            <li>📢 <strong>Zullen we afspreken?</strong> (Shall we meet up?)</li>
-            <li>📢 <strong>Zullen we samen naar de bioscoop gaan?</strong> (Shall we go to the cinema together?)</li>
+            <li>📢 <strong>Zullen we afspreken?</strong></li>
+            <li>📢 <strong>Zullen we samen naar de bioscoop gaan?</strong></li>
             <li>📢 <strong>Ik nodig je uit voor mijn feest.</strong> (I invite you to my party.)</li>
             <li>📢 <strong>Ja, gezellig!</strong> (Yes, sounds great!)</li>
         </ul>
@@ -385,9 +385,24 @@ function speak(text, isSlow=false){
 
 function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 
-function setLang(l){
-    document.querySelectorAll('.lang-bar .lang-btn').forEach(b=>b.classList.remove('active'));
-    event.target.closest('.lang-btn').classList.add('active');
+function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
     document.querySelectorAll('[data-translate]').forEach(el=>{
         const k=el.getAttribute('data-translate');
         if(UI.nl[k])el.innerHTML=l==='nl'?UI.nl[k]:(UI[l]&&UI[l][k]?UI.nl[k]+`<br><span style="color:var(--secondary);font-size:0.88em;font-weight:500;">${UI[l][k]}</span>`:UI.nl[k]);
@@ -642,9 +657,9 @@ function buildSchrijf(lang){
 }
 function saveSchrijf(){
     let msg=`*Thema 8.13 — Schrijfopdracht (Vrienden / Afspreken)*\n`;
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
     const questions = [UI[activeLang].q1, UI[activeLang].q2, UI[activeLang].q3, UI[activeLang].q4];
     questions.forEach((v,i)=>{
         const val=document.getElementById('schrijf-'+i).value.trim();
@@ -653,9 +668,9 @@ function saveSchrijf(){
     window.open(`https://wa.me/31626211106?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function resetSchrijf(){
-    const activeLang = document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
-                       document.querySelector('.lang-bar .lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
+    const activeLang = document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('english') ? 'en' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('عربية') ? 'ar' : 
+                       document.querySelector('.lang-btn.active').textContent.toLowerCase().includes('türkçe') ? 'tr' : 'nl';
     buildSchrijf(activeLang);
 }
 

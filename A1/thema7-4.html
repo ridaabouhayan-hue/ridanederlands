@@ -310,10 +310,25 @@ function speak(text, isSlow = false) {
         ar:`<div class="uitleg-box" dir="rtl"><h3>💪 الأفعال المساعدة: kunnen و mogen</h3><p><strong>Kunnen</strong> = يستطيع (القدرة).<br><strong>Mogen</strong> = يجوز / مسموح (الإذن).</p></div><div class="voorbeeld-blok" dir="rtl"><strong>Kunnen:</strong> ik kan, jij kan/kunt, hij kan, wij kunnen<br><strong>Mogen:</strong> ik mag, jij mag, hij mag, wij mogen</div><div class="tip-blok" dir="rtl"><strong>بنية الجملة:</strong> الفعل المساعد في المرتبة 2، المصدر في النهاية:<br><em>Ik <strong>kan</strong> goed <strong>fietsen</strong>.</em> (أستطيع ركوب الدراجة جيداً.)</div>`,
         ps:`<div class="uitleg-box" dir="rtl"><h3>💪 مودال فعلونه: kunnen او mogen</h3><p><strong>Kunnen</strong> = کولای شول (وړتیا).<br><strong>Mogen</strong> = اجازه لرل (اجازه).</p></div><div class="voorbeeld-blok" dir="rtl"><strong>Kunnen:</strong> ik kan, jij kan/kunt, hij kan, wij kunnen<br><strong>Mogen:</strong> ik mag, jij mag, hij mag, wij mogen</div><div class="tip-blok" dir="rtl"><strong>د جملې جوړښت:</strong> مودال فعل په دویم ځای کې، مصدر په پای کې:<br><em>Ik <strong>kan</strong> goed <strong>fietsen</strong>.</em> (زه ښه بایسکل چلولی شم.)</div>`
     };
-    function setLang(l){
-        document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-        event.target.closest('.lang-btn').classList.add('active');
-        document.querySelectorAll('[data-translate]').forEach(el=>{
+    function setLang(l) {
+    const buttons = document.querySelectorAll('.language-bar .lang-btn, .lang-btn, .lang-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    let targetBtn = null;
+    const evt = window.event || (typeof event !== 'undefined' ? event : null);
+    if (evt && evt.target) {
+        targetBtn = evt.target.closest('.lang-btn');
+    }
+    if (!targetBtn) {
+        buttons.forEach(b => {
+            const attr = b.getAttribute('onclick') || '';
+            if (attr.includes("'" + l + "'") || attr.includes('"' + l + '"')) {
+                targetBtn = b;
+            }
+        });
+    }
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    document.querySelectorAll('[data-translate]').forEach(el=>{
             const k=el.getAttribute('data-translate');
             if(UI['nl'] && UI['nl'][k]) {
                 if(l === 'nl') {
