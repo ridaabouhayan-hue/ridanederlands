@@ -500,16 +500,16 @@ function resetVerbind(){vbSel=null;vbType=null;vbDone=0;document.getElementById(
 
 // ── OPDRACHT 2: MC ──
 const mcData=[
-    {q:"Welk woord is goed? (auto = de auto, dichtbij 👇)", opts:["deze auto","dit auto","die auto","dat auto"], correct:0, feedback:"Correct! 'Auto' is een de-woord, en dichtbij is 'deze'."},
-    {q:"Welk woord is goed? (huis = het huis, ver weg 👉)", opts:["die huis","dat huis","deze huis","dit huis"], correct:1, feedback:"Correct! 'Huis' is een het-woord, en ver weg is 'dat'."},
-    {q:"Welk woord is goed? (boek = het boek, dichtbij 👇)", opts:["deze boek","die boek","dit boek","dat boek"], correct:2, feedback:"Correct! 'Boek' is een het-woord, en dichtbij is 'dit'."},
-    {q:"Welk woord is goed? (fiets = de fiets, ver weg 👉)", opts:["deze fiets","die fiets","dit fiets","dat fiets"], correct:1, feedback:"Correct! 'Fiets' is een de-woord, en ver weg is 'die'."},
-    {q:"Meervoud! Welk woord is goed? (schoenen, dichtbij 👇)", opts:["deze schoenen","die schoenen","dit schoenen","dat schoenen"], correct:0, feedback:"Correct! Meervoud is altijd een de-woord. Dichtbij is dus 'deze'."},
-    {q:"Meervoud! Welk woord is goed? (ramen, ver weg 👉)", opts:["deze ramen","die ramen","dit ramen","dat ramen"], correct:1, feedback:"Correct! Meervoud is altijd een de-woord. Ver weg is dus 'die'."},
-    {q:"Welk woord is goed? (meisje = het meisje, dichtbij 👇)", opts:["deze meisje","die meisje","dit meisje","dat meisje"], correct:2, feedback:"Correct! 'Meisje' is een het-woord (verkleinwoord), dichtbij is 'dit'."},
-    {q:"Welk woord is goed? (man = de man, ver weg 👉)", opts:["deze man","die man","dit man","dat man"], correct:1, feedback:"Correct! 'Man' is een de-woord, ver weg is 'die'."},
-    {q:"Welk woord is goed? (tafel = de tafel, dichtbij 👇)", opts:["deze tafel","die tafel","dit tafel","dat tafel"], correct:0, feedback:"Correct!"},
-    {q:"Welk woord is goed? (raam = het raam, ver weg 👉)", opts:["deze raam","die raam","dit raam","dat raam"], correct:3, feedback:"Correct!"}
+    {vraag:"Welk woord is goed? (auto = de auto, dichtbij 👇)", ant:"a", opties:{a:"deze", b:"dit", c:"die", d:"dat"}},
+    {vraag:"Welk woord is goed? (huis = het huis, ver weg 👉)", ant:"b", opties:{a:"die", b:"dat", c:"deze", d:"dit"}},
+    {vraag:"Welk woord is goed? (boek = het boek, dichtbij 👇)", ant:"c", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (fiets = de fiets, ver weg 👉)", ant:"b", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (schoenen = meervoud, dichtbij 👇)", ant:"a", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (ramen = meervoud, ver weg 👉)", ant:"b", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (meisje = het meisje, dichtbij 👇)", ant:"c", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (man = de man, ver weg 👉)", ant:"b", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (tafel = de tafel, dichtbij 👇)", ant:"a", opties:{a:"deze", b:"die", c:"dit", d:"dat"}},
+    {vraag:"Welk woord is goed? (raam = het raam, ver weg 👉)", ant:"d", opties:{a:"deze", b:"die", c:"dit", d:"dat"}}
 ];
 const mcC={};
 function buildMC(){const ul=document.getElementById('mc-vragen');ul.innerHTML='';mcData.forEach((item,i)=>{const li=document.createElement('li');const opts=Object.entries(item.opties).map(([k,v])=>`<button class="mc-btn" data-val="${k}" onclick="checkMCItem(this,'${k}','${item.ant}','mc-vragen','mc-score',${mcData.length})">${v}</button>`).join('');li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.vraag}</div><div class="mc-opties">${opts}</div>`;ul.appendChild(li);});}
@@ -518,18 +518,18 @@ function resetMC(){delete mcC['mc-vragen'];buildMC();document.getElementById('mc
 
 // ── OPDRACHT 3: INVULOEFENING ──
 const invulData=[
-    {text:"Kijk naar _ man daar! (de man, ver weg 👉)", answer:"die"},
-    {text:"Ik vind _ boek heel mooi. (het boek, dichtbij 👇)", answer:"dit"},
-    {text:"Wil je _ appels kopen? (meervoud, dichtbij 👇)", answer:"deze"},
-    {text:"_ kind speelt buiten. (het kind, ver weg 👉)", answer:"dat"},
-    {text:"_ jas is te groot voor mij. (de jas, dichtbij 👇)", answer:"deze"},
-    {text:"Zie je _ vliegtuig in de lucht? (het vliegtuig, ver weg 👉)", answer:"dat"},
-    {text:"_ schoenen hier zijn erg duur. (meervoud, dichtbij 👇)", answer:"deze"},
-    {text:"Is _ fiets van jou? (de fiets, dichtbij 👇)", answer:"deze"},
-    {text:"Nee, _ fiets daar is van mij. (de fiets, ver weg 👉)", answer:"die"},
-    {text:"_ meisje in de tuin is mijn dochter. (het meisje, ver weg 👉)", answer:"dat"},
-    {text:"Wie heeft _ probleem veroorzaakt? (het probleem, dichtbij 👇)", answer:"dit"},
-    {text:"Ik wil _ bloemen aan mijn moeder geven. (meervoud, ver weg 👉)", answer:"die"}
+    {zin:"Kijk naar ___ man daar! (de man, ver weg 👉)", ans:"die", alts:["die"]},
+    {zin:"Ik vind ___ boek heel mooi. (het boek, dichtbij 👇)", ans:"dit", alts:["dit"]},
+    {zin:"Wil je ___ appels kopen? (meervoud, dichtbij 👇)", ans:"deze", alts:["deze"]},
+    {zin:"___ kind speelt buiten. (het kind, ver weg 👉)", ans:"dat", alts:["dat"]},
+    {zin:"___ jas is te groot voor mij. (de jas, dichtbij 👇)", ans:"deze", alts:["deze"]},
+    {zin:"Zie je ___ vliegtuig in de lucht? (het vliegtuig, ver weg 👉)", ans:"dat", alts:["dat"]},
+    {zin:"___ schoenen hier zijn erg duur. (meervoud, dichtbij 👇)", ans:"deze", alts:["deze"]},
+    {zin:"Is ___ fiets van jou? (de fiets, dichtbij 👇)", ans:"deze", alts:["deze"]},
+    {zin:"Nee, ___ fiets daar is van mij. (de fiets, ver weg 👉)", ans:"die", alts:["die"]},
+    {zin:"___ meisje in de tuin is mijn dochter. (het meisje, ver weg 👉)", ans:"dat", alts:["dat"]},
+    {zin:"Wie heeft ___ probleem veroorzaakt? (het probleem, dichtbij 👇)", ans:"dit", alts:["dit"]},
+    {zin:"Ik wil ___ bloemen aan mijn moeder geven. (meervoud, ver weg 👉)", ans:"die", alts:["die"]}
 ];
 function buildInvul(){const ul=document.getElementById('invul-vragen');ul.innerHTML=invulData.map((item,i)=>`<li>${i+1}. ${item.zin.replace('___',`<input type="text" id="invr-${i}" autocomplete="off" placeholder="…">`)}</li>`).join('');}
 function checkInvul(){
