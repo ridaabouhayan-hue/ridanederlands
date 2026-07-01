@@ -6,19 +6,20 @@
     <title>A1 Spellenportaal — Leer Nederlands!</title>
     <meta name="description" content="Interactieve spellen om Nederlandse woorden en grammatica te oefenen voor A1-niveau.">
     
-    <!-- Google Font: Nunito -->
+    <!-- Google Font: Plus Jakarta Sans & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #0b0f19;
-            --card-bg: rgba(23, 28, 48, 0.7);
+            --bg: #090d16;
+            --card-bg: rgba(23, 28, 48, 0.55);
             --border-color: rgba(255, 255, 255, 0.08);
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
             --primary: #f97316; /* Orange flame */
-            --primary-glow: rgba(249, 115, 22, 0.4);
+            --primary-gradient: linear-gradient(135deg, #ff763b, #f53b57);
+            --primary-glow: rgba(244, 63, 94, 0.2);
             --success: #10b981; /* Green success */
             --error: #ef4444; /* Red error */
             --radius-lg: 24px;
@@ -43,7 +44,7 @@
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
             color: var(--text-color);
             min-height: 100vh;
@@ -53,6 +54,25 @@
             padding: 20px;
             overflow-x: hidden;
             transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Tech-style grid decoration background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        [data-theme="light"] body::before {
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.01) 1px, transparent 1px);
         }
 
         /* Animated background glow */
@@ -78,35 +98,47 @@
             width: 100%;
             max-width: 650px;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 30px;
             position: relative;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
+            gap: 6px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-muted);
             text-decoration: none;
             font-weight: 700;
             font-size: 0.9rem;
-            margin-bottom: 12px;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
             transition: var(--transition);
             cursor: pointer;
+            backdrop-filter: blur(8px);
         }
         .back-link:hover {
-            color: var(--primary);
-            transform: translateX(-4px);
+            color: var(--text-color);
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             letter-spacing: -0.5px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
@@ -10290,11 +10322,6 @@
             const correctIndex = Math.floor(Math.random() * 6);
             mepActiveMoleIndex = correctIndex;
 
-            // Choose the correct vocabulary list to draw wrong options from
-            const themeNum = activeGameType.split('_t')[1];
-            let vocabDb = VOCAB_T1;
-            if (themeNum === '2') vocabDb = VOCAB_T2;
-            else if (themeNum === '8') vocabDb = VOCAB_T8;
 
             const wrongWords = [];
             while (wrongWords.length < 5) {
