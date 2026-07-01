@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📓 Media Diary — Leuke Verhalen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-frosted: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(244, 63, 94, 0.4);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #f43f5e;
+            --accent-gradient: linear-gradient(135deg, #ec4899, #f43f5e);
+            --accent-light: rgba(244, 63, 94, 0.15);
+            --green: #22c55e;
+            --green-hover: #16a34a;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(244, 63, 94, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 950;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            display: inline-block;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ── BACK BUTTON ── */
+        .btn-back-container {
+            margin-bottom: 24px;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background: var(--surface-frosted);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-back:hover {
+            color: var(--text);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ── DASHBOARD (STORY LIST) ── */
+        #dashboard-view {
+            display: block;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .story-card {
+            background: var(--surface-frosted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: var(--accent-gradient);
+            opacity: 0.8;
+        }
+
+        .story-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+            box-shadow: 0 16px 36px rgba(244, 63, 94, 0.15);
+        }
+
+        .story-icon {
+            font-size: 2.8rem;
+            background: var(--accent-light);
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .story-card:hover .story-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .story-badge {
+            align-self: flex-start;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .story-card-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .story-card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .story-card-arrow {
+            margin-top: auto;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .story-card:hover .story-card-arrow {
+            gap: 10px;
+        }
+
+        /* ── STORY DETAIL VIEW ── */
+        #detail-view {
+            display: none;
+        }
+
+        .detail-card {
+            background: var(--surface-frosted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            margin-bottom: 30px;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .detail-icon {
+            font-size: 2.5rem;
+            background: var(--accent-light);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+
+        /* ── LANGUAGE SWITCHER ── */
+        .lang-switcher-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .lang-switcher-label {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .lang-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .lang-btn.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+        }
+
+        /* ── TEXT CONTENT & AUDIO READER ── */
+        .story-text-container {
+            font-size: 1.35rem;
+            line-height: 1.8;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .story-paragraph {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .story-paragraph:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .audio-play-btn {
+            background: var(--accent-light);
+            border: none;
+            color: var(--accent);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-top: 4px;
+            outline: none;
+        }
+
+        .audio-play-btn:hover {
+            transform: scale(1.15);
+            background: var(--accent);
+            color: white;
+        }
+
+        .story-paragraph-text {
+            flex: 1;
+        }
+
+        /* ── INTERACTIVE VOCAB WORD ── */
+        .vocab {
+            position: relative;
+            border-bottom: 2px dashed rgba(244, 63, 94, 0.4);
+            color: var(--accent);
+            font-weight: 800;
+            cursor: pointer;
+            padding: 0 2px;
+            transition: var(--transition);
+        }
+
+        .vocab:hover {
+            background: var(--accent-light);
+            border-radius: 4px;
+        }
+
+        /* ── TOOLTIP ── */
+        .tooltip {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: #0f172a;
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            z-index: 100;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tooltip.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip-root {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-weight: 600;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4px;
+            padding-top: 4px;
+        }
+
+        .vocab.show-tooltip .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── HOMEWORK ASSIGNMENT SECTION ── */
+        .vocab-exercise-section {
+            background: var(--surface-frosted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            margin-top: 30px;
+        }
+
+        .vocab-exercise-section h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ── STEP-BY-STEP INSTRUCTIONS WITH VISUAL EXAMPLE ── */
+        .vocab-exercise-desc {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            font-size: 1rem;
+            color: #f1f5f9;
+        }
+
+        .instructions-list {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .instructions-list li {
+            line-height: 1.5;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .instructions-list strong {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .example-box {
+            background: rgba(244, 63, 94, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-top: 20px;
+        }
+
+        .example-title {
+            font-weight: 850;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .example-item {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .example-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-label {
+            font-weight: 800;
+            width: 140px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .example-val {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ── RTL INSTRUCTION LAYOUT FOR ARABIC & PASHTO ── */
+        .rtl-layout {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .rtl-layout .instructions-list {
+            padding-left: 0;
+            padding-right: 20px;
+        }
+
+        .rtl-layout .example-box {
+            border-left: none;
+            border-right: 4px solid var(--accent);
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+        }
+
+        .rtl-layout .example-item {
+            flex-direction: row-reverse;
+        }
+
+        .rtl-layout .example-label {
+            text-align: right;
+            padding-left: 10px;
+            width: 140px;
+        }
+
+        .rtl-layout .example-val {
+            text-align: right;
+            width: 100%;
+        }
+
+        /* ── TABLE STYLING ── */
+        .vocab-table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .vocab-table th, .vocab-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .vocab-table th {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-muted);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .vocab-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .vocab-table textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            resize: none;
+            transition: var(--transition);
+            line-height: 1.4;
+            min-height: 40px;
+            overflow-y: hidden;
+        }
+
+        .vocab-table textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(15, 23, 42, 0.6);
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+        }
+
+        .vocab-table textarea.rtl-input {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .add-row-container {
+            margin-bottom: 24px;
+        }
+
+        .btn-add-row {
+            background: transparent;
+            color: var(--accent);
+            border: 2px dashed rgba(244, 63, 94, 0.3);
+            border-radius: var(--radius-md);
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-add-row:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ── WHATSAPP SUBMISSION BAR ── */
+        .wa-submit-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+        }
+
+        .student-name-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-name-group label {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .student-name-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 700;
+            outline: none;
+            transition: var(--transition);
+            min-width: 200px;
+        }
+
+        .student-name-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+        }
+
+        .btn-send-wa {
+            background-color: var(--green);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-send-wa:hover {
+            background-color: var(--green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-send-wa svg {
+            fill: currentColor;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ── RESPONSIVENESS ── */
+        @media (max-width: 768px) {
+            .detail-card, .vocab-exercise-section {
+                padding: 20px;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .detail-title {
+                font-size: 1.4rem;
+            }
+
+            .story-text-container {
+                font-size: 1.15rem;
+            }
+
+            .wa-submit-bar {
+                justify-content: stretch;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .student-name-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .student-name-input {
+                width: 100%;
+            }
+
+            .btn-send-wa {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- ── HEADER ── -->
+    <header>
+        <div class="main-title">📓 Media Diary</div>
+        <p class="subtitle">Leuke en interessante verhalen over alledaagse dingen.</p>
+    </header>
+
+    <!-- ── DASHBOARD VIEW ── -->
+    <div id="dashboard-view">
+        <div class="stories-grid">
+            
+            <!-- STORY 1 -->
+            <div class="story-card" onclick="loadStory(1)">
+                <div class="story-icon">🔑</div>
+                <div class="story-badge">Niveau A1</div>
+                <h3 class="story-card-title">De verloren sleutel</h3>
+                <p class="story-card-desc">Een leuk verhaal over Thomas die zijn sleutel zoekt op gekke plekken, en hem uiteindelijk vindt.</p>
+                <div class="story-card-arrow">Lees verhaal <span>→</span></div>
+            </div>
+
+            <!-- STORY 2 -->
+            <div class="story-card" onclick="loadStory(2)">
+                <div class="story-icon">🦔</div>
+                <div class="story-badge">Niveau A1</div>
+                <h3 class="story-card-title">Een verrassing in de tuin</h3>
+                <p class="story-card-desc">Sarah hoort 's avonds geritsel in de tuin. Ze gaat met haar zaklamp naar buiten en vindt een lief diertje.</p>
+                <div class="story-card-arrow">Lees verhaal <span>→</span></div>
+            </div>
+
+            <!-- STORY 3 -->
+            <div class="story-card" onclick="loadStory(3)">
+                <div class="story-icon">🐕</div>
+                <div class="story-badge">Niveau A1</div>
+                <h3 class="story-card-title">De bakker en de hond</h3>
+                <p class="story-card-desc">Bakker Jan begint vroeg in de morgen met brood bakken. Max de hond wacht geduldig op zijn vaste traktatie.</p>
+                <div class="story-card-arrow">Lees verhaal <span>→</span></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── DETAIL VIEW ── -->
+    <div id="detail-view">
+        
+        <div class="btn-back-container">
+            <button class="btn-back" onclick="showDashboard()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Terug naar het menu
+            </button>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-header">
+                <div class="detail-icon" id="detail-icon-target">🔑</div>
+                <h1 class="detail-title" id="detail-title-target">Story Title</h1>
+            </div>
+
+            <!-- LANGUAGE SWITCHER -->
+            <div class="lang-switcher-container">
+                <span class="lang-switcher-label">Kies je taal voor de moeilijke woorden:</span>
+                <div class="lang-buttons">
+                    <button class="lang-btn active" data-lang="nl" onclick="changeLang('nl')">Geen vertaling</button>
+                    <button class="lang-btn" data-lang="en" onclick="changeLang('en')">🇬🇧 ENG</button>
+                    <button class="lang-btn" data-lang="tr" onclick="changeLang('tr')">🇹🇷 TR</button>
+                    <button class="lang-btn" data-lang="ar" onclick="changeLang('ar')">🇸🇦 AR</button>
+                    <button class="lang-btn" data-lang="ps" onclick="changeLang('ps')">🇦🇫 PS</button>
+                </div>
+            </div>
+
+            <!-- STORY TEXT CONTENT -->
+            <div class="story-text-container" id="story-text-target">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+
+        <!-- HOMEWORK ASSIGNMENT TABLE -->
+        <div class="vocab-exercise-section">
+            <h2>✍️ Woordenlijst & Huiswerk</h2>
+            
+            <!-- Dynamic instructions list and visual example card -->
+            <div class="vocab-exercise-desc" id="hw-desc-container">
+                <!-- Dynamically filled in user's language -->
+            </div>
+
+            <div class="vocab-table-wrapper">
+                <table class="vocab-table" id="vocabTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 22%;">Woord</th>
+                            <th style="width: 22%;">Mijn Taal</th>
+                            <th style="width: 26%;">Uitleg (NL)</th>
+                            <th style="width: 30%;">Mijn eigen zin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows dynamically generated -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="add-row-container">
+                <button class="btn-add-row" onclick="addVocabRow()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Extra woord toevoegen
+                </button>
+            </div>
+
+            <div class="wa-submit-bar">
+                <div class="student-name-group">
+                    <label for="studentName">Jouw naam:</label>
+                    <input type="text" id="studentName" class="student-name-input" placeholder="Vul je voornaam en achternaam in">
+                </div>
+                <button class="btn-send-wa" onclick="sendToWhatsApp()">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.731-1.456L0 24h.057zM6.57 18.232l.407.242c1.554.924 3.35 1.411 5.183 1.412 5.512 0 10.005-4.494 10.008-10.007.002-2.673-1.036-5.184-2.923-7.072C17.359 2.921 14.852 1.88 12.185 1.88c-5.52 0-10.012 4.495-10.015 10.01-.001 1.912.493 3.779 1.433 5.4l.265.459-.997 3.639 3.7-.971.408.243zM16.63 14.33c-.273-.137-1.62-.8-1.87-.891-.252-.09-.436-.137-.62.137-.183.273-.709.891-.869 1.074-.16.183-.32.205-.593.069-.273-.137-1.155-.426-2.2-1.357-.813-.726-1.362-1.622-1.522-1.896-.16-.273-.017-.421.12-.557.123-.122.273-.32.41-.48.136-.16.182-.273.273-.456.09-.183.045-.343-.023-.48-.068-.137-.62-1.492-.849-2.04-.223-.538-.485-.465-.664-.474-.172-.009-.37-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.62-.662 1.849-1.27.228-.607.228-1.128.16-1.27-.069-.143-.252-.23-.526-.367z" />
+                    </svg>
+                    Huiswerk sturen via WhatsApp
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ── STORY DATA & APPLICATION SCRIPT ── -->
+<script>
+    // System phone number for the teacher
+    const TEACHER_PHONE = "31626211106";
+
+    // Dynamic Stories Database - everyday life, interesting stories (~230 words) with Pashto translation support
+    const stories = {
+        1: {
+            title: "De verloren sleutel",
+            icon: "🔑",
+            paragraphs: [
+                "Thomas komt aan het einde van de middag moe thuis van zijn werk. Hij loopt door de tuin naar de voordeur en zoekt in zijn jaszak. Maar waar is zijn <span class=\"vocab\" data-en=\"key\" data-tr=\"anahtar\" data-ar=\"مفتاح\" data-ps=\"کیلي\" data-root=\"de sleutel\">sleutel</span>?",
+                "Hij begint een beetje <span class=\"vocab\" data-en=\"nervous\" data-tr=\"gergin / heyecanlı\" data-ar=\"متوتر\" data-ps=\"وارخطا\" data-root=\"nerveus\">nerveus</span> te worden. Thomas zoekt eerst in al zijn zakken. Daarna opent hij zijn <span class=\"vocab\" data-en=\"backpack\" data-tr=\"sırt çantası\" data-ar=\"حقيبة ظهر\" data-ps=\"شا کڅوړه\" data-root=\"de rugzak\">rugzak</span> en haalt alle spullen eruit: een flesje water, zijn <span class=\"vocab\" data-en=\"lunchbox\" data-tr=\"beslenme çantası\" data-ar=\"علبة الطعام\" data-ps=\"د ډوډۍ ډبه\" data-root=\"de lunchtrommel\">lunchtrommel</span> en een boek. Geen sleutel. Hij <span class=\"vocab\" data-en=\"bends forward\" data-tr=\"öne doğru eğiliyor\" data-ar=\"ينحني للأمام\" data-ps=\"مخ په وړاندې ټیټیږي\" data-root=\"vooroverbuigen\">buigt voorover</span> en kijkt onder de <span class=\"vocab\" data-en=\"doormat\" data-tr=\"paspas\" data-ar=\"ممسحة الباب\" data-ps=\"ممسحه\" data-root=\"de deurmat\">deurmat</span>. Ook niets!",
+                "Gelukkig ziet hij dat het kleine raam van de keuken nog <span class=\"vocab\" data-en=\"ajar\" data-tr=\"aralık\" data-ar=\"موارب\" data-ps=\"نیم خلاص\" data-root=\"op een kier\">op een kier</span> staat. Thomas pakt een <span class=\"vocab\" data-en=\"garden chair\" data-tr=\"bahçe sandalyesi\" data-ar=\"كرسي الحديقة\" data-ps=\"د باغ چوکۍ\" data-root=\"de tuinstoel\">tuinstoel</span>, zet deze onder het raam en klimt <span class=\"vocab\" data-en=\"carefully\" data-tr=\"dikkatlice\" data-ar=\"بحذر\" data-ps=\"په احتیاط سره\" data-root=\"voorzichtig\">voorzichtig</span> naar binnen. Dat is een heel gek gezicht voor de buren!",
+                "Eenmaal binnen gaat de <span class=\"vocab\" data-en=\"search\" data-tr=\"arama / arayış\" data-ar=\"رحلة البحث\" data-ps=\"لټون\" data-root=\"de zoektocht\">zoektocht</span> verder. Hij kijkt onder de bank in de woonkamer en achter de televisie. Hij loopt naar de keuken en maakt zelfs de koelkast en de <span class=\"vocab\" data-en=\"freezer\" data-tr=\"derin dondurucu\" data-ar=\"مجمد\" data-ps=\"فريزر\" data-root=\"de vriezer\">vriezer</span> open. Zou de sleutel daar liggen? Nee, nog steeds niets.",
+                "Thomas <span class=\"vocab\" data-en=\"sighs\" data-tr=\"iç çekiyor\" data-ar=\"يتنهد\" data-ps=\"اسویلی کوي\" data-root=\"zuchten\">zucht</span>, geeft het op en besluit eerst een warme kop koffie te zetten om rustig te worden. Hij loopt naar de kast, pakt zijn favoriete rode kopje en kijkt er per ongeluk in. En wat ziet hij daar? Zijn sleutel ligt glanzend op de <span class=\"vocab\" data-en=\"bottom\" data-tr=\"dip / zemin\" data-ar=\"قاع\" data-ps=\"تل\" data-root=\"de bodem\">bodem</span> van het kopje!",
+                "Thomas moet heel hard om zichzelf lachen. <span class=\"vocab\" data-en=\"yesterday\" data-tr=\"dün\" data-ar=\"أمس\" data-ps=\"پرون\" data-root=\"gisteren\">Gisteren</span> had hij de sleutel daar klaargelegd om niet te vergeten. Wat een gekke dag!"
+            ]
+        },
+        2: {
+            title: "Een verrassing in de tuin",
+            icon: "🦔",
+            paragraphs: [
+                "Het is bijna <span class=\"vocab\" data-en=\"midnight\" data-tr=\"gece yarısı\" data-ar=\"منتصف الليل\" data-ps=\"نیمه شپه\" data-root=\"middernacht\">middernacht</span> en het is erg stil op straat. Sarah ligt al een uur in haar warme bed, maar ze kan niet in slaap vallen. Opeens hoort ze een <span class=\"vocab\" data-en=\"strange\" data-tr=\"garip / tuhaf\" data-ar=\"غريب\" data-ps=\"عجیبه\" data-root=\"vreemd\">vreemd</span> en zacht geluid uit de achtertuin komen.",
+                "Wat zou dat kunnen zijn? Het klinkt als een mysterieus geritsel tussen de <span class=\"vocab\" data-en=\"dry leaves\" data-tr=\"kuru yapraklar\" data-ar=\"أوراق جافة\" data-ps=\"وچ پاڼې\" data-root=\"droge bladeren\">droge bladeren</span> en de bloemen. Sarah krijgt <span class=\"vocab\" data-en=\"goosebumps\" data-tr=\"tüylerin diken diken olması\" data-ar=\"قشعريرة\" data-ps=\"رېږدېدنه\" data-root=\"kippenvel\">kippenvel</span> en voelt zich een beetje bang. Is er misschien een <span class=\"vocab\" data-en=\"burglar\" data-tr=\"hırsız\" data-ar=\"لص / دخيل\" data-ps=\"غل\" data-root=\"de inbreker\">inbreker</span> in de tuin?",
+                "Ze besluit toch te gaan kijken. Ze stapt voorzichtig uit bed en pakt haar metalen zaklamp van de tafel. Ze loopt <span class=\"vocab\" data-en=\"on her tiptoes\" data-tr=\"ayak parmaklarının ucunda\" data-ar=\"على أطراف أصابعها\" data-ps=\"د پښو په نوکانو\" data-root=\"op haar tenen\">op haar tenen</span> naar beneden, doet de <span class=\"vocab\" data-en=\"curtains\" data-tr=\"perdeler\" data-ar=\"ستائر\" data-ps=\"پرده\" data-root=\"het gordijn\">gordijnen</span> open en opent de achterdeur heel zachtjes.",
+                "Het is erg donker buiten en de koude wind waait door haar haren. Sarah doet de zaklamp aan en <span class=\"vocab\" data-en=\"shines (flashlight)\" data-tr=\"ışık tutuyor\" data-ar=\"يسلط الضوء\" data-ps=\"روښانه کوي\" data-root=\"schijnen\">schijnt</span> met het felle licht door de tuin. Ze loopt langzaam naar de grote <span class=\"vocab\" data-en=\"bush\" data-tr=\"çalı\" data-ar=\"شجيرة\" data-ps=\"بوټی\" data-root=\"de struik\">struik</span> achterin de hoek.",
+                "Ze bukt zich en schijnt onder de takken. Ze schrikt even, maar dan ziet ze twee kleine, glanzende oogjes die haar <span class=\"vocab\" data-en=\"curious\" data-tr=\"meraklı\" data-ar=\"فضولي\" data-ps=\"کنجکاو\" data-root=\"nieuwsgierig\">nieuwsgierig</span> aankijken. Het is een kleine, <span class=\"vocab\" data-en=\"cute\" data-tr=\"sevimli\" data-ar=\"لطيف\" data-ps=\"ښکلی\" data-root=\"schattig\">schattige</span> baby-egel!",
+                "Het diertje is op zoek naar lekkere insecten tussen de natte bladeren. Sarah glimlacht opgelucht. Ze loopt naar binnen en haalt een schaaltje met vers water en een klein beetje <span class=\"vocab\" data-en=\"cat food\" data-tr=\"kedi maması\" data-ar=\"طعام القطط\" data-ps=\"د پیشو خواړه\" data-root=\"kattenvoer\">kattenvoer</span>.",
+                "Ze zet het schaaltje bij de struik. De egel begint meteen tevreden te eten. Sarah sluit de door en kan nu eindelijk met een <span class=\"vocab\" data-en=\"peace of mind\" data-tr=\"iç huzuruyla\" data-ar=\"قلب مطمئن\" data-ps=\"ارامه زړه\" data-root=\"gerust hart\">gerust hart</span> gaan slapen."
+            ]
+        },
+        3: {
+            title: "De bakker en de hond",
+            icon: "🐕",
+            paragraphs: [
+                "Elke <span class=\"vocab\" data-en=\"morning\" data-tr=\"sabah\" data-ar=\"صباح\" data-ps=\"سهار\" data-root=\"de morgen\">morgen</span> om vier uur gaat de wekker van bakker Jan. Terwijl de hele stad nog <span class=\"vocab\" data-en=\"deeply\" data-tr=\"derin\" data-ar=\"بعمق\" data-ps=\"ژور\" data-root=\"diep\">diep</span> slaapt, begint Jan al met zijn zware werk in de bakkerij.",
+                "Hij <span class=\"vocab\" data-en=\"kneads\" data-tr=\"yoğuruyor\" data-ar=\"يعجن\" data-ps=\"اغږل\" data-root=\"kneden\">kneedt</span> het <span class=\"vocab\" data-en=\"dough\" data-tr=\"hamur\" data-ar=\"عجين\" data-ps=\"خميره\" data-root=\"het deeg\">deeg</span> en bakt <span class=\"vocab\" data-en=\"delicious\" data-tr=\"lezzetli / harika\" data-ar=\"لذيذ\" data-ps=\"خوندور\" data-root=\"heerlijk\">heerlijk</span> vers brood en <span class=\"vocab\" data-en=\"sweet\" data-tr=\"tatlı\" data-ar=\"حلو\" data-ps=\"خواږه\" data-root=\"zoet\">zoete</span>, warme <span class=\"vocab\" data-en=\"small croissants\" data-tr=\"küçük kruvasanlar\" data-ar=\"كرواسون صغير\" data-ps=\"کروسانت\" data-root=\"het croissantje\">croissantjes</span>. Binnen een uur vult de hele straat zich met een fantastische en warme bakkerijlucht. Dat <span class=\"vocab\" data-en=\"smells\" data-tr=\"kokuyor\" data-ar=\"يشم / رائحة\" data-ps=\"بوی کوي\" data-root=\"ruiken\">ruikt</span> heerlijk!",
+                "Als Jan om <span class=\"vocab\" data-en=\"punctually / exactly\" data-tr=\"tam vaktinde\" data-ar=\"تمام الساعة\" data-ps=\"پوره پر وخت\" data-root=\"stipt\">stipt</span> zes uur de deur van zijn winkel opendoet, staat er altijd dezelfde <span class=\"vocab\" data-en=\"faithful\" data-tr=\"sadık\" data-ar=\"مخلص / وفي\" data-ps=\"وفادار\" data-root=\"trouw\">trouwe</span> klant te wachten op de <span class=\"vocab\" data-en=\"sidewalk\" data-tr=\"kaldırım\" data-ar=\"رصيف\" data-ps=\"پلې لاره\" data-root=\"de stoep\">stoep</span>. Het is Max, de grote, bruine hond van de buren. Max is er elke dag als eerste bij.",
+                "Max zit <span class=\"vocab\" data-en=\"patiently\" data-tr=\"sabrıyla / sabırlı\" data-ar=\"بصبر\" data-ps=\"صابر\" data-root=\"geduldig\">geduldig</span> te wachten en <span class=\"vocab\" data-en=\"wags (tail)\" data-tr=\"kuyruk sallıyor\" data-ar=\"يهز ذيله\" data-ps=\"لکۍ ښوروي\" data-root=\"kwispelen\">kwispelt</span> met zijn <span class=\"vocab\" data-en=\"tail\" data-tr=\"kuyruk\" data-ar=\"ذيل\" data-root=\"de staart\">staart</span> als hij Jan ziet. Hij kijkt de bakker aan met grote, glanzende en lieve ogen. Max weet <span class=\"vocab\" data-en=\"exactly\" data-tr=\"tam olarak\" data-ar=\"بالتحديد\" data-ps=\"دقیقا\" data-root=\"precies\">precies</span> wat er nu gaat gebeuren.",
+                "Jan lacht breed en zegt vriendelijk: 'Goedemorgen Max, ben je weer zo <span class=\"vocab\" data-en=\"early\" data-tr=\"erken\" data-ar=\"مبكراً\" data-ps=\"وختي\" data-root=\"vroeg\">vroeg</span> wakker vandaag? Heb je honger?'",
+                "Jan geeft Max een klein stukje <span class=\"vocab\" data-en=\"sausage\" data-tr=\"sosis / sucuk\" data-ar=\"سجق\" data-ps=\"سجق\" data-root=\"de worst\">worst</span> of een broodje. Max pakt het broodje en maakt een klein <span class=\"vocab\" data-en=\"small jump\" data-tr=\"küçük sıçrama / zıplama\" data-ar=\"قفزة صغيرة\" data-ps=\"کوچنی ټوپ\" data-root=\"het sprongetje\">sprongetje</span>. Dan rent hij vrolijk terug naar huis.",
+                "Het is een mooi <span class=\"vocab\" data-en=\"ritual\" data-tr=\"ritüel / routine\" data-ar=\"طقس / عادة\" data-ps=\"رسم\" data-root=\"het ritueel\">ritueel</span> en een prachtige vriendschap."
+            ]
+        }
+    };
+
+    // UI Translation Data - Dynamic instructions with step list and visual example card.
+    const uiTranslations = {
+        nl: {
+            steps: [
+                "<strong>Stap 1:</strong> Kies een woord uit de tekst dat je moeilijk vindt.",
+                "<strong>Stap 2:</strong> Vertaal dit woord naar jouw eigen taal.",
+                "<strong>Stap 3:</strong> Leg het woord simpel uit in het Nederlands. Doe alsof je het uitlegt aan een kind of aan iemand die het woord nog nooit heeft gehoord. Gebruik makkelijke steekwoorden of een voorbeeld.",
+                "<strong>Stap 4:</strong> Maak je eigen zin waarin je het woord echt gebruikt. Je mag meerdere zinnen maken of vragen maken. Zorg dat het correct Nederlands is."
+            ],
+            exampleHeader: "Visueel Voorbeeld:",
+            exWord: "Woord",
+            exLang: "Mijn Taal",
+            exEasy: "Uitleg (NL)",
+            exSent: "Mijn eigen zin",
+            exWordVal: "sleutel",
+            exLangVal: "key / anahtar / مفتاح / کیلي",
+            exEasyVal: "Een ding van metaal. Je doet er een deur mee open of dicht.",
+            exSentVal: "Ik open de deur met mijn sleutel. Waar is mijn sleutel?"
+        },
+        en: {
+            steps: [
+                "<strong>Step 1:</strong> Choose a word from the text that you find difficult.",
+                "<strong>Step 2:</strong> Translate this word into your own language.",
+                "<strong>Step 3:</strong> Explain the word simply in Dutch. Act as if you are explaining it to a child or to someone who has never heard the word before. Use simple keywords or an example.",
+                "<strong>Step 4:</strong> Write your own sentence using the word. You can write multiple sentences or questions. Make sure it is correct Dutch."
+            ],
+            exampleHeader: "Visual Example:",
+            exWord: "Word",
+            exLang: "My Language",
+            exEasy: "Explanation (NL)",
+            exSent: "My own sentence",
+            exWordVal: "sleutel",
+            exLangVal: "key",
+            exEasyVal: "Een ding van metaal. Je doet er een deur mee open of dicht.",
+            exSentVal: "Ik open de deur met mijn sleutel. Waar is mijn sleutel?"
+        },
+        tr: {
+            steps: [
+                "<strong>Adım 1:</strong> Metinden zor bulduğunuz bir kelime seçin.",
+                "<strong>Adım 2:</strong> Bu kelimeyi kendi dilinize çevirin.",
+                "<strong>Adım 3:</strong> Kelimeyi basit bir şekilde Felemenkçe açıklayın. Sanki bunu bir çocuğa veya kelimeyi daha önce hiç duymamış birine açıklıyormuş gibi yapın. Basit anahtar kelimeler veya bir örnek kullanın.",
+                "<strong>Adım 4:</strong> Kelimeyi kullandığınız kendi cümlenizi yazın. Birden fazla cümle veya soru yazabilirsiniz. Doğru Felemenkçe olduğundan emin olun."
+            ],
+            exampleHeader: "Görsel Örnek:",
+            exWord: "Kelime",
+            exLang: "Benim Dilim",
+            exEasy: "Açıklama (NL)",
+            exSent: "Kendi cümlem",
+            exWordVal: "sleutel",
+            exLangVal: "anahtar",
+            exEasyVal: "Een ding van metaal. Je doet er een deur mee open of dicht.",
+            exSentVal: "Ik open de deur met mijn sleutel. Waar is mijn sleutel?"
+        },
+        ar: {
+            steps: [
+                "<strong>الخطوة 1:</strong> اختر كلمة من النص تجدها صعبة.",
+                "<strong>الخطوة 2:</strong> ترجم هذه الكلمة إلى لغتك الخاصة.",
+                "<strong>الخطوة 3:</strong> اشرح الكلمة ببساطة باللغة الهولندية. تصرّف كما لو كنت تشرحها لطفل أو لشخص لم يسمع الكلمة من قبل. استخدم كلمات رئيسية بسيطة أو مثالاً.",
+                "<strong>الخطوة 4:</strong> اكتب جملتك الخاصة باستخدام الكلمة. يمكنك كتابة جمل متعددة أو طرح أسئلة. تأكّد من صحة اللغة الهولندية."
+            ],
+            exampleHeader: "مثال توضيحي:",
+            exWord: "الكلمة",
+            exLang: "لغتي",
+            exEasy: "الشرح (هولندية)",
+            exSent: "جملتي الخاصة",
+            exWordVal: "sleutel",
+            exLangVal: "مفتاح",
+            exEasyVal: "Een ding van metaal. Je doet er een deur mee open of dicht.",
+            exSentVal: "Ik open de deur met mijn sleutel. Waar is mijn sleutel?"
+        },
+        ps: {
+            steps: [
+                "<strong>لومړی ګام:</strong> له متن څخه داسې کلمه غوره کړئ چې تاسو ته ستونزمنه ښکاري.",
+                "<strong>دوهم ګام:</strong> دا کلمه خپلې ژبې ته وژباړئ.",
+                "<strong>دریم ګام:</strong> دا کلمه په ساده هالنډي ژبه تشریح کړئ. داسې چلند وکړئ لکه څنګه چې تاسو یې یو ماشوم یا هغه چا ته تشریح کوئ چې کلمه یې هیڅکله نه وي اوریدلې. ساده اشارې یا یو مثال وکاروئ.",
+                "<strong>څلورم ګام:</strong> د دې کلمې په کارولو سره خپله جمله ولیکئ. تاسو کولی شئ څو جملې یا پوښتنې هم ولیکئ. ډاډ ترلاسه کړئ چې دا سمه هالنډي ژبه ده."
+            ],
+            exampleHeader: "بېلګه (مثال):",
+            exWord: "کلمه",
+            exLang: "زما ژبه",
+            exEasy: "تشریح (هولنډي)",
+            exSent: "زما خپله جمله",
+            exWordVal: "sleutel",
+            exLangVal: "کیلي",
+            exEasyVal: "Een ding van metaal. Je doet er een deur mee open of dicht.",
+            exSentVal: "Ik open de deur met mijn sleutel. Waar is mijn sleutel?"
+        }
+    };
+
+    // Current State
+    let activeStoryId = null;
+    let currentLang = 'nl';
+
+    // ── NAVIGATION ──
+    function loadStory(id) {
+        activeStoryId = id;
+        const story = stories[id];
+        
+        // Update headers
+        document.getElementById('detail-icon-target').textContent = story.icon;
+        document.getElementById('detail-title-target').textContent = story.title;
+
+        // Render paragraphs
+        const textTarget = document.getElementById('story-text-target');
+        textTarget.innerHTML = '';
+
+        story.paragraphs.forEach((pText) => {
+            const pDiv = document.createElement('div');
+            pDiv.className = 'story-paragraph';
+
+            // Audio button
+            const audioBtn = document.createElement('button');
+            audioBtn.className = 'audio-play-btn';
+            audioBtn.innerHTML = '🔊';
+            
+            // Clean HTML tags from spoken text for synthesis
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = pText;
+            const textToSpeak = tempDiv.textContent || tempDiv.innerText;
+            
+            audioBtn.onclick = () => speakText(textToSpeak);
+
+            // Paragraph text
+            const spanText = document.createElement('span');
+            spanText.className = 'story-paragraph-text';
+            spanText.innerHTML = pText;
+
+            pDiv.appendChild(audioBtn);
+            pDiv.appendChild(spanText);
+            textTarget.appendChild(pDiv);
+        });
+
+        // Initialize tooltips on the new elements
+        initializeTooltips();
+
+        // Reset and generate homework table rows
+        resetHomeworkTable();
+
+        // Switch Views
+        document.getElementById('dashboard-view').style.display = 'none';
+        document.getElementById('detail-view').style.display = 'block';
+
+        // Initialize dynamic step-by-step instructions
+        changeLang(currentLang);
+
+        // Scroll to top of window
+        window.scrollTo(0, 0);
+    }
+
+    function showDashboard() {
+        document.getElementById('detail-view').style.display = 'none';
+        document.getElementById('dashboard-view').style.display = 'block';
+        activeStoryId = null;
+    }
+
+    // ── LANGUAGE SWITCHER & TOOLTIPS ──
+    function changeLang(lang) {
+        currentLang = lang;
+        const t = uiTranslations[lang];
+
+        // Update button visual states
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Translate the step-by-step instructions and visual example box
+        let stepsHtml = `<ol class="instructions-list">`;
+        t.steps.forEach(step => {
+            stepsHtml += `<li>${step}</li>`;
+        });
+        stepsHtml += `</ol>`;
+
+        stepsHtml += `
+            <div class="example-box">
+                <div class="example-title">💡 ${t.exampleHeader}</div>
+                <div class="example-item">
+                    <div class="example-label">${t.exWord}:</div>
+                    <div class="example-val">${t.exWordVal}</div>
+                </div>
+                <div class="example-item">
+                    <div class="example-label">${t.exLang}:</div>
+                    <div class="example-val">${t.exLangVal}</div>
+                </div>
+                <div class="example-item">
+                    <div class="example-label">${t.exEasy}:</div>
+                    <div class="example-val">${t.exEasyVal}</div>
+                </div>
+                <div class="example-item">
+                    <div class="example-label">${t.exSent}:</div>
+                    <div class="example-val">${t.exSentVal}</div>
+                </div>
+            </div>
+        `;
+
+        const descContainer = document.getElementById('hw-desc-container');
+        if (descContainer) {
+            descContainer.innerHTML = stepsHtml;
+            // Apply RTL layout for instructions container if Arabic or Pashto is selected
+            if (lang === 'ar' || lang === 'ps') {
+                descContainer.classList.add('rtl-layout');
+            } else {
+                descContainer.classList.remove('rtl-layout');
+            }
+        }
+
+        // Update translation input textareas in the table (Toggle RTL style if Arabic or Pashto)
+        document.querySelectorAll('#vocabTable tbody tr').forEach(row => {
+            const vLangInput = row.querySelector('.v-lang');
+            if (lang === 'ar' || lang === 'ps') {
+                vLangInput.classList.add('rtl-input');
+            } else {
+                vLangInput.classList.remove('rtl-input');
+            }
+        });
+
+        // Hide all active tooltips
+        document.querySelectorAll('.vocab').forEach(w => w.classList.remove('show-tooltip'));
+    }
+
+    function initializeTooltips() {
+        const vocabElements = document.querySelectorAll('.vocab');
+        
+        vocabElements.forEach(word => {
+            // Remove previous tooltips if any
+            const existingTooltip = word.querySelector('.tooltip');
+            if (existingTooltip) existingTooltip.remove();
+
+            // Create new tooltip container
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            word.appendChild(tooltip);
+
+            word.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                // Close all other tooltips first
+                vocabElements.forEach(w => {
+                    if (w !== word) w.classList.remove('show-tooltip');
+                });
+
+                if (currentLang === 'nl') return;
+
+                const translation = word.getAttribute('data-' + currentLang);
+                if (translation) {
+                    // Set RTL direction if Arabic or Pashto
+                    if (currentLang === 'ar' || currentLang === 'ps') {
+                        tooltip.classList.add('rtl');
+                    } else {
+                        tooltip.classList.remove('rtl');
+                    }
+
+                    const root = word.getAttribute('data-root');
+                    if (root) {
+                        tooltip.innerHTML = `<span>${translation}</span><span class="tooltip-root">📖 basis: ${root}</span>`;
+                    } else {
+                        tooltip.textContent = translation;
+                    }
+                    
+                    // Toggle visibility class
+                    word.classList.toggle('show-tooltip');
+                }
+            });
+        });
+    }
+
+    // Close all tooltips on body clicks
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.vocab').forEach(w => w.classList.remove('show-tooltip'));
+    });
+
+    // ── SPEECH SYNTHESIS (Dutch Audio Reader) ──
+    function speakText(text) {
+        if (!('speechSynthesis' in window)) {
+            alert('Voorlezen wordt niet ondersteund in deze browser.');
+            return;
+        }
+        window.speechSynthesis.cancel(); // Stop playing previous audio
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'nl-NL';
+        utterance.rate = 0.85; // Slightly slower than normal for language learners
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // ── HOMEWORK TABLE BUILDER ──
+    function resetHomeworkTable() {
+        const tbody = document.querySelector('#vocabTable tbody');
+        tbody.innerHTML = '';
+        
+        // Generate 5 default rows
+        for (let i = 0; i < 5; i++) {
+            addVocabRow();
+        }
+    }
+
+    function addVocabRow() {
+        const tbody = document.querySelector('#vocabTable tbody');
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+            <td><textarea class="v-word" placeholder="bijv. sleutel" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
+            <td><textarea class="v-lang ${(currentLang === 'ar' || currentLang === 'ps') ? 'rtl-input' : ''}" placeholder="bijv. key" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
+            <td><textarea class="v-easy" placeholder="uitleg in makkelijk NL" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
+            <td><textarea class="v-sent" placeholder="maak een nieuwe zin" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
+        `;
+        
+        tbody.appendChild(tr);
+    }
+
+    function autoGrowTextarea(element) {
+        element.style.height = 'auto';
+        element.style.height = element.scrollHeight + 'px';
+    }
+
+    // ── WHATSAPP SUBMISSION ──
+    function sendToWhatsApp() {
+        const studentName = document.getElementById('studentName').value.trim();
+        if (!studentName) {
+            alert('Vul eerst je naam in onderaan de pagina!');
+            return;
+        }
+
+        const storyTitle = stories[activeStoryId].title;
+        let message = `📓 *Huiswerk Media Diary — ${storyTitle}*\n`;
+        message += `👤 *Naam:* ${studentName}\n\n`;
+
+        let hasContent = false;
+        const rows = document.querySelectorAll('#vocabTable tbody tr');
+        
+        rows.forEach((row, index) => {
+            const word = row.querySelector('.v-word').value.trim();
+            const lang = row.querySelector('.v-lang').value.trim();
+            const easy = row.querySelector('.v-easy').value.trim();
+            const sent = row.querySelector('.v-sent').value.trim();
+
+            if (word || lang || easy || sent) {
+                hasContent = true;
+                message += `*Woord ${index + 1}:* ${word || '-'}\n`;
+                if (lang) message += `👉 Vertaling: ${lang}\n`;
+                if (easy) message += `💡 Uitleg (NL): ${easy}\n`;
+                if (sent) message += `📝 Mijn zin: ${sent}\n`;
+                message += `\n`;
+            }
+        });
+
+        if (!hasContent) {
+            alert('Vul minimaal één woord in op het huiswerkformulier voordat je het verstuurt!');
+            return;
+        }
+
+        // Format message and redirect to WhatsApp link
+        const encodedMessage = encodeURIComponent(message.trim());
+        const waLink = `https://wa.me/${TEACHER_PHONE}?text=${encodedMessage}`;
+        window.open(waLink, '_blank');
+    }
+</script>
+
+</body>
+</html>
