@@ -1112,8 +1112,8 @@
         // Initialize tooltips on the new elements
         initializeTooltips();
 
-        // Reset and generate homework table rows
-        resetHomeworkTable();
+        // Restore saved homework state or initialize empty rows
+        restoreHomeworkState(id);
 
         // Switch Views
         document.getElementById('dashboard-view').style.display = 'none';
@@ -1269,21 +1269,21 @@
         const tbody = document.querySelector('#vocabTable tbody');
         tbody.innerHTML = '';
         
-        // Generate 5 default rows
+        // Generate 5 default empty rows
         for (let i = 0; i < 5; i++) {
             addVocabRow();
         }
     }
 
-    function addVocabRow() {
+    function addVocabRow(word = '', lang = '', easy = '', sent = '') {
         const tbody = document.querySelector('#vocabTable tbody');
         const tr = document.createElement('tr');
         
         tr.innerHTML = `
-            <td><textarea class="v-word" placeholder="bijv. sleutel" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
-            <td><textarea class="v-lang ${(currentLang === 'ar' || currentLang === 'ps') ? 'rtl-input' : ''}" placeholder="bijv. key" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
-            <td><textarea class="v-easy" placeholder="uitleg in makkelijk NL" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
-            <td><textarea class="v-sent" placeholder="maak een nieuwe zin" rows="1" oninput="autoGrowTextarea(this)"></textarea></td>
+            <td><textarea class="v-word" placeholder="bijv. sleutel" rows="1" oninput="autoGrowTextarea(this)">${word}</textarea></td>
+            <td><textarea class="v-lang ${(currentLang === 'ar' || currentLang === 'ps') ? 'rtl-input' : ''}" placeholder="bijv. key" rows="1" oninput="autoGrowTextarea(this)">${lang}</textarea></td>
+            <td><textarea class="v-easy" placeholder="uitleg in makkelijk NL" rows="1" oninput="autoGrowTextarea(this)">${easy}</textarea></td>
+            <td><textarea class="v-sent" placeholder="maak een nieuwe zin" rows="1" oninput="autoGrowTextarea(this)">${sent}</textarea></td>
         `;
         
         tbody.appendChild(tr);
@@ -1292,6 +1292,55 @@
     function autoGrowTextarea(element) {
         element.style.height = 'auto';
         element.style.height = element.scrollHeight + 'px';
+    }
+
+    // ── LOCAL STORAGE PERSISTENCE ──
+    function saveHomeworkState() {
+        if (!activeStoryId) return;
+        
+        const homeworkData = [];
+        const rows = document.querySelectorAll('#vocabTable tbody tr');
+        rows.forEach(row => {
+            const word = row.querySelector('.v-word').value;
+            const lang = row.querySelector('.v-lang').value;
+            const easy = row.querySelector('.v-easy').value;
+            const sent = row.querySelector('.v-sent').value;
+            homeworkData.push({ word, lang, easy, sent });
+        });
+        
+        localStorage.setItem('homework_story_' + activeStoryId, JSON.stringify(homeworkData));
+    }
+
+    function restoreHomeworkState(id) {
+        const savedDataStr = localStorage.getItem('homework_story_' + id);
+        const tbody = document.querySelector('#vocabTable tbody');
+        tbody.innerHTML = '';
+        
+        if (savedDataStr) {
+            try {
+                const homeworkData = JSON.parse(savedDataStr);
+                if (homeworkData && homeworkData.length > 0) {
+                    homeworkData.forEach(item => {
+                        addVocabRow(item.word, item.lang, item.easy, item.sent);
+                    });
+                    
+                    // Trigger auto-grow for textareas
+                    setTimeout(() => {
+                        document.querySelectorAll('#vocabTable textarea').forEach(ta => {
+                            autoGrowTextarea(ta);
+                        });
+                    }, 50);
+                    return;
+                }
+            } catch (e) {
+                console.error("Error parsing homework data:", e);
+            }
+        }
+        
+        // Default fall-back: 5 empty rows
+        for (let i = 0; i < 5; i++) {
+            addVocabRow();
+        }
     }
 
     // ── WHATSAPP SUBMISSION ──
@@ -1330,11 +1379,41 @@
             return;
         }
 
+        // Clear local storage and reset form fields upon submission
+        localStorage.removeItem('homework_story_' + activeStoryId);
+        resetHomeworkTable();
+
         // Format message and redirect to WhatsApp link
         const encodedMessage = encodeURIComponent(message.trim());
         const waLink = `https://wa.me/${TEACHER_PHONE}?text=${encodedMessage}`;
         window.open(waLink, '_blank');
     }
+
+    // ── GLOBAL LISTENERS FOR AUTO-SAVING ──
+    document.addEventListener('DOMContentLoaded', () => {
+        // Event delegation to capture typing inside textareas and save state
+        const vocabTable = document.getElementById('vocabTable');
+        if (vocabTable) {
+            vocabTable.addEventListener('input', (e) => {
+                if (e.target.tagName === 'TEXTAREA') {
+                    saveHomeworkState();
+                }
+            });
+        }
+
+        // Event listener to save and restore student's name
+        const studentNameInput = document.getElementById('studentName');
+        if (studentNameInput) {
+            studentNameInput.addEventListener('input', () => {
+                localStorage.setItem('student_name', studentNameInput.value.trim());
+            });
+            
+            const savedName = localStorage.getItem('student_name');
+            if (savedName) {
+                studentNameInput.value = savedName;
+            }
+        }
+    });
 </script>
 
 </body>
