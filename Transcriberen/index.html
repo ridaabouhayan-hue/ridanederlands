@@ -379,9 +379,22 @@
                 <span class="brand-icon">✨</span> Gemini Transcriber
             </div>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <button class="student-view-btn" id="studentViewBtn" onclick="toggleStudentView()" title="Schakel studentenview in/uit">🎓 Studentenview</button>
-                <button onclick="openSettingsModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem; transition: var(--transition);" title="Gemini API Key Instellingen">⚙️</button>
-                <button class="logout-btn" onclick="logout()">Uitloggen</button>
+                <!-- Google Translate Widget -->
+                <div id="google_translate_element" class="no-export" style="margin-right: 10px; margin-top: 4px;"></div>
+                <script type="text/javascript">
+                    function googleTranslateElementInit() {
+                        new google.translate.TranslateElement({
+                            pageLanguage: 'nl',
+                            includedLanguages: 'en,ar,pl,tr,fa,ps,fr,es,de,vi',
+                            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                        }, 'google_translate_element');
+                    }
+                </script>
+                <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+                <button class="student-view-btn no-export" id="studentViewBtn" onclick="toggleStudentView()" title="Schakel studentenview in/uit">🎓 Studentenview</button>
+                <button class="no-export" onclick="openSettingsModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.25rem; transition: var(--transition);" title="Gemini API Key Instellingen">⚙️</button>
+                <button class="logout-btn no-export" onclick="logout()">Uitloggen</button>
             </div>
         </div>
 
@@ -2210,11 +2223,16 @@
             const grammarScore = totalSents ? Math.round((totalGrammarScoreSum / totalSents) * 100) : 100;
  
             const scoreWrap = document.createElement('div');
-            scoreWrap.classList.add('score-wrap');
-            scoreWrap.style.cssText = 'margin-bottom:18px;';
+            scoreWrap.classList.add('score-wrap', 'no-export');
+            scoreWrap.style.cssText = 'margin-bottom:18px; cursor:pointer; transition:transform 0.2s;';
+            scoreWrap.title = 'Klik om percentages per cursist te bekijken';
+            scoreWrap.onmouseover = () => scoreWrap.style.transform = 'scale(1.02)';
+            scoreWrap.onmouseout = () => scoreWrap.style.transform = 'scale(1)';
+            scoreWrap.addEventListener('click', () => { if (window.showPerPersonStatsModal) window.showPerPersonStatsModal('grammar', gesprek); });
+
             const scoreLab = document.createElement('div');
-            scoreLab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;';
-            scoreLab.textContent = 'Grammatica Analyse';
+            scoreLab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px; display:flex; align-items:center; gap:6px;';
+            scoreLab.innerHTML = 'Grammatica Analyse <span style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-size:0.65rem;">Klik voor per persoon</span>';
             scoreWrap.appendChild(scoreLab);
             
             const scoreBar = document.createElement('div');
@@ -2824,6 +2842,42 @@
             }
 
             // Oude opnames zonder gedetailleerde data: toon de tekstsamenvatting.
+            
+            // Add Global Pronunciation Score
+            if (gesprek && gesprek.length > 0) {
+                const allPronScores = [];
+                gesprek.forEach(l => {
+                    if (l.woorden) l.woorden.forEach(w => {
+                        if (w.accuracy != null) allPronScores.push(w.accuracy);
+                    });
+                });
+                const globalPronScore = avgOf(allPronScores);
+                const scoreWrap = document.createElement('div');
+                scoreWrap.classList.add('score-wrap', 'no-export');
+                scoreWrap.style.cssText = 'margin-bottom:18px; cursor:pointer; transition:transform 0.2s;';
+                scoreWrap.title = 'Klik om percentages per cursist te bekijken';
+                scoreWrap.onmouseover = () => scoreWrap.style.transform = 'scale(1.02)';
+                scoreWrap.onmouseout = () => scoreWrap.style.transform = 'scale(1)';
+                scoreWrap.addEventListener('click', () => { if (window.showPerPersonStatsModal) window.showPerPersonStatsModal('pronunciation', gesprek); });
+                
+                const scoreLab = document.createElement('div');
+                scoreLab.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px; display:flex; align-items:center; gap:6px;';
+                scoreLab.innerHTML = 'Uitspraak Analyse <span style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-size:0.65rem;">Klik voor per persoon</span>';
+                scoreWrap.appendChild(scoreLab);
+                
+                const scoreBar = document.createElement('div');
+                scoreBar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
+                
+                const colorClass = scoreColor(globalPronScore);
+                scoreBar.innerHTML = `
+                    <div style="flex:1;min-width:110px;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--border);background:rgba(15,23,42,0.4);">
+                        <div style="font-size:1.4rem;font-weight:800;color:${colorClass};">${globalPronScore != null ? globalPronScore + '%' : '-'}</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Uitspraakscore</div>
+                    </div>
+                `;
+                scoreWrap.appendChild(scoreBar);
+                c.appendChild(scoreWrap);
+            }
             if (!detail) {
                 const pre = document.createElement('pre');
                 pre.style.cssText = 'white-space:pre-wrap;word-break:break-word;font-size:0.9rem;line-height:1.7;color:var(--text);background:rgba(15,23,42,0.4);border:1px solid var(--border);border-radius:8px;padding:14px;margin:0;';
@@ -3068,100 +3122,7 @@
                         card.appendChild(doel);
                     }
 
-                    // Pronunciation feedback from Gemini (instead of the long phoneme-by-phoneme print!)
-                    const uAnalyse = l.uitspraak_analyse;
-                    const hasPronFeedback = uAnalyse && (uAnalyse.fout || uAnalyse.uitleg || !uAnalyse.goed);
-                    if (hasPronFeedback) {
-                        const hideToelichting = uAnalyse.verberg === true;
-                        const det = document.createElement('div');
-                        det.style.cssText = 'margin-top:10px;padding-top:8px;border-top:1px dashed var(--border);font-size:0.75rem;color:var(--text-muted);line-height:1.6;';
-                        if (hideToelichting) {
-                            det.setAttribute('data-export-hide', 'true');
-                            det.style.opacity = '0.4';
-                        }
-
-                        // Header with Eye Icon Toggle
-                        const titleLine = document.createElement('div');
-                        titleLine.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;';
-                        
-                        const titleText = document.createElement('div');
-                        titleText.style.cssText = 'font-weight:700; color:var(--text);';
-                        titleText.textContent = hideToelichting ? 'Uitspraak toelichting (verborgen in export):' : 'Uitspraak toelichting:';
-                        
-                        const visibilityBtn = document.createElement('button');
-                        visibilityBtn.type = 'button';
-                        visibilityBtn.className = 'no-export';
-                        visibilityBtn.style.cssText = 'background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:2px; display:inline-flex; align-items:center; outline:none;';
-                        visibilityBtn.title = hideToelichting ? 'Toon toelichting in export' : 'Verberg toelichting in export';
-                        visibilityBtn.textContent = hideToelichting ? '👁️‍🗨️' : '👁️';
-                        
-                        visibilityBtn.addEventListener('click', async (ev) => {
-                            ev.stopPropagation();
-                            const actualLijn = gesprek[origIdx];
-                            if (actualLijn && actualLijn.uitspraak_analyse) {
-                                actualLijn.uitspraak_analyse.verberg = !hideToelichting;
-                                await saveDatabase();
-                                renderAzureColumn();
-                            }
-                        });
-
-                        titleLine.appendChild(titleText);
-                        titleLine.appendChild(visibilityBtn);
-                        det.appendChild(titleLine);
-
-                        // Content Row with contenteditable text spans
-                        const row = document.createElement('div');
-                        row.style.cssText = 'margin-bottom:6px; display:flex; flex-direction:column; gap:6px;';
-                        
-                        const statusColor = !uAnalyse.goed ? '#ef4444' : '#10b981';
-                        const statusIcon = !uAnalyse.goed ? '❌' : '✅';
-                        
-                        row.innerHTML = `
-                            <div style="display:flex; align-items:flex-start; gap:6px;">
-                                <span style="color:${statusColor}; font-weight:bold; cursor:pointer;" class="toelichting-status-toggle" title="Klik om status te wisselen">${statusIcon} Feedback:</span>
-                                <span contenteditable="true" class="editable-fout-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; color:#fff; outline:none; font-weight:500;">${esc(uAnalyse.fout || 'Uitspraak niet helemaal duidelijk')}</span>
-                            </div>
-                            <div style="display:flex; align-items:flex-start; gap:6px; padding-left:20px;">
-                                <span style="color:var(--text-muted); font-size:0.72rem; min-width:40px; margin-top:2px;">Uitleg:</span>
-                                <span contenteditable="true" class="editable-uitleg-text" style="flex:1; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; outline:none; color:var(--text-muted);">${esc(uAnalyse.uitleg || '')}</span>
-                            </div>
-                        `;
-
-                        // Blur listener to save edits
-                        const foutSpan = row.querySelector('.editable-fout-text');
-                        foutSpan.addEventListener('blur', async () => {
-                            const newFoutText = foutSpan.textContent.trim();
-                            const actualLijn = gesprek[origIdx];
-                            if (actualLijn && actualLijn.uitspraak_analyse) {
-                                actualLijn.uitspraak_analyse.fout = newFoutText;
-                                await saveDatabase();
-                            }
-                        });
-
-                        const uitlegSpan = row.querySelector('.editable-uitleg-text');
-                        uitlegSpan.addEventListener('blur', async () => {
-                            const newUitlegText = uitlegSpan.textContent.trim();
-                            const actualLijn = gesprek[origIdx];
-                            if (actualLijn && actualLijn.uitspraak_analyse) {
-                                actualLijn.uitspraak_analyse.uitleg = newUitlegText;
-                                await saveDatabase();
-                            }
-                        });
-
-                        // Status Toggle Click listener
-                        const statusToggle = row.querySelector('.toelichting-status-toggle');
-                        statusToggle.addEventListener('click', async () => {
-                            const actualLijn = gesprek[origIdx];
-                            if (actualLijn && actualLijn.uitspraak_analyse) {
-                                actualLijn.uitspraak_analyse.goed = !actualLijn.uitspraak_analyse.goed;
-                                await saveDatabase();
-                                renderAzureColumn();
-                            }
-                        });
-
-                        det.appendChild(row);
-                        card.appendChild(det);
-                    }
+                    // Pronunciation feedback has been removed per user request.
                     return card;
                 };
 
@@ -5854,6 +5815,90 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+window.showPerPersonStatsModal = function(type, gesprek) {
+    if (!gesprek || gesprek.length === 0) return;
+    const bySpk = {};
+    gesprek.forEach(l => {
+        const spk = l.spreker || 'Onbekend';
+        if (!bySpk[spk]) bySpk[spk] = [];
+        bySpk[spk].push(l);
+    });
+    
+    const avgOf = arr => { const v = arr.filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
+    const scoreColor = s => s == null ? '#94a3b8' : (s >= 80 ? '#10b981' : (s >= 60 ? '#f59e0b' : '#ef4444'));
+
+    let html = '';
+    Object.keys(bySpk).forEach(spk => {
+        let scoreText = '-';
+        let sColor = '#94a3b8';
+        
+        if (type === 'grammar') {
+            let totalSents = 0;
+            let totalScore = 0;
+            bySpk[spk].forEach(l => {
+                totalSents++;
+                if (!l.grammatica_analyse || l.grammatica_analyse.goed) {
+                    totalScore += 1.0;
+                } else {
+                    const strA = (l.zin_fonetisch || '').toLowerCase().replace(/[.,!?;:]/g, '').trim();
+                    const strB = (l.zin_correct || '').toLowerCase().replace(/[.,!?;:]/g, '').trim();
+                    const wordsA = strA.split(/\\s+/).filter(Boolean);
+                    const wordsB = strB.split(/\\s+/).filter(Boolean);
+                    if (wordsA.length && wordsB.length) {
+                        const dist = window.levenshtein ? window.levenshtein(wordsA, wordsB) : (typeof levenshtein === 'function' ? levenshtein(wordsA, wordsB) : 0);
+                        const maxLength = Math.max(wordsA.length, wordsB.length);
+                        totalScore += Math.max(0, 1 - (dist / maxLength));
+                    }
+                }
+            });
+            const pct = totalSents ? Math.round((totalScore / totalSents) * 100) : 100;
+            scoreText = pct + '%';
+            sColor = scoreColor(pct);
+        } else if (type === 'pronunciation') {
+            const allScores = [];
+            bySpk[spk].forEach(l => {
+                if (l.woorden) l.woorden.forEach(w => {
+                    if (w.accuracy != null) allScores.push(w.accuracy);
+                });
+            });
+            const pct = avgOf(allScores);
+            if (pct != null) {
+                scoreText = pct + '%';
+                sColor = scoreColor(pct);
+            }
+        }
+        
+        html += \`
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:12px 16px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-weight:700; font-size:1rem; color:var(--text);">\${spk}</div>
+            <div style="font-weight:800; font-size:1.2rem; color:\${sColor};">\${scoreText}</div>
+        </div>\`;
+    });
+    
+    let modal = document.getElementById('statsModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'statsModal';
+        modal.className = 'no-export';
+        modal.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:9999; opacity:0; pointer-events:none; transition:opacity 0.2s;';
+        
+        modal.innerHTML = \`
+            <div class="auth-card" style="max-width:400px; width:100%; text-align:left; position:relative;">
+                <button onclick="document.getElementById('statsModal').style.opacity='0'; document.getElementById('statsModal').style.pointerEvents='none';" style="position:absolute; top:12px; right:12px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem;">✖</button>
+                <h3 id="statsModalTitle" style="font-size:1.2rem; font-weight:800; margin-bottom:16px; color:#fff;">📊 Scores per Persoon</h3>
+                <div id="statsModalContent" style="display:flex; flex-direction:column; gap:8px; max-height:400px; overflow-y:auto; padding-right:4px;"></div>
+            </div>
+        \`;
+        document.body.appendChild(modal);
+    }
+    
+    document.getElementById('statsModalTitle').textContent = type === 'grammar' ? '📝 Grammatica per Persoon' : '🎯 Uitspraak per Persoon';
+    document.getElementById('statsModalContent').innerHTML = html;
+    
+    modal.style.pointerEvents = 'auto';
+    modal.style.opacity = '1';
+};
 </script>
 <!-- /SPEECH SYNTHESIS INJECTION -->
     <!-- MODAL: API KEY SETTINGS -->
