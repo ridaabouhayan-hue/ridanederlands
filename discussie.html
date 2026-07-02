@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussie & Debat: Overtuig de Twijfelaar</title>
+    <meta name="description" content="Discussieer en debatteer over prikkelende stellingen en probeer de twijfelaar te overtuigen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #090d16;
+            --card-bg: rgba(24, 32, 64, 0.45);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-dark: #f0f2f8;
+            --text-muted: #8b9bb4;
+            --accent-left: #ff4a6b;       /* Red/Pink for Option A */
+            --accent-right: #00d2ff;      /* Teal/Blue for Option B */
+            --accent-glow-left: rgba(255, 74, 107, 0.4);
+            --accent-glow-right: rgba(0, 210, 255, 0.4);
+            --neutral-accent: #8b7ef8;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #171d3d 0%, var(--bg) 70%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 40px 20px 80px;
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-home-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .back-home-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neutral-accent);
+            transform: translateY(-50%) translateX(-4px);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--accent-left), var(--accent-right));
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(180deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ── INDEX VIEW ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #index-view {
+            display: block;
+        }
+
+        /* Rules Box */
+        .rules-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rules-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-left), var(--accent-right));
+        }
+
+        .rules-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .rules-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .rule-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .rule-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .rule-text h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .rule-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Topics Section */
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .grid-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .topic-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px 24px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 280px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .topic-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(24, 32, 64, 0.65);
+        }
+
+        .topic-card:hover::after {
+            background: linear-gradient(135deg, var(--accent-left), var(--accent-right));
+        }
+
+        .topic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .topic-info h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .topic-sides {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .side-badge-left {
+            color: var(--accent-left);
+            font-weight: 700;
+        }
+
+        .side-badge-right {
+            color: var(--accent-right);
+            font-weight: 700;
+        }
+
+        .topic-criteria {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .criteria-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+
+        /* ── GAME VIEW ── */
+        #game-view {
+            display: none;
+            max-width: 1100px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 20px 30px;
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .game-title-area h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .game-title-area p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Timers Panel */
+        .controls-panel {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .timer-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 160px;
+        }
+
+        .timer-display {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 0.5px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .timer-btn {
+            background: var(--neutral-accent);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(139, 126, 248, 0.3);
+        }
+
+        .timer-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* ── DEBATE GAUGE ── */
+        .gauge-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--glow);
+        }
+
+        .gauge-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 30px;
+        }
+
+        .twijfelaar-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .twijfelaar-header h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .twijfelaar-header p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* Glowing interactive slider track */
+        .slider-wrapper {
+            position: relative;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .side-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px transparent;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+            max-width: 180px;
+        }
+
+        .side-label.left {
+            color: var(--accent-left);
+            text-align: right;
+        }
+
+        .side-label.right {
+            color: var(--accent-right);
+            text-align: left;
+        }
+
+        .side-label.active {
+            transform: scale(1.1);
+        }
+
+        .side-label.left.active {
+            text-shadow: 0 0 15px var(--accent-glow-left);
+        }
+
+        .side-label.right.active {
+            text-shadow: 0 0 15px var(--accent-glow-right);
+        }
+
+        .slider-container {
+            flex: 1;
+            margin: 0 30px;
+            position: relative;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .gauge-track {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(to right, var(--accent-left) 0%, #fff 50%, var(--accent-right) 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Glowing center line */
+        .gauge-center-line {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 24px;
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #fff;
+            z-index: 2;
+        }
+
+        /* Premium slider input */
+        .gauge-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            position: relative;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .gauge-slider:focus {
+            outline: none;
+        }
+
+        /* Custom thumb */
+        .gauge-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid var(--bg);
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4), 0 4px 10px rgba(0,0,0,0.5);
+            cursor: grab;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+
+        .gauge-slider::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.15);
+            box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.6), 0 6px 15px rgba(0,0,0,0.7);
+        }
+
+        /* Live state indicators */
+        .state-indicator {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* ── ARGUMENTS BOXES ── */
+        .arguments-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .arguments-column {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arguments-column.left-side::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-left);
+        }
+
+        .arguments-column.right-side::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-right);
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .column-header h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .column-header.left-side h4 { color: var(--accent-left); }
+        .column-header.right-side h4 { color: var(--accent-right); }
+
+        .argument-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .argument-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .argument-list::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.02);
+            border-radius: 3px;
+        }
+
+        .argument-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        .argument-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .argument-item p {
+            flex: 1;
+        }
+
+        .delete-argument-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.25);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-argument-btn:hover {
+            color: #ff4a6b;
+        }
+
+        .empty-state {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+            text-align: center;
+            margin: auto;
+        }
+
+        /* Argument Input Form */
+        .add-argument-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .argument-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: border-color 0.2s;
+        }
+
+        .argument-input:focus {
+            outline: none;
+            border-color: var(--neutral-accent);
+        }
+
+        .add-btn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+        }
+
+        .add-btn.left {
+            background: var(--accent-left);
+            box-shadow: 0 4px 12px var(--accent-glow-left);
+        }
+
+        .add-btn.right {
+            background: var(--accent-right);
+            box-shadow: 0 4px 12px var(--accent-glow-right);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.15);
+        }
+
+        /* Preset Arguments */
+        .preset-section {
+            margin-top: 16px;
+        }
+
+        .preset-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .presets-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .preset-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            text-align: left;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .preset-chip:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* ── FOOTER ACTIONS ── */
+        .bottom-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            padding: 16px 36px;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent-left), var(--accent-right));
+            color: #fff;
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-dark);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .action-btn.primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neutral-accent);
+        }
+
+        /* ── WINNER OVERLAY ── */
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 7, 13, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .win-card {
+            background: radial-gradient(circle at 50% 0%, #1e264f 0%, #0c0f24 100%);
+            border: 1px solid var(--neutral-accent);
+            max-width: 600px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(139, 126, 248, 0.2);
+            animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .win-crown {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .win-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .winner-team-name {
+            display: inline-block;
+            font-size: 1.8rem;
+            font-weight: 900;
+            padding: 8px 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .winner-team-name.left-winner {
+            background: var(--accent-left);
+            color: white;
+            box-shadow: 0 8px 20px var(--accent-glow-left);
+        }
+
+        .winner-team-name.right-winner {
+            background: var(--accent-right);
+            color: white;
+            box-shadow: 0 8px 20px var(--accent-glow-right);
+        }
+
+        .winner-team-name.draw-winner {
+            background: var(--neutral-accent);
+            color: white;
+            box-shadow: 0 8px 20px rgba(139, 126, 248, 0.4);
+        }
+
+        .win-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .win-close-btn {
+            background: #fff;
+            color: var(--bg);
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .win-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 99;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            h1 { font-size: 2.2rem; }
+            .back-home-btn { position: relative; left: 0; top: 0; transform: none; margin-bottom: 20px; }
+            .gauge-section { padding: 24px; }
+            .slider-wrapper { flex-direction: column; gap: 20px; }
+            .slider-container { width: 100%; margin: 10px 0; }
+            .side-label { max-width: 100%; text-align: center !important; }
+            .arguments-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bottom-actions { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Confetti for winners -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Header -->
+    <header class="section">
+        <a href="index.html" class="back-home-btn" id="header-back-btn">
+            <span>←</span> Home
+        </a>
+        <div class="logo-badge">💬 Debat Spel</div>
+        <h1>Overtuig de Twijfelaar</h1>
+        <p class="subtitle">Werk samen in teams, verdedig je standpunt en sleep de twijfelende docent mee naar jouw kant!</p>
+    </header>
+
+    <main class="container">
+        <!-- INDEX VIEW -->
+        <section id="index-view">
+            <!-- Rules explanation -->
+            <div class="rules-card">
+                <div class="rules-header">
+                    <span style="font-size: 1.8rem;">📖</span>
+                    <h2>Speluitleg: Hoe werkt het?</h2>
+                </div>
+                <div class="rules-grid">
+                    <div class="rule-item">
+                        <div class="rule-icon">⚖️</div>
+                        <div class="rule-text">
+                            <h3>1. Start & Rollen</h3>
+                            <p>De docent is de 'Twijfelaar'. De rest verdeelt zich in Team A en Team B met elk een tegengesteld standpunt.</p>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">⏱️</div>
+                        <div class="rule-text">
+                            <h3>2. Voorbereiding</h3>
+                            <p>Bereid in 10-15 minuten sterke argumenten voor, verdeel sprekersrollen en bedenk reacties op tegenargumenten.</p>
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">🔥</div>
+                        <div class="rule-text">
+                            <h3>3. Debat & Schuiven</h3>
+                            <p>Debatteer 5 minuten lang. Na elk argument verschuift de Twijfelaar de meter richting het beste standpunt.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topics Grid Title -->
+            <div class="section-title">
+                <span>🎯</span> Kies een Stelling / Thema
+            </div>
+
+            <!-- Topics Cards -->
+            <div class="grid-topics" id="topics-grid">
+                <!-- Will be rendered via JS -->
+            </div>
+        </section>
+
+
+        <!-- GAME VIEW -->
+        <section id="game-view">
+            <!-- Header bar with Title, Status and Timers -->
+            <div class="game-header">
+                <div class="game-title-area">
+                    <span class="criteria-badge" id="game-topic-category" style="background: var(--neutral-accent); color: white; margin-bottom: 8px; display: inline-block;">THEMA</span>
+                    <h2 id="game-topic-title">... vs ...</h2>
+                    <p id="game-topic-criteria">Criteria: ...</p>
+                </div>
+                
+                <div class="controls-panel">
+                    <!-- Prep Timer -->
+                    <div class="timer-box">
+                        <div>
+                            <div class="timer-label">Voorbereiding</div>
+                            <div class="timer-display" id="prep-timer">10:00</div>
+                        </div>
+                        <button class="timer-btn" id="prep-timer-btn" onclick="toggleTimer('prep')">▶</button>
+                    </div>
+
+                    <!-- Debate Timer -->
+                    <div class="timer-box">
+                        <div>
+                            <div class="timer-label">Debat</div>
+                            <div class="timer-display" id="debate-timer">05:00</div>
+                        </div>
+                        <button class="timer-btn" id="debate-timer-btn" onclick="toggleTimer('debate')">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gauge Section -->
+            <div class="gauge-section">
+                <div class="twijfelaar-header">
+                    <h3>👨‍🏫 De Twijfel-Meter</h3>
+                    <p>Docent: versleep de regelaar naar links of rechts op basis van de overtuigingskracht van de teams!</p>
+                </div>
+
+                <div class="slider-wrapper">
+                    <!-- Left Label -->
+                    <div class="side-label left" id="label-left">Optie A</div>
+
+                    <!-- Interactive Slider Container -->
+                    <div class="slider-container">
+                        <div class="gauge-track"></div>
+                        <div class="gauge-center-line"></div>
+                        <input type="range" min="0" max="100" value="50" class="gauge-slider" id="gauge-slider" oninput="updateGauge(this.value)">
+                    </div>
+
+                    <!-- Right Label -->
+                    <div class="side-label right" id="label-right">Optie B</div>
+                </div>
+
+                <div class="state-indicator">
+                    <span id="indicator-text-left">Neutraal</span>
+                    <span id="indicator-text-center">Perfecte Balans</span>
+                    <span id="indicator-text-right">Neutraal</span>
+                </div>
+            </div>
+
+            <!-- Real-time Argument Boards -->
+            <div class="arguments-grid">
+                <!-- Option A Columns -->
+                <div class="arguments-column left-side">
+                    <div class="column-header left-side">
+                        <h4 id="board-title-left">👈 Argumenten</h4>
+                        <span class="criteria-badge" style="background: rgba(255, 74, 107, 0.1); color: var(--accent-left); border: 1px solid var(--accent-left);">Team A</span>
+                    </div>
+
+                    <ul class="argument-list" id="list-left">
+                        <!-- Argument items added dynamically -->
+                        <div class="empty-state">Nog geen argumenten toegevoegd...</div>
+                    </ul>
+
+                    <!-- Input form -->
+                    <div class="add-argument-form">
+                        <input type="text" class="argument-input" id="input-left" placeholder="Typ een argument..." onkeypress="handleArgEnter(event, 'left')">
+                        <button class="add-btn left" onclick="addArgument('left')">Voeg toe</button>
+                    </div>
+
+                    <!-- Presets -->
+                    <div class="preset-section">
+                        <div class="preset-label">💡 Ideeën & Feiten</div>
+                        <div class="presets-wrapper" id="presets-left">
+                            <!-- Preset chips generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Option B Columns -->
+                <div class="arguments-column right-side">
+                    <div class="column-header right-side">
+                        <h4 id="board-title-right">Argumenten 👉</h4>
+                        <span class="criteria-badge" style="background: rgba(0, 210, 255, 0.1); color: var(--accent-right); border: 1px solid var(--accent-right);">Team B</span>
+                    </div>
+
+                    <ul class="argument-list" id="list-right">
+                        <!-- Argument items added dynamically -->
+                        <div class="empty-state">Nog geen argumenten toegevoegd...</div>
+                    </ul>
+
+                    <!-- Input form -->
+                    <div class="add-argument-form">
+                        <input type="text" class="argument-input" id="input-right" placeholder="Typ een argument..." onkeypress="handleArgEnter(event, 'right')">
+                        <button class="add-btn right" onclick="addArgument('right')">Voeg toe</button>
+                    </div>
+
+                    <!-- Presets -->
+                    <div class="preset-section">
+                        <div class="preset-label">💡 Ideeën & Feiten</div>
+                        <div class="presets-wrapper" id="presets-right">
+                            <!-- Preset chips generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debate Footer Buttons -->
+            <div class="bottom-actions">
+                <button class="action-btn secondary" onclick="goBackToIndex()">
+                    <span>↩</span> Terug naar stellingen
+                </button>
+                <button class="action-btn secondary" onclick="resetGame()">
+                    <span>🔄</span> Reset Ronde
+                </button>
+                <button class="action-btn primary" onclick="showWinnerOverlay()">
+                    <span>🏆</span> Bepaal Winnaar
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- WINNER OVERLAY MODAL -->
+    <div class="win-overlay" id="win-overlay">
+        <div class="win-card">
+            <div class="win-crown">👑</div>
+            <div class="win-title">De Twijfelaar is Overtuigd!</div>
+            <div class="winner-team-name" id="winner-banner">Team A</div>
+            <p class="win-desc" id="winner-description">Gefeliciteerd! Jullie hebben de sterkste argumenten geleverd en de Twijfelaar aan jullie kant gekregen.</p>
+            <button class="win-close-btn" onclick="closeWinnerOverlay()">Volgende stelling</button>
+        </div>
+    </div>
+
+
+    <script>
+        // ── TOPIC DATABASE ──
+        const TOPICS = [
+            {
+                id: 1,
+                icon: "👟",
+                category: "Consument",
+                title: "Adidas vs. Nike",
+                sideA: "Adidas is beter",
+                sideB: "Nike is beter",
+                criteria: ["Comfort", "Kwaliteit", "Stijl", "Prijs"],
+                presetsA: [
+                    "Adidas heeft Boost-technologie voor ultiem comfort.",
+                    "Hun klassieke modellen (Stan Smith) zijn tijdloos.",
+                    "Samenwerkingen zoals Y-3 bieden premium design."
+                ],
+                presetsB: [
+                    "Nike Air Max is iconisch en wereldwijd populair.",
+                    "Innovatieve ontwerpen en betere sportprestaties.",
+                    "Nike's marketing en branding is onverslaanbaar."
+                ]
+            },
+            {
+                id: 2,
+                icon: "📱",
+                category: "Technologie",
+                title: "Apple vs. Android",
+                sideA: "Apple is beter",
+                sideB: "Android is beter",
+                criteria: ["Gebruiksvriendelijkheid", "Design", "Prijs", "Innovatie"],
+                presetsA: [
+                    "iOS is stabiel, veilig en krijgt jarenlang updates.",
+                    "Het Apple-ecosysteem werkt naadloos samen.",
+                    "iPhones behouden langer hun restwaarde."
+                ],
+                presetsB: [
+                    "Android biedt volledige vrijheid en personalisatie.",
+                    "Keuze uit tientallen merken in alle prijsklassen.",
+                    "Android loopt vaak voorop met nieuwe hardware-features."
+                ]
+            },
+            {
+                id: 3,
+                icon: "🚗",
+                category: "Mobiliteit",
+                title: "Elektrisch rijden vs. Benzine/Diesel",
+                sideA: "Elektrisch rijden",
+                sideB: "Benzine / Diesel",
+                criteria: ["Milieu", "Kosten", "Laadpalen", "Bereik", "Aanschafprijs"],
+                presetsA: [
+                    "Nul CO2-uitstoot tijdens het rijden, beter voor klimaat.",
+                    "Lagere onderhoudskosten (minder bewegende delen).",
+                    "Elektriciteit is per kilometer vaak goedkoper dan benzine."
+                ],
+                presetsB: [
+                    "Hogere aanschafprijs van EV's is voor velen onbetaalbaar.",
+                    "Lange laadtijden en te weinig snelladers op vakantie.",
+                    "Milieubelasting bij accu-productie is erg hoog."
+                ]
+            },
+            {
+                id: 4,
+                icon: "🏠",
+                category: "Werk & Life",
+                title: "Thuiswerken vs. Kantoor",
+                sideA: "Thuiswerken is het best",
+                sideB: "Kantoor is het best",
+                criteria: ["Productiviteit", "Mentale gezondheid", "Kosten", "Werk-privé balans"],
+                presetsA: [
+                    "Geen reistijd en minder reiskosten of files.",
+                    "Beter concentreren in een rustige thuisomgeving.",
+                    "Meer flexibiliteit om werk en gezin te combineren."
+                ],
+                presetsB: [
+                    "Direct sociaal contact en betere samenwerking.",
+                    "Duidelijke scheiding tussen werk en privé.",
+                    "Makkelijker om snel te overleggen met collega's."
+                ]
+            }
+        ];
+
+        // ── STATE VARIABLES ──
+        let activeTopic = null;
+        let timers = {
+            prep: { seconds: 600, interval: null, running: false, elementId: 'prep-timer', defaultSeconds: 600 },
+            debate: { seconds: 300, interval: null, running: false, elementId: 'debate-timer', defaultSeconds: 300 }
+        };
+        let argumentsLeft = [];
+        let argumentsRight = [];
+        let audioCtx = null;
+
+        // ── SOUND ENGINE ──
+        function playSound(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                const now = audioCtx.currentTime;
+                
+                if (type === 'tick') {
+                    // Soft high click for timer countdown
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(800, now);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'add') {
+                    // Soft positive pop
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === 'remove') {
+                    // Soft negative sliding note
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(200, now + 0.2);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'alarm') {
+                    // Double warning chime
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.setValueAtTime(0.12, now + 0.15);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === 'win') {
+                    // Ascending major chord celebration
+                    osc.type = 'sine';
+                    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const noteTime = now + (idx * 0.08);
+                        osc.frequency.setValueAtTime(freq, noteTime);
+                    });
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                    osc.start(now);
+                    osc.stop(now + 1.2);
+                }
+            } catch (e) {
+                console.error("Audio error:", e);
+            }
+        }
+
+        // ── INIT APP ──
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTopics();
+            resetGame();
+        });
+
+        // ── RENDER TOPICS ──
+        function renderTopics() {
+            const grid = document.getElementById('topics-grid');
+            grid.innerHTML = '';
+            
+            TOPICS.forEach(topic => {
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                card.onclick = () => selectTopic(topic.id);
+                
+                const criteriaHtml = topic.criteria.map(c => `<span class="criteria-badge">${c}</span>`).join('');
+                
+                card.innerHTML = `
+                    <div>
+                        <span class="topic-icon">${topic.icon}</span>
+                        <div class="topic-info">
+                            <span class="criteria-badge" style="background: rgba(139, 126, 248, 0.15); color: var(--neutral-accent); font-size: 0.65rem; padding: 2px 8px; margin-bottom: 10px; display: inline-block;">${topic.category}</span>
+                            <h3>${topic.title}</h3>
+                            <div class="topic-sides">
+                                <span class="side-badge-left">A: ${topic.sideA}</span>
+                                <span>vs</span>
+                                <span class="side-badge-right">B: ${topic.sideB}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topic-criteria">
+                        ${criteriaHtml}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ── SELECT TOPIC ──
+        function selectTopic(id) {
+            activeTopic = TOPICS.find(t => t.id === id);
+            if (!activeTopic) return;
+            
+            // Set fields in game view
+            document.getElementById('game-topic-category').textContent = activeTopic.category.toUpperCase();
+            document.getElementById('game-topic-title').textContent = activeTopic.title;
+            document.getElementById('game-topic-criteria').textContent = `Criteria: ${activeTopic.criteria.join(', ')}`;
+            
+            // Set label and board texts
+            document.getElementById('label-left').textContent = activeTopic.sideA;
+            document.getElementById('label-right').textContent = activeTopic.sideB;
+            document.getElementById('board-title-left').textContent = `👈 Argumenten: ${activeTopic.sideA.split(' ')[0]}`;
+            document.getElementById('board-title-right').textContent = `${activeTopic.sideB.split(' ')[0]} :Argumenten 👉`;
+            
+            // Render presets
+            renderPresets('left', activeTopic.presetsA);
+            renderPresets('right', activeTopic.presetsB);
+
+            // Clean & switch views
+            resetGame();
+            document.getElementById('index-view').style.display = 'none';
+            document.getElementById('game-view').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBackToIndex() {
+            stopAllTimers();
+            document.getElementById('game-view').style.display = 'none';
+            document.getElementById('index-view').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── PRESETS ──
+        function renderPresets(side, list) {
+            const container = document.getElementById(`presets-${side}`);
+            container.innerHTML = '';
+            list.forEach(p => {
+                const chip = document.createElement('button');
+                chip.className = 'preset-chip';
+                chip.textContent = p;
+                chip.title = p;
+                chip.onclick = () => {
+                    addPresetArgument(side, p);
+                };
+                container.appendChild(chip);
+            });
+        }
+
+        function addPresetArgument(side, text) {
+            const input = document.getElementById(`input-${side}`);
+            input.value = text;
+            addArgument(side);
+        }
+
+        // ── GAUGE / SLIDER LOGIC ──
+        function updateGauge(val) {
+            const value = parseInt(val);
+            const slider = document.getElementById('gauge-slider');
+            
+            // Update labels scale & glow
+            const labelLeft = document.getElementById('label-left');
+            const labelRight = document.getElementById('label-right');
+            
+            labelLeft.classList.remove('active');
+            labelRight.classList.remove('active');
+
+            const textLeft = document.getElementById('indicator-text-left');
+            const textRight = document.getElementById('indicator-text-right');
+            const textCenter = document.getElementById('indicator-text-center');
+
+            if (value < 45) {
+                labelLeft.classList.add('active');
+                const strength = Math.round((50 - value) * 2);
+                textLeft.textContent = `Team A voorsprong (+${strength}%)`;
+                textLeft.style.color = 'var(--accent-left)';
+                textRight.textContent = 'Achterstand';
+                textRight.style.color = 'var(--text-muted)';
+                textCenter.textContent = '';
+            } else if (value > 55) {
+                labelRight.classList.add('active');
+                const strength = Math.round((value - 50) * 2);
+                textRight.textContent = `Team B voorsprong (+${strength}%)`;
+                textRight.style.color = 'var(--accent-right)';
+                textLeft.textContent = 'Achterstand';
+                textLeft.style.color = 'var(--text-muted)';
+                textCenter.textContent = '';
+            } else {
+                textLeft.textContent = 'Neutraal';
+                textLeft.style.color = 'var(--text-muted)';
+                textRight.textContent = 'Neutraal';
+                textRight.style.color = 'var(--text-muted)';
+                textCenter.textContent = 'Perfecte Balans';
+                textCenter.style.color = '#fff';
+            }
+        }
+
+        // ── TIMERS ENGINE ──
+        function toggleTimer(type) {
+            const timer = timers[type];
+            const btn = document.getElementById(`${type}-timer-btn`);
+            
+            if (timer.running) {
+                // Pause
+                clearInterval(timer.interval);
+                timer.running = false;
+                btn.textContent = '▶';
+            } else {
+                // Start
+                playSound('tick');
+                timer.running = true;
+                btn.textContent = '⏸';
+                timer.interval = setInterval(() => {
+                    timer.seconds--;
+                    updateTimerDisplay(type);
+                    
+                    if (timer.seconds <= 0) {
+                        clearInterval(timer.interval);
+                        timer.running = false;
+                        btn.textContent = '▶';
+                        playSound('alarm');
+                        alert(`${type === 'prep' ? 'Voorbereidingstijd' : 'Debattijd'} is verstreken!`);
+                    } else if (timer.seconds <= 10) {
+                        playSound('tick'); // Final countdown sound
+                    }
+                }, 1000);
+            }
+        }
+
+        function updateTimerDisplay(type) {
+            const timer = timers[type];
+            const el = document.getElementById(timer.elementId);
+            const mins = Math.floor(timer.seconds / 60);
+            const secs = timer.seconds % 60;
+            el.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function stopAllTimers() {
+            Object.keys(timers).forEach(type => {
+                const timer = timers[type];
+                clearInterval(timer.interval);
+                timer.running = false;
+                timer.seconds = timer.defaultSeconds;
+                updateTimerDisplay(type);
+                const btn = document.getElementById(`${type}-timer-btn`);
+                if (btn) btn.textContent = '▶';
+            });
+        }
+
+        // ── ARGUMENTS LOGIC ──
+        function handleArgEnter(e, side) {
+            if (e.key === 'Enter') {
+                addArgument(side);
+            }
+        }
+
+        function addArgument(side) {
+            const input = document.getElementById(`input-${side}`);
+            const text = input.value.trim();
+            if (!text) return;
+            
+            playSound('add');
+            
+            if (side === 'left') {
+                argumentsLeft.push(text);
+            } else {
+                argumentsRight.push(text);
+            }
+            
+            input.value = '';
+            renderArguments(side);
+        }
+
+        function deleteArgument(side, index) {
+            playSound('remove');
+            if (side === 'left') {
+                argumentsLeft.splice(index, 1);
+            } else {
+                argumentsRight.splice(index, 1);
+            }
+            renderArguments(side);
+        }
+
+        function renderArguments(side) {
+            const listEl = document.getElementById(`list-${side}`);
+            const list = side === 'left' ? argumentsLeft : argumentsRight;
+            
+            listEl.innerHTML = '';
+            
+            if (list.length === 0) {
+                listEl.innerHTML = '<div class="empty-state">Nog geen argumenten toegevoegd...</div>';
+                return;
+            }
+            
+            list.forEach((arg, index) => {
+                const item = document.createElement('li');
+                item.className = 'argument-item';
+                item.innerHTML = `
+                    <p>${arg}</p>
+                    <button class="delete-argument-btn" onclick="deleteArgument('${side}', ${index})" title="Verwijder argument">✕</button>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        // ── RESET ──
+        function resetGame() {
+            stopAllTimers();
+            argumentsLeft = [];
+            argumentsRight = [];
+            renderArguments('left');
+            renderArguments('right');
+            
+            const slider = document.getElementById('gauge-slider');
+            if (slider) {
+                slider.value = 50;
+                updateGauge(50);
+            }
+        }
+
+        // ── WINNER MODAL ──
+        function showWinnerOverlay() {
+            const value = parseInt(document.getElementById('gauge-slider').value);
+            const banner = document.getElementById('winner-banner');
+            const desc = document.getElementById('winner-description');
+            
+            playSound('win');
+            
+            banner.className = 'winner-team-name';
+            
+            if (value < 45) {
+                banner.textContent = `🏆 Team A: ${activeTopic ? activeTopic.sideA : 'Optie A'}`;
+                banner.classList.add('left-winner');
+                desc.textContent = "De Twijfelaar vond de argumenten van Team A het meest overtuigend! Ze hebben vlijmscherp gereageerd op tegenargumenten en standgehouden.";
+                startConfetti();
+            } else if (value > 55) {
+                banner.textContent = `🏆 Team B: ${activeTopic ? activeTopic.sideB : 'Optie B'}`;
+                banner.classList.add('right-winner');
+                desc.textContent = "De Twijfelaar heeft besloten! Team B had de meest overtuigende feiten en wist met ijzersterke weerleggingen de meter helemaal naar hun kant te trekken.";
+                startConfetti();
+            } else {
+                banner.textContent = "🤝 Gelijkspel!";
+                banner.classList.add('draw-winner');
+                desc.textContent = "Beide teams waren extreem aan elkaar gewaagd! De Twijfelaar kon simpelweg geen keuze maken omdat beide kanten geweldige argumenten en presentatie lieten zien.";
+            }
+            
+            document.getElementById('win-overlay').style.display = 'flex';
+        }
+
+        function closeWinnerOverlay() {
+            document.getElementById('win-overlay').style.display = 'none';
+            stopConfetti();
+            goBackToIndex();
+        }
+
+        // ── CONFETTI ENGINE ──
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let confettiFrame = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function startConfetti() {
+            resizeCanvas();
+            particles = [];
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 4,
+                    d: Math.random() * canvas.height,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngle: 0
+                });
+            }
+            if (confettiFrame) cancelAnimationFrame(confettiFrame);
+            animateConfetti();
+        }
+
+        function stopConfetti() {
+            if (confettiFrame) cancelAnimationFrame(confettiFrame);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.tiltAngle += p.tiltAngleIncremental;
+                p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                p.x += Math.sin(p.tiltAngle);
+                p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 5;
+
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                ctx.stroke();
+
+                if (p.y > canvas.height) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = -20;
+                    p.tilt = Math.random() * 10 - 5;
+                }
+            });
+            confettiFrame = requestAnimationFrame(animateConfetti);
+        }
+    </script>
+</body>
+</html>
