@@ -2352,12 +2352,7 @@
                         const normB = norm(slot.wordCorrect);
                         const isTypo = levenshtein(normA, normB) <= 2;
                         wc = isTypo ? '#f59e0b' : '#ef4444'; // spelling/typo is oranje/geel, grammar error is rood
-                        label = `
-                            <div style="display:inline-flex; flex-direction:column; align-items:center; line-height:1.1; vertical-align:middle; padding:2px 0;">
-                                <span style="color:#10b981; font-weight:800; font-size:0.85rem;">${esc(slot.wordCorrect)}</span>
-                                <span style="text-decoration:line-through; color:#ef4444; opacity:0.8; font-size:0.75rem;">${esc(slot.wordFonetisch)}</span>
-                            </div>
-                        `;
+                        label = esc(slot.wordFonetisch);
                         titleText = isTypo ? 'Spelling- of typfout.' : 'Grammaticaal incorrect of aangepast.';
                     }
 
@@ -2447,24 +2442,37 @@
                     titleText += (titleText ? ' | ' : '') + 'Klik: kleur wijzigen. Dubbelklik: tekst bewerken.';
                     pill.title = titleText;
 
-                    if (slot.type === 'substitute') {
-                        pill.innerHTML = label;
-                    } else {
-                        pill.innerHTML = `<span>${label}</span>`;
-                    }
+                    pill.innerHTML = `<span>${label}</span>`;
                     grid.appendChild(pill);
                 });
                 grid.style.marginBottom = '6px';
                 card.appendChild(grid);
 
-                // Zo moet het (corrected sentence)
+                // Zo moet het (corrected sentence rendered as green blocks)
                 const correctText = l.zin_correct || l.zin_fonetisch || '';
                 const doel = document.createElement('div');
-                doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
-                doel.innerHTML = `<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic; cursor:pointer;" title="Dubbelklik om de gecorrigeerde zin te bewerken">${esc(correctText)}</span>`;
+                doel.style.cssText = 'margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;';
                 
-                const correctSpan = doel.querySelector('span');
-                correctSpan.addEventListener('dblclick', async (ev) => {
+                const labelSpan = document.createElement('span');
+                labelSpan.style.cssText = 'font-weight:800; font-size:0.8rem; color:var(--text); min-width:80px;';
+                labelSpan.textContent = 'Zo moet het:';
+                doel.appendChild(labelSpan);
+                
+                const correctGrid = document.createElement('div');
+                correctGrid.style.cssText = 'display:inline-flex; flex-wrap:wrap; gap:6px;';
+                
+                const correctWords = correctText.split(/\s+/);
+                correctWords.forEach(w => {
+                    if (!w) return;
+                    const pill = document.createElement('span');
+                    pill.style.cssText = 'display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; background:#10b9813d; border:1px solid #10b981cc; font-size:0.8rem; color:var(--text);';
+                    pill.innerHTML = `<span>${esc(w)}</span>`;
+                    correctGrid.appendChild(pill);
+                });
+                
+                correctGrid.style.cursor = 'pointer';
+                correctGrid.title = 'Dubbelklik om de gecorrigeerde zin te bewerken';
+                correctGrid.addEventListener('dblclick', async (ev) => {
                     ev.stopPropagation();
                     let inputVal = prompt(`Bewerk de gecorrigeerde zin:`, correctText);
                     if (inputVal === null) return; // cancelled
@@ -2476,6 +2484,8 @@
                         renderGrammarColumn();
                     }
                 });
+                
+                doel.appendChild(correctGrid);
                 card.appendChild(doel);
 
                 // Waarom deze grammatica
@@ -3035,8 +3045,26 @@
 
                     if (l.zin_correct) {
                         const doel = document.createElement('div');
-                        doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
-                        doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
+                        doel.style.cssText = 'margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;';
+                        
+                        const labelSpan = document.createElement('span');
+                        labelSpan.style.cssText = 'font-weight:800; font-size:0.8rem; color:var(--text); min-width:80px;';
+                        labelSpan.textContent = 'Zo moet het:';
+                        doel.appendChild(labelSpan);
+                        
+                        const correctGrid = document.createElement('div');
+                        correctGrid.style.cssText = 'display:inline-flex; flex-wrap:wrap; gap:6px;';
+                        
+                        const correctWords = l.zin_correct.split(/\s+/);
+                        correctWords.forEach(w => {
+                            if (!w) return;
+                            const pill = document.createElement('span');
+                            pill.style.cssText = 'display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; background:#10b9813d; border:1px solid #10b981cc; font-size:0.8rem; color:var(--text);';
+                            pill.innerHTML = `<span>${esc(w)}</span>`;
+                            correctGrid.appendChild(pill);
+                        });
+                        
+                        doel.appendChild(correctGrid);
                         card.appendChild(doel);
                     }
 

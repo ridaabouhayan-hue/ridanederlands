@@ -2183,11 +2183,29 @@
                 });
                 card.appendChild(grid);
 
-                // Zo moet het
+                // Zo moet het (corrected sentence rendered as green blocks)
                 if (l.zin_correct && l.zin_correct !== l.zin_fonetisch) {
                     const doel = document.createElement('div');
-                    doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
-                    doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
+                    doel.style.cssText = 'margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;';
+                    
+                    const labelSpan = document.createElement('span');
+                    labelSpan.style.cssText = 'font-weight:800; font-size:0.8rem; color:var(--text); min-width:80px;';
+                    labelSpan.textContent = 'Zo moet het:';
+                    doel.appendChild(labelSpan);
+                    
+                    const correctGrid = document.createElement('div');
+                    correctGrid.style.cssText = 'display:inline-flex; flex-wrap:wrap; gap:6px;';
+                    
+                    const correctWords = l.zin_correct.split(/\s+/);
+                    correctWords.forEach(w => {
+                        if (!w) return;
+                        const pill = document.createElement('span');
+                        pill.style.cssText = 'display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; background:#10b9813d; border:1px solid #10b981cc; font-size:0.8rem; color:var(--text);';
+                        pill.innerHTML = `<span>${esc(w)}</span>`;
+                        correctGrid.appendChild(pill);
+                    });
+                    
+                    doel.appendChild(correctGrid);
                     card.appendChild(doel);
                 }
 
@@ -2741,8 +2759,26 @@
 
                     if (l.zin_correct) {
                         const doel = document.createElement('div');
-                        doel.style.cssText = 'margin-top:8px;font-size:0.78rem;color:var(--text-muted);';
-                        doel.innerHTML = '<b style="color:var(--text);">Zo moet het: </b><span style="font-style:italic;">' + esc(l.zin_correct) + '</span>';
+                        doel.style.cssText = 'margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;';
+                        
+                        const labelSpan = document.createElement('span');
+                        labelSpan.style.cssText = 'font-weight:800; font-size:0.8rem; color:var(--text); min-width:80px;';
+                        labelSpan.textContent = 'Zo moet het:';
+                        doel.appendChild(labelSpan);
+                        
+                        const correctGrid = document.createElement('div');
+                        correctGrid.style.cssText = 'display:inline-flex; flex-wrap:wrap; gap:6px;';
+                        
+                        const correctWords = l.zin_correct.split(/\s+/);
+                        correctWords.forEach(w => {
+                            if (!w) return;
+                            const pill = document.createElement('span');
+                            pill.style.cssText = 'display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; background:#10b9813d; border:1px solid #10b981cc; font-size:0.8rem; color:var(--text);';
+                            pill.innerHTML = `<span>${esc(w)}</span>`;
+                            correctGrid.appendChild(pill);
+                        });
+                        
+                        doel.appendChild(correctGrid);
                         card.appendChild(doel);
                     }
 
