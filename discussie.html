@@ -16,34 +16,72 @@
 
         :root {
             --bg: #090d16;
-            --card-bg: rgba(24, 32, 64, 0.45);
+            --card-bg: #151d38; /* Optimized: Solid translucent card background without expensive blur filter */
             --card-border: rgba(255, 255, 255, 0.08);
             --text-dark: #f0f2f8;
             --text-muted: #8b9bb4;
             --accent-left: #ff4a6b;       /* Red/Pink for Option A */
             --accent-right: #00d2ff;      /* Teal/Blue for Option B */
-            --accent-glow-left: rgba(255, 74, 107, 0.4);
-            --accent-glow-right: rgba(0, 210, 255, 0.4);
+            --accent-glow-left: rgba(255, 74, 107, 0.25);
+            --accent-glow-right: rgba(0, 210, 255, 0.25);
             --neutral-accent: #8b7ef8;
             --radius-lg: 24px;
             --radius-md: 16px;
             --radius-sm: 12px;
-            --glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
         }
 
         body {
             font-family: 'Nunito', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #171d3d 0%, var(--bg) 70%);
+            background: radial-gradient(circle at 50% 0%, #171d3d 0%, var(--bg) 70%) no-repeat fixed;
             color: var(--text-dark);
             min-height: 100vh;
-            padding: 40px 20px 80px;
+            padding: 20px 20px 80px;
             overflow-x: hidden;
+        }
+
+        /* ── LANGUAGE SELECTOR BAR ── */
+        .language-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: var(--neutral-accent);
+        }
+
+        .lang-btn.active {
+            background: var(--neutral-accent);
+            color: #fff;
+            border-color: var(--neutral-accent);
+            box-shadow: 0 4px 15px rgba(139, 126, 248, 0.3);
         }
 
         /* ── HEADER ── */
         header {
             max-width: 1200px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             text-align: center;
             position: relative;
         }
@@ -56,22 +94,21 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--card-border);
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: var(--radius-sm);
             color: var(--text-dark);
             text-decoration: none;
             font-weight: 700;
             font-size: 0.9rem;
-            backdrop-filter: blur(10px);
             transition: all 0.2s ease;
         }
 
         .back-home-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             border-color: var(--neutral-accent);
-            transform: translateY(-50%) translateX(-4px);
+            transform: translateY(-50%) translateX(-3px);
         }
 
         .logo-badge {
@@ -86,7 +123,7 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
@@ -97,14 +134,14 @@
             background: linear-gradient(180deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-muted);
             font-weight: 600;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
         }
 
@@ -123,9 +160,8 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 30px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(16px);
+            padding: 24px 30px;
+            margin-bottom: 35px;
             box-shadow: var(--glow);
             position: relative;
             overflow: hidden;
@@ -145,12 +181,12 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .rules-header h2 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
         }
 
@@ -187,9 +223,9 @@
         /* Topics Section */
         .section-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -198,24 +234,23 @@
         .grid-topics {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            gap: 20px;
         }
 
         .topic-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 30px 24px 24px;
+            padding: 26px 22px 22px;
             cursor: pointer;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s, box-shadow 0.25s;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 280px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            min-height: 270px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
         .topic-card::after {
@@ -229,13 +264,13 @@
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         .topic-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(24, 32, 64, 0.65);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            background: #1a254c;
         }
 
         .topic-card:hover::after {
@@ -243,29 +278,29 @@
         }
 
         .topic-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+            font-size: 2.3rem;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
             display: inline-block;
-            transition: transform 0.3s ease;
+            transition: transform 0.25s ease;
         }
 
         .topic-card:hover .topic-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.08) rotate(3deg);
         }
 
         .topic-info h3 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.3;
         }
 
         .topic-sides {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -305,11 +340,11 @@
             display: none;
             max-width: 1100px;
             margin: 0 auto;
-            animation: fadeIn 0.4s ease forwards;
+            animation: fadeIn 0.3s ease forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -317,17 +352,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 20px 30px;
+            padding: 18px 24px;
             border-radius: var(--radius-lg);
-            backdrop-filter: blur(10px);
         }
 
         .game-title-area h2 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 900;
         }
 
@@ -341,23 +375,23 @@
         .controls-panel {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .timer-box {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-md);
-            padding: 8px 16px;
+            padding: 8px 14px;
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 160px;
+            min-width: 150px;
         }
 
         .timer-display {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: #fff;
             letter-spacing: 0.5px;
@@ -365,7 +399,7 @@
         }
 
         .timer-label {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-muted);
@@ -376,14 +410,14 @@
             background: var(--neutral-accent);
             border: none;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: transform 0.15s ease, filter 0.15s;
             box-shadow: 0 4px 10px rgba(139, 126, 248, 0.3);
         }
 
@@ -397,9 +431,8 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 40px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            padding: 30px 40px;
+            margin-bottom: 24px;
             position: relative;
             overflow: hidden;
             box-shadow: var(--glow);
@@ -410,17 +443,17 @@
             max-width: 800px;
             margin: 0 auto;
             position: relative;
-            padding-bottom: 30px;
+            padding-bottom: 20px;
         }
 
         .twijfelaar-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .twijfelaar-header h3 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: var(--text-dark);
             margin-bottom: 4px;
@@ -434,7 +467,7 @@
         /* Glowing interactive slider track */
         .slider-wrapper {
             position: relative;
-            margin: 40px 0;
+            margin: 30px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -442,10 +475,9 @@
 
         .side-label {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 900;
-            text-shadow: 0 0 20px transparent;
-            transition: text-shadow 0.3s ease, transform 0.3s ease;
+            transition: transform 0.2s ease, text-shadow 0.2s;
             max-width: 180px;
         }
 
@@ -460,22 +492,22 @@
         }
 
         .side-label.active {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
 
         .side-label.left.active {
-            text-shadow: 0 0 15px var(--accent-glow-left);
+            text-shadow: 0 0 12px var(--accent-glow-left);
         }
 
         .side-label.right.active {
-            text-shadow: 0 0 15px var(--accent-glow-right);
+            text-shadow: 0 0 12px var(--accent-glow-right);
         }
 
         .slider-container {
             flex: 1;
-            margin: 0 30px;
+            margin: 0 24px;
             position: relative;
-            height: 60px;
+            height: 50px;
             display: flex;
             align-items: center;
         }
@@ -484,8 +516,8 @@
             position: absolute;
             left: 0;
             width: 100%;
-            height: 12px;
-            border-radius: 6px;
+            height: 10px;
+            border-radius: 5px;
             background: linear-gradient(to right, var(--accent-left) 0%, #fff 50%, var(--accent-right) 100%);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
         }
@@ -497,10 +529,10 @@
             top: 50%;
             transform: translate(-50%, -50%);
             width: 4px;
-            height: 24px;
+            height: 22px;
             background: #fff;
             border-radius: 2px;
-            box-shadow: 0 0 8px #fff;
+            box-shadow: 0 0 6px #fff;
             z-index: 2;
         }
 
@@ -508,7 +540,7 @@
         .gauge-slider {
             -webkit-appearance: none;
             width: 100%;
-            height: 40px;
+            height: 30px;
             background: transparent;
             position: relative;
             z-index: 5;
@@ -522,20 +554,19 @@
         /* Custom thumb */
         .gauge-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 40px;
-            width: 40px;
+            height: 34px;
+            width: 34px;
             border-radius: 50%;
             background: #ffffff;
-            border: 4px solid var(--bg);
-            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4), 0 4px 10px rgba(0,0,0,0.5);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.35), 0 3px 8px rgba(0,0,0,0.4);
             cursor: grab;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            transition: transform 0.1s ease;
         }
 
         .gauge-slider::-webkit-slider-thumb:active {
             cursor: grabbing;
-            transform: scale(1.15);
-            box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.6), 0 6px 15px rgba(0,0,0,0.7);
+            transform: scale(1.1);
         }
 
         /* Live state indicators */
@@ -545,23 +576,22 @@
             font-size: 0.8rem;
             color: var(--text-muted);
             font-weight: 700;
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
         /* ── ARGUMENTS BOXES ── */
         .arguments-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            gap: 24px;
+            margin-bottom: 30px;
         }
 
         .arguments-column {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 30px;
-            backdrop-filter: blur(10px);
+            padding: 24px;
             display: flex;
             flex-direction: column;
             box-shadow: var(--glow);
@@ -593,16 +623,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .column-header h4 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .column-header.left-side h4 { color: var(--accent-left); }
@@ -612,11 +642,11 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            min-height: 200px;
-            max-height: 350px;
+            gap: 10px;
+            min-height: 180px;
+            max-height: 320px;
             overflow-y: auto;
-            padding-right: 8px;
+            padding-right: 6px;
         }
 
         .argument-list::-webkit-scrollbar {
@@ -637,18 +667,18 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-md);
-            padding: 14px 18px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            line-height: 1.45;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 12px;
-            animation: slideIn 0.3s ease forwards;
+            gap: 10px;
+            animation: slideIn 0.25s ease forwards;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -659,10 +689,10 @@
         .delete-argument-btn {
             background: transparent;
             border: none;
-            color: rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.2);
             cursor: pointer;
             font-size: 1rem;
-            transition: color 0.2s;
+            transition: color 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -674,7 +704,7 @@
 
         .empty-state {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-style: italic;
             text-align: center;
             margin: auto;
@@ -684,19 +714,18 @@
         .add-argument-form {
             display: flex;
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 16px;
         }
 
         .argument-input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-sm);
-            padding: 10px 14px;
+            padding: 9px 12px;
             color: #fff;
             font-family: inherit;
             font-size: 0.85rem;
-            transition: border-color 0.2s;
         }
 
         .argument-input:focus {
@@ -706,33 +735,33 @@
 
         .add-btn {
             border: none;
-            padding: 10px 16px;
+            padding: 9px 14px;
             border-radius: var(--radius-sm);
             font-weight: 700;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.15s, filter 0.15s;
             color: #fff;
         }
 
         .add-btn.left {
             background: var(--accent-left);
-            box-shadow: 0 4px 12px var(--accent-glow-left);
+            box-shadow: 0 4px 10px var(--accent-glow-left);
         }
 
         .add-btn.right {
             background: var(--accent-right);
-            box-shadow: 0 4px 12px var(--accent-glow-right);
+            box-shadow: 0 4px 10px var(--accent-glow-right);
         }
 
         .add-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.15);
+            transform: translateY(-1px);
+            filter: brightness(1.12);
         }
 
         /* Preset Arguments */
         .preset-section {
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
         .preset-label {
@@ -741,24 +770,24 @@
             letter-spacing: 0.5px;
             color: var(--text-muted);
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .presets-wrapper {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .preset-chip {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            padding: 6px 12px;
-            font-size: 0.78rem;
+            padding: 5px 10px;
+            font-size: 0.76rem;
             cursor: pointer;
             color: var(--text-muted);
-            transition: all 0.2s ease;
+            transition: background-color 0.15s, color 0.15s;
             text-align: left;
             max-width: 100%;
             overflow: hidden;
@@ -768,7 +797,6 @@
 
         .preset-chip:hover {
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.15);
             color: #fff;
         }
 
@@ -776,22 +804,22 @@
         .bottom-actions {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .action-btn {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 800;
-            padding: 16px 36px;
+            padding: 14px 30px;
             border-radius: var(--radius-md);
             border: none;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            gap: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
         .action-btn.primary {
@@ -806,16 +834,16 @@
         }
 
         .action-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
         }
 
         .action-btn.primary:hover {
-            filter: brightness(1.1);
+            filter: brightness(1.08);
         }
 
         .action-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             border-color: var(--neutral-accent);
         }
 
@@ -824,7 +852,6 @@
             position: fixed;
             inset: 0;
             background: rgba(5, 7, 13, 0.95);
-            backdrop-filter: blur(20px);
             z-index: 100;
             display: none;
             align-items: center;
@@ -838,69 +865,69 @@
             max-width: 600px;
             width: 100%;
             border-radius: var(--radius-lg);
-            padding: 50px 40px;
+            padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(139, 126, 248, 0.2);
-            animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-shadow: 0 15px 40px rgba(139, 126, 248, 0.2);
+            animation: scaleUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
             position: relative;
         }
 
         @keyframes scaleUp {
-            from { transform: scale(0.8); opacity: 0; }
+            from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
         .win-crown {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            margin-bottom: 16px;
             animation: bounce 2s infinite;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
 
         .win-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 900;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .winner-team-name {
             display: inline-block;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 900;
-            padding: 8px 24px;
+            padding: 6px 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 16px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .winner-team-name.left-winner {
             background: var(--accent-left);
             color: white;
-            box-shadow: 0 8px 20px var(--accent-glow-left);
+            box-shadow: 0 6px 15px var(--accent-glow-left);
         }
 
         .winner-team-name.right-winner {
             background: var(--accent-right);
             color: white;
-            box-shadow: 0 8px 20px var(--accent-glow-right);
+            box-shadow: 0 6px 15px var(--accent-glow-right);
         }
 
         .winner-team-name.draw-winner {
             background: var(--neutral-accent);
             color: white;
-            box-shadow: 0 8px 20px rgba(139, 126, 248, 0.4);
+            box-shadow: 0 6px 15px rgba(139, 126, 248, 0.3);
         }
 
         .win-desc {
             color: var(--text-muted);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 24px;
         }
 
         .win-close-btn {
@@ -908,17 +935,17 @@
             color: var(--bg);
             border: none;
             font-family: 'Outfit', sans-serif;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 800;
-            padding: 14px 32px;
+            padding: 12px 28px;
             border-radius: var(--radius-md);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
 
         .win-close-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.25);
         }
 
         #confetti-canvas {
@@ -932,11 +959,11 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
-            h1 { font-size: 2.2rem; }
-            .back-home-btn { position: relative; left: 0; top: 0; transform: none; margin-bottom: 20px; }
-            .gauge-section { padding: 24px; }
-            .slider-wrapper { flex-direction: column; gap: 20px; }
-            .slider-container { width: 100%; margin: 10px 0; }
+            h1 { font-size: 2.1rem; }
+            .back-home-btn { position: relative; left: 0; top: 0; transform: none; margin-bottom: 16px; }
+            .gauge-section { padding: 20px; }
+            .slider-wrapper { flex-direction: column; gap: 15px; }
+            .slider-container { width: 100%; margin: 8px 0; }
             .side-label { max-width: 100%; text-align: center !important; }
             .arguments-grid { grid-template-columns: 1fr; gap: 20px; }
             .bottom-actions { flex-direction: column; align-items: stretch; }
@@ -948,14 +975,33 @@
     <!-- Confetti for winners -->
     <canvas id="confetti-canvas"></canvas>
 
+    <!-- Language Selector Bar -->
+    <nav class="language-bar" aria-label="Taalkeuze" id="lang-bar">
+        <button class="lang-btn active" data-lang="nl" onclick="changeAppLanguage('nl')">
+            <span>🇳🇱</span> Nederlands
+        </button>
+        <button class="lang-btn" data-lang="en" onclick="changeAppLanguage('en')">
+            <span>🇬🇧</span> English
+        </button>
+        <button class="lang-btn" data-lang="tr" onclick="changeAppLanguage('tr')">
+            <span>🇹🇷</span> Türkçe
+        </button>
+        <button class="lang-btn" data-lang="ar" onclick="changeAppLanguage('ar')">
+            <span>🇸🇦</span> العربية
+        </button>
+        <button class="lang-btn" data-lang="pl" onclick="changeAppLanguage('pl')">
+            <span>🇵🇱</span> Polski
+        </button>
+    </nav>
+
     <!-- Header -->
     <header class="section">
         <a href="index.html" class="back-home-btn" id="header-back-btn">
             <span>←</span> Home
         </a>
-        <div class="logo-badge">💬 Debat Spel</div>
-        <h1>Overtuig de Twijfelaar</h1>
-        <p class="subtitle">Werk samen in teams, verdedig je standpunt en sleep de twijfelende docent mee naar jouw kant!</p>
+        <div class="logo-badge" id="ui-badge">💬 Debat Spel</div>
+        <h1 id="ui-main-title">Overtuig de Twijfelaar</h1>
+        <p class="subtitle" id="ui-main-subtitle">Werk samen in teams, verdedig je standpunt en sleep de twijfelende docent mee naar jouw kant!</p>
     </header>
 
     <main class="container">
@@ -964,29 +1010,29 @@
             <!-- Rules explanation -->
             <div class="rules-card">
                 <div class="rules-header">
-                    <span style="font-size: 1.8rem;">📖</span>
-                    <h2>Speluitleg: Hoe werkt het?</h2>
+                    <span style="font-size: 1.6rem;">📖</span>
+                    <h2 id="ui-rules-title">Speluitleg: Hoe werkt het?</h2>
                 </div>
                 <div class="rules-grid">
                     <div class="rule-item">
                         <div class="rule-icon">⚖️</div>
                         <div class="rule-text">
-                            <h3>1. Start & Rollen</h3>
-                            <p>De docent is de 'Twijfelaar'. De rest verdeelt zich in Team A en Team B met elk een tegengesteld standpunt.</p>
+                            <h3 id="ui-rule1-title">1. Start & Rollen</h3>
+                            <p id="ui-rule1-desc">De docent is de 'Twijfelaar'. De rest verdeelt zich in Team A en Team B met elk een tegengesteld standpunt.</p>
                         </div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">⏱️</div>
                         <div class="rule-text">
-                            <h3>2. Voorbereiding</h3>
-                            <p>Bereid in 10-15 minuten sterke argumenten voor, verdeel sprekersrollen en bedenk reacties op tegenargumenten.</p>
+                            <h3 id="ui-rule2-title">2. Voorbereiding</h3>
+                            <p id="ui-rule2-desc">Bereid in 10-15 minuten sterke argumenten voor, verdeel sprekersrollen en bedenk reacties op tegenargumenten.</p>
                         </div>
                     </div>
                     <div class="rule-item">
                         <div class="rule-icon">🔥</div>
                         <div class="rule-text">
-                            <h3>3. Debat & Schuiven</h3>
-                            <p>Debatteer 5 minuten lang. Na elk argument verschuift de Twijfelaar de meter richting het beste standpunt.</p>
+                            <h3 id="ui-rule3-title">3. Debat & Schuiven</h3>
+                            <p id="ui-rule3-desc">Debatteer 5 minuten lang. Na elk argument verschuift de Twijfelaar de meter richting het beste standpunt.</p>
                         </div>
                     </div>
                 </div>
@@ -994,7 +1040,7 @@
 
             <!-- Topics Grid Title -->
             <div class="section-title">
-                <span>🎯</span> Kies een Stelling / Thema
+                <span>🎯</span> <span id="ui-choose-topic">Kies een Stelling / Thema</span>
             </div>
 
             <!-- Topics Cards -->
@@ -1018,7 +1064,7 @@
                     <!-- Prep Timer -->
                     <div class="timer-box">
                         <div>
-                            <div class="timer-label">Voorbereiding</div>
+                            <div class="timer-label" id="ui-prep-label">Voorbereiding</div>
                             <div class="timer-display" id="prep-timer">10:00</div>
                         </div>
                         <button class="timer-btn" id="prep-timer-btn" onclick="toggleTimer('prep')">▶</button>
@@ -1027,7 +1073,7 @@
                     <!-- Debate Timer -->
                     <div class="timer-box">
                         <div>
-                            <div class="timer-label">Debat</div>
+                            <div class="timer-label" id="ui-debate-label">Debat</div>
                             <div class="timer-display" id="debate-timer">05:00</div>
                         </div>
                         <button class="timer-btn" id="debate-timer-btn" onclick="toggleTimer('debate')">▶</button>
@@ -1038,8 +1084,8 @@
             <!-- Gauge Section -->
             <div class="gauge-section">
                 <div class="twijfelaar-header">
-                    <h3>👨‍🏫 De Twijfel-Meter</h3>
-                    <p>Docent: versleep de regelaar naar links of rechts op basis van de overtuigingskracht van de teams!</p>
+                    <h3 id="ui-meter-title">👨‍🏫 De Twijfel-Meter</h3>
+                    <p id="ui-meter-desc">Docent: versleep de regelaar naar links of rechts op basis van de overtuigingskracht van de teams!</p>
                 </div>
 
                 <div class="slider-wrapper">
@@ -1070,23 +1116,23 @@
                 <div class="arguments-column left-side">
                     <div class="column-header left-side">
                         <h4 id="board-title-left">👈 Argumenten</h4>
-                        <span class="criteria-badge" style="background: rgba(255, 74, 107, 0.1); color: var(--accent-left); border: 1px solid var(--accent-left);">Team A</span>
+                        <span class="criteria-badge" id="ui-teamA-badge" style="background: rgba(255, 74, 107, 0.1); color: var(--accent-left); border: 1px solid var(--accent-left);">Team A</span>
                     </div>
 
                     <ul class="argument-list" id="list-left">
                         <!-- Argument items added dynamically -->
-                        <div class="empty-state">Nog geen argumenten toegevoegd...</div>
+                        <div class="empty-state" id="ui-empty-left">Nog geen argumenten toegevoegd...</div>
                     </ul>
 
                     <!-- Input form -->
                     <div class="add-argument-form">
                         <input type="text" class="argument-input" id="input-left" placeholder="Typ een argument..." onkeypress="handleArgEnter(event, 'left')">
-                        <button class="add-btn left" onclick="addArgument('left')">Voeg toe</button>
+                        <button class="add-btn left" id="ui-add-left" onclick="addArgument('left')">Voeg toe</button>
                     </div>
 
                     <!-- Presets -->
                     <div class="preset-section">
-                        <div class="preset-label">💡 Ideeën & Feiten</div>
+                        <div class="preset-label" id="ui-presets-left">💡 Ideeën & Feiten</div>
                         <div class="presets-wrapper" id="presets-left">
                             <!-- Preset chips generated dynamically -->
                         </div>
@@ -1097,23 +1143,23 @@
                 <div class="arguments-column right-side">
                     <div class="column-header right-side">
                         <h4 id="board-title-right">Argumenten 👉</h4>
-                        <span class="criteria-badge" style="background: rgba(0, 210, 255, 0.1); color: var(--accent-right); border: 1px solid var(--accent-right);">Team B</span>
+                        <span class="criteria-badge" id="ui-teamB-badge" style="background: rgba(0, 210, 255, 0.1); color: var(--accent-right); border: 1px solid var(--accent-right);">Team B</span>
                     </div>
 
                     <ul class="argument-list" id="list-right">
                         <!-- Argument items added dynamically -->
-                        <div class="empty-state">Nog geen argumenten toegevoegd...</div>
+                        <div class="empty-state" id="ui-empty-right">Nog geen argumenten toegevoegd...</div>
                     </ul>
 
                     <!-- Input form -->
                     <div class="add-argument-form">
                         <input type="text" class="argument-input" id="input-right" placeholder="Typ een argument..." onkeypress="handleArgEnter(event, 'right')">
-                        <button class="add-btn right" onclick="addArgument('right')">Voeg toe</button>
+                        <button class="add-btn right" id="ui-add-right" onclick="addArgument('right')">Voeg toe</button>
                     </div>
 
                     <!-- Presets -->
                     <div class="preset-section">
-                        <div class="preset-label">💡 Ideeën & Feiten</div>
+                        <div class="preset-label" id="ui-presets-right">💡 Ideeën & Feiten</div>
                         <div class="presets-wrapper" id="presets-right">
                             <!-- Preset chips generated dynamically -->
                         </div>
@@ -1123,13 +1169,13 @@
 
             <!-- Debate Footer Buttons -->
             <div class="bottom-actions">
-                <button class="action-btn secondary" onclick="goBackToIndex()">
+                <button class="action-btn secondary" id="ui-back-btn" onclick="goBackToIndex()">
                     <span>↩</span> Terug naar stellingen
                 </button>
-                <button class="action-btn secondary" onclick="resetGame()">
+                <button class="action-btn secondary" id="ui-reset-btn" onclick="resetGame()">
                     <span>🔄</span> Reset Ronde
                 </button>
-                <button class="action-btn primary" onclick="showWinnerOverlay()">
+                <button class="action-btn primary" id="ui-win-btn" onclick="showWinnerOverlay()">
                     <span>🏆</span> Bepaal Winnaar
                 </button>
             </div>
@@ -1140,96 +1186,447 @@
     <div class="win-overlay" id="win-overlay">
         <div class="win-card">
             <div class="win-crown">👑</div>
-            <div class="win-title">De Twijfelaar is Overtuigd!</div>
+            <div class="win-title" id="ui-win-title">De Twijfelaar is Overtuigd!</div>
             <div class="winner-team-name" id="winner-banner">Team A</div>
             <p class="win-desc" id="winner-description">Gefeliciteerd! Jullie hebben de sterkste argumenten geleverd en de Twijfelaar aan jullie kant gekregen.</p>
-            <button class="win-close-btn" onclick="closeWinnerOverlay()">Volgende stelling</button>
+            <button class="win-close-btn" id="ui-win-close" onclick="closeWinnerOverlay()">Volgende stelling</button>
         </div>
     </div>
 
 
     <script>
-        // ── TOPIC DATABASE ──
+        // ── SYSTEM TRANSLATIONS ──
+        const UI_TRANSLATIONS = {
+            nl: {
+                debatSpel: "💬 Debat Spel",
+                title: "Overtuig de Twijfelaar",
+                subtitle: "Werk samen in teams, verdedig je standpunt en sleep de twijfelende docent mee naar jouw kant!",
+                rulesTitle: "Speluitleg: Hoe werkt het?",
+                rule1Title: "1. Start & Rollen",
+                rule1Desc: "De docent is de 'Twijfelaar'. De rest verdeelt zich in Team A en Team B met elk een tegengesteld standpunt.",
+                rule2Title: "2. Voorbereiding",
+                rule2Desc: "Bereid in 10-15 minuten sterke argumenten voor, verdeel sprekersrollen en bedenk reacties op tegenargumenten.",
+                rule3Title: "3. Debat & Schuiven",
+                rule3Desc: "Debatteer 5 minuten lang. Na elk argument verschuift de Twijfelaar de meter richting het beste standpunt.",
+                chooseTopic: "Kies een Stelling / Thema",
+                prepLabel: "Voorbereiding",
+                debateLabel: "Debat",
+                meterTitle: "👨‍🏫 De Twijfel-Meter",
+                meterDesc: "Docent: versleep de regelaar naar links of rechts op basis van de overtuigingskracht van de teams!",
+                neutral: "Neutraal",
+                balance: "Perfecte Balans",
+                teamLead: "voorsprong",
+                teamBehind: "Achterstand",
+                argumentsTitle: "Argumenten",
+                teamA: "Team A",
+                teamB: "Team B",
+                noArguments: "Nog geen argumenten toegevoegd...",
+                typeArg: "Typ een argument...",
+                addBtn: "Voeg toe",
+                presetsLabel: "💡 Ideeën & Feiten",
+                backBtn: "Terug naar stellingen",
+                resetBtn: "Reset Ronde",
+                winBtn: "Bepaal Winnaar",
+                winTitle: "De Twijfelaar is Overtuigd!",
+                winDescLeft: "De Twijfelaar vond de argumenten van Team A het meest overtuigend! Ze hebben vlijmscherp gereageerd op tegenargumenten en standgehouden.",
+                winDescRight: "De Twijfelaar heeft besloten! Team B had de meest overtuigende feiten en wist met ijzersterke weerleggingen de meter helemaal naar hun kant te trekken.",
+                winDescDraw: "Beide teams waren extreem aan elkaar gewaagd! De Twijfelaar kon simpelweg geen keuze maken omdat beide kanten geweldige argumenten lieten zien.",
+                draw: "Gelijkspel!",
+                nextTopic: "Volgende stelling",
+                criteriaLabel: "Criteria"
+            },
+            en: {
+                debatSpel: "💬 Debate Game",
+                title: "Convince the Doubter",
+                subtitle: "Work together in teams, defend your point of view and drag the doubting teacher to your side!",
+                rulesTitle: "Game Instructions: How does it work?",
+                rule1Title: "1. Start & Roles",
+                rule1Desc: "The teacher is the 'Doubter'. The rest split into Team A and Team B, each with an opposing point of view.",
+                rule2Title: "2. Preparation",
+                rule2Desc: "Prepare strong arguments in 10-15 minutes, assign speaker roles, and think of responses to counterarguments.",
+                rule3Title: "3. Debate & Slide",
+                rule3Desc: "Debate for 5 minutes. After each argument, the Doubter shifts the meter towards the best point.",
+                chooseTopic: "Choose a Topic / Theme",
+                prepLabel: "Preparation",
+                debateLabel: "Debate",
+                meterTitle: "👨‍🏫 The Doubt Meter",
+                meterDesc: "Teacher: drag the slider left or right based on the persuasiveness of the teams!",
+                neutral: "Neutral",
+                balance: "Perfect Balance",
+                teamLead: "lead",
+                teamBehind: "Behind",
+                argumentsTitle: "Arguments",
+                teamA: "Team A",
+                teamB: "Team B",
+                noArguments: "No arguments added yet...",
+                typeArg: "Type an argument...",
+                addBtn: "Add",
+                presetsLabel: "💡 Ideas & Facts",
+                backBtn: "Back to topics",
+                resetBtn: "Reset Round",
+                winBtn: "Determine Winner",
+                winTitle: "The Doubter is Convinced!",
+                winDescLeft: "The Doubter found Team A's arguments the most convincing! They responded sharply to counterarguments and held their ground.",
+                winDescRight: "The Doubter has decided! Team B had the most convincing facts and managed to pull the meter completely to their side with rock-solid rebuttals.",
+                winDescDraw: "Both teams were extremely evenly matched! The Doubter simply couldn't make a choice because both sides showed great arguments.",
+                draw: "Draw!",
+                nextTopic: "Next topic",
+                criteriaLabel: "Criteria"
+            },
+            tr: {
+                debatSpel: "💬 Münazara Oyunu",
+                title: "Şüpheciyi İkna Et",
+                subtitle: "Takımlar halinde birlikte çalışın, görüşünüzü savunun ve şüpheci öğretmeni kendi tarafınıza çekin!",
+                rulesTitle: "Oyun Kuralları: Nasıl çalışır?",
+                rule1Title: "1. Başlangıç ve Roller",
+                rule1Desc: "Öğretmen 'Şüpheci'dir. Geri kalanlar, her biri karşıt bir görüşe sahip olan A Takımı ve B Takımı olarak ikiye ayrılır.",
+                rule2Title: "2. Hazırlık",
+                rule2Desc: "10-15 dakika içinde güçlü argümanlar hazırlayın, konuşmacı rollerini belirleyin ve karşı argümanlara yanıtlar düşünün.",
+                rule3Title: "3. Münazara ve Kaydırma",
+                rule3Desc: "5 dakika boyunca münazara yapın. Her argümandan sonra Şüpheci, metreyi en iyi noktaya doğru kaydırır.",
+                chooseTopic: "Bir Konu / Tema Seçin",
+                prepLabel: "Hazırlık",
+                debateLabel: "Münazara",
+                meterTitle: "👨‍🏫 Şüphe Metresi",
+                meterDesc: "Öğretmen: Takımların ikna ediciliğine göre kaydırıcıyı sola veya sağa sürükleyin!",
+                neutral: "Etkisiz",
+                balance: "Mükemmel Denge",
+                teamLead: "önde",
+                teamBehind: "Geride",
+                argumentsTitle: "Argümanlar",
+                teamA: "A Takımı",
+                teamB: "B Takımı",
+                noArguments: "Henüz argüman eklenmedi...",
+                typeArg: "Bir argüman yazın...",
+                addBtn: "Ekle",
+                presetsLabel: "💡 Fikirler ve Gerçekler",
+                backBtn: "Konulara geri dön",
+                resetBtn: "Raundu Sıfırla",
+                winBtn: "Kazananı Belirle",
+                winTitle: "Şüpheci İkna Oldu!",
+                winDescLeft: "Şüpheci, A Takımının argümanlarını en ikna edici buldu! Karşı argümanlara keskin bir şekilde yanıt verdiler ve yerlerini korudular.",
+                winDescRight: "Şüpheci karar verdi! B Takımı en ikna edici gerçeklere sahipti ve kaya gibi sağlam çürütmelerle metreyi tamamen kendi tarafına çekmeyi başardı.",
+                winDescDraw: "Her iki takım da son derece dengeliydi! Şüpheci, her iki taraf da harika argümanlar gösterdiği için bir seçim yapamadı.",
+                draw: "Beraberlik!",
+                nextTopic: "Sonraki konu",
+                criteriaLabel: "Kriterler"
+            },
+            ar: {
+                debatSpel: "💬 لعبة المناظرة",
+                title: "إقناع المتشكك",
+                subtitle: "اعملوا معًا في فرق، ودافعوا عن وجهة نظركم واجذبوا المعلم المتشكك إلى جانبكم!",
+                rulesTitle: "تعليمات اللعبة: كيف تعمل؟",
+                rule1Title: "1. البداية والأدوار",
+                rule1Desc: "المعلم هو 'المتشكك'. وينقسم الباقون إلى الفريق أ والفريق ب، ولكل منهما وجهة نظر معارضة.",
+                rule2Title: "2. التحضير",
+                rule2Desc: "قم بإعداد حجج قوية في غضون 10-15 دقيقة، وتوزيع أدوار المتحدثين، والتفكير في الردود على الحجج المضادة.",
+                rule3Title: "3. المناظرة والتحريك",
+                rule3Desc: "تناظروا لمدة 5 دقائق. بعد كل حجة، يقوم المتشكك بتحريك المؤشر نحو الطرف الأفضل.",
+                chooseTopic: "اختر موضوعًا / فكرة",
+                prepLabel: "التحضير",
+                debateLabel: "المناظرة",
+                meterTitle: "👨‍🏫 مقياس الشك",
+                meterDesc: "المعلم: اسحب المؤشر لليمين أو اليسار بناءً على مدى إقناع الفرق!",
+                neutral: "محايد",
+                balance: "توازن مثالي",
+                teamLead: "تقدم",
+                teamBehind: "تأخر",
+                argumentsTitle: "الحجج",
+                teamA: "الفريق أ",
+                teamB: "الفريق ب",
+                noArguments: "لم يتم إضافة حجج بعد...",
+                typeArg: "اكتب حجة...",
+                addBtn: "إضافة",
+                presetsLabel: "💡 أفكار وحقائق",
+                backBtn: "العودة للمواضيع",
+                resetBtn: "إعادة ضبط الجولة",
+                winBtn: "تحديد الفائز",
+                winTitle: "تم إقناع المتشكك!",
+                winDescLeft: "وجد المتشكك حجج الفريق أ هي الأكثر إقناعاً! لقد استجابوا بذكاء للحجج المضادة وثبتوا على موقفهم.",
+                winDescRight: "لقد قرر المتشكك! كان لدى الفريق ب الحقائق الأكثر إقناعاً وتمكن من سحب المؤشر بالكامل إلى جانبه بردود قوية كالصخر.",
+                winDescDraw: "كان الفريقان متكافئين للغاية! لم يتمكن المتشكك ببساطة من الاختيار لأن كلا الجانبين قدما حججاً رائعة.",
+                draw: "تعادل!",
+                nextTopic: "الموضوع التالي",
+                criteriaLabel: "المعايير"
+            },
+            pl: {
+                debatSpel: "💬 Debata",
+                title: "Przekonaj Sceptyka",
+                subtitle: "Pracujcie razem w zespołach, brońcie swojego punktu widzenia i przeciągnijcie wątpiącego nauczyciela na swoją stronę!",
+                rulesTitle: "Zasady gry: Jak to działa?",
+                rule1Title: "1. Start i role",
+                rule1Desc: "Nauczyciel jest 'Sceptykiem'. Reszta dzieli się na Drużynę A i Drużynę B, z których każda ma przeciwne zdanie.",
+                rule2Title: "2. Przygotowanie",
+                rule2Desc: "Przygotujcie mocne argumenty w 10-15 minut, rozdzielcie role mówców i pomyślcie o odpowiedziach na kontrargumenty.",
+                rule3Title: "3. Debata i przesuwanie",
+                rule3Desc: "Debatujcie przez 5 minut. Po każdym argumencie Sceptyk przesuwa wskaźnik w stronę lepszego punktu.",
+                chooseTopic: "Wybierz temat / motyw",
+                prepLabel: "Przygotowanie",
+                debateLabel: "Debata",
+                meterTitle: "👨‍🏫 Miernik Wątpliwości",
+                meterDesc: "Nauczyciel: przeciągnij suwak w lewo lub w prawo w zależności od siły przekonywania zespołów!",
+                neutral: "Neutralny",
+                balance: "Idealna równowaga",
+                teamLead: "przewaga",
+                teamBehind: "Strata",
+                argumentsTitle: "Argumenty",
+                teamA: "Drużyna A",
+                teamB: "Drużyna B",
+                noArguments: "Nie dodano jeszcze żadnych argumentów...",
+                typeArg: "Wpisz argument...",
+                addBtn: "Dodaj",
+                presetsLabel: "💡 Pomysły i fakty",
+                backBtn: "Powrót do tematów",
+                resetBtn: "Resetuj rundę",
+                winBtn: "Wybierz zwycięzcę",
+                winTitle: "Sceptyk przekonany!",
+                winDescLeft: "Sceptyk uznał argumenty Drużyny A za najbardziej przekonujące! Ostro odpowiadali na kontrargumenty i nie dali się ugiąć.",
+                winDescRight: "Sceptyk zdecydował! Drużyna B miała najbardziej przekonujące fakty i zdołała całkowicie przeciągnąć wskaźnik na swoją stronę dzięki żelaznym ripostom.",
+                winDescDraw: "Oba zespoły były niezwykle wyrównane! Sceptyk po prostu nie mógł dokonać wyboru, ponieważ obie strony przedstawiły świetne argumenty.",
+                draw: "Remis!",
+                nextTopic: "Następny temat",
+                criteriaLabel: "Kryteria"
+            }
+        };
+
+        // ── TOPICS DATABASE WITH 8 DETAILED TOPICS & 5 LANGUAGES ──
         const TOPICS = [
             {
                 id: 1,
                 icon: "👟",
-                category: "Consument",
-                title: "Adidas vs. Nike",
-                sideA: "Adidas is beter",
-                sideB: "Nike is beter",
-                criteria: ["Comfort", "Kwaliteit", "Stijl", "Prijs"],
-                presetsA: [
-                    "Adidas heeft Boost-technologie voor ultiem comfort.",
-                    "Hun klassieke modellen (Stan Smith) zijn tijdloos.",
-                    "Samenwerkingen zoals Y-3 bieden premium design."
-                ],
-                presetsB: [
-                    "Nike Air Max is iconisch en wereldwijd populair.",
-                    "Innovatieve ontwerpen en betere sportprestaties.",
-                    "Nike's marketing en branding is onverslaanbaar."
-                ]
+                category: { nl: "Consument", en: "Consumer", tr: "Tüketici", ar: "الاستهلاك", pl: "Konsumpcja" },
+                title: { nl: "Adidas vs. Nike", en: "Adidas vs. Nike", tr: "Adidas vs. Nike", ar: "أديداس ضد نايكي", pl: "Adidas vs. Nike" },
+                sideA: { nl: "Adidas is beter", en: "Adidas is better", tr: "Adidas daha iyi", ar: "أديداس هي الأفضل", pl: "Adidas jest lepszy" },
+                sideB: { nl: "Nike is beter", en: "Nike is better", tr: "Nike daha iyi", ar: "نايكي هي الأفضل", pl: "Nike jest lepszy" },
+                criteria: {
+                    nl: ["Comfort", "Kwaliteit", "Stijl", "Prijs"],
+                    en: ["Comfort", "Quality", "Style", "Price"],
+                    tr: ["Konfor", "Kalite", "Tarz", "Fiyat"],
+                    ar: ["الراحة", "الجودة", "الأناقة", "السعر"],
+                    pl: ["Komfort", "Jakość", "Styl", "Cena"]
+                },
+                presetsA: {
+                    nl: ["Boost-zolen bieden betere demping.", "Klassieke ontwerpen zoals Stan Smith zijn tijdloos.", "Duits merk met sterke focus op duurzame materialen."],
+                    en: ["Boost soles offer superior cushioning.", "Classic designs like Stan Smith are timeless.", "German brand with strong focus on sustainable materials."],
+                    tr: ["Boost tabanlar üstün yastıklama sunar.", "Stan Smith gibi klasik tasarımlar zamansızdır.", "Sürdürülebilir malzemelere odaklanan Alman markası."],
+                    ar: ["توفر نعال Boost توسيدًا رائعًا.", "التصميمات الكلاسيكية مثل Stan Smith خالدة.", "علامة تجارية ألمانية تركز على المواد المستدامة."],
+                    pl: ["Podeszwy Boost oferują świetną amortyzację.", "Klasyczne wzory jak Stan Smith są ponadczasowe.", "Niemiecka marka skupiona na ekologicznych materiałach."]
+                },
+                presetsB: {
+                    nl: ["Nike Air Max heeft de meest populaire ontwerpen.", "Meer innovatie in professionele hardloopschoenen.", "Sterkere marketing en wereldwijde bekendheid."],
+                    en: ["Nike Air Max has the most popular designs.", "More innovation in professional running shoes.", "Stronger marketing and global brand presence."],
+                    tr: ["Nike Air Max en popüler tasarımlara sahiptir.", "Profesyonel koşu ayakkabılarında daha fazla yenilik.", "Daha güçlü pazarlama ve küresel marka varlığı."],
+                    ar: ["تمتلك نايكي Air Max التصميمات الأكثر شعبية.", "مزيد من الابتكار في أحذية الجري الاحترافية.", "تسويق أقوى وحضور عالمي أقوى."],
+                    pl: ["Nike Air Max ma najpopularniejsze wzory.", "Więcej innowacji w profesjonalnych butach do biegania.", "Silniejszy marketing i globalna rozpoznawalność marki."]
+                }
             },
             {
                 id: 2,
                 icon: "📱",
-                category: "Technologie",
-                title: "Apple vs. Android",
-                sideA: "Apple is beter",
-                sideB: "Android is beter",
-                criteria: ["Gebruiksvriendelijkheid", "Design", "Prijs", "Innovatie"],
-                presetsA: [
-                    "iOS is stabiel, veilig en krijgt jarenlang updates.",
-                    "Het Apple-ecosysteem werkt naadloos samen.",
-                    "iPhones behouden langer hun restwaarde."
-                ],
-                presetsB: [
-                    "Android biedt volledige vrijheid en personalisatie.",
-                    "Keuze uit tientallen merken in alle prijsklassen.",
-                    "Android loopt vaak voorop met nieuwe hardware-features."
-                ]
+                category: { nl: "Technologie", en: "Technology", tr: "Teknoloji", ar: "التكنولوجيا", pl: "Technologia" },
+                title: { nl: "Apple vs. Android", en: "Apple vs. Android", tr: "Apple vs. Android", ar: "آبل ضد أندرويد", pl: "Apple vs. Android" },
+                sideA: { nl: "Apple (iOS)", en: "Apple (iOS)", tr: "Apple (iOS)", ar: "آبل (iOS)", pl: "Apple (iOS)" },
+                sideB: { nl: "Android", en: "Android", tr: "Android", ar: "أندرويد", pl: "Android" },
+                criteria: {
+                    nl: ["Gebruiksgemak", "Privacy", "Prijs", "Vrijheid"],
+                    en: ["Usability", "Privacy", "Price", "Freedom"],
+                    tr: ["Kullanılabilirlik", "Gizlilik", "Fiyat", "Özgürlük"],
+                    ar: ["سهولة الاستخدام", "الخصوصية", "السعر", "الحرية"],
+                    pl: ["Użyteczność", "Prywatność", "Cena", "Wolność"]
+                },
+                presetsA: {
+                    nl: ["iOS is veiliger en heeft betere privacybescherming.", "Het ecosysteem (Mac, iPad, Watch) werkt naadloos.", "Langere ondersteuning met software-updates (5-7 jaar)."],
+                    en: ["iOS is more secure with better privacy protection.", "The ecosystem (Mac, iPad, Watch) works seamlessly.", "Longer software update support (5-7 years)."],
+                    tr: ["iOS daha güvenlidir ve daha iyi gizlilik korumasına sahiptir.", "Ekosistem (Mac, iPad, Watch) sorunsuz çalışır.", "Daha uzun yazılım güncelleme desteği (5-7 yıl)."],
+                    ar: ["نظام iOS أكثر أمانًا وخصوصية.", "يعمل النظام البيئي (Mac و iPad و Watch) بسلاسة.", "دعم أطول للتحديثات (5-7 سنوات)."],
+                    pl: ["iOS jest bezpieczniejszy i lepiej chroni prywatność.", "Ekosystem (Mac, iPad, Watch) działa bezproblemowo.", "Dłuższe wsparcie aktualizacjami (5-7 lat)."]
+                },
+                presetsB: {
+                    nl: ["Android geeft je de vrijheid om alles aan te passen.", "Veel goedkopere telefoons beschikbaar (vanaf €150).", "USB-C en universele opladers waren er al veel eerder."],
+                    en: ["Android gives you complete freedom to customize.", "Much cheaper phones available (starting at €150).", "USB-C and universal chargers were adopted much earlier."],
+                    tr: ["Android size özelleştirme konusunda tam özgürlük sunar.", "Daha ucuz telefonlar mevcuttur (150 €'dan başlayan).", "USB-C ve evrensel şarj cihazları çok daha önce benimsenmişti."],
+                    ar: ["يمنحك أندرويد حرية كاملة لتخصيص جهازك.", "تتوفر هواتف أرخص بكثير (تبدأ من 150 يورو).", "تم اعتماد شواحن USB-C والشواحن العالمية في وقت مبكر بكثير."],
+                    pl: ["Android daje pełną wolność personalizacji systemu.", "Dostępne znacznie tańsze telefony (od 150 €).", "USB-C i uniwersalne ładowarki były dostępne znacznie wcześniej."]
+                }
             },
             {
                 id: 3,
                 icon: "🚗",
-                category: "Mobiliteit",
-                title: "Elektrisch rijden vs. Benzine/Diesel",
-                sideA: "Elektrisch rijden",
-                sideB: "Benzine / Diesel",
-                criteria: ["Milieu", "Kosten", "Laadpalen", "Bereik", "Aanschafprijs"],
-                presetsA: [
-                    "Nul CO2-uitstoot tijdens het rijden, beter voor klimaat.",
-                    "Lagere onderhoudskosten (minder bewegende delen).",
-                    "Elektriciteit is per kilometer vaak goedkoper dan benzine."
-                ],
-                presetsB: [
-                    "Hogere aanschafprijs van EV's is voor velen onbetaalbaar.",
-                    "Lange laadtijden en te weinig snelladers op vakantie.",
-                    "Milieubelasting bij accu-productie is erg hoog."
-                ]
+                category: { nl: "Mobiliteit", en: "Mobility", tr: "Ulaşım", ar: "المواصلات", pl: "Mobilność" },
+                title: { nl: "Elektrisch rijden vs. Benzine", en: "Electric Driving vs. Gasoline", tr: "Elektrikli vs. Benzinli", ar: "السيارات الكهربائية ضد البنزين", pl: "Auta Elektryczne vs. Benzyna" },
+                sideA: { nl: "Elektrische auto", en: "Electric car", tr: "Elektrikli otomobil", ar: "سيارة كهربائية", pl: "Samochód elektryczny" },
+                sideB: { nl: "Benzine / Diesel", en: "Gasoline / Diesel", tr: "Benzinli / Dizel", ar: "بنزين / ديزل", pl: "Benzyna / Diesel" },
+                criteria: {
+                    nl: ["Milieu", "Kosten", "Laadtijd", "Bereik"],
+                    en: ["Environment", "Costs", "Charging Time", "Range"],
+                    tr: ["Çevre", "Maliyetler", "Şarj Süresi", "Menzil"],
+                    ar: ["البيئة", "التكاليف", "وقت الشحن", "المدى"],
+                    pl: ["Środowisko", "Koszty", "Czas ładowania", "Zasięg"]
+                },
+                presetsA: {
+                    nl: ["Geen CO2-uitstoot tijdens het rijden.", "Lagere onderhoudskosten (geen olie, filters, etc.).", "Stille en soepele rijervaring."],
+                    en: ["Zero tailpipe emissions while driving.", "Lower maintenance costs (no oil changes, spark plugs).", "Quiet and smooth driving experience."],
+                    tr: ["Sürüş sırasında sıfır egzoz emisyonu.", "Daha düşük bakım maliyeti (yağ değişimi yok, buji yok).", "Sessiz ve pürüzsüz sürüş deneyimi."],
+                    ar: ["خالٍ من الانبعاثات الكربونية أثناء القيادة.", "تكاليف صيانة أقل (لا يوجد تغيير زيت أو شمعات احتراق).", "تجربة قيادة هادئة وسلسة."],
+                    pl: ["Brak emisji spalin podczas jazdy.", "Niższe koszty utrzymania (brak oleju, świec itp.).", "Cicha i płynna jazda."]
+                },
+                presetsB: {
+                    nl: ["Benzineauto's zijn goedkoper in aanschaf.", "Tanken duurt 2 minuten, laden duurt veel langer.", "Groter bereik zonder stress over laadpalen."],
+                    en: ["Gasoline cars are much cheaper to buy upfront.", "Refueling takes 2 minutes, charging takes much longer.", "Longer range with zero range anxiety."],
+                    tr: ["Benzinli arabaları satın almak çok daha ucuzdur.", "Yakıt ikmali 2 dakika sürer, şarj çok daha uzun sürer.", "Şarj istasyonu endişesi olmadan daha uzun menzil."],
+                    ar: ["سيارات البنزين أرخص بكثير في الشراء الأولي.", "التزود بالوقود يستغرق دقيقتين، الشحن يستغرق وقتاً أطول.", "مدى أطول دون القلق بشأن محطات الشحن."],
+                    pl: ["Auta benzynowe są tańsze w zakupie.", "Tankowanie trwa 2 minuty, ładowanie znacznie dłużej.", "Większy zasięg bez stresu o ładowarki."]
+                }
             },
             {
                 id: 4,
                 icon: "🏠",
-                category: "Werk & Life",
-                title: "Thuiswerken vs. Kantoor",
-                sideA: "Thuiswerken is het best",
-                sideB: "Kantoor is het best",
-                criteria: ["Productiviteit", "Mentale gezondheid", "Kosten", "Werk-privé balans"],
-                presetsA: [
-                    "Geen reistijd en minder reiskosten of files.",
-                    "Beter concentreren in een rustige thuisomgeving.",
-                    "Meer flexibiliteit om werk en gezin te combineren."
-                ],
-                presetsB: [
-                    "Direct sociaal contact en betere samenwerking.",
-                    "Duidelijke scheiding tussen werk en privé.",
-                    "Makkelijker om snel te overleggen met collega's."
-                ]
+                category: { nl: "Werk & Life", en: "Work & Life", tr: "İş & Yaşam", ar: "العمل والحياة", pl: "Praca i Życie" },
+                title: { nl: "Thuiswerken vs. Kantoor", en: "Remote Work vs. Office", tr: "Evden Çalışma vs. Ofis", ar: "العمل عن بعد ضد المكتب", pl: "Praca z Domu vs. Biuro" },
+                sideA: { nl: "Thuiswerken", en: "Remote work", tr: "Evden çalışma", ar: "العمل من المنزل", pl: "Praca zdalna" },
+                sideB: { nl: "Naar kantoor gaan", en: "Going to the office", tr: "Ofise gitmek", ar: "الذهاب إلى المكتب", pl: "Praca w biurze" },
+                criteria: {
+                    nl: ["Reistijd", "Sfeer", "Productiviteit", "Balans"],
+                    en: ["Commuting", "Atmosphere", "Productivity", "Balance"],
+                    tr: ["Ulaşım", "Atmosfer", "Verimlilik", "Denge"],
+                    ar: ["وقت السفر", "الأجواء", "الإنتاجية", "التوازن"],
+                    pl: ["Czas dojazdu", "Atmosfera", "Wydajność", "Równowaga"]
+                },
+                presetsA: {
+                    nl: ["Bespaart uren reistijd en reiskosten per week.", "Minder afleiding door pratende collega's.", "Betere werk-privé balans door flexibiliteit."],
+                    en: ["Saves hours of commuting time and fuel costs.", "Fewer distractions from loud coworkers.", "Better work-life balance and schedule flexibility."],
+                    tr: ["Haftada saatlerce ulaşım süresi ve yakıt tasarrufu sağlar.", "Gürültülü iş arkadaşlarından kaynaklanan daha az dikkat dağıtıcı unsur.", "Daha iyi iş-yaşam dengesi ve esneklik."],
+                    ar: ["يوفر ساعات من وقت السفر وتكاليف الوقود.", "تشتيت أقل من الزملاء مقارنة بالمكتب الجماعي.", "توازن أفضل بين العمل والحياة ومرونة الوقت."],
+                    pl: ["Oszczędza godziny dojazdów i koszty paliwa.", "Mniej rozpraszaczy ze strony głośnych współpracowników.", "Lepszy balans życiowy i elastyczność."]
+                },
+                presetsB: {
+                    nl: ["Beter teamgevoel en makkelijker overleg.", "Duidelijke scheiding tussen werk en privéleven.", "Professionele werkplek met alle voorzieningen."],
+                    en: ["Better team collaboration and communication.", "Clear boundary between work and home life.", "Professional workspace with all tools provided."],
+                    tr: ["Daha iyi takım işbirliği ve iletişim.", "İş ve ev yaşamı arasında net sınır.", "Tüm araçların sağlandığı profesyonel çalışma alanı."],
+                    ar: ["تعاون وتواصل أفضل مع الفريق.", "حدود واضحة بين العمل والحياة المنزلية.", "مساحة عمل احترافية مع توفر جميع الأدوات."],
+                    pl: ["Lepsza współpraca i komunikacja w zespole.", "Jasna granica między pracą a życiem domowym.", "Profesjonalne stanowisko pracy ze wszystkimi narzędziami."]
+                }
+            },
+            {
+                id: 5,
+                icon: "🚌",
+                category: { nl: "Mobiliteit", en: "Mobility", tr: "Ulaşım", ar: "المواصلات", pl: "Mobilność" },
+                title: { nl: "Auto vs. Openbaar Vervoer", en: "Car vs. Public Transport", tr: "Araba vs. Toplu Taşıma", ar: "السيارة ضد المواصلات العامة", pl: "Samochód vs. Zbiorkom" },
+                sideA: { nl: "Auto", en: "Car", tr: "Araba", ar: "السيارة الخاصة", pl: "Samochód" },
+                sideB: { nl: "Trein, Bus, Metro", en: "Train, Bus, Metro", tr: "Tren, Otobüs, Metro", ar: "المواصلات العامة", pl: "Pociąg, Autobus, Metro" },
+                criteria: {
+                    nl: ["Flexibiliteit", "Kosten", "Stress", "Milieu"],
+                    en: ["Flexibility", "Costs", "Stress", "Environment"],
+                    tr: ["Esneklik", "Maliyet", "Stres", "Çevre"],
+                    ar: ["المرونة", "التكلفة", "التوتر", "البيئة"],
+                    pl: ["Elastyczność", "Koszty", "Stres", "Środowisko"]
+                },
+                presetsA: {
+                    nl: ["Reizen wanneer je wilt zonder dienstregeling.", "Comfortabel van deur tot deur reizen.", "Geen last van vertragingen van de trein."],
+                    en: ["Travel whenever you want without schedules.", "Comfortable door-to-door transit.", "No need to worry about train delays or cancellations."],
+                    tr: ["Zaman çizelgeleri olmadan istediğiniz zaman seyahat edin.", "Kapıdan kapıya konforlu ulaşım.", "Tren gecikmeleri veya iptalleri konusunda endişelenmenize gerek yok."],
+                    ar: ["السفر في أي وقت تريده دون الالتزام بجدول مواعيد.", "انتقال مريح من الباب إلى الباب مباشرة.", "لا داعي للقلق بشأن تأخيرات أو إلغاءات القطارات."],
+                    pl: ["Podróżujesz kiedy chcesz, bez rozkładów jazdy.", "Wygodny transport od drzwi do drzwi.", "Brak stresu związanego z opóźnieniami pociągów."]
+                },
+                presetsB: {
+                    nl: ["Goedkoper dan brandstof, parkeren en wegenbelasting.", "Tijd om te lezen, werken of ontspannen tijdens de reis.", "Veel beter voor het milieu (minder uitstoot)."],
+                    en: ["Cheaper than fuel, maintenance, and parking costs.", "Time to read, work, or relax during the commute.", "Much better for the environment (less emissions)."],
+                    tr: ["Yakıt, bakım ve park ücretlerinden daha ucuzdur.", "Yolculuk sırasında kitap okumak, çalışmak veya dinlenmek için zaman.", "Çevre için çok daha iyi (daha az emisyon)."],
+                    ar: ["أرخص من تكاليف الوقود والصيانة ومواقف السيارات.", "وقت للقراءة أو العمل أو الاسترخاء أثناء الرحلة.", "أفضل بكثير للبيئة (انبعاثات أقل)."],
+                    pl: ["Tańsze niż paliwo, utrzymanie auta i parkingi.", "Czas na czytanie, pracę lub relaks podczas drogi.", "Znacznie lepsze dla środowiska (mniejsza emisja)."]
+                }
+            },
+            {
+                id: 6,
+                icon: "🤖",
+                category: { nl: "Toekomst", en: "Future", tr: "Gelecek", ar: "المستقبل", pl: "Przyszłość" },
+                title: { nl: "Kunstmatige Intelligentie (AI): Goed of Slecht?", en: "Artificial Intelligence: Good or Bad?", tr: "Yapay Zeka: İyi mi Kötü mü?", ar: "الذكاء الاصطناعي: جيد أم سيء؟", pl: "Sztuczna Inteligencja: Dobra czy Zła?" },
+                sideA: { nl: "Kans / Innovatie", en: "Opportunity / Innovation", tr: "Fırsat / Yenilik", ar: "فرصة / ابتكار", pl: "Szansa / Innowacja" },
+                sideB: { nl: "Bedreiging / Risico", en: "Threat / Danger", tr: "Tehdit / Risk", ar: "تهديد / خطر", pl: "Zagrożenie / Ryzyko" },
+                criteria: {
+                    nl: ["Banen", "Efficiëntie", "Ethiek", "Creativiteit"],
+                    en: ["Jobs", "Efficiency", "Ethics", "Creativity"],
+                    tr: ["İşler", "Verimlilik", "Etik", "Yaratıcılık"],
+                    ar: ["الوظائف", "الكفاءة", "الأخلاق", "الإبداع"],
+                    pl: ["Praca", "Wydajność", "Etyka", "Kreatywność"]
+                },
+                presetsA: {
+                    nl: ["AI lost medische problemen en ziektes sneller op.", "Neemt saai, herhalend werk over.", "Helpt mensen productiever en creatiever te zijn."],
+                    en: ["AI solves medical problems and diseases much faster.", "Takes over boring, repetitive manual labor.", "Helps humans be more productive and creative."],
+                    tr: ["Yapay zeka tıbbi sorunları ve hastalıkları çok daha hızlı çözer.", "Sıkıcı, tekrarlayan el işlerini devralır.", "İnsanların daha üretken ve yaratıcı olmasına yardımcı olur."],
+                    ar: ["يحل الذكاء الاصطناعي المشكلات الطبية والأمراض بشكل أسرع.", "يتولى الأعمال اليدوية المملة والمتكررة.", "يساعد البشر على أن يكونوا أكثر إنتاجية وإبداعاً."],
+                    pl: ["AI szybciej rozwiązuje problemy medyczne i leczy choroby.", "Przejmuje nudną, powtarzalną pracę.", "Pomaga ludziom być bardziej produktywnymi i kreatywnymi."]
+                },
+                presetsB: {
+                    nl: ["Kan miljoenen banen overbodig maken.", "Risico op nepnieuws, fraude en deepfakes.", "AI mist echt menselijk gevoel en ethiek."],
+                    en: ["Could make millions of administrative jobs obsolete.", "Risk of misinformation, fraud, and deepfakes.", "AI lacks genuine human empathy and ethics."],
+                    tr: ["Milyonlarca idari işi gereksiz hale getirebilir.", "Yanlış bilgi, dolandırıcılık ve deepfake riski.", "Yapay zeka gerçek insani empati ve etikten yoksundur."],
+                    ar: ["قد يؤدي إلى التخلص من ملايين الوظائف الإدارية.", "خطر انتشار الأخبار المزيفة والاحتيال والتزييف العميق.", "يفتقر الذكاء الاصطناعي إلى التعاطف البشري الحقيقي والأخلاق."],
+                    pl: ["Może zlikwidować miliony miejsc pracy.", "Ryzyko dezinformacji, oszustw i deepfake'ów.", "AI brakuje prawdziwej ludzkiej empatii i etyki."]
+                }
+            },
+            {
+                id: 7,
+                icon: "💳",
+                category: { nl: "Geld", en: "Money", tr: "Para", ar: "المال", pl: "Pieniądze" },
+                title: { nl: "Contant Geld vs. Pinnen", en: "Cash vs. Card", tr: "Nakit vs. Kart", ar: "النقد ضد البطاقات", pl: "Gotówka vs. Karta" },
+                sideA: { nl: "Contant geld behouden", en: "Keep Cash money", tr: "Nakiti koru", ar: "الاحتفاظ بالنقد", pl: "Zachować gotówkę" },
+                sideB: { nl: "Volledig digitaal betalen", en: "Go 100% digital", tr: "Tamamen dijital", ar: "الدفع الرقمي بالكامل", pl: "Płatności w 100% cyfrowe" },
+                criteria: {
+                    nl: ["Veiligheid", "Privacy", "Gemak", "Controle"],
+                    en: ["Security", "Privacy", "Convenience", "Control"],
+                    tr: ["Güvenlik", "Gizlilik", "Kolaylık", "Kontrol"],
+                    ar: ["الأمان", "الخصوصية", "السهولة", "التحكم"],
+                    pl: ["Bezpieczeństwo", "Prywatność", "Wygoda", "Kontrola"]
+                },
+                presetsA: {
+                    nl: ["Met contant geld blijft je privacy beschermd.", "Als internet of stroom uitvalt, kun je nog betalen.", "Helpt mensen om binnen hun budget te blijven."],
+                    en: ["Cash protects personal privacy and financial tracking.", "You can still buy things if power or internet goes down.", "Helps people physically budget and avoid overspending."],
+                    tr: ["Nakit, kişisel gizliliği korur ve takibi engeller.", "Elektrik veya internet kesildiğinde hala alışveriş yapabilirsiniz.", "İnsanların bütçelerini kontrol etmelerine yardımcı olur."],
+                    ar: ["يحمي النقد الخصوصية الشخصية من التتبع المالي.", "يمكنك الاستمرار في الشراء عند انقطاع الكهرباء أو الإنترنت.", "يساعد الناس على التحكم في ميزانياتهم وتجنب الإفراط في الإنفاق."],
+                    pl: ["Gotówka chroni prywatność i unika śledzenia banków.", "Możesz płacić nawet w przypadku braku prądu lub internetu.", "Pomaga kontrolować budżet i wydatki."]
+                },
+                presetsB: {
+                    nl: ["Veel sneller en gemakkelijker bij de kassa.", "Geen risico op diefstal van een volle portemonnee.", "Geen zwart geld of belastingontduiking mogelijk."],
+                    en: ["Much faster and more convenient at checkout.", "No risk of losing physical cash to pickpockets.", "Reduces black money, money laundering, and tax evasion."],
+                    tr: ["Kasada çok daha hızlı ve pratyik.", "Yankesicilere fiziksel nakit kaptırma riski yoktur.", "Kara para aklamayı ve vergi kaçakçılığını azaltır."],
+                    ar: ["أسرع بكثير وأكثر ملاءمة عند الدفع.", "لا يوجد خطر لفقدان الأموال النقدية بسبب النشل.", "يقلل من الأموال السوداء وغسيل الأموال والتهرب الضريبي."],
+                    pl: ["Znacznie szybciej i wygodniej przy kasie.", "Brak ryzyka kradzieży portfela z dużą ilością gotówki.", "Zmniejsza szarą strefę i unikanie opodatkowania."]
+                }
+            },
+            {
+                id: 8,
+                icon: "🥦",
+                category: { nl: "Voeding", en: "Food", tr: "Beslenme", ar: "الغذاء", pl: "Jedzenie" },
+                title: { nl: "Vegetariër vs. Vleeseter", en: "Vegetarian vs. Meat Eater", tr: "Vejetaryen vs. Etçil", ar: "نباتي ضد آكل اللحوم", pl: "Wegetarianizm vs. Mięso" },
+                sideA: { nl: "Vegetarisch / Vegan", en: "Vegetarian / Vegan", tr: "Vejetaryen / Vegan", ar: "نباتي / خضري", pl: "Wegetariańskie / Wegan" },
+                sideB: { nl: "Vlees eten", en: "Eating Meat", tr: "Et yemek", ar: "أكل اللحوم", pl: "Jedzenie mięsa" },
+                criteria: {
+                    nl: ["Gezondheid", "Milieu", "Dierenwelzijn", "Smaak"],
+                    en: ["Health", "Environment", "Animal Welfare", "Taste"],
+                    tr: ["Sağlık", "Çevre", "Hayvan Hakları", "Lezzet"],
+                    ar: ["الصحة", "البيئة", "رفق بالحيوان", "المذاق"],
+                    pl: ["Zdrowie", "Środowisko", "Dobrostan zwierząt", "Smak"]
+                },
+                presetsA: {
+                    nl: ["Vleesproductie stoot gigantisch veel CO2 en methaan uit.", "Minder risico op hart- en vaatziekten.", "Geen dierenleed in de bio-industrie."],
+                    en: ["Meat production emits huge amounts of CO2 and methane.", "Lower risk of cardiovascular diseases and high cholesterol.", "No animal suffering or ethical concerns from factory farming."],
+                    tr: ["Et üretimi çok büyük miktarda CO2 ve metan salgılar.", "Kardiyovasküler hastalık riski daha düşüktür.", "Fabrika çiftçiliğinden kaynaklanan hayvan eziyeti yoktur."],
+                    ar: ["ينتج عن إنتاج اللحوم كميات هائلة من انبعاثات الكربون والميثان.", "مخاطر أقل للإصابة بأمراض القلب والأوعية الدموية.", "لا يوجد معاناة للحيوانات في المزارع الصناعية."],
+                    pl: ["Produkcja mięsa emituje ogromne ilości CO2 i metanu.", "Niższe ryzyko chorób układu krążenia.", "Brak cierpienia zwierząt w hodowli przemysłowej."]
+                },
+                presetsB: {
+                    nl: ["Vlees bevat essentiële voedingsstoffen zoals B12 en ijzer.", "Vlees is lekkerder en hoort bij onze cultuur.", "Goede vleesvervangers zijn vaak duur en bewerkt."],
+                    en: ["Meat provides essential nutrients like vitamin B12 and iron.", "Meat tastes great and is deeply rooted in food culture.", "Quality meat substitutes are often expensive and highly processed."],
+                    tr: ["Et, B12 vitamini ve demir gibi temel besinleri sağlar.", "Etin tadı harikadır ve yemek kültürümüzde derin bir yere sahiptir.", "Kaliteli et ikameleri genellikle pahalı ve aşırı işlenmiştir."],
+                    ar: ["توفر اللحوم عناصر غذائية أساسية مثل فيتامين B12 والحديد.", "مذاق اللحوم رائع وهي متأصلة بعمق في ثقافة الطعام.", "بدائل اللحوم غالباً ما تكون باهظة الثمن ومصنعة بشكل كبير."],
+                    pl: ["Mięso dostarcza niezbędnych składników, jak witamina B12 i żelazo.", "Mięso smakuje świetnie i jest zakorzenione w kulturze kulinarnej.", "Dobre zamienniki mięsa są często drogie i przetworzone."]
+                }
             }
         ];
 
         // ── STATE VARIABLES ──
+        let appLang = 'nl'; // Default UI language
         let activeTopic = null;
         let timers = {
             prep: { seconds: 600, interval: null, running: false, elementId: 'prep-timer', defaultSeconds: 600 },
@@ -1256,53 +1653,48 @@
                 const now = audioCtx.currentTime;
                 
                 if (type === 'tick') {
-                    // Soft high click for timer countdown
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(800, now);
-                    gain.gain.setValueAtTime(0.04, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    gain.gain.setValueAtTime(0.03, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                     osc.start(now);
-                    osc.stop(now + 0.05);
+                    osc.stop(now + 0.04);
                 } else if (type === 'add') {
-                    // Soft positive pop
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
-                    gain.gain.setValueAtTime(0.08, now);
+                    osc.frequency.setValueAtTime(320, now);
+                    osc.frequency.exponentialRampToValueAtTime(640, now + 0.12);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+                } else if (type === 'remove') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(380, now);
+                    osc.frequency.exponentialRampToValueAtTime(180, now + 0.15);
+                    gain.gain.setValueAtTime(0.06, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
                     osc.start(now);
                     osc.stop(now + 0.15);
-                } else if (type === 'remove') {
-                    // Soft negative sliding note
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, now);
-                    osc.frequency.exponentialRampToValueAtTime(200, now + 0.2);
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-                    osc.start(now);
-                    osc.stop(now + 0.2);
                 } else if (type === 'alarm') {
-                    // Double warning chime
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now); // C5
-                    osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
-                    gain.gain.setValueAtTime(0.12, now);
-                    gain.gain.setValueAtTime(0.12, now + 0.15);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.15);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.setValueAtTime(0.1, now + 0.15);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
                     osc.start(now);
-                    osc.stop(now + 0.4);
+                    osc.stop(now + 0.35);
                 } else if (type === 'win') {
-                    // Ascending major chord celebration
                     osc.type = 'sine';
                     const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
                     notes.forEach((freq, idx) => {
-                        const noteTime = now + (idx * 0.08);
+                        const noteTime = now + (idx * 0.06);
                         osc.frequency.setValueAtTime(freq, noteTime);
                     });
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
                     osc.start(now);
-                    osc.stop(now + 1.2);
+                    osc.stop(now + 1.0);
                 }
             } catch (e) {
                 console.error("Audio error:", e);
@@ -1311,9 +1703,86 @@
 
         // ── INIT APP ──
         window.addEventListener('DOMContentLoaded', () => {
-            renderTopics();
+            changeAppLanguage('nl');
             resetGame();
         });
+
+        // ── LANGUAGE SWITCHER ──
+        function changeAppLanguage(lang) {
+            appLang = lang;
+            
+            // Toggle active class in lang bar
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Translate static UI elements
+            const t = UI_TRANSLATIONS[lang];
+            document.getElementById('ui-badge').textContent = t.debatSpel;
+            document.getElementById('ui-main-title').textContent = t.title;
+            document.getElementById('ui-main-subtitle').textContent = t.subtitle;
+            document.getElementById('ui-rules-title').textContent = t.rulesTitle;
+            
+            document.getElementById('ui-rule1-title').textContent = t.rule1Title;
+            document.getElementById('ui-rule1-desc').textContent = t.rule1Desc;
+            document.getElementById('ui-rule2-title').textContent = t.rule2Title;
+            document.getElementById('ui-rule2-desc').textContent = t.rule2Desc;
+            document.getElementById('ui-rule3-title').textContent = t.rule3Title;
+            document.getElementById('ui-rule3-desc').textContent = t.rule3Desc;
+
+            document.getElementById('ui-choose-topic').textContent = t.chooseTopic;
+            document.getElementById('ui-prep-label').textContent = t.prepLabel;
+            document.getElementById('ui-debate-label').textContent = t.debateLabel;
+            
+            document.getElementById('ui-meter-title').textContent = t.meterTitle;
+            document.getElementById('ui-meter-desc').textContent = t.meterDesc;
+            
+            document.getElementById('ui-teamA-badge').textContent = t.teamA;
+            document.getElementById('ui-teamB-badge').textContent = t.teamB;
+            document.getElementById('ui-empty-left').textContent = t.noArguments;
+            document.getElementById('ui-empty-right').textContent = t.noArguments;
+            
+            document.getElementById('input-left').placeholder = t.typeArg;
+            document.getElementById('input-right').placeholder = t.typeArg;
+            
+            document.getElementById('ui-add-left').textContent = t.addBtn;
+            document.getElementById('ui-add-right').textContent = t.addBtn;
+            
+            document.getElementById('ui-presets-left').textContent = t.presetsLabel;
+            document.getElementById('ui-presets-right').textContent = t.presetsLabel;
+            
+            document.getElementById('ui-back-btn').innerHTML = `<span>↩</span> ${t.backBtn}`;
+            document.getElementById('ui-reset-btn').innerHTML = `<span>🔄</span> ${t.resetBtn}`;
+            document.getElementById('ui-win-btn').innerHTML = `<span>🏆</span> ${t.winBtn}`;
+            
+            document.getElementById('ui-win-title').textContent = t.winTitle;
+            document.getElementById('ui-win-close').textContent = t.nextTopic;
+
+            // Re-render topics grid in the correct language
+            renderTopics();
+
+            // If a topic is currently active, translate its details live
+            if (activeTopic) {
+                document.getElementById('game-topic-category').textContent = activeTopic.category[appLang].toUpperCase();
+                document.getElementById('game-topic-title').textContent = activeTopic.title[appLang];
+                document.getElementById('game-topic-criteria').textContent = `${t.criteriaLabel}: ${activeTopic.criteria[appLang].join(', ')}`;
+                
+                document.getElementById('label-left').textContent = activeTopic.sideA[appLang];
+                document.getElementById('label-right').textContent = activeTopic.sideB[appLang];
+                
+                document.getElementById('board-title-left').textContent = `👈 ${activeTopic.sideA[appLang]}`;
+                document.getElementById('board-title-right').textContent = `${activeTopic.sideB[appLang]} 👉`;
+
+                renderPresets('left', activeTopic.presetsA[appLang]);
+                renderPresets('right', activeTopic.presetsB[appLang]);
+            }
+            
+            updateGauge(document.getElementById('gauge-slider').value);
+        }
 
         // ── RENDER TOPICS ──
         function renderTopics() {
@@ -1325,18 +1794,18 @@
                 card.className = 'topic-card';
                 card.onclick = () => selectTopic(topic.id);
                 
-                const criteriaHtml = topic.criteria.map(c => `<span class="criteria-badge">${c}</span>`).join('');
+                const criteriaHtml = topic.criteria[appLang].map(c => `<span class="criteria-badge">${c}</span>`).join('');
                 
                 card.innerHTML = `
                     <div>
                         <span class="topic-icon">${topic.icon}</span>
                         <div class="topic-info">
-                            <span class="criteria-badge" style="background: rgba(139, 126, 248, 0.15); color: var(--neutral-accent); font-size: 0.65rem; padding: 2px 8px; margin-bottom: 10px; display: inline-block;">${topic.category}</span>
-                            <h3>${topic.title}</h3>
+                            <span class="criteria-badge" style="background: rgba(139, 126, 248, 0.15); color: var(--neutral-accent); font-size: 0.65rem; padding: 2px 8px; margin-bottom: 10px; display: inline-block;">${topic.category[appLang]}</span>
+                            <h3>${topic.title[appLang]}</h3>
                             <div class="topic-sides">
-                                <span class="side-badge-left">A: ${topic.sideA}</span>
+                                <span class="side-badge-left">${topic.sideA[appLang]}</span>
                                 <span>vs</span>
-                                <span class="side-badge-right">B: ${topic.sideB}</span>
+                                <span class="side-badge-right">${topic.sideB[appLang]}</span>
                             </div>
                         </div>
                     </div>
@@ -1353,20 +1822,7 @@
             activeTopic = TOPICS.find(t => t.id === id);
             if (!activeTopic) return;
             
-            // Set fields in game view
-            document.getElementById('game-topic-category').textContent = activeTopic.category.toUpperCase();
-            document.getElementById('game-topic-title').textContent = activeTopic.title;
-            document.getElementById('game-topic-criteria').textContent = `Criteria: ${activeTopic.criteria.join(', ')}`;
-            
-            // Set label and board texts
-            document.getElementById('label-left').textContent = activeTopic.sideA;
-            document.getElementById('label-right').textContent = activeTopic.sideB;
-            document.getElementById('board-title-left').textContent = `👈 Argumenten: ${activeTopic.sideA.split(' ')[0]}`;
-            document.getElementById('board-title-right').textContent = `${activeTopic.sideB.split(' ')[0]} :Argumenten 👉`;
-            
-            // Render presets
-            renderPresets('left', activeTopic.presetsA);
-            renderPresets('right', activeTopic.presetsB);
+            changeAppLanguage(appLang); // Applies translation updates to the game screen elements
 
             // Clean & switch views
             resetGame();
@@ -1407,9 +1863,8 @@
         // ── GAUGE / SLIDER LOGIC ──
         function updateGauge(val) {
             const value = parseInt(val);
-            const slider = document.getElementById('gauge-slider');
+            const t = UI_TRANSLATIONS[appLang];
             
-            // Update labels scale & glow
             const labelLeft = document.getElementById('label-left');
             const labelRight = document.getElementById('label-right');
             
@@ -1423,25 +1878,25 @@
             if (value < 45) {
                 labelLeft.classList.add('active');
                 const strength = Math.round((50 - value) * 2);
-                textLeft.textContent = `Team A voorsprong (+${strength}%)`;
+                textLeft.textContent = `${t.teamA} ${t.teamLead} (+${strength}%)`;
                 textLeft.style.color = 'var(--accent-left)';
-                textRight.textContent = 'Achterstand';
+                textRight.textContent = t.teamBehind;
                 textRight.style.color = 'var(--text-muted)';
                 textCenter.textContent = '';
             } else if (value > 55) {
                 labelRight.classList.add('active');
                 const strength = Math.round((value - 50) * 2);
-                textRight.textContent = `Team B voorsprong (+${strength}%)`;
+                textRight.textContent = `${t.teamB} ${t.teamLead} (+${strength}%)`;
                 textRight.style.color = 'var(--accent-right)';
-                textLeft.textContent = 'Achterstand';
+                textLeft.textContent = t.teamBehind;
                 textLeft.style.color = 'var(--text-muted)';
                 textCenter.textContent = '';
             } else {
-                textLeft.textContent = 'Neutraal';
+                textLeft.textContent = t.neutral;
                 textLeft.style.color = 'var(--text-muted)';
-                textRight.textContent = 'Neutraal';
+                textRight.textContent = t.neutral;
                 textRight.style.color = 'var(--text-muted)';
-                textCenter.textContent = 'Perfecte Balans';
+                textCenter.textContent = t.balance;
                 textCenter.style.color = '#fff';
             }
         }
@@ -1452,12 +1907,10 @@
             const btn = document.getElementById(`${type}-timer-btn`);
             
             if (timer.running) {
-                // Pause
                 clearInterval(timer.interval);
                 timer.running = false;
                 btn.textContent = '▶';
             } else {
-                // Start
                 playSound('tick');
                 timer.running = true;
                 btn.textContent = '⏸';
@@ -1470,9 +1923,10 @@
                         timer.running = false;
                         btn.textContent = '▶';
                         playSound('alarm');
-                        alert(`${type === 'prep' ? 'Voorbereidingstijd' : 'Debattijd'} is verstreken!`);
+                        const t = UI_TRANSLATIONS[appLang];
+                        alert(`${type === 'prep' ? t.prepLabel : t.debateLabel} time has expired!`);
                     } else if (timer.seconds <= 10) {
-                        playSound('tick'); // Final countdown sound
+                        playSound('tick');
                     }
                 }, 1000);
             }
@@ -1539,7 +1993,8 @@
             listEl.innerHTML = '';
             
             if (list.length === 0) {
-                listEl.innerHTML = '<div class="empty-state">Nog geen argumenten toegevoegd...</div>';
+                const t = UI_TRANSLATIONS[appLang];
+                listEl.innerHTML = `<div class="empty-state">${t.noArguments}</div>`;
                 return;
             }
             
@@ -1548,7 +2003,7 @@
                 item.className = 'argument-item';
                 item.innerHTML = `
                     <p>${arg}</p>
-                    <button class="delete-argument-btn" onclick="deleteArgument('${side}', ${index})" title="Verwijder argument">✕</button>
+                    <button class="delete-argument-btn" onclick="deleteArgument('${side}', ${index})" title="Delete">✕</button>
                 `;
                 listEl.appendChild(item);
             });
@@ -1574,25 +2029,26 @@
             const value = parseInt(document.getElementById('gauge-slider').value);
             const banner = document.getElementById('winner-banner');
             const desc = document.getElementById('winner-description');
+            const t = UI_TRANSLATIONS[appLang];
             
             playSound('win');
             
             banner.className = 'winner-team-name';
             
             if (value < 45) {
-                banner.textContent = `🏆 Team A: ${activeTopic ? activeTopic.sideA : 'Optie A'}`;
+                banner.textContent = `🏆 ${t.teamA}: ${activeTopic ? activeTopic.sideA[appLang] : ''}`;
                 banner.classList.add('left-winner');
-                desc.textContent = "De Twijfelaar vond de argumenten van Team A het meest overtuigend! Ze hebben vlijmscherp gereageerd op tegenargumenten en standgehouden.";
+                desc.textContent = t.winDescLeft;
                 startConfetti();
             } else if (value > 55) {
-                banner.textContent = `🏆 Team B: ${activeTopic ? activeTopic.sideB : 'Optie B'}`;
+                banner.textContent = `🏆 ${t.teamB}: ${activeTopic ? activeTopic.sideB[appLang] : ''}`;
                 banner.classList.add('right-winner');
-                desc.textContent = "De Twijfelaar heeft besloten! Team B had de meest overtuigende feiten en wist met ijzersterke weerleggingen de meter helemaal naar hun kant te trekken.";
+                desc.textContent = t.winDescRight;
                 startConfetti();
             } else {
-                banner.textContent = "🤝 Gelijkspel!";
+                banner.textContent = `🤝 ${t.draw}`;
                 banner.classList.add('draw-winner');
-                desc.textContent = "Beide teams waren extreem aan elkaar gewaagd! De Twijfelaar kon simpelweg geen keuze maken omdat beide kanten geweldige argumenten en presentatie lieten zien.";
+                desc.textContent = t.winDescDraw;
             }
             
             document.getElementById('win-overlay').style.display = 'flex';
@@ -1604,7 +2060,7 @@
             goBackToIndex();
         }
 
-        // ── CONFETTI ENGINE ──
+        // ── CONFETTI ENGINE (OPTIMIZED) ──
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -1619,15 +2075,15 @@
         function startConfetti() {
             resizeCanvas();
             particles = [];
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 100; i++) { // Reduced particle count for performance
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 6 + 4,
+                    r: Math.random() * 5 + 3,
                     d: Math.random() * canvas.height,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    color: `hsl(${Math.random() * 360}, 90%, 50%)`,
                     tilt: Math.random() * 10 - 5,
-                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngleIncremental: Math.random() * 0.05 + 0.02,
                     tiltAngle: 0
                 });
             }
@@ -1644,9 +2100,9 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.tiltAngle += p.tiltAngleIncremental;
-                p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                p.y += (Math.cos(p.d) + 2.5 + p.r / 2) / 2;
                 p.x += Math.sin(p.tiltAngle);
-                p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 5;
+                p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 4;
 
                 ctx.beginPath();
                 ctx.lineWidth = p.r;
@@ -1657,7 +2113,7 @@
 
                 if (p.y > canvas.height) {
                     p.x = Math.random() * canvas.width;
-                    p.y = -20;
+                    p.y = -15;
                     p.tilt = Math.random() * 10 - 5;
                 }
             });
