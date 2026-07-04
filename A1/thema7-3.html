@@ -253,7 +253,24 @@ function levenshtein(a, b) {
         ps:`<div class="uitleg-box" dir="rtl"><h3>🚦 د ترافیک قواعد</h3><p>په هالنډ کې ډیرې د ترافیک قواعد شتون لري. تاسو باید هغه وپیژنئ کله چې موټر چلوئ یا بایسکل ځلوئ.</p><ul style="margin:.5rem 0 0;padding-right:1.3em;font-size:.93rem;line-height:2"><li>🔴 سور څراغ = ودرېږه!</li><li>🟠 نارنجي = صبر وکړه</li><li>🟢 شنه = لاړ شه!</li></ul></div><div class="voorbeeld-blok" dir="rtl"><strong>مرکبې کلمې:</strong><ul style="margin:.4rem 0 0;padding-right:1.3em;font-size:.92rem;line-height:2"><li>fiets + pad = fietspad (د بایسکل لاره)</li><li>stop + licht = stoplicht (ترافیک څراغ)</li><li>zebra + pad = zebrapad (د پلو تېرېدو ځای)</li><li>snel + weg = snelweg (لویه سړک)</li></ul></div><div class="tip-blok" dir="rtl"><strong>سرعت:</strong> په ښار کې: اعظمي حد <strong>50</strong> کیلومتره/ساعت. په لویه سړک کې: اعظمي حد <strong>100</strong> کیلومتره/ساعت (کله کله 120 یا 130).</div>`
     };
     let _ttsAudio = null;
-function speak(text, isSlow = false) {
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     

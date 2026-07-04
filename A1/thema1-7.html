@@ -133,7 +133,24 @@ function levenshtein(a, b) {
 // ----------------------------------
 
 let _ttsAudio = null;
-function speak(text, isSlow = false) {
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     

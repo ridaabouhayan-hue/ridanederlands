@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NT2 A2 — Paragraaf 1.3: Dit is mijn familie.. Uitleg en opdrachten.">
+  <title>1.3 Dit is mijn familie. — NT2 A2</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+      (function() {
+          const currentTheme = localStorage.getItem('a2-theme') || 'light';
+          document.documentElement.setAttribute('data-theme', currentTheme);
+      })();
+  </script>
+</head>
+<body>
+
+  <!-- Language Bar -->
+  <nav class="language-bar" aria-label="Taalkeuze">
+    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; margin-right: auto; border-color: var(--accent-purple); color: var(--accent-purple);">🌓 Thema</button>
+    <span class="label">🌐 Vertaal Uitleg & Woorden:</span>
+    <button class="lang-btn active" id="btn-nl" onclick="changeLang('nl')">🇳🇱 Ned</button>
+    <button class="lang-btn" id="btn-en" onclick="changeLang('en')">🇬🇧 Eng</button>
+    <button class="lang-btn" id="btn-ar" onclick="changeLang('ar')">🇸🇦 العر</button>
+    <button class="lang-btn" id="btn-tr" onclick="changeLang('tr')">🇹🇷 Tür</button>
+    <button class="lang-btn" id="btn-dari" onclick="changeLang('dari')">🇦🇫 دری</button>
+    <button class="lang-btn" id="btn-thai" onclick="changeLang('thai')">🇹🇭 ไทย</button>
+  </nav>
+
+  <main class="page-container">
+    <a href="thema1.html" class="back-link">← Terug naar Thema 1</a>
+
+    <header class="page-header">
+      <div class="breadcrumb">
+        <a href="index.html">Thema's</a>
+        <span>›</span>
+        <a href="thema1.html">Thema 1</a>
+        <span>›</span>
+        <span>1.3</span>
+      </div>
+      <h1>1.3 Dit is mijn familie.</h1>
+      <p class="subtitle">Leren hoe je personen en dingen aanwijst.</p>
+    </header>
+
+    <!-- SECTION 1: WOORDENLIJST -->
+    <section class="opdracht-card theme-blauw">
+      <div class="opdracht-header">
+        <span class="opdracht-num">1</span>
+        <h2>Woordenlijst — <span class="sub-title">Vocabulary</span></h2>
+      </div>
+      <table class="ww-tabel" style="margin-top:15px;">
+        <thead>
+          <tr>
+            <th>Nederlands</th>
+            <th id="vocab-lang-header">Vertaling</th>
+          </tr>
+        </thead>
+        <tbody id="vocab-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 2: DOCENT UITLEG -->
+    <section class="opdracht-card theme-oranje">
+      <div class="opdracht-header">
+        <span class="opdracht-num">2</span>
+        <h2>Docent Uitleg — <span class="sub-title">Teacher Explanation</span></h2>
+      </div>
+      <div class="uitleg-content" id="uitleg-content" style="margin-top:15px; font-size:1.05rem; line-height:1.8;">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: OPDRACHTEN -->
+    <!-- Opdracht 1: Meerkeuze -->
+    <section class="opdracht-card theme-paars">
+      <div class="opdracht-header">
+        <span class="opdracht-num">3</span>
+        <h2>Opdracht 1: Kies het juiste woord</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="mc-container"></div>
+        <button class="controle-btn" onclick="checkMC()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetMC()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="mc-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 2: Zinnen bouwen -->
+    <section class="opdracht-card theme-groen">
+      <div class="opdracht-header">
+        <span class="opdracht-num">4</span>
+        <h2>Opdracht 2: Sleep en maak een zin</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="drag-container"></div>
+        <button class="controle-btn" onclick="checkDrag()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetDrag()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="drag-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 3: Vul de gaten in -->
+    <section class="opdracht-card theme-geel">
+      <div class="opdracht-header">
+        <span class="opdracht-num">5</span>
+        <h2>Opdracht 3: Vul het juiste woord in</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="invul-container"></div>
+        <button class="controle-btn" onclick="checkInvul()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetInvul()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="invul-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 4: Lezen (Juist/Onjuist) -->
+    <section class="opdracht-card theme-blauw">
+      <div class="opdracht-header">
+        <span class="opdracht-num">6</span>
+        <h2>Opdracht 4: Lezen (Juist of Onjuist)</h2>
+      </div>
+      <div class="opdracht-body">
+        <div class="reading-box" style="background:var(--bg-secondary); padding:20px; border-radius:var(--radius-md); margin-bottom:15px;">
+          <p style="font-weight:700; margin-bottom:8px;">Lees het verhaal:</p>
+          <p id="story-nl-text" style="font-size:1.05rem; line-height:1.7; font-style:normal; color:var(--text-primary);"></p>
+          <button class="lang-btn" id="story-translate-btn" onclick="toggleStoryTranslation()" style="margin-top:10px; cursor:pointer; font-size:0.85rem;">🌐 Toon Vertaling / Show Translation</button>
+          <p id="story-translation-text" style="display:none; margin-top:10px; font-size:0.95rem; line-height:1.6; font-style:italic; color:var(--text-secondary);"></p>
+        </div>
+        <div id="lezen-questions-container"></div>
+        <button class="controle-btn" onclick="checkLezen()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetLezen()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="lezen-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 5: Dictee -->
+    <section class="opdracht-card theme-oranje">
+      <div class="opdracht-header">
+        <span class="opdracht-num">7</span>
+        <h2>Opdracht 5: Dictee (Schrijf de zin op)</h2>
+      </div>
+      <div class="opdracht-body">
+        <p style="margin-bottom:15px; font-size:0.92rem;">Klik op het geluidsknopje en typ de zin die je hoort. Let op hoofdletters en punten.</p>
+        <div id="dictee-container"></div>
+        <div style="margin-top:15px;">
+          <button class="controle-btn" onclick="checkDictee()">Controleer Dictee</button>
+          <button class="controle-btn reset" onclick="resetDictee()" style="background:#475569;">Opnieuw</button>
+          <span id="dictee-score" class="score-badge" style="display:none; margin-left:15px; font-weight:800; font-size:1rem; padding:8px 16px; border-radius:50px;"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opdracht 6: Huiswerk Schrijven -->
+    <section class="opdracht-card theme-paars">
+      <div class="opdracht-header">
+        <span class="opdracht-num">8</span>
+        <h2>Opdracht 6: Huiswerk Schrijven</h2>
+      </div>
+      <div class="opdracht-body">
+        <p style="margin-bottom:15px; font-size:0.92rem;">Schrijf hele zinnen als antwoord op de vragen. Sla je antwoorden op en deel ze met de docent via WhatsApp!</p>
+        <div id="schrijf-container"></div>
+        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="controle-btn" onclick="saveSchrijf()" style="background:var(--accent-purple);">💾 Opslaan</button>
+          <button class="controle-btn" onclick="shareWhatsApp()" style="background:#25d366; color:white;">💬 Stuur naar docent</button>
+          <button class="controle-btn reset" onclick="resetSchrijf()" style="background:#475569;">Opnieuw</button>
+          <span id="schrijf-fb" style="display:none; color:var(--accent-green); font-weight:800; align-self:center; font-size:0.95rem;">✅ Opgeslagen!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LES VOLTOOIEN BUTTON -->
+    <div style="text-align:center; margin-top:40px; margin-bottom:60px;">
+      <button id="voltooi-btn" onclick="markeerVoltooid()" class="controle-btn" style="padding:15px 40px; font-size:1.2rem; border-radius:50px; background:linear-gradient(135deg, var(--accent-blue), #d35400); color:white; font-weight:900; cursor:pointer; width:100%; max-width:400px; border:none; box-shadow:0 10px 25px var(--accent-blue-glow);">
+        Voltooi deze les!
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    NT2 A2 Leerplatform &copy; 2026
+  </footer>
+
+  <!-- DATABASE AND SCRIPT LOGIC -->
+  <script>
+    const LESSON_ID = "1.3";
+    const DATA = {"title": "Dit is mijn familie.", "intro": "Leren hoe je personen en dingen aanwijst.", "vocab": [{"nl": "presenteren", "en": "to present / introduce", "ar": "يقدم / يعرض", "tr": "sunmak / tanıtmak", "dari": "معرفی کردن", "thai": "นำเสนอ / แนะนำ"}, {"nl": "dit", "en": "this (singular/close)", "ar": "هذا (قريب مفرد)", "tr": "bu (tekil/yakın)", "dari": "این", "thai": "นี่ (ใกล้)"}, {"nl": "dat", "en": "that (singular/far)", "ar": "ذلك (بعيد مفرد)", "tr": "o (tekil/uzak)", "dari": "آن", "thai": "นั่น (ไกล)"}, {"nl": "deze", "en": "these / this (de-words/close)", "ar": "هؤلاء / هذه", "tr": "bunlar/bu (yakın)", "dari": "این‌ها / این", "thai": "target_this_close"}, {"nl": "die", "en": "those / that (de-words/far)", "ar": "أولئك / تلك", "tr": "onlar/o (uzak)", "dari": "آن‌ها / آن", "thai": "เหล่านั้น / นั้น"}], "uitleg": {"nl": "Als we iemand presenteren, gebruiken we aanwijzende voornaamwoorden. In de klas kunnen we dit makkelijk oefenen: ik wijs naar een cursist dichtbij en zeg: 'Dit is Samir.' Dan wijs ik naar een cursist ver weg en zeg: 'Dat is Lina.' Gebruik 'dit is/dat is' voor enkelvoud, en 'dit zijn/dat zijn' voor meervoud: 'Dit zijn mijn pennen en dat zijn mijn boeken.'", "en": "When introducing someone, we use demonstrative pronouns. In class, we can easily practice this: I point to a student close by and say: 'Dit is Samir.' Then I point to a student far away and say: 'Dat is Lina.' Use 'dit is/dat is' for singular, and 'dit zijn/dat zijn' for plural: 'Dit zijn mijn pennen and that are my books.'", "ar": "عندما نقدم شخصاً ما، نستخدم أسماء الإشارة. في الفصل يمكننا التدرب على هذا بسهولة: أشير إلى طالب قريب مني وأقول: 'Dit is Samir' (هذا سمير). ثم أشير إلى طالب بعيد وأقول: 'Dat is Lina' (تلك لينا). استخدم 'dit is/dat is' للمفرد، و 'dit zijn/dat zijn' للجمع: 'هذه أقلامي وتلك كتبي.'", "tr": "Birini tanıtırken işaret zamirlerini kullanırız. Bunu sınıfta kolayca uygulayabiliriz: Yakındaki bir kursiyere işaret edip 'Dit is Samir' (Bu Samir) derim. Sonra uzaktaki bir kursiyere işaret edip 'Dat is Lina' (Şu Lina) derim. Tekiller için 'dit is/dat is', çoğullar için ise 'dit zijn/dat zijn' kullanın: 'Dit zijn mijn pennen en dat zijn mijn boeken.'", "dari": "هنگامی که کسی را معرفی می‌کنیم، از زوایای اشاره استفاده می‌کنیم. در صنف می‌توانیم این را به راحتی تمرین کنیم: من به زبان‌آموزی در نزدیک اشاره می‌کنم و می‌گویم: «این سمیر است.» سپس به زبان‌آموزی در دور اشاره می‌کنم و می‌گویم: «آن لینا است.» از «dit is/dat is» برای مفرد و «dit zijn/dat zijn» برای جمع استفاده کنید: «این‌ها قلم‌های من هستند و آن‌ها کتاب‌های من هستند.»", "thai": "เมื่อเราแนะนำใครบางคน เราจะใช้คำสรรพนามชี้เฉพาะ ในชั้นเรียนเราสามารถฝึกฝนเรื่องนี้ได้อย่างง่ายดาย: ครูชี้ไปที่ผู้เรียนที่อยู่ใกล้ๆ และพูดว่า 'Dit is Samir' (นี่คือสมียร์) จากนั้นครูชี้ไปที่ผู้เรียนที่อยู่ไกลออกไปและพูดว่า 'Dat is Lina' (นั่นคือลีน่า) ใช้ 'dit is/dat is' สำหรับเอกพจน์ และใช้ 'dit zijn/dat zijn' สำหรับพหูพจน์: 'Dit zijn mijn pennen en dat zijn mijn boeken.' (เหล่านี้คือปากกาของฉัน และเหล่านั้นคือหนังสือของฉัน)"}, "mc": [{"q": "___ is mijn buurman hier naast mij.", "o": ["Dit", "Dat", "Die"], "c": 0}, {"q": "___ zijn de dochters van Rashid, ze spelen daar achterin.", "o": ["Dit is", "Dat", "Dat zijn"], "c": 2}, {"q": "Van wie is ___ spiegel aan de overkant?", "o": ["dit", "die", "deze"], "c": 1}, {"q": "Kijk naar de pen in mijn hand. ___ pen schrijft goed.", "o": ["deze", "die", "dit"], "c": 0}, {"q": "Wie is die man daar aan de overkant van de straat? ___ is Rashid.", "o": ["Dit", "Dat", "Deze"], "c": 1}, {"q": "Dit zijn mijn boeken en dat ___ jouw boeken.", "o": ["is", "zijn", "bent"], "c": 1}, {"q": "___ spullen hier op tafel zijn van de docent.", "o": ["Deze", "Die", "Dit"], "c": 0}], "drag": [["Dit", "is", "mijn", "dochter", "en", "dat", "zijn", "mijn", "broers."], ["Deze", "boeken", "hier", "zijn", "van", "de", "docent."], ["Dat", "is", "mijn", "nieuwe", "auto", "aan", "de", "overkant."], ["Die", "mensen", "daar", "achterin", "zijn", "mijn", "nieuwe", "buren."], ["Dit", "zijn", "mijn", "sleutels", "hier", "op", "de", "tafel."], ["Van", "wie", "is", "dat", "grote", "witte", "huis", "daar?"], ["Deze", "hamer", "in", "mijn", "hand", "is", "erg", "zwaar."]], "invul": [{"s": "[Dit] is mijn tas hier op mijn schoot.", "h": "enkelvoud, dichtbij"}, {"s": "Kijk naar die auto's daar op de straat. [Dat] zijn mooie auto's.", "h": "meervoud, ver weg"}, {"s": "Van wie is [deze] hamer in mijn hand?", "h": "aanwijzend voornaamwoord bij de-woord (dichtbij)"}, {"s": "[Dit zijn] mijn kinderen hier naast mij.", "h": "meervoud, dichtbij"}, {"s": "Zie je die lamp aan het plafond? [Die] lamp is heel modern.", "h": "aanwijzend voornaamwoord bij de-woord (ver weg)"}, {"s": "Dit boek is klein, maar [dat] boek daar is heel groot.", "h": "het-woord, ver weg"}, {"s": "Kijk naar deze foto. Dit [is] mijn oudste zus.", "h": "verbum zijn bij enkelvoud"}], "lezen": {"story_nl": "Lina heeft een foto in haar hand en presenteert haar gezin aan de klas. Ze wijst naar de foto: 'Kijk, dit is mijn man. Hij is 32 jaar en werkt in een ziekenhuis. En dit zijn onze twee kinderen. Dit meisje hier is mijn oudste dochter en dat kleine jongetje is mijn zoon. Deze boeken hier op mijn tafel heb ik gekocht voor hen. Mijn broers wonen nog in Irak, die zie je niet op de foto. Dat huis daar op de achtergrond van de foto is het huis van mijn ouders in Bagdad. Die auto naast het huis is van mijn broer.'", "story_en": "Lina has a photo in her hand and presents her family to the class. She points to the photo: 'Look, this is my husband. He is 32 years old and works in a hospital. And these are our two children. This girl here is my eldest daughter and that little boy is my son. These books here on my table I bought for them. My brothers still live in Iraq, you don't see them in the photo. That house there in the background of the photo is the house of my parents in Baghdad. That car next to the house is my brother's.'", "story_ar": "تمسك لينا بصورة في يدها وتقدم عائلتها للفصل. تشير إلى الصورة قائلة: 'انظروا، هذا زوجي. عمره 32 عاماً ويعمل في مستشفى. وهؤلاء طفلانا. هذه الفتاة هنا هي ابنتي الكبرى وذلك الصبي الصغير هو ابني. هذه الكتب هنا على طاولتي اشتريتها لهما. لا يزال إخوتي يعيشون في العراق، ولا ترونهم في الصورة. ذلك البيت هناك في خلفية الصورة هو بيت والديّ في بغداد. وتلك السيارة بجانب البيت هي لأخي.'", "story_tr": "Lina'nın elinde bir fotoğraf var ve ailesini sınıfa tanıtıyor. Fotoğrafı işaret ediyor: 'Bakın, bu eşim. 32 yaşında ve bir hastanede çalışıyor. Bunlar da iki çocuğumuz. Buradaki kız en büyük kızım ve şu küçük oğlan da oğlum. Masamdaki bu kitapları onlar için satın aldım. Erkek kardeşlerim hâlâ Irak'ta yaşıyorlar, onları fotoğrafta göremezsiniz. Fotoğrafın arka planındaki şu ev, ailemin Bağdat'taki evidir. Evin yanındaki şu araba da kardeşime ait.'", "story_dari": "لینا عکسی در دست دارد و خانواده‌اش را به صنف معرفی می‌کند. او به عکس اشاره می‌کند: «ببینید، این شوهر من است. او ۳۲ سال دارد و در شفاخانه کار می‌کند. و این‌ها دو فرزند ما هستند. این دختر اینجا، دختر بزرگ من است و آن بچه کوچک، پسرم است. این کتاب‌ها اینجا روی میزم را برای آنها خریده‌ام. برادرانم هنوز در عراق زندگی می‌کنند، آنها را در عکس نمی‌بینید. آن خانه آنجا در پس‌زمینه عکس، خانه والدین من در بغداد است. آن موتر کنار خانه مال برادرم است.»", "story_thai": "ลีน่าถือรูปถ่ายอยู่ในมือและแนะนำครอบครัวของเธอให้เพื่อนๆ ในชั้นเรียนรู้จัก เธอยกรูปขึ้นมาโชว์: 'ดูสิคะ นี่คือสามีของฉัน เขาอายุ 32 ปีและทำงานในโรงพยาบาล และนี่คือลูกสองคนของเรา เด็กผู้หญิงคนนี้เป็นลูกสาวคนโตของฉัน และเด็กผู้ชายตัวเล็กๆ คนนั้นเป็นลูกชายของฉันค่ะ ปากกาพวกนี้บนโต๊ะของฉันซื้อมาให้พวกเขา พี่ชายของฉันยังอยู่ที่อิรัก คุณเลยไม่เห็นพวกเขาในรูปนี้ค่ะ บ้านหลังนั้นในพื้นหลังของรูปภาพคือบ้านของพ่อแม่ฉันในแบกแดด รถคันข้างๆ บ้านนั้นคือรถของพี่ชายฉันเองค่ะ'", "q": [{"q": "Lina presenteert haar gezin aan de klas.", "c": "juist"}, {"q": "De man van Lina is 32 jaar oud.", "c": "juist"}, {"q": "Lina's broers staan ook op de foto.", "c": "onjuist"}, {"q": "Het meisje op de foto is het oudste kind van Lina.", "c": "juist"}, {"q": "Lina heeft boeken gekocht voor haar man.", "c": "onjuist"}, {"q": "Het huis op de foto staat in Lelystad.", "c": "onjuist"}, {"q": "De auto naast het huis is van Lina's broer.", "c": "juist"}]}, "dictee": [{"ans": "Dit is mijn gezin.", "speak": "Dit is mijn gezin."}, {"ans": "Dat zijn mijn broers.", "speak": "Dat zijn mijn broers."}, {"ans": "Deze hamer is van mijn buurman.", "speak": "Deze hamer is van mijn buurman."}, {"ans": "Dit meisje is mijn oudste dochter.", "speak": "Dit meisje is mijn oudste dochter."}, {"ans": "Van wie is die spiegel daar?", "speak": "Van wie is die spiegel daar?"}, {"ans": "Kijk naar dat grote huis.", "speak": "Kijk naar dat grote huis."}, {"ans": "Deze boeken zijn van de docent.", "speak": "Deze boeken zijn van de docent."}], "schrijf": ["Presenteer je gezin in drie korte zinnen (gebruik 'Dit is' of 'Dit zijn').", "Schrijf op van wie de meubels in jouw huis zijn. (Bijv. 'Deze kast is van... Dat bed is van...')", "Welke spullen op je tafel zijn van jou?", "Hoe presenteer je een vriend die naast je staat?", "Hoe wijs je naar een auto die ver weg staat?", "Schrijf een zin over die mensen daar op straat.", "Maak een zin met 'deze' en 'hamer'."]};
+
+    let activeLang = 'nl';
+    let isStoryTranslated = false;
+
+    // Speach helper
+    
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.86;
+        window.speechSynthesis.speak(u);
+    }
+
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // --- LANGUAGE SWITCHER ---
+    const langNames = {
+        nl: "Nederlands",
+        en: "English",
+        ar: "العربية",
+        tr: "Türkçe",
+        dari: "دری",
+        thai: "ไทย"
+    };
+
+    function changeLang(lang) {
+        activeLang = lang;
+        document.querySelectorAll('.language-bar .lang-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-' + lang);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        // Update Vocab Table
+        document.getElementById('vocab-lang-header').textContent = langNames[lang];
+        const tbody = document.getElementById('vocab-table-body');
+        tbody.innerHTML = '';
+        DATA.vocab.forEach(v => {
+            const tr = document.createElement('tr');
+            
+            const tdNl = document.createElement('td');
+            tdNl.className = 'vocab';
+            tdNl.textContent = v.nl;
+            tdNl.appendChild(createSpeakBtn(v.nl));
+
+            const tdTrans = document.createElement('td');
+            tdTrans.textContent = v[lang] || v.en;
+            if (lang === 'ar' || lang === 'dari') {
+                tdTrans.style.direction = 'rtl';
+                tdTrans.style.textAlign = 'right';
+            } else {
+                tdTrans.style.direction = 'ltr';
+                tdTrans.style.textAlign = 'left';
+            }
+
+            tr.appendChild(tdNl);
+            tr.appendChild(tdTrans);
+            tbody.appendChild(tr);
+        });
+
+        // Update Docent Uitleg
+        const explanationText = DATA.uitleg[lang] || DATA.uitleg.nl;
+        const explanationContainer = document.getElementById('uitleg-content');
+        explanationContainer.innerHTML = explanationText;
+        if (lang === 'ar' || lang === 'dari') {
+            explanationContainer.style.direction = 'rtl';
+            explanationContainer.style.textAlign = 'right';
+        } else {
+            explanationContainer.style.direction = 'ltr';
+            explanationContainer.style.textAlign = 'left';
+        }
+
+        // Update story translation text if visible
+        updateStoryTranslationText();
+    }
+
+    function toggleStoryTranslation() {
+        isStoryTranslated = !isStoryTranslated;
+        const transText = document.getElementById('story-translation-text');
+        if (isStoryTranslated) {
+            transText.style.display = 'block';
+            updateStoryTranslationText();
+        } else {
+            transText.style.display = 'none';
+        }
+    }
+
+    function updateStoryTranslationText() {
+        const transText = document.getElementById('story-translation-text');
+        transText.textContent = DATA.lezen['story_' + activeLang] || DATA.lezen.story_en;
+        if (activeLang === 'ar' || activeLang === 'dari') {
+            transText.style.direction = 'rtl';
+            transText.style.textAlign = 'right';
+        } else {
+            transText.style.direction = 'ltr';
+            transText.style.textAlign = 'left';
+        }
+    }
+
+    // --- OPDRACHT 1: MC ---
+    function buildMC() {
+        const container = document.getElementById('mc-container');
+        container.innerHTML = '';
+        DATA.mc.forEach((q, idx) => {
+            const div = document.createElement('div');
+            div.className = 'mc-question-block';
+            div.style.marginBottom = '20px';
+            
+            const p = document.createElement('p');
+            p.className = 'mc-q-text';
+            p.style.fontWeight = '700';
+            p.style.marginBottom = '8px';
+            p.textContent = (idx + 1) + '. ' + q.q;
+            div.appendChild(p);
+
+            const optDiv = document.createElement('div');
+            optDiv.className = 'mc-opties-wrap';
+            optDiv.style.display = 'flex';
+            optDiv.style.gap = '10px';
+            optDiv.style.flexWrap = 'wrap';
+
+            q.o.forEach((opt, oIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.style.width = 'auto';
+                btn.style.flex = '1';
+                btn.style.minWidth = '140px';
+                btn.textContent = opt;
+                btn.onclick = () => selectMCOption(idx, oIdx);
+                btn.id = `mc-${idx}-${oIdx}`;
+                optDiv.appendChild(btn);
+            });
+
+            div.appendChild(optDiv);
+            container.appendChild(div);
+        });
+    }
+
+    let mcAnswers = {};
+    function selectMCOption(qIdx, oIdx) {
+        DATA.mc[qIdx].o.forEach((opt, idx) => {
+            const el = document.getElementById(`mc-${qIdx}-${idx}`);
+            if (el) el.classList.remove('active');
+        });
+        const activeBtn = document.getElementById(`mc-${qIdx}-${oIdx}`);
+        if (activeBtn) activeBtn.classList.add('active');
+        mcAnswers[qIdx] = oIdx;
+    }
+
+        function checkMC() {
+        let answeredCount = 0;
+        DATA.mc.forEach((q, idx) => {
+            if (mcAnswers[idx] !== undefined) answeredCount++;
+        });
+        if (answeredCount === 0) {
+            alert("Selecteer eerst een antwoord!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.mc.forEach((q, qIdx) => {
+            const correctIdx = q.c;
+            const userAns = mcAnswers[qIdx];
+            if (userAns === correctIdx) correctCount++;
+            
+            q.o.forEach((opt, oIdx) => {
+                const btn = document.getElementById(`mc-${qIdx}-${oIdx}`);
+                if (!btn) return;
+                btn.classList.remove('correct', 'incorrect');
+                if (oIdx === correctIdx) {
+                    if (userAns === oIdx) btn.classList.add('correct');
+                } else {
+                    if (userAns === oIdx) btn.classList.add('incorrect');
+                }
+            });
+        });
+
+        const badge = document.getElementById('mc-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.mc.length} goed`;
+        badge.style.background = correctCount === DATA.mc.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.mc.length) {
+            triggerConfetti();
+        }
+    }
+    function resetMC() {
+        document.getElementById('mc-score').style.display = 'none';
+        mcAnswers = {};
+        buildMC();
+    }
+
+    // --- OPDRACHT 2: DRAG / TILE BUILDER ---
+    let dragAnswers = {};
+
+    function buildDrag() {
+        const container = document.getElementById('drag-container');
+        container.innerHTML = '';
+        
+        DATA.drag.forEach((words, idx) => {
+            const div = document.createElement('div');
+            div.className = 'drag-sentence-block';
+            div.style.marginBottom = '25px';
+
+            const label = document.createElement('p');
+            label.style.fontWeight = '700';
+            label.style.marginBottom = '8px';
+            label.textContent = `Zin ${idx + 1}:`;
+            div.appendChild(label);
+
+            const dropZone = document.createElement('div');
+            dropZone.className = 'drop-zone';
+            dropZone.id = `drop-zone-${idx}`;
+            div.appendChild(dropZone);
+
+            const wordBank = document.createElement('div');
+            wordBank.className = 'word-bank';
+            wordBank.id = `word-bank-${idx}`;
+            
+            // Shuffle words
+            let shuffled = [...words].sort(() => Math.random() - 0.5);
+            shuffled.forEach((w, wIdx) => {
+                const tile = document.createElement('button');
+                tile.className = 'word-tile';
+                tile.textContent = w;
+                tile.onclick = () => handleTileClick(idx, tile, w);
+                wordBank.appendChild(tile);
+            });
+            div.appendChild(wordBank);
+            container.appendChild(div);
+            
+            dragAnswers[idx] = [];
+        });
+    }
+
+    function handleTileClick(sIdx, tile, word) {
+        const dropZone = document.getElementById(`drop-zone-${sIdx}`);
+        const wordBank = document.getElementById(`word-bank-${sIdx}`);
+        
+        if (tile.parentNode === wordBank) {
+            // Move to drop zone
+            dropZone.appendChild(tile);
+            dragAnswers[sIdx].push(word);
+        } else {
+            // Move back to word bank
+            wordBank.appendChild(tile);
+            dragAnswers[sIdx] = dragAnswers[sIdx].filter(w => w !== word);
+        }
+    }
+
+        function checkDrag() {
+        let totalTiles = 0;
+        DATA.drag.forEach((words, idx) => {
+            totalTiles += document.getElementById(`drop-zone-${idx}`).querySelectorAll('.word-tile').length;
+        });
+        if (totalTiles === 0) {
+            alert("Sleep eerst de woorden om zinnen te maken!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.drag.forEach((words, sIdx) => {
+            const dropZone = document.getElementById(`drop-zone-${sIdx}`);
+            const tiles = dropZone.querySelectorAll('.word-tile');
+            
+            let allCorrect = true;
+            tiles.forEach((tile, tIdx) => {
+                tile.classList.remove('correct-pos', 'wrong-pos');
+                if (tile.textContent === words[tIdx]) {
+                    tile.classList.add('correct-pos');
+                } else {
+                    tile.classList.add('wrong-pos');
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect && tiles.length === words.length) {
+                tiles.forEach(tile => tile.classList.add('all-correct'));
+                correctCount++;
+            }
+        });
+
+        const badge = document.getElementById('drag-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.drag.length} goed`;
+        badge.style.background = correctCount === DATA.drag.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.drag.length) {
+            triggerConfetti();
+        }
+    }
+    function resetDrag() {
+        document.getElementById('drag-score').style.display = 'none';
+        buildDrag();
+    }
+
+    // --- OPDRACHT 3: FILL IN BLANK ---
+    function buildInvul() {
+        const container = document.getElementById('invul-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'invul-list';
+
+        DATA.invul.forEach((item, idx) => {
+            const li = document.createElement('li');
+            
+            // Regex to find brackets
+            const text = item.s;
+            const parts = text.split(/\[.*?\]/);
+            const rawAns = text.match(/\[(.*?)\]/)[1];
+
+            const span1 = document.createElement('span');
+            span1.textContent = (idx + 1) + '. ' + parts[0];
+            li.appendChild(span1);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `invul-${idx}`;
+            input.setAttribute('data-ans', rawAns);
+            li.appendChild(input);
+
+            const span2 = document.createElement('span');
+            span2.textContent = parts[1];
+            li.appendChild(span2);
+
+            const hint = document.createElement('span');
+            hint.className = 'ex-hint';
+            hint.textContent = ` (${item.h})`;
+            li.appendChild(hint);
+
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+    }
+
+        function checkInvul() {
+        let hasInputs = false;
+        DATA.invul.forEach((item, idx) => {
+            const val = document.getElementById(`invul-${idx}`).value.trim();
+            if (val !== "") hasInputs = true;
+        });
+        if (!hasInputs) {
+            alert("Vul eerst de antwoorden in!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.invul.forEach((item, idx) => {
+            const input = document.getElementById(`invul-${idx}`);
+            if (!input) return;
+            const userAns = input.value.trim().toLowerCase();
+            const correctAns = input.getAttribute('data-ans').toLowerCase();
+
+            input.classList.remove('correct', 'fout');
+            if (userAns === "") {
+                input.classList.add('fout');
+                return;
+            }
+            if (userAns === correctAns) {
+                input.classList.add('correct');
+                correctCount++;
+            } else {
+                input.classList.add('fout');
+            }
+        });
+
+        const badge = document.getElementById('invul-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.invul.length} goed`;
+        badge.style.background = correctCount === DATA.invul.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.invul.length) {
+            triggerConfetti();
+        }
+    }
+    function resetInvul() {
+        document.getElementById('invul-score').style.display = 'none';
+        buildInvul();
+    }
+
+    // --- OPDRACHT 4: LEZEN ---
+    let lezenAnswers = {};
+    function buildLezen() {
+        document.getElementById('story-nl-text').textContent = DATA.lezen.story_nl;
+        
+        const container = document.getElementById('lezen-questions-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'wn-list';
+
+        DATA.lezen.q.forEach((q, idx) => {
+            const li = document.createElement('li');
+            
+            const span = document.createElement('span');
+            span.className = 'wn-stelling';
+            span.textContent = (idx + 1) + '. ' + q.q;
+            li.appendChild(span);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'wn-btngroup';
+
+            const btnJ = document.createElement('button');
+            btnJ.className = 'wn-btn';
+            btnJ.textContent = 'Juist';
+            btnJ.id = `lezen-${idx}-juist`;
+            btnJ.onclick = () => selectLezenOption(idx, 'juist');
+
+            const btnO = document.createElement('button');
+            btnO.className = 'wn-btn';
+            btnO.textContent = 'Onjuist';
+            btnO.id = `lezen-${idx}-onjuist`;
+            btnO.onclick = () => selectLezenOption(idx, 'onjuist');
+
+            btnGroup.appendChild(btnJ);
+            btnGroup.appendChild(btnO);
+            li.appendChild(btnGroup);
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+        lezenAnswers = {};
+    }
+
+    function selectLezenOption(idx, option) {
+        const btnJ = document.getElementById(`lezen-${idx}-juist`);
+        const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+        
+        btnJ.classList.remove('active');
+        btnO.classList.remove('active');
+
+        if (option === 'juist') btnJ.classList.add('active');
+        else btnO.classList.add('active');
+
+        lezenAnswers[idx] = option;
+    }
+
+        function checkLezen() {
+        let answeredCount = 0;
+        DATA.lezen.q.forEach((q, idx) => {
+            if (lezenAnswers[idx] !== undefined) answeredCount++;
+        });
+        if (answeredCount === 0) {
+            alert("Kies eerst Juist of Onjuist bij de stellingen!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.lezen.q.forEach((q, idx) => {
+            const btnJ = document.getElementById(`lezen-${idx}-juist`);
+            const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+            const correctAns = q.c.toLowerCase();
+
+            btnJ.classList.remove('correct', 'fout');
+            btnO.classList.remove('correct', 'fout');
+
+            if (lezenAnswers[idx] === undefined) {
+                return; // Do not check unselected questions
+            }
+
+            if (correctAns === 'juist') {
+                if (lezenAnswers[idx] === 'juist') {
+                    btnJ.classList.add('correct');
+                    correctCount++;
+                } else if (lezenAnswers[idx] === 'onjuist') {
+                    btnO.classList.add('fout');
+                }
+            } else {
+                if (lezenAnswers[idx] === 'onjuist') {
+                    btnO.classList.add('correct');
+                    correctCount++;
+                } else if (lezenAnswers[idx] === 'juist') {
+                    btnJ.classList.add('fout');
+                }
+            }
+        });
+
+        const badge = document.getElementById('lezen-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.lezen.q.length} goed`;
+        badge.style.background = correctCount === DATA.lezen.q.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.lezen.q.length) {
+            triggerConfetti();
+        }
+    }
+    function resetLezen() {
+        document.getElementById('lezen-score').style.display = 'none';
+        buildLezen();
+    }
+
+    // --- OPDRACHT 5: DICTEE ---
+    function buildDictee() {
+        const container = document.getElementById('dictee-container');
+        container.innerHTML = '';
+
+        DATA.dictee.forEach((item, idx) => {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:12px;';
+
+            const playBtn = document.createElement('button');
+            playBtn.className = 'audio-btn';
+            playBtn.innerHTML = '🔊 Luister';
+            playBtn.onclick = () => speakNative(item.speak);
+            row.appendChild(playBtn);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `dict-${idx}`;
+            input.className = 'dictee-input';
+            input.placeholder = 'Typ wat je hoort...';
+            row.appendChild(input);
+
+            container.appendChild(row);
+        });
+    }
+
+    // Levenshtein distance for fuzzy grading
+    defLeven = function(a, b) {
+        if(a.length == 0) return b.length; 
+        if(b.length == 0) return a.length; 
+        var matrix = [];
+        for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+        for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+        for(var i = 1; i <= b.length; i++){
+            for(var j = 1; j <= a.length; j++){
+                if(b.charAt(i-1) == a.charAt(j-1)){
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    };
+
+    function checkDictee() {
+        let hasInput = false;
+        DATA.dictee.forEach((item, idx) => {
+            const val = document.getElementById(`dict-${idx}`).value.trim();
+            if (val !== "") hasInput = true;
+        });
+        if (!hasInput) {
+            alert("Typ eerst de zinnen van het dictee!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.dictee.forEach((item, idx) => {
+            const input = document.getElementById(`dict-${idx}`);
+            if (!input) return;
+            
+            const userText = input.value.trim().toLowerCase().replace(/[.,?!]/g, "");
+            
+            input.classList.remove('correct', 'fout');
+            input.style.borderColor = '';
+            
+            // Remove existing notes
+            let existingNote = input.parentNode.querySelector('.fuzzy-note, .wrong-note');
+            if (existingNote) existingNote.remove();
+
+            if (userText === "") {
+                input.style.borderColor = '#ef4444';
+                return;
+            }
+
+            const correctText = item.ans.trim().toLowerCase().replace(/[.,?!]/g, "");
+
+            if (userText === correctText) {
+                input.classList.add('correct');
+                input.style.borderColor = '#10b981';
+                correctCount++;
+            } else if (defLeven(userText, correctText) <= 2) {
+                input.classList.add('correct');
+                input.style.borderColor = '#ca8a04';
+                correctCount++;
+                
+                const note = document.createElement('span');
+                note.className = 'fuzzy-note';
+                note.style.cssText = 'color:#ca8a04; font-size:0.85rem; margin-left:8px; font-weight:700;';
+                note.textContent = `Bijna goed! Let op: "${item.ans}"`;
+                input.parentNode.appendChild(note);
+            } else {
+                input.classList.add('fout');
+                input.style.borderColor = '#ef4444';
+                
+                const note = document.createElement('span');
+                note.className = 'wrong-note';
+                note.style.cssText = 'color:#ef4444; font-size:0.85rem; margin-left:8px; font-weight:700;';
+                note.textContent = `Correct: "${item.ans}"`;
+                input.parentNode.appendChild(note);
+            }
+        });
+
+        const badge = document.getElementById('dictee-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.dictee.length} goed`;
+        badge.style.background = correctCount === DATA.dictee.length ? '#10b981' : '#e67e22';
+        if (correctCount === DATA.dictee.length) { triggerConfetti(); }
+    }
+
+    function resetDictee() {
+        document.getElementById('dictee-score').style.display = 'none';
+        buildDictee();
+    }
+
+    // --- OPDRACHT 6: SCHRIJVEN ---
+    function buildSchrijf() {
+        const container = document.getElementById('schrijf-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'schrijf-list';
+
+        DATA.schrijf.forEach((item, idx) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '15px';
+
+            const label = document.createElement('label');
+            label.style.fontWeight = '700';
+            label.style.display = 'block';
+            label.style.marginBottom = '4px';
+            label.textContent = (idx + 1) + '. ' + item;
+            li.appendChild(label);
+
+            const textarea = document.createElement('textarea');
+            textarea.id = `s1-${idx}`;
+            textarea.style.cssText = 'width:100%; min-height:60px; padding:10px; border:2px solid var(--border-subtle); border-radius:8px; background:transparent; color:inherit; font-family:inherit; outline:none;';
+            textarea.placeholder = 'Typ je antwoord in een volledige zin...';
+            li.appendChild(textarea);
+
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+    }
+
+    function saveSchrijf() {
+        const answers = [];
+        DATA.schrijf.forEach((item, idx) => {
+            const text = document.getElementById(`s1-${idx}`).value;
+            answers.push(text);
+        });
+        localStorage.setItem('a2_schrijf_' + LESSON_ID, JSON.stringify(answers));
+        
+        const fb = document.getElementById('schrijf-fb');
+        fb.style.display = 'inline';
+        setTimeout(() => fb.style.display = 'none', 2000);
+    }
+
+    function loadSchrijf() {
+        const stored = JSON.parse(localStorage.getItem('a2_schrijf_' + LESSON_ID) || '[]');
+        stored.forEach((text, idx) => {
+            const textarea = document.getElementById(`s1-${idx}`);
+            if (textarea) textarea.value = text;
+        });
+    }
+
+    function shareWhatsApp() {
+        const answers = [];
+        let hasContent = false;
+        DATA.schrijf.forEach((item, idx) => {
+            const text = document.getElementById(`s1-${idx}`).value.trim();
+            if (text) {
+                answers.push(`Vraag: ${item}
+Antwoord: ${text}`);
+                hasContent = true;
+            }
+        });
+        if (!hasContent) {
+            alert('Schrijf eerst je antwoorden op de vragen!');
+            return;
+        }
+        
+        const message = `NT2 A2 Huiswerk Les ${LESSON_ID} — ${DATA.title}:\n\n` + answers.join('\n\n');
+        const phone = '31626211106'; // Teacher Rida
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    function resetSchrijf() {
+        buildSchrijf();
+    }
+
+    // --- LES VOLTOOIEN ---
+    function markeerVoltooid() {
+        const pageName = window.location.pathname.split('/').pop();
+        localStorage.setItem('completed_' + pageName, 'true');
+        
+        const btn = document.getElementById('voltooi-btn');
+        btn.textContent = '🎉 Les voltooid! Goed gedaan!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        btn.style.borderColor = '#10b981';
+        btn.disabled = true;
+    }
+
+    function checkVoltooiStatus() {
+        const pageName = window.location.pathname.split('/').pop();
+        if (localStorage.getItem('completed_' + pageName) === 'true') {
+            const btn = document.getElementById('voltooi-btn');
+            if (btn) {
+                btn.textContent = '🎉 Les voltooid! Goed gedaan!';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                btn.style.borderColor = '#10b981';
+                btn.disabled = true;
+            }
+        }
+    }
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+        changeLang('nl');
+        buildMC();
+        buildDrag();
+        buildInvul();
+        buildLezen();
+        buildDictee();
+        buildSchrijf();
+        loadSchrijf();
+        checkVoltooiStatus();
+    });
+  </script>
+
+  <!-- THEME TOGGLE SCRIPT -->
+  <script>
+      (function() {
+          const themeToggle = document.getElementById('theme-toggle');
+          if (!themeToggle) return;
+          themeToggle.addEventListener('click', () => {
+              let theme = document.documentElement.getAttribute('data-theme') || 'light';
+              let newTheme = theme === 'light' ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('a2-theme', newTheme);
+          });
+      })();
+  </script>
+
+</body>
+</html>

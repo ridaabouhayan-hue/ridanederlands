@@ -367,7 +367,24 @@ const UITLEG = {
 };
 
 let _ttsAudio=null;
-function speak(text){if(!text)return;if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}_ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);_ttsAudio.play().catch(()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='nl-NL';u.rate=0.9;window.speechSynthesis.speak(u);}});}
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text){if(!text)return;if(_ttsAudio){_ttsAudio.pause();_ttsAudio.currentTime=0;}_ttsAudio=new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(text)}`);_ttsAudio.play().catch(()=>{if('speechSynthesis'in window){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='nl-NL';u.rate=0.9;window.speechSynthesis.speak(u);}});}
 
 function buildTable(lang){const tbody=document.getElementById('vocab-body');tbody.innerHTML='';VOCAB.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><button class="speak-btn" onclick="speak('${r.nl.replace(/'/g,"\\'")}')">🔊</button></td><td class="nl-word">${r.nl}</td><td>${r[lang]||'—'}</td><td class="example-cell">${r.ex}</td>`;tbody.appendChild(tr);});document.getElementById('th-lang').textContent=UI[lang].thLang;}
 

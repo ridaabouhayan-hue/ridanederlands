@@ -223,7 +223,24 @@ function levenshtein(a, b) {
         zh:`<div class="uitleg-box"><h3>自我介绍</h3><p>在第1.1段，你将学习如何用荷兰语介绍自己。请使用以下句子：</p><ul style="line-height:2.2;font-size:.93rem"><li>Mijn naam is ... / Ik heet ... → 我的名字是 ...</li><li>Ik kom uit ... → 我来自 ...（国家）</li><li>Ik woon in ... → 我住在 ...（城市/国家）</li><li>Ik ben ... jaar oud → 我 ... 岁。</li><li>Ik ben getrouwd / niet getrouwd → 我已婚 / 未婚。</li><li>Ik heb ... kinderen → 我有 ... 个孩子。</li></ul></div><div class="voorbeeld-blok">🇨🇳 例子：你好！我的名字是Julia。我来自叙利亚。我住在乌得勒支。我28岁。我已婚，有两个孩子。</div><div class="tip-blok"><strong>注意：</strong> "Ik heet Julia" = "Mijn naam is Julia" — 两种说法都正确！</div>`
     };
     let _ttsAudio = null;
-function speak(text, isSlow = false) {
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NT2 A2 — Paragraaf 1.10: Op het station. Uitleg en opdrachten.">
+  <title>1.10 Op het station — NT2 A2</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+      (function() {
+          const currentTheme = localStorage.getItem('a2-theme') || 'light';
+          document.documentElement.setAttribute('data-theme', currentTheme);
+      })();
+  </script>
+</head>
+<body>
+
+  <!-- Language Bar -->
+  <nav class="language-bar" aria-label="Taalkeuze">
+    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; margin-right: auto; border-color: var(--accent-purple); color: var(--accent-purple);">🌓 Thema</button>
+    <span class="label">🌐 Vertaal Uitleg & Woorden:</span>
+    <button class="lang-btn active" id="btn-nl" onclick="changeLang('nl')">🇳🇱 Ned</button>
+    <button class="lang-btn" id="btn-en" onclick="changeLang('en')">🇬🇧 Eng</button>
+    <button class="lang-btn" id="btn-ar" onclick="changeLang('ar')">🇸🇦 العر</button>
+    <button class="lang-btn" id="btn-tr" onclick="changeLang('tr')">🇹🇷 Tür</button>
+    <button class="lang-btn" id="btn-dari" onclick="changeLang('dari')">🇦🇫 دری</button>
+    <button class="lang-btn" id="btn-thai" onclick="changeLang('thai')">🇹🇭 ไทย</button>
+  </nav>
+
+  <main class="page-container">
+    <a href="thema1.html" class="back-link">← Terug naar Thema 1</a>
+
+    <header class="page-header">
+      <div class="breadcrumb">
+        <a href="index.html">Thema's</a>
+        <span>›</span>
+        <a href="thema1.html">Thema 1</a>
+        <span>›</span>
+        <span>1.10</span>
+      </div>
+      <h1>1.10 Op het station</h1>
+      <p class="subtitle">Leren reizen met de trein en berichten op het station begrijpen.</p>
+    </header>
+
+    <!-- SECTION 1: WOORDENLIJST -->
+    <section class="opdracht-card theme-blauw">
+      <div class="opdracht-header">
+        <span class="opdracht-num">1</span>
+        <h2>Woordenlijst — <span class="sub-title">Vocabulary</span></h2>
+      </div>
+      <table class="ww-tabel" style="margin-top:15px;">
+        <thead>
+          <tr>
+            <th>Nederlands</th>
+            <th id="vocab-lang-header">Vertaling</th>
+          </tr>
+        </thead>
+        <tbody id="vocab-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 2: DOCENT UITLEG -->
+    <section class="opdracht-card theme-oranje">
+      <div class="opdracht-header">
+        <span class="opdracht-num">2</span>
+        <h2>Docent Uitleg — <span class="sub-title">Teacher Explanation</span></h2>
+      </div>
+      <div class="uitleg-content" id="uitleg-content" style="margin-top:15px; font-size:1.05rem; line-height:1.8;">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: OPDRACHTEN -->
+    <!-- Opdracht 1: Meerkeuze -->
+    <section class="opdracht-card theme-paars">
+      <div class="opdracht-header">
+        <span class="opdracht-num">3</span>
+        <h2>Opdracht 1: Kies het juiste woord</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="mc-container"></div>
+        <button class="controle-btn" onclick="checkMC()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetMC()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="mc-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 2: Zinnen bouwen -->
+    <section class="opdracht-card theme-groen">
+      <div class="opdracht-header">
+        <span class="opdracht-num">4</span>
+        <h2>Opdracht 2: Sleep en maak een zin</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="drag-container"></div>
+        <button class="controle-btn" onclick="checkDrag()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetDrag()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="drag-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 3: Vul de gaten in -->
+    <section class="opdracht-card theme-geel">
+      <div class="opdracht-header">
+        <span class="opdracht-num">5</span>
+        <h2>Opdracht 3: Vul het juiste woord in</h2>
+      </div>
+      <div class="opdracht-body">
+        <div id="invul-container"></div>
+        <button class="controle-btn" onclick="checkInvul()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetInvul()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="invul-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 4: Lezen (Juist/Onjuist) -->
+    <section class="opdracht-card theme-blauw">
+      <div class="opdracht-header">
+        <span class="opdracht-num">6</span>
+        <h2>Opdracht 4: Lezen (Juist of Onjuist)</h2>
+      </div>
+      <div class="opdracht-body">
+        <div class="reading-box" style="background:var(--bg-secondary); padding:20px; border-radius:var(--radius-md); margin-bottom:15px;">
+          <p style="font-weight:700; margin-bottom:8px;">Lees het verhaal:</p>
+          <p id="story-nl-text" style="font-size:1.05rem; line-height:1.7; font-style:normal; color:var(--text-primary);"></p>
+          <button class="lang-btn" id="story-translate-btn" onclick="toggleStoryTranslation()" style="margin-top:10px; cursor:pointer; font-size:0.85rem;">🌐 Toon Vertaling / Show Translation</button>
+          <p id="story-translation-text" style="display:none; margin-top:10px; font-size:0.95rem; line-height:1.6; font-style:italic; color:var(--text-secondary);"></p>
+        </div>
+        <div id="lezen-questions-container"></div>
+        <button class="controle-btn" onclick="checkLezen()">Controleer</button>
+        <button class="controle-btn reset" onclick="resetLezen()" style="background:#475569;">Opnieuw</button>
+        <span class="score-badge" id="lezen-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
+      </div>
+    </section>
+
+    <!-- Opdracht 5: Dictee -->
+    <section class="opdracht-card theme-oranje">
+      <div class="opdracht-header">
+        <span class="opdracht-num">7</span>
+        <h2>Opdracht 5: Dictee (Schrijf de zin op)</h2>
+      </div>
+      <div class="opdracht-body">
+        <p style="margin-bottom:15px; font-size:0.92rem;">Klik op het geluidsknopje en typ de zin die je hoort. Let op hoofdletters en punten.</p>
+        <div id="dictee-container"></div>
+        <div style="margin-top:15px;">
+          <button class="controle-btn" onclick="checkDictee()">Controleer Dictee</button>
+          <button class="controle-btn reset" onclick="resetDictee()" style="background:#475569;">Opnieuw</button>
+          <span id="dictee-score" class="score-badge" style="display:none; margin-left:15px; font-weight:800; font-size:1rem; padding:8px 16px; border-radius:50px;"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opdracht 6: Huiswerk Schrijven -->
+    <section class="opdracht-card theme-paars">
+      <div class="opdracht-header">
+        <span class="opdracht-num">8</span>
+        <h2>Opdracht 6: Huiswerk Schrijven</h2>
+      </div>
+      <div class="opdracht-body">
+        <p style="margin-bottom:15px; font-size:0.92rem;">Schrijf hele zinnen als antwoord op de vragen. Sla je antwoorden op en deel ze met de docent via WhatsApp!</p>
+        <div id="schrijf-container"></div>
+        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="controle-btn" onclick="saveSchrijf()" style="background:var(--accent-purple);">💾 Opslaan</button>
+          <button class="controle-btn" onclick="shareWhatsApp()" style="background:#25d366; color:white;">💬 Stuur naar docent</button>
+          <button class="controle-btn reset" onclick="resetSchrijf()" style="background:#475569;">Opnieuw</button>
+          <span id="schrijf-fb" style="display:none; color:var(--accent-green); font-weight:800; align-self:center; font-size:0.95rem;">✅ Opgeslagen!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LES VOLTOOIEN BUTTON -->
+    <div style="text-align:center; margin-top:40px; margin-bottom:60px;">
+      <button id="voltooi-btn" onclick="markeerVoltooid()" class="controle-btn" style="padding:15px 40px; font-size:1.2rem; border-radius:50px; background:linear-gradient(135deg, var(--accent-blue), #d35400); color:white; font-weight:900; cursor:pointer; width:100%; max-width:400px; border:none; box-shadow:0 10px 25px var(--accent-blue-glow);">
+        Voltooi deze les!
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    NT2 A2 Leerplatform &copy; 2026
+  </footer>
+
+  <!-- DATABASE AND SCRIPT LOGIC -->
+  <script>
+    const LESSON_ID = "1.10";
+    const DATA = {"title": "Op het station", "intro": "Leren reizen met de trein en berichten op het station begrijpen.", "vocab": [{"nl": "het bericht", "en": "message / announcement", "ar": "الرسالة / الإعلان المسموع", "tr": "mesaj / duyuru", "dari": "پیام/خبر", "thai": "ข่าวสาร / ประกาศ"}, {"nl": "duidelijk", "en": "clear", "ar": "واضح", "tr": "net / açık", "dari": "واضح", "thai": "ชัดเจน"}, {"nl": "de vertraging", "en": "delay", "ar": "التأخير", "tr": "gecikme", "dari": "تاخیر", "thai": "การล่าช้า / ดีเลย์"}, {"nl": "technisch", "en": "technical", "ar": "تقني / فني", "tr": "teknik", "dari": "تخنیکی/فنی", "thai": "ทางเทคนิค"}, {"nl": "op tijd", "en": "in time / on time", "ar": "في الوقت المحدد", "tr": "zamanında", "dari": "به وقت", "thai": "ตรงเวลา"}], "uitleg": {"nl": "Op het station moet je goed luisteren naar de berichten van de computer of de docent. Soms heeft een trein vertraging door een technisch probleem. Een omroepbericht vertelt je dan wat er aan de hand is. Bijvoorbeeld: 'De trein naar Amersfoort vertrekt over tien minuten van spoor vier.' Zorg dat je op tijd op het spoor bent!", "en": "At the station, you must listen carefully to the announcements from the computer or teacher. Sometimes a train is delayed due to a technical problem. An announcement will tell you what is going on. For example: 'The train to Amersfoort departs in ten minutes from track four.' Make sure you are on the platform on time!", "ar": "في المحطة، يجب عليك الاستماع جيداً للإعلانات المسموعة من الكمبيوتر أو المعلم. في بعض الأحيان يتأخر القطار بسبب مشكلة تقنية. يخبرك الإعلان المسموع بما يحدث. مثل: 'القطار المتجه إلى أيمرسفورت يغادر بعد عشر دقائق من الرصيف 4.' تأكد من وصولك إلى الرصيف في الوقت المحدد!", "tr": "İstasyonda bilgisayardan veya öğretmenden gelen duyuruları dikkatlice dinlemelisiniz. Bazen teknik bir sorun nedeniyle tren gecikebilir. Bir anons size ne olduğunu söyleyecektir. Örneğin: 'Amersfoort treni on dakika içinde dördüncü perondan kalkacaktır.' Zamanında peronda olduğunuzdan emin olun!", "dari": "در ایستگاه قطار، باید به پیام‌های صوتی دستگاه یا استاد به خوبی گوش دهید. گاهی اوقات قطار به دلیل مشکلات فنی تاخیر دارد. یک پیام صوتی به شما می‌گوید که چه اتفاقی افتاده است. به عنوان مثال: «قطار به سمت آمرسفورت ده دقیقه بعد از خط چهار حرکت می‌کند.» مطمئن شوید که به وقت در خط آهن حضور دارید!", "thai": "ที่สถานีรถไฟ คุณต้องตั้งใจฟังประกาศจากเครื่องคอมพิวเตอร์หรืออาจารย์ บางครั้งรถไฟอาจล่าช้าเนื่องจากปัญหาทางเทคนิค ประกาศจะแจ้งให้คุณทราบว่าเกิดอะไรขึ้น ตัวอย่างเช่น: 'รถไฟไปเมืองอาเมอร์สโฟร์ตจะออกเดินทางในอีกสิบนาทีจากชานชาลาที่สี่' ตรวจสอบให้แน่ใจว่าคุณไปถึงชานชาลาตรงเวลา!"}, "mc": [{"q": "De trein heeft 15 minuten ___ door een defect.", "o": ["station", "hulp", "vertraging"], "c": 2}, {"q": "Ik hoor een ___ op het perron over de trein.", "o": ["bericht", "automaat", "lawaai"], "c": 0}, {"q": "Gelukkig rijdt de trein nu wel weer ___.", "o": ["op tijd", "vertraging", "technisch"], "c": 0}, {"q": "Waar kan ik treinkaartjes kopen op het station?", "o": ["Bij de automaat", "Bij de hamer", "Bij de wijk"], "c": 0}, {"q": "Het omroepbericht was niet ___, ik kon het niet verstaan.", "o": ["duidelijk", "modern", "zwanger"], "c": 0}, {"q": "De trein staat op ___ 5.", "o": ["spoor", "lift", "tuin"], "c": 0}, {"q": "Wat is er aan de hand? Er is een ___ storing.", "o": ["technische", "ruime", "blije"], "c": 0}], "drag": [["De", "trein", "naar", "Amersfoort", "heeft", "minimaal", "tien", "minuten", "vertraging."], ["Deze", "informatie", "op", "het", "scherm", "is", "erg", "duidelijk."], ["Ahmed", "stuur", "een", "bericht", "naar", "zijn", "werkgever."], ["De", "reizigers", "wachten", "op", "het", "perron", "voor", "de", "trein."], ["Er", "is", "een", "groot", "technisch", "probleem", "met", "de", "bovenleiding."], ["Ik", "wil", "graag", "op", "tijd", "komen", "voor", "mijn", "afspraak."], ["Hoor", "jij", "dat", "harde", "lawaai", "op", "het", "station?"]], "invul": [{"s": "Onze trein kan niet rijden door een [technisch] probleem.", "h": "probleem met de machine of elektriciteit"}, {"s": "Sorry dat ik te laat ben, de trein had [vertraging].", "h": "later aankomen dan de normale tijd"}, {"s": "Is het omroepbericht voor de reizigers [duidelijk]?", "h": "goed te begrijpen of te horen"}, {"s": "Ik moet rennen om [op tijd] te zijn voor de trein.", "h": "niet te laat"}, {"s": "We kopen onze kaartjes bij de gele [automaat].", "h": "apparaat op het station"}, {"s": "De trein vertrekt vandaag van een ander [spoor].", "h": "de rails waar de trein op rijdt"}, {"s": "Ik stuur een [bericht] naar mijn vrouw dat de trein stilstaat.", "h": "korte geschreven tekst"}], "lezen": {"story_nl": "Ahmed zit in de trein van Amsterdam naar Deventer. Hij heeft om 9.00 uur een belangrijke afspraak voor zijn werk en moet echt op tijd komen. Plotseling stopt de trein voor het station Amersfoort. Reizigers horen een omroepbericht over het spoor: 'Goede middag dames en heren. Helaas moet onze trein voor het station wachten. De trein die nu op ons spoor staat, heeft een technisch probleem. We rijden verder naar station Amersfoort als er een ander spoor vrij is. We hebben waarschijnlijk een vertraging van minimaal tien minuten.' Ahmed schrikt, want het is al 8.40 uur en vanaf het station is het nog tien minuten lopen naar zijn afspraak. Hij pakt zijn telefoon en stuurt direct een bericht naar zijn manager om te zeggen dat hij mogelijk iets later komt door de treinvertraging. Gelukkig begint de trein na vijf minuten weer te rijden en komt Ahmed toch nog net op tijd aan.", "story_en": "Ahmed is on the train from Amsterdam to Deventer. He has an important meeting for his work at 9:00 AM and really has to be on time. Suddenly the train stops before the station of Amersfoort. Passengers hear an announcement over the platform: 'Good afternoon ladies and gentlemen. Unfortunately, our train has to wait before the station. The train currently on our track has a technical problem. We will continue to Amersfoort station when another track is clear. We have a delay of probably at least ten minutes.' Ahmed is shocked, because it is already 8:40 AM and from the station it is still a ten-minute walk to his appointment. He grabs his phone and immediately sends a message to his manager to say that he might be slightly late due to the train delay. Fortunately, after five minutes, the train starts running again and Ahmed still arrives just in time.", "story_ar": "يجلس أحمد في القطار المتجه من أمستردام إلى ديفينتر. لديه موعد عمل مهم في الساعة 9:00 صباحاً ويجب أن يصل في الوقت المحدد. وفجأة يتوقف القطار قبل محطة أيمرسفورت. يسمع المسافرون إعلاناً مسموعاً عبر الرصيف: 'مساء الخير سيداتي وسادتي. للأسف يجب على قطارنا الانتظار قبل المحطة. القطار الذي يقف الآن على سكتنا يعاني من مشكلة تقنية. سنواصل السير إلى محطة أيمرسفورت عندما تفرغ سكة أخرى. لدينا تأخر محتمل لمدة عشر دقائق على الأقل.' يصاب أحمد بالذعر، لأن الوقت أصبح 8:40 صباحاً ومن المحطة يستغرق المشي عشر دقائق أخرى للوصول إلى موعده. يمسك بهاتفه ويرسل رسالة فورية إلى مديره ليخبره بأنه قد يتأخر قليلاً بسبب تأخر القطار. لحسن الحظ، يبدأ القطار بالتحرك مجدداً بعد خمس دقائق ويصل أحمد في الوقت المحدد تماماً.", "story_tr": "Ahmed Amsterdam'dan Deventer'e giden trende oturuyor. Saat 9.00'da işi için önemli bir randevusu var ve gerçekten zamanında gelmesi gerekiyor. Aniden tren Amersfoort istasyonundan önce duruyor. Yolcular perondan şu anonsu duyuyor: 'İyi günler hanımefendiler ve beyefendiler. Maalesef trenimiz istasyondan önce beklemek zorunda. Şu an hattımızda duran trende teknik bir sorun var. Başka bir hat boşaldığında Amersfoort istasyonuna doğru devam edeceğiz. Muhtemelen en az on dakika gecikmemiz var.' Ahmed endişeleniyor çünkü saat zaten 8.40 ve istasyondan randevusuna yürümek on dakika sürüyor. Telefonunu alıyor ve tren gecikmesi nedeniyle biraz geç kalabileceğini söylemek için yöneticisine hemen bir mesaj gönderiyor. Neyse ki beş dakika sonra tren tekrar hareket etmeye başlıyor ve Ahmed yine de tam zamanında ulaşıyor.", "story_dari": "احمد در قطار از آمستردام به سمت دونتر نشسته است. او ساعت ۹:۰۰ صبح قرار کاری مهمی دارد و واقعاً باید به وقت برسد. ناگهان قطار قبل از ایستگاه آمرسفورت متوقف می‌شود. مسافران پیام صوتی را از خط آهن می‌شنوند: «بعد از ظهر شما بخیر خانم‌ها و آقایان. متاسفانه قطار ما باید قبل از ایستگاه منتظر بماند. قطاری که اکنون در مسیر ما قرار دارد، مشکل تخنیکی دارد. در صورت خالی شدن مسیر دیگر، به سمت ایستگاه آمرسفورت حرکت خواهیم کرد. ما احتمالاً حداقل ده دقیقه تاخیر داریم.» احمد نگران می‌شود، زیرا ساعت ۸:۴۰ است و از ایستگاه تا محل قرارش ده دقیقه پیاده‌روی است. او گوشی‌اش را می‌گیرد و فوراً پیامی به مدیرش می‌فرستد تا بگوید به دلیل تاخیر قطار ممکن است کمی دیر برسد. خوشبختانه بعد از پنج دقیقه قطار دوباره حرکت می‌کند و احمد در نهایت درست به وقت می‌رسد.", "thai": "อาเหม็ดกำลังนั่งอยู่บนรถไฟจากอัมสเตอร์ดัมไปเดเวนเตอร์ เขามีนัดสำคัญเรื่องงานเวลา 9.00 น. และต้องไปให้ตรงเวลา ทันใดนั้นรถไฟก็จอดก่อนถึงสถานีอาเมอร์สโฟร์ต ผู้โดยสารได้ยินเสียงประกาศ: 'สวัสดีตอนบ่ายครับสุภาพสตรีและสุภาพบุรุษ ขออภัยที่รถไฟของเราต้องจอดรอก่อนเข้าสถานี เนื่องจากรถไฟที่อยู่บนรางของเราในขณะนี้มีปัญหาทางเทคนิค เราจะเดินทางต่อไปยังสถานีอาเมอร์สโฟร์ตเมื่อมีรางอื่นว่าง เราจะล่าช้าอย่างน้อยสิบนาทีครับ' อาเหม็ดตกใจเพราะตอนนี้เวลา 8.40 น. แล้ว และจากสถานีต้องเดินต่ออีกสิบนาทีเพื่อไปที่นัดหมาย เขาหยิบโทรศัพท์และส่งข้อความหาผู้จัดการทันทีเพื่อแจ้งว่าจะไปสายเล็กน้อยเนื่องจากรถไฟดีเลย์ โชคดีที่รถไฟเริ่มวิ่งต่อหลังจากนั้นห้านาที ทำให้อาเหม็ดไปถึงได้ทันเวลาพอดี", "q": [{"q": "Ahmed heeft een afspraak om negen uur.", "c": "juist"}, {"q": "Ahmed reist van Deventer naar Amsterdam.", "c": "onjuist"}, {"q": "De vertraging van de trein is minimaal tien minuten.", "c": "juist"}, {"q": "Het technische probleem is bij de trein van Ahmed zelf.", "c": "onjuist"}, {"q": "Vanaf het station moet Ahmed nog tien minuten lopen naar zijn afspraak.", "c": "juist"}, {"q": "Ahmed belt direct zijn baas op om het te vertellen.", "c": "onjuist"}, {"q": "Uiteindelijk komt Ahmed toch nog op tijd voor zijn afspraak.", "c": "juist"}]}, "dictee": [{"ans": "De trein heeft vertraging.", "speak": "De trein heeft vertraging."}, {"ans": "Er is een technisch probleem.", "speak": "Er is een technisch probleem."}, {"ans": "Ik stuur een bericht naar mijn werk.", "speak": "Ik stuur een bericht naar mijn werk."}, {"ans": "Ahmed moet op tijd komen voor zijn afspraak.", "speak": "Ahmed moet op tijd komen voor zijn afspraak."}, {"ans": "De trein staat te wachten voor het station.", "speak": "De trein staat te wachten voor het station."}, {"ans": "Ik moet tien minuten lopen naar het kantoor.", "speak": "Ik moet tien minuten lopen naar het kantoor."}, {"ans": "Hoor jij het omroepbericht op het perron?", "speak": "Hoor jij het omroepbericht op het perron?"}], "schrijf": ["Wat doe jij als de trein of bus vertraging heeft?", "Hoe laat moet jij normaal gesproken op je werk of school zijn?", "Schrijf een zin over een technisch probleem dat je hebt gehad.", "Reis je vaak met de trein in Nederland?", "Vind je de berichten op het station duidelijk?", "Wat is jouw favoriete manier van reizen?", "Schrijf een bericht aan een vriend dat je later bent."]};
+
+    let activeLang = 'nl';
+    let isStoryTranslated = false;
+
+    // Speach helper
+    
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speakNative(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'nl-NL';
+        u.rate = 0.86;
+        window.speechSynthesis.speak(u);
+    }
+
+    function createSpeakBtn(text) {
+        let btn = document.createElement('button');
+        btn.innerHTML = '🔊';
+        btn.className = 'native-speak-btn';
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
+        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
+        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        return btn;
+    }
+
+    // --- LANGUAGE SWITCHER ---
+    const langNames = {
+        nl: "Nederlands",
+        en: "English",
+        ar: "العربية",
+        tr: "Türkçe",
+        dari: "دری",
+        thai: "ไทย"
+    };
+
+    function changeLang(lang) {
+        activeLang = lang;
+        document.querySelectorAll('.language-bar .lang-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-' + lang);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        // Update Vocab Table
+        document.getElementById('vocab-lang-header').textContent = langNames[lang];
+        const tbody = document.getElementById('vocab-table-body');
+        tbody.innerHTML = '';
+        DATA.vocab.forEach(v => {
+            const tr = document.createElement('tr');
+            
+            const tdNl = document.createElement('td');
+            tdNl.className = 'vocab';
+            tdNl.textContent = v.nl;
+            tdNl.appendChild(createSpeakBtn(v.nl));
+
+            const tdTrans = document.createElement('td');
+            tdTrans.textContent = v[lang] || v.en;
+            if (lang === 'ar' || lang === 'dari') {
+                tdTrans.style.direction = 'rtl';
+                tdTrans.style.textAlign = 'right';
+            } else {
+                tdTrans.style.direction = 'ltr';
+                tdTrans.style.textAlign = 'left';
+            }
+
+            tr.appendChild(tdNl);
+            tr.appendChild(tdTrans);
+            tbody.appendChild(tr);
+        });
+
+        // Update Docent Uitleg
+        const explanationText = DATA.uitleg[lang] || DATA.uitleg.nl;
+        const explanationContainer = document.getElementById('uitleg-content');
+        explanationContainer.innerHTML = explanationText;
+        if (lang === 'ar' || lang === 'dari') {
+            explanationContainer.style.direction = 'rtl';
+            explanationContainer.style.textAlign = 'right';
+        } else {
+            explanationContainer.style.direction = 'ltr';
+            explanationContainer.style.textAlign = 'left';
+        }
+
+        // Update story translation text if visible
+        updateStoryTranslationText();
+    }
+
+    function toggleStoryTranslation() {
+        isStoryTranslated = !isStoryTranslated;
+        const transText = document.getElementById('story-translation-text');
+        if (isStoryTranslated) {
+            transText.style.display = 'block';
+            updateStoryTranslationText();
+        } else {
+            transText.style.display = 'none';
+        }
+    }
+
+    function updateStoryTranslationText() {
+        const transText = document.getElementById('story-translation-text');
+        transText.textContent = DATA.lezen['story_' + activeLang] || DATA.lezen.story_en;
+        if (activeLang === 'ar' || activeLang === 'dari') {
+            transText.style.direction = 'rtl';
+            transText.style.textAlign = 'right';
+        } else {
+            transText.style.direction = 'ltr';
+            transText.style.textAlign = 'left';
+        }
+    }
+
+    // --- OPDRACHT 1: MC ---
+    function buildMC() {
+        const container = document.getElementById('mc-container');
+        container.innerHTML = '';
+        DATA.mc.forEach((q, idx) => {
+            const div = document.createElement('div');
+            div.className = 'mc-question-block';
+            div.style.marginBottom = '20px';
+            
+            const p = document.createElement('p');
+            p.className = 'mc-q-text';
+            p.style.fontWeight = '700';
+            p.style.marginBottom = '8px';
+            p.textContent = (idx + 1) + '. ' + q.q;
+            div.appendChild(p);
+
+            const optDiv = document.createElement('div');
+            optDiv.className = 'mc-opties-wrap';
+            optDiv.style.display = 'flex';
+            optDiv.style.gap = '10px';
+            optDiv.style.flexWrap = 'wrap';
+
+            q.o.forEach((opt, oIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.style.width = 'auto';
+                btn.style.flex = '1';
+                btn.style.minWidth = '140px';
+                btn.textContent = opt;
+                btn.onclick = () => selectMCOption(idx, oIdx);
+                btn.id = `mc-${idx}-${oIdx}`;
+                optDiv.appendChild(btn);
+            });
+
+            div.appendChild(optDiv);
+            container.appendChild(div);
+        });
+    }
+
+    let mcAnswers = {};
+    function selectMCOption(qIdx, oIdx) {
+        DATA.mc[qIdx].o.forEach((opt, idx) => {
+            const el = document.getElementById(`mc-${qIdx}-${idx}`);
+            if (el) el.classList.remove('active');
+        });
+        const activeBtn = document.getElementById(`mc-${qIdx}-${oIdx}`);
+        if (activeBtn) activeBtn.classList.add('active');
+        mcAnswers[qIdx] = oIdx;
+    }
+
+        function checkMC() {
+        let answeredCount = 0;
+        DATA.mc.forEach((q, idx) => {
+            if (mcAnswers[idx] !== undefined) answeredCount++;
+        });
+        if (answeredCount === 0) {
+            alert("Selecteer eerst een antwoord!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.mc.forEach((q, qIdx) => {
+            const correctIdx = q.c;
+            const userAns = mcAnswers[qIdx];
+            if (userAns === correctIdx) correctCount++;
+            
+            q.o.forEach((opt, oIdx) => {
+                const btn = document.getElementById(`mc-${qIdx}-${oIdx}`);
+                if (!btn) return;
+                btn.classList.remove('correct', 'incorrect');
+                if (oIdx === correctIdx) {
+                    if (userAns === oIdx) btn.classList.add('correct');
+                } else {
+                    if (userAns === oIdx) btn.classList.add('incorrect');
+                }
+            });
+        });
+
+        const badge = document.getElementById('mc-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.mc.length} goed`;
+        badge.style.background = correctCount === DATA.mc.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.mc.length) {
+            triggerConfetti();
+        }
+    }
+    function resetMC() {
+        document.getElementById('mc-score').style.display = 'none';
+        mcAnswers = {};
+        buildMC();
+    }
+
+    // --- OPDRACHT 2: DRAG / TILE BUILDER ---
+    let dragAnswers = {};
+
+    function buildDrag() {
+        const container = document.getElementById('drag-container');
+        container.innerHTML = '';
+        
+        DATA.drag.forEach((words, idx) => {
+            const div = document.createElement('div');
+            div.className = 'drag-sentence-block';
+            div.style.marginBottom = '25px';
+
+            const label = document.createElement('p');
+            label.style.fontWeight = '700';
+            label.style.marginBottom = '8px';
+            label.textContent = `Zin ${idx + 1}:`;
+            div.appendChild(label);
+
+            const dropZone = document.createElement('div');
+            dropZone.className = 'drop-zone';
+            dropZone.id = `drop-zone-${idx}`;
+            div.appendChild(dropZone);
+
+            const wordBank = document.createElement('div');
+            wordBank.className = 'word-bank';
+            wordBank.id = `word-bank-${idx}`;
+            
+            // Shuffle words
+            let shuffled = [...words].sort(() => Math.random() - 0.5);
+            shuffled.forEach((w, wIdx) => {
+                const tile = document.createElement('button');
+                tile.className = 'word-tile';
+                tile.textContent = w;
+                tile.onclick = () => handleTileClick(idx, tile, w);
+                wordBank.appendChild(tile);
+            });
+            div.appendChild(wordBank);
+            container.appendChild(div);
+            
+            dragAnswers[idx] = [];
+        });
+    }
+
+    function handleTileClick(sIdx, tile, word) {
+        const dropZone = document.getElementById(`drop-zone-${sIdx}`);
+        const wordBank = document.getElementById(`word-bank-${sIdx}`);
+        
+        if (tile.parentNode === wordBank) {
+            // Move to drop zone
+            dropZone.appendChild(tile);
+            dragAnswers[sIdx].push(word);
+        } else {
+            // Move back to word bank
+            wordBank.appendChild(tile);
+            dragAnswers[sIdx] = dragAnswers[sIdx].filter(w => w !== word);
+        }
+    }
+
+        function checkDrag() {
+        let totalTiles = 0;
+        DATA.drag.forEach((words, idx) => {
+            totalTiles += document.getElementById(`drop-zone-${idx}`).querySelectorAll('.word-tile').length;
+        });
+        if (totalTiles === 0) {
+            alert("Sleep eerst de woorden om zinnen te maken!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.drag.forEach((words, sIdx) => {
+            const dropZone = document.getElementById(`drop-zone-${sIdx}`);
+            const tiles = dropZone.querySelectorAll('.word-tile');
+            
+            let allCorrect = true;
+            tiles.forEach((tile, tIdx) => {
+                tile.classList.remove('correct-pos', 'wrong-pos');
+                if (tile.textContent === words[tIdx]) {
+                    tile.classList.add('correct-pos');
+                } else {
+                    tile.classList.add('wrong-pos');
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect && tiles.length === words.length) {
+                tiles.forEach(tile => tile.classList.add('all-correct'));
+                correctCount++;
+            }
+        });
+
+        const badge = document.getElementById('drag-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.drag.length} goed`;
+        badge.style.background = correctCount === DATA.drag.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.drag.length) {
+            triggerConfetti();
+        }
+    }
+    function resetDrag() {
+        document.getElementById('drag-score').style.display = 'none';
+        buildDrag();
+    }
+
+    // --- OPDRACHT 3: FILL IN BLANK ---
+    function buildInvul() {
+        const container = document.getElementById('invul-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'invul-list';
+
+        DATA.invul.forEach((item, idx) => {
+            const li = document.createElement('li');
+            
+            // Regex to find brackets
+            const text = item.s;
+            const parts = text.split(/\[.*?\]/);
+            const rawAns = text.match(/\[(.*?)\]/)[1];
+
+            const span1 = document.createElement('span');
+            span1.textContent = (idx + 1) + '. ' + parts[0];
+            li.appendChild(span1);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `invul-${idx}`;
+            input.setAttribute('data-ans', rawAns);
+            li.appendChild(input);
+
+            const span2 = document.createElement('span');
+            span2.textContent = parts[1];
+            li.appendChild(span2);
+
+            const hint = document.createElement('span');
+            hint.className = 'ex-hint';
+            hint.textContent = ` (${item.h})`;
+            li.appendChild(hint);
+
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+    }
+
+        function checkInvul() {
+        let hasInputs = false;
+        DATA.invul.forEach((item, idx) => {
+            const val = document.getElementById(`invul-${idx}`).value.trim();
+            if (val !== "") hasInputs = true;
+        });
+        if (!hasInputs) {
+            alert("Vul eerst de antwoorden in!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.invul.forEach((item, idx) => {
+            const input = document.getElementById(`invul-${idx}`);
+            if (!input) return;
+            const userAns = input.value.trim().toLowerCase();
+            const correctAns = input.getAttribute('data-ans').toLowerCase();
+
+            input.classList.remove('correct', 'fout');
+            if (userAns === "") {
+                input.classList.add('fout');
+                return;
+            }
+            if (userAns === correctAns) {
+                input.classList.add('correct');
+                correctCount++;
+            } else {
+                input.classList.add('fout');
+            }
+        });
+
+        const badge = document.getElementById('invul-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.invul.length} goed`;
+        badge.style.background = correctCount === DATA.invul.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.invul.length) {
+            triggerConfetti();
+        }
+    }
+    function resetInvul() {
+        document.getElementById('invul-score').style.display = 'none';
+        buildInvul();
+    }
+
+    // --- OPDRACHT 4: LEZEN ---
+    let lezenAnswers = {};
+    function buildLezen() {
+        document.getElementById('story-nl-text').textContent = DATA.lezen.story_nl;
+        
+        const container = document.getElementById('lezen-questions-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'wn-list';
+
+        DATA.lezen.q.forEach((q, idx) => {
+            const li = document.createElement('li');
+            
+            const span = document.createElement('span');
+            span.className = 'wn-stelling';
+            span.textContent = (idx + 1) + '. ' + q.q;
+            li.appendChild(span);
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'wn-btngroup';
+
+            const btnJ = document.createElement('button');
+            btnJ.className = 'wn-btn';
+            btnJ.textContent = 'Juist';
+            btnJ.id = `lezen-${idx}-juist`;
+            btnJ.onclick = () => selectLezenOption(idx, 'juist');
+
+            const btnO = document.createElement('button');
+            btnO.className = 'wn-btn';
+            btnO.textContent = 'Onjuist';
+            btnO.id = `lezen-${idx}-onjuist`;
+            btnO.onclick = () => selectLezenOption(idx, 'onjuist');
+
+            btnGroup.appendChild(btnJ);
+            btnGroup.appendChild(btnO);
+            li.appendChild(btnGroup);
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+        lezenAnswers = {};
+    }
+
+    function selectLezenOption(idx, option) {
+        const btnJ = document.getElementById(`lezen-${idx}-juist`);
+        const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+        
+        btnJ.classList.remove('active');
+        btnO.classList.remove('active');
+
+        if (option === 'juist') btnJ.classList.add('active');
+        else btnO.classList.add('active');
+
+        lezenAnswers[idx] = option;
+    }
+
+        function checkLezen() {
+        let answeredCount = 0;
+        DATA.lezen.q.forEach((q, idx) => {
+            if (lezenAnswers[idx] !== undefined) answeredCount++;
+        });
+        if (answeredCount === 0) {
+            alert("Kies eerst Juist of Onjuist bij de stellingen!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.lezen.q.forEach((q, idx) => {
+            const btnJ = document.getElementById(`lezen-${idx}-juist`);
+            const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+            const correctAns = q.c.toLowerCase();
+
+            btnJ.classList.remove('correct', 'fout');
+            btnO.classList.remove('correct', 'fout');
+
+            if (lezenAnswers[idx] === undefined) {
+                return; // Do not check unselected questions
+            }
+
+            if (correctAns === 'juist') {
+                if (lezenAnswers[idx] === 'juist') {
+                    btnJ.classList.add('correct');
+                    correctCount++;
+                } else if (lezenAnswers[idx] === 'onjuist') {
+                    btnO.classList.add('fout');
+                }
+            } else {
+                if (lezenAnswers[idx] === 'onjuist') {
+                    btnO.classList.add('correct');
+                    correctCount++;
+                } else if (lezenAnswers[idx] === 'juist') {
+                    btnJ.classList.add('fout');
+                }
+            }
+        });
+
+        const badge = document.getElementById('lezen-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.lezen.q.length} goed`;
+        badge.style.background = correctCount === DATA.lezen.q.length ? '#10b981' : '#e67e22';
+
+        if (correctCount === DATA.lezen.q.length) {
+            triggerConfetti();
+        }
+    }
+    function resetLezen() {
+        document.getElementById('lezen-score').style.display = 'none';
+        buildLezen();
+    }
+
+    // --- OPDRACHT 5: DICTEE ---
+    function buildDictee() {
+        const container = document.getElementById('dictee-container');
+        container.innerHTML = '';
+
+        DATA.dictee.forEach((item, idx) => {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:12px;';
+
+            const playBtn = document.createElement('button');
+            playBtn.className = 'audio-btn';
+            playBtn.innerHTML = '🔊 Luister';
+            playBtn.onclick = () => speakNative(item.speak);
+            row.appendChild(playBtn);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `dict-${idx}`;
+            input.className = 'dictee-input';
+            input.placeholder = 'Typ wat je hoort...';
+            row.appendChild(input);
+
+            container.appendChild(row);
+        });
+    }
+
+    // Levenshtein distance for fuzzy grading
+    defLeven = function(a, b) {
+        if(a.length == 0) return b.length; 
+        if(b.length == 0) return a.length; 
+        var matrix = [];
+        for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+        for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+        for(var i = 1; i <= b.length; i++){
+            for(var j = 1; j <= a.length; j++){
+                if(b.charAt(i-1) == a.charAt(j-1)){
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    };
+
+    function checkDictee() {
+        let hasInput = false;
+        DATA.dictee.forEach((item, idx) => {
+            const val = document.getElementById(`dict-${idx}`).value.trim();
+            if (val !== "") hasInput = true;
+        });
+        if (!hasInput) {
+            alert("Typ eerst de zinnen van het dictee!");
+            return;
+        }
+
+        let correctCount = 0;
+        DATA.dictee.forEach((item, idx) => {
+            const input = document.getElementById(`dict-${idx}`);
+            if (!input) return;
+            
+            const userText = input.value.trim().toLowerCase().replace(/[.,?!]/g, "");
+            
+            input.classList.remove('correct', 'fout');
+            input.style.borderColor = '';
+            
+            // Remove existing notes
+            let existingNote = input.parentNode.querySelector('.fuzzy-note, .wrong-note');
+            if (existingNote) existingNote.remove();
+
+            if (userText === "") {
+                input.style.borderColor = '#ef4444';
+                return;
+            }
+
+            const correctText = item.ans.trim().toLowerCase().replace(/[.,?!]/g, "");
+
+            if (userText === correctText) {
+                input.classList.add('correct');
+                input.style.borderColor = '#10b981';
+                correctCount++;
+            } else if (defLeven(userText, correctText) <= 2) {
+                input.classList.add('correct');
+                input.style.borderColor = '#ca8a04';
+                correctCount++;
+                
+                const note = document.createElement('span');
+                note.className = 'fuzzy-note';
+                note.style.cssText = 'color:#ca8a04; font-size:0.85rem; margin-left:8px; font-weight:700;';
+                note.textContent = `Bijna goed! Let op: "${item.ans}"`;
+                input.parentNode.appendChild(note);
+            } else {
+                input.classList.add('fout');
+                input.style.borderColor = '#ef4444';
+                
+                const note = document.createElement('span');
+                note.className = 'wrong-note';
+                note.style.cssText = 'color:#ef4444; font-size:0.85rem; margin-left:8px; font-weight:700;';
+                note.textContent = `Correct: "${item.ans}"`;
+                input.parentNode.appendChild(note);
+            }
+        });
+
+        const badge = document.getElementById('dictee-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.dictee.length} goed`;
+        badge.style.background = correctCount === DATA.dictee.length ? '#10b981' : '#e67e22';
+        if (correctCount === DATA.dictee.length) { triggerConfetti(); }
+    }
+
+    function resetDictee() {
+        document.getElementById('dictee-score').style.display = 'none';
+        buildDictee();
+    }
+
+    // --- OPDRACHT 6: SCHRIJVEN ---
+    function buildSchrijf() {
+        const container = document.getElementById('schrijf-container');
+        container.innerHTML = '';
+
+        const ul = document.createElement('ul');
+        ul.className = 'schrijf-list';
+
+        DATA.schrijf.forEach((item, idx) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '15px';
+
+            const label = document.createElement('label');
+            label.style.fontWeight = '700';
+            label.style.display = 'block';
+            label.style.marginBottom = '4px';
+            label.textContent = (idx + 1) + '. ' + item;
+            li.appendChild(label);
+
+            const textarea = document.createElement('textarea');
+            textarea.id = `s1-${idx}`;
+            textarea.style.cssText = 'width:100%; min-height:60px; padding:10px; border:2px solid var(--border-subtle); border-radius:8px; background:transparent; color:inherit; font-family:inherit; outline:none;';
+            textarea.placeholder = 'Typ je antwoord in een volledige zin...';
+            li.appendChild(textarea);
+
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+    }
+
+    function saveSchrijf() {
+        const answers = [];
+        DATA.schrijf.forEach((item, idx) => {
+            const text = document.getElementById(`s1-${idx}`).value;
+            answers.push(text);
+        });
+        localStorage.setItem('a2_schrijf_' + LESSON_ID, JSON.stringify(answers));
+        
+        const fb = document.getElementById('schrijf-fb');
+        fb.style.display = 'inline';
+        setTimeout(() => fb.style.display = 'none', 2000);
+    }
+
+    function loadSchrijf() {
+        const stored = JSON.parse(localStorage.getItem('a2_schrijf_' + LESSON_ID) || '[]');
+        stored.forEach((text, idx) => {
+            const textarea = document.getElementById(`s1-${idx}`);
+            if (textarea) textarea.value = text;
+        });
+    }
+
+    function shareWhatsApp() {
+        const answers = [];
+        let hasContent = false;
+        DATA.schrijf.forEach((item, idx) => {
+            const text = document.getElementById(`s1-${idx}`).value.trim();
+            if (text) {
+                answers.push(`Vraag: ${item}
+Antwoord: ${text}`);
+                hasContent = true;
+            }
+        });
+        if (!hasContent) {
+            alert('Schrijf eerst je antwoorden op de vragen!');
+            return;
+        }
+        
+        const message = `NT2 A2 Huiswerk Les ${LESSON_ID} — ${DATA.title}:\n\n` + answers.join('\n\n');
+        const phone = '31626211106'; // Teacher Rida
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    function resetSchrijf() {
+        buildSchrijf();
+    }
+
+    // --- LES VOLTOOIEN ---
+    function markeerVoltooid() {
+        const pageName = window.location.pathname.split('/').pop();
+        localStorage.setItem('completed_' + pageName, 'true');
+        
+        const btn = document.getElementById('voltooi-btn');
+        btn.textContent = '🎉 Les voltooid! Goed gedaan!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        btn.style.borderColor = '#10b981';
+        btn.disabled = true;
+    }
+
+    function checkVoltooiStatus() {
+        const pageName = window.location.pathname.split('/').pop();
+        if (localStorage.getItem('completed_' + pageName) === 'true') {
+            const btn = document.getElementById('voltooi-btn');
+            if (btn) {
+                btn.textContent = '🎉 Les voltooid! Goed gedaan!';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                btn.style.borderColor = '#10b981';
+                btn.disabled = true;
+            }
+        }
+    }
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+        changeLang('nl');
+        buildMC();
+        buildDrag();
+        buildInvul();
+        buildLezen();
+        buildDictee();
+        buildSchrijf();
+        loadSchrijf();
+        checkVoltooiStatus();
+    });
+  </script>
+
+  <!-- THEME TOGGLE SCRIPT -->
+  <script>
+      (function() {
+          const themeToggle = document.getElementById('theme-toggle');
+          if (!themeToggle) return;
+          themeToggle.addEventListener('click', () => {
+              let theme = document.documentElement.getAttribute('data-theme') || 'light';
+              let newTheme = theme === 'light' ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('a2-theme', newTheme);
+          });
+      })();
+  </script>
+
+</body>
+</html>

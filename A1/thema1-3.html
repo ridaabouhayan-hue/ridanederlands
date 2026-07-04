@@ -143,7 +143,24 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
     const UI={nl:{subtitle:'Leer het verschil tussen korte en lange klanken.',vocabTitle:'Woorden van paragraaf 1.3',vocabIntro:'Klik op een taal hierboven om de vertaling te zien.',thExample:'Voorbeeldzin',thLang:'🇳🇱 Nederlands'},en:{subtitle:'Learn the difference between short and long sounds.',vocabTitle:'Words of paragraph 1.3',vocabIntro:'Click a language above to see the translation.',thExample:'Example sentence',thLang:'🇬🇧 English'},tr:{subtitle:'Kısa ve uzun sesler arasındaki farkı öğrenin.',vocabTitle:"Paragraf 1.3'ün kelimeleri",vocabIntro:'Çeviriyi görmek için yukarıdan bir dil seçin.',thExample:'Örnek cümle',thLang:'🇹🇷 Türkçe'},ar:{subtitle:'تعلم الفرق بين الأصوات القصيرة والطويلة.',vocabTitle:'كلمات الفقرة 1.3',vocabIntro:'انقر على لغة أعلاه لرؤية الترجمة.',thExample:'جملة مثال',thLang:'🇸🇦 العربية'},ps:{subtitle:'د لنډ او اوږد غږونو فرق زده کړئ.',vocabTitle:'د پراګراف 1.3 کلمې',vocabIntro:'د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.',thExample:'د بیلګې جمله',thLang:'🇦🇫 پښتو'}};
     const UITLEG={nl:`<div class="uitleg-box"><h3>Korte en lange klanken</h3><p>In het Nederlands is het heel belangrijk of een klank <strong>kort</strong> of <strong>lang</strong> is. Dit verandert de betekenis van het woord!</p><table style="width:100%;border-collapse:collapse;font-size:.9rem;margin:.8rem 0"><thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Korte klank</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Lange klank</th></tr></thead><tbody><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">man (1 letter: a)</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">maan (2 letters: aa)</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">kat</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">kaas</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">bed</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">been</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">bos</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">boom</td></tr></tbody></table></div><div class="tip-blok"><strong>Regel:</strong> Eén klinker = KORTE klank (man, bed, bus) · Twee klinkers = LANGE klank (maan, been, boom)</div>`,en:`<div class="uitleg-box"><h3>Short and long sounds</h3><p>In Dutch, short and long vowel sounds change the meaning of a word!</p><div class="tip-blok"><strong>Rule:</strong> 1 vowel = SHORT sound (man, bed) · 2 vowels = LONG sound (maan, been, boom)</div></div>`,tr:`<div class="uitleg-box"><h3>Kısa ve uzun sesler</h3><p>Hollandacada kısa ve uzun sesler kelimenin anlamını değiştirir!</p><div class="tip-blok"><strong>Kural:</strong> 1 sesli harf = KISA ses · 2 sesli harf = UZUN ses</div></div>`,ar:`<div class="uitleg-box" dir="rtl"><h3>الأصوات القصيرة والطويلة</h3><p>في الهولندية، الأصوات القصيرة والطويلة تغيّر معنى الكلمة!</p><div class="tip-blok" dir="rtl"><strong>القاعدة:</strong> حرف علة واحد = صوت قصير · حرفا علة = صوت طويل</div></div>`,ps:`<div class="uitleg-box" dir="rtl"><h3>لنډ او اوږد غږونه</h3><p>هالنډي کې لنډ او اوږد غږونه د کلمې معنی بدلوي!</p><div class="tip-blok" dir="rtl"><strong>قانون:</strong> یو غږ = لنډ · دوه غږونه = اوږد</div></div>`};
     let _ttsAudio = null;
-function speak(text, isSlow = false) {
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     

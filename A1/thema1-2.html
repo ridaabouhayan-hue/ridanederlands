@@ -201,7 +201,24 @@ function levenshtein(a, b) {
         zh:`<div class="uitleg-box"><h3>问候语与告别语</h3><p>在第1.2段，你将学习如何用荷兰语问候和道别。根据一天中的不同时间使用正确的词！</p><table style="width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0"><thead><tr style="background:rgba(99,102,241,.12)"><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">时间</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">问候语</th><th style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">告别语</th></tr></thead><tbody><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">早上</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedemorgen（早上好）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)" rowspan="3">doei / tot ziens / dag（再见）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">下午</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedemiddag（下午好）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">晚上</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">Goedenavond（晚上好）</td></tr><tr><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">随时（非正式）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">hoi / hallo / dag（你好）</td><td style="padding:7px 10px;border:1px solid rgba(99,102,241,.2)">doei / dag（再见）</td></tr></tbody></table></div><div class="tip-blok"><strong>正式与非正式：</strong> "Goedemorgen meneer" = 正式（在工作场合）。 "Hoi!" = 非正式（与朋友）</div>`
     };
     let _ttsAudio = null;
-function speak(text, isSlow = false) {
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
     if (!text) return;
     if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
     

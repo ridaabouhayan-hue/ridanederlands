@@ -3,10 +3,11 @@
    Herschreven: mei 2026
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300..900&display=swap');
 
 /* ---------- CSS Variabelen ---------- */
 :root {
+  --grammar-blue: #2563eb; /* Royal blue for grammar */
   --primary:        #4361ee;
   --primary-light:  #e8f0fe;
   --secondary:      #7209b7;
@@ -64,6 +65,7 @@
 
 /* Dark mode — behouden, maar nu als toevoeging, niet als basis */
 [data-theme="dark"] {
+  --grammar-blue: #60a5fa; /* Bright blue for dark mode grammar */
   --primary:        #4e8cff;
   --primary-light:  rgba(78, 140, 255, 0.12);
   --secondary:      #a78bfa;
@@ -86,7 +88,30 @@
   --border-subtle:  rgba(255, 255, 255, 0.08);
   --border-medium:  rgba(255, 255, 255, 0.15);
   --shadow-card:    0 4px 24px rgba(0,0,0,0.28);
+
+  /* Overrides for accents in dark mode to ensure readability */
+  --accent-purple:      #c084fc;
+  --accent-purple-glow: rgba(192, 132, 252, 0.15);
+  --accent-blue:        #60a5fa;
+  --accent-blue-glow:   rgba(96, 165, 250, 0.15);
+  --accent-green:       #34d399;
+  --accent-green-glow:  rgba(52, 211, 153, 0.15);
+  --accent-orange:      #fb923c;
+  --accent-orange-glow: rgba(251, 146, 60, 0.15);
+  --accent-red:         #f87171;
+  --accent-red-glow:    rgba(248, 113, 113, 0.15);
+  --accent-yellow:      #facc15;
+  --accent-yellow-glow: rgba(250, 204, 21, 0.15);
 }
+
+/* Overrides for thematic exercise cards in dark mode */
+[data-theme="dark"] .opdracht-card.theme-paars  { --theme: #c084fc; --theme-bg: rgba(192, 132, 252, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-blauw  { --theme: #60a5fa; --theme-bg: rgba(96, 165, 250, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-groen  { --theme: #34d399; --theme-bg: rgba(52, 211, 153, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-oranje { --theme: #fb923c; --theme-bg: rgba(251, 146, 60, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-rood   { --theme: #f87171; --theme-bg: rgba(248, 113, 113, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-roze   { --theme: #f472b6; --theme-bg: rgba(244, 114, 182, 0.12); }
+[data-theme="dark"] .opdracht-card.theme-geel   { --theme: #facc15; --theme-bg: rgba(250, 204, 21, 0.12); }
 
 /* ---------- Reset & Base ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -105,11 +130,12 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   transition: background-color 0.3s, color 0.3s;
-}
+
+  font-weight: 550;}
 
 h1, h2, h3, h4, h5 {
   font-family: 'Nunito', sans-serif;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.25;
   color: var(--text-dark);
 }
@@ -133,7 +159,7 @@ h1, h2, h3, h4, h5 {
 .language-bar .label {
   font-size: 0.78rem;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-right: 4px;
@@ -145,7 +171,7 @@ h1, h2, h3, h4, h5 {
   gap: 5px;
   padding: 5px 13px;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 550;
   color: var(--primary);
   background: transparent;
   border: 2px solid var(--primary);
@@ -191,14 +217,14 @@ h1, h2, h3, h4, h5 {
 .page-header .breadcrumb a {
   color: var(--primary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 550;
   transition: var(--transition);
 }
 .page-header .breadcrumb a:hover { text-decoration: underline; }
 
 .page-header h1 {
   font-size: clamp(1.8rem, 5vw, 2.8rem);
-  font-weight: 900;
+  font-weight: 550;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   background-clip: text;
@@ -245,7 +271,7 @@ h1, h2, h3, h4, h5 {
 
 .thema-card .thema-number {
   font-size: 0.73rem;
-  font-weight: 800;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--primary);
@@ -253,7 +279,7 @@ h1, h2, h3, h4, h5 {
 
 .thema-card .thema-title {
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 550;
   color: var(--text-dark);
 }
 
@@ -262,7 +288,7 @@ h1, h2, h3, h4, h5 {
   color: var(--text-muted);
 }
 
-.thema-card.active .thema-status { color: var(--accent-green); font-weight: 700; }
+.thema-card.active .thema-status { color: var(--accent-green); font-weight: 550; }
 .thema-card.locked { opacity: 0.5; pointer-events: none; }
 
 /* ---------- Paragraaf Cards (thema-overzicht) ---------- */
@@ -318,7 +344,7 @@ h1, h2, h3, h4, h5 {
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 550;
   color: var(--white);
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   border-radius: var(--radius-md);
@@ -328,7 +354,7 @@ h1, h2, h3, h4, h5 {
 
 .para-card .para-title {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 550;
   color: var(--text-dark);
   margin-bottom: 3px;
 }
@@ -346,7 +372,7 @@ h1, h2, h3, h4, h5 {
   color: var(--primary);
   text-decoration: none;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 550;
   margin-bottom: 28px;
   transition: var(--transition);
 }
@@ -362,7 +388,7 @@ h1, h2, h3, h4, h5 {
   align-items: center;
   gap: 7px;
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 12px;
@@ -379,7 +405,7 @@ h1, h2, h3, h4, h5 {
 
 .content-section h2 {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 550;
   margin-bottom: 14px;
   color: var(--text-dark);
 }
@@ -407,7 +433,7 @@ h1, h2, h3, h4, h5 {
 .vocab-table thead th {
   text-align: left;
   padding: 12px 16px;
-  font-weight: 800;
+  font-weight: 550;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -425,7 +451,7 @@ h1, h2, h3, h4, h5 {
 .vocab-table tbody tr:last-child td { border-bottom: none; }
 .vocab-table tbody tr:hover { background: var(--primary-light); }
 
-.vocab-table .nl-word { font-weight: 700; color: var(--primary); }
+.vocab-table .nl-word { font-weight: 550; color: var(--primary); }
 .vocab-table .example-cell { font-style: italic; font-size: 0.88rem; color: var(--text-gray); }
 .vocab-table input, .vocab-table textarea {
   width: 100%;
@@ -482,7 +508,7 @@ h1, h2, h3, h4, h5 {
 
 .opdracht-card h3 {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 550;
   color: var(--theme, var(--primary));
   margin-top: 0;
   margin-bottom: 4px;
@@ -500,7 +526,7 @@ h1, h2, h3, h4, h5 {
 .mc-list li { margin: 10px 0; }
 
 .mc-vraag {
-  font-weight: 700;
+  font-weight: 550;
   font-size: 0.95rem;
   color: var(--text-dark);
   margin-bottom: 6px;
@@ -514,14 +540,14 @@ h1, h2, h3, h4, h5 {
   padding: 6px 14px;
   cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 550;
   background: var(--bg);
   color: var(--text-dark);
   font-family: 'Nunito', sans-serif;
   transition: var(--transition);
 }
 .mc-btn:hover { border-color: var(--theme, var(--primary)); background: var(--theme-bg, var(--primary-light)); }
-.mc-btn.correct { border-color: #10b981; background: rgba(16,185,129,0.10); color: #059669; font-weight: 800; }
+.mc-btn.correct { border-color: #10b981; background: rgba(16,185,129,0.10); color: #059669; font-weight: 550; }
 .mc-btn.fout    { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #dc2626; }
 
 /* ---------- Invul oefeningen ---------- */
@@ -546,7 +572,7 @@ h1, h2, h3, h4, h5 {
 /* ---------- Meervoud grid ---------- */
 .mv-grid { display: flex; flex-direction: column; gap: 10px; }
 .mv-item { display: flex; align-items: center; gap: 8px; font-size: 0.92rem; min-width: 0; overflow: hidden; }
-.mv-item > span { font-weight: 700; min-width: 0; white-space: nowrap; color: var(--text-dark); flex-shrink: 0; }
+.mv-item > span { font-weight: 550; min-width: 0; white-space: nowrap; color: var(--text-dark); flex-shrink: 0; }
 .mv-item input {
   border: 2px solid var(--border-med);
   border-radius: 6px;
@@ -569,7 +595,7 @@ h1, h2, h3, h4, h5 {
 .verbind-col { flex: 1; display: flex; flex-direction: column; gap: 7px; min-width: 0; }
 .verbind-col-header {
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--theme, var(--primary));
@@ -586,7 +612,7 @@ h1, h2, h3, h4, h5 {
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 550;
   background: var(--bg);
   color: var(--text-dark);
   transition: var(--transition);
@@ -594,13 +620,13 @@ h1, h2, h3, h4, h5 {
 }
 .verbind-item:hover     { border-color: var(--theme, var(--primary)); background: var(--theme-bg, var(--primary-light)); }
 .verbind-item.selected  { border-color: var(--theme, var(--primary)); background: var(--theme-bg, var(--primary-light)); }
-.verbind-item.matched-ok  { border-color: #10b981; background: rgba(16,185,129,0.08); pointer-events: none; color: #059669; font-weight: 700; }
+.verbind-item.matched-ok  { border-color: #10b981; background: rgba(16,185,129,0.08); pointer-events: none; color: #059669; font-weight: 550; }
 .verbind-item.matched-err { border-color: #ef4444; background: rgba(239,68,68,0.08); animation: shake .3s; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 
 /* ---------- Zin ordenen ---------- */
 .zo-container { margin-bottom: 16px; }
-.zo-zin-nr { font-weight: 800; font-size: 0.85rem; color: var(--theme, var(--primary)); margin-bottom: 6px; }
+.zo-zin-nr { font-weight: 550; font-size: 0.85rem; color: var(--theme, var(--primary)); margin-bottom: 6px; }
 .zo-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 8px; }
 .zo-chip {
   background: var(--theme-bg, var(--primary-light));
@@ -609,7 +635,7 @@ h1, h2, h3, h4, h5 {
   padding: 5px 13px;
   cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 550;
   color: var(--theme, var(--primary));
   transition: var(--transition);
   user-select: none;
@@ -632,7 +658,7 @@ h1, h2, h3, h4, h5 {
   border-radius: 6px;
   padding: 3px 10px;
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 550;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -643,7 +669,7 @@ h1, h2, h3, h4, h5 {
 /* ---------- Kruiswoordpuzzel ---------- */
 .puzzel-grid { display: flex; flex-direction: column; gap: 10px; }
 .puzzel-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
-.puzzel-row .puzzel-nr { font-weight: 800; min-width: 22px; color: var(--theme, var(--primary)); }
+.puzzel-row .puzzel-nr { font-weight: 550; min-width: 22px; color: var(--theme, var(--primary)); }
 .puzzel-row .puzzel-hint { flex: 1; color: var(--text-gray); font-size: 0.84rem; }
 .puzzel-row input {
   border: 2px solid var(--border-med);
@@ -656,7 +682,7 @@ h1, h2, h3, h4, h5 {
   width: 150px;
   outline: none;
   transition: border-color 0.2s;
-  font-weight: 700;
+  font-weight: 550;
   letter-spacing: 1px;
 }
 .puzzel-row input:focus  { border-color: var(--theme, var(--primary)); }
@@ -668,7 +694,7 @@ h1, h2, h3, h4, h5 {
   background: var(--primary-light);
   border-radius: var(--radius-md);
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 550;
   text-align: center;
   color: var(--primary);
   display: none;
@@ -678,7 +704,7 @@ h1, h2, h3, h4, h5 {
 /* ---------- Schrijfopdracht ---------- */
 .schrijf-list { list-style: none; padding: 0; }
 .schrijf-list li { margin: 10px 0; }
-.schrijf-list label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; color: var(--text-dark); }
+.schrijf-list label { display: block; font-weight: 550; font-size: 0.9rem; margin-bottom: 4px; color: var(--text-dark); }
 .schrijf-list textarea {
   width: 100%;
   min-height: 54px;
@@ -705,7 +731,7 @@ h1, h2, h3, h4, h5 {
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 0.92rem;
-  font-weight: 800;
+  font-weight: 550;
   font-family: 'Nunito', sans-serif;
   transition: var(--transition);
   box-shadow: 0 4px 12px rgba(67,97,238,0.22);
@@ -722,7 +748,7 @@ h1, h2, h3, h4, h5 {
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 550;
   font-family: 'Nunito', sans-serif;
   transition: var(--transition);
 }
@@ -736,7 +762,7 @@ h1, h2, h3, h4, h5 {
   padding: 18px 22px;
   margin-top: 12px;
 }
-.wa-section h4 { color: #16a34a; margin-top: 0; font-size: 1rem; font-weight: 800; }
+.wa-section h4 { color: #16a34a; margin-top: 0; font-size: 1rem; font-weight: 550; }
 .wa-section p  { font-size: 0.88rem; line-height: 1.6; margin: 5px 0; color: var(--text-gray); }
 
 .wa-btn {
@@ -750,7 +776,7 @@ h1, h2, h3, h4, h5 {
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 0.92rem;
-  font-weight: 800;
+  font-weight: 550;
   font-family: 'Nunito', sans-serif;
   text-decoration: none;
   transition: var(--transition);
@@ -767,7 +793,7 @@ h1, h2, h3, h4, h5 {
   margin-left: 10px;
   padding: 3px 12px;
   border-radius: 100px;
-  font-weight: 800;
+  font-weight: 550;
   font-size: 0.85rem;
 }
 .score-goed   { background: rgba(16,185,129,0.12); color: #059669; border: 1px solid rgba(16,185,129,0.3); }
@@ -845,7 +871,7 @@ h1, h2, h3, h4, h5 {
 .dialog-line:last-child { margin-bottom: 0; }
 .dialog-speaker {
   font-size: 0.73rem;
-  font-weight: 800;
+  font-weight: 550;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--primary);
@@ -887,7 +913,7 @@ h1, h2, h3, h4, h5 {
   gap: 4px;
 }
 .vocab-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-hover); }
-.vocab-card .nl-word { font-size: 1.05rem; font-weight: 800; color: var(--primary); }
+.vocab-card .nl-word { font-size: 1.05rem; font-weight: 550; color: var(--primary); }
 .vocab-card .translation { font-size: 0.88rem; color: var(--text-gray); }
 
 /* ---------- Quiz (NOS mt stijl) ---------- */
@@ -901,7 +927,7 @@ h1, h2, h3, h4, h5 {
 .quiz-section h3 {
   color: var(--primary);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 550;
   margin-bottom: 18px;
 }
 .question-block {
@@ -913,7 +939,7 @@ h1, h2, h3, h4, h5 {
   border: 1px solid var(--border);
 }
 .question-block p {
-  font-weight: 800;
+  font-weight: 550;
   margin-bottom: 10px;
   color: var(--text-dark);
   font-size: 1rem;
@@ -931,7 +957,7 @@ h1, h2, h3, h4, h5 {
   transition: border 0.2s, background 0.2s;
   font-size: 0.95rem;
   color: var(--text-gray);
-  font-weight: 600;
+  font-weight: 550;
 }
 .question-block label:hover { border-color: var(--border-med); background: var(--primary-light); }
 .question-block input[type="radio"] {
@@ -948,7 +974,7 @@ h1, h2, h3, h4, h5 {
   padding: 12px 26px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 550;
   font-size: 0.95rem;
   font-family: 'Nunito', sans-serif;
   transition: var(--transition);
@@ -962,7 +988,7 @@ h1, h2, h3, h4, h5 {
 
 .quiz-result {
   margin-top: 14px;
-  font-weight: 800;
+  font-weight: 550;
   font-size: 1.05rem;
   padding: 11px 16px;
   border-radius: var(--radius-md);
@@ -983,7 +1009,7 @@ h1, h2, h3, h4, h5 {
 .quiz-question { margin-bottom: 22px; }
 .quiz-question .q-text {
   font-size: 0.98rem;
-  font-weight: 700;
+  font-weight: 550;
   margin-bottom: 10px;
   color: var(--text-dark);
 }
@@ -994,7 +1020,7 @@ h1, h2, h3, h4, h5 {
   border: 2px solid var(--border-med);
   border-radius: 100px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 550;
   color: var(--text-gray);
   cursor: pointer;
   font-family: 'Nunito', sans-serif;
@@ -1003,7 +1029,7 @@ h1, h2, h3, h4, h5 {
 .quiz-option:hover  { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 .quiz-option.correct { border-color: #10b981; color: #059669; background: rgba(16,185,129,0.10); pointer-events: none; }
 .quiz-option.wrong   { border-color: #ef4444; color: #dc2626; background: rgba(239,68,68,0.08); pointer-events: none; opacity: 0.7; }
-.quiz-feedback       { margin-top: 7px; font-size: 0.84rem; font-weight: 700; min-height: 1.3em; }
+.quiz-feedback       { margin-top: 7px; font-size: 0.84rem; font-weight: 550; min-height: 1.3em; }
 .quiz-feedback.correct { color: #059669; }
 .quiz-feedback.wrong   { color: #dc2626; }
 
@@ -1018,7 +1044,7 @@ h1, h2, h3, h4, h5 {
 }
 .drag-exercise .exercise-label {
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 550;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1064,7 +1090,7 @@ h1, h2, h3, h4, h5 {
   border: 2px solid var(--border-med);
   border-radius: 100px;
   font-size: 0.93rem;
-  font-weight: 700;
+  font-weight: 550;
   color: var(--text-dark);
   cursor: grab;
   transition: var(--transition);
@@ -1082,7 +1108,7 @@ h1, h2, h3, h4, h5 {
   position: relative;
   cursor: pointer;
   border-bottom: 2px dashed var(--primary);
-  font-weight: 700;
+  font-weight: 550;
   color: var(--primary);
   transition: var(--transition);
   display: inline-block;
@@ -1090,7 +1116,7 @@ h1, h2, h3, h4, h5 {
 .vocab:hover { background: var(--primary-light); border-radius: 3px; }
 
 .highlight {
-  font-weight: 700;
+  font-weight: 550;
   color: var(--text-dark);
   background: linear-gradient(120deg, #ffd166 0%, #ffd166 100%);
   background-repeat: no-repeat;
@@ -1117,7 +1143,7 @@ h1, h2, h3, h4, h5 {
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 0.92rem;
-  font-weight: 800;
+  font-weight: 550;
   font-family: 'Nunito', sans-serif;
   text-decoration: none;
   transition: var(--transition);
@@ -1173,7 +1199,7 @@ h1, h2, h3, h4, h5 {
   padding: 7px 13px;
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 550;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
@@ -1203,7 +1229,7 @@ h1, h2, h3, h4, h5 {
   justify-content: flex-end;
   margin-top: 14px;
 }
-.wa-send-container label { font-weight: 700; color: var(--text-dark); }
+.wa-send-container label { font-weight: 550; color: var(--text-dark); }
 .wa-send-container input {
   padding: 0.55rem 0.8rem;
   border: 2px solid var(--border-med);
@@ -1238,7 +1264,7 @@ h1, h2, h3, h4, h5 {
 .example-card.orange { border-left-color: #f59e0b; }
 .example-card.red    { border-left-color: #ef4444; }
 .example-card.purple { border-left-color: var(--secondary); }
-.example-card .nl { font-size: 1.02rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+.example-card .nl { font-size: 1.02rem; font-weight: 550; color: var(--text-dark); margin-bottom: 5px; }
 .example-card .context { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
 
 /* ---------- Animaties ---------- */
@@ -1289,7 +1315,7 @@ h1, h2, h3, h4, h5 {
   align-items: center;
 }
 .word-bank-title {
-  font-weight: 800;
+  font-weight: 550;
   font-size: 0.95rem;
   color: var(--text-primary);
   margin-right: 8px;
@@ -1302,7 +1328,7 @@ h1, h2, h3, h4, h5 {
   color: var(--text-primary);
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-  font-weight: 700;
+  font-weight: 550;
   font-size: 0.95rem;
   box-shadow: var(--shadow-card);
   transition: var(--transition-fast);
@@ -1315,3 +1341,109 @@ h1, h2, h3, h4, h5 {
   box-shadow: var(--shadow-hover);
 }
 
+
+/* ---------- Grammar Titles Highlight ---------- */
+.para-card .para-title.grammar-title, .grammar-title {
+  color: var(--grammar-blue) !important;
+}
+
+/* ---------- Confetti Emoji Animation ---------- */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+.confetti-emoji {
+  position: fixed;
+  bottom: -50px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: floatUp 3s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+/* ---------- Mobile Responsiveness Enhancements ---------- */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+  .page-container {
+    padding: 16px 12px 60px;
+  }
+  .opdracht-card {
+    padding: 18px 14px;
+    border-radius: var(--radius-md) !important;
+  }
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.3rem !important; }
+  
+  /* Tables */
+  .ww-tabel th, .ww-tabel td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+  
+  /* Multichoice buttons flex wrap */
+  .mc-opties-wrap {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .quiz-opt {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+  
+  /* Drag and drop flex wrap */
+  .word-bank {
+    padding: 8px;
+    gap: 6px;
+  }
+  .drop-zone {
+    min-height: 48px;
+    padding: 8px;
+  }
+  .word-tile {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  
+  /* Invul inputs */
+  .invul-list li {
+    font-size: 0.95rem;
+    line-height: 2.4;
+  }
+  .invul-list input {
+    width: 120px;
+    padding: 2px 6px;
+    font-size: 0.9rem;
+  }
+  
+  /* Juist/Onjuist reading */
+  .wn-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 8px;
+  }
+  .wn-btngroup {
+    align-self: flex-end;
+  }
+  
+  /* Audio rows in dictation */
+  #dictee-container > div {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .audio-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .dictee-input {
+    width: 100%;
+  }
+}
