@@ -621,13 +621,6 @@
             </div>
         </div>
 
-        <!-- Sectie 5: Vul in (Plaatjes) -->
-        <div class="quiz-card">
-            <h3 data-translate="sec5_title">5. Vul in.</h3>
-            <span class="instruction-text" data-translate="sec5_instr">
-                Kijk naar de plaatjes. Schrijf de goede woorden bij de plaatjes. Schrijf woorden uit thema 8.
-            </span>
-
         <!-- Sectie 5: Dictee -->
         <div class="quiz-card">
             <h3 data-translate="sec5_title">5. Dictee</h3>
@@ -1233,22 +1226,58 @@
                 return;
             }
             const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
-            const maxScore = testNum === "2" ? "34" : "35";
 
             submissionsList.forEach((sub, idx) => {
                 const item = document.createElement('div');
                 item.className = 'grading-student-item' + (selectedStudentIdx === idx ? ' active' : '');
+                
+                const isOld = sub.results.isOldFormat || (sub.answers && sub.answers.sec5 && sub.answers.sec5.length === 10);
+                let currentMaxScore;
+                if (testNum === "2") {
+                    currentMaxScore = isOld ? "34" : "33";
+                } else {
+                    currentMaxScore = isOld ? "35" : "34";
+                }
+
                 const dateLabel = sub.date || new Date().toLocaleDateString('nl-NL');
                 item.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 3px;">
-                        <span>👤 <strong>${sub.name}</strong></span>
+                    <div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0;">
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">👤 <strong>${sub.name}</strong></span>
                         <span style="font-size: 0.8rem; color: #4a4a68;">Oefentoets ${testNum} — 📅 ${dateLabel}</span>
                     </div>
-                    <span style="font-weight: bold; color: var(--accent-blue);">${sub.results.totalScore}/${maxScore}</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: bold; color: var(--accent-blue);">${sub.results.totalScore}/${currentMaxScore}</span>
+                        <button class="delete-student-btn" onclick="deleteStudent(event, ${idx})" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.1rem; padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" title="Verwijder cursist">🗑️</button>
+                    </div>
                 `;
                 item.onclick = () => selectStudentForGrading(idx);
                 container.appendChild(item);
             });
+        }
+
+        function deleteStudent(event, idx) {
+            if (event) event.stopPropagation();
+            if (!confirm("Weet je zeker dat je deze cursist wilt verwijderen uit de lijst?")) return;
+            
+            submissionsList.splice(idx, 1);
+            localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissionsList));
+            
+            if (selectedStudentIdx === idx) {
+                selectedStudentIdx = submissionsList.length > 0 ? 0 : null;
+            } else if (selectedStudentIdx > idx) {
+                selectedStudentIdx--;
+            }
+            
+            renderStudentList();
+            if (selectedStudentIdx !== null && submissionsList.length > 0) {
+                selectStudentForGrading(selectedStudentIdx);
+            } else {
+                document.getElementById('grading-results-panel').innerHTML = `
+                    <div style="text-align: center; color: var(--text-secondary); margin-top: 50px;">
+                        Selecteer een cursist om de resultaten te bekijken.
+                    </div>
+                `;
+            }
         }
 
         function loadGradingSettingsFromStorage() {
@@ -1375,21 +1404,37 @@
                 });
             }
 
-            // Section 5: Dictee
-            const sec5Regex = /\*5\. Dictee\*([\s\S]*?)(?=\n\n\*|$)/;
-            const sec5Block = text.match(sec5Regex);
-            if (sec5Block) {
-                const lines = sec5Block[1].split('\n');
+            let isOldFormat = false;
+            const sec5OldRegex = /\*5\. Plaatjes Woordenschat\*([\s\S]*?)(?=\n\n\*|$)/;
+            const sec5OldBlock = text.match(sec5OldRegex);
+            if (sec5OldBlock) {
+                isOldFormat = true;
+                const lines = sec5OldBlock[1].split('\n');
+                answers.sec5 = Array(10).fill("");
                 lines.forEach(l => {
-                    const mWord = l.match(/Woord \d+:\s*"([^"]*)"/);
-                    if (mWord) {
-                        answers.sec5.push(mWord[1].trim());
-                    }
-                    const mZin = l.match(/Zin \d+:\s*"([^"]*)"/);
-                    if (mZin) {
-                        answers.sec5.push(mZin[1].trim());
+                    const m = l.match(/Plaatje (\d+):\s*"([^"]*)"/);
+                    if (m) {
+                        const idx = parseInt(m[1]) - 1;
+                        answers.sec5[idx] = m[2].trim();
                     }
                 });
+            } else {
+                // Section 5: Dictee
+                const sec5Regex = /\*5\. Dictee\*([\s\S]*?)(?=\n\n\*|$)/;
+                const sec5Block = text.match(sec5Regex);
+                if (sec5Block) {
+                    const lines = sec5Block[1].split('\n');
+                    lines.forEach(l => {
+                        const mWord = l.match(/Woord \d+:\s*"([^"]*)"/);
+                        if (mWord) {
+                            answers.sec5.push(mWord[1].trim());
+                        }
+                        const mZin = l.match(/Zin \d+:\s*"([^"]*)"/);
+                        if (mZin) {
+                            answers.sec5.push(mZin[1].trim());
+                        }
+                    });
+                }
             }
 
             // Section 6: Schrijven
@@ -1403,11 +1448,26 @@
                 });
             }
 
-            return { name, answers };
+            return { name, answers, isOldFormat };
         }
+
+        const oldAnswerKeysSec5 = [
+            ["boerderij", "de boerderij"],
+            ["koe", "de koe"],
+            ["kip", "de kip"],
+            ["schaap", "het schaap"],
+            ["natuur", "de natuur"],
+            ["vakantie", "de vakantie"],
+            ["vriend", "de vriend", "vriendin", "de vriendin"],
+            ["sport", "de sport"],
+            ["dame", "de dame", "vrouw", "de vrouw"],
+            ["weekend", "het weekend"]
+        ];
 
         function gradeSubmission(submission) {
             const answers = submission.answers;
+            const isOldFormat = submission.isOldFormat || (answers.sec5 && answers.sec5.length === 10);
+            
             const results = {
                 sec1: [],
                 sec2: [],
@@ -1420,7 +1480,8 @@
                 score3: 0,
                 score4: 0,
                 score5: 0,
-                totalScore: 0
+                totalScore: 0,
+                isOldFormat: isOldFormat
             };
 
             // Grade Sec 1
@@ -1460,9 +1521,10 @@
             }
 
             // Grade Sec 5
-            for (let i = 0; i < 9; i++) {
+            const sec5Count = isOldFormat ? 10 : 9;
+            for (let i = 0; i < sec5Count; i++) {
                 const ans = answers.sec5[i] || "";
-                const correctList = answerKeys.sec5[i] || [];
+                const correctList = isOldFormat ? oldAnswerKeysSec5[i] : (answerKeys.sec5[i] || []);
                 const graded = gradeAnswer(ans, correctList);
                 results.score5 += graded.score;
                 results.sec5.push({ num: i + 1, ans, correct: correctList[0], isCorrect: graded.status === "correct" });
@@ -1525,6 +1587,15 @@
 
             const panel = document.getElementById('grading-results-panel');
             
+            const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
+            const isOld = sub.results.isOldFormat || (sub.answers && sub.answers.sec5 && sub.answers.sec5.length === 10);
+            let currentMaxScore;
+            if (testNum === "2") {
+                currentMaxScore = isOld ? "34" : "33";
+            } else {
+                currentMaxScore = isOld ? "35" : "34";
+            }
+
             let html = `
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
                     <div>
@@ -1532,7 +1603,7 @@
                         <span style="color: var(--text-secondary); font-size: 0.9rem;">Datum verwerkt: ${sub.date}</span>
                     </div>
                     <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-blue);">
-                        Score: ${sub.results.totalScore}/${maxScore}
+                        Score: ${sub.results.totalScore}/${currentMaxScore}
                     </div>
                 </div>
             `;
@@ -1573,7 +1644,11 @@
             html += renderSection("2. Lezen", sub.results.sec2);
             html += renderSection("3. Grammatica", sub.results.sec3);
             html += renderSection("4. Geef antwoord (Nee, ...)", sub.results.sec4);
-            html += renderSection5Dictee("5. Dictee", sub.results.sec5);
+            if (isOld) {
+                html += renderSection("5. Plaatjes Woordenschat", sub.results.sec5);
+            } else {
+                html += renderSection5Dictee("5. Dictee", sub.results.sec5);
+            }
 
             html += `<div class="grading-section-header">6. Schrijven (Praatplaat)</div>`;
             sub.results.sec6.forEach(item => {
@@ -1684,15 +1759,25 @@
                 customInstructionsPrompt = `\n\nExtra instructies van de docent voor deze feedback:\n- ${customInstr}`;
             }
 
+            const isOld = sub.results.isOldFormat || (sub.answers && sub.answers.sec5 && sub.answers.sec5.length === 10);
+            let currentMaxScore;
+            if (testNum === "2") {
+                currentMaxScore = isOld ? "34" : "33";
+            } else {
+                currentMaxScore = isOld ? "35" : "34";
+            }
+            const sec5Label = isOld ? "Plaatjes woordenschat" : "Dictee";
+            const sec5Max = isOld ? 10 : 9;
+
             const promptText = `Je bent een ervaren docent Nederlands NT2 (A1 niveau).
 Hier is de oefentoets ${testNum} van Thema 8 (Vrije Tijd) gemaakt door cursist "${sub.name}".
 De scores van de gesloten vragen zijn al berekend:
 - Luisteren: ${sub.results.score1}/5
 - Lezen: ${sub.results.score2}/5
-- Grammatica: ${sub.results.score3}/9
+- Grammatica: ${sub.results.score3}/${testNum === "2" ? 9 : 10}
 - Antwoorden geven (negatie): ${sub.results.score4}/5
-- Dictee: ${sub.results.score5}/9
-Totaalscore gesloten onderdelen: ${sub.results.totalScore}/${maxScore}
+- ${sec5Label}: ${sub.results.score5}/${sec5Max}
+Totaalscore gesloten onderdelen: ${sub.results.totalScore}/${currentMaxScore}
 
 Hier zijn de antwoorden van de cursist op onderdeel 6. Schrijven (Praatplaat):
 De cursist moest 4 zinnen schrijven over de praatplaat.
@@ -1771,9 +1856,17 @@ Eindig met een aanmoediging. Houd het Nederlandse taalgebruik relatief eenvoudig
             const sub = submissionsList[selectedStudentIdx];
             const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
             
+            const isOld = sub.results.isOldFormat || (sub.answers && sub.answers.sec5 && sub.answers.sec5.length === 10);
+            let currentMaxScore;
+            if (testNum === "2") {
+                currentMaxScore = isOld ? "34" : "33";
+            } else {
+                currentMaxScore = isOld ? "35" : "34";
+            }
+            
             let text = `*RAPPORT OEFENTOETS ${testNum} THEMA 8 - VRIJE TIJD*\n`;
             text += `👤 *Cursist:* ${sub.name}\n`;
-            text += `📊 *Totaalscore gesloten vragen:* ${sub.results.totalScore}/${maxScore}\n\n`;
+            text += `📊 *Totaalscore gesloten vragen:* ${sub.results.totalScore}/${currentMaxScore}\n\n`;
             
             if (sub.feedback) {
                 text += `📝 *Feedback docent (en AI):*\n${sub.feedback}`;
