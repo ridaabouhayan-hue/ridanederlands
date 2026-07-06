@@ -717,105 +717,50 @@
             }
 
             const val = id => document.getElementById(id) ? document.getElementById(id).value.trim() : "";
-            const mcVal = group => selectedChoices[group] || "";
+            const mcVal = group => selectedChoices[group] ? selectedChoices[group].toUpperCase() : "-";
 
-            let totalScore = 0;
-            let report = `*RESULTATEN OEFENTOETS 1 THEMA 8 - VRIJE TIJD*\n`;
+            const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
+
+            let report = `*ANTWOORDEN OEFENTOETS ${testNum} THEMA 8 - VRIJE TIJD*\n`;
             report += `👤 *Cursist:* ${studentName}\n\n`;
 
             // Section 1
-            let score1 = 0;
-            let report1 = `*1. Luisteren* (Score: {SCORE1}/5)\n`;
+            report += `*1. Luisteren*\n`;
             for (let i = 1; i <= 5; i++) {
-                const ans = mcVal(`q1_${i}_group`);
-                const correct = answerKeys.sec1[i - 1];
-                if (ans === correct) {
-                    score1++;
-                    report1 += `- Vraag ${i}: ${ans.toUpperCase()} ✅\n`;
-                } else {
-                    report1 += `- Vraag ${i}: ${ans.toUpperCase() || "-"} ❌ (moet zijn: ${correct.toUpperCase()})\n`;
-                }
+                report += `- Vraag ${i}: ${mcVal(`q1_${i}_group`)}\n`;
             }
-            report1 = report1.replace("{SCORE1}", score1);
-            totalScore += score1;
 
             // Section 2
-            let score2 = 0;
-            let report2 = `\n*2. Lezen* (Score: {SCORE2}/5)\n`;
+            report += `\n*2. Lezen*\n`;
             for (let i = 1; i <= 5; i++) {
-                const ans = mcVal(`q2_${i}_group`);
-                const correct = answerKeys.sec2[i - 1];
-                if (ans === correct) {
-                    score2++;
-                    report2 += `- Vraag ${i}: ${ans.toUpperCase()} ✅\n`;
-                } else {
-                    report2 += `- Vraag ${i}: ${ans.toUpperCase() || "-"} ❌ (moet zijn: ${correct.toUpperCase()})\n`;
-                }
+                report += `- Vraag ${i}: ${mcVal(`q2_${i}_group`)}\n`;
             }
-            report2 = report2.replace("{SCORE2}", score2);
-            totalScore += score2;
 
             // Section 3
-            let score3 = 0;
-            let report3 = `\n*3. Grammatica* (Score: {SCORE3}/10)\n`;
+            report += `\n*3. Grammatica*\n`;
             for (let i = 1; i <= 10; i++) {
-                const ans = val(`q3_${i}`);
-                const correctList = answerKeys.sec3[i - 1];
-                const graded = gradeAnswer(ans, correctList);
-                score3 += graded.score;
-                if (graded.status === "correct") {
-                    report3 += `- Zin ${i}: "${ans}" ✅\n`;
-                } else {
-                    report3 += `- Zin ${i}: "${ans || "-"}" ❌ (moet zijn: ${correctList[0]})\n`;
-                }
+                report += `- Zin ${i}: "${val(`q3_${i}`) || "-"}"\n`;
             }
-            report3 = report3.replace("{SCORE3}", score3);
-            totalScore += score3;
 
             // Section 4
-            let score4 = 0;
-            let report4 = `\n*4. Geef antwoord (Nee, ...)* (Score: {SCORE4}/5)\n`;
+            report += `\n*4. Geef antwoord (Nee, ...)*\n`;
             for (let i = 1; i <= 5; i++) {
-                const ans = val(`q4_${i}`);
-                const correctList = answerKeys.sec4[i - 1];
-                const graded = gradeAnswer(ans, correctList);
-                score4 += graded.score;
-                if (graded.status === "correct") {
-                    report4 += `- Vraag ${i}: "Nee, ${ans}" ✅\n`;
-                } else {
-                    report4 += `- Vraag ${i}: "Nee, ${ans || "-"}" ❌ (moet zijn: Nee, ${correctList[0]})\n`;
-                }
+                report += `- Vraag ${i}: "Nee, ${val(`q4_${i}`) || "-"}"\n`;
             }
-            report4 = report4.replace("{SCORE4}", score4);
-            totalScore += score4;
 
             // Section 5
-            let score5 = 0;
-            let report5 = `\n*5. Plaatjes Woordenschat* (Score: {SCORE5}/10)\n`;
+            report += `\n*5. Plaatjes Woordenschat*\n`;
             const q5_map = [1, 6, 2, 7, 3, 8, 4, 9, 5, 10];
             for (let i = 1; i <= 10; i++) {
                 const qNum = q5_map[i - 1];
-                const ans = val(`q5_${qNum}`);
-                const correctList = answerKeys.sec5[qNum - 1];
-                const graded = gradeAnswer(ans, correctList);
-                score5 += graded.score;
-                if (graded.status === "correct") {
-                    report5 += `- Plaatje ${qNum}: "${ans}" ✅\n`;
-                } else {
-                    report5 += `- Plaatje ${qNum}: "${ans || "-"}" ❌ (moet zijn: ${correctList[0]})\n`;
-                }
+                report += `- Plaatje ${qNum}: "${val(`q5_${qNum}`) || "-"}"\n`;
             }
-            report5 = report5.replace("{SCORE5}", score5);
-            totalScore += score5;
 
-            // Section 6 (Open question - graded by teacher)
-            let report6 = `\n*6. Schrijven (Praatplaat)* (Handmatig nakijken)\n`;
+            // Section 6
+            report += `\n*6. Schrijven (Praatplaat)*\n`;
             for (let i = 1; i <= 4; i++) {
-                report6 += `- Zin ${i}: "${val('q6_' + i) || "-"}"\n`;
+                report += `- Zin ${i}: "${val('q6_' + i) || "-"}"\n`;
             }
-
-            report += `*TOTAALSCORE (Deel 1-5):* ${totalScore}/35\n\n`;
-            report += report1 + report2 + report3 + report4 + report5 + report6;
 
             const phone = "31626211106";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
