@@ -187,7 +187,7 @@
             height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            display: none;
+            display: none !important;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
@@ -295,22 +295,20 @@
 
         /* Language bar */
         .language-bar {
+            position: absolute;
+            top: 20px;
+            right: 80px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 6px;
+            padding: 4px;
             border-radius: 50px;
             display: flex;
-            gap: 6px;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            gap: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            width: 100%;
-            max-width: 650px;
-            overflow-x: auto;
-            flex-wrap: nowrap;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            z-index: 100;
+            width: auto;
+            max-width: none;
         }
 
         .language-bar::-webkit-scrollbar {
@@ -321,16 +319,14 @@
             background: transparent;
             border: 2px solid transparent;
             color: var(--text-color);
-            padding: 8px 14px;
+            padding: 6px 10px;
             border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
+            font-size: 1.1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
             transition: var(--transition);
-            white-space: nowrap;
         }
 
         .lang-btn:hover {
@@ -447,6 +443,7 @@
             margin-bottom: 16px; /* Spaced out question */
             min-height: 60px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             line-height: 1.2;
@@ -787,7 +784,7 @@
         /* --- DUAL PANE LAYOUT & SIDEBAR --- */
         .game-layout-container {
             display: grid;
-            grid-template-columns: 1fr 180px; /* Ultra-compact 180px sidebar */
+            grid-template-columns: 1fr;
             gap: 20px;
             width: 100%;
             max-width: 1000px; /* Center-aligned premium width */
@@ -817,18 +814,24 @@
             background: var(--card-bg);
             border: 2px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 12px; /* Compact padding */
+            padding: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.15);
             backdrop-filter: blur(16px);
             color: var(--text-color);
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
-            display: flex;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 15px auto 25px auto;
+            display: none; /* Controlled by JS toggle */
             flex-direction: column;
-            gap: 10px; /* Less space between sections */
-            animation: slideInRight 0.3s ease-out;
+            gap: 12px;
+            box-sizing: border-box;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .sidebar-header {
@@ -929,6 +932,7 @@
         /* Float Toggle Button for Mobile */
         .sidebar-toggle-btn {
             display: none;
+            margin: 10px auto 20px auto;
             background: var(--primary);
             color: #fff;
             border: none;
@@ -1126,20 +1130,13 @@
                 gap: 20px;
             }
             .info-sidebar {
-                display: none; /* Collapsed by default on mobile, toggleable */
-                position: fixed;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: 320px;
-                max-height: none;
-                z-index: 1000;
-                border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-                border-left: 2px solid var(--primary);
-                animation: slideInFromRight 0.3s ease-out;
-            }
-            .info-sidebar.mobile-show {
-                display: flex;
+                position: relative;
+                width: 100%;
+                max-width: 600px;
+                border-radius: var(--radius-md);
+                border-left: none;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+                margin: 15px auto 25px auto;
             }
             .sidebar-toggle-btn {
                 display: inline-flex;
@@ -1155,7 +1152,7 @@
 
         @media (max-width: 600px) {
             h1 { font-size: 1.6rem; }
-            .word-display { font-size: 1.9rem; min-height: 50px; }
+            .word-display { font-size: 1.9rem; min-height: 50px; flex-direction: column; }
             .translation-helper { font-size: 0.95rem; }
             .option-btn { font-size: 0.95rem; padding: 12px 14px; }
             .game-card { padding: 20px; }
@@ -1251,6 +1248,14 @@
     <canvas id="confetti-canvas"></canvas>
 
     <button id="theme-toggle" class="theme-btn" aria-label="Toggle Donker/Licht Thema">🌓</button>
+    <nav class="language-bar" aria-label="Taalkeuze" id="game-language-bar" style="display: none;">
+        <button class="lang-btn active" data-lang="en" title="English"><span>🇬🇧</span></button>
+        <button class="lang-btn" data-lang="ar" title="العربية"><span>🇸🇦</span></button>
+        <button class="lang-btn" data-lang="tr" title="Türkçe"><span>🇹🇷</span></button>
+        <button class="lang-btn" data-lang="ps" title="Pashto"><span>🇦🇫</span></button>
+        <button class="lang-btn" data-lang="zh" title="Chinese"><span>🇨🇳</span></button>
+    </nav>
+
     <button id="info-toggle" class="info-toggle-btn" aria-label="Toon Uitleg & Regels" onclick="toggleSidebar()">💡</button>
 
     <header>
@@ -1355,24 +1360,30 @@
             <span>💡</span> Uitleg & Regels
         </button>
 
-        <!-- Language Selector Bar -->
-        <nav class="language-bar" aria-label="Taalkeuze" id="game-language-bar">
-            <button class="lang-btn active" data-lang="en">
-                <span>🇬🇧</span> English
-            </button>
-            <button class="lang-btn" data-lang="ar">
-                <span>🇸🇦</span> العربية
-            </button>
-            <button class="lang-btn" data-lang="tr">
-                <span>🇹🇷</span> Türkçe
-            </button>
-            <button class="lang-btn" data-lang="ps">
-                <span>🇦🇫</span> پښتو
-            </button>
-            <button class="lang-btn" data-lang="zh">
-                <span>🇨🇳</span> 中文
-            </button>
-        </nav>
+        <aside class="info-sidebar" id="info-sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-icon">💡</span>
+                    <h3 class="sidebar-title">Uitleg & Regels</h3>
+                    <button class="sidebar-close-btn" id="sidebar-close-btn" onclick="toggleSidebar()">✕</button>
+                </div>
+                <div class="sidebar-divider"></div>
+                
+                <div class="sidebar-section">
+                    <h4 class="sidebar-section-title">🎮 Hoe werkt het?</h4>
+                    <p class="sidebar-instruction" id="sidebar-instruction-text">
+                        Kies een antwoord uit de opties hiernaast.
+                    </p>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h4 class="sidebar-section-title">📚 Grammatica & Regels</h4>
+                    <div class="sidebar-rule-details" id="sidebar-rules-text">
+                        Uitgebreide uitleg over de regels en grammatica...
+                    </div>
+                </div>
+            </aside>
+
+
 
         <div class="game-layout-container">
             <div class="game-main-column">
@@ -1456,28 +1467,7 @@
             </div>
 
             <!-- Right-side Info & Explanation Sidebar -->
-            <aside class="info-sidebar" id="info-sidebar">
-                <div class="sidebar-header">
-                    <span class="sidebar-icon">💡</span>
-                    <h3 class="sidebar-title">Uitleg & Regels</h3>
-                    <button class="sidebar-close-btn" id="sidebar-close-btn" onclick="toggleSidebar()">✕</button>
-                </div>
-                <div class="sidebar-divider"></div>
-                
-                <div class="sidebar-section">
-                    <h4 class="sidebar-section-title">🎮 Hoe werkt het?</h4>
-                    <p class="sidebar-instruction" id="sidebar-instruction-text">
-                        Kies een antwoord uit de opties hiernaast.
-                    </p>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h4 class="sidebar-section-title">📚 Grammatica & Regels</h4>
-                    <div class="sidebar-rule-details" id="sidebar-rules-text">
-                        Uitgebreide uitleg over de regels en grammatica...
-                    </div>
-                </div>
-            </aside>
+            
         </div>
     </main>
 
@@ -1932,8 +1922,72 @@
                         "ar": "له / خاصته",
                         "tr": "onun",
                         "ps": "د هغه",                        "zh": "他的"
+            },
+            {
+                        "nl": "tot ziens",
+                        "en": "goodbye",
+                        "ar": "مع السلامة",
+                        "tr": "görüşmek üzere",
+                        "ps": "د لیدو په هیله",
+                        "zh": "再见"
+            },
+            {
+                        "nl": "alstublieft",
+                        "en": "please, here you go",
+                        "ar": "من فضلك، تفضل",
+                        "tr": "lütfen, buyurun",
+                        "ps": "هیله کوم",
+                        "zh": "请，给你"
+            },
+            {
+                        "nl": "dank u wel",
+                        "en": "thank you very much",
+                        "ar": "شكرا جزيلا",
+                        "tr": "çok teşekkürler",
+                        "ps": "ډیره مننه",
+                        "zh": "非常感谢"
+            },
+            {
+                        "nl": "meneer",
+                        "en": "mister",
+                        "ar": "سيد",
+                        "tr": "beyefendi",
+                        "ps": "ښاغلی",
+                        "zh": "先生"
+            },
+            {
+                        "nl": "mevrouw",
+                        "en": "madam",
+                        "ar": "سيدة",
+                        "tr": "hanımefendi",
+                        "ps": "اغلې",
+                        "zh": "女士"
+            },
+            {
+                        "nl": "de jongen",
+                        "en": "boy",
+                        "ar": "ولد",
+                        "tr": "oğlan",
+                        "ps": "هلک",
+                        "zh": "男孩"
+            },
+            {
+                        "nl": "het meisje",
+                        "en": "girl",
+                        "ar": "فتاة",
+                        "tr": "kız",
+                        "ps": "نجلۍ",
+                        "zh": "女孩"
+            },
+            {
+                        "nl": "de man",
+                        "en": "man",
+                        "ar": "رجل",
+                        "tr": "adam",
+                        "ps": "سړی",
+                        "zh": "男人"
             }
-];
+        ];
 
         const VOCAB_T2 = [
             {
@@ -2369,8 +2423,72 @@
                         "ar": "كم",
                         "tr": "ne kadar",
                         "ps": "څومره",                        "zh": "多少"
+            },
+            {
+                        "nl": "het papier",
+                        "en": "paper",
+                        "ar": "الورق",
+                        "tr": "kağıt",
+                        "ps": "کاغذ",
+                        "zh": "纸张"
+            },
+            {
+                        "nl": "het potlood",
+                        "en": "pencil",
+                        "ar": "قلم رصاص",
+                        "tr": "kurşun kalem",
+                        "ps": "پنسل",
+                        "zh": "铅笔"
+            },
+            {
+                        "nl": "de computer",
+                        "en": "computer",
+                        "ar": "الحاسوب",
+                        "tr": "bilgisayar",
+                        "ps": "کمپیوټر",
+                        "zh": "电脑"
+            },
+            {
+                        "nl": "de klok",
+                        "en": "clock",
+                        "ar": "الساعة",
+                        "tr": "saat",
+                        "ps": "ساعت",
+                        "zh": "钟表"
+            },
+            {
+                        "nl": "de prullenbak",
+                        "en": "trash can",
+                        "ar": "سلة المهملات",
+                        "tr": "çöp kutusu",
+                        "ps": "د کثافاتو ډنډ",
+                        "zh": "垃圾桶"
+            },
+            {
+                        "nl": "de stoel",
+                        "en": "chair",
+                        "ar": "الكرسي",
+                        "tr": "sandalye",
+                        "ps": "څوکۍ",
+                        "zh": "椅子"
+            },
+            {
+                        "nl": "de tafel",
+                        "en": "table",
+                        "ar": "الطاولة",
+                        "tr": "masa",
+                        "ps": "میز",
+                        "zh": "桌子"
+            },
+            {
+                        "nl": "de tas",
+                        "en": "bag",
+                        "ar": "الحقيبة",
+                        "tr": "çanta",
+                        "ps": "کڅوړه",
+                        "zh": "包"
             }
-];
+        ];
 
         const VOCAB_T3 = [
             {
@@ -2806,8 +2924,72 @@
                         "ar": "مفتاح",
                         "tr": "anahtar",
                         "ps": "کیلي",                        "zh": "钥匙"
+            },
+            {
+                        "nl": "het raam",
+                        "en": "window",
+                        "ar": "النافذة",
+                        "tr": "pencere",
+                        "ps": "کړکۍ",
+                        "zh": "窗户"
+            },
+            {
+                        "nl": "de deur",
+                        "en": "door",
+                        "ar": "الباب",
+                        "tr": "kapı",
+                        "ps": "ور",
+                        "zh": "门"
+            },
+            {
+                        "nl": "de tuin",
+                        "en": "garden",
+                        "ar": "الحديقة",
+                        "tr": "bahçe",
+                        "ps": "باغ",
+                        "zh": "花园"
+            },
+            {
+                        "nl": "de spiegel",
+                        "en": "mirror",
+                        "ar": "المرآة",
+                        "tr": "ayna",
+                        "ps": "هنداره",
+                        "zh": "镜子"
+            },
+            {
+                        "nl": "de douche",
+                        "en": "shower",
+                        "ar": "الدوش",
+                        "tr": "duş",
+                        "ps": "شاور",
+                        "zh": "淋浴"
+            },
+            {
+                        "nl": "de lamp",
+                        "en": "lamp",
+                        "ar": "المصباح",
+                        "tr": "lamba",
+                        "ps": "څراغ",
+                        "zh": "灯"
+            },
+            {
+                        "nl": "het bed",
+                        "en": "bed",
+                        "ar": "السرير",
+                        "tr": "yatak",
+                        "ps": "بستر",
+                        "zh": "床"
+            },
+            {
+                        "nl": "de kast",
+                        "en": "cupboard",
+                        "ar": "الخزانة",
+                        "tr": "dolap",
+                        "ps": "المارۍ",
+                        "zh": "柜子"
             }
-];
+        ];
 
         const VOCAB_T4 = [
             {
@@ -3243,8 +3425,72 @@
                         "ar": "اليورو",
                         "tr": "avro",
                         "ps": "یورو",                        "zh": "欧元"
+            },
+            {
+                        "nl": "de kaas",
+                        "en": "cheese",
+                        "ar": "الجبن",
+                        "tr": "peynir",
+                        "ps": "پنیر",
+                        "zh": "奶酪"
+            },
+            {
+                        "nl": "de boter",
+                        "en": "butter",
+                        "ar": "الزبدة",
+                        "tr": "tereyağı",
+                        "ps": "کوچ",
+                        "zh": "黄油"
+            },
+            {
+                        "nl": "het zout",
+                        "en": "salt",
+                        "ar": "الملح",
+                        "tr": "tuz",
+                        "ps": "مالګه",
+                        "zh": "盐"
+            },
+            {
+                        "nl": "de suiker",
+                        "en": "sugar",
+                        "ar": "السكر",
+                        "tr": "şeker",
+                        "ps": "بوره",
+                        "zh": "糖"
+            },
+            {
+                        "nl": "de banaan",
+                        "en": "banana",
+                        "ar": "الموز",
+                        "tr": "muz",
+                        "ps": "کیله",
+                        "zh": "香蕉"
+            },
+            {
+                        "nl": "de appel",
+                        "en": "apple",
+                        "ar": "التفاح",
+                        "tr": "elma",
+                        "ps": "مڼه",
+                        "zh": "苹果"
+            },
+            {
+                        "nl": "de rijst",
+                        "en": "rice",
+                        "ar": "الأرز",
+                        "tr": "pirinç",
+                        "ps": "ورجې",
+                        "zh": "米饭"
+            },
+            {
+                        "nl": "de kip",
+                        "en": "chicken",
+                        "ar": "الدجاج",
+                        "tr": "tavuk",
+                        "ps": "چرګ",
+                        "zh": "鸡肉"
             }
-];
+        ];
 
         const VOCAB_T5 = [
             {
@@ -3680,8 +3926,72 @@
                         "ar": "يقول",
                         "tr": "söylemek",
                         "ps": "ویل",                        "zh": "说"
+            },
+            {
+                        "nl": "het oog",
+                        "en": "eye",
+                        "ar": "العين",
+                        "tr": "göz",
+                        "ps": "سترګه",
+                        "zh": "眼睛"
+            },
+            {
+                        "nl": "het oor",
+                        "en": "ear",
+                        "ar": "الأذن",
+                        "tr": "kulak",
+                        "ps": "غوږ",
+                        "zh": "耳朵"
+            },
+            {
+                        "nl": "de neus",
+                        "en": "nose",
+                        "ar": "الأنف",
+                        "tr": "burun",
+                        "ps": "پوزه",
+                        "zh": "鼻子"
+            },
+            {
+                        "nl": "de mond",
+                        "en": "mouth",
+                        "ar": "الفm",
+                        "tr": "ağız",
+                        "ps": "خوله",
+                        "zh": "嘴巴"
+            },
+            {
+                        "nl": "de tand",
+                        "en": "tooth",
+                        "ar": "السن",
+                        "tr": "diş",
+                        "ps": "غاښ",
+                        "zh": "牙齿"
+            },
+            {
+                        "nl": "de hand",
+                        "en": "hand",
+                        "ar": "اليد",
+                        "tr": "el",
+                        "ps": "لاس",
+                        "zh": "手"
+            },
+            {
+                        "nl": "de voet",
+                        "en": "foot",
+                        "ar": "القدم",
+                        "tr": "ayak",
+                        "ps": "پښه",
+                        "zh": "脚"
+            },
+            {
+                        "nl": "het bloed",
+                        "en": "blood",
+                        "ar": "الدم",
+                        "tr": "kan",
+                        "ps": "وینه",
+                        "zh": "血液"
             }
-];
+        ];
 
         const GRAMMAR_T1 = [
             {
@@ -4343,8 +4653,128 @@
                         ],
                         "ar": "ما هو لونك المفضل؟",
                         "tr": "En sevdiğin renk ne?",
-                        "ps": "ستا خوښ رنګ څه دی؟",            }
-];
+                        "ps": "ستا خوښ رنګ څه دی؟",            },
+            {
+                        "sentence": "Hoe heet ___? - Ik heet Sarah.",
+                        "nl": "jij",
+                        "options": [
+                                    "jij",
+                                    "ik",
+                                    "wij"
+                        ],
+                        "en": "What is your name? - My name is Sarah.",
+                        "ar": "ما اسمك؟ - اسمي سارة.",
+                        "tr": "Adın ne? - Benim adım Sarah."
+            },
+            {
+                        "sentence": "Dit is Jan. ___ komt uit Nederland.",
+                        "nl": "Hij",
+                        "options": [
+                                    "Hij",
+                                    "Zij",
+                                    "Het"
+                        ],
+                        "en": "This is Jan. He comes from the Netherlands.",
+                        "ar": "هذا يان. هو من هولندا.",
+                        "tr": "Bu Jan. O Hollanda'dan geliyor."
+            },
+            {
+                        "sentence": "Dit is Sofia. ___ komt uit Spanje.",
+                        "nl": "Zij",
+                        "options": [
+                                    "Zij",
+                                    "Hij",
+                                    "Het"
+                        ],
+                        "en": "This is Sofia. She comes from Spain.",
+                        "ar": "هذه صوفيا. هي من إسبانيا.",
+                        "tr": "Bu Sofia. O İspanya'dan geliyor."
+            },
+            {
+                        "sentence": "Wat ___ uw naam?",
+                        "nl": "is",
+                        "options": [
+                                    "is",
+                                    "bent",
+                                    "zijn"
+                        ],
+                        "en": "What is your name? (polite)",
+                        "ar": "ما اسمك؟ (رسمي)",
+                        "tr": "Adınız nedir?"
+            },
+            {
+                        "sentence": "Wij ___ in Amsterdam.",
+                        "nl": "wonen",
+                        "options": [
+                                    "wonen",
+                                    "woont",
+                                    "woon"
+                        ],
+                        "en": "We live in Amsterdam.",
+                        "ar": "نحن نعيش في أمستردام.",
+                        "tr": "Biz Amsterdam'da yaşıyoruz."
+            },
+            {
+                        "sentence": "___ heet jij? - Ik heet David.",
+                        "nl": "Hoe",
+                        "options": [
+                                    "Hoe",
+                                    "Wat",
+                                    "Waar"
+                        ],
+                        "en": "What is your name? - My name is David.",
+                        "ar": "ما اسمك؟ - اسمي ديفيد.",
+                        "tr": "Adın ne? - Benim adım David."
+            },
+            {
+                        "sentence": "___ woon jij? - In Utrecht.",
+                        "nl": "Waar",
+                        "options": [
+                                    "Waar",
+                                    "Hoe",
+                                    "Wie"
+                        ],
+                        "en": "Where do you live? - In Utrecht.",
+                        "ar": "أين تعيش؟ - في أوترخت.",
+                        "tr": "Nerede yaşıyorsun? - Utrecht'te."
+            },
+            {
+                        "sentence": "Ik ___ een boek.",
+                        "nl": "heb",
+                        "options": [
+                                    "heb",
+                                    "heeft",
+                                    "hebben"
+                        ],
+                        "en": "I have a book.",
+                        "ar": "عندي كتاب.",
+                        "tr": "Benim bir kitabım var."
+            },
+            {
+                        "sentence": "Jullie ___ studenten.",
+                        "nl": "zijn",
+                        "options": [
+                                    "zijn",
+                                    "bent",
+                                    "is"
+                        ],
+                        "en": "You (plural) are students.",
+                        "ar": "أنتم طلاب.",
+                        "tr": "Siz öğrencisiniz."
+            },
+            {
+                        "sentence": "Zij (meervoud) ___ een auto.",
+                        "nl": "hebben",
+                        "options": [
+                                    "hebben",
+                                    "heeft",
+                                    "heb"
+                        ],
+                        "en": "They have a car.",
+                        "ar": "لديهم سيارة.",
+                        "tr": "Onların bir arabası var."
+            }
+        ];
 
         const GRAMMAR_T2 = [
             {
@@ -5856,8 +6286,68 @@
                         ],
                         "ar": "أنت ذكي.",
                         "tr": "Sen akıllısın.",
-                        "ps": "ته هوښیار یې.",            }
-];
+                        "ps": "ته هوښیار یې.",            },
+            {
+                        "sentence": "Ik ___ in een groot huis. (wonen)",
+                        "nl": "woon",
+                        "options": [
+                                    "woon",
+                                    "woont",
+                                    "wonen"
+                        ],
+                        "en": "I live in a big house.",
+                        "ar": "أنا أعيش في بيت كبير.",
+                        "tr": "Büyük bir evde yaşıyorum."
+            },
+            {
+                        "sentence": "Wij ___ een brief aan de familie. (schrijven)",
+                        "nl": "schrijven",
+                        "options": [
+                                    "schrijven",
+                                    "schrijft",
+                                    "schrijf"
+                        ],
+                        "en": "We are writing a letter to the family.",
+                        "ar": "نحن نكتب رسالة إلى العائلة.",
+                        "tr": "Aileye bir mektup yazıyoruz."
+            },
+            {
+                        "sentence": "De kinderen ___ buiten. (spelen)",
+                        "nl": "spelen",
+                        "options": [
+                                    "spelen",
+                                    "speelt",
+                                    "speel"
+                        ],
+                        "en": "The children are playing outside.",
+                        "ar": "الأطفال يلعبون بالخارج.",
+                        "tr": "Çocuklar dışarıda oynuyor."
+            },
+            {
+                        "sentence": "Mijn vader ___ koffie in de ochtend. (drinken)",
+                        "nl": "drinkt",
+                        "options": [
+                                    "drinkt",
+                                    "drinken",
+                                    "drink"
+                        ],
+                        "en": "My father drinks coffee in the morning.",
+                        "ar": "أبي يشرب القهوة في الصباح.",
+                        "tr": "Babam sabahları kahve içer."
+            },
+            {
+                        "sentence": "Jij ___ een appel. (eten)",
+                        "nl": "eet",
+                        "options": [
+                                    "eet",
+                                    "eetst",
+                                    "eten"
+                        ],
+                        "en": "You eat an apple.",
+                        "ar": "أنت تأكل تفاحة.",
+                        "tr": "Sen bir elma yiyorsun."
+            }
+        ];
 
         const GRAMMAR_T4 = [
             {
@@ -7336,8 +7826,104 @@
                         ],
                         "ar": "هناك العديد من المتاجر في وسط المدينة.",
                         "tr": "Şehir merkezinde çok dükkan var.",
-                        "ps": "په ښار مرکز کې ډېر دوکانونه شته.",            }
-];
+                        "ps": "په ښار مرکز کې ډېر دوکانونه شته.",            },
+            {
+                        "sentence": "Ik heb twee ___ aan mijn hand. (vinger)",
+                        "nl": "vingers",
+                        "options": [
+                                    "vingers",
+                                    "vingeren",
+                                    "vinger"
+                        ],
+                        "en": "I have two fingers on my hand.",
+                        "ar": "لدي إصبعين في يدي.",
+                        "tr": "Elimde iki parmak var."
+            },
+            {
+                        "sentence": "Waarom ga je naar de dokter? ___ ik buikpijn heb.",
+                        "nl": "Omdat",
+                        "options": [
+                                    "Omdat",
+                                    "Want",
+                                    "Maar"
+                        ],
+                        "en": "Why are you going to the doctor? Because I have a stomachache.",
+                        "ar": "لماذا تذهب إلى الطبيب؟ لأن بطني يؤلمني.",
+                        "tr": "Neden doktora gidiyorsun? Çünkü karın ağrım var."
+            },
+            {
+                        "sentence": "Ik kan vandaag niet werken, ___ ik ben ziek.",
+                        "nl": "want",
+                        "options": [
+                                    "want",
+                                    "omdat",
+                                    "en"
+                        ],
+                        "en": "I cannot work today, because I am sick.",
+                        "ar": "لا يمكنني العمل اليوم، لأني مريض.",
+                        "tr": "Bugün çalışamam çünkü hastayım."
+            },
+            {
+                        "sentence": "De dokter geeft mij ___ tegen de pijn.",
+                        "nl": "medicijnen",
+                        "options": [
+                                    "medicijnen",
+                                    "medicijn",
+                                    "medicijnenen"
+                        ],
+                        "en": "The doctor gives me medicine for the pain.",
+                        "ar": "الطبيب يعطيني دواءً للألم.",
+                        "tr": "Doktor bana ağrı için ilaç veriyor."
+            },
+            {
+                        "sentence": "Zij heeft pijn aan haar twee ___.",
+                        "nl": "voeten",
+                        "options": [
+                                    "voeten",
+                                    "voet",
+                                    "voetens"
+                        ],
+                        "en": "She has pain in both her feet.",
+                        "ar": "قدميها تؤلمانها.",
+                        "tr": "İki ayağında da ağrı var."
+            },
+            {
+                        "sentence": "Kun jij ___ voor mij bellen?",
+                        "nl": "de dokter",
+                        "options": [
+                                    "de dokter",
+                                    "het dokter",
+                                    "dokter"
+                        ],
+                        "en": "Can you call the doctor for me?",
+                        "ar": "هل يمكنك الاتصال بالطبيب من أجلي؟",
+                        "tr": "Benim için doktoru arayabilir misin?"
+            },
+            {
+                        "sentence": "Wij moeten veel water ___.",
+                        "nl": "drinken",
+                        "options": [
+                                    "drinken",
+                                    "drinkt",
+                                    "gedronken"
+                        ],
+                        "en": "We must drink a lot of water.",
+                        "ar": "يجب أن نشرب الكثير من الماء.",
+                        "tr": "Çok su içmeliyiz."
+            },
+            {
+                        "sentence": "Hij ___ niet hard rennen. Hij heeft pijn aan zijn been.",
+                        "nl": "kan",
+                        "options": [
+                                    "kan",
+                                    "moet",
+                                    "wil"
+                        ],
+                        "en": "He cannot run fast. His leg hurts.",
+                        "ar": "لا يستطيع الجري بسرعة. رجله تؤلمه.",
+                        "tr": "Hızlı koşamıyor. Bacağı ağrıyor."
+            }
+        ];
 
         
 
@@ -8420,13 +9006,631 @@
                         "en": "The cat sleeps under the chair.",
                         "ar": "القطة تنام تحت الكرسي.",
                         "tr": "Kedi sandalyenin altında uyuyor."
+            },
+            {
+                        "sentence": "Ik heb _________ zin om te sporten. (Kies uit: niet - geen)",
+                        "nl": "geen",
+                        "options": [
+                                    "geen",
+                                    "niet",
+                                    "nooit"
+                        ],
+                        "en": "I don't feel like playing sports.",
+                        "ar": "ليس لدي رغبة في ممارسة الرياضة.",
+                        "tr": "Spor yapacak havamda değilim."
+            },
+            {
+                        "sentence": "Hij kan _________ voetballen. Hij is te moe. (Kies uit: niet - geen)",
+                        "nl": "niet",
+                        "options": [
+                                    "niet",
+                                    "geen",
+                                    "nooit"
+                        ],
+                        "en": "He cannot play soccer. He is too tired.",
+                        "ar": "لا يمكنه لعب كرة القدم. هو متعب جداً.",
+                        "tr": "Futbol oynayamaz. Çok yorgun."
+            },
+            {
+                        "sentence": "Zij hebben _________ tijd voor een hobby. (Kies uit: niet - geen)",
+                        "nl": "geen",
+                        "options": [
+                                    "geen",
+                                    "niet",
+                                    "nooit"
+                        ],
+                        "en": "They don't have time for a hobby.",
+                        "ar": "ليس لديهم وقت لهواية.",
+                        "tr": "Bir hobi için zamanları yok."
+            },
+            {
+                        "sentence": "Ik vind dit spel _________ leuk. (Kies uit: niet - geen)",
+                        "nl": "niet",
+                        "options": [
+                                    "niet",
+                                    "geen",
+                                    "nooit"
+                        ],
+                        "en": "I don't like this game.",
+                        "ar": "لا يعجبني هذا اللعبة.",
+                        "tr": "Bu oyunu sevmiyorum."
+            },
+            {
+                        "sentence": "Er zijn _________ kaarten meer. (Kies uit: niet - geen)",
+                        "nl": "geen",
+                        "options": [
+                                    "geen",
+                                    "niet",
+                                    "een"
+                        ],
+                        "en": "There are no more cards.",
+                        "ar": "Artık kart kalmadı.",
+                        "tr": "Artık kart kalmadı."
+            },
+            {
+                        "sentence": "Wij gaan vandaag _________ wandelen. Het regent. (Kies uit: niet - geen)",
+                        "nl": "niet",
+                        "options": [
+                                    "niet",
+                                    "geen",
+                                    "nooit"
+                        ],
+                        "en": "We are not going for a walk today. It is raining.",
+                        "ar": "لن نذهب للمشي اليوم. إنها تمطر.",
+                        "tr": "Bugün yürüyüşe çıkmıyoruz. Yağmur yağıyor."
+            },
+            {
+                        "sentence": "Zij heeft _________ fiets om te fietsen. (Kies uit: niet - geen)",
+                        "nl": "geen",
+                        "options": [
+                                    "geen",
+                                    "niet",
+                                    "een"
+                        ],
+                        "en": "She doesn't have a bicycle to ride.",
+                        "ar": "ليس لديها دراجة لتركبها.",
+                        "tr": "Bisiklete binmek için bisikleti yok."
+            },
+            {
+                        "sentence": "U mag hier _________ zwemmen. (Kies uit: niet - geen)",
+                        "nl": "niet",
+                        "options": [
+                                    "niet",
+                                    "geen",
+                                    "nooit"
+                        ],
+                        "en": "You are not allowed to swim here.",
+                        "ar": "لا يسمح لك بالسباحة هنا.",
+                        "tr": "Burada yüzmenize izin verilmez."
+            },
+            {
+                        "sentence": "Simon spreekt _________ af met vrienden. (Kies uit: niet - geen)",
+                        "nl": "niet",
+                        "options": [
+                                    "niet",
+                                    "geen",
+                                    "nooit"
+                        ],
+                        "en": "Simon is not meeting up with friends.",
+                        "ar": "سيمون لا يلتقي بأصدقائه.",
+                        "tr": "Simon arkadaşlarla buluşmuyor."
+            },
+            {
+                        "sentence": "Er is _________ muziek op het feest. (Kies uit: niet - geen)",
+                        "nl": "geen",
+                        "options": [
+                                    "geen",
+                                    "niet",
+                                    "een"
+                        ],
+                        "en": "There is no music at the party.",
+                        "ar": "لا توجد موسيقى في الحفلة.",
+                        "tr": "Partide müzik yok."
+            },
+            {
+                        "sentence": "Ik verveel _________ in mijn vrije tijd.",
+                        "nl": "me",
+                        "options": [
+                                    "me",
+                                    "je",
+                                    "zich"
+                        ],
+                        "en": "I get bored in my free time.",
+                        "ar": "أشعر بالملل في وقت فراغي.",
+                        "tr": "Boş zamanımda sıkılıyorum."
+            },
+            {
+                        "sentence": "Haast jij _________ om op tijd te komen?",
+                        "nl": "je",
+                        "options": [
+                                    "je",
+                                    "me",
+                                    "zich"
+                        ],
+                        "en": "Are you hurrying to arrive on time?",
+                        "ar": "هل تسرع لتصل في الوقت المحدد؟",
+                        "tr": "Zamanında gelmek için acele ediyor musun?"
+            },
+            {
+                        "sentence": "Hij scheert _________ elke ochtend.",
+                        "nl": "zich",
+                        "options": [
+                                    "zich",
+                                    "me",
+                                    "ons"
+                        ],
+                        "en": "He shaves every morning.",
+                        "ar": "يحلق ذقنه كل صباح.",
+                        "tr": "Her sabah tıraş olur."
+            },
+            {
+                        "sentence": "Wij verheugen _________ op de vakantie.",
+                        "nl": "ons",
+                        "options": [
+                                    "ons",
+                                    "zich",
+                                    "jullie"
+                        ],
+                        "en": "We are looking forward to the vacation.",
+                        "ar": "نحن نتطلع إلى الإجازة.",
+                        "tr": "Tatili sabırsızlıkla bekliyoruz."
+            },
+            {
+                        "sentence": "Jullie wassen _________ na het sporten.",
+                        "nl": "je",
+                        "options": [
+                                    "je",
+                                    "me",
+                                    "zich"
+                        ],
+                        "en": "You (plural) wash yourselves after playing sports.",
+                        "ar": "أنتم تغسلون أنفسكم بعد الرياضة.",
+                        "tr": "Spordan sonra yıkanıyorsunuz."
+            },
+            {
+                        "sentence": "Zij verslapen _________ vaak in het weekend.",
+                        "nl": "zich",
+                        "options": [
+                                    "zich",
+                                    "ons",
+                                    "me"
+                        ],
+                        "en": "They often oversleep on the weekend.",
+                        "ar": "غالباً ما ينامون لفترة طويلة في عطلة نهاية الأسبوع.",
+                        "tr": "Hafta sonları sık sık uyuyakalırlar."
+            },
+            {
+                        "sentence": "Ik moet _________ snel omkleden voor de wedstrijd.",
+                        "nl": "me",
+                        "options": [
+                                    "me",
+                                    "zich",
+                                    "ons"
+                        ],
+                        "en": "I need to change clothes quickly for the match.",
+                        "ar": "يجب أن أغير ملابسي بسرعة للمباراة.",
+                        "tr": "Maç için hızlıca üstümü değiştirmeliyim."
+            },
+            {
+                        "sentence": "Hij ontspant _________ met een goed boek.",
+                        "nl": "zich",
+                        "options": [
+                                    "zich",
+                                    "me",
+                                    "ons"
+                        ],
+                        "en": "He relaxes with a good book.",
+                        "ar": "يسترخي مع كتاب جيد.",
+                        "tr": "İyi bir kitapla rahatlıyor."
+            },
+            {
+                        "sentence": "Wij haasten _________ naar het sportveld.",
+                        "nl": "ons",
+                        "options": [
+                                    "ons",
+                                    "zich",
+                                    "je"
+                        ],
+                        "en": "We hurry to the sports field.",
+                        "ar": "نحن نسرع إلى الملعب الرياضي.",
+                        "tr": "Spor sahasına acele ediyoruz."
+            },
+            {
+                        "sentence": "Zij bereiden _________ voor op het examen.",
+                        "nl": "zich",
+                        "options": [
+                                    "zich",
+                                    "me",
+                                    "ons"
+                        ],
+                        "en": "They prepare themselves for the exam.",
+                        "ar": "يستعدون للامتحان.",
+                        "tr": "Sınava hazırlanıyorlar."
+            },
+            {
+                        "sentence": "Ik speel tennis. Dit is _________ racket. (mijn / zijn / haar)",
+                        "nl": "mijn",
+                        "options": [
+                                    "mijn",
+                                    "zijn",
+                                    "haar"
+                        ],
+                        "en": "I play tennis. This is my racket.",
+                        "ar": "أنا ألعب التنس. هذا مضربي.",
+                        "tr": "Tenis oynuyorum. Bu benim raketim."
+            },
+            {
+                        "sentence": "Zij houdt van muziek. Dat is _________ gitaar. (mijn / zijn / haar)",
+                        "nl": "haar",
+                        "options": [
+                                    "haar",
+                                    "zijn",
+                                    "mijn"
+                        ],
+                        "en": "She loves music. That is her guitar.",
+                        "ar": "هي تحب الموسيقى. هذه جيتارها.",
+                        "tr": "Müziği seviyor. O onun gitarı."
+            },
+            {
+                        "sentence": "Hij fietst veel. Dat is _________ nieuwe fiets. (mijn / zijn / haar)",
+                        "nl": "zijn",
+                        "options": [
+                                    "zijn",
+                                    "haar",
+                                    "mijn"
+                        ],
+                        "en": "He cycles a lot. That is his new bicycle.",
+                        "ar": "هو يركب الدراجة كثيراً. هذه دراجته الجديدة.",
+                        "tr": "Çok bisiklete biniyor. O onun yeni bisikleti."
+            },
+            {
+                        "sentence": "Wij hebben een hond. Dit is _________ hond. (ons / onze / hun)",
+                        "nl": "onze",
+                        "options": [
+                                    "onze",
+                                    "ons",
+                                    "hun"
+                        ],
+                        "en": "We have a dog. This is our dog.",
+                        "ar": "لدينا كلب. هذا كلبنا.",
+                        "tr": "Bizim bir köpeğimiz var. Bu bizim köpeğimiz."
+            },
+            {
+                        "sentence": "Heeft u een hobby? Wat is _________ hobby? (uw / jouw / zijn)",
+                        "nl": "uw",
+                        "options": [
+                                    "uw",
+                                    "jouw",
+                                    "zijn"
+                        ],
+                        "en": "Do you have a hobby? What is your hobby? (polite)",
+                        "ar": "هل لديك هواية؟ ما هي هوايتك؟",
+                        "tr": "Hobiniz var mı? Hobiniz nedir?"
+            },
+            {
+                        "sentence": "Jullie spelen piano. Is dat _________ piano? (jullie / hun / ons)",
+                        "nl": "jullie",
+                        "options": [
+                                    "jullie",
+                                    "hun",
+                                    "ons"
+                        ],
+                        "en": "You (plural) play piano. Is that your piano?",
+                        "ar": "أنتم تعزفون البيانو. هل هذا بيانوهكم؟",
+                        "tr": "Piyano çalıyorsunuz. O sizin piyanonuz mu?"
+            },
+            {
+                        "sentence": "Zij (meervoud) vissen graag. Dat is _________ boot. (hun / haar / ons)",
+                        "nl": "hun",
+                        "options": [
+                                    "hun",
+                                    "haar",
+                                    "ons"
+                        ],
+                        "en": "They like fishing. That is their boat.",
+                        "ar": "هم يحبون الصيد. هذا قاربهم.",
+                        "tr": "Balık tutmayı seviyorlar. O onların teknesi."
+            },
+            {
+                        "sentence": "Ik ga met _________ vriend afspreken. (mijn / zijn / haar)",
+                        "nl": "mijn",
+                        "options": [
+                                    "mijn",
+                                    "zijn",
+                                    "haar"
+                        ],
+                        "en": "I am going to meet my friend.",
+                        "ar": "سوف ألتقي بصديقي.",
+                        "tr": "Arkadaşımla buluşacağım."
+            },
+            {
+                        "sentence": "Zij nodigt _________ familie uit. (haar / zijn / mijn)",
+                        "nl": "haar",
+                        "options": [
+                                    "haar",
+                                    "zijn",
+                                    "mijn"
+                        ],
+                        "en": "She invites her family.",
+                        "ar": "هي تدعو عائلتها.",
+                        "tr": "Ailesini davet ediyor."
+            },
+            {
+                        "sentence": "Hij wandelt met _________ hond in het bos. (zijn / haar / hun)",
+                        "nl": "zijn",
+                        "options": [
+                                    "zijn",
+                                    "haar",
+                                    "hun"
+                        ],
+                        "en": "He walks with his dog in the forest.",
+                        "ar": "يمشي met كلبه في الغابة.",
+                        "tr": "Köpeğiyle ormanda yürüyor."
+            },
+            {
+                        "sentence": "Wat doe jij graag in je _________ tijd? (vrije / sport / hobby)",
+                        "nl": "vrije",
+                        "options": [
+                                    "vrije",
+                                    "sport",
+                                    "hobby"
+                        ],
+                        "en": "What do you like to do in your free time?",
+                        "ar": "ماذا تحب أن تفعل في وقت فراغك؟",
+                        "tr": "Boş zamanında ne yapmaktan hoşlanırsın?"
+            },
+            {
+                        "sentence": "Ik wil je graag _________ voor mijn verjaardag. (uitnodigen / spelen / wandelen)",
+                        "nl": "uitnodigen",
+                        "options": [
+                                    "uitnodigen",
+                                    "spelen",
+                                    "wandelen"
+                        ],
+                        "en": "I would like to invite you for my birthday.",
+                        "ar": "أود أن أدعوك لعيد ميلادي.",
+                        "tr": "Seni doğum günüme davet etmek isterim."
+            },
+            {
+                        "sentence": "Zullen we morgen _________? (afspreken / afspreekt / afgesproken)",
+                        "nl": "afspreken",
+                        "options": [
+                                    "afspreken",
+                                    "afspreekt",
+                                    "afgesproken"
+                        ],
+                        "en": "Shall we meet up tomorrow?",
+                        "ar": "هل نلتقي غداً؟",
+                        "tr": "Yarın buluşalım mı?"
+            },
+            {
+                        "sentence": "Zij vindt reizen erg _________. (gezellig / moeilijk / ziek)",
+                        "nl": "gezellig",
+                        "options": [
+                                    "gezellig",
+                                    "moeilijk",
+                                    "ziek"
+                        ],
+                        "en": "She finds traveling very pleasant/fun.",
+                        "ar": "هي تجد السفر ممتعاً جداً.",
+                        "tr": "Seyahat etmeyi çok keyifli buluyor."
+            },
+            {
+                        "sentence": "Richard gaat elke avond _________. (hardlopen / hardloopt / hardgelopen)",
+                        "nl": "hardlopen",
+                        "options": [
+                                    "hardlopen",
+                                    "hardloopt",
+                                    "hardgelopen"
+                        ],
+                        "en": "Richard goes running every evening.",
+                        "ar": "ريتشارد يذهب للجري كل مساء.",
+                        "tr": "Richard her akşam koşmaya gider."
+            },
+            {
+                        "sentence": "Wij willen graag naar een concert _________. (gaan / gaanen / gegaan)",
+                        "nl": "gaan",
+                        "options": [
+                                    "gaan",
+                                    "gaat",
+                                    "gegaan"
+                        ],
+                        "en": "We would like to go to a concert.",
+                        "ar": "نود الذهاب إلى حفلة موسيقية.",
+                        "tr": "Bir konsere gitmek istiyoruz."
+            },
+            {
+                        "sentence": "Hij kan heel mooi _________. (zingen / zingt / gezongen)",
+                        "nl": "zingen",
+                        "options": [
+                                    "zingen",
+                                    "zingt",
+                                    "gezongen"
+                        ],
+                        "en": "He can sing very beautifully.",
+                        "ar": "يمكنه الغناء بشكل جميل جداً.",
+                        "tr": "Çok güzel şarkı söyleyebilir."
+            },
+            {
+                        "sentence": "Zij luistert graag _________ muziek. (naar / op / in)",
+                        "nl": "naar",
+                        "options": [
+                                    "naar",
+                                    "op",
+                                    "in"
+                        ],
+                        "en": "She likes listening to music.",
+                        "ar": "هي تحب الاستماع إلى الموسيقى.",
+                        "tr": "Müzik dinlemeyi sever."
+            },
+            {
+                        "sentence": "Ik speel graag _________. (voetbal / voetballen / voetballer)",
+                        "nl": "voetbal",
+                        "options": [
+                                    "voetbal",
+                                    "voetballen",
+                                    "voetballer"
+                        ],
+                        "en": "I like playing soccer.",
+                        "ar": "أحب لعب كرة القدم.",
+                        "tr": "Futbol oynamayı severim."
+            },
+            {
+                        "sentence": "Hobby's en sporten zijn goed voor de _________. (rust / pijn / koorts)",
+                        "nl": "rust",
+                        "options": [
+                                    "rust",
+                                    "pijn",
+                                    "koorts"
+                        ],
+                        "en": "Hobbies and sports are good for rest/relaxation.",
+                        "ar": "الهوايات والرياضة جيدة للراحة.",
+                        "tr": "Hobiler ve spor dinlenmek için iyidir."
             }
-];
+        ];
 
         
 
 
         // Game Config
+        
+        const RULES_TRANSLATIONS = {
+            "instructions": {
+                "vocab": {
+                    "nl": "Vertaal het getoonde woord correct naar het Nederlands. Selecteer het juiste antwoord uit de drie opties. Verzamel 50 vlammen om te winnen!",
+                    "en": "Correctly translate the shown word to Dutch. Select the correct answer from the three options. Collect 50 flames to win!",
+                    "ar": "ترجم الكلمة المعروضة بشكل صحيح إلى اللغة الهولندية. اختر الإجابة الصحيحة من الخيارات الثلاثة. اجمع 50 لهباً لتفوز!",
+                    "tr": "Gösterilen kelimeyi doğru şekilde Felemenkçe'ye çevirin. Üç seçenek arasından doğru cevabı seçin. Kazanmak için 50 alev toplayın!",
+                    "ps": "ښودل شوې کلمه په سمه توګه هالنډي ته وژباړئ. له دریو اختیارونو څخه سم ځواب غوره کړئ. د ګټلو لپاره 50 لمبې راټول کړئ!",
+                    "zh": "正确地将显示的单词翻译成荷兰语。从三个选项中选择正确答案。收集50个火焰即可获胜！"
+                },
+                "gram": {
+                    "nl": "Kies het juiste woord om de grammatica-zin compleet te maken. Klik op de opties en verzamel 50 vlammen!",
+                    "en": "Choose the correct word to complete the grammar sentence. Click on the options and collect 50 flames!",
+                    "ar": "اختر الكلمة الصحيحة لإكمال الجملة القواعدية. انقر على الخيارات واجمع 50 لهباً!",
+                    "tr": "Gramer cümlesini tamamlamak için doğru kelimeyi seçin. Seçeneklere tıklayın ve 50 alev toplayın!",
+                    "ps": "د ګرامر جملې بشپړولو لپاره سمه کلمه غوره کړئ. په اختیارونو کلیک وکړئ او 50 لمبې راټول کړئ!",
+                    "zh": "选择正确的单词完成语法句子。点击选项并收集50个火焰！"
+                },
+                "mep": {
+                    "nl": "Lees de omschrijving of invulzin bovenin. Sla (klik) zo snel mogelijk op de mol met het juiste Nederlandse woord. Haal 50 vlammen om te winnen!",
+                    "en": "Read the description or fill-in sentence at the top. Hit (click) the mole with the correct Dutch word as fast as possible. Get 50 flames to win!",
+                    "ar": "اقرأ الوصف أو جملة الفراغ في الأعلى. اضرب (انقر) الشامة التي تحمل الكلمة الهولندية الصحيحة بأسرع ما يمكن. احصل على 50 لهباً لتفوز!",
+                    "tr": "Üstteki açıklamayı veya boşluk doldurma cümlesini okuyun. Doğru Felemenkçe kelimeye sahip köstebeğe olabildiğince hızlı vurun (tıklayın). Kazanmak için 50 alev alın!",
+                    "ps": "په پورتنۍ برخه کې توضیحات یا ډکولو جمله ولولئ. د سم هالنډي کلمې سره خاوروونکی (کلیک) د امکان تر حده ګړندی ووهئ. د ګټلو لپاره 50 لمبې ترلاسه کړئ!",
+                    "zh": "阅读顶部的描述或填空句子。尽快打（击）中带有正确荷兰语单词的鼹鼠。获得50个火焰即可获胜！"
+                },
+                "memo": {
+                    "nl": "Klik op de kaarten om ze om te draaien en zoek exact dezelfde Nederlandse woorden bij elkaar.",
+                    "en": "Click on the cards to flip them and match the exact same Dutch words together.",
+                    "ar": "انقر على البطاقات لقلبها ومطابقة الكلمات الهولندية المتطابقة تماماً معاً.",
+                    "tr": "Kartları çevirmek için üzerlerine tıklayın ve tamamen aynı Felemenkçe kelimeleri birbiriyle eşleştirin.",
+                    "ps": "په کارتونو کلیک وکړئ ترڅو دوی فلپ کړئ او ورته ورته هالنډي کلمې سره میچ کړئ.",
+                    "zh": "点击卡片将其翻转，并将完全相同的荷兰语单词匹配在一起。"
+                }
+            },
+            "vocab_t": {
+                "1": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 1 (Hallo)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>hallo / goedemorgen</strong> — begroetingen</li><li><strong>de naam</strong> — hoe je heet</li><li><strong>wonen</strong> — in welke stad je woont</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 1 (Hello)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>hallo / goedemorgen</strong> — greetings</li><li><strong>de naam</strong> — your name</li><li><strong>wonen</strong> — in which city you live</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 1 (مرحباً)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>hallo / goedemorgen</strong> — التحيات</li><li><strong>de naam</strong> — الاسم</li><li><strong>wonen</strong> — في أي مدينة تعيش</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 1 (Merhaba)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>hallo / goedemorgen</strong> — selamlaşmalar</li><li><strong>de naam</strong> — adınız</li><li><strong>wonen</strong> — hangi şehirde yaşadığınız</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>لومړۍ موضوع (سلام)</strong> بنسټیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>hallo / goedemorgen</strong> — ستړي مه شي</li><li><strong>de naam</strong> — نوم</li><li><strong>wonen</strong> — په کوم ښار کې اوسېږئ</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 1 (你好)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>hallo / goedemorgen</strong> — 问候语</li><li><strong>de naam</strong> — 你的名字</li><li><strong>wonen</strong> — 你住在哪个城市</li></ul>`
+                },
+                "2": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 2 (De school)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>de school</strong> — plaats van leren</li><li><strong>de docent</strong> — persoon die lesgeeft</li><li><strong>leren</strong> — wat je op school doet</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 2 (The school)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>de school</strong> — place of learning</li><li><strong>de docent</strong> — person who teaches</li><li><strong>leren</strong> — what you do at school</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 2 (المدرسة)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>de school</strong> — مكان التعلم</li><li><strong>de docent</strong> — المعلم</li><li><strong>leren</strong> — ما تفعله في المدرسة</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 2 (Okul)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>de school</strong> — öğrenme yeri</li><li><strong>de docent</strong> — ders veren kişi</li><li><strong>leren</strong> — okulda yaptığınız şey</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>دویمې موضوع (ښوونځی)</strong> بنسitیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>de school</strong> — د زده کړې ځای</li><li><strong>de docent</strong> — ښوونکی</li><li><strong>leren</strong> — هغه څه چې تاسو په ښوونځي کې کوئ</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 2 (学校)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>de school</strong> — 学习的地方</li><li><strong>de docent</strong> — 授课的老师</li><li><strong>leren</strong> — 你在学校做的事</li></ul>`
+                },
+                "3": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 3 (Wonen)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>het huis / de flat</strong> — waar je woont</li><li><strong>de keuken / de slaapkamer</strong> — kamers in huis</li><li><strong>de tafel / de stoel</strong> — meubels</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 3 (Living)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>het huis / de flat</strong> — where you live</li><li><strong>de keuken / de slaapkamer</strong> — rooms in the house</li><li><strong>de tafel / de stoel</strong> — furniture</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 3 (السكن)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>het huis / de flat</strong> — أين تسكن</li><li><strong>de keuken / de slaapkamer</strong> — غرف في المنزل</li><li><strong>de tafel / de stoel</strong> — الأثاث</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 3 (Ev/Yaşam)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>het huis / de flat</strong> — yaşadığınız yer</li><li><strong>de keuken / de slaapkamer</strong> — evdeki odalar</li><li><strong>de tafel / de stoel</strong> — mobilyalar</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>دریمې موضوع (استوګنه)</strong> بنسټیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>het huis / de flat</strong> — چیرته چې تاسو اوسېږئ</li><li><strong>de keuken / de slaapkamer</strong> — په کور کې خونې</li><li><strong>de tafel / de stoel</strong> — فرنیچر</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 3 (居住)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>het huis / de flat</strong> — 你居住的地方</li><li><strong>de keuken / de slaapkamer</strong> — 屋子里的房间</li><li><strong>de tafel / de stoel</strong> — 家具</li></ul>`
+                },
+                "4": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 4 (Eten en drinken)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>het eten / drinken</strong> — basisbehoeften</li><li><strong>het brood / de melk</strong> — boodschappen</li><li><strong>de supermarkt</strong> — winkel voor eten</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 4 (Food and drinks)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>het eten / drinken</strong> — basic needs</li><li><strong>het brood / de melk</strong> — groceries</li><li><strong>de supermarkt</strong> — food store</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 4 (الطعام والشراب)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>het eten / drinken</strong> — الاحتياجات الأساسية</li><li><strong>het brood / de melk</strong> — البقالة</li><li><strong>de supermarkt</strong> — متجر الأغذية</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 4 (Yeme ve İçme)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>het eten / drinken</strong> — temel ihtiyaçlar</li><li><strong>het brood / de melk</strong> — gıda alışverişi</li><li><strong>de supermarkt</strong> — gıda mağazası</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>څلورمې موضوع (خوړل او څښل)</strong> بنسټیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>het eten / drinken</strong> — اساسي اړتیاوې</li><li><strong>het brood / de melk</strong> — سوداګريز توکي</li><li><strong>de supermarkt</strong> — د خواړو پلورنځی</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 4 (饮食)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>het eten / drinken</strong> — 基本需求</li><li><strong>het brood / de melk</strong> — 食品杂货</li><li><strong>de supermarkt</strong> — 超市</li></ul>`
+                },
+                "5": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 5 (De dokter)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>het hoofd / het been</strong> — lichaamsdelen</li><li><strong>de dokter / de apotheek</strong> — gezondheidszorg</li><li><strong>ziek / de pijn</strong> — als je niet gezond bent</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 5 (The doctor)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>het hoofd / het been</strong> — body parts</li><li><strong>de dokter / de apotheek</strong> — healthcare</li><li><strong>ziek / de pijn</strong> — when you are not healthy</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 5 (الطبيب)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>het hoofd / het been</strong> — أعضاء الجسم</li><li><strong>de dokter / de apotheek</strong> — الرعاية الصحية</li><li><strong>ziek / de pijn</strong> — عندما لا تكون بصحة جيدة</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 5 (Doktor)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>het hoofd / het been</strong> — vücut parçaları</li><li><strong>de dokter / de apotheek</strong> — sağlık hizmetleri</li><li><strong>ziek / de pijn</strong> — sağlıklı olmadığınızda</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>پنځمې موضوع (ډاکټر)</strong> بنسټیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>het hoofd / het been</strong> — د بدن غړي</li><li><strong>de dokter / de apotheek</strong> — روغتیايي خدمتونه</li><li><strong>ziek / de pijn</strong> — کله چې تاسو روغ نه یاست</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 5 (医生)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>het hoofd / het been</strong> — 身体部位</li><li><strong>de dokter / de apotheek</strong> — 医疗保健</li><li><strong>ziek / de pijn</strong> — 生病/疼痛时</li></ul>`
+                },
+                "8": {
+                    "nl": `<p>Hier oefen je de basiswoorden van <strong>Thema 8 (Vrije tijd)</strong>.</p><br><strong>Voorbeelden:</strong><ul><li><strong>de sport / de hobby</strong> — bezigheden</li><li><strong>de wedstrijd</strong> — competitie</li><li><strong>afspreken</strong> — ontmoeten met anderen</li></ul>`,
+                    "en": `<p>Here you practice the basic words of <strong>Theme 8 (Leisure time)</strong>.</p><br><strong>Examples:</strong><ul><li><strong>de sport / de hobby</strong> — activities</li><li><strong>de wedstrijd</strong> — match / game</li><li><strong>afspreken</strong> — to meet up with others</li></ul>`,
+                    "ar": `<p>هنا تتدرب على الكلمات الأساسية لـ <strong>الموضوع 8 (وقت الفراغ)</strong>.</p><br><strong>أمثلة:</strong><ul><li><strong>de sport / de hobby</strong> — الأنشطة</li><li><strong>de wedstrijd</strong> — المباراة</li><li><strong>afspreken</strong> — اللقاء مع الآخرين</li></ul>`,
+                    "tr": `<p>Burada <strong>Tema 8 (Boş Zaman)</strong> temel kelimelerini çalışırsınız.</p><br><strong>Örnekler:</strong><ul><li><strong>de sport / de hobby</strong> — aktiviteler</li><li><strong>de wedstrijd</strong> — maç / oyun</li><li><strong>afspreken</strong> — başkalarıyla buluşmak</li></ul>`,
+                    "ps": `<p>دلته تاسو د <strong>اتمې موضوع (تفریح وخت)</strong> بنسټیزې کلمې تمرین کوئ.</p><br><strong>بېلګې:</strong><ul><li><strong>de sport / de hobby</strong> — فعالیتونه</li><li><strong>de wedstrijd</strong> — لوبه / سیالي</li><li><strong>afspreken</strong> — له نورو سره لیدنه کول</li></ul>`,
+                    "zh": `<p>在这里你练习<strong>主题 8 (自由时间)</strong>的基础单词。</p><br><strong>例子:</strong><ul><li><strong>de sport / de hobby</strong> — 业余活动</li><li><strong>de wedstrijd</strong> — 比赛</li><li><strong>afspreken</strong> — 与他人见面</li></ul>`
+                }
+            },
+            "gram_t": {
+                "1": {
+                    "nl": `<p>In <strong>Thema 1</strong> leer je persoonlijke voornaamwoorden en zijn/hebben.</p><br><strong>1. Persoonlijke voornaamwoorden:</strong><ul><li><strong>ik, jij, hij, zij, het</strong> (enkelvoud)</li><li><strong>wij, jullie, zij</strong> (meervoud)</li></ul><br><strong>2. Zijn & hebben:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`,
+                    "en": `<p>In <strong>Theme 1</strong> you learn personal pronouns and be/have.</p><br><strong>1. Personal pronouns:</strong><ul><li><strong>ik (I), jij (you), hij (he), zij (she), het (it)</strong> (singular)</li><li><strong>wij (we), jullie (you all), zij (they)</strong> (plural)</li></ul><br><strong>2. Be & Have:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 1</strong> تتعلم الضمائر الشخصية وفعل الكينونة (يكون) والملك (يملك).</p><br><strong>1. الضمائر الشخصية:</strong><ul><li><strong>ik, jij, hij, zij, het</strong> (مفرد)</li><li><strong>wij, jullie, zij</strong> (جمع)</li></ul><br><strong>2. يكون ويملك:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`,
+                    "tr": `<p><strong>Tema 1</strong>'de şahıs zamirlerini ve olmak/sahip olmak fiillerini öğrenirsiniz.</p><br><strong>1. Şahıs zamirleri:</strong><ul><li><strong>ik, jij, hij, zij, het</strong> (tekil)</li><li><strong>wij, jullie, zij</strong> (çoğul)</li></ul><br><strong>2. Olmak & Sahip olmak:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`,
+                    "ps": `<p>په <strong>لومړۍ موضوع</strong> کې تاسو شخصي ضميرونه او اوسیدل/درلودل زده کوئ.</p><br><strong>1. شخصي ضميرونه:</strong><ul><li><strong>ik, jij, hij, zij, het</strong> (مفرد)</li><li><strong>wij, jullie, zij</strong> (جمع)</li></ul><br><strong>2. اوسیدل او درلودل:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`,
+                    "zh": `<p>在<strong>主题 1</strong>中，你学习人称代词和“是/有”。</p><br><strong>1. 人称代词:</strong><ul><li><strong>ik, jij, hij, zij, het</strong> (单数)</li><li><strong>wij, jullie, zij</strong> (复数)</li></ul><br><strong>2. 是与有:</strong><ul><li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li><li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li></ul>`
+                },
+                "2": {
+                    "nl": `<p>In <strong>Thema 2</strong> oefen je werkwoordspelling, vraagwoorden en dagen/maanden.</p><br><strong>1. Werkwoordspelling:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>Inversie: <strong>Werk</strong> jij? (geen -t bij jij erachter)</li></ul><br><strong>2. Vraagwoorden:</strong><ul><li><strong>hoeveel, wanneer, hoe</strong></li></ul>`,
+                    "en": `<p>In <strong>Theme 2</strong> you practice verb spelling, question words, and days/months.</p><br><strong>1. Verb spelling:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>Inversion: <strong>Werk</strong> jij? (no -t when 'jij' is after the verb)</li></ul><br><strong>2. Question words:</strong><ul><li><strong>hoeveel (how much), wanneer (when), hoe (how)</strong></li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 2</strong> تتدرب على تصريف الأفعال، أدوات الاستفهام، والأيام/الأشهر.</p><br><strong>1. تصريف الأفعال:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>الانعكاس: <strong>Werk</strong> jij؟ (لا توجد -t عندما تأتي jij بعد الفعل)</li></ul><br><strong>2. أدوات الاستفهام:</strong><ul><li><strong>hoeveel, wanneer, hoe</strong></li></ul>`,
+                    "tr": `<p><strong>Tema 2</strong>'de fiil çekimini, soru kelimelerini ve günleri/ayları çalışırsınız.</p><br><strong>1. Fiil çekimi:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>Devrik cümle: <strong>Werk</strong> jij? ('jij' fiilden sonra gelirse -t takısı almaz)</li></ul><br><strong>2. Soru kelimeleri:</strong><ul><li><strong>hoeveel, wanneer, hoe</strong></li></ul>`,
+                    "ps": `<p>په <strong>دویمه موضوع</strong> کې تاسو د فعل املا، د پوښتنې کلمې او ورځې/میاشتې تمرین کوئ.</p><br><strong>1. د فعل املا:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>انعکاس: <strong>Werk</strong> jij؟ (د jij وروسته د -t توری نه راځي)</li></ul><br><strong>2. د پوښتنې کلمې:</strong><ul><li><strong>hoeveel, wanneer, hoe</strong></li></ul>`,
+                    "zh": `<p>在<strong>主题 2</strong>中，你练习动词拼写、疑问词以及星期/月份。</p><br><strong>1. 动词拼写:</strong><ul><li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li><li>语序倒装: <strong>Werk</strong> jij? (当jij在动词后面时，动词不加-t)</li></ul><br><strong>2. 疑问词:</strong><ul><li><strong>hoeveel, wanneer, hoe</strong></li></ul>`
+                },
+                "3": {
+                    "nl": `<p>In <strong>Thema 3</strong> oefen je werkwoordspelling met klinkerverandering en kleuren/meubels.</p><br><strong>1. Lange/korte klinkers:</strong><ul><li>spelen → ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen → ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. Onregelmatigheden:</strong><ul><li>schrijven → ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (-v/-z wisseling)</li></ul>`,
+                    "en": `<p>In <strong>Theme 3</strong> you practice verb spelling with vowel changes and colors/furniture.</p><br><strong>1. Long/short vowels:</strong><ul><li>spelen → ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen → ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. Irregularities:</strong><ul><li>schrijven → ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (-v/-z change)</li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 3</strong> تتدرب على تصريف الأفعال مع تغيير الأحرف الصوتية والألوان/الأثاث.</p><br><strong>1. الأحرف الصوتية الطويلة/القصيرة:</strong><ul><li>spelen ← ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen ← ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. الاستثناءات:</strong><ul><li>schrijven ← ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (تغيير v إلى f و z إلى s)</li></ul>`,
+                    "tr": `<p><strong>Tema 3</strong>'te sesli harf değişiklikleri ile fiil çekimini ve renkleri/mobilyaları çalışırsınız.</p><br><strong>1. Uzun/kısa sesli harfler:</strong><ul><li>spelen → ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen → ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. Düzensizlikler:</strong><ul><li>schrijven → ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (-v/-z değişimi)</li></ul>`,
+                    "ps": `<p>په <strong>دریمه موضوع</strong> کې تاسو د غږ لرونکو تورو په بدلون سره د فعل املا او رنګونه/فرنیچر تمرین کوئ.</p><br><strong>1. اوږده/لنډ غږ لرونکي توري:</strong><ul><li>spelen ← ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen ← ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. بې قاعدې توري:</strong><ul><li>schrijven ← ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (د v/z بدلون)</li></ul>`,
+                    "zh": `<p>在<strong>主题 3</strong>中，你练习带有元音变化的动词拼写以及颜色/家具。</p><br><strong>1. 长/短元音:</strong><ul><li>spelen → ik <strong>speel</strong>, wij <strong>spelen</strong></li><li>wonen → ik <strong>woon</strong>, wij <strong>wonen</strong></li></ul><br><strong>2. 不规则变化:</strong><ul><li>schrijven → ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (-v/-z 变化)</li></ul>`
+                },
+                "4": {
+                    "nl": `<p>In <strong>Thema 4</strong> oefen je the werkwoorden gaan/komen en zinsvolgorde.</p><br><strong>1. Gaan & komen:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. Vragen stellen:</strong><ul><li>Ja/nee vragen beginnen met het werkwoord.</li></ul>`,
+                    "en": `<p>In <strong>Theme 4</strong> you practice the verbs go/come and word order.</p><br><strong>1. Go & Come:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. Asking questions:</strong><ul><li>Yes/no questions start with the verb.</li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 4</strong> تتدرب على الأفعال يذهب/يأتي وترتيب الجملة.</p><br><strong>1. يذهب ويأتي:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. طرح الأسئلة:</strong><ul><li>أسئلة نعم/لا تبدأ بالفعل.</li></ul>`,
+                    "tr": `<p><strong>Tema 4</strong>'te gitmek/gelmek fiillerini ve kelime sırasını çalışırsınız.</p><br><strong>1. Gitmek & Gelmek:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. Soru sorma:</strong><ul><li>Evet/hayır soruları fiille başlar.</li></ul>`,
+                    "ps": `<p>په <strong>څلورمه موضوع</strong> کې تاسو تلل/راتلل فعلونه او د جملې ترتیب تمرین کوئ.</p><br><strong>1. تلل او راتلل:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. پوښتنې کول:</strong><ul><li>د هو/نه پوښتنې په فعل سره پیل کیږي.</li></ul>`,
+                    "zh": `<p>在<strong>主题 4</strong>中，你练习动词“去/来”以及语序。</p><br><strong>1. 去与来:</strong><ul><li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li><li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li></ul><br><strong>2. 提问方式:</strong><ul><li>是/否疑问句以动词开头。</li></ul>`
+                },
+                "5": {
+                    "nl": `<p>In <strong>Thema 5</strong> oefen je meervoudsvormen (-en / -s) en klachten.</p><br><strong>1. Meervoud:</strong><ul><li>voet → <strong>voeten</strong> (-en)</li><li>lip → <strong>lippen</strong> (dubbele medeklinker!)</li><li>dokter → <strong>dokters</strong> (-s)</li></ul><br><strong>2. Waarom & omdat:</strong><ul><li>Vraag met <strong>waarom</strong>, antwoord met <strong>omdat / want</strong>.</li></ul>`,
+                    "en": `<p>In <strong>Theme 5</strong> you practice plurals (-en / -s) and complaints.</p><br><strong>1. Plurals:</strong><ul><li>voet → <strong>voeten</strong> (-en)</li><li>lip → <strong>lippen</strong> (double consonant!)</li><li>dokter → <strong>dokters</strong> (-s)</li></ul><br><strong>2. Why & Because:</strong><ul><li>Question with <strong>waarom (why)</strong>, answer with <strong>omdat / want (because)</strong>.</li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 5</strong> تتدرب على صيغ الجمع (-en / -s) والشكاوى الطبية.</p><br><strong>1. الجمع:</strong><ul><li>voet ← <strong>voeten</strong></li><li>lip ← <strong>lippen</strong> (تضعيف الحرف الساكن!)</li><li>dokter ← <strong>dokters</strong></li></ul><br><strong>2. لماذا ولأن:</strong><ul><li>السؤال يبدأ بـ <strong>waarom</strong>، والإجابة بـ <strong>omdat / want</strong>.</li></ul>`,
+                    "tr": `<p><strong>Tema 5</strong>'te çoğul eklerini (-en / -s) ve sağlık şikayetlerini çalışırsınız.</p><br><strong>1. Çoğullar:</strong><ul><li>voet → <strong>voeten</strong> (-en)</li><li>lip → <strong>lippen</strong> (çift ünsüz!)</li><li>dokter → <strong>dokters</strong> (-s)</li></ul><br><strong>2. Neden & Çünkü:</strong><ul><li>Soru <strong>waarom (neden)</strong> ile sorulur, cevap <strong>omdat / want (çünkü)</strong> ile verilir.</li></ul>`,
+                    "ps": `<p>په <strong>پنځمه موضوع</strong> کې تاسو جمع حالتونه (-en / -s) او شکایتونه تمرین کوئ.</p><br><strong>1. جمع حالتونه:</strong><ul><li>voet ← <strong>voeten</strong></li><li>lip ← <strong>lippen</strong> (دوه ګونی خاموش توری!)</li><li>dokter ← <strong>dokters</strong></li></ul><br><strong>2. ولې او ځکه چې:</strong><ul><li>پوښتنه په <strong>waarom</strong> پیل کیږي او ځواب په <strong>omdat / want</strong> ورکول کیږي.</li></ul>`,
+                    "zh": `<p>在<strong>主题 5</strong>中，你练习复数形式 (-en / -s) 以及诉苦表现。</p><br><strong>1. 复数:</strong><ul><li>voet → <strong>voeten</strong> (-en)</li><li>lip → <strong>lippen</strong> (双写辅音字母！)</li><li>dokter → <strong>dokters</strong> (-s)</li></ul><br><strong>2. 为什么与因为:</strong><ul><li>用 <strong>waarom (为什么)</strong> 提问，用 <strong>omdat / want (因为)</strong> 回答。</li></ul>`
+                },
+                "8": {
+                    "nl": `<p>In <strong>Thema 8</strong> oefen je ontkenningen (niet/geen), bezittelijke voornaamwoorden en wederkerende werkwoorden.</p><br><strong>1. Ontkenning:</strong><ul><li><strong>niet</strong> (werkwoorden/adjectieven)</li><li><strong>geen</strong> (zelfstandige naamwoorden)</li></ul><br><strong>2. Bezittelijk:</strong><ul><li><strong>mijn, jouw, zijn, haar, ons, onze, jullie, hun</strong></li></ul><br><strong>3. Wederkerend:</strong><ul><li>zich haasten, zich wassen</li></ul>`,
+                    "en": `<p>In <strong>Theme 8</strong> you practice negations (niet/geen), possessive pronouns, and reflexive verbs.</p><br><strong>1. Negation:</strong><ul><li><strong>niet</strong> (with verbs/adjectives)</li><li><strong>geen</strong> (with nouns)</li></ul><br><strong>2. Possessive:</strong><ul><li><strong>mijn (my), jouw (your), zijn (his), haar (her), ons/onze (our), jullie (your pl), hun (their)</strong></li></ul><br><strong>3. Reflexive:</strong><ul><li>zich haasten (to hurry), zich wassen (to wash oneself)</li></ul>`,
+                    "ar": `<p>في <strong>الموضوع 8</strong> تتدرب على النفي (niet/geen)، ضمائر الملكية، والأفعال الانعكاسية.</p><br><strong>1. النفي:</strong><ul><li><strong>niet</strong> (مع الأفعال والصفات)</li><li><strong>geen</strong> (مع الأسماء)</li></ul><br><strong>2. الملكية:</strong><ul><li><strong>mijn, jouw, zijn, haar, ons, onze, jullie, hun</strong></li></ul><br><strong>3. الأنعكاسية:</strong><ul><li>zich haasten (يستعجل), zich wassen (يغتسل)</li></ul>`,
+                    "tr": `<p><strong>Tema 8</strong>'de olumsuzlukları (niet/geen), iyelik zamirlerini ve dönüşlü fiilleri çalışırsınız.</p><br><strong>1. Olumsuzluk:</strong><ul><li><strong>niet</strong> (fiiller/sıfatlarla)</li><li><strong>geen</strong> (isimlerle)</li></ul><br><strong>2. İyelik:</strong><ul><li><strong>mijn, jouw, zijn, haar, ons, onze, jullie, hun</strong></li></ul><br><strong>3. Dönüşlü:</strong><ul><li>zich haasten (acele etmek), zich wassen (yıkanmak)</li></ul>`,
+                    "ps": `<p>په <strong>اتمه موضوع</strong> کې تاسو نفي حالتونه (niet/geen)، ملکیتي ضمیرونه او ځاني فعلونه تمرین کوئ.</p><br><strong>1. نفي حالتونه:</strong><ul><li><strong>niet</strong> (د فعلونو/صفتونو سره)</li><li><strong>geen</strong> (د نومونو سره)</li></ul><br><strong>2. ملکیتي ضمیرونه:</strong><ul><li><strong>mijn, jouw, zijn, haar, ons, onze, jullie, hun</strong></li></ul><br><strong>3. ځاني فعلونه:</strong><ul><li>zich haasten (بیړه کول), zich wassen (ځان مینځل)</li></ul>`,
+                    "zh": `<p>在<strong>主题 8</strong>中，你练习否定词 (niet/geen)、物主代词和反身动词。</p><br><strong>1. 否定词:</strong><ul><li><strong>niet</strong> (用于动词/形容词)</li><li><strong>geen</strong> (用于名词)</li></ul><br><strong>2. 物主代词:</strong><ul><li><strong>mijn, jouw, zijn, haar, ons, onze, jullie, hun</strong></li></ul><br><strong>3. 反身动词:</strong><ul><li>zich haasten (赶快), zich wassen (洗脸/洗澡)</li></ul>`
+                }
+            }
+        };
+
         let currentLang = 'en';
         let activeGameType = 'vocab_t1'; // Default theme 1 vocab
         let score = 0;
@@ -8633,7 +9837,7 @@
                 gameCard.style.display = 'flex';
                 mepGameContainer.style.display = 'none';
                 memoGameContainer.style.display = 'none';
-                gameLanguageBar.style.display = 'none';
+                gameLanguageBar.style.display = 'flex';
             } else if (type.startsWith('mep_t')) {
                 const themeNum = type.split('_t')[1];
                 const themeTitles = {
@@ -8656,7 +9860,7 @@
                 gameCard.style.display = 'none';
                 mepGameContainer.style.display = 'none';
                 memoGameContainer.style.display = 'flex';
-                gameLanguageBar.style.display = 'none';
+                gameLanguageBar.style.display = 'flex';
             }
             
             updateSidebarContent(type);
@@ -8693,53 +9897,24 @@
         }
 
         function toggleSidebar() {
-            const container = document.querySelector('.game-layout-container');
             const sidebar = document.getElementById('info-sidebar');
-            const isMobile = window.innerWidth <= 900;
-            
-            if (isMobile) {
-                if (sidebar) {
-                    sidebar.classList.toggle('mobile-show');
-                }
-            } else {
-                if (container) {
-                    container.classList.toggle('sidebar-closed');
-                    const closed = container.classList.contains('sidebar-closed');
-                    localStorage.setItem('sidebar-closed', closed ? 'true' : 'false');
+            if (sidebar) {
+                if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                    sidebar.style.display = 'flex';
+                } else {
+                    sidebar.style.display = 'none';
                 }
             }
-            updateToggleBtnVisibility();
         }
 
         function updateToggleBtnVisibility() {
-            const container = document.querySelector('.game-layout-container');
             const mobileToggle = document.getElementById('mobile-info-toggle');
-            const desktopToggle = document.getElementById('info-toggle');
             const sidebar = document.getElementById('info-sidebar');
-            
             if (gameView.style.display === 'none' || gameView.style.display === '') {
                 if (mobileToggle) mobileToggle.style.display = 'none';
-                if (desktopToggle) desktopToggle.style.display = 'none';
-                return;
-            }
-
-            const isMobile = window.innerWidth <= 900;
-            if (isMobile) {
-                if (desktopToggle) desktopToggle.style.display = 'none';
-                if (mobileToggle) {
-                    if (sidebar && sidebar.classList.contains('mobile-show')) {
-                        mobileToggle.style.display = 'none';
-                    } else {
-                        mobileToggle.style.display = 'inline-flex';
-                    }
-                }
+                if (sidebar) sidebar.style.display = 'none'; // reset when leaving game
             } else {
-                if (mobileToggle) mobileToggle.style.display = 'none';
-                if (container && container.classList.contains('sidebar-closed')) {
-                    if (desktopToggle) desktopToggle.style.display = 'flex';
-                } else {
-                    if (desktopToggle) desktopToggle.style.display = 'none';
-                }
+                if (mobileToggle) mobileToggle.style.display = 'inline-flex';
             }
         }
         window.addEventListener('resize', updateToggleBtnVisibility);
@@ -8772,173 +9947,32 @@
         function updateSidebarContent(type) {
             const instructionText = document.getElementById('sidebar-instruction-text');
             const rulesText = document.getElementById('sidebar-rules-text');
+            const lang = currentLang || 'en';
 
             if (type.startsWith('vocab_t')) {
                 const themeNum = type.split('_t')[1];
-                instructionText.textContent = 'Vertaal het getoonde woord correct naar het Nederlands. Selecteer het juiste antwoord uit de drie opties. Verzamel 50 vlammen om te winnen!';
+                instructionText.textContent = RULES_TRANSLATIONS.instructions.vocab[lang] || RULES_TRANSLATIONS.instructions.vocab['en'];
                 
-                if (themeNum === '1') {
-                    rulesText.innerHTML = `
-                        <p>Hier oefen je de basiswoorden van <strong>Thema 1 (Hallo)</strong>.</p>
-                        <br>
-                        <strong>Voorbeelden:</strong>
-                        <ul>
-                            <li><strong>hallo / goedemorgen</strong> — begroetingen</li>
-                            <li><strong>de naam</strong> — hoe je heet</li>
-                            <li><strong>wonen</strong> — in welke stad je woont</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '2') {
-                    rulesText.innerHTML = `
-                        <p>Hier oefen je de basiswoorden van <strong>Thema 2 (De school)</strong>.</p>
-                        <br>
-                        <strong>Voorbeelden:</strong>
-                        <ul>
-                            <li><strong>de school</strong> — plaats van leren</li>
-                            <li><strong>de docent</strong> — persoon die lesgeeft</li>
-                            <li><strong>leren</strong> — wat je op school doet</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '3') {
-                    rulesText.innerHTML = `
-                        <p>Hier oefen je de basiswoorden van <strong>Thema 3 (Wonen)</strong>.</p>
-                        <br>
-                        <strong>Voorbeelden:</strong>
-                        <ul>
-                            <li><strong>het huis / de flat</strong> — waar je woont</li>
-                            <li><strong>de keuken / de slaapkamer</strong> — kamers in huis</li>
-                            <li><strong>de tafel / de stoel</strong> — meubels</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '4') {
-                    rulesText.innerHTML = `
-                        <p>Hier oefen je de basiswoorden van <strong>Thema 4 (Eten en drinken)</strong>.</p>
-                        <br>
-                        <strong>Voorbeelden:</strong>
-                        <ul>
-                            <li><strong>het eten / drinken</strong> — basisbehoeften</li>
-                            <li><strong>het brood / de melk</strong> — boodschappen</li>
-                            <li><strong>de supermarkt</strong> — winkel voor eten</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '5') {
-                    rulesText.innerHTML = `
-                        <p>Hier oefen je de basiswoorden van <strong>Thema 5 (De dokter)</strong>.</p>
-                        <br>
-                        <strong>Voorbeelden:</strong>
-                        <ul>
-                            <li><strong>het hoofd / het been</strong> — lichaamsdelen</li>
-                            <li><strong>de dokter / de apotheek</strong> — gezondheidszorg</li>
-                            <li><strong>ziek / de pijn</strong> — als je niet gezond bent</li>
-                        </ul>
-                    `;
+                if (RULES_TRANSLATIONS.vocab_t[themeNum]) {
+                    rulesText.innerHTML = RULES_TRANSLATIONS.vocab_t[themeNum][lang] || RULES_TRANSLATIONS.vocab_t[themeNum]['en'];
+                } else {
+                    rulesText.innerHTML = "";
                 }
             } else if (type.startsWith('gram_t')) {
                 const themeNum = type.split('_t')[1];
-                instructionText.textContent = 'Kies het juiste woord om de grammatica-zin compleet te maken. Klik op de opties en verzamel 50 vlammen!';
+                instructionText.textContent = RULES_TRANSLATIONS.instructions.gram[lang] || RULES_TRANSLATIONS.instructions.gram['en'];
                 
-                if (themeNum === '1') {
-                    rulesText.innerHTML = `
-                        <p>In <strong>Thema 1</strong> leer je persoonlijke voornaamwoorden en zijn/hebben.</p>
-                        <br>
-                        <strong>1. Persoonlijke voornaamwoorden:</strong>
-                        <ul>
-                            <li><strong>ik, jij, hij, zij, het</strong> (enkelvoud)</li>
-                            <li><strong>wij, jullie, zij</strong> (meervoud)</li>
-                        </ul>
-                        <br>
-                        <strong>2. Zijn & hebben:</strong>
-                        <ul>
-                            <li>Ik <strong>ben</strong>, jij <strong>bent</strong>, hij <strong>is</strong>, wij <strong>zijn</strong></li>
-                            <li>Ik <strong>heb</strong>, jij <strong>hebt</strong>, hij <strong>heeft</strong>, wij <strong>hebben</strong></li>
-                        </ul>
-                    `;
-                } else if (themeNum === '2') {
-                    rulesText.innerHTML = `
-                        <p>In <strong>Thema 2</strong> oefen je werkwoordspelling, vraagwoorden en dagen/maanden.</p>
-                        <br>
-                        <strong>1. Werkwoordspelling:</strong>
-                        <ul>
-                            <li>ik <strong>werk</strong>, jij <strong>werkt</strong>, hij <strong>werkt</strong>, wij <strong>werken</strong></li>
-                            <li>Inversie: <strong>Werk</strong> jij? (geen -t bij jij erachter)</li>
-                        </ul>
-                        <br>
-                        <strong>2. Vraagwoorden:</strong>
-                        <ul>
-                            <li><strong>hoeveel, wanneer, hoe</strong></li>
-                        </ul>
-                    `;
-                } else if (themeNum === '3') {
-                    rulesText.innerHTML = `
-                        <p>In <strong>Thema 3</strong> oefen je werkwoordspelling met klinkerverandering en kleuren/meubels.</p>
-                        <br>
-                        <strong>1. Lange/korte klinkers:</strong>
-                        <ul>
-                            <li>spn → ik <strong>speel</strong>, wij <strong>spelen</strong></li>
-                            <li>wonen → ik <strong>woon</strong>, wij <strong>wonen</strong></li>
-                        </ul>
-                        <br>
-                        <strong>2. Onregelmatigheden:</strong>
-                        <ul>
-                            <li>schrijven → ik <strong>schrijf</strong>, wij <strong>schrijven</strong> (-v/-z wisseling)</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '4') {
-                    rulesText.innerHTML = `
-                        <p>In <strong>Thema 4</strong> oefen je de werkwoorden gaan/komen en zinsvolgorde.</p>
-                        <br>
-                        <strong>1. Gaan & komen:</strong>
-                        <ul>
-                            <li>ik <strong>ga</strong>, hij <strong>gaat</strong>, wij <strong>gaan</strong></li>
-                            <li>ik <strong>kom</strong>, hij <strong>komt</strong>, wij <strong>komen</strong></li>
-                        </ul>
-                        <br>
-                        <strong>2. Vragen stellen:</strong>
-                        <ul>
-                            <li>Ja/nee vragen beginnen met het werkwoord.</li>
-                        </ul>
-                    `;
-                } else if (themeNum === '5') {
-                    rulesText.innerHTML = `
-                        <p>In <strong>Thema 5</strong> oefen je meervoudsvormen (-en / -s) en klachten.</p>
-                        <br>
-                        <strong>1. Meervoud:</strong>
-                        <ul>
-                            <li>voet → <strong>voeten</strong> (-en)</li>
-                            <li>lip → <strong>lippen</strong> (dubbele medeklinker!)</li>
-                            <li>dokter → <strong>dokters</strong> (-s)</li>
-                        </ul>
-                        <br>
-                        <strong>2. Waarom & omdat:</strong>
-                        <ul>
-                            <li>Vraag met <strong>waarom</strong>, antwoord met <strong>omdat / want</strong>.</li>
-                        </ul>
-                    `;
+                if (RULES_TRANSLATIONS.gram_t[themeNum]) {
+                    rulesText.innerHTML = RULES_TRANSLATIONS.gram_t[themeNum][lang] || RULES_TRANSLATIONS.gram_t[themeNum]['en'];
+                } else {
+                    rulesText.innerHTML = "";
                 }
             } else if (type.startsWith('mep_t')) {
-                instructionText.textContent = 'Lees de omschrijving of invulzin bovenin. Sla (klik) zo snel mogelijk op de mol met het juiste Nederlandse woord. Haal 50 vlammen om te winnen!';
-                rulesText.innerHTML = `
-                    <p>Dit spel test hoe snel je woorden herkent.</p>
-                    <br>
-                    <strong>Spelregels:</strong>
-                    <ul>
-                        <li>Elke goede mol geeft <strong>+1 vlam</strong>.</li>
-                        <li>Elke foute mol kost <strong>-3 vlammen</strong>.</li>
-                        <li>De mollen veranderen regelmatig van positie!</li>
-                    </ul>
-                `;
+                instructionText.textContent = RULES_TRANSLATIONS.instructions.mep[lang] || RULES_TRANSLATIONS.instructions.mep['en'];
+                rulesText.innerHTML = "";
             } else if (type.startsWith('memo_t')) {
-                instructionText.textContent = 'Klik op de kaarten om ze om te draaien en zoek exact dezelfde Nederlandse woorden bij elkaar.';
-                rulesText.innerHTML = `
-                    <p>Train je geheugen en je woordenschat door identieke woorden te matchen.</p>
-                    <br>
-                    <strong>Spelregels:</strong>
-                    <ul>
-                        <li>Elk correct paar geeft <strong>+1 vlam</strong>.</li>
-                        <li>Gevonden kaarten blijven openliggen en worden groen.</li>
-                        <li>Als alle 8 paren zijn gevonden, start automatisch een nieuwe ronde.</li>
-                    </ul>
-                `;
+                instructionText.textContent = RULES_TRANSLATIONS.instructions.memo[lang] || RULES_TRANSLATIONS.instructions.memo['en'];
+                rulesText.innerHTML = "";
             }
         }
 
@@ -8962,6 +9996,7 @@
                 }
                 
                 updateQuestionDisplay();
+                updateSidebarContent(activeGameType);
             });
         });
 
@@ -9053,7 +10088,14 @@
                 translationHelper.textContent = '';
             } else {
                 // Grammar: show sentence in Dutch, no translation (pure Dutch)
-                questionWord.textContent = currentItem.sentence;
+                let sentenceHtml = currentItem.sentence;
+                if (sentenceHtml.includes('(')) {
+                    const openParenIdx = sentenceHtml.indexOf('(');
+                    const sentencePart = sentenceHtml.substring(0, openParenIdx).trim();
+                    const hintPart = sentenceHtml.substring(openParenIdx).trim();
+                    sentenceHtml = `<div>${sentencePart}</div><div class="grammar-hint" style="font-size: 1.15rem; color: var(--primary); margin-top: 12px; font-weight: 700;">${hintPart}</div>`;
+                }
+                questionWord.innerHTML = sentenceHtml;
                 translationHelper.textContent = '';
             }
         }

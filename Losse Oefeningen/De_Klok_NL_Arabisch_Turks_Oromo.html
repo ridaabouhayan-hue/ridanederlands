@@ -6,90 +6,642 @@
 <title>🕐 De Klok - NL / EN / PS / ZH / AR / TR / OR</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Nunito',sans-serif;background:#f8f6f1;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
-  h1{font-size:2.1rem;font-weight:900;color:#2d3436;margin-bottom:6px}
-  .subtitle{font-size:1rem;color:#636e72;margin-bottom:20px;font-weight:600}
+  
+  :root {
+    --primary: #4ECDC4;
+    --primary-dark: #3dbdb5;
+    --secondary: #6C5CE7;
+    --red: #FF6B6B;
+    --yellow: #FFD93D;
+    --dark: #2d3436;
+    --bg-light: #f8f6f1;
+    --border-color: #e0ddd5;
+  }
 
-  .lang-tabs{display:flex;gap:0;margin-bottom:28px;background:#e0ddd5;border-radius:14px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,0.06);flex-wrap:wrap;justify-content:center}
-  .lang-tab{padding:9px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;color:#636e72;border-radius:11px;cursor:pointer;transition:all .25s}
-  .lang-tab:hover{color:#2d3436}
-  .lang-tab.active{background:white;color:#2d3436;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-  .lang-tab .flag{font-size:1.1rem;margin-right:5px}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-  .clock-container{position:relative;width:720px;max-width:95vw}
-  svg.main-clock{width:100%;height:100%;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.08))}
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
 
-  .label-row{display:flex;justify-content:center;gap:20px;margin-top:24px;flex-wrap:wrap}
-  .label-item{display:flex;align-items:center;gap:7px;font-weight:700;font-size:0.85rem;color:#2d3436}
-  .label-swatch{width:16px;height:16px;border-radius:4px}
+  h1 {
+    font-size: 2.1rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
 
-  .time-list{margin-top:28px;background:white;border-radius:16px;padding:24px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.06);max-width:720px;width:100%}
-  .time-list h2{font-size:1.1rem;font-weight:800;margin-bottom:16px;color:#2d3436}
-  .time-group{margin-bottom:10px}
-  .group-header{display:inline-block;color:white;font-weight:800;font-size:0.75rem;letter-spacing:.5px;padding:3px 11px;border-radius:20px;margin-bottom:5px}
-  .group-entries{display:flex;flex-wrap:wrap;gap:3px 18px;padding-left:4px}
-  .time-entry{font-size:0.88rem;padding:3px 0;display:flex;align-items:center;gap:7px}
-  .time-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .subtitle {
+    font-size: 1rem;
+    color: #636e72;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
 
-  .edu-block{background:white;border-radius:16px;padding:24px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:24px;max-width:720px;width:100%}
-  .edu-block h2{font-size:1.15rem;font-weight:900;color:#2d3436;margin-bottom:12px}
-  .edu-block p{font-size:0.92rem;color:#444;line-height:1.6;margin-bottom:12px}
-  .tip-box{display:flex;gap:12px;background:#fff3e0;border-left:4px solid #FF6B6B;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:0.88rem;line-height:1.6}
-  .tip-icon{font-size:1.2rem;flex-shrink:0}
-  .rtl{direction:rtl;text-align:right}
-  .rtl .tip-box{border-left:none;border-right:4px solid #FF6B6B}
+  /* Responsive & modern tabs */
+  .lang-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 28px;
+    background: var(--border-color);
+    border-radius: 14px;
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-  /* ANALOG EXAMPLES */
-  .clock-examples{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
-  .example-card{display:flex;align-items:center;gap:14px;background:#f8f6f1;border-radius:12px;padding:14px 16px}
-  .mini-clock-wrap{width:90px;height:90px;flex-shrink:0}
-  .mini-clock{width:100%;height:100%}
-  .example-info{flex:1}
-  .digital-small{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:700;background:#1a1a2e;color:#00ff88;padding:3px 10px;border-radius:6px;display:inline-block;margin-bottom:5px;letter-spacing:2px}
-  .example-answer{font-size:0.92rem;font-weight:700;color:#2d3436;display:flex;align-items:center;gap:6px;margin-bottom:2px}
-  .quad-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
-  .example-note{font-size:0.78rem;color:#888;font-weight:600}
+  .lang-tab {
+    padding: 9px 18px;
+    border: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #636e72;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: all .25s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-  /* EXERCISES */
-  .exercises-section{max-width:720px;width:100%;margin-top:36px}
-  .exercises-header{background:linear-gradient(135deg,#2d3436,#434a4d);color:white;padding:18px 24px;border-radius:16px 16px 0 0;text-align:center}
-  .exercises-header h2{font-size:1.2rem;font-weight:900;margin-bottom:3px}
-  .exercises-header p{font-size:0.85rem;opacity:.8;font-weight:600}
-  .exercise-grid{display:flex;flex-direction:column}
-  .exercise-item{background:white;padding:16px 24px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:16px}
-  .exercise-item:last-child{border-bottom:none;border-radius:0 0 16px 16px}
-  .exercise-num{background:#2d3436;color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:900;flex-shrink:0}
-  .digital-display{font-family:'Courier New',monospace;font-size:1.5rem;font-weight:700;background:#1a1a2e;color:#00ff88;padding:5px 14px;border-radius:8px;letter-spacing:3px;flex-shrink:0;min-width:85px;text-align:center}
-  .exercise-options{display:flex;flex-direction:column;gap:5px;flex:1}
-  .option-btn{display:flex;align-items:center;gap:9px;padding:7px 12px;border:2px solid #e0ddd5;border-radius:10px;background:#fafaf8;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.88rem;color:#2d3436;cursor:pointer;transition:all .2s;text-align:left}
-  .option-btn:hover{border-color:#b2bec3;background:#f0eeea}
-  .option-letter{background:#e0ddd5;color:#636e72;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;flex-shrink:0}
-  .option-btn.correct{border-color:#00b894;background:#e8f8f5}
-  .option-btn.correct .option-letter{background:#00b894;color:white}
-  .option-btn.wrong{border-color:#FF6B6B;background:#fff0f0}
-  .option-btn.wrong .option-letter{background:#FF6B6B;color:white}
-  .option-btn.disabled{pointer-events:none;opacity:.6}
+  .lang-tab:hover {
+    color: var(--dark);
+    background: rgba(255, 255, 255, 0.4);
+  }
 
-  /* ANALOG EXERCISE */
-  .analog-exercise-item{background:white;padding:16px 24px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:16px}
-  .analog-exercise-item:last-child{border-bottom:none;border-radius:0 0 16px 16px}
+  .lang-tab.active {
+    background: white;
+    color: var(--dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
 
-  .score-bar{background:white;border-radius:16px;padding:18px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-top:20px;max-width:720px;width:100%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-  .score-info{font-weight:800;font-size:1.05rem;color:#2d3436}
-  .score-info span{color:#00b894}
-  .score-progress{flex:1;min-width:180px;height:11px;background:#e0ddd5;border-radius:6px;overflow:hidden}
-  .score-fill{height:100%;background:linear-gradient(90deg,#00b894,#4ECDC4);border-radius:6px;transition:width .5s}
-  .reset-btn{padding:7px 18px;border:2px solid #e0ddd5;border-radius:10px;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.82rem;color:#636e72;cursor:pointer;transition:all .2s}
-  .reset-btn:hover{border-color:#FF6B6B;color:#FF6B6B}
+  .lang-tab .flag {
+    font-size: 1.1rem;
+  }
 
-  @media print{body{background:white}.lang-tabs,.reset-btn{display:none}.option-btn{border:1px solid #ccc}}
-  @media(max-width:600px){.exercise-item,.analog-exercise-item{flex-direction:column;align-items:stretch;gap:10px}.digital-display{align-self:center}.label-row{gap:10px}h1{font-size:1.5rem}.clock-examples{grid-template-columns:1fr}.lang-tab{padding:7px 12px;font-size:0.8rem}}
+  /* Main Clock Visual */
+  .clock-container {
+    position: relative;
+    width: 720px;
+    max-width: 95vw;
+    margin-bottom: 20px;
+  }
+
+  svg.main-clock {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 6px 25px rgba(0,0,0,0.06));
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .label-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--dark);
+  }
+
+  .label-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.15);
+  }
+
+  /* Clean and structured time list - NO OVERLAPPING CELLS */
+  .time-list {
+    margin-top: 28px;
+    background: white;
+    border-radius: 18px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    max-width: 720px;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .time-list h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: var(--dark);
+    border-bottom: 2px solid var(--bg-light);
+    padding-bottom: 10px;
+  }
+
+  .time-group {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    border-bottom: 1px solid #f1eeeb;
+    padding: 10px 0;
+    gap: 15px;
+  }
+
+  .time-group:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: 600px) {
+    .time-group {
+      grid-template-columns: 1fr;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  .group-header {
+    display: inline-block;
+    color: white;
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: .7px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-align: center;
+    width: fit-content;
+  }
+
+  .group-entries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  .time-entry {
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4f5354;
+  }
+
+  .time-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Educational Text blocks */
+  .edu-block {
+    background: white;
+    border-radius: 18px;
+    padding: 28px 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    margin-top: 24px;
+    max-width: 720px;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .edu-block h2 {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+
+  .edu-block p {
+    font-size: 0.98rem;
+    color: #4a4d4e;
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .tip-box {
+    display: flex;
+    gap: 12px;
+    background: #fff3e0;
+    border-left: 4px solid var(--red);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #5c3e1a;
+  }
+
+  .tip-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .rtl {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .rtl .tip-box {
+    border-left: none;
+    border-right: 4px solid var(--red);
+  }
+
+  /* Analog examples grid */
+  .clock-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .example-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--bg-light);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+
+  .mini-clock-wrap {
+    width: 95px;
+    height: 95px;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+  }
+
+  .mini-clock {
+    width: 100%;
+    height: 100%;
+  }
+
+  .example-info {
+    width: 100%;
+  }
+
+  .digital-small {
+    font-family: 'Courier New', monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: #1a1a2e;
+    color: #00ff88;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .example-answer {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .quad-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .example-note {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    font-weight: 600;
+  }
+
+  /* Exercises Section */
+  .exercises-section {
+    max-width: 720px;
+    width: 100%;
+    margin-top: 36px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .exercises-header {
+    background: linear-gradient(135deg, var(--dark), #434a4d);
+    color: white;
+    padding: 20px 24px;
+    text-align: center;
+  }
+
+  .exercises-header h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .exercises-header p {
+    font-size: 0.9rem;
+    opacity: .85;
+    font-weight: 600;
+  }
+
+  .exercise-grid {
+    display: flex;
+    flex-direction: column;
+    background: white;
+  }
+
+  .exercise-item, .analog-exercise-item {
+    background: white;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1eeeb;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .exercise-item:last-child, .analog-exercise-item:last-child {
+    border-bottom: none;
+  }
+
+  .exercise-num {
+    background: var(--dark);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .digital-display {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: #1a1a2e;
+    color: #00ff88;
+    padding: 5px 14px;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    min-width: 85px;
+    text-align: center;
+  }
+
+  .exercise-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: #fafaf8;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all .2s;
+    text-align: left;
+  }
+
+  .option-btn:hover {
+    border-color: #b2bec3;
+    background: #f0eeea;
+  }
+
+  .option-letter {
+    background: var(--border-color);
+    color: #636e72;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .option-btn.correct {
+    border-color: #00b894;
+    background: #e8f8f5;
+    color: #09725b;
+  }
+
+  .option-btn.correct .option-letter {
+    background: #00b894;
+    color: white;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--red);
+    background: #fff0f0;
+    color: #9c2e2e;
+  }
+
+  .option-btn.wrong .option-letter {
+    background: var(--red);
+    color: white;
+  }
+
+  .option-btn.disabled {
+    pointer-events: none;
+    opacity: .7;
+  }
+
+  /* Exercise C (Writing Input styling) */
+  .write-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+  .write-input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--bg-light);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dark);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .write-input:focus {
+    border-color: var(--secondary);
+    background: white;
+  }
+
+  .write-input.correct {
+    border-color: #00b894;
+    background: #e8f8f5;
+    color: #09725b;
+  }
+
+  .write-input.wrong {
+    border-color: var(--red);
+    background: #fff0f0;
+    color: #9c2e2e;
+  }
+
+  .btn-check-write {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-check-write:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .write-feedback {
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-left: 10px;
+  }
+
+  .write-feedback.correct { color: #00b894; }
+  .write-feedback.wrong { color: var(--red); }
+
+  /* Dynamic floating score bar */
+  .score-bar {
+    background: white;
+    border-radius: 16px;
+    padding: 18px 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-top: 30px;
+    max-width: 720px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .score-info {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--dark);
+  }
+
+  .score-info span {
+    color: #00b894;
+  }
+
+  .score-progress {
+    flex: 1;
+    min-width: 180px;
+    height: 12px;
+    background: var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00b894, var(--primary));
+    border-radius: 6px;
+    transition: width .5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reset-btn {
+    padding: 8px 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: #636e72;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .reset-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: #fff0f0;
+  }
+
+  @media print {
+    body { background: white; }
+    .lang-tabs, .reset-btn, .btn-check-write { display: none; }
+    .option-btn { border: 1px solid #ccc; }
+    .write-input { border-bottom: 2px solid #ccc; border-radius: 0; background: none; }
+  }
+
+  @media (max-width: 600px) {
+    .exercise-item, .analog-exercise-item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 16px 20px;
+    }
+    .digital-display {
+      align-self: center;
+    }
+    .label-row {
+      gap: 10px;
+    }
+    h1 {
+      font-size: 1.6rem;
+    }
+    .lang-tab {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+    }
+  }
 </style>
 </head>
 <body>
 
-<h1 id="page-title">🕐 Hoe laat is het?</h1>
+<h1 id="page-title">Hoe laat is het? 🕐</h1>
 <p class="subtitle" id="page-subtitle">De klok lezen in het Nederlands</p>
 
 <div class="lang-tabs">
@@ -100,6 +652,9 @@
   <button class="lang-tab" onclick="switchLang('ar',this)"><span class="flag">🇸🇦</span> العربية</button>
   <button class="lang-tab" onclick="switchLang('tr',this)"><span class="flag">🇹🇷</span> Türkçe</button>
   <button class="lang-tab" onclick="switchLang('om',this)"><span class="flag">🇪🇹</span> Afaan Oromo</button>
+  <button class="lang-tab" onclick="switchLang('pt',this)"><span class="flag">🇵🇹</span> Português</button>
+  <button class="lang-tab" onclick="switchLang('hu',this)"><span class="flag">🇭🇺</span> Magyar</button>
+  <button class="lang-tab" onclick="switchLang('el',this)"><span class="flag">🇬🇷</span> Ελληνικά</button>
 </div>
 
 <!-- ===== MAIN CLOCK ===== -->
@@ -226,9 +781,18 @@
   <div class="exercise-grid" id="exercise-grid-b"></div>
 </div>
 
+<!-- ===== EXERCISES SECTION C: MIX WRITING ===== -->
+<div class="exercises-section" style="margin-top:24px">
+  <div class="exercises-header" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark))">
+    <h2 id="ex-c-title">✏️ Opdracht C — Mix Schrijven (typ het antwoord)</h2>
+    <p id="ex-c-subtitle">Typ de tijd in het Nederlands (bijv. '5 over 10' of 'vijf over tien').</p>
+  </div>
+  <div class="exercise-grid" id="exercise-grid-c"></div>
+</div>
+
 <!-- SCORE -->
 <div class="score-bar">
-  <div class="score-info">Score: <span id="score-num">0</span> / <span id="score-total">30</span></div>
+  <div class="score-info">Score: <span id="score-num">0</span> / <span id="score-total">45</span></div>
   <div class="score-progress"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
   <button class="reset-btn" onclick="resetAll()">🔄 Opnieuw</button>
 </div>
@@ -330,10 +894,30 @@ const exercisesB = [
   {h:8,m:20,correct:2,options:['tien over acht','tien voor half acht','tien voor half negen']},
 ];
 
+// ===== 15 WRITING MIX EXERCISES (NEW) =====
+const exercisesC = [
+  {time:'10:05', type:'digital', answers:['5 over 10', 'vijf over tien', '5 over tien', 'vijf over 10']},
+  {time:'04:30', type:'digital', answers:['half 5', 'half vijf']},
+  {time:'08:15', type:'digital', answers:['kwart over 8', 'kwart over acht']},
+  {time:'11:45', type:'digital', answers:['kwart voor 12', 'kwart voor twaalf']},
+  {time:'02:20', type:'digital', answers:['10 voor half 3', 'tien voor half drie', 'tien voor half 3', '10 voor half drie']},
+  {time:'06:35', type:'digital', answers:['5 over half 7', 'vijf over half zeven', '5 over half zeven', 'vijf over half 7']},
+  {h:12, m:0, type:'analog', answers:['12 uur', 'twaalf uur']},
+  {h:9, m:55, type:'analog', answers:['5 voor 10', 'vijf voor tien', '5 voor tien', 'vijf voor 10']},
+  {h:2, m:10, type:'analog', answers:['10 over 2', 'tien over twee', '10 over twee', 'tien over 2']},
+  {h:4, m:25, type:'analog', answers:['5 voor half 5', 'vijf voor half vijf', '5 voor half vijf', 'vijf voor half 5']},
+  {time:'21:30', type:'digital', answers:['half 10', 'half tien']},
+  {time:'01:40', type:'digital', answers:['10 over half 2', 'tien over half twee', '10 over half twee', 'tien over half 2']},
+  {h:7, m:15, type:'analog', answers:['kwart over 7', 'kwart over zeven']},
+  {h:6, m:50, type:'analog', answers:['10 voor 7', 'tien voor zeven', '10 voor zeven', 'tien voor 7']},
+  {time:'23:05', type:'digital', answers:['5 over 11', 'vijf over elf', '5 over elf', 'vijf over 11']}
+];
+
 let score = 0;
 let answeredA = new Set();
 let answeredB = new Set();
-const totalQ = exercisesA.length + exercisesB.length;
+let answeredC = new Set();
+const totalQ = exercisesA.length + exercisesB.length + exercisesC.length;
 
 function renderDigitalExercises() {
   const grid = document.getElementById('exercise-grid');
@@ -365,6 +949,84 @@ function renderAnalogExercises() {
       <div class="exercise-options">${opts}</div>
     </div>`;
   }).join('');
+}
+
+function renderWritingExercises() {
+  const grid = document.getElementById('exercise-grid-c');
+  grid.innerHTML = exercisesC.map((ex, i) => {
+    let promptHtml = '';
+    if (ex.type === 'digital') {
+      promptHtml = `<div class="digital-display">${ex.time}</div>`;
+    } else {
+      promptHtml = `<div class="mini-clock-wrap">${miniClock(ex.h, ex.m)}</div>`;
+    }
+
+    return `<div class="exercise-item">
+      <div class="exercise-num">${i+1}</div>
+      ${promptHtml}
+      <div class="write-container">
+        <input type="text" class="write-input" id="write-input-${i}" placeholder="Typ het antwoord hier..." onkeypress="handleWriteKey(event, ${i})">
+        <button class="btn-check-write" onclick="checkWrite(${i})" id="btn-write-${i}">Check</button>
+        <span class="write-feedback" id="feedback-write-${i}"></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function handleWriteKey(event, i) {
+  if (event.key === 'Enter') {
+    checkWrite(i);
+  }
+}
+
+function checkWrite(i) {
+  if (answeredC.has(i)) return;
+  
+  const inputEl = document.getElementById(`write-input-${i}`);
+  const feedbackEl = document.getElementById(`feedback-write-${i}`);
+  const btnEl = document.getElementById(`btn-write-${i}`);
+  
+  let val = inputEl.value.trim().toLowerCase();
+  
+  // Normalization logic to match user request (e.g. handle leading "het is", replace punctuation)
+  if (val.startsWith('het is')) {
+    val = val.substring(6).trim();
+  }
+  // Strip trailing period or question marks
+  val = val.replace(/[.,!?]/g, "").trim();
+
+  const ex = exercisesC[i];
+  let isCorrect = false;
+  
+  // Compare to allowed answers
+  for (let ans of ex.answers) {
+    let cleanAns = ans.trim().toLowerCase();
+    if (cleanAns.startsWith('het is')) {
+      cleanAns = cleanAns.substring(6).trim();
+    }
+    cleanAns = cleanAns.replace(/[.,!?]/g, "").trim();
+
+    if (val === cleanAns) {
+      isCorrect = true;
+      break;
+    }
+  }
+
+  answeredC.add(i);
+  inputEl.disabled = true;
+  btnEl.disabled = true;
+
+  if (isCorrect) {
+    score++;
+    inputEl.classList.add('correct');
+    feedbackEl.textContent = '✓ Correct';
+    feedbackEl.className = 'write-feedback correct';
+  } else {
+    inputEl.classList.add('wrong');
+    feedbackEl.textContent = `✗ Fout (Correct: ${ex.answers[0]})`;
+    feedbackEl.className = 'write-feedback wrong';
+  }
+  updateScore();
 }
 
 function checkA(i, j) {
@@ -401,10 +1063,11 @@ function updateScore() {
 }
 
 function resetAll() {
-  score = 0; answeredA.clear(); answeredB.clear();
+  score = 0; answeredA.clear(); answeredB.clear(); answeredC.clear();
   updateScore();
   renderDigitalExercises();
   renderAnalogExercises();
+  renderWritingExercises();
 }
 
 // ===== LANGUAGE DATA =====
@@ -425,6 +1088,7 @@ const L = {
     anaT:'🕐 10 voorbeelden met analoge klok',
     eAT:'✏️ Opdracht A — Digitale klok (meerkeuze)',eAS:'Je ziet de digitale klok. Wat zeg je in het Nederlands?',
     eBT:'✏️ Opdracht B — Analoge klok (meerkeuze)',eBS:'Je ziet de klok met wijzers. Wat zeg je in het Nederlands?',
+    eCT:'✏️ Opdracht C — Mix Schrijven (typ het antwoord)',eCS:'Typ de tijd in het Nederlands (bijv. \'5 over 10\' of \'vijf over tien\').',
     expl:`<h2>📖 Hoe werkt de klok in het Nederlands?</h2>
       <p>In het Nederlands lezen we de klok anders dan in veel andere talen. We gebruiken <b>het volgende uur</b> als referentiepunt zodra de grote wijzer de 3 passeert (kwart over). Dat betekent dat we bij 6:25 zeggen: <em>"vijf voor <b>half zeven</b>"</em> — we kijken vooruit naar 7!</p>
       <p>We gebruiken altijd <b>stappen van vijf minuten</b>: 5 over, 10 over, kwart over, 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>
@@ -446,6 +1110,7 @@ const L = {
     anaT:'🕐 10 examples using an analog clock',
     eAT:'✏️ Exercise A — Digital clock (multiple choice)',eAS:'You see the digital clock. What do you say in Dutch?',
     eBT:'✏️ Exercise B — Analog clock (multiple choice)',eBS:'You see the analog clock. What do you say in Dutch?',
+    eCT:'✏️ Exercise C — Mix Writing (type the answer)',eCS:'Type the time in Dutch (e.g. \'5 over 10\' or \'vijf over tien\').',
     expl:`<h2>📖 How does the clock work in Dutch?</h2>
       <p>In Dutch, we read the clock differently. Once the minute hand passes the 15-minute mark (kwart over), we use <b>the next hour</b> as our reference point. At 6:25 we say: <em>"vijf voor <b>half zeven</b>"</em> — we look ahead to 7!</p>
       <p><b>Important rules:</b></p>
@@ -468,6 +1133,7 @@ const L = {
     anaT:'🕐 د ستن لرونکي ساعت سره 10 بېلګې',
     eAT:'✏️ د الف تمرین — ډیجیټل ساعت (انتخابي)',eAS:'تاسو ډیجیټل ساعت ګورئ. په هالنډي ژبه کې څه وایئ؟',
     eBT:'✏️ د ب تمرین — ستن لرونکی ساعت (انتخابي)',eBS:'تاسو د ساعت ستنې ګورئ. په هالنډي ژبه کې څه وایئ؟',
+    eCT:'✏️ د تمرین ج — لیکل (ځواب ولیکئ)',eCS:'وخت په هالنډي ژبه کې ولیکئ (لکه "5 over 10" یا "vijf over tien").',
     expl:`<h2>📖 ساعت په هالنډي ژبه کې څنګه کار کوي؟</h2>
       <div class="rtl">
       <p>په هالنډي ژبه کې، موږ ساعت په بل ډول لولو. کله چې ۱۵ دقیقې تېرې شي، موږ <b>راتلونکی ساعت</b> د مرجع په توګه کاروو. په 6:25 کې موږ وایو: <em>"vijf voor <b>half zeven</b>"</em> يعني موږ 7 ته ګورو!</p>
@@ -492,6 +1158,7 @@ const L = {
     anaT:'🕐 10个时钟的例子',
     eAT:'✏️ 练习 A — 数字时钟 (选择题)',eAS:'你看到了数字时钟。用荷兰语怎么说？',
     eBT:'✏️ 练习 B — 模拟时钟 (选择题)',eBS:'你看到了带指针的时钟。用荷兰语怎么说？',
+    eCT:'✏️ 练习 C — 混合写作 (输入答案)',eCS:'用荷兰语输入时间 (例如 \'5 over 10\' 或 \'vijf over tien\')。',
     expl:`<h2>📖 荷兰语的时钟是怎么工作的？</h2>
       <p>在荷兰语中，我们读时间的方式有所不同。当分针过了15分钟 (kwart over) 之后，我们就使用<b>下一个小时</b>作为参考点。在 6:25 我们会说：<em>"vijf voor <b>half zeven</b>"（差五分半道七点）</em> — 我们已经开始看向7点了！</p>
       <p><b>重要规则：</b></p>
@@ -514,6 +1181,7 @@ const L = {
     anaT:'🕐 ١٠ أمثلة مع الساعة التناظرية',
     eAT:'✏️ تمرين أ — الساعة الرقمية (اختيار)',eAS:'أنت ترى الساعة الرقمية. ماذا تقول بالهولندية؟',
     eBT:'✏️ تمرين ب — الساعة التناظرية (اختيار)',eBS:'أنت ترى الساعة مع العقارب. ماذا تقول بالهولندية؟',
+    eCT:'✏️ تمرين ج — كتابة (اكتب الإجابة)',eCS:'اكتب الوقت باللغة الهولندية (مثال: \'5 over 10\' أو \'vijf over tien\').',
     expl:`<h2>📖 كيف تعمل الساعة بالهولندية؟</h2>
       <div class="rtl">
       <p>في اللغة الهولندية، نقرأ الساعة بطريقة مختلفة. نستخدم <b>الساعة التالية</b> كنقطة مرجعية بعد ربع ساعة. عند الساعة ٦:٢٥ نقول: <em>"vijf voor <b>half zeven</b>"</em></p>
@@ -538,6 +1206,7 @@ const L = {
     anaT:'🕐 Analog saatle 10 örnek',
     eAT:'✏️ Alıştırma A — Dijital saat (çoktan seçmeli)',eAS:'Dijital saati görüyorsun. Hollandaca ne dersin?',
     eBT:'✏️ Alıştırma B — Analog saat (çoktan seçmeli)',eBS:'Saati ibreleriyle görüyorsun. Hollandaca ne dersin?',
+    eCT:'✏️ Alıştırma C — Karışık Yazma (cevabı yaz)',eCS:'Saati Hollandaca yaz (örn. \'5 over 10\' veya \'vijf over tien\').',
     expl:`<h2>📖 Hollandaca'da saat nasıl çalışır?</h2>
       <p>Hollandaca'da saati farklı okuruz. Büyük ibre 3'ü (kwart over) geçtikten sonra <b>sonraki saati</b> referans alırız. Yani 6:25'te şöyle deriz: <em>"vijf voor <b>half zeven</b>"</em> — 7'ye bakıyoruz!</p>
       <p><b>Önemli kurallar:</b></p>
@@ -560,11 +1229,141 @@ const L = {
     anaT:'🕐 Fakkeenyota 10 sa\'aatii analoogii',
     eAT:'✏️ Shaakala A — Sa\'aatii dijitaalaa',eAS:'Sa\'aatii dijitaalaa argita. Afaan Holandiin maal jetta?',
     eBT:'✏️ Shaakala B — Sa\'aatii analoogii',eBS:'Sa\'aatii ibree argita. Afaan Holandiin maal jetta?',
+    eCT:'✏️ Shaakala C — Shaakala Barreessuu',eCS:'Sa\'aatii afaan Holandiin barreessi (Fakkeenya: \'5 over 10\').',
     expl:`<h2>📖 Sa'aatiin afaan Holandiin akkamitti hojjeta?</h2>
       <p>Afaan Holandiin keessatti, sa'aatii akkaataa adda ta'een dubbifna. Erga daqiiqaan 15 (kwart over) darbe booda, <b>sa'aatii itti aanu</b> fayyadamna. Sa'aatii 6:25 irratti: <em>"vijf voor <b>half zeven</b>"</em> — gara 7tti ilaalla!</p>
       <p>• <b>over</b> = booda &nbsp; • <b>voor</b> = dura &nbsp; • <b>half</b> = walakkaa &nbsp; • <b>kwart</b> = kurmaana</p>
       <div class="tip-box"><div class="tip-icon">⚠️</div><div><b>Of eeggadhu!</b> "Half zeven" = 6:30, <b>miti</b> 7:30! "half zeven" = gara 7tti walakkaa irra jirra.</div></div>`
-  }
+  },
+  pt: {
+    "title": "🕐 Que horas são?",
+    "sub": "Ler as horas em neerlandês",
+    "top": "▲ A hora atual",
+    "bottom": "▼ HALF + próxima hora",
+    "qOT": "OVER",
+    "qOS1": "over = depois de / passado",
+    "qOS2": "(5, 10, kwart over)",
+    "qVT": "VOOR HALF",
+    "qVS1": "voor half = antes da meia",
+    "qVS2": "(10, 5 voor half)",
+    "qHT": "OVER HALF",
+    "qHS1": "over half = depois da meia",
+    "qHS2": "(5, 10 over half)",
+    "qFT": "VOOR",
+    "qFS1": "voor = antes de / para",
+    "qFS2": "(kwart, 10, 5 voor)",
+    "o12": "... uur (horas)",
+    "o1": "5 over (5 depois de ...)",
+    "o2": "10 over (10 depois de ...)",
+    "o3": "kwart over (um quarto depois de ...)",
+    "o4": "10 voor half (10 para a meia ...)",
+    "o5": "5 voor half (5 para a meia ...)",
+    "o6": "half (meia ...)",
+    "o7": "5 over half (5 depois da meia ...)",
+    "o8": "10 over half (10 depois da meia ...)",
+    "o9": "kwart voor (um quarto para ...)",
+    "o10": "10 voor (10 para ...)",
+    "o11": "5 voor (5 para ...)",
+    "lO": "OVER (depois)",
+    "lV": "VOOR HALF (antes da meia)",
+    "lH": "OVER HALF (depois da meia)",
+    "lF": "VOOR (para)",
+    "exT": "Exemplo: das 6 horas às 7 horas",
+    "anaT": "🕐 10 exemplos com relógio analógico",
+    "eAT": "✏️ Exercício A — Relógio digital (escolha múltipla)",
+    "eAS": "Você vê o relógio digital. O que diz em neerlandês?",
+    "eBT": "✏️ Exercício B — Relógio analógico (escolha múltipla)",
+    "eBS": "Você vê o relógio com ponteiros. O que diz em neerlandês?",
+    "expl": "<p>Em neerlandês, lemos as horas de forma diferente de muitas outras línguas. Usamos <b>a próxima hora</b> como ponto de referência assim que o ponteiro grande passa o 3 (kwart over). Isso significa que às 6:25 dizemos: <em>\"vijf voor <b>half zeven</b>\"</em> — olhamos para a frente, para o 7!</p>\n\n    <p>Usamos sempre <b>intervalos de cinco minutos</b>: 5, 10, kwart (= 15 minutos), 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>\n\n    <div class=\"tip-box tip-orange\">\n      <div class=\"tip-icon\">⚠️</div>\n      <div>\n        <b>Atenção:</b> \"Half zeven\" = 6:30, <b>não</b> 7:30! Isto é confuso para muitos estudantes. Em neerlandês, \"half zeven\" = estamos a <em>meio</em> caminho das sete.\n      </div>\n    </div>",
+    "eCT": "✏️ Exercício C — Escrita mista (escreva a resposta)",
+    "eCS": "Escreva a hora em neerlandês (ex: '5 over 10' ou 'vijf over tien')."
+},
+  hu: {
+    "title": "🕐 Hány óra van?",
+    "sub": "Az idő olvasása hollandul",
+    "top": "▲ A jelenlegi óra",
+    "bottom": "▼ HALF + következő óra",
+    "qOT": "OVER",
+    "qOS1": "over = múlt / múlva",
+    "qOS2": "(5, 10, kwart over)",
+    "qVT": "VOOR HALF",
+    "qVS1": "voor half = fél előtt",
+    "qVS2": "(10, 5 voor half)",
+    "qHT": "OVER HALF",
+    "qHS1": "over half = fél után",
+    "qHS2": "(5, 10 over half)",
+    "qFT": "VOOR",
+    "qFS1": "voor = előtt / híján",
+    "qFS2": "(kwart, 10, 5 voor)",
+    "o12": "... uur (óra)",
+    "o1": "5 over (5-tel múlt ...)",
+    "o2": "10 over (10-zel múlt ...)",
+    "o3": "kwart over (negyed órával múlt ...)",
+    "o4": "10 voor half (10 perccel fél ... előtt)",
+    "o5": "5 voor half (5 perccel fél ... előtt)",
+    "o6": "half (fél ...)",
+    "o7": "5 over half (5 perccel fél ... után)",
+    "o8": "10 over half (10 perccel fél ... után)",
+    "o9": "kwart voor (negyed órával ... előtt)",
+    "o10": "10 voor (10 perccel ... előtt)",
+    "o11": "5 voor (5 perccel ... előtt)",
+    "lO": "OVER (múlt)",
+    "lV": "VOOR HALF (fél előtt)",
+    "lH": "OVER HALF (fél után)",
+    "lF": "VOOR (előtt)",
+    "exT": "Példa: 6 óra-tól 7 uur-ig",
+    "anaT": "🕐 10 példa analóg órával",
+    "eAT": "✏️ A feladat — Digitális óra (választás)",
+    "eAS": "Digitális órát látsz. Mit mondasz hollandul?",
+    "eBT": "✏️ B feladat — Analóg óra (választás)",
+    "eBS": "Órát látsz mutatókkal. Mit mondasz hollandul?",
+    "expl": "<p>Hollandul másképp olvassuk az órát, mint sok más nyelven. A <b>következő órát</b> használjuk referenciapontként, amint a nagymutató túlhalad a 3-ason (kwart over). Ez azt jelenti, hogy 6:25-kor azt mondjuk: <em>\"vijf voor <b>half zeven</b>\"</em> — előre nézünk a 7 felé!</p>\n\n    <p>Mindig <b>ötperces lépéseket</b> használunk: 5, 10, kwart (= 15 perc), 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>\n\n    <div class=\"tip-box tip-orange\">\n      <div class=\"tip-icon\">⚠️</div>\n      <div>\n        <b>Figyelem:</b> \"Half zeven\" = 6:30, <b>nem</b> 7:30! Ez sok tanuló számára zavaró. Hollandul \"half zeven\" = <em>félúton</em> vagyunk a hét felé.\n      </div>\n    </div>",
+    "eCT": "✏️ C feladat — Vegyes írás (írd le a választ)",
+    "eCS": "Írd le az időt hollandul (pl. '5 over 10' vagy 'vijf over tien')."
+},
+  el: {
+    "title": "🕐 Τι ώρα είναι;",
+    "sub": "Πώς διαβάζουμε την ώρα στα ολλανδικά",
+    "top": "▲ Η τρέχουσα ώρα",
+    "bottom": "▼ HALF + επόμενη ώρα",
+    "qOT": "OVER",
+    "qOS1": "over = και / μετά",
+    "qOS2": "(5, 10, kwart over)",
+    "qVT": "VOOR HALF",
+    "qVS1": "voor half = παρά μισή",
+    "qVS2": "(10, 5 voor half)",
+    "qHT": "OVER HALF",
+    "qHS1": "over half = και μισή",
+    "qHS2": "(5, 10 over half)",
+    "qFT": "VOOR",
+    "qFS1": "voor = παρά",
+    "qFS2": "(kwart, 10, 5 voor)",
+    "o12": "... uur (ώρα)",
+    "o1": "5 over (και πέντε)",
+    "o2": "10 over (και δέκα)",
+    "o3": "kwart over (και τέταρτο)",
+    "o4": "10 voor half (δέκα παρά μισή)",
+    "o5": "5 voor half (πέντε παρά μισή)",
+    "o6": "half (και μισή)",
+    "o7": "5 over half (και μισή και πέντε)",
+    "o8": "10 over half (και μισή και δέκα)",
+    "o9": "kwart voor (παρά τέταρτο)",
+    "o10": "10 voor (παρά δέκα)",
+    "o11": "5 voor (παρά πέντε)",
+    "lO": "OVER (και)",
+    "lV": "VOOR HALF (παρά μισή)",
+    "lH": "OVER HALF (και μισή)",
+    "lF": "VOOR (παρά)",
+    "exT": "Παράδειγμα: από 6 έως 7",
+    "anaT": "🕐 10 παραδείγματα με αναλογικό ρολόι",
+    "eAT": "✏️ Άσκηση Α — Ψηφιακό ρολόι (πολλαπλή επιλογή)",
+    "eAS": "Βλέπεις το ψηφιακό ρολόι. Τι λες στα ολλανδικά;",
+    "eBT": "✏️ Άσκηση Β — Αναλογικό ρολόι (πολλαπλή επιλογή)",
+    "eBS": "Βλέπεις το ρολόι με τους δείκτες. Τι λες στα ολλανδικά;",
+    "expl": "<p>Στα ολλανδικά διαβάζουμε την ώρα διαφορετικά από πολλές άλλες γλώσσες. Χρησιμοποιούμε <b>την επόμενη ώρα</b> ως σημείο αναφοράς μόλις ο μεγάλος δείκτης περάσει το 3 (kwart over). Αυτό σημαίνει ότι στις 6:25 λέμε: <em>\"vijf voor <b>half zeven</b>\"</em> — κοιτάμε μπροστά προς το 7!</p>\n\n    <p>Χρησιμοποιούμε πάντα <b>βήματα πέντε λεπτών</b>: 5, 10, kwart (= 15 λεπτά), 10 voor half, 5 voor half, half, 5 over half, 10 over half, kwart voor, 10 voor, 5 voor.</p>\n\n    <div class=\"tip-box tip-orange\">\n      <div class=\"tip-icon\">⚠️</div>\n      <div>\n        <b>Προσοχή:</b> \"Half zeven\" = 6:30, <b>όχι</b> 7:30! Αυτό προκαλεί σύγχυση σε πολλούς μαθητές. Στα ολλανδικά, \"half zeven\" = είμαστε στη <em>μέση</em> του δρόμου προς τις εφτά.\n      </div>\n    </div>",
+    "eCT": "✏️ Άσκηση Γ — Μικτή γραφή (γράψε την απάντηση)",
+    "eCS": "Γράψε την ώρα στα ολλανδικά (π.χ. '5 over 10' ή 'vijf over tien')."
+}
 };
 
 function switchLang(lang, btn) {
@@ -610,10 +1409,16 @@ function switchLang(lang, btn) {
 
   document.getElementById('example-title').textContent = d.exT;
   document.getElementById('analog-examples-title').textContent = d.anaT;
+  
   document.getElementById('ex-title').textContent = d.eAT;
   document.getElementById('ex-subtitle').textContent = d.eAS;
+  
   document.getElementById('ex-b-title').textContent = d.eBT;
   document.getElementById('ex-b-subtitle').textContent = d.eBS;
+
+  document.getElementById('ex-c-title').textContent = d.eCT;
+  document.getElementById('ex-c-subtitle').textContent = d.eCS;
+  
   document.getElementById('explanation-block').innerHTML = d.expl;
 }
 
@@ -621,10 +1426,10 @@ function switchLang(lang, btn) {
 renderAnalogExamples();
 renderDigitalExercises();
 renderAnalogExercises();
+renderWritingExercises();
 document.getElementById('score-total').textContent = totalQ;
 switchLang('nl', document.querySelector('.lang-tab'));
 </script>
-
 
 <!-- SPEECH SYNTHESIS INJECTION -->
 <script>
@@ -649,37 +1454,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return btn;
     }
 
-    // 1. .vocab spans
-    document.querySelectorAll('.vocab').forEach(el => {
-        if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
-            el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
-        }
-    });
-
-    // 2. Conjugation tables (.conj-table, .ww-tabel)
-    document.querySelectorAll('.conj-table tbody tr, .ww-tabel tbody tr').forEach(row => {
-        if (row.cells.length >= 2) {
-            let targetCell = row.cells[1];
-            // If the target cell already has a button, skip
-            if (!targetCell.querySelector('.native-speak-btn') && !targetCell.querySelector('button')) {
-                targetCell.appendChild(createSpeakBtn(targetCell.textContent.trim()));
-            }
-        }
-    });
-
-    // 3. Example sentences (.example)
-    document.querySelectorAll('.example').forEach(el => {
-        if (!el.querySelector('.native-speak-btn') && !el.querySelector('button')) {
-            let clone = el.cloneNode(true);
-            let transl = clone.querySelector('.transl');
-            if (transl) transl.remove();
-            let text = clone.textContent.replace(/\([^)]+\)/g, '').trim();
-            el.appendChild(createSpeakBtn(text));
-        }
+    // 1. Add speak button to vocabulary or list items
+    document.querySelectorAll('.time-entry b, .example-answer b').forEach(el => {
+        const text = el.parentElement.textContent.replace('🔊', '').split('(')[0].replace('=', '').trim();
+        el.parentElement.appendChild(createSpeakBtn(text));
     });
 });
 </script>
-<!-- /SPEECH SYNTHESIS INJECTION -->
 
 </body>
 </html>
