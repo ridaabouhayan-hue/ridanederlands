@@ -320,61 +320,61 @@
                 <!-- P1 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_1.jpeg" alt="Plaatje 1">
-                    <label>1. de </label>
+                    <label>1. </label>
                     <input type="text" class="test-input" id="q5_1" placeholder="Typ...">
                 </div>
                 <!-- P6 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_6.jpeg" alt="Plaatje 6">
-                    <label>6. de </label>
+                    <label>6. </label>
                     <input type="text" class="test-input" id="q5_6" placeholder="Typ...">
                 </div>
                 <!-- P2 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_2.jpeg" alt="Plaatje 2">
-                    <label>2. de </label>
+                    <label>2. </label>
                     <input type="text" class="test-input" id="q5_2" placeholder="Typ...">
                 </div>
                 <!-- P7 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_7.jpeg" alt="Plaatje 7">
-                    <label>7. de </label>
+                    <label>7. </label>
                     <input type="text" class="test-input" id="q5_7" placeholder="Typ...">
                 </div>
                 <!-- P3 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_3.jpeg" alt="Plaatje 3">
-                    <label>3. de </label>
+                    <label>3. </label>
                     <input type="text" class="test-input" id="q5_3" placeholder="Typ...">
                 </div>
                 <!-- P8 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_8.jpeg" alt="Plaatje 8">
-                    <label>8. de </label>
+                    <label>8. </label>
                     <input type="text" class="test-input" id="q5_8" placeholder="Typ...">
                 </div>
                 <!-- P4 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_4.jpeg" alt="Plaatje 4">
-                    <label>4. het </label>
+                    <label>4. </label>
                     <input type="text" class="test-input" id="q5_4" placeholder="Typ...">
                 </div>
                 <!-- P9 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_9.png" alt="Plaatje 9">
-                    <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">9. niet de heer, maar de</label>
+                    <label>9. </label>
                     <input type="text" class="test-input" id="q5_9" placeholder="Typ...">
                 </div>
                 <!-- P5 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_5.jpeg" alt="Plaatje 5">
-                    <label>5. de </label>
+                    <label>5. </label>
                     <input type="text" class="test-input" id="q5_5" placeholder="Typ...">
                 </div>
                 <!-- P10 -->
                 <div class="picture-card">
                     <img src="../TOETSEN/img/page_3_img_10.jpeg" alt="Plaatje 10">
-                    <label>10. het </label>
+                    <label>10. </label>
                     <input type="text" class="test-input" id="q5_10" placeholder="Typ...">
                 </div>
             </div>
@@ -431,7 +431,54 @@
                 btn.classList.add('selected');
                 selectedChoices[groupId] = btn.getAttribute('data-value');
             }
+            saveAnswers();
         }
+
+        function saveAnswers() {
+            const inputs = {};
+            document.querySelectorAll('input.test-input').forEach(inp => {
+                inputs[inp.id] = inp.value;
+            });
+            const state = { inputs, mc: selectedChoices };
+            const pageKey = 'oefentoets_state_' + window.location.pathname.split('/').pop();
+            localStorage.setItem(pageKey, JSON.stringify(state));
+        }
+
+        function restoreAnswers() {
+            const pageKey = 'oefentoets_state_' + window.location.pathname.split('/').pop();
+            const saved = localStorage.getItem(pageKey);
+            if (!saved) return;
+            try {
+                const state = JSON.parse(saved);
+                if (state.inputs) {
+                    for (const id in state.inputs) {
+                        const el = document.getElementById(id);
+                        if (el) el.value = state.inputs[id];
+                    }
+                }
+                if (state.mc) {
+                    for (const groupId in state.mc) {
+                        const val = state.mc[groupId];
+                        if (val) {
+                            selectedChoices[groupId] = val;
+                            const group = document.getElementById(groupId);
+                            if (group) {
+                                const btn = group.querySelector(`.choice-btn[data-value="${val}"]`);
+                                if (btn) btn.classList.add('selected');
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Error restoring answers:", e);
+            }
+        }
+
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('test-input')) {
+                saveAnswers();
+            }
+        });
 
         // Language Translate Logic
         const langBtns = document.querySelectorAll('.lang-btn');
@@ -772,7 +819,10 @@
 
             const phone = "31626211106";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
-            window.open(url, '_blank');
+            const newWin = window.open(url, '_blank');
+            if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                window.location.href = url;
+            }
         }
 
         // Image Zoom Modal Setup
@@ -797,6 +847,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            restoreAnswers();
             const modal = document.getElementById('image-modal');
             const closeBtn = document.querySelector('.image-zoom-modal-close');
             if (closeBtn) closeBtn.addEventListener('click', closeZoomModal);
