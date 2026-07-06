@@ -1175,7 +1175,7 @@
 
     <!-- JS Logic for Docent Panel -->
     <script>
-        const SUBMISSIONS_KEY = 'oefentoets_grading_submissions';
+        const SUBMISSIONS_KEY = window.location.pathname.includes("oefentoets2") ? "oefentoets2_submissions" : (window.location.pathname.includes("oefentoets3") ? "oefentoets3_submissions" : "oefentoets1_submissions");
         const SETTINGS_KEY = 'oefentoets_grading_settings';
         const defaultSettings = {
             provider: 'gemini',
@@ -1214,12 +1214,19 @@
                 container.innerHTML = '<div style="color: var(--text-secondary); padding: 10px; font-style: italic;">Nog geen cursisten verwerkt.</div>';
                 return;
             }
+            const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
+            const maxScore = testNum === "2" ? "34" : "35";
+
             submissionsList.forEach((sub, idx) => {
                 const item = document.createElement('div');
                 item.className = 'grading-student-item' + (selectedStudentIdx === idx ? ' active' : '');
+                const dateLabel = sub.date || new Date().toLocaleDateString('nl-NL');
                 item.innerHTML = `
-                    <span>👤 <strong>${sub.name}</strong></span>
-                    <span>Score: ${sub.results.totalScore}/35</span>
+                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                        <span>👤 <strong>${sub.name}</strong></span>
+                        <span style="font-size: 0.8rem; color: #4a4a68;">Oefentoets ${testNum} — 📅 ${dateLabel}</span>
+                    </div>
+                    <span style="font-weight: bold; color: var(--accent-blue);">${sub.results.totalScore}/${maxScore}</span>
                 `;
                 item.onclick = () => selectStudentForGrading(idx);
                 container.appendChild(item);
@@ -1463,12 +1470,14 @@
             const results = gradeSubmission(parsed);
             
             const existingIdx = submissionsList.findIndex(s => s.name === parsed.name);
+            const testNum = window.location.pathname.includes("oefentoets2") ? "2" : (window.location.pathname.includes("oefentoets3") ? "3" : "1");
             const newSubmission = {
                 name: parsed.name,
                 answers: parsed.answers,
                 results: results,
                 feedback: "",
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString('nl-NL'),
+                oefentoets: "Oefentoets " + testNum
             };
 
             if (existingIdx !== -1) {
