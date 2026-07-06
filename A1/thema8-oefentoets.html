@@ -558,8 +558,9 @@
         };
 
         langBtns.forEach(btn => {
+            if (!btn.getAttribute('data-lang')) return; // skip theme-toggle
             btn.addEventListener('click', () => {
-                langBtns.forEach(b => b.classList.remove('active'));
+                langBtns.forEach(b => { if (b.getAttribute('data-lang')) b.classList.remove('active'); });
                 btn.classList.add('active');
                 
                 const lang = btn.getAttribute('data-lang');
@@ -572,7 +573,13 @@
                     }
                     document.querySelectorAll('[data-translate]').forEach(el => {
                         const key = el.getAttribute('data-translate');
-                        if (dict[key]) el.textContent = dict[key];
+                        if (dict[key]) {
+                            if (key === 'sec4_explanation') {
+                                el.innerHTML = dict[key];
+                            } else {
+                                el.textContent = dict[key];
+                            }
+                        }
                     });
                 }
 
