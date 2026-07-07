@@ -6,6 +6,11 @@
     <title>Oefentoets 2 Thema 8 — NT2 A1</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../TOETSEN/toets.css">
+    <!-- Firebase SDKs compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../firebase_config.js"></script>
     <style>
         .picture-card img {
             max-height: 140px;
@@ -443,7 +448,7 @@
         <span class="lang-btn" data-lang="fa">🇮🇷 Farsi</span>
         <span class="lang-btn" data-lang="da">🇦🇫 Dari</span>
         <span class="lang-btn" data-lang="ps">🇦🇫 پښتو</span>
-        <button class="lang-btn" style="margin-left: auto; border-color: var(--accent-orange); color: var(--accent-orange); font-weight: 800; cursor: pointer;" onclick="openGradingModalPrompt()">👨‍🏫 Nakijken</button>
+        <a class="lang-btn" style="margin-left: auto; border-color: var(--accent-orange); color: var(--accent-orange); font-weight: 800; cursor: pointer; text-decoration: none; display: flex; align-items: center;" href="../TOETSEN/dashboard.html" target="_blank">👨‍🏫 Nakijken</a>
     </nav>
 
     <main class="page-container">
@@ -615,13 +620,8 @@
                 <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
                     ⭐ <span data-translate="sec3_example_title">Voorbeeld</span>
                 </div>
-                <div style="background: var(--white); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 8px;">
-                    <label style="font-weight: bold; display: block; color: var(--text-dark);">Vraag: lopen -> ik ... naar school.</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--text-dark);">ik</span>
-                        <input type="text" class="test-input" value="loop" disabled style="margin: 0; width: 120px; border: 2px solid var(--accent-blue); background: var(--bg); color: var(--accent-blue); font-weight: bold; text-align: center; cursor: not-allowed; opacity: 0.85;">
-                        <span style="color: var(--text-dark);">naar school.</span>
-                    </div>
+                <div class="sentence-item" style="margin: 0; background: var(--white); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-sm); pointer-events: none;">
+                    Voorbeeld: <span class="verb-cue">lopen</span> ik <input type="text" class="test-input-inline" value="loop" disabled style="border: 2px solid var(--accent-blue); background: var(--bg); color: var(--accent-blue); font-weight: bold; text-align: center; width: 80px;"> naar school.
                 </div>
             </div>
 
@@ -1234,6 +1234,29 @@
                 report += `- Zin ${i}: "${val('q6_' + i) || "-"}"\n`;
             }
 
+            // Save to Firebase Firestore if available
+            if (window.fbDb) {
+                const subData = {
+                    name: studentName,
+                    date: new Date().toLocaleDateString('nl-NL'),
+                    time: new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }),
+                    theme: "thema8",
+                    testNum: testNum,
+                    answers: {
+                        sec1: [1,2,3,4,5].map(i => mcVal(`q1_${i}_group`)),
+                        sec2: [1,2,3,4,5].map(i => mcVal(`q2_${i}_group`)),
+                        sec3: Array.from({length: document.getElementById('q3_10') ? 10 : 9}, (_, idx) => val('q3_' + (idx + 1))),
+                        sec4: [1,2,3,4,5].map(i => val(`q4_${i}`)),
+                        sec5: [1,2,3,4,5,6,7,8,9].map(i => val(`q5_${i}`)),
+                        sec6: [1,2,3,4].map(i => val(`q6_${i}`))
+                    },
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                window.fbDb.collection("submissions").add(subData)
+                    .then(() => console.log("Saved to Firestore"))
+                    .catch(err => console.error("Firestore error", err));
+            }
+
             const phone = "31626211106";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
             const newWin = window.open(url, '_blank');
@@ -1241,7 +1264,7 @@
                 window.location.href = url;
             } else {
                 setTimeout(() => {
-                    window.location.href = "thema8-oefentoets3.html";
+                    window.location.href = "thema8.html";
                 }, 1200);
             }
         }

@@ -18,6 +18,12 @@
     
     <!-- Load API Key -->
     <script src="../api_key.js"></script>
+
+    <!-- Firebase SDKs compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../firebase_config.js"></script>
     
     <style>
         body {
@@ -105,11 +111,11 @@
         
         .layout-grid {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 320px 1fr;
             gap: 25px;
         }
         
-                /* Sidebar layout */
+        /* Sidebar layout */
         .sidebar-card {
             background: var(--bg-card);
             border: 1px solid var(--border-medium);
@@ -233,7 +239,7 @@
         
         .results-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 25px;
         }
         
@@ -260,17 +266,9 @@
             border-bottom: none;
         }
         
-        .check-icon {
-            font-weight: 800;
-            margin-right: 6px;
-        }
-        .check-icon.correct { color: #10b981; }
-        .check-icon.half { color: #f59e0b; }
-        .check-icon.incorrect { color: #ef4444; }
-        
         .feedback-box {
             width: 100%;
-            height: 250px;
+            height: 500px;
             padding: 12px;
             background: var(--bg);
             border: 1px solid var(--border-medium);
@@ -286,15 +284,6 @@
         
         .feedback-box:focus {
             border-color: var(--primary);
-        }
-        
-        .score-pill {
-            background: var(--primary);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.85rem;
         }
         
         .translate-bar {
@@ -356,27 +345,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
         }
-        
-        .badge-score {
-            font-size: 0.8rem;
-            padding: 2px 6px;
-            background: var(--bg-secondary);
-            border-radius: 6px;
-            font-weight: 800;
-            margin-left: 8px;
-            border: 1px solid var(--border-subtle);
-        }
-        
-        .writing-grade-select {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border-medium);
-            padding: 4px;
-            border-radius: 4px;
-            outline: none;
-            font-size: 0.85rem;
-        }
-        
     </style>
 </head>
 <body>
@@ -396,7 +364,7 @@
             </button>
         </header>
         
-        <!-- Webhook Settings -->
+        <!-- Webhook / Import Settings -->
         <div class="settings-bar">
             <div class="settings-input-group">
                 <label style="font-weight: 800; font-size: 0.9rem; min-width: 130px;">Apps Script GET URL:</label>
@@ -426,11 +394,33 @@
         </div>
         
         <div class="layout-grid">
-            <!-- Sidebar with grouped submissions per theme -->
+            <!-- Sidebar with grouped submissions per theme & filters -->
             <aside class="sidebar-card">
-                <div class="sidebar-title" style="margin-bottom: 10px;">📂 Toetsen per Thema</div>
+                <div class="sidebar-title" style="margin-bottom: 10px;">📂 Filters & Sorteren</div>
+                <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--border-medium); padding-bottom: 15px;">
+                    <input type="text" id="search-student" class="settings-input" placeholder="🔍 Cursist zoeken..." oninput="filterName(this.value)" style="width: 100%; box-sizing: border-box;">
+                    <select id="filter-theme" class="settings-input" onchange="filterTheme(this.value)" style="width: 100%; box-sizing: border-box;">
+                        <option value="all">📁 Alle Thema's</option>
+                        <option value="thema1">Thema 1 — Hallo</option>
+                        <option value="thema2">Thema 2 — De school</option>
+                        <option value="thema3">Thema 3 — Wonen</option>
+                        <option value="thema4">Thema 4 — Eten</option>
+                        <option value="thema5">Thema 5 — De dokter</option>
+                        <option value="thema6">Thema 6 — Kleding</option>
+                        <option value="thema7">Thema 7 — Reizen</option>
+                        <option value="thema8">Thema 8 — Vrije tijd</option>
+                    </select>
+                    <select id="sort-by" class="settings-input" onchange="changeSort(this.value)" style="width: 100%; box-sizing: border-box;">
+                        <option value="date_desc">📅 Nieuwste Eerst</option>
+                        <option value="date_asc">📅 Oudste Eerst</option>
+                        <option value="name_asc">🔤 Cursist (A-Z)</option>
+                        <option value="name_desc">🔤 Cursist (Z-A)</option>
+                    </select>
+                </div>
+                
+                <div class="sidebar-title" style="margin-bottom: 10px;">📂 Ingezonden Toetsen</div>
                 <div class="submissions-list" id="submissions-container">
-                    <!-- Loaded dynamically, grouped by theme -->
+                    <!-- Loaded dynamically -->
                 </div>
             </aside>
             
@@ -440,232 +430,59 @@
                     🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
                 </div>
             </main>
-            
         </div>
         
     </div>
     
     <!-- DASHBOARD LOGIC -->
     <script>
-        // Answer keys & Grading rules from Docent PDF
-        const docentKeys = {
-            sec1: ["b", "d", "b", "b", "b"],
-            sec2: ["b", "c", "a", "a", "b"],
-            sec3: [
-                ["kunnen"],
-                ["mag"],
-                ["kan"],
-                ["kunt", "kan"],
-                ["mag"],
-                ["kun", "kan"],
-                ["kunnen"],
-                ["mogen"],
-                ["mag"],
-                ["kunnen"]
-            ],
-            sec4: [
-                ["is hun hond"],
-                ["zijn jouw schoenen", "zijn je schoenen"],
-                ["is zijn kaart"],
-                ["is onze afspraak"],
-                ["zijn jullie potloden"]
-            ],
-            sec5: [
-                ["kruispunt"],
-                ["wachten", "zij wacht", "wacht"],
-                ["chauffeur", "buschauffeur"],
-                ["denken", "hij denkt", "denkt"],
-                ["boot", "zeilboot"],
-                ["rennen"],
-                ["bord", "verkeersbord"],
-                ["eiland"],
-                ["instappen"],
-                ["slapen", "zij slaapt", "slaapt"]
-            ]
-        };
-
-        const docentQuestions = {
-            sec1: [
-                "1. Welke bus moet Eva nemen?",
-                "2. Hoe laat vertrekt de bus?",
-                "3. Hoelang moet Eva lopen naar het huis van Koen?",
-                "4. Waar moet Eva naar rechts?",
-                "5. Waar moet Eva linksaf?"
-            ],
-            sec2: [
-                "1. Waar woont Aster?",
-                "2. Hoe snel rijdt de trein?",
-                "3. Hoelang moet Aster nog lopen in Amsterdam?",
-                "4. Waarom reist Aster vandaag met de auto?",
-                "5. Hoelang rijdt Aster vandaag met de auto?"
-            ],
-            sec3: [
-                "1. We [werkwoord] hier oversteken.",
-                "2. Je [werkwoord] hier niet lopen.",
-                "3. Olga [werkwoord] de metro nemen.",
-                "4. [werkwoord] u het goede spoor vinden?",
-                "5. Ik [werkwoord] niet autorijden.",
-                "6. [werkwoord] je dit doorgeven aan mijn collega?",
-                "7. Snel! Jullie [werkwoord] de trein nog halen.",
-                "8. Kleine kinderen [werkwoord] niet zelf reizen met het vliegtuig.",
-                "9. Samir [werkwoord] niet op het fietspad rijden met zijn auto.",
-                "10. Jing en Ricardo [werkwoord] hun fiets niet vinden."
-            ],
-            sec4: [
-                "1. Van wie is die hond? (Aron en Zora) -> Het ...",
-                "2. Van wie zijn de schoenen? (jij) -> Het ...",
-                "3. Van wie is de kaart? (hij) -> Het ...",
-                "4. Van wie is de afspraak? (wij) -> Het ...",
-                "5. Van wie zijn de potloden? (jullie) -> Het ..."
-            ],
-            sec5: [
-                "Plaatje 1 (het zebrapad/kruispunt)",
-                "Plaatje 2 (wachten op perron)",
-                "Plaatje 3 (de chauffeur)",
-                "Plaatje 4 (denken/nadenken)",
-                "Plaatje 5 (de zeilboot)",
-                "Plaatje 6 (rennen op baan)",
-                "Plaatje 7 (het verkeersbord)",
-                "Plaatje 8 (het eiland)",
-                "Plaatje 9 (instappen in bus)",
-                "Plaatje 10 (slapen in bed)"
-            ],
-            sec6: [
-                "Zin 1",
-                "Zin 2",
-                "Zin 3",
-                "Zin 4"
-            ]
-        };
-
-        // Fuzzy matching logic
-        function normalize(str) {
-            if (!str) return "";
-            return str.toLowerCase()
-                .replace(/[\.\?\!\,\;]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-
-        function getLevenshteinDistance(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
-            const matrix = [];
-            for (let i = 0; i <= b.length; i++) {
-                matrix[i] = [i];
-            }
-            for (let j = 0; j <= a.length; j++) {
-                matrix[0][j] = j;
-            }
-            for (let i = 1; i <= b.length; i++) {
-                for (let j = 1; j <= a.length; j++) {
-                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                        matrix[i][j] = matrix[i - 1][j - 1];
-                    } else {
-                        matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1,
-                            Math.min(
-                                matrix[i][j - 1] + 1,
-                                matrix[i - 1][j] + 1
-                            )
-                        );
-                    }
-                }
-            }
-            return matrix[b.length][a.length];
-        }
-
-        function checkCorrectness(studentAns, correctList, maxScore = 1.0) {
-            const studentNorm = normalize(studentAns);
-            if (!studentNorm) return { status: "incorrect", score: 0.0 };
-            
-            // Check exact match
-            if (correctList.some(ans => normalize(ans) === studentNorm)) {
-                return { status: "correct", score: maxScore };
-            }
-            
-            // Check fuzzy match (spelling mistakes)
-            let minDistance = Infinity;
-            for (let ans of correctList) {
-                const ansNorm = normalize(ans);
-                const dist = getLevenshteinDistance(studentNorm, ansNorm);
-                if (dist < minDistance) minDistance = dist;
-            }
-            
-            // Define threshold based on answer length
-            let threshold = 2;
-            if (correctList[0].length <= 4) {
-                threshold = 1;
-            } else if (correctList[0].length > 10) {
-                threshold = 4;
-            }
-            
-            if (minDistance <= threshold) {
-                return { status: "half", score: Math.round(maxScore * 0.67 * 10) / 10 }; // ~2/3 points for spelling
-            }
-            
-            return { status: "incorrect", score: 0.0 };
-        }
-
-        // Submissions database
-        let allSubmissions = {}; // themeKey -> array of submissions
-        let selectedTheme = null;
-        let selectedSubIndex = null;
-        let selectedLanguage = "nl"; // Current translated feedback letter language
-        let manualGrades = {}; // Stores manual grades for section 6 [zinIndex] = score
-        let generatedFeedbacks = {}; // Stores raw generated feedbacks [studentName] = feedbackInDutch
-
-        // Mock data to ensure the teacher sees something on initial load
-        const mockSubmissions = [
-            {
-                name: "Amina Al-Masri",
-                date: "07-06-2026",
-                time: "14:23",
-                theme: "thema7",
-                answers: {
-                    sec1: ["b", "d", "b", "b", "b"], // Perfect 5/5
-                    sec2: ["b", "c", "a", "a", "b"], // Perfect 5/5
-                    sec3: ["kunnen", "mag", "kan", "kunt", "mag", "kan", "kunnen", "mogen", "mag", "kunnen"], // Perfect 10/10
-                    sec4: ["is hun hond", "zijn jouw schoenen", "is zijn kaart", "is onze afspraak", "zijn jullie potloden"], // Perfect 15/15
-                    sec5: ["kruispunt", "wachten", "sjauffeur", "denken", "boot", "rennen", "bord", "eiland", "instap", "slapen"], // spelling mistakes at 3 and 9 -> 26/30
-                    sec6: [
-                        "Ik zie een geel trein op het spoor.",
-                        "Een man rent op de straat.",
-                        "De vrouw koopt een reisticket.",
-                        "Er zijn veel mensen in de bus."
-                    ]
-                }
+        // Answer keys for auto-grading
+        const answerKeys = {
+            thema7: {
+                sec1: ["b", "d", "b", "b", "b"],
+                sec2: ["b", "c", "a", "a", "b"],
+                sec3: [["kunnen"], ["mag"], ["kan"], ["kunt", "kan"], ["mag"], ["kun", "kan"], ["kunnen"], ["mogen"], ["mag"], ["kunnen"]],
+                sec4: [["is hun hond"], ["zijn jouw schoenen", "zijn je schoenen"], ["is zijn kaart"], ["is onze afspraak"], ["zijn jullie potloden"]],
+                sec5: [["kruispunt"], ["wachten"], ["chauffeur"], ["denken"], ["boot", "zeilboot"], ["rennen"], ["bord", "verkeersbord"], ["eiland"], ["instappen"], ["slapen"]]
             },
-            {
-                name: "Youssef Erdogan",
-                date: "08-06-2026",
-                time: "10:12",
-                theme: "thema7",
-                answers: {
-                    sec1: ["a", "d", "c", "b", "b"], // 3/5
-                    sec2: ["b", "b", "a", "a", "c"], // 3/5
-                    sec3: ["kan", "mag", "kan", "kunt", "mogen", "kun", "kunnen", "mogen", "mag", "kunnen"], // 8/10
-                    sec4: ["is haar hond", "zijn je schoenen", "is zijn kaart", "is ons afspraak", "zijn jullie potloden"], // 1 is wrong, 4 is slightly wrong
-                    sec5: ["zebrapad", "wachten", "chauffeur", "denken", "zeilboot", "rennen", "bord", "eiland", "instappen", "slapen"], // 1 is wrong (zebrapad vs kruispunt)
-                    sec6: [
-                        "De trein is geel.",
-                        "De man rent heel hard.",
-                        "De vrouw heeft een koffer bij het spoor.",
-                        "Ik zie een bus."
-                    ]
+            thema8: {
+                toets1: {
+                    sec1: ["b", "a", "c", "b", "b"],
+                    sec2: ["b", "b", "b", "c", "b"],
+                    sec3: [["ga", "gaat"], ["dansen"], ["moet"], ["kom", "komt"], ["willen"], ["mag"], ["wandelen"], ["spelen"], ["kunt", "kan"], ["zwemmen"]],
+                    sec4: [["ik ga geen cursus doen"], ["hij houdt niet van dansen"], ["zij heeft geen hond"], ["zij voetballen niet op zaterdag"], ["taart is niet gezond"]],
+                    sec5: [["vakantie"], ["boerderij"], ["wandelen"], ["hobby"], ["natuur"], ["weekend"], ["ik ga in het weekend wandelen"], ["zij speelt gitaar in een band"], ["wij gaan op vakantie naar een eiland"]]
+                },
+                toets2: {
+                    sec1: ["b", "b", "b", "b", "a"],
+                    sec2: ["b", "a", "b", "b", "a"],
+                    sec3: [["wil"], ["fietsen"], ["moet"], ["komen"], ["mag"], ["koken"], ["spelen"], ["kan"], ["opstaan"]],
+                    sec4: [["ik ga morgen niet werken"], ["zij woont niet in amsterdam"], ["hij drinkt geen melk"], ["zij spelen niet buiten"], ["de winkel is niet open"]],
+                    sec5: [["sporten"], ["strand"], ["museum"], ["fietsen"], ["dierentuin"], ["concert"], ["thomas houdt van hardlopen in het bos"], ["mijn dochter speelt graag buiten met vrienden"], ["wij eten vanavond in een gezellig restaurant"]]
+                },
+                toets3: {
+                    sec1: ["b", "b", "b", "a", "b"],
+                    sec2: ["b", "b", "a", "b", "b"],
+                    sec3: [["kun", "kan"], ["koken"], ["moeten"], ["mogen"], ["wil"], ["gaat"], ["zwemmen"], ["opstaan"], ["bellen"], ["leren"]],
+                    sec4: [["ik heb geen fiets"], ["hij is vandaag niet vrij"], ["zij gaan niet tennissen"], ["ik eet geen vlees"], ["de bus komt nu niet"]],
+                    sec5: [["zwemmen"], ["gitaar"], ["reizen"], ["film"], ["strand"], ["park"], ["zij wandelt met haar man in het park"], ["ik vind het leuk om buiten te zijn"], ["mijn broer houdt van koken en muziek"]]
+                },
+                toets4: {
+                    sec1: ["b", "a", "c", "b", "c"],
+                    sec2: ["c", "b", "b", "b", "a"],
+                    sec3: [["kunnen"], ["wil", "wilt"], ["mogen"], ["gaat"], ["komen"], ["tennissen"], ["moet"], ["hardlopen"], ["kunt", "kan"], ["sporten"]],
+                    sec4: [["ik speel geen piano"], ["de film is niet leuk"], ["ik ga vandaag niet sporten"], ["jan heeft geen auto"], ["bier is niet gezond"]],
+                    sec5: [["kamperen"], ["camping"], ["gitaar"], ["barbecue"], ["zonsondergang"], ["ontspannen"], ["mark gaat in het weekend kamperen"], ["wij luisteren graag naar muziek"], ["ik wil zaterdag naar het bos gaan"]]
+                },
+                toets5: {
+                    sec1: ["b", "a", "c", "b", "b"],
+                    sec2: ["b", "c", "a", "b", "c"],
+                    sec3: [["mogen"], ["kan", "kun"], ["willen"], ["vissen"], ["moet"], ["gaan"], ["komt", "komen"], ["zeilen"], ["kan"], ["spelen"]],
+                    sec4: [["zij woont niet in utrecht"], ["ik heb geen fiets"], ["hij kookt vanavond niet"], ["dit is niet mijn boek"], ["ali heeft geen gitaar"]],
+                    sec5: [["plannen"], ["vissen"], ["zeilen"], ["strand"], ["vakantie"], ["medaille"], ["wij maken plannen voor de vakantie"], ["emma krijgt een gouden medaille"], ["ik wil graag tennissen in de ochtend"]]
                 }
             }
-        ];
-
-        // Save and Load settings
-        function saveWebhookUrl(val) {
-            localStorage.setItem('toetsen_webhook_url', val.trim());
-        }
-
-        function loadSettings() {
-            const url = localStorage.getItem('toetsen_webhook_url') || "";
-            document.getElementById('webhook-url-input').value = url;
-        }
+        };
 
         const themesInfo = {
             thema1: { name: "Thema 1 — Hallo", key: "toets_thema1_submissions" },
@@ -678,32 +495,182 @@
             thema8: { name: "Thema 8 — Vrije tijd", key: "toets_thema8_submissions" }
         };
 
+        let allSubmissions = {};
+        let selectedTheme = null;
+        let selectedSubIndex = null;
+        let selectedLanguage = "nl";
+        let generatedFeedbacks = {}; // [studentName] = { nl: "...", en: "..." }
+
+        let nameFilter = "";
+        let themeFilter = "all";
+        let sortBy = "date_desc";
+
+        // Mock data for initial fill
+        const mockSubmissions = [
+            {
+                name: "Amina Al-Masri",
+                date: "07-06-2026",
+                time: "14:23",
+                theme: "thema7",
+                testNum: "1",
+                answers: {
+                    sec1: ["b", "d", "b", "b", "b"],
+                    sec2: ["b", "c", "a", "a", "b"],
+                    sec3: ["kunnen", "mag", "kan", "kunt", "mag", "kan", "kunnen", "mogen", "mag", "kunnen"],
+                    sec4: ["is hun hond", "zijn jouw schoenen", "is zijn kaart", "is onze afspraak", "zijn jullie potloden"],
+                    sec5: ["kruispunt", "wachten", "sjauffeur", "denken", "boot", "rennen", "bord", "eiland", "instap", "slapen"],
+                    sec6: ["Ik zie een geel trein op het spoor.", "Een man rent op de straat.", "De vrouw koopt een reisticket.", "Er zijn veel mensen in de bus."]
+                }
+            }
+        ];
+
         function initializeSubmissions() {
-            allSubmissions = {};
+            for (let t = 1; t <= 8; t++) {
+                allSubmissions[`thema${t}`] = [];
+            }
+            
+            // Load local storage submissions
             for (let t = 1; t <= 8; t++) {
                 const themeKey = `thema${t}`;
                 const storageKey = themesInfo[themeKey].key;
-                let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                
-                // Pre-populate Theme 7 with mock data if completely empty
-                if (t === 7 && subs.length === 0) {
-                    localStorage.setItem(storageKey, JSON.stringify(mockSubmissions));
-                    subs = mockSubmissions;
-                }
+                const subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 allSubmissions[themeKey] = subs;
             }
+            
+            if (allSubmissions['thema7'].length === 0) {
+                allSubmissions['thema7'] = mockSubmissions;
+                localStorage.setItem(themesInfo['thema7'].key, JSON.stringify(mockSubmissions));
+            }
+            
+            // Sync with Firestore
+            if (window.fbDb) {
+                window.fbDb.collection("submissions").orderBy("timestamp", "desc")
+                    .onSnapshot((snapshot) => {
+                        // Reset to local values first to avoid duplication
+                        for (let t = 1; t <= 8; t++) {
+                            const themeKey = `thema${t}`;
+                            const storageKey = themesInfo[themeKey].key;
+                            allSubmissions[themeKey] = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                            if (themeKey === 'thema7' && allSubmissions['thema7'].length === 0) {
+                                allSubmissions['thema7'] = mockSubmissions;
+                            }
+                        }
+                        
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            if (data.theme && allSubmissions[data.theme]) {
+                                const exists = allSubmissions[data.theme].some(s => 
+                                    s.name === data.name && 
+                                    s.date === data.date && 
+                                    s.time === data.time &&
+                                    JSON.stringify(s.answers) === JSON.stringify(data.answers)
+                                );
+                                if (!exists) {
+                                    allSubmissions[data.theme].push({
+                                        name: data.name,
+                                        date: data.date,
+                                        time: data.time,
+                                        theme: data.theme,
+                                        testNum: data.testNum || "1",
+                                        answers: data.answers
+                                    });
+                                }
+                            }
+                        });
+                        updateList();
+                    }, (err) => {
+                        console.error("Firestore error:", err);
+                        updateList();
+                    });
+            } else {
+                updateList();
+            }
+        }
+
+        function filterName(val) {
+            nameFilter = val;
             updateList();
+        }
+
+        function filterTheme(val) {
+            themeFilter = val;
+            updateList();
+        }
+
+        function changeSort(val) {
+            sortBy = val;
+            updateList();
+        }
+
+        function parseDateTime(dateStr, timeStr) {
+            try {
+                const parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10) - 1;
+                    const year = parseInt(parts[2], 10);
+                    let hours = 0, minutes = 0;
+                    if (timeStr) {
+                        const tParts = timeStr.split(':');
+                        if (tParts.length >= 2) {
+                            hours = parseInt(tParts[0], 10);
+                            minutes = parseInt(tParts[1], 10);
+                        }
+                    }
+                    return new Date(year, month, day, hours, minutes);
+                }
+            } catch(e) {}
+            return new Date(0);
         }
 
         function updateList() {
             const container = document.getElementById('submissions-container');
             container.innerHTML = '';
             
+            let items = [];
             for (let t = 1; t <= 8; t++) {
                 const themeKey = `thema${t}`;
-                const themeName = themesInfo[themeKey].name;
                 const subs = allSubmissions[themeKey] || [];
-                const count = subs.length;
+                subs.forEach((sub, idx) => {
+                    items.push({
+                        ...sub,
+                        originalIndex: idx,
+                        themeKey: themeKey
+                    });
+                });
+            }
+            
+            if (nameFilter) {
+                const query = nameFilter.toLowerCase();
+                items = items.filter(item => item.name.toLowerCase().includes(query));
+            }
+            
+            if (themeFilter !== "all") {
+                items = items.filter(item => item.themeKey === themeFilter);
+            }
+            
+            items.sort((a, b) => {
+                if (sortBy === "name_asc") return a.name.localeCompare(b.name);
+                if (sortBy === "name_desc") return b.name.localeCompare(a.name);
+                if (sortBy === "date_asc") return parseDateTime(a.date, a.time) - parseDateTime(b.date, b.time);
+                return parseDateTime(b.date, b.time) - parseDateTime(a.date, a.time);
+            });
+            
+            const grouped = {};
+            items.forEach(item => {
+                if (!grouped[item.themeKey]) grouped[item.themeKey] = [];
+                grouped[item.themeKey].push(item);
+            });
+            
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                if (themeFilter !== "all" && themeFilter !== themeKey) continue;
+                
+                const themeName = themesInfo[themeKey].name;
+                const themeItems = grouped[themeKey] || [];
+                const count = themeItems.length;
+                
+                if (nameFilter && count === 0) continue;
                 
                 const header = document.createElement('div');
                 header.className = `theme-group-header ${count > 0 ? 'has-items' : ''}`;
@@ -719,13 +686,14 @@
                     noSubs.textContent = 'Geen inzendingen';
                     container.appendChild(noSubs);
                 } else {
-                    subs.forEach((sub, idx) => {
+                    themeItems.forEach((sub) => {
                         const card = document.createElement('div');
-                        card.className = `submission-card ${selectedTheme === themeKey && selectedSubIndex === idx ? 'selected' : ''}`;
-                        card.onclick = () => selectSubmission(themeKey, idx);
+                        card.className = `submission-card ${selectedTheme === sub.themeKey && selectedSubIndex === sub.originalIndex ? 'selected' : ''}`;
+                        card.onclick = () => selectSubmission(sub.themeKey, sub.originalIndex);
                         
+                        const testLabel = sub.testNum ? ` (toets ${sub.testNum})` : '';
                         card.innerHTML = `
-                            <div class="student-name">${sub.name}</div>
+                            <div class="student-name">${sub.name}${testLabel}</div>
                             <div class="timestamp">📅 ${sub.date} om ${sub.time}</div>
                         `;
                         container.appendChild(card);
@@ -734,285 +702,99 @@
             }
         }
 
-        function clearAllSubmissions() {
-            if (confirm("Weet u zeker dat u alle opgeslagen inzendingen van ALLE thema's wilt wissen uit de browser? Dit wist ook de mock-inzendingen.")) {
-                for (let t = 1; t <= 8; t++) {
-                    const themeKey = `thema${t}`;
-                    const storageKey = themesInfo[themeKey].key;
-                    localStorage.removeItem(storageKey);
-                }
-                selectedTheme = null;
-                selectedSubIndex = null;
-                initializeSubmissions();
-                document.getElementById('main-content-panel').innerHTML = `
-                    <div class="empty-state">
-                        🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
-                    </div>
-                `;
-            }
-        }
-
         function selectSubmission(theme, idx) {
             selectedTheme = theme;
             selectedSubIndex = idx;
-            manualGrades = { 0: 3, 1: 3, 2: 3, 3: 3 }; // Reset writing grades
-            selectedLanguage = "nl"; // Reset feedback language
+            selectedLanguage = "nl";
             updateList();
             renderReviewPanel();
         }
 
-        // Automatic grading & rendering of the review panel
         function renderReviewPanel() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             const panel = document.getElementById('main-content-panel');
             
-            if (selectedTheme !== 'thema7') {
-                panel.innerHTML = `
-                    <div class="quiz-card">
-                        <h2>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> (${themesInfo[selectedTheme].name})</h2>
-                        <p style="margin-top: 15px; font-weight: 600; color: var(--text-secondary);">
-                            Voor dit thema is nog geen automatische nakijkfunctie geïmplementeerd. Hieronder staan de ingediende antwoorden:
-                        </p>
-                        <pre style="background:var(--bg); border: 1px solid var(--border-medium); padding:15px; border-radius:var(--radius-sm); overflow-x:auto; margin-top: 15px; color: var(--text-primary); font-family: monospace; font-size: 0.9rem;">
-${JSON.stringify(sub.answers, null, 2)}
-                        </pre>
-                    </div>
-                `;
-                return;
-            }
-            
-            let totalAutoScore = 0;
-            let maxAutoScore = 0;
-            
-            // 1. Grading Sections
-            // Luisteren (5 points)
-            let s1_html = '';
-            sub.answers.sec1.forEach((ans, i) => {
-                const correct = docentKeys.sec1[i];
-                const isCorrect = ans === correct;
-                const score = isCorrect ? 1.0 : 0.0;
-                totalAutoScore += score;
-                maxAutoScore += 1;
-                
-                const icon = isCorrect 
-                    ? `<span class="check-icon correct">✅</span>` 
-                    : `<span class="check-icon incorrect">❌</span>`;
-                s1_html += `
-                    <div class="qa-item">
-                        ${icon} <strong>Vraag ${i+1}:</strong> ${docentQuestions.sec1[i]}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Antwoord cursist: <span style="font-weight:700;">${ans}</span> ${!isCorrect ? `(Juist: ${correct})` : ''}
-                    </div>
-                `;
-            });
+            // Format raw answers representation
+            const formatSection = (arr) => {
+                if (!arr || arr.length === 0) return "<i>Geen antwoorden ingevuld</i>";
+                return arr.map((ans, i) => `<b>Vraag ${i+1}:</b> ${ans || '-'}`).join('<br>');
+            };
 
-            // Lezen (5 points)
-            let s2_html = '';
-            sub.answers.sec2.forEach((ans, i) => {
-                const correct = docentKeys.sec2[i];
-                const isCorrect = ans === correct;
-                const score = isCorrect ? 1.0 : 0.0;
-                totalAutoScore += score;
-                maxAutoScore += 1;
-                
-                const icon = isCorrect 
-                    ? `<span class="check-icon correct">✅</span>` 
-                    : `<span class="check-icon incorrect">❌</span>`;
-                s2_html += `
-                    <div class="qa-item">
-                        ${icon} <strong>Vraag ${i+1}:</strong> ${docentQuestions.sec2[i]}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Antwoord cursist: <span style="font-weight:700;">${ans}</span> ${!isCorrect ? `(Juist: ${correct})` : ''}
-                    </div>
-                `;
-            });
+            const rawAnswersHtml = `
+                <div class="section-header-bar">1. Luisteren</div>
+                <div class="qa-item">${formatSection(sub.answers.sec1)}</div>
+                <div class="section-header-bar">2. Lezen</div>
+                <div class="qa-item">${formatSection(sub.answers.sec2)}</div>
+                <div class="section-header-bar">3. Grammatica</div>
+                <div class="qa-item">${formatSection(sub.answers.sec3)}</div>
+                <div class="section-header-bar">4. Geef antwoord (Geen/Niet)</div>
+                <div class="qa-item">${formatSection(sub.answers.sec4)}</div>
+                <div class="section-header-bar">5. Dictee</div>
+                <div class="qa-item">${formatSection(sub.answers.sec5)}</div>
+                <div class="section-header-bar">6. Schrijven (Praatplaat)</div>
+                <div class="qa-item">${formatSection(sub.answers.sec6)}</div>
+            `;
 
-            // Grammatica (10 points)
-            let s3_html = '';
-            sub.answers.sec3.forEach((ans, i) => {
-                const correctList = docentKeys.sec3[i];
-                const res = checkCorrectness(ans, correctList, 1.0);
-                totalAutoScore += res.score;
-                maxAutoScore += 1;
-                
-                let icon = '';
-                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
-                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
-                else icon = `<span class="check-icon incorrect">❌</span>`;
-                
-                s3_html += `
-                    <div class="qa-item">
-                        ${icon} <strong>Zin ${i+1}:</strong> ${docentQuestions.sec3[i]}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"${ans || '(geen antwoord)'}"</span> 
-                        ${res.status !== "correct" ? `(Juist: ${correctList.join('/')})` : ''} 
-                        <span class="badge-score">${res.score}/1 pt</span>
-                    </div>
-                `;
-            });
-
-            // Bezittelijk (5 items x 3 points = 15 points)
-            let s4_html = '';
-            sub.answers.sec4.forEach((ans, i) => {
-                const correctList = docentKeys.sec4[i];
-                const res = checkCorrectness(ans, correctList, 3.0);
-                totalAutoScore += res.score;
-                maxAutoScore += 3;
-                
-                let icon = '';
-                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
-                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
-                else icon = `<span class="check-icon incorrect">❌</span>`;
-                
-                s4_html += `
-                    <div class="qa-item">
-                        ${icon} <strong>Zin ${i+1}:</strong> ${docentQuestions.sec4[i]}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"Het ${ans || '(geen antwoord)'}"</span> 
-                        ${res.status !== "correct" ? `(Juist: Het ${correctList.join(' / Het ')})` : ''}
-                        <span class="badge-score">${res.score}/3 pt</span>
-                    </div>
-                `;
-            });
-
-            // Woordenschat (10 items x 3 points = 30 points)
-            let s5_html = '';
-            sub.answers.sec5.forEach((ans, i) => {
-                const correctList = docentKeys.sec5[i];
-                const res = checkCorrectness(ans, correctList, 3.0);
-                totalAutoScore += res.score;
-                maxAutoScore += 3;
-                
-                let icon = '';
-                if (res.status === "correct") icon = `<span class="check-icon correct">✅</span>`;
-                else if (res.status === "half") icon = `<span class="check-icon half">🟠</span>`;
-                else icon = `<span class="check-icon incorrect">❌</span>`;
-                
-                s5_html += `
-                    <div class="qa-item">
-                        ${icon} <strong>Plaatje ${i+1}:</strong> ${docentQuestions.sec5[i]}<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;Ingevuld: <span style="font-weight:700;">"${ans || '(geen antwoord)'}"</span> 
-                        ${res.status !== "correct" ? `(Juist: ${correctList.join('/')})` : ''}
-                        <span class="badge-score">${res.score}/3 pt</span>
-                    </div>
-                `;
-            });
-
-            // Section 6 (Schrijven Open Vragen - 4 sentences x 3 points = 12 points)
-            let s6_html = '';
-            sub.answers.sec6.forEach((ans, i) => {
-                const currentScore = manualGrades[i];
-                s6_html += `
-                    <div class="qa-item">
-                        <strong>Zin ${i+1}:</strong> <span style="font-weight:700; font-style:italic;">"${ans || '(geen antwoord)'}"</span>
-                        <div style="margin-top: 8px; display:flex; align-items:center; gap:10px;">
-                            <label style="font-size:0.8rem; font-weight:700;">Beoordeling:</label>
-                            <select class="writing-grade-select" onchange="updateWritingGrade(${i}, this.value)">
-                                <option value="3" ${currentScore === 3 ? 'selected' : ''}>3 pt (Perfecte zin)</option>
-                                <option value="2" ${currentScore === 2 ? 'selected' : ''}>2 pt (Begrijpelijk/Spellingfout)</option>
-                                <option value="1" ${currentScore === 1 ? 'selected' : ''}>1 pt (Zeer matig)</option>
-                                <option value="0" ${currentScore === 0 ? 'selected' : ''}>0 pt (Fout/Incompleet)</option>
-                            </select>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Calculate grand totals
-            const totalWritingScore = Object.values(manualGrades).reduce((sum, v) => sum + v, 0);
-            const totalScore = Math.round((totalAutoScore + totalWritingScore) * 10) / 10;
-            const maxScore = maxAutoScore + 12; // 35 points total if scaled, but raw points in docent PDF:
-            // S1 (5) + S2 (5) + S3 (10) + S4 (15) + S5 (30) + S6 (12) = 77 points total!
-            // Let's display both the raw score and a scaled percentage
-            const percentage = Math.round((totalScore / 77) * 100);
-            
             panel.innerHTML = `
                 <div class="quiz-card" style="margin-bottom: 0;">
                     <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px;">
-                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong></span>
-                        <span class="score-pill" style="font-size:1rem; padding: 6px 14px; background-color:#8b7ef8;">
-                            Score: ${String(totalScore).replace('.', ',')}/77 pt (${percentage}%)
-                        </span>
+                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> (${themesInfo[sub.theme].name})</span>
                     </h2>
                     
                     <div class="results-grid">
-                        <!-- Left column: Q&A Grading details -->
-                        <div style="max-height: 700px; overflow-y: auto; padding-right: 10px;">
-                            
-                            <div class="section-header-bar">1. Luisteren (${sub.answers.sec1.filter((ans, i) => ans === docentKeys.sec1[i]).length}/5 pt)</div>
-                            ${s1_html}
-                            
-                            <div class="section-header-bar">2. Lezen (${sub.answers.sec2.filter((ans, i) => ans === docentKeys.sec2[i]).length}/5 pt)</div>
-                            ${s2_html}
-                            
-                            <div class="section-header-bar">3. Grammatica (Vorm van kunnen/mogen)</div>
-                            ${s3_html}
-                            
-                            <div class="section-header-bar">4. Bezittelijk voornaamwoord (Zinnen schrijven)</div>
-                            ${s4_html}
-                            
-                            <div class="section-header-bar">5. Woordenschat (Plaatjes invullen)</div>
-                            ${s5_html}
-                            
-                            <div class="section-header-bar">6. Schrijven / Spreken (Praatplaat - ${totalWritingScore}/12 pt)</div>
-                            ${s6_html}
+                        <!-- Left column: Raw student answers -->
+                        <div style="max-height: 700px; overflow-y: auto; padding-right: 15px; border-right:1px solid var(--border-medium);">
+                            <h3>Ingezonden Antwoorden</h3>
+                            ${rawAnswersHtml}
                         </div>
                         
-                        <!-- Right column: AI Feedback Generator -->
-                        <div style="display:flex; flex-direction:column; gap:15px; border-left:1px solid var(--border-medium); padding-left:20px;">
-                            <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 Gemini AI Feedback Generator</h3>
-                            <span class="instruction-text" style="margin-bottom:5px;">
-                                Analyseer de fouten van ${sub.name} en genereer direct een gepersonaliseerde, bemoedigende feedbackbrief in het Nederlands.
-                            </span>
+                        <!-- Right column: AI Feedback Generator & Editor -->
+                        <div style="display:flex; flex-direction:column; gap:15px; padding-left:20px;">
+                            <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 Gemini AI Nakijken & Feedback</h3>
                             
                             <button class="settings-btn" id="generate-ai-btn" style="width:100%; padding:12px; background:var(--primary);" onclick="generateAIFeedback()">
-                                ✨ Genereer AI Feedbackbrief
+                                ✨ Genereer Nakijkblad & Brief
                             </button>
                             
                             <div class="translate-bar" id="translation-controls" style="display:none;">
-                                <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Vertaal brief:</span>
+                                <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Herschrijf / Vertaal:</span>
                                 <button class="translate-btn ${selectedLanguage === 'nl' ? 'active' : ''}" onclick="switchFeedbackLanguage('nl')">🇳🇱 NL</button>
                                 <button class="translate-btn ${selectedLanguage === 'en' ? 'active' : ''}" onclick="switchFeedbackLanguage('en')">🇬🇧 EN</button>
                                 <button class="translate-btn ${selectedLanguage === 'ar' ? 'active' : ''}" onclick="switchFeedbackLanguage('ar')">🇸🇦 AR</button>
                                 <button class="translate-btn ${selectedLanguage === 'tr' ? 'active' : ''}" onclick="switchFeedbackLanguage('tr')">🇹🇷 TR</button>
-                                <button class="translate-btn ${selectedLanguage === 'fa' ? 'active' : ''}" onclick="switchFeedbackLanguage('fa')">🇮🇷 FA</button>
-                                <button class="translate-btn ${selectedLanguage === 'da' ? 'active' : ''}" onclick="switchFeedbackLanguage('da')">🇦🇫 DA</button>
-                                <button class="translate-btn ${selectedLanguage === 'ps' ? 'active' : ''}" onclick="switchFeedbackLanguage('ps')">🇦🇫 PS</button>
+                            </div>
+
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="ai-instruction" class="settings-input" placeholder="AI Instructie (bijv. 'vertaal naar het engels en maak positief')..." style="flex-grow: 1;">
+                                <button class="settings-btn" onclick="rewriteFeedbackWithAI()" style="background: var(--secondary);">Herschrijf</button>
                             </div>
                             
                             <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." oninput="updateStoredFeedback(this.value)"></textarea>
                             
                             <div class="action-row">
                                 <button class="action-btn purple" onclick="copyFeedbackText()">📋 Kopieer tekst</button>
-                                <button class="action-btn green" onclick="sendFeedbackWhatsApp()">📲 Stuur naar student</button>
+                                <button class="action-btn green" onclick="sendFeedbackWhatsApp()">📲 Stuur naar student via WhatsApp</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
             
-            // Restore textarea state if already generated
             if (generatedFeedbacks[sub.name]) {
                 document.getElementById('translation-controls').style.display = 'flex';
                 showActiveFeedbackText();
             }
         }
 
-        function updateWritingGrade(idx, val) {
-            manualGrades[idx] = parseInt(val);
-            renderReviewPanel();
-        }
-
         function updateStoredFeedback(val) {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             if (!sub) return;
-            
-            if (!generatedFeedbacks[sub.name]) {
-                generatedFeedbacks[sub.name] = {};
-            }
-            // Update the translation slot currently active
+            if (!generatedFeedbacks[sub.name]) generatedFeedbacks[sub.name] = {};
             generatedFeedbacks[sub.name][selectedLanguage] = val;
         }
 
-        // --- GEMINI AI FEEDBACK GENERATION ---
         async function generateAIFeedback() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
@@ -1021,92 +803,103 @@ ${JSON.stringify(sub.answers, null, 2)}
             
             btn.disabled = true;
             btn.textContent = "⏳ Analyseren en schrijven...";
-            textarea.value = "Gemini is bezig met het nakijken van de antwoorden en het schrijven van de brief...";
+            textarea.value = "Gemini kijkt de toets na en stelt het feedbackrapport op...";
             
             try {
-                // Collect detailed error details for the prompt
-                let errorsText = "";
-                
-                // Section 3 checking
-                sub.answers.sec3.forEach((ans, i) => {
-                    const corr = docentKeys.sec3[i];
-                    const res = checkCorrectness(ans, corr);
-                    if (res.status !== "correct") {
-                        errorsText += `- Grammatica Vraag ${i+1}: schreef "${ans || 'niks'}" (moet zijn: ${corr[0]})\n`;
-                    }
-                });
-                
-                // Section 4 checking
-                sub.answers.sec4.forEach((ans, i) => {
-                    const corr = docentKeys.sec4[i];
-                    const res = checkCorrectness(ans, corr, 3.0);
-                    if (res.status !== "correct") {
-                        errorsText += `- Bezittelijk Vraag ${i+1}: schreef "Het ${ans || 'niks'}" (moet zijn: Het ${corr[0]})\n`;
-                    }
-                });
+                const keys = answerKeys[sub.theme] || {};
+                const keysString = sub.theme === 'thema8' ? JSON.stringify(answerKeys.thema8[`toets${sub.testNum || "1"}`]) : JSON.stringify(keys);
 
-                // Section 5 checking
-                sub.answers.sec5.forEach((ans, i) => {
-                    const corr = docentKeys.sec5[i];
-                    const res = checkCorrectness(ans, corr, 3.0);
-                    if (res.status !== "correct") {
-                        errorsText += `- Woordenschat Plaatje ${i+1} (${docentQuestions.sec5[i]}): schreef "${ans || 'niks'}" (moet zijn: ${corr[0]})\n`;
-                    }
-                });
-                
-                // Section 6 sentences
-                let writingText = "";
-                sub.answers.sec6.forEach((ans, i) => {
-                    writingText += `- Zin ${i+1}: "${ans || '(geen zin)'}" (Beoordeeld met ${manualGrades[i]}/3 punten door docent)\n`;
-                });
-                
-                // Construct Gemini Prompt
                 const prompt = `
-                Je bent een NT2 A1 docent Nederlands. Schrijf een persoonlijke, bemoedigende en professionele feedbackbrief voor de cursist genaamd "${sub.name}".
-                De cursist heeft Toets Thema 7 (Reizen en Vervoer) gemaakt.
-                
-                Hier zijn de details van hun toets:
-                - Naam: ${sub.name}
-                - Score op luisteren: ${sub.answers.sec1.filter((ans, i) => ans === docentKeys.sec1[i]).length}/5
-                - Score op lezen: ${sub.answers.sec2.filter((ans, i) => ans === docentKeys.sec2[i]).length}/5
-                - Fouten en spellingproblemen in grammatica, bezittelijke voornaamwoorden en woordenschat:
-                ${errorsText || "Geen grote fouten in deze secties!"}
-                
-                - Schrijfvaardigheid zinnen (Sectie 6 - Praatplaat):
-                ${writingText}
-                
-                Richtlijnen voor de brief:
-                1. Schrijf de brief volledig in het Nederlands (NT2 A1/A2 niveau, helder en eenvoudig, maar wel natuurlijk).
-                2. Begin met "Beste ${sub.name}," en sluit af met "Met vriendelijke groet, [Je naam]".
-                3. Wees erg positief en bemoedigend! Zeg eerst wat er heel goed ging (bijvoorbeeld hun luister/leesscore of grammatica).
-                4. Geef daarna constructieve en duidelijke leertips over de gemaakte fouten (bijvoorbeeld het verschil tussen 'kunnen' en 'mogen' of spelling van reiswoorden).
-                5. Beoordeel de schrijfvaardigheidszinnen kort en geef tips om de zinnen te verbeteren indien er fouten inzitten (bijv. "geel trein" moet zijn "gele trein").
-                6. Houd de toon warm, empathisch en bemoedigend. Geef geen cijfer in de brief, maar motiveer ze.
-                
-                Geef uitsluitend de tekst van de brief terug.
+                Je bent een NT2 A1 docent Nederlands. Jouw taak is om de ingediende toets van cursist "${sub.name}" na te kijken en een gedetailleerd feedbackrapport te genereren.
+                De cursist heeft toets ${sub.theme.toUpperCase()} (Toets ${sub.testNum || "1"}) gemaakt.
+
+                Hier zijn de cursist-antwoorden:
+                - Sectie 1 (Luisteren): ${JSON.stringify(sub.answers.sec1)}
+                - Sectie 2 (Lezen): ${JSON.stringify(sub.answers.sec2)}
+                - Sectie 3 (Grammatica): ${JSON.stringify(sub.answers.sec3)}
+                - Sectie 4 (Geen/Niet): ${JSON.stringify(sub.answers.sec4)}
+                - Sectie 5 (Dictee): ${JSON.stringify(sub.answers.sec5)}
+                - Sectie 6 (Schrijven - Praatplaat): ${JSON.stringify(sub.answers.sec6)}
+
+                Richtlijnen voor de correctie:
+                - Gebruik de bekende antwoordsleutel: ${keysString}
+                - Als er geen specifieke sleutel is, controleer de antwoorden dan zelf op basis van de A1 grammaticaregels en spelling.
+                - Voor de schrijfzinnen (Sectie 6), controleer grammatica, lidwoorden en of de zinnen logisch en correct zijn geschreven.
+
+                Stel de feedback EXACT op volgens deze vaste structuur in het Nederlands:
+
+                📊 **1. NAKIJKBLAD (OVERZICHT)**
+                Bespreek per sectie of de vraag goed is (gebruik ✅), fout (❌) of spellingfouten bevat (⚠️). Bereken de score en het percentage.
+
+                ✉️ **2. FEEDBACKBRIEF**
+                Beste ${sub.name},
+                [Schrijf een bemoedigende en persoonlijke brief in eenvoudig Nederlands (A1/A2 niveau). Geef complimenten over de goede onderdelen en geef maximaal 3 concrete leertips voor de fouten].
+
+                Met vriendelijke groet,
+                [Je docent]
+
+                Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende teksten van jezelf.
                 `;
-                
+
                 const responseText = await callGemini(prompt);
-                
-                // Save original feedback
-                generatedFeedbacks[sub.name] = {
-                    nl: responseText.trim()
-                };
+                generatedFeedbacks[sub.name] = { nl: responseText.trim() };
                 
                 document.getElementById('translation-controls').style.display = 'flex';
                 selectedLanguage = "nl";
                 showActiveFeedbackText();
-                
             } catch (err) {
-                console.error("Gemini API Error:", err);
-                textarea.value = `Fout bij genereren van AI feedback: ${err.message}\n\nControleer of de Gemini API-sleutel correct is ingesteld in api_key.js en je verbinding hebt met het internet.`;
+                console.error("Gemini Error:", err);
+                textarea.value = `Fout bij genereren feedback: ${err.message}`;
             } finally {
                 btn.disabled = false;
-                btn.textContent = "✨ Genereer AI Feedbackbrief";
+                btn.textContent = "✨ Genereer Nakijkblad & Brief";
             }
         }
 
-        // Translate the generated feedback using Gemini
+        async function rewriteFeedbackWithAI() {
+            if (selectedTheme === null || selectedSubIndex === null) return;
+            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const instructionInput = document.getElementById('ai-instruction');
+            const instruction = instructionInput.value.trim();
+            const textarea = document.getElementById('feedback-textarea');
+            const currentText = textarea.value.trim();
+            
+            if (!instruction) {
+                alert("Typ eerst een instructie in het AI Instructie-veld.");
+                return;
+            }
+            if (!currentText) {
+                alert("Er is geen feedback om aan te passen. Genereer eerst de feedback.");
+                return;
+            }
+            
+            textarea.value = "Gemini past het feedbackrapport aan op basis van je instructie...";
+            
+            try {
+                const prompt = `
+                Je bent een NT2 docent Nederlands. Hier is de huidige feedback (nakijkblad en brief) voor cursist "${sub.name}":
+                """
+                ${currentText}
+                """
+
+                Pas deze feedback aan volgens de volgende specifieke instructie van de hoofddocent:
+                "${instruction}"
+
+                Behoud de geformatteerde structuur (Nakijkblad en Feedbackbrief) tenzij de instructie vraagt om dit te wijzigen.
+                Geef uitsluitend het aangepaste feedbackrapport terug.
+                `;
+                
+                const responseText = await callGemini(prompt);
+                generatedFeedbacks[sub.name][selectedLanguage] = responseText.trim();
+                showActiveFeedbackText();
+                instructionInput.value = ""; // Clear input
+            } catch (err) {
+                console.error("Rewrite error:", err);
+                alert("Fout bij het herschrijven met AI: " + err.message);
+                showActiveFeedbackText();
+            }
+        }
+
         async function translateFeedback(targetLangCode, targetLangName) {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
@@ -1114,16 +907,14 @@ ${JSON.stringify(sub.answers, null, 2)}
             const origFeedback = generatedFeedbacks[sub.name]?.nl;
             
             if (!origFeedback) return;
-            
             textarea.value = `Vertalen naar het ${targetLangName}...`;
             
             try {
                 const prompt = `
-                Vertaal de onderstaande Nederlandse feedbackbrief van een docent naar het ${targetLangName}. 
-                Behoud de opmaak, de alinea's en de vriendelijke, bemoedigende toon. 
-                De vertaling moet natuurlijk en accuraat klinken in het ${targetLangName}.
+                Vertaal de onderstaande feedback (nakijkblad en brief) naar het ${targetLangName}. 
+                Behoud de structuur, de emoji's, en de vriendelijke toon.
                 
-                Brief om te vertalen:
+                Tekst om te vertalen:
                 """
                 ${origFeedback}
                 """
@@ -1136,7 +927,7 @@ ${JSON.stringify(sub.answers, null, 2)}
                 showActiveFeedbackText();
             } catch (err) {
                 console.error("Translation Error:", err);
-                textarea.value = `Fout bij vertalen: ${err.message}\n\nOriginele brief:\n\n${origFeedback}`;
+                textarea.value = `Fout bij vertalen: ${err.message}\n\nOriginele feedback:\n\n${origFeedback}`;
             }
         }
 
@@ -1146,11 +937,9 @@ ${JSON.stringify(sub.answers, null, 2)}
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             if (!sub) return;
             
-            // Mark the active language button
             document.querySelectorAll('.translate-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            // Search for active button
             const btns = document.querySelectorAll('.translate-btn');
             btns.forEach(b => {
                 if (b.textContent.toLowerCase().includes(lang)) {
@@ -1158,14 +947,11 @@ ${JSON.stringify(sub.answers, null, 2)}
                 }
             });
             
-            // If already translated/generated, display it
             if (generatedFeedbacks[sub.name] && generatedFeedbacks[sub.name][lang]) {
                 showActiveFeedbackText();
             } else {
-                // Otherwise translate it now!
                 const langNames = {
-                    en: "Engels", ar: "Arabisch", tr: "Turks",
-                    fa: "Farsi", da: "Dari", ps: "Pasjtoe"
+                    en: "Engels", ar: "Arabisch", tr: "Turks"
                 };
                 translateFeedback(lang, langNames[lang]);
             }
@@ -1209,7 +995,6 @@ ${JSON.stringify(sub.answers, null, 2)}
             }
         }
 
-        // WhatsApp forwarding and copying
         function copyFeedbackText() {
             const textarea = document.getElementById('feedback-textarea');
             if (!textarea || !textarea.value.trim()) {
@@ -1228,43 +1013,30 @@ ${JSON.stringify(sub.answers, null, 2)}
                 return;
             }
             const encodedText = encodeURIComponent(textarea.value.trim());
-            const phone = "31626211106"; // Default recipient or student number if available
+            const phone = "31626211106"; 
             const url = `https://wa.me/${phone}?text=${encodedText}`;
             window.open(url, '_blank');
         }
 
-        // Fetch external submissions from Google Apps Script GET
-        function fetchExternalSubmissions() {
-            const url = localStorage.getItem('toetsen_webhook_url');
-            if (!url) {
-                alert("Vul alstublieft eerst de Apps Script GET URL in om te kunnen synchroniseren.");
-                return;
-            }
-            
-            alert("Start synchronisatie met Google Sheets...");
-            // Real integration: GET request to script URL which returns spreadsheet data as JSON
-            fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    // Update LocalStorage and reload
-                    localStorage.setItem('toets_thema7_submissions', JSON.stringify(data));
-                    allSubmissions['thema7'] = data;
-                    selectedTheme = null;
-                    selectedSubIndex = null;
-                    updateList();
-                    alert(`Succesvol ${data.length} inzendingen geladen uit Google Sheets!`);
-                } else {
-                    alert("Foutief antwoordformaat van Google Sheets. Verwachtte een array van submissions.");
+        function clearAllSubmissions() {
+            if (confirm("Weet u zeker dat u alle opgeslagen inzendingen van ALLE thema's wilt wissen?")) {
+                for (let t = 1; t <= 8; t++) {
+                    const themeKey = `thema${t}`;
+                    const storageKey = themesInfo[themeKey].key;
+                    localStorage.removeItem(storageKey);
                 }
-            })
-            .catch(err => {
-                console.error("Fetch submissions error:", err);
-                alert(`Fout bij laden van Google Sheets: ${err.message}. Controleer of je Apps Script doGet(e) hebt geïmplementeerd en de URL klopt.`);
-            });
+                selectedTheme = null;
+                selectedSubIndex = null;
+                initializeSubmissions();
+                document.getElementById('main-content-panel').innerHTML = `
+                    <div class="empty-state">
+                        🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
+                    </div>
+                `;
+            }
         }
 
-        // --- MANUAL WHATSAPP IMPORT BACKUP FEATURE ---
+        // WhatsApp manual import parser
         function toggleImportArea() {
             const area = document.getElementById('import-area');
             if (area.style.display === 'none' || area.style.display === '') {
@@ -1278,36 +1050,20 @@ ${JSON.stringify(sub.answers, null, 2)}
 
         function parseWhatsAppMessage(text) {
             if (!text) return null;
-            
-            // Clean up formatting bold markers that WhatsApp/markdown uses
             const cleanText = text.replace(/\*/g, '');
-            
-            // Extract Name
-            const nameMatch = cleanText.match(/Naam:\s*(.*)/i);
+            const nameMatch = cleanText.match(/Cursist:\s*(.*)/i);
             const name = nameMatch ? nameMatch[1].trim() : "Onbekende Cursist";
             
-            // Extract Date and Time
-            const dateMatch = cleanText.match(/Datum:\s*([^\s]*)/i);
-            const date = dateMatch ? dateMatch[1].trim() : new Date().toLocaleDateString('nl-NL');
+            const date = new Date().toLocaleDateString('nl-NL');
+            const time = new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
             
-            const timeMatch = cleanText.match(/om\s*([0-9:]*)/i);
-            const time = timeMatch ? timeMatch[1].trim() : new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+            let theme = "thema8";
+            if (cleanText.toLowerCase().includes("thema 7")) theme = "thema7";
             
-            // Detect theme
-            let theme = "thema7"; // default
-            if (cleanText.toLowerCase().includes("thema 7")) {
-                theme = "thema7";
-            }
+            const testNumMatch = cleanText.match(/OEFENTOETS\s*([0-9]+)/i);
+            const testNum = testNumMatch ? testNumMatch[1] : "1";
             
-            const answers = {
-                sec1: [],
-                sec2: [],
-                sec3: [],
-                sec4: [],
-                sec5: [],
-                sec6: []
-            };
-            
+            const answers = { sec1: [], sec2: [], sec3: [], sec4: [], sec5: [], sec6: [] };
             const lines = cleanText.split('\n');
             let currentSec = null;
             
@@ -1315,70 +1071,36 @@ ${JSON.stringify(sub.answers, null, 2)}
                 const trimmed = line.trim();
                 const lower = trimmed.toLowerCase();
                 
-                if (lower.includes("1. luisteren")) {
-                    currentSec = "sec1";
-                } else if (lower.includes("2. lezen")) {
-                    currentSec = "sec2";
-                } else if (lower.includes("3. grammatica")) {
-                    currentSec = "sec3";
-                } else if (lower.includes("4. bezittelijk") || lower.includes("4. voornaamwoord") || lower.includes("4. geef antwoord")) {
-                    currentSec = "sec4";
-                } else if (lower.includes("5. woordenschat") || (lower.includes("5. vul in") && !lower.includes("3. vul in"))) {
-                    currentSec = "sec5";
-                } else if (lower.includes("6. schrijven") || lower.includes("6. open") || lower.includes("6. wat zie je")) {
-                    currentSec = "sec6";
-                } else if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
+                if (lower.includes("1. luisteren")) currentSec = "sec1";
+                else if (lower.includes("2. lezen")) currentSec = "sec2";
+                else if (lower.includes("3. grammatica")) currentSec = "sec3";
+                else if (lower.includes("4. geef antwoord")) currentSec = "sec4";
+                else if (lower.includes("5. dictee")) currentSec = "sec5";
+                else if (lower.includes("6. schrijven")) currentSec = "sec6";
+                else if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
                     const colonIndex = trimmed.indexOf(':');
                     if (colonIndex !== -1) {
                         let ansVal = trimmed.substring(colonIndex + 1).trim();
-                        
-                        if (currentSec === "sec1" || currentSec === "sec2") {
-                            answers[currentSec].push(ansVal);
-                        } else if (currentSec === "sec3") {
-                            answers[currentSec].push(ansVal);
-                        } else if (currentSec === "sec4") {
-                            if (ansVal.toLowerCase().startsWith("het ")) {
-                                ansVal = ansVal.substring(4).trim();
-                            }
-                            answers[currentSec].push(ansVal);
-                        } else if (currentSec === "sec5") {
-                            answers[currentSec].push(ansVal);
-                        } else if (currentSec === "sec6") {
-                            ansVal = ansVal.replace(/^["']|["']$/g, '').trim();
-                            answers[currentSec].push(ansVal);
-                        }
+                        ansVal = ansVal.replace(/^["']|["']$/g, '').trim();
+                        if (currentSec) answers[currentSec].push(ansVal);
                     }
                 }
             });
             
-            // Pad answers to standard length if empty/missing
-            while (answers.sec1.length < 5) answers.sec1.push("-");
-            while (answers.sec2.length < 5) answers.sec2.push("-");
-            while (answers.sec3.length < 10) answers.sec3.push("-");
-            while (answers.sec4.length < 5) answers.sec4.push("-");
-            while (answers.sec5.length < 10) answers.sec5.push("-");
-            while (answers.sec6.length < 4) answers.sec6.push("-");
-            
-            return {
-                name,
-                date,
-                time,
-                theme,
-                answers
-            };
+            return { name, date, time, theme, testNum, answers };
         }
 
         function importWhatsAppSub() {
             const textarea = document.getElementById('import-textarea');
             const text = textarea.value.trim();
             if (!text) {
-                alert("Plak eerst het WhatsApp bericht in het tekstvak.");
+                alert("Plak eerst het WhatsApp bericht.");
                 return;
             }
             
             const parsed = parseWhatsAppMessage(text);
             if (!parsed) {
-                alert("Kan het bericht niet herkennen. Zorg ervoor dat het een origineel antwoordbericht is.");
+                alert("Kan het bericht niet herkennen.");
                 return;
             }
             
@@ -1387,22 +1109,51 @@ ${JSON.stringify(sub.answers, null, 2)}
                 let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 subs.push(parsed);
                 localStorage.setItem(storageKey, JSON.stringify(subs));
-                
-                // Update in-memory
                 allSubmissions[parsed.theme] = subs;
                 
-                // Close import area
                 toggleImportArea();
-                
-                // Refresh list and select the newly imported submission
                 updateList();
                 selectSubmission(parsed.theme, subs.length - 1);
-                
-                alert(`Succesvol toets handmatig geïmporteerd voor: ${parsed.name}!`);
+                alert(`Succesvol geïmporteerd voor: ${parsed.name}!`);
             } catch (e) {
-                console.error("Fout bij importeren:", e);
-                alert("Fout bij opslaan van handmatige invoer.");
+                console.error(e);
+                alert("Fout bij opslaan.");
             }
+        }
+
+        function saveWebhookUrl(val) {
+            localStorage.setItem('toetsen_webhook_url', val.trim());
+        }
+
+        function loadSettings() {
+            const url = localStorage.getItem('toetsen_webhook_url') || "";
+            document.getElementById('webhook-url-input').value = url;
+        }
+
+        function fetchExternalSubmissions() {
+            const url = localStorage.getItem('toetsen_webhook_url');
+            if (!url) {
+                alert("Vul alstublieft eerst de Apps Script GET URL in.");
+                return;
+            }
+            alert("Start synchronisatie met Google Sheets...");
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    localStorage.setItem('toets_thema7_submissions', JSON.stringify(data));
+                    allSubmissions['thema7'] = data;
+                    selectedTheme = null;
+                    selectedSubIndex = null;
+                    updateList();
+                    alert(`Succesvol ${data.length} inzendingen geladen uit Google Sheets!`);
+                } else {
+                    alert("Foutief antwoordformaat van Google Sheets.");
+                }
+            })
+            .catch(err => {
+                alert(`Fout bij laden van Google Sheets: ${err.message}`);
+            });
         }
 
         // Document Load
