@@ -1135,7 +1135,9 @@
         function speakDictee(text) {
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(text);
+            // Remove parentheses and their contents
+            const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+            const u = new SpeechSynthesisUtterance(cleanText);
             u.lang = 'nl-NL';
             u.rate = 0.8;
             window.speechSynthesis.speak(u);

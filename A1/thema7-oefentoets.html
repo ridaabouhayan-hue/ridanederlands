@@ -462,13 +462,15 @@
 
         // Speech
         function speakNative(text) {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'nl-NL';
-            u.rate = 0.85;
-            window.speechSynthesis.speak(u);
-        }
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        // Remove parentheses and their contents so only singular is spoken
+        const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+        const u = new SpeechSynthesisUtterance(cleanText);
+        u.lang = 'nl-NL';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+    }
 
         // WhatsApp Submission
         const answerKeys = {
@@ -849,7 +851,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function speakNative(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
+        // Remove parentheses and their contents so only singular is spoken
+        const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+        const u = new SpeechSynthesisUtterance(cleanText);
         u.lang = 'nl-NL';
         u.rate = 0.9;
         window.speechSynthesis.speak(u);
