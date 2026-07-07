@@ -372,7 +372,7 @@
         <!-- Webhook / Import Settings -->
         <div class="settings-bar">
             <div class="settings-input-group">
-                <label style="font-weight: 800; font-size: 0.9rem; min-width: 130px;">Apps Script GET URL:</label>
+                <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">Apps Script GET URL:</label>
                 <input type="text" id="webhook-url-input" class="settings-input" placeholder="Plak hier je Google Apps Script URL..." onchange="saveWebhookUrl(this.value)">
             </div>
             <div style="display: flex; gap: 10px;">
@@ -381,6 +381,19 @@
                 </button>
                 <button class="settings-btn" style="background: #8b7ef8;" onclick="toggleImportArea()">
                     📋 WhatsApp Import
+                </button>
+            </div>
+        </div>
+
+        <!-- Gemini API Settings -->
+        <div class="settings-bar" style="margin-top: -15px; margin-bottom: 25px;">
+            <div class="settings-input-group">
+                <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">🤖 Gemini API Key:</label>
+                <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Plak hier je Gemini API Key..." onchange="saveGeminiApiKey(this.value)">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="settings-btn" style="background: var(--accent-orange);" onclick="testGeminiConnection()">
+                    ✨ Test AI Verbinding
                 </button>
             </div>
         </div>
@@ -975,9 +988,9 @@
         }
 
         async function callGemini(promptText) {
-            const apiKey = window.GEMINI_API_KEY;
+            const apiKey = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY;
             if (!apiKey || apiKey.includes("YOUR-")) {
-                throw new Error("Gemini API-sleutel is niet ingesteld in api_key.js");
+                throw new Error("Gemini API-sleutel is niet ingesteld. Vul deze hierboven in.");
             }
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             const response = await fetch(url, {
@@ -1131,9 +1144,31 @@
             localStorage.setItem('toetsen_webhook_url', val.trim());
         }
 
+        function saveGeminiApiKey(val) {
+            localStorage.setItem('gemini_api_key', val.trim());
+        }
+
         function loadSettings() {
             const url = localStorage.getItem('toetsen_webhook_url') || "";
             document.getElementById('webhook-url-input').value = url;
+            
+            const key = localStorage.getItem('gemini_api_key') || "";
+            document.getElementById('gemini-api-key-input').value = key;
+        }
+
+        async function testGeminiConnection() {
+            const key = localStorage.getItem('gemini_api_key');
+            if (!key) {
+                alert("Vul eerst je Gemini API Key in!");
+                return;
+            }
+            alert("Verbinding testen met Gemini...");
+            try {
+                const testResult = await callGemini("Zeg 'Verbinding met Gemini is succesvol tot stand gebracht!'");
+                alert(testResult);
+            } catch (err) {
+                alert("Verbinding mislukt: " + err.message);
+            }
         }
 
         function fetchExternalSubmissions() {
