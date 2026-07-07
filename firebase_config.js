@@ -19,4 +19,13 @@
     window.fbAuth = firebase.auth();
     window.fbDb = firebase.firestore();
     try { window.fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch (e) { console.warn(e); }
+    
+    // Automatic anonymous sign-in to guarantee read/write permissions for Firestore
+    window.fbAuth.onAuthStateChanged(function(user) {
+        if (!user) {
+            window.fbAuth.signInAnonymously().catch(function(e) {
+                console.warn("Firebase anonymous auth failed:", e);
+            });
+        }
+    });
 })();
