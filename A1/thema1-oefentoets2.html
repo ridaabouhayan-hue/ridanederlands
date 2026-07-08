@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oefentoets 2 Thema 1 — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../TOETSEN/toets.css">
+    <!-- Firebase SDKs compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../firebase_config.js"></script>
+    <style>
+        :root {
+            --toets-bg: #fbf7ff;
+            --toets-accent: #8b5cf6;
+        }
+        [data-theme="dark"] {
+            --toets-bg: #0f1729 !important;
+        }
+        html, body {
+            background: var(--toets-bg) !important;
+            background-color: var(--toets-bg) !important;
+        }
+        main.page-container {
+            background: var(--toets-bg) !important;
+        }
+        .language-bar {
+            background: var(--toets-bg) !important;
+        }
+        .quiz-card { border-left: 4px solid var(--toets-accent) !important; }
+        .choice-btn:hover, .choice-btn.selected { border-color: var(--toets-accent) !important; background: rgba(139, 92, 246, 0.08) !important; }
+        .page-header h1 { color: var(--toets-accent) !important; }
+        .back-link { color: var(--toets-accent) !important; }
+        
+        .picture-card img {
+            max-height: 140px;
+        }
+        .audio-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent-yellow);
+            color: #453000;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--accent-yellow-glow);
+            transition: var(--transition-fast);
+            margin-right: 12px;
+        }
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+        .example-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-orange);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    </style>
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <!-- Language Bar -->
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
+        <span class="label">🌐 Vertaal de vragen:</span>
+        <span class="lang-btn active" data-lang="nl">🇳🇱 Nederlands</span>
+        <span class="lang-btn" data-lang="en">🇬🇧 English</span>
+        <span class="lang-btn" data-lang="ar">🇸🇦 العربية</span>
+        <span class="lang-btn" data-lang="tr">🇹🇷 Türkçe</span>
+        <span class="lang-btn" data-lang="fa">🇮🇷 Farsi</span>
+        <span class="lang-btn" data-lang="da">🇦🇫 Dari</span>
+        <span class="lang-btn" data-lang="ps">🇦🇫 پښتو</span>
+        <a class="lang-btn" style="margin-left: auto; border-color: var(--accent-orange); color: var(--accent-orange); font-weight: 800; cursor: pointer; text-decoration: none; display: flex; align-items: center;" href="../TOETSEN/dashboard.html" target="_blank">👨‍🏫 Nakijken</a>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema1.html" class="back-link">← Terug naar Thema 1</a>
+        <header class="page-header">
+            <h1>📝 Oefentoets 2 — Thema 1 (Hallo)</h1>
+            <p class="subtitle">Bereid je voor op het examen. Klik helemaal onderaan op de knop om je antwoorden via WhatsApp naar je docent te sturen.</p>
+        </header>
+
+        <!-- Naam invullen -->
+        <div class="quiz-card">
+            <h3 style="margin-top: 0;">👤 Jouw Naam</h3>
+            <span class="instruction-text" 
+                data-nl="Vul hier je voor- en achternaam in voor de docent."
+                data-en="Enter your first and last name here for the teacher."
+                data-ar="أدخل اسمك الأول والأخير هنا للمعلم."
+                data-tr="Öğretmen için buraya adınızı ve soyadınızı girin."
+                data-fa="نام و نام خانوادگی خود را در اینجا برای معلم وارد کنید."
+                data-da="نام و تخلص خود را در اینجا برای معلم وارد کنید."
+                data-ps="خپل نوم او تخلص دلته د استاد لپاره ولیکئ.">
+                Vul hier je voor- en achternaam in voor de docent.
+            </span>
+            <input type="text" class="test-input" id="student-name" placeholder="Typ je naam...">
+        </div>
+
+        <!-- Sectie 1: Luisteren -->
+        <div class="quiz-card">
+            <h3 data-translate="sec1_title">1. Luister naar de tekst.</h3>
+            <span class="instruction-text" data-translate="sec1_instr">
+                Klik op de luidspreker om de tekst te horen. Lees eerst de vragen. Kies daarna het goede antwoord.
+            </span>
+
+            <div class="audio-player-card" style="display: flex; flex-direction: column; gap: 10px; padding: 15px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border-medium);">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button id="play-pause-btn" class="audio-btn" style="margin: 0; width: 44px; height: 44px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" onclick="togglePlayPause()">▶️</button>
+                    <button id="stop-btn" class="audio-btn" style="margin: 0; width: 44px; height: 44px; font-size: 1.2rem; background: var(--accent-red); color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center;" onclick="stopAudio()">⏹️</button>
+                    <div style="flex-grow: 1;">
+                        <div id="audio-status" style="font-weight: bold; color: var(--text-primary); font-size: 0.95rem;">Klik op afspelen</div>
+                        <div id="audio-progress-container" style="width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; margin-top: 8px; position: relative; overflow: hidden;">
+                            <div id="audio-progress-bar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.1s linear;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q1.1 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">1. Hoe heet de man?</div>
+                <div class="choice-grid" id="q1_1_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q1_1_group', this)">a. Lars</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q1_1_group', this)">b. Karim</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q1_1_group', this)">c. Thomas</button>
+                </div>
+            </div>
+
+            <!-- Q1.2 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">2. Hoe oud is Karim?</div>
+                <div class="choice-grid" id="q1_2_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q1_2_group', this)">a. vijftien jaar oud</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q1_2_group', this)">b. vijfentwintig jaar oud</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q1_2_group', this)">c. dertig jaar oud</button>
+                </div>
+            </div>
+
+            <!-- Q1.3 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">3. Waar woont Karim nu?</div>
+                <div class="choice-grid" id="q1_3_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q1_3_group', this)">a. in Utrecht</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q1_3_group', this)">b. in Amsterdam</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q1_3_group', this)">c. in Syrië</button>
+                </div>
+            </div>
+
+            <!-- Q1.4 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">4. Is Karim getrouwd?</div>
+                <div class="choice-grid" id="q1_4_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q1_4_group', this)">a. Ja, hij is getrouwd.</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q1_4_group', this)">b. Nee, hij is niet getrouwd.</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q1_4_group', this)">c. Hij heeft twee kinderen.</button>
+                </div>
+            </div>
+
+            <!-- Q1.5 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">5. Hoe heet zijn broer?</div>
+                <div class="choice-grid" id="q1_5_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q1_5_group', this)">a. Samir</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q1_5_group', this)">b. Leyla</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q1_5_group', this)">c. Julia</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sectie 2: Lezen -->
+        <div class="quiz-card">
+            <h3 data-translate="sec2_title">2. Lees de tekst.</h3>
+            <span class="instruction-text" data-translate="sec2_instr">
+                Lees eerst de vragen. Lees daarna de tekst. Kies de goede antwoorden.
+            </span>
+
+            <div style="background: var(--bg-secondary); padding: 20px; border-radius: var(--radius-md); margin-bottom: 25px; border: 1px solid var(--border-medium); font-size: 1rem; line-height: 1.6;">
+                <strong>Tekst over Ali:</strong><br><br>
+                Mijn naam is Ali. Ik ben dertig jaar oud. Ik ben getrouwd met Fatima. Wij hebben een zoon en een dochter. Mijn zoon heet Omar. Omar is zes jaar oud. Mijn dochter heet Sara. Sara is drie jaar oud. Wij wonen in een klein huis in Haarlem. Fatima komt uit Marokko en ik kom uit Turkije. Wij praten thuis Nederlands en Turks.
+            </div>
+
+            <!-- Q2.1 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">1. Hoe heet de vrouw van Ali?</div>
+                <div class="choice-grid" id="q2_1_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q2_1_group', this)">a. Fatima</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q2_1_group', this)">b. Sara</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q2_1_group', this)">c. Julia</button>
+                </div>
+            </div>
+
+            <!-- Q2.2 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">2. Hoeveel kinderen hebben Ali en Fatima?</div>
+                <div class="choice-grid" id="q2_2_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q2_2_group', this)">a. één kind</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q2_2_group', this)">b. twee kinderen</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q2_2_group', this)">c. drie kinderen</button>
+                </div>
+            </div>
+
+            <!-- Q2.3 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">3. Hoe oud is de dochter van Ali?</div>
+                <div class="choice-grid" id="q2_3_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q2_3_group', this)">a. drie jaar oud</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q2_3_group', this)">b. zes jaar oud</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q2_3_group', this)">c. dertig jaar oud</button>
+                </div>
+            </div>
+
+            <!-- Q2.4 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">4. Waar woont de familie?</div>
+                <div class="choice-grid" id="q2_4_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q2_4_group', this)">a. in Marokko</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q2_4_group', this)">b. in Turkije</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q2_4_group', this)">c. in Haarlem</button>
+                </div>
+            </div>
+
+            <!-- Q2.5 -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-weight: 700; margin-bottom: 8px;">5. Welke talen praten ze thuis?</div>
+                <div class="choice-grid" id="q2_5_group">
+                    <button class="choice-btn" data-value="a" onclick="selectChoice('q2_5_group', this)">a. alleen Turks</button>
+                    <button class="choice-btn" data-value="b" onclick="selectChoice('q2_5_group', this)">b. Nederlands en Turks</button>
+                    <button class="choice-btn" data-value="c" onclick="selectChoice('q2_5_group', this)">c. Turks en Marokkaans</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sectie 3: Grammatica -->
+        <div class="quiz-card">
+            <h3 data-translate="sec3_title">3. Vul in.</h3>
+            <span class="instruction-text" data-translate="sec3_instr">
+                Kijk naar de werkwoorden. Schrijf de goede vorm van het werkwoord op.
+            </span>
+
+            <div style="border: 2px dashed var(--accent-blue); background: var(--bg-secondary); padding: 18px; border-radius: var(--radius-md); margin-top: 15px; margin-bottom: 25px;">
+                <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+                    ⭐ <span data-translate="sec3_example_title">Voorbeeld</span>
+                </div>
+                <div class="sentence-item" style="margin: 0; background: var(--white); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-sm); pointer-events: none;">
+                    Voorbeeld: <span class="verb-cue">wonen</span> Ik <input type="text" class="test-input-inline" value="woon" disabled style="border: 2px solid var(--accent-blue); background: var(--bg); color: var(--accent-blue); font-weight: bold; text-align: center; width: 80px;"> in Amsterdam.
+                </div>
+            </div>
+
+            <div class="sentence-item">
+                1. <span class="verb-cue">zijn</span> Ik <input type="text" class="test-input-inline" id="q3_1" placeholder="…"> Karim.
+            </div>
+            <div class="sentence-item">
+                2. <span class="verb-cue">hebben</span> Mijn broer <input type="text" class="test-input-inline" id="q3_2" placeholder="…"> een grote auto.
+            </div>
+            <div class="sentence-item">
+                3. <span class="verb-cue">heten</span> Hoe <input type="text" class="test-input-inline" id="q3_3" placeholder="…"> uw man?
+            </div>
+            <div class="sentence-item">
+                4. <span class="verb-cue">wonen</span> <input type="text" class="test-input-inline" id="q3_4" placeholder="…"> jij in Amsterdam?
+            </div>
+            <div class="sentence-item">
+                5. <span class="verb-cue">zijn</span> Zij <input type="text" class="test-input-inline" id="q3_5" placeholder="…"> niet getrouwd.
+            </div>
+            <div class="sentence-item">
+                6. <span class="verb-cue">komen</span> Waar <input type="text" class="test-input-inline" id="q3_6" placeholder="…"> je vandaan?
+            </div>
+            <div class="sentence-item">
+                7. <span class="verb-cue">hebben</span> Wij <input type="text" class="test-input-inline" id="q3_7" placeholder="…"> geen kinderen.
+            </div>
+            <div class="sentence-item">
+                8. <span class="verb-cue">spreken</span> Hij <input type="text" class="test-input-inline" id="q3_8" placeholder="…"> Spaans.
+            </div>
+            <div class="sentence-item">
+                9. <span class="verb-cue">zijn</span> <input type="text" class="test-input-inline" id="q3_9" placeholder="…"> u meneer Bakker?
+            </div>
+            <div class="sentence-item">
+                10. <span class="verb-cue">hebben</span> <input type="text" class="test-input-inline" id="q3_10" placeholder="…"> jullie een gezin?
+            </div>
+        </div>
+
+        <!-- Sectie 4: Vraagwoorden -->
+        <div class="quiz-card">
+            <h3 data-translate="sec4_title">4. Vul het vraagwoord in.</h3>
+            <span class="instruction-text" data-translate="sec4_instr">
+                Kies uit: Wie, Wat, Waar.
+            </span>
+            <div style="border: 2px dashed var(--accent-blue); background: var(--bg-secondary); padding: 18px; border-radius: var(--radius-md); margin-top: 15px; margin-bottom: 25px;">
+                <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+                    ⭐ <span data-translate="sec4_example_title">Voorbeeld</span>
+                </div>
+                <div class="sentence-item" style="margin: 0; background: var(--white); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-sm); pointer-events: none;">
+                    Voorbeeld: <input type="text" class="test-input-inline" value="Waar" disabled style="border: 2px solid var(--accent-blue); background: var(--bg); color: var(--accent-blue); font-weight: bold; text-align: center; width: 80px;"> woon jij? - Ik woon in Amsterdam.
+                </div>
+            </div>
+
+            <div class="sentence-item">
+                1. <input type="text" class="test-input-inline" id="q4_1" placeholder="…"> leer jij op school? - Ik leer Nederlands.
+            </div>
+            <div class="sentence-item">
+                2. <input type="text" class="test-input-inline" id="q4_2" placeholder="…"> woont jouw familie? - Mijn familie woont in Marokko.
+            </div>
+            <div class="sentence-item">
+                3. <input type="text" class="test-input-inline" id="q4_3" placeholder="…"> is jouw zus? - Haar naam is Reem.
+            </div>
+            <div class="sentence-item">
+                4. <input type="text" class="test-input-inline" id="q4_4" placeholder="…"> is Omar? - Omar is mijn zoon.
+            </div>
+            <div class="sentence-item">
+                5. <input type="text" class="test-input-inline" id="q4_5" placeholder="…"> spreekt er Turks? - Ali spreekt Turks.
+            </div>
+        </div>
+
+        <!-- Sectie 5: Dictee -->
+        <div class="quiz-card" style="border: 2px solid var(--border); border-top: 6px solid var(--accent-blue); padding: 25px 30px; border-radius: var(--radius-lg); margin-bottom: 30px; box-shadow: var(--shadow-card);">
+            <h3 data-translate="sec5_title" style="margin-top: 0; font-size: 1.5rem; color: var(--text-dark); display: flex; align-items: center; gap: 10px;">✍️ 5. Dictee</h3>
+            
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border); padding: 15px 20px; border-radius: var(--radius-md); margin-bottom: 25px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="font-weight: bold; color: var(--text-dark); display: flex; align-items: center; gap: 6px; font-size: 1rem;">
+                    💡 Hoe maak je deze opdracht?
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 0.95rem; color: var(--text-gray);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: var(--accent-blue); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold;">1</span>
+                        <span data-translate="sec5_instr">Klik op 🔊 <strong>Luister</strong> om het woord of de zin te horen.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: var(--accent-blue); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold;">2</span>
+                        <span>Typ precies wat je hoort in de lege cel.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dictee-container" style="display: flex; flex-direction: column; gap: 25px;">
+                <div>
+                    <div style="font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; color: var(--text-dark); border-bottom: 2px solid var(--accent-blue); padding-bottom: 5px; display: inline-block;">
+                        📝 Woorden (Schrijf 1 woord op):
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 10px;">
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 1</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('vader')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_1" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 2</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('dochter')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_2" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 3</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('praten')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_3" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 4</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('school')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_4" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 5</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('letter')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_5" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                        <div class="dictee-cell-word" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-blue); padding: 15px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-blue);">Woord 6</span>
+                                <button type="button" style="padding: 6px 14px; font-size: 0.95rem; border-radius: 20px; background: var(--accent-blue); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('mevrouw')">🔊 Luister</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_6" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 10px 12px; font-size: 1.05rem;" placeholder="Typ hier het woord...">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <div style="font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; color: var(--text-dark); border-bottom: 2px solid var(--accent-orange); padding-bottom: 5px; display: inline-block;">
+                        ✍️ Zinnen (Schrijf de hele zin op):
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">
+                        <div class="dictee-cell-sentence" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-orange); padding: 18px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-orange);">Zin 1</span>
+                                <button type="button" style="padding: 8px 16px; font-size: 1rem; border-radius: 20px; background: var(--accent-orange); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('Ik leer Nederlands op school.')">🔊 Luister naar de zin</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_7" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 12px 14px; font-size: 1.05rem;" placeholder="Typ hier de hele zin...">
+                        </div>
+                        <div class="dictee-cell-sentence" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-orange); padding: 18px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-orange);">Zin 2</span>
+                                <button type="button" style="padding: 8px 16px; font-size: 1rem; border-radius: 20px; background: var(--accent-orange); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('Waar woont jouw familie?')">🔊 Luister naar de zin</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_8" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 12px 14px; font-size: 1.05rem;" placeholder="Typ hier de hele zin...">
+                        </div>
+                        <div class="dictee-cell-sentence" style="background: var(--white); border: 2px solid var(--border); border-left: 5px solid var(--accent-orange); padding: 18px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); transition: var(--transition);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: bold; font-size: 1.1rem; color: var(--accent-orange);">Zin 3</span>
+                                <button type="button" style="padding: 8px 16px; font-size: 1rem; border-radius: 20px; background: var(--accent-orange); color: white; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; font-family: inherit; transition: var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="speakDictee('Zij spreekt een beetje Nederlands.')">🔊 Luister naar de zin</button>
+                            </div>
+                            <input type="text" class="test-input" id="q5_9" style="margin: 0; width: 100%; border-color: var(--border); background: var(--bg); padding: 12px 14px; font-size: 1.05rem;" placeholder="Typ hier de hele zin...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sectie 6: Wat zie je? -->
+        <div class="quiz-card">
+            <h3 data-translate="sec6_title">6. Wat zie je?</h3>
+            <span class="instruction-text" data-translate="sec6_instr">
+                Kijk naar de praatplaat. Wat zie je? Geef vier antwoorden. Maak hele zinnen.
+            </span>
+
+            <div style="text-align: center; margin-bottom: 25px;">
+                <img src="../TOETSEN/img/praatplaat_thema1_toets2.png" alt="Praatplaat Oefentoets" style="max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border-medium); box-shadow: var(--shadow-card); cursor: zoom-in;" onclick="openZoomModal(this.src)">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                <div>
+                    <label>Zin 1:</label>
+                    <textarea class="test-input" id="q6_1" placeholder="Typ je eerste zin..."></textarea>
+                </div>
+                <div>
+                    <label>Zin 2:</label>
+                    <textarea class="test-input" id="q6_2" placeholder="Typ je tweede zin..."></textarea>
+                </div>
+                <div>
+                    <label>Zin 3:</label>
+                    <textarea class="test-input" id="q6_3" placeholder="Typ je derde zin..."></textarea>
+                </div>
+                <div>
+                    <label>Zin 4:</label>
+                    <textarea class="test-input" id="q6_4" placeholder="Typ je vierde zin..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verzend knop -->
+        <button class="submit-btn" onclick="sendToWhatsApp()">📲 Stuur antwoorden naar docent</button>
+    </main>
+
+    <!-- Image Zoom Modal -->
+    <div id="image-modal" class="modal" onclick="closeZoomModal()" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.85); overflow:hidden;">
+        <span style="position:absolute; top:20px; right:30px; color:#fff; font-size:40px; font-weight:bold; cursor:pointer;">&times;</span>
+        <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;">
+            <img id="modal-img" style="max-width:90%; max-height:90%; border-radius:4px; box-shadow:0 0 30px rgba(0,0,0,0.5);">
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        const selectedChoices = {};
+        function selectChoice(groupId, btn) {
+            const group = document.getElementById(groupId);
+            const buttons = group.querySelectorAll('.choice-btn');
+            
+            if (btn.classList.contains('selected')) {
+                btn.classList.remove('selected');
+                selectedChoices[groupId] = "";
+            } else {
+                buttons.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedChoices[groupId] = btn.getAttribute('data-value');
+            }
+            saveAnswers();
+        }
+
+        function saveAnswers() {
+            const inputs = {};
+            document.querySelectorAll('input.test-input, textarea.test-input, input.test-input-inline').forEach(inp => {
+                inputs[inp.id] = inp.value;
+            });
+            const state = { inputs, mc: selectedChoices };
+            const pageKey = 'oefentoets_state_' + window.location.pathname.split('/').pop();
+            localStorage.setItem(pageKey, JSON.stringify(state));
+        }
+
+        function restoreAnswers() {
+            const pageKey = 'oefentoets_state_' + window.location.pathname.split('/').pop();
+            const saved = localStorage.getItem(pageKey);
+            if (!saved) return;
+            try {
+                const state = JSON.parse(saved);
+                if (state.inputs) {
+                    for (const id in state.inputs) {
+                        const el = document.getElementById(id);
+                        if (el) el.value = state.inputs[id];
+                    }
+                }
+                if (state.mc) {
+                    for (const groupId in state.mc) {
+                        const val = state.mc[groupId];
+                        if (val) {
+                            selectedChoices[groupId] = val;
+                            const group = document.getElementById(groupId);
+                            if (group) {
+                                const btn = group.querySelector(`.choice-btn[data-value="${val}"]`);
+                                if (btn) btn.classList.add('selected');
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Error restoring answers:", e);
+            }
+        }
+
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('test-input') || e.target.classList.contains('test-input-inline')) {
+                saveAnswers();
+            }
+        });
+
+        // Translations
+        const langBtns = document.querySelectorAll('.lang-btn');
+        const translations = {
+            nl: {
+                title: "📝 Oefentoets 2 — Thema 1 (Hallo)",
+                sec1_title: "1. Luister naar de tekst.",
+                sec1_instr: "Klik op de luidspreker om de tekst te horen. Lees eerst de vragen. Kies daarna het goede antwoord.",
+                sec2_title: "2. Lees de tekst.",
+                sec2_instr: "Lees eerst de vragen. Lees daarna de tekst. Kies de goede antwoorden.",
+                sec3_title: "3. Vul in.",
+                sec3_instr: "Kijk naar de werkwoorden. Schrijf de goede vorm van het werkwoord op.",
+                sec4_title: "4. Vul het vraagwoord in.",
+                sec4_instr: "Kies uit: Wie, Wat, Waar.",
+                sec4_example: "Voorbeeld: Waar woon jij? -> Antwoord: Ik woon in Amsterdam.",
+                sec3_example_title: "Voorbeeld",
+                sec4_example_title: "Voorbeeld",
+                sec4_explanation: "💡 <strong>Wanneer gebruik je Wie, Wat of Waar?</strong><br>• Gebruik <strong>Wie</strong> voor personen (bijv. <em>Wie</em> is dat?).<br>• Gebruik <strong>Wat</strong> voor dingen of talen (bijv. <em>Wat</em> spreek jij?).<br>• Gebruik <strong>Waar</strong> voor locaties (bijv. <em>Waar</em> woon jij?).",
+                sec5_title: "5. Dictee",
+                sec5_instr: "Klik op de luidspreker 🔊 om het woord of de zin te horen. Typ daarna wat je hoort.",
+                sec6_title: "6. Wat zie je?",
+                sec6_instr: "Kijk naar de praatplaat. Wat zie je? Geef vier antwoorden. Maak hele zinnen."
+            },
+            en: {
+                title: "📝 Practice Test 2 — Theme 1 (Hello)",
+                sec1_title: "1. Listen to the text.",
+                sec1_instr: "Click the speaker to hear the text. First read the questions. Then choose the correct answer.",
+                sec2_title: "2. Read the text.",
+                sec2_instr: "First read the questions. Then read the text. Choose the correct answers.",
+                sec3_title: "3. Fill in.",
+                sec3_instr: "Look at the verbs. Write down the correct form of the verb.",
+                sec4_title: "4. Fill in the question word.",
+                sec4_instr: "Choose from: Wie, Wat, Waar.",
+                sec4_example: "Example: Where do you live? -> Answer: Ik woon in Amsterdam.",
+                sec3_example_title: "Example",
+                sec4_example_title: "Example",
+                sec4_explanation: "💡 <strong>When to use Wie, Wat or Waar?</strong><br>• Use <strong>Wie</strong> for people (e.g., <em>Wie</em> is dat?).<br>• Use <strong>Wat</strong> for things or languages (e.g., <em>Wat</em> spreek jij?).<br>• Use <strong>Waar</strong> for locations (e.g., <em>Waar</em> woon jij?).",
+                sec5_title: "5. Dictation",
+                sec5_instr: "Click the speaker 🔊 to hear the word or sentence. Then type what you hear.",
+                sec6_title: "6. What do you see?",
+                sec6_instr: "Look at the picture board. What do you see? Give four answers. Write complete sentences."
+            },
+            ar: {
+                title: "📝 اختبار تجريبي 2 — المحور 1 (مرحباً)",
+                sec1_title: "1. استمع إلى النص.",
+                sec1_instr: "انقر على مكبر الصوت لسماع النص. اقرأ الأسئلة أولاً. ثم اختر الإجابة الصحيحة.",
+                sec2_title: "2. اقرأ النص.",
+                sec2_instr: "اقرأ الأسئلة أولاً. ثم اقرأ النص. اختر الإجابات الصحيحة.",
+                sec3_title: "3. املأ الفراغ.",
+                sec3_instr: "انظر إلى الأفعال. اكتب الصيغة الصحيحة للفعل.",
+                sec4_title: "4. أجب عن الأسئلة.",
+                sec4_instr: "اكتب جملاً كاملة. ابدأ بـ ...Nee",
+                sec4_example: "مثال: هل أنت معلم؟ -> الإجابة: Nee, ik ben geen docent.",
+                sec3_example_title: "مثال",
+                sec4_example_title: "مثال",
+                sec4_explanation: "💡 <strong>متى تستخدم GEEN أو NIET؟</strong><br>• استخدم <strong>geen</strong> مع الأسماء المسبوقة بـ <em>een</em> أو بدون أداة تعريف (مثال: <em>geen</em> auto، <em>geen</em> hond).<br>• استخدم <strong>niet</strong> مع الأفعال، الصفات (مثال: <em>niet</em> gezond)، أسماء العلم، أو الأسماء المعرفة بـ de/het.",
+                sec5_title: "5. الإملاء",
+                sec5_instr: "انقر على مكبر الصوت 🔊 لسماع الكلمة أو الجملة. اكتب ما تسمعه.",
+                sec6_title: "6. ماذا ترى؟",
+                sec6_instr: "انظر إلى اللوحة التوضيحية. ماذا ترى؟ اكتب أربع إجابات. ضعها في جمل كاملة."
+            },
+            tr: {
+                title: "📝 Deneme Sınavı 2 — Tema 1 (Merhaba)",
+                sec1_title: "1. Metni dinleyin.",
+                sec1_instr: "Metni duymak için hoparlöre tıklayın. Önce soruları okuyun. Ardından doğru cevabı seçin.",
+                sec2_title: "2. Metni okuyun.",
+                sec2_instr: "Önce soruları okuyun. Ardından metni okuyun. Doğru cevapları seçin.",
+                sec3_title: "3. Doldurun.",
+                sec3_instr: "Fiillere bakın. Fiilin doğru çekimini yazın.",
+                sec4_title: "4. Cevap verin.",
+                sec4_instr: "Tam cümleler yazın. Nee, ... ile başlayın.",
+                sec4_example: "Örnek: Öğretmen misiniz? -> Cevap: Nee, ik ben geen docent.",
+                sec3_example_title: "Örnek",
+                sec4_example_title: "Örnek",
+                sec4_explanation: "💡 <strong>GEEN veya NIET ne zaman kullanılır?</strong><br>• Önünde <em>een</em> olan veya tanımlığı bulunmayan isimler için <strong>geen</strong> kullanın (örn. <em>geen</em> auto, <em>geen</em> hond).<br>• Fiiller, sıfatlar (örn. <em>niet</em> gezond), isimler veya de/het tanımlıklı isimler için <strong>niet</strong> kullanın.",
+                sec5_title: "5. Dikte",
+                sec5_instr: "Kelimeyi veya cümleyi duymak için hoparlöre 🔊 tıklayın. Duyduğunuzu yazın.",
+                sec6_title: "6. Ne görüyorsunuz?",
+                sec6_instr: "Resimli panoya bakın. Ne görüyorsunuz? Dört cevap verin. Tam cümleler kurun."
+            },
+            fa: {
+                title: "📝 آزمون آزمایشی ۲ — موضوع ۱ (سلام)",
+                sec1_title: "۱. به متن گوش دهید.",
+                sec1_instr: "برای شنیدن متن روی بلندگو کلیک کنید. ابتدا سوالات را بخوانید. سپس پاسخ صحیح را انتخاب کنید.",
+                sec2_title: "۲. متن را بخوانید.",
+                sec2_instr: "ابتدا سوالات را بخوانید. سپس متن را بخوانید. پاسخ‌های صحیح را انتخاب کنید.",
+                sec3_title: "۳. جاهای خالی را پر کنید.",
+                sec3_instr: "به افعال نگاه کنید. شکل صحیح فعل را بنویسید.",
+                sec4_title: "۴. پاسخ دهید.",
+                sec4_instr: "جملات کامل بنویسید. با ...Nee شروع کنید.",
+                sec4_example: "مثال: آیا شما معلم هستید؟ -> پاسخ: Nee, ik ben geen docent.",
+                sec3_example_title: "مثال",
+                sec4_example_title: "مثال",
+                sec4_explanation: "💡 <strong>چه زمانی از GEEN یا NIET استفاده کنیم؟</strong><br>• از <strong>geen</strong> برای اسم‌های همراه با <em>een</em> یا بدون حرف تعریف استفاده کنید (مانند: <em>geen</em> auto، <em>geen</em> hond).<br>• از <strong>niet</strong> برای فعل‌ها، صفت‌ها (مانند: <em>niet</em> gezond)، نام‌ها یا اسم‌های دارای حرف تعریف de/het استفاده کنید.",
+                sec5_title: "5. املا",
+                sec5_instr: "برای شنیدن کلمه یا جمله روی بلندگو 🔊 کلیک کنید. آنچه را که می‌شنوید بنویسید.",
+                sec6_title: "6. چی می‌بینید؟",
+                sec6_instr: "به تصویر نگاه کنید. چی می‌بینید؟ چهار پاسخ بدهید. جمله‌های کامل بسازید."
+            },
+            da: {
+                title: "📝 آزمون آزمایشی ۲ — موضوع ۱ (سلام)",
+                sec1_title: "۱. به متن گوش دهید.",
+                sec1_instr: "برای شنیدن متن روی بلندگو کلیک کنید. ابتدا سوالات را بخوانید. سپس پاسخ صحیح را انتخاب کنید.",
+                sec2_title: "۲. متن را بخوانید.",
+                sec2_instr: "ابتدا سوالات را بخوانید. سپس متن را بخوانید. پاسخ‌های صحیح را انتخاب کنید.",
+                sec3_title: "۳. جاهای خالی را پر کنید.",
+                sec3_instr: "به فعل‌ها نگاه کنید. شکل صحیح فعل را بنویسید.",
+                sec4_title: "۴. پاسخ دهید.",
+                sec4_instr: "جمله‌های کامل بنویسید. با ...Nee شروع کنید.",
+                sec4_example: "مثال: آیا شما معلم هستید؟ -> پاسخ: Nee, ik ben geen docent.",
+                sec5_title: "5. املا",
+                sec5_instr: "د ويي یا جملې اورېدو لپاره پر لوډسپیکر 🔊 کلیک وکړئ. هغه څه چې اورئ ولیکئ.",
+                sec6_title: "6. څه وینئ؟",
+                sec6_instr: "انځور ته وګورئ. څه وینئ؟ څلور ځوابونه ورکړئ. بشپړې جملې جوړې کړئ."
+            },
+            ps: {
+                title: "📝 آزمایښتي ازموینه ۲ — لومړۍ موضوع (سلام)",
+                sec1_title: "۱. متن ته غوږ ونیسئ.",
+                sec1_instr: "د متن اورېدو لپاره پر لوډسپیکر کلیک وکړئ. لومړی پوښتنې ولولئ. بیا سم ځواب وټاکئ.",
+                sec2_title: "۲. متن ولولئ.",
+                sec2_instr: "لومړی پوښتنې ولولئ. بیا متن ولولئ. سم ځوابونه وټاکئ.",
+                sec3_title: "۳. خالي ځایونه ډک کړئ.",
+                sec3_instr: "فعلونو ته وګورئ. د فعل سم شکل ولیکئ.",
+                sec4_title: "۴. ځواب ورکړئ.",
+                sec4_instr: "بشپړې جملې ولیکئ. په ...Nee پیل وکړئ.",
+                sec4_example: "مثال: ایا ته ښوونکی یې؟ -> ځواب: Nee, ik ben geen docent.",
+                sec3_example_title: "بېلګه",
+                sec4_example_title: "بېلګه",
+                sec4_explanation: "💡 <strong>کله له GEEN یا NIET څخه کار اخلو؟</strong><br>• د <em>een</em> لرونکو یا بې معرفې نومونو لپاره له <strong>geen</strong> څخه کار واخلئ (مثلاً: <em>geen</em> auto، <em>geen</em> hond).<br>• د فعلونو، صفتونو (مثلاً: <em>niet</em> gezond)، نومونو یا د de/het لرونکو نومونو لپاره له <strong>niet</strong> څخه کار واخلئ.",
+                sec5_title: "۵. خالي ځایونه ډک کړئ.",
+                sec5_instr: "انځورونو ته وګورئ. د انځورونو ترڅنګ sam ټکي ولیکئ. د لومړۍ موضوع وييکي ولیکئ.",
+                sec6_title: "۶. څه وینئ؟",
+                sec6_instr: "انځور ته وګورئ. څه وینئ؟ څلور ځوابونه ورکړئ. بشپړې جملې جوړې کړئ."
+            }
+        };
+
+        langBtns.forEach(btn => {
+            if (!btn.getAttribute('data-lang')) return;
+            btn.addEventListener('click', () => {
+                langBtns.forEach(b => { if (b.getAttribute('data-lang')) b.classList.remove('active'); });
+                btn.classList.add('active');
+                
+                const lang = btn.getAttribute('data-lang');
+                const dict = translations[lang] || translations['en'];
+
+                if (dict) {
+                    const headerEl = document.querySelector('.page-header h1');
+                    if (headerEl) {
+                        headerEl.textContent = dict.title || translations['nl'].title;
+                    }
+                    document.querySelectorAll('[data-translate]').forEach(el => {
+                        const key = el.getAttribute('data-translate');
+                        if (dict[key]) {
+                            if (key === 'sec4_explanation') {
+                                el.innerHTML = dict[key];
+                            } else {
+                                el.textContent = dict[key];
+                            }
+                        }
+                    });
+                }
+
+                document.querySelectorAll('.instruction-text').forEach(inst => {
+                    const nlText = inst.getAttribute('data-nl');
+                    if (nlText) {
+                        const translatedText = inst.getAttribute('data-' + lang);
+                        if (translatedText && lang !== 'nl') {
+                            inst.textContent = nlText + " / " + translatedText;
+                        } else {
+                            inst.textContent = nlText;
+                        }
+                    }
+                });
+            });
+        });
+
+        // Theme toggle
+        (function() {
+            const themeBtn = document.getElementById('theme-toggle');
+            if (!themeBtn) return;
+            themeBtn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme') || 'light';
+                const next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('a1-theme', next);
+            });
+        })();
+
+        // Listening Audio Logic
+        let speechUtterance = null;
+        let isSpeaking = false;
+        let isPaused = false;
+        let speechTimer = null;
+        let speechProgress = 0;
+        let estimatedDuration = 25;
+
+        function togglePlayPause() {
+            if (!window.speechSynthesis) return;
+            const playBtn = document.getElementById('play-pause-btn');
+            const statusText = document.getElementById('audio-status');
+            
+            if (!isSpeaking) {
+                window.speechSynthesis.cancel();
+                setTimeout(() => {
+                    const text = "Hoi, ik ben Karim. Ik ben vijfentwintig jaar oud. Ik kom uit Syrië. Ik woon nu in Amsterdam. Ik ben niet getrouwd. Ik heb geen kinderen. Ik heb wel een broer en een zus. Mijn broer heet Samir en mijn zus heet Leyla. Ik spreek Arabisch en een beetje Nederlands. Ik leer Nederlands op school.";
+                    speechUtterance = new SpeechSynthesisUtterance(text);
+                    speechUtterance.lang = 'nl-NL';
+                    speechUtterance.rate = 0.85;
+                    
+                    speechUtterance.onstart = () => {
+                        isSpeaking = true;
+                        isPaused = false;
+                        playBtn.textContent = "⏸️";
+                        statusText.textContent = "Tekst wordt voorgelezen...";
+                        startProgressBar();
+                    };
+                    
+                    speechUtterance.onend = () => {
+                        resetAudioPlayer();
+                    };
+                    
+                    window.speechSynthesis.speak(speechUtterance);
+                }, 100);
+            } else if (isPaused) {
+                window.speechSynthesis.resume();
+                isPaused = false;
+                playBtn.textContent = "⏸️";
+                statusText.textContent = "Tekst wordt voorgelezen...";
+                startProgressBar();
+            } else {
+                window.speechSynthesis.pause();
+                isPaused = true;
+                playBtn.textContent = "▶️";
+                statusText.textContent = "Gepauzeerd";
+            }
+        }
+
+        function stopAudio() {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            resetAudioPlayer();
+        }
+
+        function resetAudioPlayer() {
+            isSpeaking = false;
+            isPaused = false;
+            document.getElementById('play-pause-btn').textContent = "▶️";
+            document.getElementById('audio-status').textContent = "Klik om af te spelen";
+            document.getElementById('audio-progress-bar').style.width = "0%";
+            clearInterval(speechTimer);
+            speechProgress = 0;
+        }
+
+        function startProgressBar() {
+            clearInterval(speechTimer);
+            const progressBar = document.getElementById('audio-progress-bar');
+            const totalSteps = estimatedDuration * 10;
+            speechTimer = setInterval(() => {
+                if (!isPaused) {
+                    speechProgress++;
+                    const percentage = Math.min((speechProgress / totalSteps) * 100, 100);
+                    progressBar.style.width = percentage + "%";
+                    if (percentage >= 100) {
+                        clearInterval(speechTimer);
+                    }
+                }
+            }, 100);
+        }
+
+        function speakDictee(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+            const u = new SpeechSynthesisUtterance(cleanText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+
+        // Answer keys
+        const answerKeys = {
+            sec1: ["b", "c", "a", "b", "c"],
+            sec2: ["a", "c", "b", "a", "c"],
+            sec3: [
+                ["ben"],
+                ["zijn"],
+                ["bent"],
+                ["is"],
+                ["bent", "ben"],
+                ["hebben"],
+                ["heb"],
+                ["heeft"],
+                ["hebben"],
+                ["heeft"]
+            ],
+            sec4: [
+                ["wat"],
+                ["waar"],
+                ["wie"],
+                ["wie"],
+                ["wie"]
+            ],
+            sec5: [
+                ["vader"],
+                ["dochter"],
+                ["praten"],
+                ["school"],
+                ["letter"],
+                ["mevrouw"],
+                ["ik leer nederlands op school", "ik leer nederlands op school."],
+                ["waar woont jouw familie", "waar woont jouw familie?"],
+                ["zij spreekt een beetje nederlands", "zij spreekt een beetje nederlands."]
+            ]
+        };
+
+        // Send To WhatsApp
+        function sendToWhatsApp() {
+            const studentName = document.getElementById('student-name').value.trim();
+            if (!studentName) {
+                alert("Vul eerst je naam in voor je de toets opstuurt.");
+                return;
+            }
+
+            const val = id => document.getElementById(id) ? document.getElementById(id).value.trim() : "";
+            const mcVal = group => selectedChoices[group] ? selectedChoices[group].toUpperCase() : "-";
+
+            let report = `*ANTWOORDEN OEFENTOETS 2 THEMA 1 - HALLO*\n`;
+            report += `👤 *Cursist:* ${studentName}\n\n`;
+
+            report += `*1. Luisteren*\n`;
+            for (let i = 1; i <= 5; i++) {
+                report += `- Vraag ${i}: ${mcVal(`q1_${i}_group`)}\n`;
+            }
+
+            report += `\n*2. Lezen*\n`;
+            for (let i = 1; i <= 5; i++) {
+                report += `- Vraag ${i}: ${mcVal(`q2_${i}_group`)}\n`;
+            }
+
+            report += `\n*3. Grammatica*\n`;
+            for (let i = 1; i <= 10; i++) {
+                report += `- Zin ${i}: "${val(`q3_${i}`) || "-"}"\n`;
+            }
+
+            report += `\n*4. Vraagwoorden*\n`;
+            for (let i = 1; i <= 5; i++) {
+                report += `- Vraag ${i}: "${val(`q4_${i}`) || "-"}"\n`;
+            }
+
+            report += `\n*5. Dictee*\n`;
+            for (let i = 1; i <= 6; i++) {
+                report += `- Woord ${i}: "${val(`q5_${i}`) || "-"}"\n`;
+            }
+            for (let i = 7; i <= 9; i++) {
+                report += `- Zin ${i - 6}: "${val(`q5_${i}`) || "-"}"\n`;
+            }
+
+            report += `\n*6. Schrijven (Praatplaat)*\n`;
+            for (let i = 1; i <= 4; i++) {
+                report += `- Zin ${i}: "${val('q6_' + i) || "-"}"\n`;
+            }
+
+            if (window.fbDb) {
+                const subData = {
+                    name: studentName,
+                    date: new Date().toLocaleDateString('nl-NL'),
+                    time: new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }),
+                    theme: "thema1",
+                    testNum: "2",
+                    answers: {
+                        sec1: [1,2,3,4,5].map(i => mcVal(`q1_${i}_group`)),
+                        sec2: [1,2,3,4,5].map(i => mcVal(`q2_${i}_group`)),
+                        sec3: [1,2,3,4,5,6,7,8,9,10].map(i => val('q3_' + i)),
+                        sec4: [1,2,3,4,5].map(i => val(`q4_${i}`)),
+                        sec5: [1,2,3,4,5,6,7,8,9].map(i => val(`q5_${i}`)),
+                        sec6: [1,2,3,4].map(i => val(`q6_${i}`))
+                    },
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                window.fbDb.collection("submissions").add(subData)
+                    .then(() => console.log("Saved to Firestore"))
+                    .catch(err => console.error("Firestore error", err));
+            }
+
+            const phone = "31626211106";
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(report)}`;
+            const newWin = window.open(url, '_blank');
+            if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
+                window.location.href = url;
+            } else {
+                setTimeout(() => {
+                    window.location.href = "thema1.html";
+                }, 1200);
+            }
+        }
+
+        // Image Zoom Modal Setup
+        function openZoomModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+        
+        function closeZoomModal() {
+            document.getElementById('image-modal').style.display = "none";
+        }
+
+        window.addEventListener('load', restoreAnswers);
+    </script>
+</body>
+</html>

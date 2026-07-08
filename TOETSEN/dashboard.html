@@ -389,7 +389,7 @@
         <div class="settings-bar" style="margin-top: -15px; margin-bottom: 25px;">
             <div class="settings-input-group">
                 <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">🤖 Gemini API Key:</label>
-                <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Plak hier je Gemini API Key..." onchange="saveGeminiApiKey(this.value)">
+                <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Plak hier je Gemini API Key..." oninput="saveGeminiApiKey(this.value)" onchange="saveGeminiApiKey(this.value)">
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="settings-btn" style="background: var(--accent-orange);" onclick="testGeminiConnection()">
@@ -456,6 +456,22 @@
     <script>
         // Answer keys for auto-grading
         const answerKeys = {
+            thema1: {
+                toets1: {
+                    sec1: ["b", "a", "c", "b", "c"],
+                    sec2: ["b", "c", "a", "c", "b"],
+                    sec3: [["heet"], ["ben", "bent"], ["komen"], ["woont"], ["heeft"], ["is"], ["spreekt", "spreken"], ["zijn"], ["heb", "hebt"], ["leren"]],
+                    sec4: [["waar"], ["wie"], ["wat"], ["waar"], ["wie"]],
+                    sec5: [["naam"], ["wonen"], ["gezin"], ["moeder"], ["getrouwd"], ["letter"], ["ik kom uit spanje", "ik kom uit spanje."], ["hoe heet jouw broer", "hoe heet jouw broer?"], ["mijn vader woont in utrecht", "mijn vader woont in utrecht."]]
+                },
+                toets2: {
+                    sec1: ["b", "c", "a", "b", "c"],
+                    sec2: ["a", "c", "b", "a", "c"],
+                    sec3: [["ben"], ["zijn"], ["bent"], ["is"], ["bent", "ben"], ["hebben"], ["heb"], ["heeft"], ["hebben"], ["heeft"]],
+                    sec4: [["wat"], ["waar"], ["wie"], ["wie"], ["wie"]],
+                    sec5: [["vader"], ["dochter"], ["praten"], ["school"], ["letter"], ["mevrouw"], ["ik leer nederlands op school", "ik leer nederlands op school."], ["waar woont jouw familie", "waar woont jouw familie?"], ["zij spreekt een beetje nederlands", "zij spreekt een beetje nederlands."]]
+                }
+            },
             thema7: {
                 sec1: ["b", "d", "b", "b", "b"],
                 sec2: ["b", "c", "a", "a", "b"],
@@ -825,7 +841,7 @@
             
             try {
                 const keys = answerKeys[sub.theme] || {};
-                const keysString = sub.theme === 'thema8' ? JSON.stringify(answerKeys.thema8[`toets${sub.testNum || "1"}`]) : JSON.stringify(keys);
+                const keysString = (sub.theme === 'thema8' || sub.theme === 'thema1') ? JSON.stringify(answerKeys[sub.theme][`toets${sub.testNum || "1"}`]) : JSON.stringify(keys);
 
                 const prompt = `
                 Je bent een NT2 A1 docent Nederlands. Jouw taak is om de ingediende toets van cursist "${sub.name}" na te kijken en een gedetailleerd feedbackrapport te genereren.
@@ -1076,8 +1092,11 @@
             const date = new Date().toLocaleDateString('nl-NL');
             const time = new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
             
-            let theme = "thema8";
-            if (cleanText.toLowerCase().includes("thema 7")) theme = "thema7";
+            let theme = "thema8"; // default fallback
+            const themeMatch = cleanText.match(/THEMA\s*([0-9]+)/i);
+            if (themeMatch) {
+                theme = "thema" + themeMatch[1];
+            }
             
             const testNumMatch = cleanText.match(/OEFENTOETS\s*([0-9]+)/i);
             const testNum = testNumMatch ? testNumMatch[1] : "1";
@@ -1093,7 +1112,7 @@
                 if (lower.includes("1. luisteren")) currentSec = "sec1";
                 else if (lower.includes("2. lezen")) currentSec = "sec2";
                 else if (lower.includes("3. grammatica")) currentSec = "sec3";
-                else if (lower.includes("4. geef antwoord")) currentSec = "sec4";
+                else if (lower.includes("4. geef antwoord") || lower.includes("4. vraagwoorden") || lower.includes("4. vul het vraagwoord")) currentSec = "sec4";
                 else if (lower.includes("5. dictee")) currentSec = "sec5";
                 else if (lower.includes("6. schrijven")) currentSec = "sec6";
                 else if (trimmed.startsWith("-") || trimmed.startsWith("•")) {
@@ -1123,12 +1142,27 @@
                 return;
             }
             
-            const storageKey = themesInfo[parsed.theme].key;
+            const storageKey = (themesInfo[parsed.theme] || { key: "toets_" + parsed.theme + "_submissions" }).key;
             try {
                 let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 subs.push(parsed);
                 localStorage.setItem(storageKey, JSON.stringify(subs));
                 allSubmissions[parsed.theme] = subs;
+
+                // Sync manually imported WhatsApp submission to Firestore
+                if (window.fbDb) {
+                    window.fbDb.collection("submissions").add({
+                        name: parsed.name,
+                        date: parsed.date,
+                        time: parsed.time,
+                        theme: parsed.theme,
+                        testNum: parsed.testNum,
+                        answers: parsed.answers,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                    .then(() => console.log("Imported WhatsApp submission synced to Firestore"))
+                    .catch(err => console.error("Firestore sync error:", err));
+                }
                 
                 toggleImportArea();
                 updateList();
@@ -1152,7 +1186,7 @@
             const url = localStorage.getItem('toetsen_webhook_url') || "";
             document.getElementById('webhook-url-input').value = url;
             
-            const key = localStorage.getItem('gemini_api_key') || "";
+            const key = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY || "";
             document.getElementById('gemini-api-key-input').value = key;
         }
 
