@@ -106,3 +106,12 @@ Wanneer er gebruik wordt gemaakt van de ingebouwde spraaksynthese (`SpeechSynthe
 
 ## 6. Woordenlijst Beperking
 - **Strikte Regel**: Alle dicteewoorden en zinnen die in de oefentoetsen worden gebruikt, moeten uitsluitend afkomstig zijn uit de officiële woordenlijst van het desbetreffende A1 thema. Introduceer geen onbekende woorden.
+
+---
+
+## 7. ElevenLabs Audio Generatie (Dictee & Luisteren)
+- **Strikte Regel**: Alle met ElevenLabs (of andere API's) gegenereerde audiobestanden voor dictee en luisteropdrachten moeten voldoen aan de **NT2 Nederlands examen A1/A2-standaard**. Dit houdt in:
+  - Uiterst duidelijke, rustige en heldere uitspraak.
+  - Een langzamer spreektempo zodat het voor cursisten goed te volgen is en oneerlijkheden worden voorkomen.
+  - In de generatiescripts (bijv. [genereer_toets_audio.py](file:///c:/Users/Rabou/Mijn%20Drive/HTML%20FILES/genereer_toets_audio.py)) moeten de steminstellingen voor stabiliteit en gelijkenis (`stability` en `similarity_boost`) ingesteld zijn op ten minste `0.85` voor dicteewoorden om een stabiele en rustige intonatie te garanderen.
+

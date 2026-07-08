@@ -725,95 +725,77 @@
             });
         })();
 
-        // Listening Audio Logic
-        let speechUtterance = null;
-        let isSpeaking = false;
-        let isPaused = false;
-        let speechTimer = null;
-        let speechProgress = 0;
-        let estimatedDuration = 25;
+        // Ingesproken Audio Logic
+        let audioPlayer = null;
+        let dicteePlayer = null;
 
         function togglePlayPause() {
-            if (!window.speechSynthesis) return;
             const playBtn = document.getElementById('play-pause-btn');
             const statusText = document.getElementById('audio-status');
+            const progressBar = document.getElementById('audio-progress-bar');
             
-            if (!isSpeaking) {
-                window.speechSynthesis.cancel();
-                setTimeout(() => {
-                    const text = "Hallo, ik heet Julia. Ik ben dertig jaar oud. Ik kom uit Spanje. Ik woon nu in Nederland, in Utrecht. Ik heb een man en twee kinderen. Mijn man heet Thomas. Mijn zoon heet Max en mijn dochter heet Emma. Ik spreek Spaans en een beetje Nederlands.";
-                    speechUtterance = new SpeechSynthesisUtterance(text);
-                    speechUtterance.lang = 'nl-NL';
-                    speechUtterance.rate = 0.85;
-                    
-                    speechUtterance.onstart = () => {
-                        isSpeaking = true;
-                        isPaused = false;
-                        playBtn.textContent = "⏸️";
-                        statusText.textContent = "Tekst wordt voorgelezen...";
-                        startProgressBar();
-                    };
-                    
-                    speechUtterance.onend = () => {
-                        resetAudioPlayer();
-                    };
-                    
-                    window.speechSynthesis.speak(speechUtterance);
-                }, 100);
-            } else if (isPaused) {
-                window.speechSynthesis.resume();
-                isPaused = false;
+            if (!audioPlayer) {
+                audioPlayer = new Audio('../audio/A1/thema1/oefentoets1-luisteren.mp3');
+                
+                audioPlayer.addEventListener('timeupdate', () => {
+                    if (audioPlayer.duration) {
+                        const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                        progressBar.style.width = percentage + "%";
+                    }
+                });
+                
+                audioPlayer.addEventListener('ended', () => {
+                    resetAudioPlayer();
+                });
+            }
+            
+            if (audioPlayer.paused) {
+                audioPlayer.play().catch(err => {
+                    console.error("Audio kon niet worden afgespeeld:", err);
+                    statusText.textContent = "Fout bij afspelen";
+                });
                 playBtn.textContent = "⏸️";
-                statusText.textContent = "Tekst wordt voorgelezen...";
-                startProgressBar();
+                statusText.textContent = "Tekst wordt afgespeeld...";
             } else {
-                window.speechSynthesis.pause();
-                isPaused = true;
+                audioPlayer.pause();
                 playBtn.textContent = "▶️";
                 statusText.textContent = "Gepauzeerd";
             }
         }
 
         function stopAudio() {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+            }
             resetAudioPlayer();
         }
 
         function resetAudioPlayer() {
-            isSpeaking = false;
-            isPaused = false;
             document.getElementById('play-pause-btn').textContent = "▶️";
             document.getElementById('audio-status').textContent = "Klik om af te spelen";
             document.getElementById('audio-progress-bar').style.width = "0%";
-            clearInterval(speechTimer);
-            speechProgress = 0;
-        }
-
-        function startProgressBar() {
-            clearInterval(speechTimer);
-            const progressBar = document.getElementById('audio-progress-bar');
-            const totalSteps = estimatedDuration * 10;
-            speechTimer = setInterval(() => {
-                if (!isPaused) {
-                    speechProgress++;
-                    const percentage = Math.min((speechProgress / totalSteps) * 100, 100);
-                    progressBar.style.width = percentage + "%";
-                    if (percentage >= 100) {
-                        clearInterval(speechTimer);
-                    }
-                }
-            }, 100);
         }
 
         function speakDictee(text) {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const cleanText = text.replace(/\([^)]+\)/g, '').trim();
-            const u = new SpeechSynthesisUtterance(cleanText);
-            u.lang = 'nl-NL';
-            u.rate = 0.8;
-            window.speechSynthesis.speak(u);
+            if (audioPlayer) {
+                audioPlayer.pause();
+                resetAudioPlayer();
+            }
+            
+            if (dicteePlayer) {
+                dicteePlayer.pause();
+            }
+            
+            const filename = text.toLowerCase()
+                .replace(/[?.!,]/g, '')
+                .trim()
+                .replace(/\s+/g, '_') + '.mp3';
+                
+            dicteePlayer = new Audio('../audio/A1/thema1/dictee/' + filename);
+            dicteePlayer.play().catch(err => {
+                console.error("Dictee audio kon niet worden afgespeeld:", err);
+            });
         }
 
         // Answer keys
