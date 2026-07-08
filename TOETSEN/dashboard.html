@@ -850,12 +850,60 @@
             updateList();
         }
 
+        function calculateSubmissionScore(sub) {
+            const keys = answerKeys[sub.theme] || {};
+            let testKey = keys;
+            if (sub.theme === 'thema8' || sub.theme === 'thema1') {
+                const keyForToets = (sub.testNum && sub.testNum.startsWith("OFFICIEEL")) 
+                    ? `toets${sub.testNum}` 
+                    : `toets${sub.testNum || "1"}`;
+                testKey = keys[keyForToets] || {};
+            }
+            
+            let total = 0;
+            let correct = 0;
+            
+            const sections = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5'];
+            sections.forEach(sec => {
+                const studentAns = sub.answers[sec] || [];
+                const correctAns = testKey[sec] || [];
+                
+                correctAns.forEach((keyVal, idx) => {
+                    total++;
+                    const ans = (studentAns[idx] || "").trim().toLowerCase();
+                    if (Array.isArray(keyVal)) {
+                        const matches = keyVal.some(v => v.trim().toLowerCase() === ans);
+                        if (matches) correct++;
+                    } else {
+                        if (keyVal.trim().toLowerCase() === ans) correct++;
+                    }
+                });
+            });
+            
+            // Section 6 (Schrijven - Praatplaat):
+            let sec6Correct = 4;
+            if (sub.feedbacks && sub.feedbacks.nl) {
+                const match = sub.feedbacks.nl.match(/(?:Sectie 6|Schrijven|Praatplaat)[^\n]*?Score:\s*(\d+)\/4/i);
+                if (match) {
+                    sec6Correct = parseInt(match[1]);
+                }
+            }
+            correct += sec6Correct;
+            total += 4;
+            
+            const incorrect = total - correct;
+            const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+            
+            return { correct, total, incorrect, percentage };
+        }
+
         function renderReviewPanel() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             const panel = document.getElementById('main-content-panel');
             const subKey = getSubmissionKey(sub);
             const state = feedbackGenerationState[subKey] || { status: 'idle' };
+            const scoreInfo = calculateSubmissionScore(sub);
             
             // Format raw answers representation
             const formatSection = (arr) => {
@@ -887,9 +935,25 @@
 
             panel.innerHTML = `
                 <div class="quiz-card" style="margin-bottom: 0;">
-                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px;">
-                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> (${themesInfo[sub.theme].name})</span>
+                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px; margin-bottom:15px;">
+                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> — ${themesInfo[sub.theme].name} (${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? sub.testNum : 'toets ' + (sub.testNum || '1')})</span>
                     </h2>
+                    
+                    <!-- Teacher Score Summary Card -->
+                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 25px; display: flex; justify-content: space-around; align-items: center; border: 1px solid var(--border-medium);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Goed</div>
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #10b981;">✅ ${scoreInfo.correct} <span style="font-size: 1rem; color: var(--text-secondary); font-weight: 500;">/ ${scoreInfo.total}</span></div>
+                        </div>
+                        <div style="text-align: center; border-left: 1px solid var(--border-medium); border-right: 1px solid var(--border-medium); padding: 0 40px;">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Fout</div>
+                            <div style="font-size: 1.6rem; font-weight: 800; color: #ef4444;">❌ ${scoreInfo.incorrect}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Percentage</div>
+                            <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">📈 ${scoreInfo.percentage}%</div>
+                        </div>
+                    </div>
                     
                     <div class="results-grid">
                         <!-- Left column: Raw student answers -->
@@ -979,6 +1043,11 @@
 
                 📊 **1. NAKIJKBLAD (OVERZICHT)**
 
+                * **Totaal Score Overzicht:**
+                  * Totaal goed: [Aantal] van de [Totaal] vragen
+                  * Totaal fout: [Aantal]
+                  * Scoringspercentage: [Percentage]%
+
                 * **Sectie 1: Luisteren (5 vragen)**
                   * Vraag 1: [Antwoord] ✅
                   * Vraag 2: [Antwoord] ❌ (Het juiste antwoord is [Sleutel])
@@ -991,7 +1060,7 @@
                 Stel de feedback EXACT op volgens de volgende vaste structuur in het Nederlands:
 
                 📊 **1. NAKIJKBLAD (OVERZICHT)**
-                [Het gestructureerde overzicht per sectie met bullet points, scores en emoji's. Geef voor fouten duidelijk aan wat het juiste antwoord is.]
+                [Geef HIER EERST het totale overzicht van de score (totaal goed, totaal fout, percentage) zoals hierboven beschreven. Geef daarna het gestructureerde overzicht per sectie met bullet points, scores en emoji's. Geef voor fouten duidelijk aan wat het juiste antwoord is.]
 
                 ✉️ **2. FEEDBACKBRIEF**
                 Beste ${sub.name},
@@ -1060,6 +1129,7 @@
                 Strikte regels:
                 - Gebruik NOOIT markdown-tabellen (zoals | kolom |). Dit is onleesbaar op WhatsApp.
                 - Behoud altijd de vaste geformatteerde structuur (Nakijkblad met bullet points en Feedbackbrief) tenzij de instructie specifiek vraagt om dit te wijzigen.
+                - Zorg ervoor dat het totale overzicht van de score (totaal goed, totaal fout, percentage) bovenaan het Nakijkblad behouden blijft en correct wordt bijgewerkt indien de score verandert.
                 - Wees niet te streng met kleine spelfoutjes en typfouten (tolerantiegrens van 1-2 afwijkende letters volgens het Levenshtein-model) en trek daar geen punten voor af.
                 - Indien de docent in de instructie aangeeft dat een zin in Sectie 6 fout is (bijv. omdat het niet klopt met de praatplaat) of dat de score aangepast moet worden, pas dan de score van Sectie 6 (bijv. van 4/4 naar 3/4) en de bijbehorende feedback aan.
                 - Geef uitsluitend het aangepaste feedbackrapport terug in dezelfde taal als het origineel.
