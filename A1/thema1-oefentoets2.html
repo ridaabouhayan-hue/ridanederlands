@@ -65,6 +65,37 @@
             font-size: 0.95rem;
             line-height: 1.6;
         }
+        .audio-switcher-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--toets-accent);
+            padding: 10px 18px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease-in-out;
+            font-family: inherit;
+        }
+        .audio-switcher-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+        }
+        [data-theme="dark"] .audio-switcher-btn {
+            background: rgba(15, 23, 42, 0.9);
+            color: #ffffff;
+            border-color: var(--toets-accent);
+        }
     </style>
     <!-- PREVENT THEME FLASH -->
     <script>
@@ -722,42 +753,120 @@
             });
         })();
 
-        // Ingesproken Audio Logic
+        // Audio Logic (MP3 & TTS Fallback)
         let audioPlayer = null;
         let dicteePlayer = null;
+        let ttsUtterance = null;
+        let isSpeakingTTS = false;
+        let isPausedTTS = false;
+        let ttsTimer = null;
+        let ttsProgress = 0;
+        const estimatedDuration = 25;
 
         function togglePlayPause() {
             const playBtn = document.getElementById('play-pause-btn');
             const statusText = document.getElementById('audio-status');
             const progressBar = document.getElementById('audio-progress-bar');
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
             
-            if (!audioPlayer) {
-                audioPlayer = new Audio('../audio/A1/thema1/oefentoets2-luisteren.mp3');
-                
-                audioPlayer.addEventListener('timeupdate', () => {
-                    if (audioPlayer.duration) {
-                        const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                        progressBar.style.width = percentage + "%";
-                    }
-                });
-                
-                audioPlayer.addEventListener('ended', () => {
-                    resetAudioPlayer();
-                });
-            }
+            const mainText = "Hoi, ik ben Karim. Ik ben vijfentwintig jaar oud. Ik kom uit Syrië. Ik woon nu in Amsterdam. Ik ben niet getrouwd. Ik heb geen kinderen. Ik heb wel een broer en een zus. Mijn broer heet Samir en mijn zus heet Leyla. Ik spreek Arabisch en een beetje Nederlands. Ik leer Nederlands op school.";
             
-            if (audioPlayer.paused) {
-                audioPlayer.play().catch(err => {
-                    console.error("Audio kon niet worden afgespeeld:", err);
-                    statusText.textContent = "Fout bij afspelen";
-                });
-                playBtn.textContent = "⏸️";
-                statusText.textContent = "Tekst wordt afgespeeld...";
+            if (mode === 'mp3') {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                clearInterval(ttsTimer);
+                isSpeakingTTS = false;
+                
+                if (!audioPlayer) {
+                    audioPlayer = new Audio('../audio/A1/thema1/oefentoets2-luisteren.mp3');
+                    
+                    audioPlayer.addEventListener('timeupdate', () => {
+                        if (audioPlayer.duration) {
+                            const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                            progressBar.style.width = percentage + "%";
+                        }
+                    });
+                    
+                    audioPlayer.addEventListener('ended', () => {
+                        resetAudioPlayer();
+                    });
+                }
+                
+                if (audioPlayer.paused) {
+                    audioPlayer.play().catch(err => {
+                        console.warn("MP3 afspelen mislukt, fallback naar TTS...", err);
+                        playTTS(mainText);
+                    });
+                    playBtn.textContent = "⏸️";
+                    statusText.textContent = "Tekst wordt afgespeeld (Ingesproken)...";
+                } else {
+                    audioPlayer.pause();
+                    playBtn.textContent = "▶️";
+                    statusText.textContent = "Gepauzeerd";
+                }
             } else {
-                audioPlayer.pause();
-                playBtn.textContent = "▶️";
-                statusText.textContent = "Gepauzeerd";
+                if (audioPlayer) audioPlayer.pause();
+                
+                if (!isSpeakingTTS) {
+                    playTTS(mainText);
+                } else if (isPausedTTS) {
+                    window.speechSynthesis.resume();
+                    isPausedTTS = false;
+                    playBtn.textContent = "⏸️";
+                    statusText.textContent = "Tekst wordt voorgelezen (Computer)...";
+                    startTTSProgressBar();
+                } else {
+                    window.speechSynthesis.pause();
+                    isPausedTTS = true;
+                    playBtn.textContent = "▶️";
+                    statusText.textContent = "Gepauzeerd (Computer)";
+                    clearInterval(ttsTimer);
+                }
             }
+        }
+
+        function playTTS(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            
+            const playBtn = document.getElementById('play-pause-btn');
+            const statusText = document.getElementById('audio-status');
+            
+            setTimeout(() => {
+                const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+                ttsUtterance = new SpeechSynthesisUtterance(cleanText);
+                ttsUtterance.lang = 'nl-NL';
+                ttsUtterance.rate = 0.85;
+                
+                ttsUtterance.onstart = () => {
+                    isSpeakingTTS = true;
+                    isPausedTTS = false;
+                    playBtn.textContent = "⏸️";
+                    statusText.textContent = "Tekst wordt voorgelezen (Computer)...";
+                    startTTSProgressBar();
+                };
+                
+                ttsUtterance.onend = () => {
+                    resetAudioPlayer();
+                };
+                
+                window.speechSynthesis.speak(ttsUtterance);
+            }, 100);
+        }
+
+        function startTTSProgressBar() {
+            clearInterval(ttsTimer);
+            const progressBar = document.getElementById('audio-progress-bar');
+            const totalSteps = estimatedDuration * 10;
+            ttsTimer = setInterval(() => {
+                if (!isPausedTTS) {
+                    ttsProgress++;
+                    const percentage = Math.min((ttsProgress / totalSteps) * 100, 100);
+                    progressBar.style.width = percentage + "%";
+                    if (percentage >= 100) {
+                        clearInterval(ttsTimer);
+                    }
+                }
+            }, 100);
         }
 
         function stopAudio() {
@@ -765,34 +874,81 @@
                 audioPlayer.pause();
                 audioPlayer.currentTime = 0;
             }
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            clearInterval(ttsTimer);
             resetAudioPlayer();
         }
 
         function resetAudioPlayer() {
+            isSpeakingTTS = false;
+            isPausedTTS = false;
+            ttsProgress = 0;
+            clearInterval(ttsTimer);
             document.getElementById('play-pause-btn').textContent = "▶️";
             document.getElementById('audio-status').textContent = "Klik om af te spelen";
             document.getElementById('audio-progress-bar').style.width = "0%";
         }
 
         function speakDictee(text) {
-            if (audioPlayer) {
-                audioPlayer.pause();
-                resetAudioPlayer();
-            }
+            stopAudio();
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
             
-            if (dicteePlayer) {
-                dicteePlayer.pause();
-            }
-            
-            const filename = text.toLowerCase()
-                .replace(/[?.!,]/g, '')
-                .trim()
-                .replace(/\s+/g, '_') + '.mp3';
+            if (mode === 'mp3') {
+                if (dicteePlayer) {
+                    dicteePlayer.pause();
+                }
                 
-            dicteePlayer = new Audio('../audio/A1/thema1/dictee/' + filename);
-            dicteePlayer.play().catch(err => {
-                console.error("Dictee audio kon niet worden afgespeeld:", err);
-            });
+                const filename = text.toLowerCase()
+                    .replace(/[?.!,]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '_') + '.mp3';
+                    
+                dicteePlayer = new Audio('../audio/A1/thema1/dictee/' + filename);
+                dicteePlayer.play().catch(err => {
+                    console.warn("Dictee MP3 mislukt, fallback naar TTS...", err);
+                    speakTTSDictee(text);
+                });
+            } else {
+                speakTTSDictee(text);
+            }
+        }
+
+        function speakTTSDictee(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            
+            const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+            const u = new SpeechSynthesisUtterance(cleanText);
+            u.lang = 'nl-NL';
+            u.rate = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+
+        // Switcher Logic
+        function toggleAudioMode() {
+            const currentMode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
+            const nextMode = currentMode === 'mp3' ? 'tts' : 'mp3';
+            localStorage.setItem('toetsen_audio_mode', nextMode);
+            
+            stopAudio();
+            if (dicteePlayer) dicteePlayer.pause();
+            
+            updateAudioSwitcherUI();
+        }
+
+        function updateAudioSwitcherUI() {
+            const btn = document.getElementById('audio-mode-toggle');
+            if (!btn) return;
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
+            if (mode === 'mp3') {
+                btn.innerHTML = "🔊 Ingesproken Stem (Aanbevolen)";
+                btn.style.borderColor = "var(--toets-accent)";
+            } else {
+                btn.innerHTML = "🤖 Computer Stem (TTS)";
+                btn.style.borderColor = "#94a3b8";
+            }
         }
 
         // Answer keys
@@ -924,7 +1080,15 @@
             document.getElementById('image-modal').style.display = "none";
         }
 
-        window.addEventListener('load', restoreAnswers);
+        window.addEventListener('load', () => {
+            restoreAnswers();
+            updateAudioSwitcherUI();
+        });
     </script>
+    
+    <!-- Audio Mode Toggle Button -->
+    <button id="audio-mode-toggle" class="audio-switcher-btn" onclick="toggleAudioMode()" title="Klik om te wisselen tussen ingesproken audio en computerstem.">
+        🔊 Ingesproken Stem (Aanbevolen)
+    </button>
 </body>
 </html>
