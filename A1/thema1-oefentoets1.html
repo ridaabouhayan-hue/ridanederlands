@@ -65,35 +65,30 @@
             font-size: 0.95rem;
             line-height: 1.6;
         }
+        .audio-switcher-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
         .audio-switcher-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--toets-accent);
-            padding: 10px 18px;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-medium);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            z-index: 10000;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.85rem;
-            color: var(--text-dark);
-            transition: all 0.2s ease-in-out;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
             font-family: inherit;
         }
         .audio-switcher-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-            background: #ffffff;
-        }
-        [data-theme="dark"] .audio-switcher-btn {
-            background: rgba(15, 23, 42, 0.9);
-            color: #ffffff;
+            background: var(--bg-hover);
+            color: var(--text-primary);
             border-color: var(--toets-accent);
         }
     </style>
@@ -495,6 +490,13 @@
 
         <!-- Verzend knop -->
         <button class="submit-btn" onclick="sendToWhatsApp()">📲 Stuur antwoorden naar docent</button>
+        
+        <!-- Audio Mode Toggle Button -->
+        <div class="audio-switcher-container">
+            <button id="audio-mode-toggle" class="audio-switcher-btn" onclick="toggleAudioMode()" title="Klik om te wisselen tussen computerstem (TTS) en ingesproken audio.">
+                🤖 Computer Stem (Standaard)
+            </button>
+        </div>
     </main>
 
     <!-- Image Zoom Modal -->
@@ -770,7 +772,7 @@
             const playBtn = document.getElementById('play-pause-btn');
             const statusText = document.getElementById('audio-status');
             const progressBar = document.getElementById('audio-progress-bar');
-            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'tts';
             
             const mainText = "Hallo, ik heet Julia. Ik ben dertig jaar oud. Ik kom uit Spanje. Ik woon nu in Nederland, in Utrecht. Ik heb een man en twee kinderen. Mijn man heet Thomas. Mijn zoon heet Max en mijn dochter heet Emma. Ik spreek Spaans en een beetje Nederlands.";
             
@@ -894,9 +896,10 @@
             document.getElementById('audio-progress-bar').style.width = "0%";
         }
 
+        // Dictee afspelen
         function speakDictee(text) {
             stopAudio();
-            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'tts';
             
             if (mode === 'mp3') {
                 if (dicteePlayer) {
@@ -931,8 +934,8 @@
 
         // Switcher Logic
         function toggleAudioMode() {
-            const currentMode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
-            const nextMode = currentMode === 'mp3' ? 'tts' : 'mp3';
+            const currentMode = localStorage.getItem('toetsen_audio_mode') || 'tts';
+            const nextMode = currentMode === 'tts' ? 'mp3' : 'tts';
             localStorage.setItem('toetsen_audio_mode', nextMode);
             
             stopAudio();
@@ -944,13 +947,13 @@
         function updateAudioSwitcherUI() {
             const btn = document.getElementById('audio-mode-toggle');
             if (!btn) return;
-            const mode = localStorage.getItem('toetsen_audio_mode') || 'mp3';
-            if (mode === 'mp3') {
-                btn.innerHTML = "🔊 Ingesproken Stem (Aanbevolen)";
-                btn.style.borderColor = "var(--toets-accent)";
+            const mode = localStorage.getItem('toetsen_audio_mode') || 'tts';
+            if (mode === 'tts') {
+                btn.innerHTML = "🤖 Computer Stem (Standaard)";
+                btn.style.borderColor = "var(--border-medium)";
             } else {
-                btn.innerHTML = "🤖 Computer Stem (TTS)";
-                btn.style.borderColor = "#94a3b8";
+                btn.innerHTML = "🔊 Ingesproken Stem";
+                btn.style.borderColor = "var(--toets-accent)";
             }
         }
 
@@ -1088,10 +1091,5 @@
             updateAudioSwitcherUI();
         });
     </script>
-    
-    <!-- Audio Mode Toggle Button -->
-    <button id="audio-mode-toggle" class="audio-switcher-btn" onclick="toggleAudioMode()" title="Klik om te wisselen tussen ingesproken audio en computerstem.">
-        🔊 Ingesproken Stem (Aanbevolen)
-    </button>
 </body>
 </html>
