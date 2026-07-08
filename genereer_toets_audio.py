@@ -98,7 +98,7 @@ def main():
     
     # Dicteewoorden en -zinnen
     oefentoets1_dictee = [
-        "naam", "wonen", "gezin", "moeder", "getrouwd", "letter",
+        "naam", "wonen", "gezin", "moeder", "getrouwd", "kind",
         "Ik kom uit Spanje.", "Hoe heet jouw broer?", "Mijn vader woont in Utrecht."
     ]
     for text in oefentoets1_dictee:
@@ -134,7 +134,7 @@ def main():
     
     # Dicteewoorden en -zinnen
     oefentoets2_dictee = [
-        "vader", "dochter", "praten", "school", "letter", "mevrouw",
+        "vader", "dochter", "praten", "school", "broer", "mevrouw",
         "Ik leer Nederlands op school.", "Waar woont jouw familie?", "Zij spreekt een beetje Nederlands."
     ]
     for text in oefentoets2_dictee:

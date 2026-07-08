@@ -112,6 +112,7 @@ Wanneer er gebruik wordt gemaakt van de ingebouwde spraaksynthese (`SpeechSynthe
 ## 7. ElevenLabs Audio Generatie (Dictee & Luisteren)
 - **Strikte Regel**: Alle met ElevenLabs (of andere API's) gegenereerde audiobestanden voor dictee en luisteropdrachten moeten voldoen aan de **NT2 Nederlands examen A1/A2-standaard**. Dit houdt in:
   - Uiterst duidelijke, rustige en heldere uitspraak.
+  - Het moeten **ALTIJD** Nederlands uitgesproken stemmen en woorden zijn (geen Engels of ander accent).
+  - Dicteewoorden en zinnen moeten uitsluitend normale, herkenbare contextwoorden uit de officiële woordenlijst van het thema bevatten (vermijd vage of onduidelijke dicteewoorden zoals 'letter').
   - Een langzamer spreektempo zodat het voor cursisten goed te volgen is en oneerlijkheden worden voorkomen.
   - In de generatiescripts (bijv. [genereer_toets_audio.py](file:///c:/Users/Rabou/Mijn%20Drive/HTML%20FILES/genereer_toets_audio.py)) moeten de steminstellingen voor stabiliteit en gelijkenis (`stability` en `similarity_boost`) ingesteld zijn op ten minste `0.85` voor dicteewoorden om een stabiele en rustige intonatie te garanderen.
-
