@@ -6,6 +6,11 @@
     <meta name="description" content="NT2 A1 — Toets Thema 8: Vrije tijd — Online examen met automatische nakijkfunctie en WhatsApp verzendsysteem">
     <title>Toets Thema 8 — Vrije tijd — NT2 A1</title>
     <link rel="stylesheet" href="../toets.css">
+    <!-- Firebase SDKs compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../../firebase_config.js"></script>
     
     <!-- PREVENT THEME FLASH -->
     <script>
@@ -309,19 +314,19 @@
                 <!-- P1 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_1.jpeg" alt="Plaatje 1">
-                    <label>1. de </label>
+                    <label>1. </label>
                     <input type="text" class="test-input" id="q5_1" placeholder="Typ...">
                 </div>
                 <!-- P6 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_6.jpeg" alt="Plaatje 6">
-                    <label>6. de </label>
+                    <label>6. </label>
                     <input type="text" class="test-input" id="q5_6" placeholder="Typ...">
                 </div>
                 <!-- P2 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_2.jpeg" alt="Plaatje 2">
-                    <label>2. de </label>
+                    <label>2. </label>
                     <input type="text" class="test-input" id="q5_2" placeholder="Typ...">
                 </div>
                 <!-- P7 -->
@@ -333,7 +338,7 @@
                 <!-- P3 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_3.jpeg" alt="Plaatje 3">
-                    <label>3. de </label>
+                    <label>3. </label>
                     <input type="text" class="test-input" id="q5_3" placeholder="Typ...">
                 </div>
                 <!-- P8 -->
@@ -345,13 +350,13 @@
                 <!-- P4 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_4.jpeg" alt="Plaatje 4">
-                    <label>4. het </label>
+                    <label>4. </label>
                     <input type="text" class="test-input" id="q5_4" placeholder="Typ...">
                 </div>
                 <!-- P9 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_9.png" alt="Plaatje 9">
-                    <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">9. niet de heer, maar de</label>
+                    <label style="font-size: 0.85rem; display: block; margin-bottom: 4px;">9. niet de heer, maar</label>
                     <input type="text" class="test-input" id="q5_9" placeholder="Typ...">
                 </div>
                 <!-- P5 -->
@@ -363,7 +368,7 @@
                 <!-- P10 -->
                 <div class="picture-card">
                     <img src="../img/page_3_img_10.jpeg" alt="Plaatje 10">
-                    <label>10. het </label>
+                    <label>10. </label>
                     <input type="text" class="test-input" id="q5_10" placeholder="Typ...">
                 </div>
             </div>
@@ -714,6 +719,7 @@
                 date: dateStr,
                 time: timeStr,
                 theme: "thema8",
+                testNum: "OFFICIEEL Thema 8 (2026)",
                 answers: {
                     sec1: [mcVal("q1_1_group"), mcVal("q1_2_group"), mcVal("q1_3_group"), mcVal("q1_4_group"), mcVal("q1_5_group")],
                     sec2: [mcVal("q2_1_group"), mcVal("q2_2_group"), mcVal("q2_3_group"), mcVal("q2_4_group"), mcVal("q2_5_group")],
@@ -731,6 +737,22 @@
                 localStorage.setItem('toets_thema8_submissions', JSON.stringify(submissions));
             } catch (e) {
                 console.error("Fout bij opslaan van inzending:", e);
+            }
+
+            // Save to Firestore Database
+            if (window.fbDb) {
+                const subData = {
+                    name: submission.name,
+                    date: submission.date,
+                    time: submission.time,
+                    theme: submission.theme,
+                    testNum: submission.testNum,
+                    answers: submission.answers,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                window.fbDb.collection("submissions").add(subData)
+                    .then(() => console.log("Saved to Firestore"))
+                    .catch(err => console.error("Firestore error", err));
             }
 
             // Build clean WhatsApp message (Q&A only)
@@ -761,8 +783,8 @@
 
             report += `\n*5. Woordenschat (Plaatjes)*\n`;
             const q5_labels = [
-                "1. de", "6. de", "2. de", "7.", "3. de",
-                "8.", "4. het", "9. de dame", "5.", "10. het"
+                "1.", "6.", "2.", "7.", "3.",
+                "8.", "4.", "9. niet de heer, maar", "5.", "10."
             ];
             const q5_map = {
                 1: "q5_1", 2: "q5_2", 3: "q5_3", 4: "q5_4", 5: "q5_5",
