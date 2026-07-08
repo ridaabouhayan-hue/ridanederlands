@@ -350,6 +350,16 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
         }
+        .status-checkmark {
+            font-size: 1.1rem;
+            margin-left: 8px;
+            opacity: 0.2;
+            transition: var(--transition-fast);
+        }
+        .status-checkmark.ready {
+            opacity: 1;
+            color: #10b981;
+        }
     </style>
 </head>
 <body>
@@ -533,11 +543,34 @@
         let selectedTheme = null;
         let selectedSubIndex = null;
         let selectedLanguage = "nl";
-        let generatedFeedbacks = {}; // [studentName] = { nl: "...", en: "..." }
+        let generatedFeedbacks = {}; // Cache fallback
+        const feedbackGenerationState = {}; // Key: subKey, Value: { status: 'idle'|'generating', error: null }
 
         let nameFilter = "";
         let themeFilter = "all";
         let sortBy = "date_desc";
+
+        function getSubmissionKey(sub) {
+            return `${sub.theme}_${sub.name.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.date.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.time.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        }
+
+        function saveSubmission(theme, idx) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            
+            // Save to LocalStorage
+            const storageKey = themesInfo[theme].key;
+            localStorage.setItem(storageKey, JSON.stringify(allSubmissions[theme]));
+            
+            // Sync to Firestore
+            if (window.fbDb && sub.id) {
+                window.fbDb.collection("submissions").doc(sub.id).update({
+                    feedbacks: sub.feedbacks || {}
+                })
+                .then(() => console.log("Feedback successfully updated in Firestore"))
+                .catch(err => console.error("Error updating feedback in Firestore:", err));
+            }
+        }
 
         // Mock data for initial fill
         const mockSubmissions = [
@@ -593,21 +626,27 @@
                         snapshot.forEach((doc) => {
                             const data = doc.data();
                             if (data.theme && allSubmissions[data.theme]) {
-                                const exists = allSubmissions[data.theme].some(s => 
+                                const existsIdx = allSubmissions[data.theme].findIndex(s => 
                                     s.name === data.name && 
                                     s.date === data.date && 
-                                    s.time === data.time &&
-                                    JSON.stringify(s.answers) === JSON.stringify(data.answers)
+                                    s.time === data.time
                                 );
-                                if (!exists) {
+                                if (existsIdx === -1) {
                                     allSubmissions[data.theme].push({
+                                        id: doc.id,
                                         name: data.name,
                                         date: data.date,
                                         time: data.time,
                                         theme: data.theme,
                                         testNum: data.testNum || "1",
-                                        answers: data.answers
+                                        answers: data.answers,
+                                        feedbacks: data.feedbacks || {}
                                     });
+                                } else {
+                                    allSubmissions[data.theme][existsIdx].id = doc.id;
+                                    if (data.feedbacks) {
+                                        allSubmissions[data.theme][existsIdx].feedbacks = data.feedbacks;
+                                    }
                                 }
                             }
                         });
@@ -726,8 +765,12 @@
                         card.onclick = () => selectSubmission(sub.themeKey, sub.originalIndex);
                         
                         const testLabel = sub.testNum ? ` (toets ${sub.testNum})` : '';
+                        const hasFeedback = sub.feedbacks && sub.feedbacks.nl && sub.feedbacks.nl.trim().length > 0;
                         card.innerHTML = `
-                            <div class="student-name">${sub.name}${testLabel}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${sub.name}${testLabel}</div>
+                                <span class="status-checkmark ${hasFeedback ? 'ready' : ''}" style="margin-left: 8px; font-size: 1.1rem; transition: var(--transition-fast); ${hasFeedback ? 'opacity: 1;' : 'opacity: 0.2;'}">${hasFeedback ? '✅' : '✔️'}</span>
+                            </div>
                             <div class="timestamp">📅 ${sub.date} om ${sub.time}</div>
                         `;
                         container.appendChild(card);
@@ -748,6 +791,8 @@
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             const panel = document.getElementById('main-content-panel');
+            const subKey = getSubmissionKey(sub);
+            const state = feedbackGenerationState[subKey] || { status: 'idle' };
             
             // Format raw answers representation
             const formatSection = (arr) => {
@@ -770,6 +815,13 @@
                 <div class="qa-item">${formatSection(sub.answers.sec6)}</div>
             `;
 
+            const hasFeedback = sub.feedbacks && Object.keys(sub.feedbacks).length > 0;
+            const textareaValue = state.status === 'generating' 
+                ? "AI is bezig met genereren of bewerken op de achtergrond..." 
+                : (state.status === 'error' ? `Fout bij genereren feedback: ${state.error}` : (sub.feedbacks ? (sub.feedbacks[selectedLanguage] || "") : ""));
+
+            const isBtnDisabled = state.status === 'generating';
+
             panel.innerHTML = `
                 <div class="quiz-card" style="margin-bottom: 0;">
                     <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px;">
@@ -787,11 +839,11 @@
                         <div style="display:flex; flex-direction:column; gap:15px; padding-left:20px;">
                             <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 Gemini AI Nakijken & Feedback</h3>
                             
-                            <button class="settings-btn" id="generate-ai-btn" style="width:100%; padding:12px; background:var(--primary);" onclick="generateAIFeedback()">
-                                ✨ Genereer Nakijkblad & Brief
+                            <button class="settings-btn" id="generate-ai-btn" style="width:100%; padding:12px; background:var(--primary);" ${isBtnDisabled ? 'disabled' : ''} onclick="generateAIFeedback()">
+                                ${state.status === 'generating' ? '⏳ Analyseren en schrijven...' : '✨ Genereer Nakijkblad & Brief'}
                             </button>
                             
-                            <div class="translate-bar" id="translation-controls" style="display:none;">
+                            <div class="translate-bar" id="translation-controls" style="${hasFeedback ? 'display:flex;' : 'display:none;'}">
                                 <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Herschrijf / Vertaal:</span>
                                 <button class="translate-btn ${selectedLanguage === 'nl' ? 'active' : ''}" onclick="switchFeedbackLanguage('nl')">🇳🇱 NL</button>
                                 <button class="translate-btn ${selectedLanguage === 'en' ? 'active' : ''}" onclick="switchFeedbackLanguage('en')">🇬🇧 EN</button>
@@ -801,10 +853,10 @@
 
                             <div style="display: flex; gap: 8px;">
                                 <input type="text" id="ai-instruction" class="settings-input" placeholder="AI Instructie (bijv. 'vertaal naar het engels en maak positief')..." style="flex-grow: 1;">
-                                <button class="settings-btn" onclick="rewriteFeedbackWithAI()" style="background: var(--secondary);">Herschrijf</button>
+                                <button class="settings-btn" id="rewrite-ai-btn" ${isBtnDisabled ? 'disabled' : ''} onclick="rewriteFeedbackWithAI()" style="background: var(--secondary);">Herschrijf</button>
                             </div>
                             
-                            <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." oninput="updateStoredFeedback(this.value)"></textarea>
+                            <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." ${isBtnDisabled ? 'disabled' : ''} oninput="updateStoredFeedback(this.value)" onkeyup="updateStoredFeedback(this.value)" onchange="updateStoredFeedback(this.value)">${textareaValue}</textarea>
                             
                             <div class="action-row">
                                 <button class="action-btn purple" onclick="copyFeedbackText()">📋 Kopieer tekst</button>
@@ -814,30 +866,24 @@
                     </div>
                 </div>
             `;
-            
-            if (generatedFeedbacks[sub.name]) {
-                document.getElementById('translation-controls').style.display = 'flex';
-                showActiveFeedbackText();
-            }
         }
 
         function updateStoredFeedback(val) {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             if (!sub) return;
-            if (!generatedFeedbacks[sub.name]) generatedFeedbacks[sub.name] = {};
-            generatedFeedbacks[sub.name][selectedLanguage] = val;
+            sub.feedbacks = sub.feedbacks || {};
+            sub.feedbacks[selectedLanguage] = val;
+            saveSubmission(selectedTheme, selectedSubIndex);
         }
 
         async function generateAIFeedback() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
-            const btn = document.getElementById('generate-ai-btn');
-            const textarea = document.getElementById('feedback-textarea');
+            const subKey = getSubmissionKey(sub);
             
-            btn.disabled = true;
-            btn.textContent = "⏳ Analyseren en schrijven...";
-            textarea.value = "Gemini kijkt de toets na en stelt het feedbackrapport op...";
+            feedbackGenerationState[subKey] = { status: 'generating' };
+            renderReviewPanel();
             
             try {
                 const keys = answerKeys[sub.theme] || {};
@@ -861,10 +907,26 @@
                 - Voor de schrijfzinnen (Sectie 6), controleer grammatica, lidwoorden en of de zinnen logisch en correct zijn geschreven.
                 - Geef bij de beoordeling of feedback van het dictee (Sectie 5) NOOIT zowel het enkelvoud als het meervoud van een woord. Geef uitsluitend één enkele vorm (enkelvoud óf meervoud, degene die in de sleutel staat of voorgelezen is). Meerdere opties tonen is verwarrend voor de cursist.
 
-                Stel de feedback EXACT op volgens deze vaste structuur in het Nederlands:
+                Strikte opmaak-regels (VOOR DE JUISTE LAYOUT):
+                - Gebruik NOOIT markdown-tabellen (zoals | kolom |). Dit is onleesbaar op WhatsApp.
+                - Gebruik ALTIJD een eenvoudige lijst met bullet-points voor het overzicht.
+                - Het Nakijkblad overzicht moet er EXACT zo uitzien:
 
                 📊 **1. NAKIJKBLAD (OVERZICHT)**
-                Bespreek per sectie of de vraag goed is (gebruik ✅), fout (❌) of spellingfouten bevat (⚠️). Bereken de score en het percentage.
+
+                * **Sectie 1: Luisteren (5 vragen)**
+                  * Vraag 1: [Antwoord] ✅
+                  * Vraag 2: [Antwoord] ❌ (Het juiste antwoord is [Sleutel])
+                  ...
+                  * *Score: X/5*
+
+                * **Sectie 2: Lezen (5 vragen)**
+                  ...
+
+                Stel de feedback EXACT op volgens de volgende vaste structuur in het Nederlands:
+
+                📊 **1. NAKIJKBLAD (OVERZICHT)**
+                [Het gestructureerde overzicht per sectie met bullet points, scores en emoji's. Geef voor fouten duidelijk aan wat het juiste antwoord is.]
 
                 ✉️ **2. FEEDBACKBRIEF**
                 Beste ${sub.name},
@@ -877,23 +939,32 @@
                 `;
 
                 const responseText = await callGemini(prompt);
-                generatedFeedbacks[sub.name] = { nl: responseText.trim() };
                 
-                document.getElementById('translation-controls').style.display = 'flex';
-                selectedLanguage = "nl";
-                showActiveFeedbackText();
+                sub.feedbacks = sub.feedbacks || {};
+                sub.feedbacks.nl = responseText.trim();
+                saveSubmission(selectedTheme, selectedSubIndex);
+                
+                feedbackGenerationState[subKey] = { status: 'idle' };
+                updateList();
+                
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    selectedLanguage = "nl";
+                    renderReviewPanel();
+                }
             } catch (err) {
                 console.error("Gemini Error:", err);
-                textarea.value = `Fout bij genereren feedback: ${err.message}`;
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "✨ Genereer Nakijkblad & Brief";
+                feedbackGenerationState[subKey] = { status: 'error', error: err.message };
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    renderReviewPanel();
+                }
             }
         }
 
         async function rewriteFeedbackWithAI() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const subKey = getSubmissionKey(sub);
+            
             const instructionInput = document.getElementById('ai-instruction');
             const instruction = instructionInput.value.trim();
             const textarea = document.getElementById('feedback-textarea');
@@ -908,11 +979,12 @@
                 return;
             }
             
-            textarea.value = "Gemini past het feedbackrapport aan op basis van je instructie...";
+            feedbackGenerationState[subKey] = { status: 'generating' };
+            renderReviewPanel();
             
             try {
                 const prompt = `
-                Je bent een NT2 docent Nederlands. Hier is de huidige feedback (nakijkblad en brief) voor cursist "${sub.name}":
+                Je bent een NT2 docent Nederlands. Hier is de huidige feedback (nakijkblad en brief) voor cursist "${sub.name}" (in de taal ${selectedLanguage}):
                 """
                 ${currentText}
                 """
@@ -920,34 +992,52 @@
                 Pas deze feedback aan volgens de volgende specifieke instructie van de hoofddocent:
                 "${instruction}"
 
-                Behoud de geformatteerde structuur (Nakijkblad en Feedbackbrief) tenzij de instructie vraagt om dit te wijzigen.
-                Geef uitsluitend het aangepaste feedbackrapport terug.
+                Strikte regels:
+                - Gebruik NOOIT markdown-tabellen (zoals | kolom |). Dit is onleesbaar op WhatsApp.
+                - Behoud altijd de vaste geformatteerde structuur (Nakijkblad met bullet points en Feedbackbrief) tenzij de instructie specifiek vraagt om dit te wijzigen.
+                - Geef uitsluitend het aangepaste feedbackrapport terug in dezelfde taal als het origineel.
                 `;
                 
                 const responseText = await callGemini(prompt);
-                generatedFeedbacks[sub.name][selectedLanguage] = responseText.trim();
-                showActiveFeedbackText();
-                instructionInput.value = ""; // Clear input
+                
+                sub.feedbacks = sub.feedbacks || {};
+                sub.feedbacks[selectedLanguage] = responseText.trim();
+                saveSubmission(selectedTheme, selectedSubIndex);
+                
+                feedbackGenerationState[subKey] = { status: 'idle' };
+                updateList();
+                
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    renderReviewPanel();
+                }
             } catch (err) {
                 console.error("Rewrite error:", err);
-                alert("Fout bij het herschrijven met AI: " + err.message);
-                showActiveFeedbackText();
+                feedbackGenerationState[subKey] = { status: 'error', error: err.message };
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    renderReviewPanel();
+                }
             }
         }
 
         async function translateFeedback(targetLangCode, targetLangName) {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
-            const textarea = document.getElementById('feedback-textarea');
-            const origFeedback = generatedFeedbacks[sub.name]?.nl;
+            const subKey = getSubmissionKey(sub);
             
+            const origFeedback = sub.feedbacks?.nl;
             if (!origFeedback) return;
-            textarea.value = `Vertalen naar het ${targetLangName}...`;
+            
+            feedbackGenerationState[subKey] = { status: 'generating' };
+            renderReviewPanel();
             
             try {
                 const prompt = `
                 Vertaal de onderstaande feedback (nakijkblad en brief) naar het ${targetLangName}. 
-                Behoud de structuur, de emoji's, en de vriendelijke toon.
+                Behoud de structuur, de bullet-points, de emoji's, en de vriendelijke toon.
+                
+                Strikte regels:
+                - Gebruik NOOIT markdown-tabellen.
+                - Zorg dat het nakijkblad overzicht een duidelijke bullet-point lijst blijft.
                 
                 Tekst om te vertalen:
                 """
@@ -958,11 +1048,22 @@
                 `;
                 
                 const translatedText = await callGemini(prompt);
-                generatedFeedbacks[sub.name][targetLangCode] = translatedText.trim();
-                showActiveFeedbackText();
+                
+                sub.feedbacks[targetLangCode] = translatedText.trim();
+                saveSubmission(selectedTheme, selectedSubIndex);
+                
+                feedbackGenerationState[subKey] = { status: 'idle' };
+                updateList();
+                
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    renderReviewPanel();
+                }
             } catch (err) {
                 console.error("Translation Error:", err);
-                textarea.value = `Fout bij vertalen: ${err.message}\n\nOriginele feedback:\n\n${origFeedback}`;
+                feedbackGenerationState[subKey] = { status: 'error', error: err.message };
+                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
+                    renderReviewPanel();
+                }
             }
         }
 
@@ -982,7 +1083,7 @@
                 }
             });
             
-            if (generatedFeedbacks[sub.name] && generatedFeedbacks[sub.name][lang]) {
+            if (sub.feedbacks && sub.feedbacks[lang]) {
                 showActiveFeedbackText();
             } else {
                 const langNames = {
@@ -996,8 +1097,8 @@
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             const textarea = document.getElementById('feedback-textarea');
-            if (generatedFeedbacks[sub.name] && generatedFeedbacks[sub.name][selectedLanguage]) {
-                textarea.value = generatedFeedbacks[sub.name][selectedLanguage];
+            if (sub.feedbacks && sub.feedbacks[selectedLanguage]) {
+                textarea.value = sub.feedbacks[selectedLanguage];
             } else {
                 textarea.value = "";
             }
@@ -1128,7 +1229,7 @@
             return { name, date, time, theme, testNum, answers };
         }
 
-        function importWhatsAppSub() {
+        async function importWhatsAppSub() {
             const textarea = document.getElementById('import-textarea');
             const text = textarea.value.trim();
             if (!text) {
@@ -1136,20 +1237,122 @@
                 return;
             }
             
-            const parsed = parseWhatsAppMessage(text);
-            if (!parsed) {
-                alert("Kan het bericht niet herkennen.");
-                return;
-            }
+            const importBtn = document.querySelector("#import-area .settings-btn[onclick='importWhatsAppSub()']");
+            const originalText = importBtn.textContent;
+            importBtn.disabled = true;
+            importBtn.textContent = "⏳ Importeren...";
             
-            const storageKey = (themesInfo[parsed.theme] || { key: "toets_" + parsed.theme + "_submissions" }).key;
             try {
+                const apiKey = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY;
+                if (!apiKey || apiKey.includes("YOUR-")) {
+                    throw new Error("Gemini API-sleutel is niet ingesteld. Vul deze hierboven in.");
+                }
+                
+                const prompt = `
+                Je bent een data-parser assistent. Jouw taak is om de onderstaande bulk-tekst met ingezonden antwoorden van cursisten te ontleden. 
+                De ingezonden berichten komen van WhatsApp en kunnen meerdere cursisten en verschillende toetsen bevatten.
+
+                Ontleed de tekst en geef uitsluitend een JSON array terug met objecten in dit formaat:
+                [{
+                    "name": "Naam van de cursist",
+                    "date": "dd-mm-jjjj (gebruik de datum van vandaag '${new Date().toLocaleDateString('nl-NL')}' als deze niet in de tekst staat of afgeleid kan worden)",
+                    "time": "uu:mm (gebruik de tijd van nu '${new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}' als deze niet in de tekst staat of afgeleid kan worden)",
+                    "theme": "thema1" t/m "thema8" (zoek uit welk thema het is op basis van de tekst, bijv. "Thema 1 - Hallo" -> "thema1", "Thema 8" -> "thema8", etc.)",
+                    "testNum": "1" t/m "5" (zoek uit welk oefentoets nummer het is, bijv. "oefentoets 1" of "toets 1" -> "1", etc. Standaard "1")",
+                    "answers": {
+                        "sec1": ["antwoord1", "antwoord2", ...],
+                        "sec2": ["antwoord1", "antwoord2", ...],
+                        "sec3": ["antwoord1", ...],
+                        "sec4": ["antwoord1", ...],
+                        "sec5": ["antwoord1", ...],
+                        "sec6": ["antwoord1", ...]
+                    }
+                }]
+
+                Regels voor het vullen van answers:
+                - Elke sectie (1 t/m 6) moet een array van antwoorden zijn.
+                - De antwoorden zijn de waarden die achter de vraagnummers of indicatoren staan (bijv. "Vraag 1: A" -> "A", "Zin 1: Ik loop" -> "Ik loop", "- Vraag 1: B" -> "B").
+                - Als een sectie geen antwoorden heeft, laat de array dan leeg: [].
+                - Verwijder sterretjes (*), quotes en overbodige witruimte uit de antwoorden.
+                - Zorg ervoor dat het resultaat 100% valide JSON is (geef GEEN markdown block, GEEN \`\`\`json, gewoon pure JSON tekst).
+
+                Bulk-tekst om te ontleden:
+                """
+                ${text}
+                """
+                `;
+                
+                const responseText = await callGemini(prompt);
+                let jsonText = responseText.trim();
+                if (jsonText.startsWith("```")) {
+                    jsonText = jsonText.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
+                }
+                
+                const parsedList = JSON.parse(jsonText);
+                if (!Array.isArray(parsedList)) {
+                    throw new Error("Het resultaat van de AI was geen lijst.");
+                }
+                
+                let successCount = 0;
+                for (const parsed of parsedList) {
+                    if (!parsed.name || !parsed.theme) continue;
+                    
+                    const storageKey = (themesInfo[parsed.theme] || { key: "toets_" + parsed.theme + "_submissions" }).key;
+                    let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    parsed.feedbacks = parsed.feedbacks || {};
+                    subs.push(parsed);
+                    localStorage.setItem(storageKey, JSON.stringify(subs));
+                    allSubmissions[parsed.theme] = subs;
+                    
+                    if (window.fbDb) {
+                        const docData = {
+                            name: parsed.name,
+                            date: parsed.date,
+                            time: parsed.time,
+                            theme: parsed.theme,
+                            testNum: parsed.testNum || "1",
+                            answers: parsed.answers,
+                            feedbacks: parsed.feedbacks,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        
+                        window.fbDb.collection("submissions").add(docData)
+                        .then((docRef) => {
+                            parsed.id = docRef.id;
+                            const currentSubs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                            const idx = currentSubs.findIndex(s => s.name === parsed.name && s.date === parsed.date && s.time === parsed.time);
+                            if (idx !== -1) {
+                                currentSubs[idx].id = docRef.id;
+                                localStorage.setItem(storageKey, JSON.stringify(currentSubs));
+                            }
+                        })
+                        .catch(err => console.error("Firestore sync error:", err));
+                    }
+                    successCount++;
+                }
+                
+                textarea.value = '';
+                toggleImportArea();
+                updateList();
+                alert(`Succesvol ${successCount} cursisten geïmporteerd via WhatsApp bulk-import!`);
+                
+            } catch (err) {
+                console.error("Gemini Bulk Import Error:", err);
+                alert("AI bulk import mislukt of API key mist. We proberen het nu met de traditionele (enkele) importeur...");
+                
+                const parsed = parseWhatsAppMessage(text);
+                if (!parsed) {
+                    alert("Handmatige parsing ook mislukt. Controleer het formaat van het bericht.");
+                    return;
+                }
+                
+                const storageKey = (themesInfo[parsed.theme] || { key: "toets_" + parsed.theme + "_submissions" }).key;
                 let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                parsed.feedbacks = parsed.feedbacks || {};
                 subs.push(parsed);
                 localStorage.setItem(storageKey, JSON.stringify(subs));
                 allSubmissions[parsed.theme] = subs;
-
-                // Sync manually imported WhatsApp submission to Firestore
+                
                 if (window.fbDb) {
                     window.fbDb.collection("submissions").add({
                         name: parsed.name,
@@ -1158,19 +1361,24 @@
                         theme: parsed.theme,
                         testNum: parsed.testNum,
                         answers: parsed.answers,
+                        feedbacks: parsed.feedbacks,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     })
-                    .then(() => console.log("Imported WhatsApp submission synced to Firestore"))
+                    .then((docRef) => {
+                        parsed.id = docRef.id;
+                        localStorage.setItem(storageKey, JSON.stringify(subs));
+                    })
                     .catch(err => console.error("Firestore sync error:", err));
                 }
                 
+                textarea.value = '';
                 toggleImportArea();
                 updateList();
                 selectSubmission(parsed.theme, subs.length - 1);
-                alert(`Succesvol geïmporteerd voor: ${parsed.name}!`);
-            } catch (e) {
-                console.error(e);
-                alert("Fout bij opslaan.");
+                alert(`Succesvol geïmporteerd (enkelvoudig via fallback) voor: ${parsed.name}!`);
+            } finally {
+                importBtn.disabled = false;
+                importBtn.textContent = originalText;
             }
         }
 
