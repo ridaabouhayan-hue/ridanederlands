@@ -360,6 +360,19 @@
             opacity: 1;
             color: #10b981;
         }
+        .delete-sub-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 2px;
+            font-size: 1rem;
+            opacity: 0.5;
+            transition: var(--transition-fast);
+        }
+        .delete-sub-btn:hover {
+            opacity: 1 !important;
+            transform: scale(1.15);
+        }
     </style>
 </head>
 <body>
@@ -769,7 +782,10 @@
                         card.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                 <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${sub.name}${testLabel}</div>
-                                <span class="status-checkmark ${hasFeedback ? 'ready' : ''}" style="margin-left: 8px; font-size: 1.1rem; transition: var(--transition-fast); ${hasFeedback ? 'opacity: 1;' : 'opacity: 0.2;'}">${hasFeedback ? '✅' : '✔️'}</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span class="status-checkmark ${hasFeedback ? 'ready' : ''}" style="font-size: 1.1rem; transition: var(--transition-fast); ${hasFeedback ? 'opacity: 1;' : 'opacity: 0.2;'}">${hasFeedback ? '✅' : '✔️'}</span>
+                                    <button class="delete-sub-btn" onclick="deleteSingleSubmission(event, '${sub.themeKey}', ${sub.originalIndex})" title="Verwijder deze inzending">🗑️</button>
+                                </div>
                             </div>
                             <div class="timestamp">📅 ${sub.date} om ${sub.time}</div>
                         `;
@@ -785,6 +801,46 @@
             selectedLanguage = "nl";
             updateList();
             renderReviewPanel();
+        }
+
+        function deleteSingleSubmission(event, theme, idx) {
+            if (event) event.stopPropagation();
+            
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            
+            if (!confirm(`Weet u zeker dat u de inzending van ${sub.name} wilt verwijderen?`)) {
+                return;
+            }
+            
+            // Remove from Firestore
+            if (window.fbDb && sub.id) {
+                window.fbDb.collection("submissions").doc(sub.id).delete()
+                    .then(() => console.log("Submission deleted from Firestore"))
+                    .catch(err => console.error("Error deleting from Firestore:", err));
+            }
+            
+            // Remove from local array
+            allSubmissions[theme].splice(idx, 1);
+            
+            // Save to LocalStorage
+            const storageKey = themesInfo[theme].key;
+            localStorage.setItem(storageKey, JSON.stringify(allSubmissions[theme]));
+            
+            // Reset selected states if we deleted the current selection
+            if (selectedTheme === theme && selectedSubIndex === idx) {
+                selectedTheme = null;
+                selectedSubIndex = null;
+                document.getElementById('main-content-panel').innerHTML = `
+                    <div class="empty-state">
+                        🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
+                    </div>
+                `;
+            } else if (selectedTheme === theme && selectedSubIndex > idx) {
+                selectedSubIndex--;
+            }
+            
+            updateList();
         }
 
         function renderReviewPanel() {
