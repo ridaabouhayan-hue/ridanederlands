@@ -1513,6 +1513,49 @@
             if (selectedTheme === theme && selectedSubIndex === idx) renderReviewPanel();
         }
 
+        function clearManualOverrides(theme, idx) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            if (!confirm("Weet u zeker dat u alle handmatige correcties voor deze student wilt wissen en wilt terugkeren naar de automatische score?")) {
+                return;
+            }
+            sub.gradingState = sub.gradingState || {};
+            sub.gradingState.overrides = {};
+            saveSubmission(theme, idx);
+            renderReviewPanel();
+        }
+
+        function checkFeedbackMismatch(sub, scoreInfo) {
+            if (!sub.feedbacks || !sub.feedbacks.nl) return null;
+            const text = sub.feedbacks.nl.toLowerCase();
+            
+            // Check if the feedback mentions a different total score
+            const pointsRegex = /van\s+de\s+(\d+)\s+punten/i;
+            const match = text.match(pointsRegex);
+            if (match && parseInt(match[1], 10) !== scoreInfo.total) {
+                return `Het opgeslagen rapport vermeldt een totaalscore van ${match[1]} punten, terwijl deze actuele toets ${scoreInfo.total} punten bevat.`;
+            }
+            
+            // Check if the feedback mentions keyword clues of other themes
+            const otherThemes = Object.keys(themesInfo).filter(t => t !== sub.theme);
+            const keywords = {
+                thema7: ["reizen", "kruispunt", "eiland", "boot", "instappen", "verkeersbord"],
+                thema8: ["vrije tijd", "bioscoop", "hobby", "sporten", "gitaar", "boerderij"]
+            };
+
+            for (const ot of otherThemes) {
+                const words = keywords[ot] || [];
+                if (words.some(w => text.includes(w))) {
+                    const currentWords = keywords[sub.theme] || [];
+                    if (!currentWords.some(w => text.includes(w))) {
+                        return `Het opgeslagen rapport lijkt te horen bij een andere toets (bijv. ${themesInfo[ot].name}).`;
+                    }
+                }
+            }
+            
+            return null;
+        }
+
         function renderReviewPanel() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
@@ -1528,12 +1571,23 @@
 
             const hasFeedback = sub.feedbacks && Object.keys(sub.feedbacks).length > 0;
             const textareaValue = state.status === 'generating'
-                ? "AI is bezig met genereren of bewerken op de achtergrond..."
+                ? "Rapport wordt opgesteld..."
                 : (state.status === 'error' ? `Fout bij genereren feedback: ${state.error}` : (sub.feedbacks ? (sub.feedbacks[selectedLanguage] || "") : ""));
 
             const isBtnDisabled = state.status === 'generating';
             const isLocked = !!grading.locked;
             const editingDisabled = isBtnDisabled || isLocked;
+
+            const mismatchWarning = checkFeedbackMismatch(sub, scoreInfo);
+            const warningHtml = mismatchWarning ? `
+                <div class="warning-box" style="background: #fffbeb; border: 1px solid #fef3c7; color: #b45309; padding: 12px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                    <span style="font-size: 1.1rem;">⚠️</span>
+                    <div>
+                        <strong>Let op: Afwijkend/verouderd rapport gedetecteerd.</strong><br>
+                        ${escapeHtml(mismatchWarning)} Klik op <strong>Genereer Nakijkblad & Brief</strong> om het rapport opnieuw te schrijven voor deze toets.
+                    </div>
+                </div>
+            ` : '';
 
             panel.innerHTML = `
                 <div class="quiz-card" style="margin-bottom: 0;">
@@ -1541,7 +1595,10 @@
                         <span>👤 Review: <strong style="color:var(--primary);">${escapeHtml(sub.name)}</strong> — ${escapeHtml(themesInfo[sub.theme].name)} (${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? escapeHtml(sub.testNum) : 'toets ' + escapeHtml(sub.testNum || '1')})
                             <span class="status-pill ${isLocked ? 'vergrendeld' : 'concept'}">${isLocked ? '🔒 Vergrendeld' : '✏️ Concept'}</span>
                         </span>
-                        <button class="settings-btn" onclick="openScoreModal()" style="font-size: 0.9rem; padding: 6px 12px; background: var(--primary); display: flex; align-items: center; gap: 5px;">📈 Omrekentabel</button>
+                        <div style="display:flex; gap:8px;">
+                            <button class="settings-btn" onclick="openScoreModal()" style="font-size: 0.9rem; padding: 6px 12px; background: var(--primary); display: flex; align-items: center; gap: 5px;">📈 Omrekentabel</button>
+                            <button class="settings-btn" onclick="clearManualOverrides('${selectedTheme}', ${selectedSubIndex})" style="font-size: 0.9rem; padding: 6px 12px; background: var(--secondary); display: flex; align-items: center; gap: 5px;" title="Wis alle handmatige aanpassingen en herstel automatische score">🗑️ Herstel</button>
+                        </div>
                     </h2>
 
                     <!-- Class/Route Assignment Dropdown -->
@@ -1612,6 +1669,7 @@
                             </div>
                             ${renderInstructieLog(grading)}
 
+                            ${warningHtml}
                             <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." ${editingDisabled ? 'disabled' : ''} oninput="updateStoredFeedback(this.value)" onchange="updateStoredFeedback(this.value)">${textareaValue}</textarea>
                             ${isLocked ? `<div style="font-size:0.78rem; color:var(--text-muted); margin-top:-8px;">🔒 Vergrendeld — ontgrendel om verder te bewerken.</div>` : ''}
 
