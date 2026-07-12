@@ -43,7 +43,7 @@
         }
         
         .dashboard-container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -688,7 +688,8 @@
                 window.fbDb.collection("submissions").doc(sub.id).update({
                     feedbacks: sub.feedbacks || {},
                     gradingState: sub.gradingState || {},
-                    classRoute: sub.classRoute || ""
+                    classRoute: sub.classRoute || "",
+                    archived: sub.archived || false
                 })
                 .then(() => console.log("Submission successfully updated in Firestore"))
                 .catch(err => console.error("Error updating submission in Firestore:", err));
@@ -825,7 +826,8 @@
                                         answers: data.answers,
                                         feedbacks: data.feedbacks || {},
                                         gradingState: data.gradingState || {},
-                                        classRoute: data.classRoute || ""
+                                        classRoute: data.classRoute || "",
+                                        archived: data.archived || false
                                     });
                                 } else {
                                     allSubmissions[data.theme][existsIdx].id = doc.id;
@@ -837,6 +839,9 @@
                                     }
                                     if (data.classRoute !== undefined) {
                                         allSubmissions[data.theme][existsIdx].classRoute = data.classRoute;
+                                    }
+                                    if (data.archived !== undefined) {
+                                        allSubmissions[data.theme][existsIdx].archived = data.archived;
                                     }
                                 }
                             }
@@ -988,10 +993,13 @@
                 return parseDateTime(b.date, b.time) - parseDateTime(a.date, a.time);
             });
             
+            const activeItems = items.filter(item => !item.archived);
+            const archivedItems = items.filter(item => item.archived);
+
             const officialGrouped = {};
             const practiceGrouped = {};
             
-            items.forEach(item => {
+            activeItems.forEach(item => {
                 const isOfficial = item.testNum && (item.testNum.startsWith("OFFICIEEL") || item.testNum.includes("OFFICIEEL"));
                 const targetGroup = isOfficial ? officialGrouped : practiceGrouped;
                 if (!targetGroup[item.themeKey]) targetGroup[item.themeKey] = [];
@@ -1050,6 +1058,7 @@
                                     <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${classBadge}${sub.name}${testLabel}</div>
                                     <div style="display: flex; align-items: center; gap: 6px;">
                                         <span class="status-checkmark ${hasFeedback ? 'ready' : ''}" style="font-size: 1.1rem; transition: var(--transition-fast); ${hasFeedback ? 'opacity: 1;' : 'opacity: 0.2;'}">${hasFeedback ? '✅' : '✔️'}</span>
+                                        <button class="delete-sub-btn" onclick="archiveSubmission(event, '${sub.themeKey}', ${sub.originalIndex}, true)" title="Archiveer deze inzending">📦</button>
                                         <button class="delete-sub-btn" onclick="deleteSingleSubmission(event, '${sub.themeKey}', ${sub.originalIndex})" title="Verwijder deze inzending">🗑️</button>
                                     </div>
                                 </div>
@@ -1060,9 +1069,60 @@
                     }
                 }
             }
+
+            function renderArchivedGroup(itemsList) {
+                if (itemsList.length === 0) return;
+                
+                const catHeader = document.createElement('div');
+                catHeader.className = 'category-header';
+                catHeader.style.cursor = 'pointer';
+                catHeader.style.display = 'flex';
+                catHeader.style.justifyContent = 'space-between';
+                catHeader.style.alignItems = 'center';
+                catHeader.style.background = 'var(--bg-secondary)';
+                catHeader.style.padding = '8px 12px';
+                catHeader.style.borderRadius = 'var(--radius-sm)';
+                catHeader.style.border = '1px solid var(--border-medium)';
+                catHeader.style.marginTop = '20px';
+                catHeader.style.marginBottom = '10px';
+                
+                const isCollapsed = localStorage.getItem('archive_collapsed') === 'true';
+                catHeader.innerHTML = `<span>📦 Archief (${itemsList.length})</span><span style="font-size:0.8rem;">${isCollapsed ? '▶' : '▼'}</span>`;
+                catHeader.onclick = () => {
+                    const collapsed = localStorage.getItem('archive_collapsed') === 'true';
+                    localStorage.setItem('archive_collapsed', !collapsed);
+                    updateList();
+                };
+                container.appendChild(catHeader);
+                
+                if (isCollapsed) return;
+
+                itemsList.forEach((sub) => {
+                    const card = document.createElement('div');
+                    card.className = `submission-card ${selectedTheme === sub.themeKey && selectedSubIndex === sub.originalIndex ? 'selected' : ''}`;
+                    card.style.opacity = '0.7';
+                    card.onclick = () => selectSubmission(sub.themeKey, sub.originalIndex);
+                    
+                    const testLabel = sub.testNum ? ` (${sub.testNum.startsWith("OFFICIEEL") ? "officieel" : "toets " + sub.testNum})` : '';
+                    const themeLabel = `<span style="font-size:0.72rem; color:var(--text-secondary); display:block; margin-top:3px; font-weight:normal;">${themesInfo[sub.themeKey].name}</span>`;
+                    const classBadge = sub.classRoute ? `<span class="class-badge badge-${sub.classRoute.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}">${sub.classRoute}</span>` : '';
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${classBadge}${sub.name}${testLabel}${themeLabel}</div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <button class="delete-sub-btn" style="padding: 2px 6px; font-size: 0.75rem; width: auto; height: auto;" onclick="archiveSubmission(event, '${sub.themeKey}', ${sub.originalIndex}, false)" title="Zet terug in actieve lijst">📤</button>
+                                <button class="delete-sub-btn" onclick="deleteSingleSubmission(event, '${sub.themeKey}', ${sub.originalIndex})" title="Verwijder deze inzending permanent">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="timestamp">📅 ${sub.date} om ${sub.time}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
             
             renderSubGroup("🏆 Officiële Toetsen", officialGrouped);
             renderSubGroup("✍️ Oefentoetsen", practiceGrouped);
+            renderArchivedGroup(archivedItems);
             
             if (container.children.length === 0) {
                 const noSubs = document.createElement('div');
@@ -1118,6 +1178,19 @@
             }
             
             updateList();
+        }
+
+        function archiveSubmission(event, theme, idx, archiveState) {
+            if (event) event.stopPropagation();
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            
+            sub.archived = !!archiveState;
+            saveSubmission(theme, idx);
+            updateList();
+            if (selectedTheme === theme && selectedSubIndex === idx) {
+                renderReviewPanel();
+            }
         }
 
         // Grading state per submission: sparse overrides ("sec1_0" -> "goed"/"deels"/"fout")
@@ -2324,25 +2397,32 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
             });
         }
 
-        let activeScoreTab = '2026';
         let isPresentationMode = false;
 
         function openScoreModal() {
             const modal = document.getElementById('score-modal');
-            if (modal) modal.style.display = 'block';
-            renderScoreTable();
+            if (!modal) return;
+            modal.style.display = 'block';
+
+            let totalPoints = 77;
+            if (selectedTheme !== null && selectedSubIndex !== null) {
+                const sub = allSubmissions[selectedTheme][selectedSubIndex];
+                if (sub) {
+                    const scoreInfo = calculateSubmissionScore(sub);
+                    totalPoints = scoreInfo.total;
+                }
+            }
+            
+            const maxPointsInput = document.getElementById('score-modal-max-points');
+            if (maxPointsInput) {
+                maxPointsInput.value = totalPoints;
+            }
+            renderScoreTable(totalPoints);
         }
 
         function closeScoreModal() {
             const modal = document.getElementById('score-modal');
             if (modal) modal.style.display = 'none';
-        }
-
-        function switchScoreTab(tab) {
-            activeScoreTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-btn-${tab}`).classList.add('active');
-            renderScoreTable();
         }
 
         function togglePresentationMode() {
@@ -2355,54 +2435,78 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
             }
         }
 
-        function renderScoreTable() {
+        function renderScoreTable(customMaxPoints) {
             const container = document.getElementById('score-table-container');
+            const titleEl = document.getElementById('score-modal-title');
+            
             let totalPoints = 77;
-            if (activeScoreTab === '2022') totalPoints = 53;
-            else if (activeScoreTab === 'digi') totalPoints = 39;
+            let testName = "Toets";
+            if (selectedTheme !== null && selectedSubIndex !== null) {
+                const sub = allSubmissions[selectedTheme][selectedSubIndex];
+                if (sub) {
+                    const scoreInfo = calculateSubmissionScore(sub);
+                    totalPoints = scoreInfo.total;
+                    testName = `${themesInfo[sub.theme].name} (${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? sub.testNum : 'toets ' + (sub.testNum || '1')})`;
+                }
+            }
+
+            if (customMaxPoints !== undefined && customMaxPoints !== null) {
+                totalPoints = parseInt(customMaxPoints, 10) || totalPoints;
+            }
+
+            if (titleEl) {
+                titleEl.textContent = `Omrekentabel: ${testName} (Totaal: ${totalPoints} p.)`;
+            }
             
             let html = `
                 <table style="width: 100%; border-collapse: collapse; text-align: left; transition: all 0.3s ease;">
                     <thead>
                         <tr style="border-bottom: 2px solid var(--border-medium); background: var(--bg-secondary);">
-                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary);">Punten Goed</th>
-                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary);">Fouten</th>
-                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary);">Exact Percentage</th>
-                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary);">Op het Bord (Afgerond 5%)</th>
+                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary); width: 25%;">Goed</th>
+                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary); width: 25%;">Fout</th>
+                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary); width: 25%;">Percentage</th>
+                            <th style="padding: 10px; font-weight: 800; color: var(--text-primary); width: 25%;">Status</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
             
-            const pointsToRender = [];
-            for (let p = totalPoints; p >= 0; p -= 5) {
-                pointsToRender.push(p);
-            }
-            if (pointsToRender[pointsToRender.length - 1] !== 0) {
-                pointsToRender.push(0);
-            }
-            
-            pointsToRender.forEach(p => {
+            const minPoints = Math.max(0, Math.floor(totalPoints * 0.3));
+            for (let p = totalPoints; p >= minPoints; p--) {
                 const incorrect = totalPoints - p;
-                const exactPct = totalPoints > 0 ? ((p / totalPoints) * 100).toFixed(1) : "0.0";
-                const roundedPct = totalPoints > 0 ? Math.round(((p / totalPoints) * 100) / 5) * 5 : 0;
+                const exactPct = totalPoints > 0 ? (p / totalPoints) * 100 : 0;
                 
-                let highlightStyle = "";
-                if (roundedPct >= 60) {
-                    highlightStyle = "color: #10b981; font-weight: 700;";
-                } else if (p > 0) {
-                    highlightStyle = "color: #ef4444; font-weight: 700;";
+                let rowBg = "";
+                let textColor = "#ffffff";
+                let statusLabel = "";
+                
+                if (exactPct >= 80) {
+                    const factor = (exactPct - 80) / 20;
+                    const greenHue = 120 + Math.round(factor * 20);
+                    const lightness = 35 + Math.round((1 - factor) * 10);
+                    rowBg = `hsl(${greenHue}, 65%, ${lightness}%)`;
+                    statusLabel = "Goed";
+                } else if (exactPct >= 55) {
+                    const factor = (exactPct - 55) / 24;
+                    const orangeHue = 35 + Math.round(factor * 40);
+                    rowBg = `hsl(${orangeHue}, 75%, 42%)`;
+                    statusLabel = "Voldoende";
+                } else {
+                    const factor = (exactPct - 30) / 25;
+                    const redLightness = 35 + Math.round(factor * 10);
+                    rowBg = `hsl(0, 75%, ${redLightness}%)`;
+                    statusLabel = "Onvoldoende";
                 }
                 
                 html += `
-                    <tr style="border-bottom: 1px solid var(--border-light);">
-                        <td style="padding: 10px; font-weight: 700; color: var(--text-primary);">🎯 ${p} goed</td>
-                        <td style="padding: 10px; color: var(--text-secondary);">${incorrect} fout</td>
-                        <td style="padding: 10px; color: var(--text-secondary);">${exactPct}%</td>
-                        <td style="padding: 10px; ${highlightStyle}">${roundedPct}%</td>
+                    <tr style="border-bottom: 1px solid var(--border-light); background-color: ${rowBg}; color: ${textColor};">
+                        <td style="padding: 8px 10px; font-weight: 800;">🎯 ${p} goed</td>
+                        <td style="padding: 8px 10px; opacity: 0.95;">${incorrect} fout</td>
+                        <td style="padding: 8px 10px; font-weight: 700;">${exactPct.toFixed(1)}%</td>
+                        <td style="padding: 8px 10px; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px;">${statusLabel}</td>
                     </tr>
                 `;
-            });
+            }
             
             html += `
                     </tbody>
@@ -3008,10 +3112,9 @@ Rida
             <span class="close-score-modal" onclick="closeScoreModal()" style="position: absolute; right: 20px; top: 15px; font-size: 2rem; cursor: pointer; color: var(--text-secondary);">&times;</span>
             <h2 id="score-modal-title" style="margin-top: 0; color: var(--primary);">📈 Score Omrekentabel</h2>
             
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-medium); padding-bottom: 10px; flex-wrap: wrap;">
-                <button class="tab-btn active" id="tab-btn-2026" onclick="switchScoreTab('2026')">🏆 2026 Model (77 pt)</button>
-                <button class="tab-btn" id="tab-btn-2022" onclick="switchScoreTab('2022')">🥈 2022 Model (53 pt)</button>
-                <button class="tab-btn" id="tab-btn-digi" onclick="switchScoreTab('digi')">✍️ Oefentoets (39 pt)</button>
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border-medium); padding-bottom: 15px; flex-wrap: wrap; align-items: center;">
+                <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-secondary);">Totaal aantal punten van deze toets:</label>
+                <input type="number" id="score-modal-max-points" class="settings-input" style="max-width: 85px; padding: 4px 8px;" onchange="renderScoreTable(this.value)" oninput="renderScoreTable(this.value)">
                 <button class="settings-btn" onclick="togglePresentationMode()" style="margin-left: auto; background: var(--secondary); display: flex; align-items: center; gap: 5px;">🖥️ Presentatie Modus</button>
             </div>
             
