@@ -24,6 +24,9 @@
     <!-- Load API Key -->
     <script src="../api_key.js"></script>
 
+    <!-- Testdefinities: enige bron van waarheid voor labels/vragen/antwoorden/punten per toets -->
+    <script src="test-definities.js"></script>
+
     <!-- Firebase SDKs compat -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -408,13 +411,53 @@
             padding: 15px 25px !important;
         }
         .modal-content {
-            background: #ffffff !important;
-            color: #1a1a2e !important;
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
-        [data-theme="dark"] .modal-content {
-            background: #1e293b !important;
-            color: #f1f5f9 !important;
+
+        /* Handmatige nakijk-overrides (goed/deels/fout per vraag) */
+        .override-btn {
+            background: none;
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            padding: 2px 7px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            opacity: 0.45;
+            transition: var(--transition-fast);
         }
+        .override-btn:hover { opacity: 1; transform: translateY(-1px); }
+        .override-btn.active-goed { background: rgba(16, 185, 129, 0.15); border-color: #10b981; opacity: 1; }
+        .override-btn.active-deels { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; opacity: 1; }
+        .override-btn.active-fout { background: rgba(239, 68, 68, 0.15); border-color: #ef4444; opacity: 1; }
+
+        /* Vaardigheidsbalken (diagnostisch overzicht) */
+        .vaardigheid-bar-track { background: var(--border-subtle); border-radius: 6px; height: 8px; overflow: hidden; }
+        .vaardigheid-bar-fill { background: var(--primary); height: 100%; transition: var(--transition-medium); }
+
+        /* Stapsgewijze workflow-indicator bovenin het reviewpaneel */
+        .stepper-dot {
+            width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 800; flex-shrink: 0;
+        }
+        .stepper-dot.done { background: var(--accent-green, #10b981); color: #fff; }
+        .stepper-dot.active { background: var(--primary); color: #fff; }
+        .stepper-dot.todo { border: 1px solid var(--border-medium); color: var(--text-muted); }
+        .stepper-line { flex: 0 0 20px; height: 1px; background: var(--border-medium); margin: 0 4px; }
+
+        .sticky-action-bar {
+            position: sticky; bottom: 0;
+            background: var(--bg-card);
+            padding-top: 12px; margin-top: 4px;
+            border-top: 1px solid var(--border-medium);
+        }
+
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;
+        }
+        .status-pill.concept { background: rgba(245, 158, 11, 0.15); color: #b45309; }
+        .status-pill.vergrendeld { background: rgba(16, 185, 129, 0.15); color: #047857; }
     </style>
 </head>
 <body>
@@ -428,41 +471,56 @@
                 <h1>📊 Toetsen Dashboard</h1>
                 <p>Bekijk ingediende toetsen, voer correcties uit en genereer AI feedbackbrieven</p>
             </div>
-            
-            <button class="settings-btn" style="background: var(--accent-red);" onclick="clearAllSubmissions()">
-                🗑️ Wis alle inzendingen
+
+            <button class="settings-btn" onclick="toggleSettingsPanel()">
+                ⚙️ Instellingen
             </button>
         </header>
-        
-        <!-- Webhook / Import Settings -->
-        <div class="settings-bar">
-            <div class="settings-input-group">
-                <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">Apps Script GET URL:</label>
-                <input type="text" id="webhook-url-input" class="settings-input" placeholder="Plak hier je Google Apps Script URL..." onchange="saveWebhookUrl(this.value)">
+
+        <!-- Statuscijfers: totaal / nagekeken / nog te doen -->
+        <div id="stats-row" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;"></div>
+
+        <!-- Inklapbaar instellingenpaneel: webhook, WhatsApp import, AI-provider, wis-alles -->
+        <div id="settings-panel" style="display: none; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 20px; margin-bottom: 25px; box-shadow: var(--shadow-card);">
+            <div class="settings-bar" style="box-shadow: none; margin-bottom: 12px;">
+                <div class="settings-input-group">
+                    <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">Apps Script GET URL:</label>
+                    <input type="text" id="webhook-url-input" class="settings-input" placeholder="Plak hier je Google Apps Script URL..." onchange="saveWebhookUrl(this.value)">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="settings-btn" onclick="fetchExternalSubmissions()">🔄 Synchroniseer Sheet</button>
+                    <button class="settings-btn" style="background: #8b7ef8;" onclick="toggleImportArea()">📋 WhatsApp Import</button>
+                </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="settings-btn" onclick="fetchExternalSubmissions()">
-                    🔄 Synchroniseer Sheet
-                </button>
-                <button class="settings-btn" style="background: #8b7ef8;" onclick="toggleImportArea()">
-                    📋 WhatsApp Import
-                </button>
+
+            <div class="settings-bar" style="box-shadow: none; margin-bottom: 12px;">
+                <div class="settings-input-group">
+                    <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">🤖 AI Provider:</label>
+                    <select id="ai-provider-select" class="settings-input" onchange="saveAiProvider(this.value)" style="max-width: 220px;">
+                        <option value="gemini">Google Gemini</option>
+                        <option value="claude">Anthropic Claude</option>
+                    </select>
+                </div>
+                <button class="settings-btn" style="background: var(--accent-orange);" onclick="testAiConnection()">✨ Test AI Verbinding</button>
+            </div>
+            <div class="settings-bar" style="box-shadow: none; margin-bottom: 12px;">
+                <div class="settings-input-group">
+                    <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">Gemini API Key:</label>
+                    <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Plak hier je Gemini API Key..." oninput="saveGeminiApiKey(this.value)" onchange="saveGeminiApiKey(this.value)">
+                </div>
+            </div>
+            <div class="settings-bar" style="box-shadow: none; margin-bottom: 12px;">
+                <div class="settings-input-group">
+                    <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">Claude API Key:</label>
+                    <input type="password" id="claude-api-key-input" class="settings-input" placeholder="Plak hier je Anthropic API Key..." oninput="saveClaudeApiKey(this.value)" onchange="saveClaudeApiKey(this.value)">
+                </div>
+            </div>
+
+            <div class="settings-bar" style="box-shadow: none; border-top: 1px solid var(--border-medium); padding-top: 15px; justify-content: flex-end;">
+                <button class="settings-btn" style="background: var(--accent-red);" onclick="clearAllSubmissions()">🗑️ Wis alle inzendingen</button>
             </div>
         </div>
 
-        <!-- Gemini API Settings -->
-        <div class="settings-bar" style="margin-top: -15px; margin-bottom: 25px;">
-            <div class="settings-input-group">
-                <label style="font-weight: 800; font-size: 0.9rem; min-width: 150px;">🤖 Gemini API Key:</label>
-                <input type="password" id="gemini-api-key-input" class="settings-input" placeholder="Plak hier je Gemini API Key..." oninput="saveGeminiApiKey(this.value)" onchange="saveGeminiApiKey(this.value)">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="settings-btn" style="background: var(--accent-orange);" onclick="testGeminiConnection()">
-                    ✨ Test AI Verbinding
-                </button>
-            </div>
-        </div>
-        
         <!-- Collapsible Manual Import Area -->
         <div id="import-area" style="display: none; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 20px; margin-bottom: 25px; box-shadow: var(--shadow-card);">
             <h3 style="margin-top: 0; font-weight: 800; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 8px;">📋 Handmatig WhatsApp Bericht Importeren</h3>
@@ -499,8 +557,24 @@
                         <option value="name_asc">🔤 Cursist (A-Z)</option>
                         <option value="name_desc">🔤 Cursist (Z-A)</option>
                     </select>
+                    <input type="date" id="filter-date" class="settings-input" onchange="filterDate(this.value)" style="width: 100%; box-sizing: border-box;" title="Filter op inleverdatum">
+                    <div style="display: flex; gap: 6px;">
+                        <button class="translate-btn active" id="status-filter-all" style="flex:1;" onclick="filterStatus('all')">Alles</button>
+                        <button class="translate-btn" id="status-filter-todo" style="flex:1;" onclick="filterStatus('todo')">Te doen</button>
+                        <button class="translate-btn" id="status-filter-done" style="flex:1;" onclick="filterStatus('done')">Klaar</button>
+                    </div>
                 </div>
-                
+
+                <button class="settings-btn" style="width:100%; margin-bottom:15px; background: var(--secondary);" onclick="queueAllPending()">▶️ Genereer voor alle openstaande toetsen</button>
+                <div id="feedbackQueueContainer" style="display:none; margin-bottom:15px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 10px; background: var(--bg);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-weight:800; font-size:0.85rem;">🔄 Wachtrij</span>
+                        <span id="feedbackQueueProgress" style="font-size:0.8rem; color:var(--text-secondary);"></span>
+                    </div>
+                    <ul id="feedbackQueueList" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; max-height:220px; overflow-y:auto;"></ul>
+                    <div id="feedbackQueueButtons" style="display:flex; gap:8px; margin-top:8px;"></div>
+                </div>
+
                 <div class="sidebar-title" style="margin-bottom: 10px;">📂 Ingezonden Toetsen</div>
                 <div class="submissions-list" id="submissions-container">
                     <!-- Loaded dynamically -->
@@ -519,76 +593,9 @@
     
     <!-- DASHBOARD LOGIC -->
     <script>
-        // Answer keys for auto-grading
-        const answerKeys = {
-            thema1: {
-                toets1: {
-                    sec1: ["b", "a", "c", "b", "c"],
-                    sec2: ["b", "c", "a", "c", "b"],
-                    sec3: [["heet"], ["ben", "bent"], ["komen"], ["woont"], ["heeft"], ["is"], ["spreekt", "spreken"], ["zijn"], ["heb", "hebt"], ["leren", "leert"]],
-                    sec4: [["waar"], ["wie"], ["wat"], ["waar"], ["wie"]],
-                    sec5: [["naam"], ["wonen"], ["gezin"], ["moeder"], ["getrouwd"], ["kind"], ["ik kom uit spanje", "ik kom uit spanje."], ["hoe heet jouw broer", "hoe heet jouw broer?"], ["mijn vader woont in utrecht", "mijn vader woont in utrecht."]]
-                },
-                toets2: {
-                    sec1: ["b", "c", "a", "b", "c"],
-                    sec2: ["a", "c", "b", "a", "c"],
-                    sec3: [["ben"], ["zijn"], ["bent"], ["is"], ["bent", "ben"], ["hebben"], ["heb"], ["heeft"], ["hebben"], ["heeft"]],
-                    sec4: [["wat"], ["waar"], ["wie"], ["wie"], ["wie"]],
-                    sec5: [["vader"], ["dochter"], ["praten"], ["school"], ["broer"], ["mevrouw"], ["ik leer nederlands op school", "ik leer nederlands op school."], ["waar woont jouw familie", "waar woont jouw familie?"], ["zij spreekt een beetje nederlands", "zij spreekt een beetje nederlands."]]
-                }
-            },
-            thema7: {
-                sec1: ["b", "d", "b", "b", "b"],
-                sec2: ["b", "c", "a", "a", "b"],
-                sec3: [["kunnen"], ["mag"], ["kan"], ["kunt", "kan"], ["mag"], ["kun", "kan"], ["kunnen"], ["mogen"], ["mag"], ["kunnen"]],
-                sec4: [["is hun hond"], ["zijn jouw schoenen", "zijn je schoenen"], ["is zijn kaart"], ["is onze afspraak"], ["zijn jullie potloden"]],
-                sec5: [["kruispunt"], ["wachten"], ["chauffeur"], ["denken"], ["boot", "zeilboot"], ["rennen"], ["bord", "verkeersbord"], ["eiland"], ["instappen"], ["slapen"]]
-            },
-            thema8: {
-                "toetsOFFICIEEL Thema 8 (2026)": {
-                    sec1: ["a", "c", "b", "a", "b"],
-                    sec2: ["b", "a", "a", "d", "b"],
-                    sec3: [["ga"], ["dansen"], ["komt"], ["moet"], ["tekenen"], ["mag"], ["trainen"], ["sporten"], ["ga"], ["kunt"]],
-                    sec4: [["ik ga geen cursus doen", "ik ga geen cursus volgen"], ["hij houdt niet van dansen"], ["zij heeft geen hond"], ["zij voetballen zaterdag niet", "zij voetballen niet op zaterdag"], ["taart is niet gezond"]],
-                    sec5: [["kat"], ["bal"], ["tent"], ["zwembad"], ["kletsen", "zij kletsen"], ["bloem", "bloemen"], ["zingen", "hij zingt"], ["wandelen", "zij wandelen"], ["dame"], ["schaap"]]
-                },
-                toets1: {
-                    sec1: ["b", "a", "c", "b", "b"],
-                    sec2: ["b", "b", "b", "c", "b"],
-                    sec3: [["ga", "gaat"], ["dansen"], ["moet"], ["kom", "komt"], ["willen"], ["mag"], ["wandelen"], ["spelen"], ["kunt", "kan"], ["zwemmen"]],
-                    sec4: [["ik ga geen cursus doen", "ik ga geen cursus volgen"], ["hij houdt niet van dansen"], ["zij heeft geen hond"], ["zij voetballen niet op zaterdag", "zij voetballen zaterdag niet"], ["taart is niet gezond"]],
-                    sec5: [["vakantie"], ["boerderij"], ["wandelen"], ["hobby"], ["vriend"], ["weekend"], ["ik ga in het weekend wandelen", "ik ga in het weekend wandelen."], ["wij houden van muziek en dansen", "wij houden van muziek en dansen."], ["wij gaan in het weekend op vakantie", "wij gaan in het weekend op vakantie."]]
-                },
-                toets2: {
-                    sec1: ["b", "b", "b", "b", "a"],
-                    sec2: ["b", "a", "b", "b", "a"],
-                    sec3: [["wil"], ["fietsen"], ["moet"], ["komen"], ["mag"], ["koken"], ["spelen"], ["kan"], ["opstaan"]],
-                    sec4: [["ik ga morgen niet werken"], ["zij woont niet in amsterdam"], ["hij drinkt geen melk"], ["zij spelen niet buiten"], ["de winkel is niet open"]],
-                    sec5: [["sporten"], ["club"], ["team"], ["fietsen"], ["wedstrijd"], ["trainen"], ["wij gaan sporten met het team", "wij gaan sporten met het team."], ["ik speel graag met mijn vrienden", "ik speel graag met mijn vrienden."], ["wij eten vanavond in een gezellig restaurant", "wij eten vanavond in een gezellig restaurant."]]
-                },
-                toets3: {
-                    sec1: ["b", "b", "b", "a", "b"],
-                    sec2: ["b", "b", "a", "b", "b"],
-                    sec3: [["kun", "kan"], ["koken"], ["moeten"], ["mogen"], ["wil"], ["gaat"], ["zwemmen"], ["opstaan"], ["bellen"], ["leren"]],
-                    sec4: [["ik heb geen fiets"], ["hij is vandaag niet vrij"], ["zij gaan niet tennissen"], ["ik eet geen vlees"], ["de bus komt nu niet"]],
-                    sec5: [["bioscoop"], ["feest"], ["afspreken"], ["verjaardag"], ["muziek"], ["spelen"], ["wij gaan samen naar de bioscoop", "wij gaan samen naar de bioscoop."], ["wij luisteren naar klassieke muziek", "wij luisteren naar klassieke muziek."], ["hij viert zijn verjaardag in de tuin", "hij viert zijn verjaardag in de tuin."]]
-                },
-                toets4: {
-                    sec1: ["b", "a", "c", "b", "c"],
-                    sec2: ["c", "b", "b", "b", "a"],
-                    sec3: [["kunnen"], ["wil", "wilt"], ["mogen"], ["gaat"], ["komen"], ["tennissen"], ["moet"], ["hardlopen"], ["kunt", "kan"], ["sporten"]],
-                    sec4: [["ik speel geen piano"], ["de film is niet leuk"], ["ik ga vandaag niet sporten", "ik ga niet sporten vandaag"], ["jan heeft geen auto"], ["bier is niet gezond"]],
-                    sec5: [["kamperen"], ["hobby"], ["vriend"], ["gezellig"], ["wandelen"], ["weekend"], ["mark gaat in het weekend kamperen", "mark gaat in het weekend kamperen."], ["wij luisteren graag naar muziek", "wij luisteren graag naar muziek."], ["ik wil graag met mijn vriend wandelen", "ik wil graag met mijn vriend wandelen."]]
-                },
-                toets5: {
-                    sec1: ["b", "a", "c", "b", "b"],
-                    sec2: ["b", "c", "a", "b", "c"],
-                    sec3: [["mogen"], ["kan", "kun"], ["willen"], ["vissen"], ["moet"], ["gaan"], ["komt", "komen"], ["zeilen"], ["kan"], ["spelen"]],
-                    sec4: [["zij woont niet in utrecht"], ["ik heb geen fiets"], ["hij kookt vanavond niet", "hij kookt niet vanavond"], ["dit is niet mijn boek"], ["ali heeft geen gitaar"]],
-                    sec5: [["sporten"], ["wedstrijd"], ["team"], ["weekend"], ["vakantie"], ["samen"], ["wij gaan samen op vakantie", "wij gaan samen op vakantie."], ["emma doet mee aan de wedstrijd", "emma doet mee aan de wedstrijd."], ["ik wil graag sporten in het weekend", "ik wil graag sporten in het weekend."]]
-                }
-            }
-        };
+        // Antwoordsleutels, sectielabels, vragen en punten komen nu allemaal uit
+        // TEST_DEFINITIES (test-definities.js) — zie dat bestand voor de enige
+        // bron van waarheid en de uitleg waarom dit zo is opgezet.
 
         const themesInfo = {
             thema1: { name: "Thema 1 — Hallo", key: "toets_thema1_submissions" },
@@ -611,6 +618,8 @@
         let nameFilter = "";
         let themeFilter = "all";
         let sortBy = "date_desc";
+        let dateFilter = "";
+        let statusFilter = "all"; // 'all' | 'todo' | 'done'
 
         function getSubmissionKey(sub) {
             return `${sub.theme}_${sub.name.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.date.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.time.replace(/[^a-zA-Z0-9]/g, '_')}`;
@@ -627,7 +636,8 @@
             // Sync to Firestore
             if (window.fbDb && sub.id) {
                 window.fbDb.collection("submissions").doc(sub.id).update({
-                    feedbacks: sub.feedbacks || {}
+                    feedbacks: sub.feedbacks || {},
+                    gradingState: sub.gradingState || {}
                 })
                 .then(() => console.log("Feedback successfully updated in Firestore"))
                 .catch(err => console.error("Error updating feedback in Firestore:", err));
@@ -653,11 +663,67 @@
             }
         ];
 
+        // Extra voorbeeldinzendingen per thema (alleen gebruikt om een leeg thema
+        // te vullen met een voorbeeld — zo zie je de nieuwe layout voor elk type
+        // toets zonder je echte data aan te raken). Thema 8 heeft één voorbeeld
+        // dat AL nagekeken + vergrendeld is (zodat je de complete workflow ziet,
+        // inclusief het sectie 6 AI-voorstel en de vastgezette feedbackbrief) en
+        // één vers voorbeeld dat nog "te doen" is.
+        const mockSubmissionsByTheme = {
+            thema7: mockSubmissions,
+            thema8: [
+                {
+                    name: "Youssef Amrani",
+                    date: "03-07-2026",
+                    time: "09:12",
+                    theme: "thema8",
+                    testNum: "1",
+                    answers: {
+                        sec1: ["b", "a", "c", "b", "b"],
+                        sec2: ["b", "b", "b", "c", "b"],
+                        sec3: ["ga", "dansen", "moet", "kom", "willen", "mag", "wandelen", "spelen", "kan", "zwemmen"],
+                        sec4: ["ik ga geen cursus doen", "hij houdt niet van dansen", "zij heeft geen hond", "zij voetballen niet op zaterdag", "taart is niet gezond"],
+                        sec5: ["vakantie", "boerderei", "wandelen", "hobbie", "vriend", "weekend", "Ik ga in het weekend wandelen.", "Wij houden van muziek en dansen.", "Wij gaan in het weekend op vakantie."],
+                        sec6: ["De familie zit op de boerderij.", "Een jongen speelt met de hond.", "De koe staat in het gras.", "Het is mooi weer buiten."]
+                    },
+                    feedbacks: {
+                        nl: "📊 **1. NAKIJKBLAD (OVERZICHT)**\n* **Totaal Score Overzicht:**\n  * Totaal behaald: 68 van de 74 punten\n  * Scoringspercentage: 92%\n\n✉️ **2. FEEDBACKBRIEF**\nBeste Youssef,\nWat goed gedaan! Je hebt de meeste onderdelen uitstekend gemaakt, vooral luisteren en lezen waren foutloos. Let bij het dictee nog even op de spelling van \"boerderij\" en \"hobby\". Ga zo door!\n\nMet vriendelijke groet,\nRida"
+                    },
+                    gradingState: {
+                        overrides: {},
+                        locked: true,
+                        instructieLog: [],
+                        sec6: [
+                            { verdict: "goed", reden: "Correcte zin, geen fouten." },
+                            { verdict: "goed", reden: "Correcte zin, geen fouten." },
+                            { verdict: "deels", reden: "Kleine woordvolgorde-onnauwkeurigheid, wel begrijpelijk." },
+                            { verdict: "goed", reden: "Correcte zin, geen fouten." }
+                        ]
+                    }
+                },
+                {
+                    name: "Elif Yildiz",
+                    date: "08-07-2026",
+                    time: "16:40",
+                    theme: "thema8",
+                    testNum: "OFFICIEEL Thema 8 (2026)",
+                    answers: {
+                        sec1: ["a", "c", "b", "a", "b"],
+                        sec2: ["b", "a", "a", "d", "b"],
+                        sec3: ["ga", "dansen", "komt", "moet", "tekenen", "mag", "trainen", "sporten", "ga", "kan"],
+                        sec4: ["ik ga geen cursus doen", "hij houdt niet van dansen", "zij heeft geen hond", "zij voetballen zaterdag niet", "taart is niet gezond"],
+                        sec5: ["kat", "bal", "tent", "zwembad", "kletsen", "bloem", "zingen", "wandelen", "dame", "schaap"],
+                        sec6: ["", "", "", ""]
+                    }
+                }
+            ]
+        };
+
         function initializeSubmissions() {
             for (let t = 1; t <= 8; t++) {
                 allSubmissions[`thema${t}`] = [];
             }
-            
+
             // Load local storage submissions
             for (let t = 1; t <= 8; t++) {
                 const themeKey = `thema${t}`;
@@ -665,12 +731,16 @@
                 const subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 allSubmissions[themeKey] = subs;
             }
-            
-            if (allSubmissions['thema7'].length === 0) {
-                allSubmissions['thema7'] = mockSubmissions;
-                localStorage.setItem(themesInfo['thema7'].key, JSON.stringify(mockSubmissions));
-            }
-            
+
+            // Vul alleen thema's die nog helemaal leeg zijn met een voorbeeld —
+            // raakt nooit een thema waar al echte inzendingen in staan.
+            Object.keys(mockSubmissionsByTheme).forEach(themeKey => {
+                if (allSubmissions[themeKey].length === 0) {
+                    allSubmissions[themeKey] = mockSubmissionsByTheme[themeKey];
+                    localStorage.setItem(themesInfo[themeKey].key, JSON.stringify(mockSubmissionsByTheme[themeKey]));
+                }
+            });
+
             // Sync with Firestore
             if (window.fbDb) {
                 window.fbDb.collection("submissions").orderBy("timestamp", "desc")
@@ -680,8 +750,8 @@
                             const themeKey = `thema${t}`;
                             const storageKey = themesInfo[themeKey].key;
                             allSubmissions[themeKey] = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                            if (themeKey === 'thema7' && allSubmissions['thema7'].length === 0) {
-                                allSubmissions['thema7'] = mockSubmissions;
+                            if (mockSubmissionsByTheme[themeKey] && allSubmissions[themeKey].length === 0) {
+                                allSubmissions[themeKey] = mockSubmissionsByTheme[themeKey];
                             }
                         }
                         
@@ -702,12 +772,16 @@
                                         theme: data.theme,
                                         testNum: data.testNum || "1",
                                         answers: data.answers,
-                                        feedbacks: data.feedbacks || {}
+                                        feedbacks: data.feedbacks || {},
+                                        gradingState: data.gradingState || {}
                                     });
                                 } else {
                                     allSubmissions[data.theme][existsIdx].id = doc.id;
                                     if (data.feedbacks) {
                                         allSubmissions[data.theme][existsIdx].feedbacks = data.feedbacks;
+                                    }
+                                    if (data.gradingState) {
+                                        allSubmissions[data.theme][existsIdx].gradingState = data.gradingState;
                                     }
                                 }
                             }
@@ -737,6 +811,50 @@
             updateList();
         }
 
+        function filterDate(val) {
+            dateFilter = val; // "yyyy-mm-dd" van <input type="date">, of ""
+            updateList();
+        }
+
+        function filterStatus(val) {
+            statusFilter = val;
+            ['all', 'todo', 'done'].forEach(s => {
+                const btn = document.getElementById('status-filter-' + s);
+                if (btn) btn.classList.toggle('active', s === val);
+            });
+            updateList();
+        }
+
+        function hasFeedbackReady(sub) {
+            return !!(sub.feedbacks && sub.feedbacks.nl && sub.feedbacks.nl.trim().length > 0);
+        }
+
+        function renderStatsRow() {
+            const el = document.getElementById('stats-row');
+            if (!el) return;
+            let total = 0, done = 0;
+            for (let t = 1; t <= 8; t++) {
+                const subs = allSubmissions[`thema${t}`] || [];
+                total += subs.length;
+                done += subs.filter(hasFeedbackReady).length;
+            }
+            const todo = total - done;
+            el.innerHTML = `
+                <div style="background: var(--bg-card); border:1px solid var(--border-medium); border-radius: var(--radius-md); padding: 15px; text-align:center; box-shadow: var(--shadow-card);">
+                    <div style="font-size:0.8rem; color:var(--text-secondary); font-weight:700; text-transform:uppercase;">Totaal ingezonden</div>
+                    <div style="font-size:1.8rem; font-weight:900; color:var(--text-primary);">${total}</div>
+                </div>
+                <div style="background: rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius: var(--radius-md); padding: 15px; text-align:center;">
+                    <div style="font-size:0.8rem; color:#047857; font-weight:700; text-transform:uppercase;">Nagekeken</div>
+                    <div style="font-size:1.8rem; font-weight:900; color:#047857;">${done}</div>
+                </div>
+                <div style="background: rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius: var(--radius-md); padding: 15px; text-align:center;">
+                    <div style="font-size:0.8rem; color:#b45309; font-weight:700; text-transform:uppercase;">Nog te doen</div>
+                    <div style="font-size:1.8rem; font-weight:900; color:#b45309;">${todo}</div>
+                </div>
+            `;
+        }
+
         function parseDateTime(dateStr, timeStr) {
             try {
                 const parts = dateStr.split('-');
@@ -759,9 +877,10 @@
         }
 
         function updateList() {
+            renderStatsRow();
             const container = document.getElementById('submissions-container');
             container.innerHTML = '';
-            
+
             let items = [];
             for (let t = 1; t <= 8; t++) {
                 const themeKey = `thema${t}`;
@@ -774,16 +893,26 @@
                     });
                 });
             }
-            
+
             if (nameFilter) {
                 const query = nameFilter.toLowerCase();
                 items = items.filter(item => item.name.toLowerCase().includes(query));
             }
-            
+
             if (themeFilter !== "all") {
                 items = items.filter(item => item.themeKey === themeFilter);
             }
-            
+
+            if (dateFilter) {
+                const parts = dateFilter.split('-'); // yyyy-mm-dd
+                const wanted = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                items = items.filter(item => item.date === wanted);
+            }
+
+            if (statusFilter !== "all") {
+                items = items.filter(item => statusFilter === "done" ? hasFeedbackReady(item) : !hasFeedbackReady(item));
+            }
+
             items.sort((a, b) => {
                 if (sortBy === "name_asc") return a.name.localeCompare(b.name);
                 if (sortBy === "name_desc") return b.name.localeCompare(a.name);
@@ -922,111 +1051,245 @@
             updateList();
         }
 
+        // Grading state per submission: sparse overrides ("sec1_0" -> "goed"/"deels"/"fout")
+        // plus AI-voorstellen/eindoordelen voor sectie 6. Dit is de "structured grading
+        // state" die zowel automatisch nakijken als handmatige correcties draagt, zodat
+        // een correctie altijd meteen de score bijwerkt (zie calculateSubmissionScore).
+        function getGradingState(sub) {
+            if (!sub.gradingState) sub.gradingState = {};
+            if (!sub.gradingState.overrides) sub.gradingState.overrides = {};
+            if (!sub.gradingState.instructieLog) sub.gradingState.instructieLog = [];
+            if (sub.gradingState.locked === undefined) sub.gradingState.locked = false;
+            return sub.gradingState;
+        }
+
+        function puntenVoorStatus(status, puntenPerVraag) {
+            if (status === "goed") return puntenPerVraag;
+            if (status === "deels") return Math.round(puntenPerVraag * 2 / 3);
+            return 0;
+        }
+
+        function isFuzzyMatch(juist, gegeven) {
+            const a = juist.trim().toLowerCase();
+            const g = gegeven.trim().toLowerCase();
+            if (!g) return false;
+            return a.includes(g) || g.includes(a) || Math.abs(a.length - g.length) <= 1;
+        }
+
+        // Kijkt één vraag automatisch na tegen de echte antwoorden uit test-definities.js.
+        function gradeQuestion(sectie, idx, gegevenAntwoord) {
+            const gegeven = (gegevenAntwoord || "").trim().toLowerCase();
+            const gegevenSchoon = gegeven.replace(/[.,?!]/g, "");
+            const juisteWaarde = sectie.antwoorden[idx];
+            const lijst = Array.isArray(juisteWaarde) ? juisteWaarde : [juisteWaarde];
+            const max = sectie.puntenPerVraag;
+
+            if (lijst.some(v => v.trim().toLowerCase() === gegeven)) {
+                return { status: "goed", punten: max };
+            }
+            if (sectie.type === "keuze") {
+                return { status: "fout", punten: 0 };
+            }
+            if (max > 1 && lijst.some(v => v.trim().toLowerCase().replace(/[.,?!]/g, "") === gegevenSchoon)) {
+                return { status: "deels", punten: puntenVoorStatus("deels", max) };
+            }
+            if ((sectie.type === "dictee" || sectie.type === "woordenschat-plaatje") && gegeven.length > 0 && lijst.some(v => isFuzzyMatch(v, gegeven))) {
+                return { status: "deels", punten: puntenVoorStatus("deels", max) };
+            }
+            return { status: "fout", punten: 0 };
+        }
+
+        // Score-engine: leest alles uit TEST_DEFINITIES (nooit hardcoded), past
+        // handmatige overrides toe, en berekent zowel het gepoolde percentage
+        // (over het echte totaal van DEZE toets) als de percentages per vaardigheid.
         function calculateSubmissionScore(sub) {
-            const keys = answerKeys[sub.theme] || {};
-            let testKey = keys;
-            if (sub.theme === 'thema8' || sub.theme === 'thema1') {
-                const keyForToets = (sub.testNum && sub.testNum.startsWith("OFFICIEEL")) 
-                    ? `toets${sub.testNum}` 
-                    : `toets${sub.testNum || "1"}`;
-                testKey = keys[keyForToets] || {};
-            }
-            
-            let total = 77; // Normal paper version written total is 77
+            const testDef = getTestDefinitie(sub.theme, sub.testNum);
+            const grading = getGradingState(sub);
+            const totaalPunten = getTotaalPunten(testDef);
+
             let correct = 0;
-            
-            // 1. Luisteren (5 pt)
-            if (testKey.sec1) {
-                testKey.sec1.forEach((keyVal, idx) => {
-                    const ans = (sub.answers.sec1[idx] || "").trim().toLowerCase();
-                    if (ans === keyVal.trim().toLowerCase()) correct += 1;
-                });
-            }
-            
-            // 2. Lezen (5 pt)
-            if (testKey.sec2) {
-                testKey.sec2.forEach((keyVal, idx) => {
-                    const ans = (sub.answers.sec2[idx] || "").trim().toLowerCase();
-                    if (ans === keyVal.trim().toLowerCase()) correct += 1;
-                });
-            }
-            
-            // 3. Grammatica (10 pt)
-            if (testKey.sec3) {
-                testKey.sec3.forEach((keyVal, idx) => {
-                    const ans = (sub.answers.sec3[idx] || "").trim().toLowerCase();
-                    if (Array.isArray(keyVal)) {
-                        if (keyVal.some(v => v.trim().toLowerCase() === ans)) correct += 1;
-                    } else if (ans === keyVal.trim().toLowerCase()) {
-                        correct += 1;
+            const vaardigheidTotalen = {};
+            const detailPerSectie = {};
+
+            if (testDef) {
+                testDef.secties.forEach(sectie => {
+                    if (!vaardigheidTotalen[sectie.vaardigheid]) vaardigheidTotalen[sectie.vaardigheid] = { behaald: 0, max: 0 };
+
+                    if (sectie.type === "open-ai") {
+                        const aantal = sectie.aantalZinnen || 0;
+                        const aiVoorstellen = grading.sec6 || [];
+                        const details = [];
+                        for (let i = 0; i < aantal; i++) {
+                            const overrideKey = sectie.id + "_" + i;
+                            const status = grading.overrides[overrideKey] || (aiVoorstellen[i] ? aiVoorstellen[i].verdict : null);
+                            const punten = status ? puntenVoorStatus(status, sectie.puntenPerVraag) : 0;
+                            correct += punten;
+                            vaardigheidTotalen[sectie.vaardigheid].behaald += punten;
+                            details.push({ status: status || "nog niet beoordeeld", punten, max: sectie.puntenPerVraag, aiVoorstel: aiVoorstellen[i] || null });
+                        }
+                        vaardigheidTotalen[sectie.vaardigheid].max += aantal * sectie.puntenPerVraag;
+                        detailPerSectie[sectie.id] = details;
+                        return;
                     }
-                });
-            }
-            
-            // 4. Schrijven - Geef antwoord (15 pt - 3 per question)
-            if (testKey.sec4) {
-                testKey.sec4.forEach((keyVal, idx) => {
-                    const ans = (sub.answers.sec4[idx] || "").trim().toLowerCase().replace(/[.,?!]/g, "");
-                    if (Array.isArray(keyVal)) {
-                        const exactMatch = keyVal.some(v => v.trim().toLowerCase() === (sub.answers.sec4[idx] || "").trim().toLowerCase());
-                        const cleanMatch = keyVal.some(v => v.trim().toLowerCase().replace(/[.,?!]/g, "") === ans);
-                        if (exactMatch) correct += 3;
-                        else if (cleanMatch) correct += 2;
-                    } else {
-                        const exact = keyVal.trim().toLowerCase();
-                        const clean = exact.replace(/[.,?!]/g, "");
-                        if ((sub.answers.sec4[idx] || "").trim().toLowerCase() === exact) correct += 3;
-                        else if (ans === clean) correct += 2;
-                    }
-                });
-            }
-            
-            // 5. Woordenschat (30 pt - 3 per question)
-            if (testKey.sec5) {
-                testKey.sec5.forEach((keyVal, idx) => {
-                    const ans = (sub.answers.sec5[idx] || "").trim().toLowerCase();
-                    if (Array.isArray(keyVal)) {
-                        const exactMatch = keyVal.some(v => v.trim().toLowerCase() === ans);
-                        if (exactMatch) {
-                            correct += 3;
+
+                    const gegevenAntwoorden = (sub.answers && sub.answers[sectie.id]) || [];
+                    const details = sectie.antwoorden.map((_, idx) => {
+                        const overrideKey = sectie.id + "_" + idx;
+                        let result;
+                        if (grading.overrides[overrideKey]) {
+                            result = { status: grading.overrides[overrideKey], punten: puntenVoorStatus(grading.overrides[overrideKey], sectie.puntenPerVraag) };
                         } else {
-                            const nearMatch = keyVal.some(v => {
-                                const valStr = v.trim().toLowerCase();
-                                return valStr.includes(ans) || ans.includes(valStr) || Math.abs(valStr.length - ans.length) <= 1;
-                            });
-                            if (nearMatch && ans.length > 0) correct += 2;
+                            result = gradeQuestion(sectie, idx, gegevenAntwoorden[idx]);
                         }
-                    } else {
-                        const exact = keyVal.trim().toLowerCase();
-                        if (ans === exact) {
-                            correct += 3;
-                        } else if (ans.length > 0 && (exact.includes(ans) || ans.includes(exact) || Math.abs(exact.length - ans.length) <= 1)) {
-                            correct += 2;
-                        }
-                    }
+                        correct += result.punten;
+                        vaardigheidTotalen[sectie.vaardigheid].behaald += result.punten;
+                        return result;
+                    });
+                    vaardigheidTotalen[sectie.vaardigheid].max += sectie.antwoorden.length * sectie.puntenPerVraag;
+                    detailPerSectie[sectie.id] = details;
                 });
             }
-            
-            // 6. Schrijven - Praatplaat (12 pt - 3 per sentence)
-            let sec6Correct = 12;
-            if (sub.feedbacks && sub.feedbacks.nl) {
-                const match12 = sub.feedbacks.nl.match(/(?:Sectie 6|Schrijven|Praatplaat)[^\n]*?Score:\s*(\d+)\/12/i);
-                if (match12) {
-                    sec6Correct = parseInt(match12[1]);
-                } else {
-                    const match4 = sub.feedbacks.nl.match(/(?:Sectie 6|Schrijven|Praatplaat)[^\n]*?Score:\s*(\d+)\/4/i);
-                    if (match4) {
-                        sec6Correct = parseInt(match4[1]) * 3;
-                    }
-                }
+
+            const incorrect = totaalPunten - correct;
+            const percentage = totaalPunten > 0 ? Math.round((correct / totaalPunten) * 100) : 0;
+
+            const vaardigheden = {};
+            Object.keys(vaardigheidTotalen).forEach(v => {
+                const t = vaardigheidTotalen[v];
+                vaardigheden[v] = { behaald: t.behaald, max: t.max, percentage: t.max > 0 ? Math.round((t.behaald / t.max) * 100) : 0 };
+            });
+
+            return { correct, total: totaalPunten, incorrect, percentage, vaardigheden, detailPerSectie, testDef };
+        }
+
+        // Handmatige correctie op één vraag (of één praatplaat-zin) — dit is de
+        // betrouwbare manier om "dit toch goed rekenen" of "dit is fout" aan te
+        // geven, in plaats van te vertrouwen op vrije-tekst AI-instructies. De
+        // score bovenaan herberekent direct.
+        function setGradingOverride(theme, idx, sectieId, vraagIdx, status) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            const grading = getGradingState(sub);
+            const key = sectieId + "_" + vraagIdx;
+            if (grading.overrides[key] === status) {
+                delete grading.overrides[key]; // nogmaals klikken = terug naar automatisch
+            } else {
+                grading.overrides[key] = status;
             }
-            correct += sec6Correct;
-            
-            const incorrect = total - correct;
-            const rawPercentage = total > 0 ? (correct / total) * 100 : 0;
-            const percentage = Math.round(rawPercentage / 5) * 5;
-            
-            return { correct, total, incorrect, percentage };
+            saveSubmission(theme, idx);
+            if (selectedTheme === theme && selectedSubIndex === idx) {
+                renderReviewPanel();
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str === null || str === undefined ? "" : str)
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function renderStepper(hasFeedback, locked) {
+            const stap = locked ? 4 : (hasFeedback ? 3 : 2);
+            const stappen = [
+                { n: 1, label: "Antwoorden" },
+                { n: 2, label: "AI Nakijken" },
+                { n: 3, label: "Bewerken & vastzetten" },
+                { n: 4, label: "Versturen" }
+            ];
+            return `<div style="display:flex; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:4px;">` +
+                stappen.map((s, i) => {
+                    const status = s.n < stap ? "done" : (s.n === stap ? "active" : "todo");
+                    return `
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span class="stepper-dot ${status}">${status === "done" ? "✓" : s.n}</span>
+                            <span style="font-size:0.82rem; ${status === "active" ? "color:var(--primary); font-weight:800;" : "color:var(--text-secondary);"}">${s.label}</span>
+                        </div>
+                        ${i < stappen.length - 1 ? '<div class="stepper-line"></div>' : ''}
+                    `;
+                }).join('') +
+            `</div>`;
+        }
+
+        function renderVaardighedenHtml(vaardigheden) {
+            const balken = Object.keys(VAARDIGHEID_LABELS).map(v => {
+                const data = vaardigheden[v];
+                if (!data || data.max === 0) return '';
+                return `
+                    <div style="flex:1; min-width:110px;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-secondary); font-weight:700; margin-bottom:3px;">
+                            <span>${VAARDIGHEID_LABELS[v]}</span><span>${data.percentage}%</span>
+                        </div>
+                        <div class="vaardigheid-bar-track"><div class="vaardigheid-bar-fill" style="width:${data.percentage}%;"></div></div>
+                    </div>
+                `;
+            }).join('');
+            return balken ? `<div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:14px;">${balken}</div>` : '';
+        }
+
+        function overrideButtons(theme, idx, sectieId, vraagIdx, status) {
+            return `
+                <span style="display:flex; gap:2px;">
+                    <button class="override-btn ${status === 'goed' ? 'active-goed' : ''}" title="Goed rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'goed')">✅</button>
+                    <button class="override-btn ${status === 'deels' ? 'active-deels' : ''}" title="Deels goed rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'deels')">⚠️</button>
+                    <button class="override-btn ${status === 'fout' ? 'active-fout' : ''}" title="Fout rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'fout')">❌</button>
+                </span>
+            `;
+        }
+
+        function renderVraagAntwoordSectie(sub, sectie, details, theme, idx) {
+            const behaald = details.reduce((s, d) => s + d.punten, 0);
+            const max = sectie.type === "open-ai" ? (sectie.aantalZinnen || 0) * sectie.puntenPerVraag : sectie.antwoorden.length * sectie.puntenPerVraag;
+            const header = `<div class="section-header-bar">${escapeHtml(sectie.label)} (Score: ${behaald}/${max})</div>`;
+
+            if (sectie.type === "open-ai") {
+                const zinnen = (sub.answers && sub.answers.sec6) || [];
+                const rows = details.map((detail, i) => {
+                    const ai = detail.aiVoorstel;
+                    const aiTekst = ai
+                        ? `${ai.verdict === 'goed' ? '✅ correct' : ai.verdict === 'deels' ? '⚠️ kleine fout' : '❌ fout'} — ${escapeHtml(ai.reden || '')}`
+                        : `<i>Nog geen AI-voorstel — genereer eerst het nakijkblad.</i>`;
+                    return `
+                        <div class="qa-item">
+                            <div style="font-weight:700;">Zin ${i + 1}: ${escapeHtml(zinnen[i] || '-')}</div>
+                            <div style="font-size:0.8rem; color:var(--text-secondary); margin:3px 0;">AI-voorstel: ${aiTekst}</div>
+                            <div>${overrideButtons(theme, idx, "sec6", i, detail.status)}</div>
+                        </div>
+                    `;
+                }).join('');
+                return header + rows;
+            }
+
+            const gegeven = (sub.answers && sub.answers[sectie.id]) || [];
+            const rows = sectie.antwoorden.map((_, i) => {
+                const detail = details[i];
+                const vraag = (sectie.vragen && sectie.vragen[i]) ? sectie.vragen[i] : `Vraag ${i + 1}`;
+                return `
+                    <div class="qa-item">
+                        <div style="font-weight:700;">Vraag ${i + 1}: ${escapeHtml(vraag)}</div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px; flex-wrap:wrap;">
+                            <span>Antwoord cursist: <strong>${escapeHtml(gegeven[i] || '-')}</strong></span>
+                            ${overrideButtons(theme, idx, sectie.id, i, detail.status)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            return header + rows;
+        }
+
+        function renderInstructieLog(grading) {
+            if (!grading.instructieLog || grading.instructieLog.length === 0) return '';
+            const items = grading.instructieLog.slice().reverse().map(entry =>
+                `<div style="padding:4px 0; border-bottom:1px dashed var(--border-subtle); font-size:0.78rem; color:var(--text-secondary);"><strong>${escapeHtml(entry.tijdstip)}:</strong> ${escapeHtml(entry.instructie)}</div>`
+            ).join('');
+            return `<details style="margin-top:2px;"><summary style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--text-secondary);">📝 Instructiegeschiedenis (${grading.instructieLog.length})</summary><div style="margin-top:6px;">${items}</div></details>`;
+        }
+
+        function toggleLock(theme, idx) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            const grading = getGradingState(sub);
+            grading.locked = !grading.locked;
+            saveSubmission(theme, idx);
+            if (selectedTheme === theme && selectedSubIndex === idx) renderReviewPanel();
         }
 
         function renderReviewPanel() {
@@ -1036,73 +1299,66 @@
             const subKey = getSubmissionKey(sub);
             const state = feedbackGenerationState[subKey] || { status: 'idle' };
             const scoreInfo = calculateSubmissionScore(sub);
-            
-            // Format raw answers representation
-            const formatSection = (arr) => {
-                if (!arr || arr.length === 0) return "<i>Geen antwoorden ingevuld</i>";
-                return arr.map((ans, i) => `<b>Vraag ${i+1}:</b> ${ans || '-'}`).join('<br>');
-            };
+            const grading = getGradingState(sub);
 
-            const rawAnswersHtml = `
-                <div class="section-header-bar">1. Luisteren</div>
-                <div class="qa-item">${formatSection(sub.answers.sec1)}</div>
-                <div class="section-header-bar">2. Lezen</div>
-                <div class="qa-item">${formatSection(sub.answers.sec2)}</div>
-                <div class="section-header-bar">3. Grammatica</div>
-                <div class="qa-item">${formatSection(sub.answers.sec3)}</div>
-                <div class="section-header-bar">4. Geef antwoord (Geen/Niet)</div>
-                <div class="qa-item">${formatSection(sub.answers.sec4)}</div>
-                <div class="section-header-bar">5. Dictee</div>
-                <div class="qa-item">${formatSection(sub.answers.sec5)}</div>
-                <div class="section-header-bar">6. Schrijven (Praatplaat)</div>
-                <div class="qa-item">${formatSection(sub.answers.sec6)}</div>
-            `;
+            const rawAnswersHtml = scoreInfo.testDef
+                ? scoreInfo.testDef.secties.map(sectie => renderVraagAntwoordSectie(sub, sectie, scoreInfo.detailPerSectie[sectie.id], selectedTheme, selectedSubIndex)).join('')
+                : `<div class="qa-item"><i>Geen testdefinitie gevonden voor ${escapeHtml(themesInfo[sub.theme].name)} (${escapeHtml(sub.testNum || '1')}). Voeg deze toe in test-definities.js.</i></div>`;
 
             const hasFeedback = sub.feedbacks && Object.keys(sub.feedbacks).length > 0;
-            const textareaValue = state.status === 'generating' 
-                ? "AI is bezig met genereren of bewerken op de achtergrond..." 
+            const textareaValue = state.status === 'generating'
+                ? "AI is bezig met genereren of bewerken op de achtergrond..."
                 : (state.status === 'error' ? `Fout bij genereren feedback: ${state.error}` : (sub.feedbacks ? (sub.feedbacks[selectedLanguage] || "") : ""));
 
             const isBtnDisabled = state.status === 'generating';
+            const isLocked = !!grading.locked;
+            const editingDisabled = isBtnDisabled || isLocked;
 
             panel.innerHTML = `
                 <div class="quiz-card" style="margin-bottom: 0;">
-                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px; margin-bottom:15px;">
-                        <span>👤 Review: <strong style="color:var(--primary);">${sub.name}</strong> — ${themesInfo[sub.theme].name} (${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? sub.testNum : 'toets ' + (sub.testNum || '1')})</span>
+                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1px solid var(--border-medium); padding-bottom:12px; margin-bottom:8px;">
+                        <span>👤 Review: <strong style="color:var(--primary);">${escapeHtml(sub.name)}</strong> — ${escapeHtml(themesInfo[sub.theme].name)} (${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? escapeHtml(sub.testNum) : 'toets ' + escapeHtml(sub.testNum || '1')})
+                            <span class="status-pill ${isLocked ? 'vergrendeld' : 'concept'}">${isLocked ? '🔒 Vergrendeld' : '✏️ Concept'}</span>
+                        </span>
                         <button class="settings-btn" onclick="openScoreModal()" style="font-size: 0.9rem; padding: 6px 12px; background: var(--primary); display: flex; align-items: center; gap: 5px;">📈 Omrekentabel</button>
                     </h2>
-                    
+
+                    ${renderStepper(hasFeedback, isLocked)}
+
                     <!-- Teacher Score Summary Card -->
-                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 25px; display: flex; justify-content: space-around; align-items: center; border: 1px solid var(--border-medium);">
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Goed</div>
-                            <div style="font-size: 1.6rem; font-weight: 800; color: #10b981;">✅ ${scoreInfo.correct} <span style="font-size: 1rem; color: var(--text-secondary); font-weight: 500;">/ ${scoreInfo.total}</span></div>
+                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-medium);">
+                        <div style="display: flex; justify-content: space-around; align-items: center;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Goed</div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #10b981;">✅ ${scoreInfo.correct} <span style="font-size: 1rem; color: var(--text-secondary); font-weight: 500;">/ ${scoreInfo.total}</span></div>
+                            </div>
+                            <div style="text-align: center; border-left: 1px solid var(--border-medium); border-right: 1px solid var(--border-medium); padding: 0 40px;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Fout</div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #ef4444;">❌ ${scoreInfo.incorrect}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Percentage</div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">📈 ${scoreInfo.percentage}%</div>
+                            </div>
                         </div>
-                        <div style="text-align: center; border-left: 1px solid var(--border-medium); border-right: 1px solid var(--border-medium); padding: 0 40px;">
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Fout</div>
-                            <div style="font-size: 1.6rem; font-weight: 800; color: #ef4444;">❌ ${scoreInfo.incorrect}</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Percentage</div>
-                            <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">📈 ${scoreInfo.percentage}%</div>
-                        </div>
+                        ${renderVaardighedenHtml(scoreInfo.vaardigheden)}
                     </div>
-                    
+
                     <div class="results-grid">
-                        <!-- Left column: Raw student answers -->
-                        <div style="max-height: 700px; overflow-y: auto; padding-right: 15px; border-right:1px solid var(--border-medium);">
-                            <h3>Ingezonden Antwoorden</h3>
+                        <!-- Left column: Vraag + antwoord naast elkaar, met handmatige overrides -->
+                        <div style="padding-right: 15px; border-right:1px solid var(--border-medium);">
+                            <h3>Ingezonden Antwoorden <span style="font-weight:500; font-size:0.8rem; color:var(--text-muted);">(klik ✅/⚠️/❌ om handmatig te corrigeren)</span></h3>
                             ${rawAnswersHtml}
                         </div>
-                        
+
                         <!-- Right column: AI Feedback Generator & Editor -->
                         <div style="display:flex; flex-direction:column; gap:15px; padding-left:20px;">
-                            <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 Gemini AI Nakijken & Feedback</h3>
-                            
+                            <h3 style="margin-top:0; font-weight:800; font-size:1.1rem; color:var(--text-primary);">🤖 AI Nakijken & Feedback</h3>
+
                             <button class="settings-btn" id="generate-ai-btn" style="width:100%; padding:12px; background:var(--primary);" ${isBtnDisabled ? 'disabled' : ''} onclick="generateAIFeedback()">
-                                ${state.status === 'generating' ? '⏳ Analyseren en schrijven...' : '✨ Genereer Nakijkblad & Brief'}
+                                ${state.status === 'generating' ? '⏳ Analyseren en schrijven...' : (hasFeedback ? '🔄 Opnieuw genereren' : '✨ Genereer Nakijkblad & Brief')}
                             </button>
-                            
+
                             <div class="translate-bar" id="translation-controls" style="${hasFeedback ? 'display:flex;' : 'display:none;'}">
                                 <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Herschrijf / Vertaal:</span>
                                 <button class="translate-btn ${selectedLanguage === 'nl' ? 'active' : ''}" onclick="switchFeedbackLanguage('nl')">🇳🇱 NL</button>
@@ -1111,16 +1367,24 @@
                                 <button class="translate-btn ${selectedLanguage === 'tr' ? 'active' : ''}" onclick="switchFeedbackLanguage('tr')">🇹🇷 TR</button>
                             </div>
 
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="ai-instruction" class="settings-input" placeholder="AI Instructie (bijv. 'vertaal naar het engels en maak positief')..." style="flex-grow: 1;">
-                                <button class="settings-btn" id="rewrite-ai-btn" ${isBtnDisabled ? 'disabled' : ''} onclick="rewriteFeedbackWithAI()" style="background: var(--secondary);">Herschrijf</button>
+                            <div>
+                                <label style="font-size:0.8rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:6px;">AI Instructie (bijv. "maak toon positiever" of "let op: sectie 6 zin 2 klopt niet bij de praatplaat")</label>
+                                <textarea id="ai-instruction" class="feedback-box" autocomplete="off" spellcheck="true" placeholder="Typ hier je instructie voor de AI..." style="height:80px; margin-bottom:8px;" ${editingDisabled ? 'disabled' : ''}></textarea>
+                                <button class="settings-btn" id="rewrite-ai-btn" style="width:100%;" ${editingDisabled ? 'disabled' : ''} onclick="rewriteFeedbackWithAI()">✏️ Herschrijf met deze instructie</button>
                             </div>
-                            
-                            <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." ${isBtnDisabled ? 'disabled' : ''} oninput="updateStoredFeedback(this.value)" onkeyup="updateStoredFeedback(this.value)" onchange="updateStoredFeedback(this.value)">${textareaValue}</textarea>
-                            
-                            <div class="action-row">
-                                <button class="action-btn purple" onclick="copyFeedbackText()">📋 Kopieer tekst</button>
-                                <button class="action-btn green" onclick="sendFeedbackWhatsApp()">📲 Stuur naar student via WhatsApp</button>
+                            ${renderInstructieLog(grading)}
+
+                            <textarea id="feedback-textarea" class="feedback-box" placeholder="Klik hierboven op genereren..." ${editingDisabled ? 'disabled' : ''} oninput="updateStoredFeedback(this.value)" onchange="updateStoredFeedback(this.value)">${textareaValue}</textarea>
+                            ${isLocked ? `<div style="font-size:0.78rem; color:var(--text-muted); margin-top:-8px;">🔒 Vergrendeld — ontgrendel om verder te bewerken.</div>` : ''}
+
+                            <div>
+                                <button class="settings-btn" style="width:100%; margin-bottom:10px; ${isLocked ? 'background: var(--text-muted);' : 'background: #10b981;'}" onclick="toggleLock('${selectedTheme}', ${selectedSubIndex})">
+                                    ${isLocked ? '🔓 Ontgrendel voor bewerken' : '🔒 Vergrendel & klaar voor verzending'}
+                                </button>
+                                <div class="action-row">
+                                    <button class="action-btn purple" onclick="copyFeedbackText()">📋 Kopieer tekst</button>
+                                    <button class="action-btn green" onclick="sendFeedbackWhatsApp()">📲 Stuur naar student via WhatsApp</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1128,119 +1392,271 @@
             `;
         }
 
+        let feedbackSaveTimer = null;
         function updateStoredFeedback(val) {
             if (selectedTheme === null || selectedSubIndex === null) return;
-            const sub = allSubmissions[selectedTheme][selectedSubIndex];
+            const theme = selectedTheme, idx = selectedSubIndex, lang = selectedLanguage;
+            const sub = allSubmissions[theme][idx];
             if (!sub) return;
             sub.feedbacks = sub.feedbacks || {};
-            sub.feedbacks[selectedLanguage] = val;
-            saveSubmission(selectedTheme, selectedSubIndex);
+            sub.feedbacks[lang] = val;
+            // Debounce: sla pas op na 800ms rust, zodat niet elke toetsaanslag
+            // een aparte Firestore-write veroorzaakt.
+            clearTimeout(feedbackSaveTimer);
+            feedbackSaveTimer = setTimeout(() => saveSubmission(theme, idx), 800);
+        }
+
+        // Laat de AI ALLEEN spelling/grammatica per praatplaat-zin beoordelen
+        // (geen score, geen inhoudelijke juistheid t.o.v. de praatplaat — dat
+        // eindoordeel geeft de docent zelf via de override-knoppen). Dit
+        // vervangt de vroegere regex-uit-vrije-tekst score-extractie.
+        async function evaluateSectie6AI(sub, sectie) {
+            const zinnen = (sub.answers && sub.answers.sec6) || [];
+            if (!zinnen.length) return null;
+            const prompt = `
+Je bent een NT2 A1 docent Nederlands. Beoordeel ALLEEN de spelling en grammatica (NIET of de zin inhoudelijk bij de praatplaat past — dat oordeel geeft de docent zelf) van deze ${zinnen.length} zinnen van cursist "${sub.name}":
+${zinnen.map((z, i) => `Zin ${i + 1}: "${(z || '').replace(/"/g, "'")}"`).join('\n')}
+
+Geef per zin een oordeel: "goed" (geen of vrijwel geen taalfouten), "deels" (kleine spel- of grammaticafout, nog steeds begrijpelijk), of "fout" (leeg, onbegrijpelijk of duidelijk incorrect).
+Geef UITSLUITEND geldige JSON terug, geen markdown-codeblok, in dit exacte formaat met precies ${zinnen.length} items in dezelfde volgorde:
+[{"verdict":"goed","reden":"korte reden in het Nederlands"}]
+            `;
+            const responseText = await callAI(prompt);
+            let jsonText = responseText.trim();
+            if (jsonText.startsWith("```")) {
+                jsonText = jsonText.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/, "").trim();
+            }
+            const parsed = JSON.parse(jsonText);
+            if (!Array.isArray(parsed)) throw new Error("Onverwacht antwoord bij sectie 6-beoordeling.");
+            return parsed;
+        }
+
+        // Genereert feedback voor een specifieke submission (theme/idx), losstaand van
+        // wat er nu op het scherm staat. Zo kan dit ook vanuit de achtergrond-wachtrij
+        // draaien terwijl de docent een andere cursist bekijkt — het scherm wordt
+        // alleen bijgewerkt als de bewerkte submission toevallig de geselecteerde is.
+        async function generateAIFeedbackFor(theme, idx) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return { success: false, error: "Inzending niet gevonden." };
+            const subKey = getSubmissionKey(sub);
+
+            feedbackGenerationState[subKey] = { status: 'generating' };
+            if (selectedTheme === theme && selectedSubIndex === idx) renderReviewPanel();
+
+            try {
+                const testDef = getTestDefinitie(sub.theme, sub.testNum);
+                if (!testDef) {
+                    throw new Error(`Geen testdefinitie gevonden voor ${themesInfo[sub.theme] ? themesInfo[sub.theme].name : sub.theme} (${sub.testNum || '1'}). Voeg deze toe in test-definities.js.`);
+                }
+
+                const grading = getGradingState(sub);
+                const sectie6 = testDef.secties.find(s => s.type === "open-ai");
+                if (sectie6 && (!grading.sec6 || grading.sec6.length === 0)) {
+                    try {
+                        grading.sec6 = await evaluateSectie6AI(sub, sectie6);
+                    } catch (e) {
+                        console.error("Sectie 6 AI-beoordeling mislukt, ga verder zonder AI-voorstel:", e);
+                    }
+                }
+
+                // De score wordt NIET door de AI berekend — dat gebeurt deterministisch
+                // in JS (calculateSubmissionScore), tegen de echte antwoorden uit
+                // test-definities.js. De AI krijgt hieronder alleen de opdracht om het
+                // AL BEREKENDE resultaat leesbaar op te schrijven en een brief te
+                // schrijven — dit voorkomt dat de AI zelf (soms verkeerd) gaat nakijken.
+                const scoreInfo = calculateSubmissionScore(sub);
+                const nakijkbladData = testDef.secties.map(sectie => {
+                    const details = scoreInfo.detailPerSectie[sectie.id] || [];
+                    const gegevenAntwoorden = sectie.type === "open-ai" ? (sub.answers.sec6 || []) : ((sub.answers && sub.answers[sectie.id]) || []);
+                    const behaald = details.reduce((s, d) => s + d.punten, 0);
+                    const max = (sectie.type === "open-ai" ? (sectie.aantalZinnen || 0) : sectie.antwoorden.length) * sectie.puntenPerVraag;
+                    return {
+                        sectie: sectie.label,
+                        scoreVanDezeSectie: `${behaald}/${max}`,
+                        items: details.map((d, i) => ({
+                            vraag: i + 1,
+                            antwoordCursist: gegevenAntwoorden[i] || "-",
+                            status: d.status,
+                            puntenBehaald: `${d.punten}/${sectie.puntenPerVraag}`,
+                            juisteAntwoord: sectie.type !== "open-ai" ? (Array.isArray(sectie.antwoorden[i]) ? sectie.antwoorden[i][0] : sectie.antwoorden[i]) : undefined
+                        }))
+                    };
+                });
+                const vaardighedenTekst = Object.keys(scoreInfo.vaardigheden)
+                    .map(v => `${VAARDIGHEID_LABELS[v] || v}: ${scoreInfo.vaardigheden[v].percentage}%`)
+                    .join(', ');
+
+                const prompt = `
+Je bent een NT2 A1 docent Nederlands. De toets van cursist "${sub.name}" (${themesInfo[sub.theme].name}, ${sub.testNum && sub.testNum.startsWith("OFFICIEEL") ? sub.testNum : 'toets ' + (sub.testNum || '1')}) is AL NAGEKEKEN door het systeem. Hieronder staan de definitieve, al berekende resultaten.
+
+BELANGRIJK: reken NIETS zelf opnieuw na en verzin GEEN eigen antwoorden of score. Jouw enige taak is dit resultaat leesbaar opschrijven en een feedbackbrief schrijven.
+
+Totaalscore: ${scoreInfo.correct} van de ${scoreInfo.total} punten (${scoreInfo.percentage}%).
+Per vaardigheid: ${vaardighedenTekst}.
+
+Resultaten per sectie (gebruik dit EXACT, verzin niets anders):
+${JSON.stringify(nakijkbladData, null, 2)}
+
+Strikte opmaak-regels:
+- Gebruik NOOIT markdown-tabellen. Gebruik bullet-points.
+- status "goed" toon je als ✅, "deels" als ⚠️, "fout" als ❌.
+- Geef bij "deels" of "fout" kort het juiste antwoord ("juisteAntwoord") erbij, indien aanwezig.
+- Geef bij Dictee/Woordenschat NOOIT zowel enkelvoud als meervoud als "het juiste antwoord" — gebruik alleen de gegeven waarde.
+
+Stel de feedback EXACT op volgens deze structuur in het Nederlands:
+
+📊 **1. NAKIJKBLAD (OVERZICHT)**
+* **Totaal Score Overzicht:**
+  * Totaal behaald: ${scoreInfo.correct} van de ${scoreInfo.total} punten
+  * Scoringspercentage: ${scoreInfo.percentage}%
+[Geef daarna per sectie (gebruik de "sectie"-naam als kop) een bullet-lijst met per vraag: antwoord, status-emoji, punten. Baseer dit UITSLUITEND op de resultaten hierboven.]
+
+✉️ **2. FEEDBACKBRIEF**
+Beste ${sub.name},
+[Schrijf een bemoedigende en persoonlijke brief in eenvoudig Nederlands (A1/A2 niveau), gebaseerd op de resultaten hierboven. Geef complimenten over de sterke onderdelen (kijk naar de vaardigheidspercentages) en geef maximaal 3 concrete leertips voor de zwakke onderdelen.]
+
+Met vriendelijke groet,
+Rida
+
+Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende teksten van jezelf.
+                `;
+
+                const responseText = await callAI(prompt);
+
+                sub.feedbacks = sub.feedbacks || {};
+                sub.feedbacks.nl = responseText.trim();
+                saveSubmission(theme, idx);
+
+                feedbackGenerationState[subKey] = { status: 'idle' };
+                updateList();
+
+                if (selectedTheme === theme && selectedSubIndex === idx) {
+                    selectedLanguage = "nl";
+                    renderReviewPanel();
+                }
+                return { success: true };
+            } catch (err) {
+                console.error("AI Error:", err);
+                feedbackGenerationState[subKey] = { status: 'error', error: err.message };
+                if (selectedTheme === theme && selectedSubIndex === idx) {
+                    renderReviewPanel();
+                }
+                return { success: false, error: err.message };
+            }
         }
 
         async function generateAIFeedback() {
             if (selectedTheme === null || selectedSubIndex === null) return;
-            const sub = allSubmissions[selectedTheme][selectedSubIndex];
-            const subKey = getSubmissionKey(sub);
-            
-            feedbackGenerationState[subKey] = { status: 'generating' };
-            renderReviewPanel();
-            
-            try {
-                const keys = answerKeys[sub.theme] || {};
-                const keysString = (sub.theme === 'thema8' || sub.theme === 'thema1') ? JSON.stringify(answerKeys[sub.theme][`toets${sub.testNum || "1"}`]) : JSON.stringify(keys);
+            return generateAIFeedbackFor(selectedTheme, selectedSubIndex);
+        }
 
-                const prompt = `
-                Je bent een NT2 A1 docent Nederlands. Jouw taak is om de ingediende toets van cursist "${sub.name}" na te kijken en een gedetailleerd feedbackrapport te genereren.
-                De cursist heeft toets ${sub.theme.toUpperCase()} (Toets ${sub.testNum || "1"}) gemaakt.
+        // ── ACHTERGROND-WACHTRIJ voor AI-feedback (naar het voorbeeld van de
+        // transcriptie-wachtrij in Transcriberen/index.html) — verwerkt meerdere
+        // openstaande toetsen na elkaar zonder de rest van het dashboard te
+        // blokkeren; de docent kan intussen gewoon andere cursisten bekijken.
+        let feedbackQueue = [];
+        let isProcessingFeedbackQueue = false;
 
-                Hier zijn de cursist-antwoorden:
-                - Sectie 1 (Luisteren): ${JSON.stringify(sub.answers.sec1)}
-                - Sectie 2 (Lezen): ${JSON.stringify(sub.answers.sec2)}
-                - Sectie 3 (Grammatica): ${JSON.stringify(sub.answers.sec3)}
-                - Sectie 4 (Geen/Niet): ${JSON.stringify(sub.answers.sec4)}
-                - Sectie 5 (Dictee): ${JSON.stringify(sub.answers.sec5)}
-                - Sectie 6 (Schrijven - Praatplaat): ${JSON.stringify(sub.answers.sec6)}
-
-                Richtlijnen voor de correctie (volgens het officiële A1 papieren antwoordmodel):
-                - Gebruik de bekende antwoordsleutel: ${keysString}
-                - Bereken de punten per sectie als volgt:
-                  * Sectie 1 (Luisteren): 5 vragen, 1 punt per goede vraag (totaal 5 punten).
-                  * Sectie 2 (Lezen): 5 vragen, 1 punt per goede vraag (totaal 5 punten).
-                  * Sectie 3 (Grammatica): 10 vragen, 1 punt per goede vraag (totaal 10 punten).
-                  * Sectie 4 (Geen/Niet): 5 vragen, 3 punten per goede vraag (totaal 15 punten). Geef 3 punten bij een perfecte zin, 2 punten bij een zin met een klein/begrijpelijk foutje, en 0 punten als de zin niet klopt.
-                  * Sectie 5 (Dictee/Woordenschat): 10 vragen, 3 punten per goede vraag (totaal 30 punten). Geef 3 punten bij een correct gespeld woord, 2 punten bij een kleine spelfout (1-2 letters afwijking), en 0 punten bij een onherkenbaar of fout woord.
-                  * Sectie 6 (Schrijven - Praatplaat): 4 zinnen, 3 punten per goede zin (totaal 12 punten). Geef 3 punten bij een grammaticaal en spelingtechnisch correcte volzin, 2 punten bij een klein foutje, en 0 punten bij een incorrecte of onvolledige zin.
-                  * Totaal maximale score: 77 punten.
-                - Geef bij de beoordeling of feedback van het dictee (Sectie 5) NOOIT zowel het enkelvoud als het meervoud van een woord. Geef uitsluitend één enkele vorm (enkelvoud óf meervoud, degene die in de sleutel staat of voorgelezen is). Meerdere opties tonen is verwarrend voor de cursist.
-                - SPELLING TOLERANTIE (Levenshtein-model): Wees niet te streng met kleine spelfoutjes en typfouten. Pas het Levenshtein-model toe: sta 1 of maximaal 2 afwijkende letters (typefoutjes/karakterverschillen) toe per woord. Reken het antwoord in dat geval als 2 van de 3 punten (waarschuwing ⚠️) in plaats van het direct fout (0 punten, ❌) te rekenen.
-                - BEREKENING SCORINGSPERCENTAGE: Bereken het percentage als (behaalde_punten / 77) * 100 en rond dit percentage ALTIJD af naar het dichtstbijzijnde veelvoud van 5 (bijvoorbeeld: 30 goed is 30/77 = 38.96% -> 40%, 48 goed is 48/77 = 62.3% -> 60%, enz.).
-
-                Strikte opmaak-regels (VOOR DE JUISTE LAYOUT):
-                - Gebruik NOOIT markdown-tabellen (zoals | kolom |). Dit is onleesbaar op WhatsApp.
-                - Gebruik ALTIJD een eenvoudige lijst met bullet-points voor het overzicht.
-                - Het Nakijkblad overzicht moet er EXACT zo uitzien:
-
-                📊 **1. NAKIJKBLAD (OVERZICHT)**
-
-                * **Totaal Score Overzicht:**
-                  * Totaal behaald: [Aantal punten] van de 77 punten
-                  * Scoringspercentage: [Percentage]% (afgerond in gradaties van 5%)
-
-                * **Sectie 1: Luisteren (Score: X/5)**
-                  * Vraag 1: [Antwoord] ✅ (1/1 pt)
-                  * Vraag 2: [Antwoord] ❌ (0/1 pt - Het juiste antwoord is [Sleutel])
-                  ...
-                  * *Score: X/5*
-
-                * **Sectie 2: Lezen (Score: X/5)**
-                  ...
-                  
-                * **Sectie 4: Geef antwoord (Score: X/15)**
-                  * Vraag 1: [Antwoord] ✅ (3/3 pt)
-                  * Vraag 2: [Antwoord] ⚠️ (2/3 pt - Klein foutje)
-                  ...
-
-                * **Sectie 5: Dictee/Woordenschat (Score: X/30)**
-                  ...
-
-                * **Sectie 6: Schrijven - Praatplaat (Score: X/12)**
-                  ...
-
-                Stel de feedback EXACT op volgens de volgende vaste structuur in het Nederlands:
-
-                📊 **1. NAKIJKBLAD (OVERZICHT)**
-                [Geef HIER EERST het totale overzicht van de score (totaal goed, totaal fout, percentage) zoals hierboven beschreven. Geef daarna het gestructureerde overzicht per sectie met bullet points, scores en emoji's. Geef voor fouten duidelijk aan wat het juiste antwoord is.]
-
-                ✉️ **2. FEEDBACKBRIEF**
-                Beste ${sub.name},
-                [Schrijf een bemoedigende en persoonlijke brief in eenvoudig Nederlands (A1/A2 niveau). Geef complimenten over de goede onderdelen en geef maximaal 3 concrete leertips voor de fouten].
-
-                Met vriendelijke groet,
-                Rida
-
-                Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende teksten van jezelf.
-                `;
-
-                const responseText = await callGemini(prompt);
-                
-                sub.feedbacks = sub.feedbacks || {};
-                sub.feedbacks.nl = responseText.trim();
-                saveSubmission(selectedTheme, selectedSubIndex);
-                
-                feedbackGenerationState[subKey] = { status: 'idle' };
-                updateList();
-                
-                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
-                    selectedLanguage = "nl";
-                    renderReviewPanel();
-                }
-            } catch (err) {
-                console.error("Gemini Error:", err);
-                feedbackGenerationState[subKey] = { status: 'error', error: err.message };
-                if (selectedTheme === sub.theme && selectedSubIndex === allSubmissions[sub.theme].indexOf(sub)) {
-                    renderReviewPanel();
-                }
+        function queueAllPending() {
+            const pending = [];
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                (allSubmissions[themeKey] || []).forEach((sub, idx) => {
+                    if (!hasFeedbackReady(sub) && !feedbackQueue.some(q => q.theme === themeKey && q.idx === idx)) {
+                        pending.push({ id: 'q_' + Math.random().toString(36).substr(2, 9), theme: themeKey, idx: idx, name: sub.name, status: 'pending', error: '' });
+                    }
+                });
             }
+            if (pending.length === 0) {
+                alert("Geen openstaande toetsen gevonden — alles is al nagekeken.");
+                return;
+            }
+            feedbackQueue = feedbackQueue.concat(pending);
+            renderFeedbackQueue();
+            startFeedbackQueueProcessing();
+        }
+
+        function renderFeedbackQueue() {
+            const container = document.getElementById('feedbackQueueContainer');
+            const list = document.getElementById('feedbackQueueList');
+            const progress = document.getElementById('feedbackQueueProgress');
+            const buttonsDiv = document.getElementById('feedbackQueueButtons');
+
+            if (feedbackQueue.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'block';
+
+            const doneCount = feedbackQueue.filter(q => q.status === 'done').length;
+            progress.textContent = `${doneCount}/${feedbackQueue.length}`;
+
+            list.innerHTML = feedbackQueue.map(item => {
+                const badge = item.status === 'done' ? ['✅ Klaar', '#10b981']
+                    : item.status === 'error' ? ['❌ Fout', '#ef4444']
+                    : item.status === 'bezig' ? ['⏳ Bezig...', 'var(--primary)']
+                    : ['⏸️ Wachten', '#94a3b8'];
+                return `
+                    <li style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; padding:4px 6px; background: var(--bg-card); border-radius:6px; border:1px solid var(--border-subtle);">
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:130px;" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span>
+                        <span style="color:${badge[1]}; font-weight:800;">${badge[0]}</span>
+                    </li>
+                `;
+            }).join('');
+
+            const hasActionable = feedbackQueue.some(q => q.status === 'pending' || q.status === 'error');
+            let buttonsHtml = '';
+            if (hasActionable && !isProcessingFeedbackQueue) {
+                buttonsHtml += `<button class="settings-btn" style="flex:1; font-size:0.8rem; padding:6px;" onclick="startFeedbackQueueProcessing()">▶️ Start</button>`;
+            }
+            if (isProcessingFeedbackQueue || hasActionable) {
+                buttonsHtml += `<button class="settings-btn" style="flex:1; font-size:0.8rem; padding:6px; background: var(--accent-red);" onclick="cancelFeedbackQueueProcessing()">⏹️ Stop / wis</button>`;
+            }
+            buttonsDiv.innerHTML = buttonsHtml;
+        }
+
+        async function startFeedbackQueueProcessing() {
+            if (isProcessingFeedbackQueue) return;
+            feedbackQueue.forEach(it => { if (it.status === 'error') it.status = 'pending'; });
+            isProcessingFeedbackQueue = true;
+            renderFeedbackQueue();
+            await processNextInFeedbackQueue();
+        }
+
+        async function processNextInFeedbackQueue() {
+            if (!isProcessingFeedbackQueue) return;
+            const item = feedbackQueue.find(q => q.status === 'pending');
+            if (!item) {
+                isProcessingFeedbackQueue = false;
+                renderFeedbackQueue();
+                const errCount = feedbackQueue.filter(q => q.status === 'error').length;
+                alert(errCount ? `Wachtrij klaar. Let op: ${errCount} toets(en) gaven een fout.` : "Wachtrij succesvol verwerkt — alle feedback is gegenereerd!");
+                return;
+            }
+            item.status = 'bezig';
+            renderFeedbackQueue();
+            try {
+                const result = await generateAIFeedbackFor(item.theme, item.idx);
+                if (result && result.success) {
+                    item.status = 'done';
+                } else {
+                    item.status = 'error';
+                    item.error = (result && result.error) || 'Onbekende fout';
+                }
+            } catch (e) {
+                item.status = 'error';
+                item.error = e.message;
+            }
+            renderFeedbackQueue();
+            if (isProcessingFeedbackQueue) {
+                await processNextInFeedbackQueue();
+            }
+        }
+
+        function cancelFeedbackQueueProcessing() {
+            isProcessingFeedbackQueue = false;
+            feedbackQueue = feedbackQueue.filter(q => q.status === 'done');
+            renderFeedbackQueue();
         }
 
         async function rewriteFeedbackWithAI() {
@@ -1264,7 +1680,7 @@
             
             feedbackGenerationState[subKey] = { status: 'generating' };
             renderReviewPanel();
-            
+
             try {
                 const prompt = `
                 Je bent een NT2 docent Nederlands. Hier is de huidige feedback (nakijkblad en brief) voor cursist "${sub.name}" (in de taal ${selectedLanguage}):
@@ -1278,18 +1694,19 @@
                 Strikte regels:
                 - Gebruik NOOIT markdown-tabellen (zoals | kolom |). Dit is onleesbaar op WhatsApp.
                 - Behoud altijd de vaste geformatteerde structuur (Nakijkblad met bullet points en Feedbackbrief) tenzij de instructie specifiek vraagt om dit te wijzigen.
-                - Zorg ervoor dat het totale overzicht van de score (totaal behaald van de 77 punten, percentage afgerond in gradaties van 5%) bovenaan het Nakijkblad behouden blijft en correct wordt bijgewerkt indien de score verandert.
-                - Wees niet te streng met kleine spelfoutjes en typfouten (tolerantiegrens van 1-2 afwijkende letters volgens het Levenshtein-model: reken als 2 van de 3 punten) en trek daar geen volledige punten voor af.
-                - Indien de docent in de instructie aangeeft dat een zin in Sectie 6 fout is (bijv. omdat het niet klopt met de praatplaat) of dat de score aangepast moet worden, pas dan de score van Sectie 6 (bijv. van 12/12 naar 9/12) en de bijbehorende feedback aan.
+                - Pas GEEN scores/punten/percentages aan — die staan al vast (berekend door het systeem, niet door jou). Als de instructie om een scorewijziging vraagt (bijv. "reken dit toch goed"), negeer dat deel dan: de docent regelt scorewijzigingen apart via de ✅/⚠️/❌-knoppen bij de antwoorden, niet via deze instructietekst. Pas alleen de tekst/toon/vertaling aan.
                 - Geef uitsluitend het aangepaste feedbackrapport terug in dezelfde taal als het origineel.
                 `;
-                
-                const responseText = await callGemini(prompt);
-                
+
+                const responseText = await callAI(prompt);
+
                 sub.feedbacks = sub.feedbacks || {};
                 sub.feedbacks[selectedLanguage] = responseText.trim();
+                const grading = getGradingState(sub);
+                grading.instructieLog.push({ instructie: instruction, tijdstip: new Date().toLocaleString('nl-NL') });
                 saveSubmission(selectedTheme, selectedSubIndex);
-                
+                instructionInput.value = '';
+
                 feedbackGenerationState[subKey] = { status: 'idle' };
                 updateList();
                 
@@ -1333,7 +1750,7 @@
                 Geef uitsluitend de vertaling terug.
                 `;
                 
-                const translatedText = await callGemini(prompt);
+                const translatedText = await callAI(prompt);
                 
                 sub.feedbacks[targetLangCode] = translatedText.trim();
                 saveSubmission(selectedTheme, selectedSubIndex);
@@ -1417,6 +1834,45 @@
             }
         }
 
+        async function callClaude(promptText) {
+            const apiKey = localStorage.getItem('claude_api_key');
+            if (!apiKey) {
+                throw new Error("Claude API-sleutel is niet ingesteld. Vul deze in bij Instellingen.");
+            }
+            const model = localStorage.getItem('claude_model') || 'claude-3-5-sonnet-20241022';
+            const response = await fetch("https://api.anthropic.com/v1/messages", {
+                method: "POST",
+                headers: {
+                    "x-api-key": apiKey,
+                    "anthropic-version": "2023-06-01",
+                    "content-type": "application/json",
+                    "anthropic-dangerous-direct-browser-access": "true"
+                },
+                body: JSON.stringify({
+                    model: model,
+                    max_tokens: 2000,
+                    messages: [{ role: "user", content: promptText }]
+                })
+            });
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(errText + " (Als dit een CORS-fout is: Claude direct vanuit de browser aanroepen wordt soms geblokkeerd — gebruik in dat geval Gemini.)");
+            }
+            const result = await response.json();
+            if (result.content && result.content[0] && result.content[0].text) {
+                return result.content[0].text;
+            }
+            throw new Error("Ongeldig antwoord van Claude API.");
+        }
+
+        // Dispatcher: de rest van de code roept altijd callAI() aan, zodat generate/
+        // rewrite/vertalen/sectie6-beoordeling niet hoeven te weten welke provider
+        // actief is.
+        async function callAI(promptText) {
+            const provider = localStorage.getItem('ai_provider') || 'gemini';
+            return provider === 'claude' ? callClaude(promptText) : callGemini(promptText);
+        }
+
         function copyFeedbackText() {
             const textarea = document.getElementById('feedback-textarea');
             if (!textarea || !textarea.value.trim()) {
@@ -1441,21 +1897,40 @@
         }
 
         function clearAllSubmissions() {
-            if (confirm("Weet u zeker dat u alle opgeslagen inzendingen van ALLE thema's wilt wissen?")) {
-                for (let t = 1; t <= 8; t++) {
-                    const themeKey = `thema${t}`;
-                    const storageKey = themesInfo[themeKey].key;
-                    localStorage.removeItem(storageKey);
-                }
-                selectedTheme = null;
-                selectedSubIndex = null;
-                initializeSubmissions();
-                document.getElementById('main-content-panel').innerHTML = `
-                    <div class="empty-state">
-                        🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
-                    </div>
-                `;
+            const typed = prompt("Dit wist ALLE inzendingen van ALLE thema's permanent, ook in de cloud (Firestore). Typ VERWIJDER om te bevestigen:");
+            if (typed !== "VERWIJDER") {
+                if (typed !== null) alert("Niet bevestigd — er is niets gewist.");
+                return;
             }
+
+            // Verwijder ook de Firestore-documenten zelf, niet alleen de lokale kopie —
+            // anders komt de data terug zodra de realtime-listener opnieuw synchroniseert.
+            if (window.fbDb) {
+                window.fbDb.collection("submissions").get().then(snapshot => {
+                    const batch = window.fbDb.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    return batch.commit();
+                }).catch(err => console.error("Fout bij verwijderen uit Firestore:", err));
+            }
+
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const storageKey = themesInfo[themeKey].key;
+                localStorage.removeItem(storageKey);
+            }
+            selectedTheme = null;
+            selectedSubIndex = null;
+            initializeSubmissions();
+            document.getElementById('main-content-panel').innerHTML = `
+                <div class="empty-state">
+                    🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
+                </div>
+            `;
+        }
+
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            panel.style.display = panel.style.display === 'none' || panel.style.display === '' ? 'block' : 'none';
         }
 
         // WhatsApp manual import parser
@@ -1529,11 +2004,6 @@
             importBtn.textContent = "⏳ Importeren...";
             
             try {
-                const apiKey = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY;
-                if (!apiKey || apiKey.includes("YOUR-")) {
-                    throw new Error("Gemini API-sleutel is niet ingesteld. Vul deze hierboven in.");
-                }
-                
                 const prompt = `
                 Je bent een data-parser assistent. Jouw taak is om de onderstaande bulk-tekst met ingezonden antwoorden van cursisten te ontleden. 
                 De ingezonden berichten komen van WhatsApp en kunnen meerdere cursisten en verschillende toetsen bevatten.
@@ -1568,7 +2038,7 @@
                 """
                 `;
                 
-                const responseText = await callGemini(prompt);
+                const responseText = await callAI(prompt);
                 let jsonText = responseText.trim();
                 if (jsonText.startsWith("```")) {
                     jsonText = jsonText.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
@@ -1676,23 +2146,33 @@
             localStorage.setItem('gemini_api_key', val.trim());
         }
 
+        function saveClaudeApiKey(val) {
+            localStorage.setItem('claude_api_key', val.trim());
+        }
+
+        function saveAiProvider(val) {
+            localStorage.setItem('ai_provider', val);
+        }
+
         function loadSettings() {
             const url = localStorage.getItem('toetsen_webhook_url') || "";
             document.getElementById('webhook-url-input').value = url;
-            
-            const key = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY || "";
-            document.getElementById('gemini-api-key-input').value = key;
+
+            const geminiKey = localStorage.getItem('gemini_api_key') || window.GEMINI_API_KEY || "";
+            document.getElementById('gemini-api-key-input').value = geminiKey;
+
+            const claudeKey = localStorage.getItem('claude_api_key') || "";
+            document.getElementById('claude-api-key-input').value = claudeKey;
+
+            const provider = localStorage.getItem('ai_provider') || 'gemini';
+            document.getElementById('ai-provider-select').value = provider;
         }
 
-        async function testGeminiConnection() {
-            const key = localStorage.getItem('gemini_api_key');
-            if (!key) {
-                alert("Vul eerst je Gemini API Key in!");
-                return;
-            }
-            alert("Verbinding testen met Gemini...");
+        async function testAiConnection() {
+            const provider = localStorage.getItem('ai_provider') || 'gemini';
+            alert(`Verbinding testen met ${provider === 'claude' ? 'Claude' : 'Gemini'}...`);
             try {
-                const testResult = await callGemini("Zeg 'Verbinding met Gemini is succesvol tot stand gebracht!'");
+                const testResult = await callAI("Zeg 'Verbinding is succesvol tot stand gebracht!'");
                 alert(testResult);
             } catch (err) {
                 alert("Verbinding mislukt: " + err.message);
