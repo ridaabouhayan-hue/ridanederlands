@@ -458,6 +458,38 @@
         }
         .status-pill.concept { background: rgba(245, 158, 11, 0.15); color: #b45309; }
         .status-pill.vergrendeld { background: rgba(16, 185, 129, 0.15); color: #047857; }
+
+        /* Klas/route badges & styling */
+        .class-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-right: 6px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .badge-z-route {
+            background-color: rgba(59, 130, 246, 0.15) !important;
+            color: #3b82f6 !important;
+            border: 1px solid rgba(59, 130, 246, 0.3) !important;
+        }
+        .badge-a1 {
+            background-color: rgba(16, 185, 129, 0.15) !important;
+            color: #10b981 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        }
+        .badge-a2 {
+            background-color: rgba(139, 92, 246, 0.15) !important;
+            color: #8b5cf6 !important;
+            border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        }
+        .badge-overig {
+            background-color: rgba(107, 114, 128, 0.15) !important;
+            color: #6b7280 !important;
+            border: 1px solid rgba(107, 114, 128, 0.3) !important;
+        }
     </style>
 </head>
 <body>
@@ -472,9 +504,14 @@
                 <p>Bekijk ingediende toetsen, voer correcties uit en genereer AI feedbackbrieven</p>
             </div>
 
-            <button class="settings-btn" onclick="toggleSettingsPanel()">
-                ⚙️ Instellingen
-            </button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="settings-btn" style="background: var(--secondary); display: flex; align-items: center; gap: 6px;" onclick="showAnalysisPanel()">
+                    📊 Groepsanalyse
+                </button>
+                <button class="settings-btn" onclick="toggleSettingsPanel()">
+                    ⚙️ Instellingen
+                </button>
+            </div>
         </header>
 
         <!-- Statuscijfers: totaal / nagekeken / nog te doen -->
@@ -558,6 +595,14 @@
                         <option value="name_desc">🔤 Cursist (Z-A)</option>
                     </select>
                     <input type="date" id="filter-date" class="settings-input" onchange="filterDate(this.value)" style="width: 100%; box-sizing: border-box;" title="Filter op inleverdatum">
+                    <select id="filter-class" class="settings-input" onchange="filterClass(this.value)" style="width: 100%; box-sizing: border-box;">
+                        <option value="all">🎓 Alle klassen/routes</option>
+                        <option value="Z-route">Z-route</option>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="Overig">Overig</option>
+                        <option value="none">Geen klas toegewezen</option>
+                    </select>
                     <div style="display: flex; gap: 6px;">
                         <button class="translate-btn active" id="status-filter-all" style="flex:1;" onclick="filterStatus('all')">Alles</button>
                         <button class="translate-btn" id="status-filter-todo" style="flex:1;" onclick="filterStatus('todo')">Te doen</button>
@@ -620,6 +665,11 @@
         let sortBy = "date_desc";
         let dateFilter = "";
         let statusFilter = "all"; // 'all' | 'todo' | 'done'
+        let classFilter = "all"; // 'all' | 'Z-route' | 'A1' | 'A2' | 'Overig' | 'none'
+        let activeAnalysisTheme = "all";
+        let activeAnalysisClass = "all";
+        let lastGeneratedAnalysis = {}; // Cached analysis by class_theme key
+        let isAnalysisAILoading = false;
 
         function getSubmissionKey(sub) {
             return `${sub.theme}_${sub.name.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.date.replace(/[^a-zA-Z0-9]/g, '_')}_${sub.time.replace(/[^a-zA-Z0-9]/g, '_')}`;
@@ -637,10 +687,11 @@
             if (window.fbDb && sub.id) {
                 window.fbDb.collection("submissions").doc(sub.id).update({
                     feedbacks: sub.feedbacks || {},
-                    gradingState: sub.gradingState || {}
+                    gradingState: sub.gradingState || {},
+                    classRoute: sub.classRoute || ""
                 })
-                .then(() => console.log("Feedback successfully updated in Firestore"))
-                .catch(err => console.error("Error updating feedback in Firestore:", err));
+                .then(() => console.log("Submission successfully updated in Firestore"))
+                .catch(err => console.error("Error updating submission in Firestore:", err));
             }
         }
 
@@ -773,7 +824,8 @@
                                         testNum: data.testNum || "1",
                                         answers: data.answers,
                                         feedbacks: data.feedbacks || {},
-                                        gradingState: data.gradingState || {}
+                                        gradingState: data.gradingState || {},
+                                        classRoute: data.classRoute || ""
                                     });
                                 } else {
                                     allSubmissions[data.theme][existsIdx].id = doc.id;
@@ -782,6 +834,9 @@
                                     }
                                     if (data.gradingState) {
                                         allSubmissions[data.theme][existsIdx].gradingState = data.gradingState;
+                                    }
+                                    if (data.classRoute !== undefined) {
+                                        allSubmissions[data.theme][existsIdx].classRoute = data.classRoute;
                                     }
                                 }
                             }
@@ -822,6 +877,11 @@
                 const btn = document.getElementById('status-filter-' + s);
                 if (btn) btn.classList.toggle('active', s === val);
             });
+            updateList();
+        }
+
+        function filterClass(val) {
+            classFilter = val;
             updateList();
         }
 
@@ -903,6 +963,14 @@
                 items = items.filter(item => item.themeKey === themeFilter);
             }
 
+            if (classFilter !== "all") {
+                if (classFilter === "none") {
+                    items = items.filter(item => !item.classRoute);
+                } else {
+                    items = items.filter(item => item.classRoute === classFilter);
+                }
+            }
+
             if (dateFilter) {
                 const parts = dateFilter.split('-'); // yyyy-mm-dd
                 const wanted = `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -976,9 +1044,10 @@
                             
                             const testLabel = sub.testNum ? ` (${sub.testNum.startsWith("OFFICIEEL") ? "officieel" : "toets " + sub.testNum})` : '';
                             const hasFeedback = sub.feedbacks && sub.feedbacks.nl && sub.feedbacks.nl.trim().length > 0;
+                            const classBadge = sub.classRoute ? `<span class="class-badge badge-${sub.classRoute.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}">${sub.classRoute}</span>` : '';
                             card.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                                    <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${sub.name}${testLabel}</div>
+                                    <div class="student-name" style="flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${classBadge}${sub.name}${testLabel}</div>
                                     <div style="display: flex; align-items: center; gap: 6px;">
                                         <span class="status-checkmark ${hasFeedback ? 'ready' : ''}" style="font-size: 1.1rem; transition: var(--transition-fast); ${hasFeedback ? 'opacity: 1;' : 'opacity: 0.2;'}">${hasFeedback ? '✅' : '✔️'}</span>
                                         <button class="delete-sub-btn" onclick="deleteSingleSubmission(event, '${sub.themeKey}', ${sub.originalIndex})" title="Verwijder deze inzending">🗑️</button>
@@ -1182,6 +1251,15 @@
             }
         }
 
+        function updateClassRoute(theme, idx, val) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            sub.classRoute = val;
+            saveSubmission(theme, idx);
+            updateList();
+            renderReviewPanel();
+        }
+
         function escapeHtml(str) {
             return String(str === null || str === undefined ? "" : str)
                 .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -1322,6 +1400,19 @@
                         </span>
                         <button class="settings-btn" onclick="openScoreModal()" style="font-size: 0.9rem; padding: 6px 12px; background: var(--primary); display: flex; align-items: center; gap: 5px;">📈 Omrekentabel</button>
                     </h2>
+
+                    <!-- Class/Route Assignment Dropdown -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--bg-secondary); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-medium); flex-wrap: wrap;">
+                        <span style="font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Toewijzen aan Klas/Route:</span>
+                        <select onchange="updateClassRoute('${selectedTheme}', ${selectedSubIndex}, this.value)" class="settings-input" style="max-width: 180px; padding: 4px 8px;" ${isLocked ? 'disabled' : ''}>
+                            <option value="" ${!sub.classRoute ? 'selected' : ''}>-- Geen klas --</option>
+                            <option value="Z-route" ${sub.classRoute === 'Z-route' ? 'selected' : ''}>Z-route</option>
+                            <option value="A1" ${sub.classRoute === 'A1' ? 'selected' : ''}>A1</option>
+                            <option value="A2" ${sub.classRoute === 'A2' ? 'selected' : ''}>A2</option>
+                            <option value="Overig" ${sub.classRoute === 'Overig' ? 'selected' : ''}>Overig</option>
+                        </select>
+                        <button class="settings-btn" style="background: var(--secondary); font-size: 0.8rem; padding: 4px 10px; margin-left: auto;" onclick="generateIndividualAdvice('${selectedTheme}', ${selectedSubIndex})">🔮 Individuele AI Analyse</button>
+                    </div>
 
                     ${renderStepper(hasFeedback, isLocked)}
 
@@ -2292,10 +2383,595 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
             container.innerHTML = html;
         }
 
+        function showAnalysisPanel() {
+            selectedTheme = null;
+            selectedSubIndex = null;
+            updateList();
+            renderAnalysisPanel();
+        }
+
+        function changeAnalysisFilters(classVal, themeVal) {
+            activeAnalysisClass = classVal;
+            activeAnalysisTheme = themeVal;
+            renderAnalysisPanel();
+        }
+
+        function renderAnalysisPanel() {
+            const panel = document.getElementById('main-content-panel');
+            if (!panel) return;
+
+            // Gather all items
+            let items = [];
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const subs = allSubmissions[themeKey] || [];
+                subs.forEach((sub, idx) => {
+                    items.push({
+                        ...sub,
+                        originalIndex: idx,
+                        themeKey: themeKey
+                    });
+                });
+            }
+
+            // Filter items
+            const classVal = activeAnalysisClass;
+            const themeVal = activeAnalysisTheme;
+
+            let filtered = items;
+            if (classVal !== "all") {
+                if (classVal === "none") {
+                    filtered = filtered.filter(item => !item.classRoute);
+                } else {
+                    filtered = filtered.filter(item => item.classRoute === classVal);
+                }
+            }
+            if (themeVal !== "all") {
+                filtered = filtered.filter(item => item.themeKey === themeVal);
+            }
+
+            // If no submissions found
+            if (filtered.length === 0) {
+                panel.innerHTML = `
+                    <div class="quiz-card" style="margin-bottom: 0;">
+                        <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px; margin-bottom:15px;">
+                            <span>📊 Groepsanalyse & Prestatierapport</span>
+                        </h2>
+                        
+                        <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-medium);">
+                            <div style="display: flex; flex-direction: column; gap: 4px; min-width: 150px;">
+                                <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-secondary);">Selecteer Klas/Route:</label>
+                                <select onchange="changeAnalysisFilters(this.value, '${themeVal}')" class="settings-input">
+                                    <option value="all" ${classVal === 'all' ? 'selected' : ''}>Alle klassen</option>
+                                    <option value="Z-route" ${classVal === 'Z-route' ? 'selected' : ''}>Z-route</option>
+                                    <option value="A1" ${classVal === 'A1' ? 'selected' : ''}>A1</option>
+                                    <option value="A2" ${classVal === 'A2' ? 'selected' : ''}>A2</option>
+                                    <option value="Overig" ${classVal === 'Overig' ? 'selected' : ''}>Overig</option>
+                                    <option value="none" ${classVal === 'none' ? 'selected' : ''}>Geen klas</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px; min-width: 150px;">
+                                <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-secondary);">Selecteer Thema/Toets:</label>
+                                <select onchange="changeAnalysisFilters('${classVal}', this.value)" class="settings-input">
+                                    <option value="all" ${themeVal === 'all' ? 'selected' : ''}>Alle Thema's</option>
+                                    <option value="thema1" ${themeVal === 'thema1' ? 'selected' : ''}>Thema 1 — Hallo</option>
+                                    <option value="thema2" ${themeVal === 'thema2' ? 'selected' : ''}>Thema 2 — De school</option>
+                                    <option value="thema3" ${themeVal === 'thema3' ? 'selected' : ''}>Thema 3 — Wonen</option>
+                                    <option value="thema4" ${themeVal === 'thema4' ? 'selected' : ''}>Thema 4 — Eten</option>
+                                    <option value="thema5" ${themeVal === 'thema5' ? 'selected' : ''}>Thema 5 — De dokter</option>
+                                    <option value="thema6" ${themeVal === 'thema6' ? 'selected' : ''}>Thema 6 — Kleding</option>
+                                    <option value="thema7" ${themeVal === 'thema7' ? 'selected' : ''}>Thema 7 — Reizen</option>
+                                    <option value="thema8" ${themeVal === 'thema8' ? 'selected' : ''}>Thema 8 — Vrije tijd</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="empty-state" style="box-shadow: none; border-style: solid; padding: 40px 20px;">
+                            🔍 Geen inzendingen gevonden voor deze selectie. Voeg inzendingen toe of wijzig je filters.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Compute statistics
+            const totalCount = filtered.length;
+            let totalMaxPossible = 0;
+            let totalEarned = 0;
+
+            const skillsTotals = {
+                luisteren: { behaald: 0, max: 0 },
+                lezen: { behaald: 0, max: 0 },
+                grammatica: { behaald: 0, max: 0 },
+                schrijven: { behaald: 0, max: 0 }
+            };
+
+            const questionStats = {};
+
+            filtered.forEach(sub => {
+                const scoreInfo = calculateSubmissionScore(sub);
+                totalEarned += scoreInfo.correct;
+                totalMaxPossible += scoreInfo.total;
+
+                Object.keys(scoreInfo.vaardigheden).forEach(v => {
+                    if (skillsTotals[v]) {
+                        skillsTotals[v].behaald += scoreInfo.vaardigheden[v].behaald;
+                        skillsTotals[v].max += scoreInfo.vaardigheden[v].max;
+                    }
+                });
+
+                if (scoreInfo.testDef) {
+                    scoreInfo.testDef.secties.forEach(sectie => {
+                        const details = scoreInfo.detailPerSectie[sectie.id] || [];
+                        const gegevenAntwoorden = sectie.type === "open-ai" ? (sub.answers.sec6 || []) : ((sub.answers && sub.answers[sectie.id]) || []);
+                        
+                        details.forEach((d, idx) => {
+                            const qKey = `${sub.theme}_${sub.testNum || '1'}_${sectie.id}_${idx}`;
+                            if (!questionStats[qKey]) {
+                                const qText = (sectie.vragen && sectie.vragen[idx]) ? sectie.vragen[idx] : `Vraag ${idx + 1}`;
+                                questionStats[qKey] = {
+                                    qKey,
+                                    theme: sub.theme,
+                                    testNum: sub.testNum || "1",
+                                    sectieLabel: sectie.label,
+                                    sectieId: sectie.id,
+                                    vraagIdx: idx,
+                                    vraagTekst: qText,
+                                    juistAntwoord: sectie.type !== "open-ai" ? (Array.isArray(sectie.antwoorden[idx]) ? sectie.antwoorden[idx][0] : sectie.antwoorden[idx]) : undefined,
+                                    earnedPoints: 0,
+                                    maxPoints: 0,
+                                    totalCount: 0,
+                                    correctCount: 0,
+                                    incorrectAnswers: {}
+                                };
+                            }
+
+                            const qStat = questionStats[qKey];
+                            qStat.earnedPoints += d.punten;
+                            qStat.maxPoints += sectie.puntenPerVraag;
+                            qStat.totalCount += 1;
+                            if (d.status === "goed") {
+                                qStat.correctCount += 1;
+                            } else {
+                                const answerText = (gegevenAntwoorden[idx] || "").trim().toLowerCase();
+                                if (answerText) {
+                                    qStat.incorrectAnswers[answerText] = (qStat.incorrectAnswers[answerText] || 0) + 1;
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+
+            const avgPct = totalMaxPossible > 0 ? Math.round((totalEarned / totalMaxPossible) * 100) : 0;
+
+            // Find top mistakes and strengths
+            const qList = Object.values(questionStats).filter(q => q.totalCount > 0);
+            qList.forEach(q => {
+                q.successRate = q.maxPoints > 0 ? (q.earnedPoints / q.maxPoints) : 0;
+            });
+
+            const mistakes = qList.slice().sort((a, b) => a.successRate - b.successRate).filter(q => q.successRate < 0.85).slice(0, 3);
+            const strengths = qList.slice().sort((a, b) => b.successRate - a.successRate).filter(q => q.successRate > 0.50).slice(0, 3);
+
+            // Skills breakdown HTML
+            let skillsHtml = '';
+            Object.keys(skillsTotals).forEach(v => {
+                const total = skillsTotals[v];
+                const pct = total.max > 0 ? Math.round((total.behaald / total.max) * 100) : 0;
+                let colorClass = 'var(--primary)';
+                if (pct >= 80) colorClass = '#10b981';
+                else if (pct < 60) colorClass = '#ef4444';
+                else colorClass = '#f59e0b';
+                
+                skillsHtml += `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:800; margin-bottom:4px;">
+                            <span>${VAARDIGHEID_LABELS[v] || v}</span>
+                            <span>${pct}% (${total.behaald}/${total.max} pt)</span>
+                        </div>
+                        <div class="vaardigheid-bar-track" style="height: 10px;">
+                            <div class="vaardigheid-bar-fill" style="width: ${pct}%; background: ${colorClass};"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Mistakes HTML
+            let mistakesHtml = '';
+            if (mistakes.length === 0) {
+                mistakesHtml = '<div style="color:var(--text-secondary); font-style:italic;">Geen grote knelpunten gevonden (iedereen scoort >85%!).</div>';
+            } else {
+                mistakes.forEach((m, idx) => {
+                    const pct = Math.round(m.successRate * 100);
+                    const topWrong = Object.entries(m.incorrectAnswers)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 2)
+                        .map(entry => `"${entry[0]}" (${entry[1]}x)`)
+                        .join(', ');
+                    const wrongText = topWrong ? `<br><span style="font-size:0.8rem; color:var(--text-secondary);">Veelgegeven fouten: ${escapeHtml(topWrong)}</span>` : '';
+                    const answerText = m.juistAntwoord ? `<br><span style="font-size:0.8rem; color:#10b981;">Correct antwoord: <strong>${escapeHtml(m.juistAntwoord)}</strong></span>` : '';
+
+                    mistakesHtml += `
+                        <div style="padding: 12px; background: rgba(239, 68, 68, 0.04); border-left: 4px solid #ef4444; border-radius: var(--radius-sm); margin-bottom: 10px; border: 1px solid var(--border-medium); border-left-width: 4px;">
+                            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:0.85rem;">
+                                <span>${idx+1}. ${escapeHtml(themesInfo[m.theme].name)} - ${escapeHtml(m.sectieLabel)} (Toets ${m.testNum})</span>
+                                <span style="color:#ef4444;">${pct}% goed</span>
+                            </div>
+                            <div style="margin-top: 6px; font-size: 0.85rem;">
+                                Vraag: <em>"${escapeHtml(m.vraagTekst)}"</em>
+                                ${answerText}
+                                ${wrongText}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Strengths HTML
+            let strengthsHtml = '';
+            if (strengths.length === 0) {
+                strengthsHtml = '<div style="color:var(--text-secondary); font-style:italic;">Geen opvallende sterktes gevonden.</div>';
+            } else {
+                strengths.forEach((m, idx) => {
+                    const pct = Math.round(m.successRate * 100);
+                    strengthsHtml += `
+                        <div style="padding: 12px; background: rgba(16, 185, 129, 0.04); border-left: 4px solid #10b981; border-radius: var(--radius-sm); margin-bottom: 10px; border: 1px solid var(--border-medium); border-left-width: 4px;">
+                            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:0.85rem;">
+                                <span>${idx+1}. ${escapeHtml(themesInfo[m.theme].name)} - ${escapeHtml(m.sectieLabel)} (Toets ${m.testNum})</span>
+                                <span style="color:#10b981;">${pct}% goed</span>
+                            </div>
+                            <div style="margin-top: 6px; font-size: 0.85rem;">
+                                Vraag: <em>"${escapeHtml(m.vraagTekst)}"</em>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // AI analysis block content
+            const analysisCacheKey = `${classVal}_${themeVal}`;
+            const cachedReport = lastGeneratedAnalysis[analysisCacheKey];
+            
+            let aiBlockHtml = '';
+            if (isAnalysisAILoading) {
+                aiBlockHtml = `
+                    <div style="text-align:center; padding:30px; color:var(--text-secondary);">
+                        <div style="font-size:1.5rem; margin-bottom:10px; animation: spin 1s linear infinite;">⏳</div>
+                        <strong>AI analyseert de resultaten en stelt lesadviezen en extra oefeningen op...</strong>
+                    </div>
+                `;
+            } else if (cachedReport) {
+                aiBlockHtml = `
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 15px; max-height: 500px; overflow-y: auto; white-space: pre-wrap; font-size:0.9rem; line-height: 1.5; color: var(--text-primary); margin-bottom: 15px;">${escapeHtml(cachedReport)}</div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="settings-btn" style="background: var(--secondary);" onclick="copyAnalysisText('${analysisCacheKey}')">📋 Kopieer rapport</button>
+                        <button class="settings-btn" style="background: var(--primary);" onclick="generateGroupAnalysisAI()">🔄 Genereer opnieuw</button>
+                    </div>
+                `;
+            } else {
+                aiBlockHtml = `
+                    <div style="text-align:center; padding:30px; border:1px dashed var(--border-medium); border-radius:var(--radius-sm); background: var(--bg-secondary); color:var(--text-secondary); margin-bottom: 15px;">
+                        Geen AI-rapport gegenereerd voor deze groep. Klik op de knop om de antwoorden te analyseren en extra oefenmateriaal te maken.
+                    </div>
+                    <button class="settings-btn" style="width:100%; padding: 12px; font-size: 1rem; background: var(--primary);" onclick="generateGroupAnalysisAI()">✨ Genereer Groepsanalyse & Lesadvies</button>
+                `;
+            }
+
+            panel.innerHTML = `
+                <div class="quiz-card" style="margin-bottom: 0;">
+                    <h2 style="margin-top:0; font-size:1.4rem; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-medium); padding-bottom:12px; margin-bottom:15px;">
+                        <span>📊 Groepsanalyse & Prestatierapport</span>
+                    </h2>
+
+                    <!-- Filter Bar Inside Panel -->
+                    <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; background: var(--bg-secondary); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-medium);">
+                        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 180px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase;">Selecteer Groep/Klas:</label>
+                            <select onchange="changeAnalysisFilters(this.value, '${themeVal}')" class="settings-input">
+                                <option value="all" ${classVal === 'all' ? 'selected' : ''}>Alle klassen</option>
+                                <option value="Z-route" ${classVal === 'Z-route' ? 'selected' : ''}>Z-route</option>
+                                <option value="A1" ${classVal === 'A1' ? 'selected' : ''}>A1</option>
+                                <option value="A2" ${classVal === 'A2' ? 'selected' : ''}>A2</option>
+                                <option value="Overig" ${classVal === 'Overig' ? 'selected' : ''}>Overig</option>
+                                <option value="none" ${classVal === 'none' ? 'selected' : ''}>Geen klas toegewezen</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 180px;">
+                            <label style="font-size: 0.8rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase;">Selecteer Thema/Toets:</label>
+                            <select onchange="changeAnalysisFilters('${classVal}', this.value)" class="settings-input">
+                                <option value="all" ${themeVal === 'all' ? 'selected' : ''}>Alle Thema's</option>
+                                <option value="thema1" ${themeVal === 'thema1' ? 'selected' : ''}>Thema 1 — Hallo</option>
+                                <option value="thema2" ${themeVal === 'thema2' ? 'selected' : ''}>Thema 2 — De school</option>
+                                <option value="thema3" ${themeVal === 'thema3' ? 'selected' : ''}>Thema 3 — Wonen</option>
+                                <option value="thema4" ${themeVal === 'thema4' ? 'selected' : ''}>Thema 4 — Eten</option>
+                                <option value="thema5" ${themeVal === 'thema5' ? 'selected' : ''}>Thema 5 — De dokter</option>
+                                <option value="thema6" ${themeVal === 'thema6' ? 'selected' : ''}>Thema 6 — Kleding</option>
+                                <option value="thema7" ${themeVal === 'thema7' ? 'selected' : ''}>Thema 7 — Reizen</option>
+                                <option value="thema8" ${themeVal === 'thema8' ? 'selected' : ''}>Thema 8 — Vrije tijd</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Summary Row -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-medium); padding: 15px; border-radius: var(--radius-sm); text-align: center;">
+                            <div style="font-size:0.75rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px;">Aantal studenten</div>
+                            <div style="font-size:1.6rem; font-weight:900; color:var(--text-primary);">${totalCount}</div>
+                        </div>
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-medium); padding: 15px; border-radius: var(--radius-sm); text-align: center;">
+                            <div style="font-size:0.75rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px;">Gemiddelde Score</div>
+                            <div style="font-size:1.6rem; font-weight:900; color:var(--text-primary);">${totalCount > 0 ? Math.round(totalEarned / totalCount) : 0} <span style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">/ ${totalCount > 0 ? Math.round(totalMaxPossible / totalCount) : 0}</span></div>
+                        </div>
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-medium); padding: 15px; border-radius: var(--radius-sm); text-align: center;">
+                            <div style="font-size:0.75rem; font-weight:800; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px;">Gemiddeld Slagingspercentage</div>
+                            <div style="font-size:1.6rem; font-weight:900; color:var(--primary);">${avgPct}%</div>
+                        </div>
+                    </div>
+
+                    <!-- Layout: Skills and Strengths/Mistakes Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; border-bottom: 1px solid var(--border-medium); padding-bottom: 25px;">
+                        <div>
+                            <h3 style="margin-top:0; font-size:1.1rem; border-bottom:1px solid var(--border-medium); padding-bottom:8px; margin-bottom:12px;">📊 Prestatie per Vaardigheid</h3>
+                            ${skillsHtml}
+                        </div>
+                        <div style="max-height: 380px; overflow-y: auto;">
+                            <h3 style="margin-top:0; font-size:1.1rem; border-bottom:1px solid var(--border-medium); padding-bottom:8px; margin-bottom:12px; color:#ef4444;">⚠️ Top Knelpunten</h3>
+                            ${mistakesHtml}
+                        </div>
+                    </div>
+
+                    <!-- Layout Lower: AI Report & Strengths -->
+                    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px;">
+                        <div>
+                            <h3 style="margin-top:0; font-size:1.1rem; border-bottom:1px solid var(--border-medium); padding-bottom:8px; margin-bottom:12px;">🤖 AI Lesadvies & Extra Oefeningen</h3>
+                            ${aiBlockHtml}
+                        </div>
+                        <div>
+                            <h3 style="margin-top:0; font-size:1.1rem; border-bottom:1px solid var(--border-medium); padding-bottom:8px; margin-bottom:12px; color:#10b981;">✅ Sterke Onderdelen</h3>
+                            ${strengthsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function copyAnalysisText(key) {
+            const text = lastGeneratedAnalysis[key];
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("AI Groepsanalyse gekopieerd naar klembord!");
+            }).catch(err => {
+                console.error("Fout bij kopiëren:", err);
+            });
+        }
+
+        async function generateGroupAnalysisAI() {
+            const classVal = activeAnalysisClass;
+            const themeVal = activeAnalysisTheme;
+            const cacheKey = `${classVal}_${themeVal}`;
+
+            isAnalysisAILoading = true;
+            renderAnalysisPanel();
+
+            // Gather statistics data to send to AI
+            let items = [];
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const subs = allSubmissions[themeKey] || [];
+                subs.forEach((sub, idx) => {
+                    items.push({
+                        ...sub,
+                        originalIndex: idx,
+                        themeKey: themeKey
+                    });
+                });
+            }
+
+            let filtered = items;
+            if (classVal !== "all") {
+                if (classVal === "none") {
+                    filtered = filtered.filter(item => !item.classRoute);
+                } else {
+                    filtered = filtered.filter(item => item.classRoute === classVal);
+                }
+            }
+            if (themeVal !== "all") {
+                filtered = filtered.filter(item => item.themeKey === themeVal);
+            }
+
+            const totalCount = filtered.length;
+            let totalMaxPossible = 0;
+            let totalEarned = 0;
+
+            const skillsTotals = {
+                luisteren: { behaald: 0, max: 0 },
+                lezen: { behaald: 0, max: 0 },
+                grammatica: { behaald: 0, max: 0 },
+                schrijven: { behaald: 0, max: 0 }
+            };
+
+            const questionStats = {};
+
+            filtered.forEach(sub => {
+                const scoreInfo = calculateSubmissionScore(sub);
+                totalEarned += scoreInfo.correct;
+                totalMaxPossible += scoreInfo.total;
+
+                Object.keys(scoreInfo.vaardigheden).forEach(v => {
+                    if (skillsTotals[v]) {
+                        skillsTotals[v].behaald += scoreInfo.vaardigheden[v].behaald;
+                        skillsTotals[v].max += scoreInfo.vaardigheden[v].max;
+                    }
+                });
+
+                if (scoreInfo.testDef) {
+                    scoreInfo.testDef.secties.forEach(sectie => {
+                        const details = scoreInfo.detailPerSectie[sectie.id] || [];
+                        const gegevenAntwoorden = sectie.type === "open-ai" ? (sub.answers.sec6 || []) : ((sub.answers && sub.answers[sectie.id]) || []);
+                        
+                        details.forEach((d, idx) => {
+                            const qKey = `${sub.theme}_${sub.testNum || '1'}_${sectie.id}_${idx}`;
+                            if (!questionStats[qKey]) {
+                                const qText = (sectie.vragen && sectie.vragen[idx]) ? sectie.vragen[idx] : `Vraag ${idx + 1}`;
+                                questionStats[qKey] = {
+                                    qKey,
+                                    theme: sub.theme,
+                                    testNum: sub.testNum || "1",
+                                    sectieLabel: sectie.label,
+                                    sectieId: sectie.id,
+                                    vraagIdx: idx,
+                                    vraagTekst: qText,
+                                    juistAntwoord: sectie.type !== "open-ai" ? (Array.isArray(sectie.antwoorden[idx]) ? sectie.antwoorden[idx][0] : sectie.antwoorden[idx]) : undefined,
+                                    earnedPoints: 0,
+                                    maxPoints: 0,
+                                    totalCount: 0,
+                                    correctCount: 0,
+                                    incorrectAnswers: {}
+                                };
+                            }
+
+                            const qStat = questionStats[qKey];
+                            qStat.earnedPoints += d.punten;
+                            qStat.maxPoints += sectie.puntenPerVraag;
+                            qStat.totalCount += 1;
+                            if (d.status === "goed") {
+                                qStat.correctCount += 1;
+                            } else {
+                                const answerText = (gegevenAntwoorden[idx] || "").trim().toLowerCase();
+                                if (answerText) {
+                                    qStat.incorrectAnswers[answerText] = (qStat.incorrectAnswers[answerText] || 0) + 1;
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+
+            const avgPct = totalMaxPossible > 0 ? Math.round((totalEarned / totalMaxPossible) * 100) : 0;
+            const qList = Object.values(questionStats).filter(q => q.totalCount > 0);
+            qList.forEach(q => {
+                q.successRate = q.maxPoints > 0 ? (q.earnedPoints / q.maxPoints) : 0;
+            });
+            const mistakes = qList.slice().sort((a, b) => a.successRate - b.successRate).filter(q => q.successRate < 0.85).slice(0, 3);
+
+            const skillsText = Object.keys(skillsTotals)
+                .map(v => `${VAARDIGHEID_LABELS[v] || v}: ${skillsTotals[v].max > 0 ? Math.round((skillsTotals[v].behaald / skillsTotals[v].max) * 100) : 0}%`)
+                .join(', ');
+
+            const mistakesText = mistakes.map((m, idx) => {
+                const topWrong = Object.entries(m.incorrectAnswers)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 2)
+                    .map(entry => `"${entry[0]}"`)
+                    .join(', ');
+                return `${idx+1}. Toets: ${themesInfo[m.theme].name} (${m.testNum}), Sectie: ${m.sectieLabel}, Vraag: "${m.vraagTekst}", Gemiddelde score: ${Math.round(m.successRate * 100)}% goed. Verwacht antwoord: "${m.juistAntwoord || '-'}". Veelgegeven fouten: ${topWrong || 'geen'}`;
+            }).join('\n');
+
+            const classLabelText = classVal === 'all' ? 'alle klassen' : (classVal === 'none' ? 'studenten zonder klas' : `klas ${classVal}`);
+            const themeLabelText = themeVal === 'all' ? 'alle toetsen' : `toets ${themesInfo[themeVal].name}`;
+
+            const prompt = `
+Je bent een NT2 A1 docent Nederlands. Analyseer de prestaties van de groep "${classLabelText}" voor "${themeLabelText}".
+Hier zijn de statistieken van de groep:
+- Totaal aantal ingeleverde toetsen: ${totalCount}
+- Gemiddeld slagingspercentage van de groep: ${avgPct}%
+- Vaardigheden overzicht: ${skillsText}
+
+Dit zijn de top knelpunten (meest gemaakte fouten) van de groep:
+${mistakesText || 'Geen grote knelpunten gevonden.'}
+
+Schrijf een groepsanalyse rapport in het Nederlands. Gebruik de Nunito stijl: geordend, vriendelijk en direct bruikbaar. Structuur van het rapport:
+
+📊 **1. PRESTATIE ANALYSE**
+[Geef een korte samenvatting van hoe de groep heeft gescoord op de vaardigheden. Waar blinken ze in uit en waar liggen de structurele zwaktes?]
+
+⚠️ **2. KNELPUNT EVALUATIE**
+[Analyseer de specifieke fouten uit de knelpuntenlijst hierboven. Leg kort uit waarom studenten volgens jou deze fouten maken (bijv. verwarring rond spelling, grammaticaal begrip, enz.)]
+
+💡 **3. LESADVIES & DIDACTISCHE TIPS**
+[Geef minimaal 3 concrete tips aan de docent om dit knelpunt te bespreken en te remediëren in de volgende lessen.]
+
+📝 **4. REMEDIËREND OEFENMATERIAAL (EXTRA OPDRACHTEN)**
+[Bied direct kopieerbare oefeningen aan. Maak minimaal 5 extra oefenvragen of zinnen die exact aansluiten bij de gemaakte fouten, zodat de cursisten dit nogmaals kunnen trainen. Voeg de antwoorden toe onderaan.]
+            `;
+
+            try {
+                const response = await callAI(prompt);
+                lastGeneratedAnalysis[cacheKey] = response;
+            } catch(e) {
+                lastGeneratedAnalysis[cacheKey] = "Fout bij genereren AI Analyse: " + e.message;
+            }
+
+            isAnalysisAILoading = false;
+            renderAnalysisPanel();
+        }
+
+        async function generateIndividualAdvice(theme, idx) {
+            const sub = allSubmissions[theme][idx];
+            if (!sub) return;
+            
+            const scoreInfo = calculateSubmissionScore(sub);
+            
+            // Collect mistakes
+            const mistakes = [];
+            if (scoreInfo.testDef) {
+                scoreInfo.testDef.secties.forEach(sectie => {
+                    const details = scoreInfo.detailPerSectie[sectie.id] || [];
+                    const gegeven = (sub.answers && sub.answers[sectie.id]) || [];
+                    details.forEach((d, i) => {
+                        if (d.status !== "goed") {
+                            mistakes.push({
+                                sectie: sectie.label,
+                                vraag: (sectie.vragen && sectie.vragen[i]) ? sectie.vragen[i] : `Vraag ${i + 1}`,
+                                gegeven: gegeven[i] || '-',
+                                juist: sectie.type !== "open-ai" ? (Array.isArray(sectie.antwoorden[i]) ? sectie.antwoorden[i][0] : sectie.antwoorden[i]) : undefined
+                            });
+                        }
+                    });
+                });
+            }
+
+            const mistakesText = mistakes.slice(0, 5).map(m => 
+                `- Sectie: ${m.sectie}, Vraag: "${m.vraag}", Ingegeven antwoord: "${m.gegeven}", Correct antwoord: "${m.juist || '-'}"`
+            ).join('\n');
+
+            const prompt = `
+Je bent een NT2 A1 docent Nederlands. Schrijf een individueel leeradvies voor cursist "${sub.name}".
+De cursist scoorde ${scoreInfo.correct}/${scoreInfo.total} (${scoreInfo.percentage}%) op de toets "${themesInfo[sub.theme].name}".
+
+Dit zijn de gemaakte fouten:
+${mistakesText || 'Geen fouten gemaakt!'}
+
+Schrijf een bemoedigend en persoonlijk leeradvies en geef 3 concrete tips en 3 extra oefenvragen met antwoorden om direct mee te oefenen. Houd het kort en A1/A2 niveau.
+Met vriendelijke groet,
+Rida
+            `;
+
+            // Open a modal or update the feedback textarea with this content
+            const feedbackTextarea = document.getElementById('feedback-textarea');
+            if (feedbackTextarea) {
+                feedbackTextarea.value = "AI genereert individueel leeradvies...";
+                try {
+                    const response = await callAI(prompt);
+                    if (confirm("Wil je het gegenereerde leeradvies onderaan de bestaande feedbackbrief plakken? (Klik op Annuleren om de hele brief te vervangen)")) {
+                        feedbackTextarea.value = (sub.feedbacks.nl || "") + "\n\n---\n🔮 **Individueel AI Advies & Oefening:**\n" + response;
+                    } else {
+                        feedbackTextarea.value = response;
+                    }
+                    updateStoredFeedback(feedbackTextarea.value);
+                } catch(e) {
+                    alert("Fout bij genereren individueel advies: " + e.message);
+                    renderReviewPanel();
+                }
+            }
+        }
+
         // Document Load
         document.addEventListener('DOMContentLoaded', () => {
             loadSettings();
             initializeSubmissions();
+            renderAnalysisPanel();
         });
     </script>
 
