@@ -1227,23 +1227,53 @@
         // Kijkt één vraag automatisch na tegen de echte antwoorden uit test-definities.js.
         function gradeQuestion(sectie, idx, gegevenAntwoord) {
             const gegeven = (gegevenAntwoord || "").trim().toLowerCase();
-            const gegevenSchoon = gegeven.replace(/[.,?!]/g, "");
             const juisteWaarde = sectie.antwoorden[idx];
             const lijst = Array.isArray(juisteWaarde) ? juisteWaarde : [juisteWaarde];
             const max = sectie.puntenPerVraag;
 
+            // 1. Directe exacte match (ongeacht case en spaties)
             if (lijst.some(v => v.trim().toLowerCase() === gegeven)) {
                 return { status: "goed", punten: max };
             }
+
             if (sectie.type === "keuze") {
                 return { status: "fout", punten: 0 };
             }
-            if (max > 1 && lijst.some(v => v.trim().toLowerCase().replace(/[.,?!]/g, "") === gegevenSchoon)) {
+
+            // 2. Controleer of de juiste antwoorden zelf met "ja" of "nee" beginnen.
+            // Zo nee, dan mogen we eventuele ja/nee-inleidingen van de student negeren.
+            const correctHasJaNee = lijst.some(v => {
+                const s = v.trim().toLowerCase().replace(/[.,?!;:()]/g, "").trim();
+                return s.startsWith("ja ") || s.startsWith("ja,") || s.startsWith("nee ") || s.startsWith("nee,") || s === "ja" || s === "nee";
+            });
+
+            const cleanString = (str) => {
+                let s = str.trim().toLowerCase().replace(/[.,?!;:()]/g, "").trim();
+                if (!correctHasJaNee) {
+                    s = s.replace(/^(ja|nee)\s*,?\s*/i, "").trim();
+                }
+                return s;
+            };
+
+            const gegevenSchoon = cleanString(gegeven);
+
+            // 3. Vergelijk de schoongemaakte antwoorden
+            if (gegevenSchoon && lijst.some(v => cleanString(v) === gegevenSchoon)) {
+                return { status: "goed", punten: max };
+            }
+
+            // 4. Dictee of plaatjes (fuzzy matching voor gedeeltelijke score)
+            if ((sectie.type === "dictee" || sectie.type === "woordenschat-plaatje") && gegeven.length > 0) {
+                if (lijst.some(v => isFuzzyMatch(cleanString(v), gegevenSchoon))) {
+                    return { status: "deels", punten: puntenVoorStatus("deels", max) };
+                }
+            }
+
+            // 5. Gedeeltelijke score bij meerpuntsvragen
+            if (max > 1 && lijst.some(v => cleanString(v) === gegevenSchoon)) {
                 return { status: "deels", punten: puntenVoorStatus("deels", max) };
             }
-            if ((sectie.type === "dictee" || sectie.type === "woordenschat-plaatje") && gegeven.length > 0 && lijst.some(v => isFuzzyMatch(v, gegeven))) {
-                return { status: "deels", punten: puntenVoorStatus("deels", max) };
-            }
+
             return { status: "fout", punten: 0 };
         }
 
