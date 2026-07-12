@@ -1133,8 +1133,14 @@
         }
 
         function puntenVoorStatus(status, puntenPerVraag) {
+            if (typeof status === "number") return status;
+            // Backwards compatibility for old string status values
             if (status === "goed") return puntenPerVraag;
-            if (status === "deels") return Math.round(puntenPerVraag * 2 / 3);
+            if (status === "deels") {
+                if (puntenPerVraag === 1) return 0.5;
+                return 2;
+            }
+            if (status === "fout") return 0;
             return 0;
         }
 
@@ -1190,11 +1196,22 @@
                         const details = [];
                         for (let i = 0; i < aantal; i++) {
                             const overrideKey = sectie.id + "_" + i;
-                            const status = grading.overrides[overrideKey] || (aiVoorstellen[i] ? aiVoorstellen[i].verdict : null);
-                            const punten = status ? puntenVoorStatus(status, sectie.puntenPerVraag) : 0;
+                            const overrideVal = grading.overrides[overrideKey];
+                            const statusVal = overrideVal !== undefined ? overrideVal : (aiVoorstellen[i] ? aiVoorstellen[i].verdict : null);
+                            const punten = statusVal !== null ? puntenVoorStatus(statusVal, sectie.puntenPerVraag) : 0;
                             correct += punten;
                             vaardigheidTotalen[sectie.vaardigheid].behaald += punten;
-                            details.push({ status: status || "nog niet beoordeeld", punten, max: sectie.puntenPerVraag, aiVoorstel: aiVoorstellen[i] || null });
+                            
+                            let statusLabel = "nog niet beoordeeld";
+                            if (statusVal !== null) {
+                                if (typeof statusVal === "number") {
+                                    statusLabel = statusVal === sectie.puntenPerVraag ? "goed" : (statusVal === 0 ? "fout" : "deels");
+                                } else {
+                                    statusLabel = statusVal;
+                                }
+                            }
+                            
+                            details.push({ status: statusLabel, punten, max: sectie.puntenPerVraag, aiVoorstel: aiVoorstellen[i] || null });
                         }
                         vaardigheidTotalen[sectie.vaardigheid].max += aantal * sectie.puntenPerVraag;
                         detailPerSectie[sectie.id] = details;
@@ -1205,8 +1222,15 @@
                     const details = sectie.antwoorden.map((_, idx) => {
                         const overrideKey = sectie.id + "_" + idx;
                         let result;
-                        if (grading.overrides[overrideKey]) {
-                            result = { status: grading.overrides[overrideKey], punten: puntenVoorStatus(grading.overrides[overrideKey], sectie.puntenPerVraag) };
+                        if (grading.overrides[overrideKey] !== undefined) {
+                            const overrideVal = grading.overrides[overrideKey];
+                            const points = puntenVoorStatus(overrideVal, sectie.puntenPerVraag);
+                            
+                            let statusLabel = "goed";
+                            if (points === 0) statusLabel = "fout";
+                            else if (points < sectie.puntenPerVraag) statusLabel = "deels";
+                            
+                            result = { status: statusLabel, punten: points };
                         } else {
                             result = gradeQuestion(sectie, idx, gegevenAntwoorden[idx]);
                         }
@@ -1240,10 +1264,11 @@
             if (!sub) return;
             const grading = getGradingState(sub);
             const key = sectieId + "_" + vraagIdx;
-            if (grading.overrides[key] === status) {
+            const val = (typeof status === "number" || !isNaN(Number(status))) ? Number(status) : status;
+            if (grading.overrides[key] === val) {
                 delete grading.overrides[key]; // nogmaals klikken = terug naar automatisch
             } else {
-                grading.overrides[key] = status;
+                grading.overrides[key] = val;
             }
             saveSubmission(theme, idx);
             if (selectedTheme === theme && selectedSubIndex === idx) {
@@ -1303,12 +1328,27 @@
             return balken ? `<div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:14px;">${balken}</div>` : '';
         }
 
-        function overrideButtons(theme, idx, sectieId, vraagIdx, status) {
+        function formatPoints(pts) {
+            return Number.isInteger(pts) ? pts : pts.toFixed(1);
+        }
+
+        function overrideButtons(theme, idx, sectieId, vraagIdx, currentPoints, maxPoints) {
+            if (maxPoints === 3) {
+                return `
+                    <span style="display:flex; gap:2px; align-items:center;">
+                        <button class="override-btn ${currentPoints === 3 ? 'active-goed' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="3 punten (Volledig correct)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 3)">3</button>
+                        <button class="override-btn ${currentPoints === 2 ? 'active-deels' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="2 punten (1 kleine fout)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 2)">2</button>
+                        <button class="override-btn ${currentPoints === 1 ? 'active-deels' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px; border-color:#f59e0b;" title="1 punt (2 fouten)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 1)">1</button>
+                        <button class="override-btn ${currentPoints === 0 ? 'active-fout' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="0 punten (Fout)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 0)">0</button>
+                    </span>
+                `;
+            }
+            
             return `
-                <span style="display:flex; gap:2px;">
-                    <button class="override-btn ${status === 'goed' ? 'active-goed' : ''}" title="Goed rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'goed')">✅</button>
-                    <button class="override-btn ${status === 'deels' ? 'active-deels' : ''}" title="Deels goed rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'deels')">⚠️</button>
-                    <button class="override-btn ${status === 'fout' ? 'active-fout' : ''}" title="Fout rekenen" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 'fout')">❌</button>
+                <span style="display:flex; gap:2px; align-items:center;">
+                    <button class="override-btn ${currentPoints === 1 ? 'active-goed' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="1 punt (Goed)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 1)">1</button>
+                    <button class="override-btn ${currentPoints === 0.5 ? 'active-deels' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="0.5 punt (Deels goed)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 0.5)">½</button>
+                    <button class="override-btn ${currentPoints === 0 ? 'active-fout' : ''}" style="min-width:24px; text-align:center; padding: 2px 4px;" title="0 punten (Fout)" onclick="setGradingOverride('${theme}', ${idx}, '${sectieId}', ${vraagIdx}, 0)">0</button>
                 </span>
             `;
         }
@@ -1316,7 +1356,7 @@
         function renderVraagAntwoordSectie(sub, sectie, details, theme, idx) {
             const behaald = details.reduce((s, d) => s + d.punten, 0);
             const max = sectie.type === "open-ai" ? (sectie.aantalZinnen || 0) * sectie.puntenPerVraag : sectie.antwoorden.length * sectie.puntenPerVraag;
-            const header = `<div class="section-header-bar">${escapeHtml(sectie.label)} (Score: ${behaald}/${max})</div>`;
+            const header = `<div class="section-header-bar">${escapeHtml(sectie.label)} (Score: ${formatPoints(behaald)}/${max})</div>`;
 
             if (sectie.type === "open-ai") {
                 const zinnen = (sub.answers && sub.answers.sec6) || [];
@@ -1329,7 +1369,7 @@
                         <div class="qa-item">
                             <div style="font-weight:700;">Zin ${i + 1}: ${escapeHtml(zinnen[i] || '-')}</div>
                             <div style="font-size:0.8rem; color:var(--text-secondary); margin:3px 0;">AI-voorstel: ${aiTekst}</div>
-                            <div>${overrideButtons(theme, idx, "sec6", i, detail.status)}</div>
+                            <div>${overrideButtons(theme, idx, "sec6", i, detail.punten, sectie.puntenPerVraag)}</div>
                         </div>
                     `;
                 }).join('');
@@ -1345,7 +1385,7 @@
                         <div style="font-weight:700;">Vraag ${i + 1}: ${escapeHtml(vraag)}</div>
                         <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px; flex-wrap:wrap;">
                             <span>Antwoord cursist: <strong>${escapeHtml(gegeven[i] || '-')}</strong></span>
-                            ${overrideButtons(theme, idx, sectie.id, i, detail.status)}
+                            ${overrideButtons(theme, idx, sectie.id, i, detail.punten, sectie.puntenPerVraag)}
                         </div>
                     </div>
                 `;
@@ -1421,11 +1461,11 @@
                         <div style="display: flex; justify-content: space-around; align-items: center;">
                             <div style="text-align: center;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Goed</div>
-                                <div style="font-size: 1.6rem; font-weight: 800; color: #10b981;">✅ ${scoreInfo.correct} <span style="font-size: 1rem; color: var(--text-secondary); font-weight: 500;">/ ${scoreInfo.total}</span></div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #10b981;">✅ ${formatPoints(scoreInfo.correct)} <span style="font-size: 1rem; color: var(--text-secondary); font-weight: 500;">/ ${scoreInfo.total}</span></div>
                             </div>
                             <div style="text-align: center; border-left: 1px solid var(--border-medium); border-right: 1px solid var(--border-medium); padding: 0 40px;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Fout</div>
-                                <div style="font-size: 1.6rem; font-weight: 800; color: #ef4444;">❌ ${scoreInfo.incorrect}</div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #ef4444;">❌ ${formatPoints(scoreInfo.incorrect)}</div>
                             </div>
                             <div style="text-align: center;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Percentage</div>
