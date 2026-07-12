@@ -501,7 +501,12 @@
                     <a href="../index.html">Startpagina</a><span>›</span><span>Docenten Dashboard</span>
                 </div>
                 <h1>📊 Toetsen Dashboard</h1>
-                <p>Bekijk ingediende toetsen, voer correcties uit en genereer AI feedbackbrieven</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; width:100%; gap: 10px;">
+                    <p style="margin: 0; color: var(--text-secondary);">Bekijk ingediende toetsen, voer correcties uit en genereer AI feedbackbrieven</p>
+                    <div id="connection-status-indicator" style="font-size: 0.82rem; font-weight: 800; display: flex; align-items: center; color: var(--text-secondary);">
+                        <span style="display:inline-block; width:8px; height:8px; background:#6b7280; border-radius:50%; margin-right:5px;"></span> Standby
+                    </div>
+                </div>
             </div>
 
             <div style="display: flex; gap: 10px; align-items: center;">
@@ -553,8 +558,9 @@
                 </div>
             </div>
 
-            <div class="settings-bar" style="box-shadow: none; border-top: 1px solid var(--border-medium); padding-top: 15px; justify-content: flex-end;">
-                <button class="settings-btn" style="background: var(--accent-red);" onclick="clearAllSubmissions()">🗑️ Wis alle inzendingen</button>
+            <div class="settings-bar" style="box-shadow: none; border-top: 1px solid var(--border-medium); padding-top: 15px; justify-content: space-between; align-items: center;">
+                <button class="settings-btn" style="background: var(--secondary);" onclick="restoreMockSubmissions()" id="restore-mocks-btn">🔄 Herstel Voorbeelddata</button>
+                <button class="settings-btn" style="background: var(--accent-red);" onclick="clearAllSubmissions()" id="clear-all-btn">🗑️ Wis alle inzendingen</button>
             </div>
         </div>
 
@@ -771,6 +777,19 @@
             ]
         };
 
+        function updateConnectionStatus(isConnected) {
+            const el = document.getElementById('connection-status-indicator');
+            if (el) {
+                if (isConnected) {
+                    el.innerHTML = '<span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; margin-right:5px;"></span> Cloud Verbonden';
+                    el.style.color = '#10b981';
+                } else {
+                    el.innerHTML = '<span style="display:inline-block; width:8px; height:8px; background:#ef4444; border-radius:50%; margin-right:5px;"></span> Offline (Lokaal)';
+                    el.style.color = '#ef4444';
+                }
+            }
+        }
+
         function initializeSubmissions() {
             for (let t = 1; t <= 8; t++) {
                 allSubmissions[`thema${t}`] = [];
@@ -786,23 +805,28 @@
 
             // Vul alleen thema's die nog helemaal leeg zijn met een voorbeeld —
             // raakt nooit een thema waar al echte inzendingen in staan.
-            Object.keys(mockSubmissionsByTheme).forEach(themeKey => {
-                if (allSubmissions[themeKey].length === 0) {
-                    allSubmissions[themeKey] = mockSubmissionsByTheme[themeKey];
-                    localStorage.setItem(themesInfo[themeKey].key, JSON.stringify(mockSubmissionsByTheme[themeKey]));
-                }
-            });
+            const mockCleared = localStorage.getItem('mock_data_cleared') === '1';
+            if (!mockCleared) {
+                Object.keys(mockSubmissionsByTheme).forEach(themeKey => {
+                    if (allSubmissions[themeKey].length === 0) {
+                        allSubmissions[themeKey] = mockSubmissionsByTheme[themeKey];
+                        localStorage.setItem(themesInfo[themeKey].key, JSON.stringify(mockSubmissionsByTheme[themeKey]));
+                    }
+                });
+            }
 
             // Sync with Firestore
             if (window.fbDb) {
                 window.fbDb.collection("submissions").orderBy("timestamp", "desc")
                     .onSnapshot((snapshot) => {
+                        updateConnectionStatus(true);
                         // Reset to local values first to avoid duplication
+                        const currentMockCleared = localStorage.getItem('mock_data_cleared') === '1';
                         for (let t = 1; t <= 8; t++) {
                             const themeKey = `thema${t}`;
                             const storageKey = themesInfo[themeKey].key;
                             allSubmissions[themeKey] = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                            if (mockSubmissionsByTheme[themeKey] && allSubmissions[themeKey].length === 0) {
+                            if (!currentMockCleared && mockSubmissionsByTheme[themeKey] && allSubmissions[themeKey].length === 0) {
                                 allSubmissions[themeKey] = mockSubmissionsByTheme[themeKey];
                             }
                         }
@@ -849,9 +873,11 @@
                         updateList();
                     }, (err) => {
                         console.error("Firestore error:", err);
+                        updateConnectionStatus(false);
                         updateList();
                     });
             } else {
+                updateConnectionStatus(false);
                 updateList();
             }
         }
@@ -1393,6 +1419,20 @@
                 .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
+        function extractJSONArray(text) {
+            const startIdx = text.indexOf('[');
+            const endIdx = text.lastIndexOf(']');
+            if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+                const jsonPart = text.substring(startIdx, endIdx + 1);
+                try {
+                    return JSON.parse(jsonPart);
+                } catch (e) {
+                    console.warn("JSON extraction regex parsing failed, trying raw text:", e);
+                }
+            }
+            return JSON.parse(text.trim());
+        }
+
         function renderStepper(hasFeedback, locked) {
             const stap = locked ? 4 : (hasFeedback ? 3 : 2);
             const stappen = [
@@ -1597,21 +1637,21 @@
                         </span>
                         <div style="display:flex; gap:8px;">
                             <button class="settings-btn" onclick="openScoreModal()" style="font-size: 0.9rem; padding: 6px 12px; background: var(--primary); display: flex; align-items: center; gap: 5px;">📈 Omrekentabel</button>
-                            <button class="settings-btn" onclick="clearManualOverrides('${selectedTheme}', ${selectedSubIndex})" style="font-size: 0.9rem; padding: 6px 12px; background: var(--secondary); display: flex; align-items: center; gap: 5px;" title="Wis alle handmatige aanpassingen en herstel automatische score">🗑️ Herstel</button>
+                            <button class="settings-btn" id="clear-overrides-btn" onclick="clearManualOverrides('${selectedTheme}', ${selectedSubIndex})" style="font-size: 0.9rem; padding: 6px 12px; background: var(--secondary); display: flex; align-items: center; gap: 5px;" title="Wis alle handmatige aanpassingen en herstel automatische score">🗑️ Herstel</button>
                         </div>
                     </h2>
 
                     <!-- Class/Route Assignment Dropdown -->
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--bg-secondary); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-medium); flex-wrap: wrap;">
                         <span style="font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">Toewijzen aan Klas/Route:</span>
-                        <select onchange="updateClassRoute('${selectedTheme}', ${selectedSubIndex}, this.value)" class="settings-input" style="max-width: 180px; padding: 4px 8px;" ${isLocked ? 'disabled' : ''}>
+                        <select id="class-route-select" onchange="updateClassRoute('${selectedTheme}', ${selectedSubIndex}, this.value)" class="settings-input" style="max-width: 180px; padding: 4px 8px;" ${isLocked ? 'disabled' : ''}>
                             <option value="" ${!sub.classRoute ? 'selected' : ''}>-- Geen klas --</option>
                             <option value="Z-route" ${sub.classRoute === 'Z-route' ? 'selected' : ''}>Z-route</option>
                             <option value="A1" ${sub.classRoute === 'A1' ? 'selected' : ''}>A1</option>
                             <option value="A2" ${sub.classRoute === 'A2' ? 'selected' : ''}>A2</option>
                             <option value="Overig" ${sub.classRoute === 'Overig' ? 'selected' : ''}>Overig</option>
                         </select>
-                        <button class="settings-btn" style="background: var(--secondary); font-size: 0.8rem; padding: 4px 10px; margin-left: auto;" onclick="generateIndividualAdvice('${selectedTheme}', ${selectedSubIndex})">Genereer Leeradvies</button>
+                        <button class="settings-btn" id="individual-advice-btn" style="background: var(--secondary); font-size: 0.8rem; padding: 4px 10px; margin-left: auto;" onclick="generateIndividualAdvice('${selectedTheme}', ${selectedSubIndex})">Genereer Leeradvies</button>
                     </div>
 
                     ${renderStepper(hasFeedback, isLocked)}
@@ -1718,11 +1758,7 @@ Geef UITSLUITEND geldige JSON terug, geen markdown-codeblok, in dit exacte forma
 [{"verdict":"goed","reden":"korte reden in het Nederlands"}]
             `;
             const responseText = await callAI(prompt);
-            let jsonText = responseText.trim();
-            if (jsonText.startsWith("```")) {
-                jsonText = jsonText.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/, "").trim();
-            }
-            const parsed = JSON.parse(jsonText);
+            const parsed = extractJSONArray(responseText);
             if (!Array.isArray(parsed)) throw new Error("Onverwacht antwoord bij sectie 6-beoordeling.");
             return parsed;
         }
@@ -2183,6 +2219,8 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
                 return;
             }
 
+            localStorage.setItem('mock_data_cleared', '1');
+
             // Verwijder ook de Firestore-documenten zelf, niet alleen de lokale kopie —
             // anders komt de data terug zodra de realtime-listener opnieuw synchroniseert.
             if (window.fbDb) {
@@ -2206,6 +2244,22 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
                     🔍 Selecteer een student in de linkerlijst om de toets te bekijken en na te kijken.
                 </div>
             `;
+        }
+
+        function restoreMockSubmissions() {
+            if (!confirm("Weet u zeker dat u de voorbeelddata wilt herstellen? Dit voegt voorbeeldtoetsen toe aan alle thema's.")) {
+                return;
+            }
+            localStorage.removeItem('mock_data_cleared');
+            for (let t = 1; t <= 8; t++) {
+                const themeKey = `thema${t}`;
+                const storageKey = themesInfo[themeKey].key;
+                localStorage.removeItem(storageKey);
+            }
+            selectedTheme = null;
+            selectedSubIndex = null;
+            initializeSubmissions();
+            alert("Voorbeelddata is hersteld!");
         }
 
         function toggleSettingsPanel() {
@@ -2319,12 +2373,7 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
                 `;
                 
                 const responseText = await callAI(prompt);
-                let jsonText = responseText.trim();
-                if (jsonText.startsWith("```")) {
-                    jsonText = jsonText.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
-                }
-                
-                const parsedList = JSON.parse(jsonText);
+                const parsedList = extractJSONArray(responseText);
                 if (!Array.isArray(parsedList)) {
                     throw new Error("Het resultaat van de AI was geen lijst.");
                 }
@@ -2459,30 +2508,78 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
             }
         }
 
-        function fetchExternalSubmissions() {
+        async function fetchExternalSubmissions() {
             const url = localStorage.getItem('toetsen_webhook_url');
             if (!url) {
                 alert("Vul alstublieft eerst de Apps Script GET URL in.");
                 return;
             }
             alert("Start synchronisatie met Google Sheets...");
-            fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    localStorage.setItem('toets_thema7_submissions', JSON.stringify(data));
-                    allSubmissions['thema7'] = data;
-                    selectedTheme = null;
-                    selectedSubIndex = null;
-                    updateList();
-                    alert(`Succesvol ${data.length} inzendingen geladen uit Google Sheets!`);
-                } else {
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (!Array.isArray(data)) {
                     alert("Foutief antwoordformaat van Google Sheets.");
+                    return;
                 }
-            })
-            .catch(err => {
+                
+                let importCount = 0;
+                let skipCount = 0;
+                
+                for (const sub of data) {
+                    const theme = sub.theme || "thema7";
+                    const testNum = sub.testNum || "1";
+                    
+                    // Check if this submission already exists in allSubmissions (locally/Firestore)
+                    const exists = (allSubmissions[theme] || []).some(s => 
+                        s.name === sub.name && 
+                        s.date === sub.date && 
+                        s.time === sub.time
+                    );
+                    
+                    if (!exists) {
+                        const timestamp = sub.date && sub.time 
+                            ? new Date(`${sub.date.split('-').reverse().join('-')}T${sub.time}`).getTime() 
+                            : Date.now();
+                            
+                        const docData = {
+                            name: sub.name,
+                            date: sub.date,
+                            time: sub.time,
+                            theme: theme,
+                            testNum: testNum,
+                            answers: sub.answers || { sec1: [], sec2: [], sec3: [], sec4: [], sec5: [], sec6: [] },
+                            feedbacks: sub.feedbacks || {},
+                            gradingState: sub.gradingState || {},
+                            classRoute: sub.classRoute || "",
+                            archived: sub.archived || false,
+                            timestamp: timestamp
+                        };
+                        
+                        if (window.fbDb) {
+                            // Online mode: Push to Firestore!
+                            await window.fbDb.collection("submissions").add(docData);
+                        } else {
+                            // Offline mode fallback: Push directly to LocalStorage
+                            const storageKey = (themesInfo[theme] || { key: "toets_" + theme + "_submissions" }).key;
+                            let subs = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                            subs.push(docData);
+                            localStorage.setItem(storageKey, JSON.stringify(subs));
+                            allSubmissions[theme] = subs;
+                        }
+                        importCount++;
+                    } else {
+                        skipCount++;
+                    }
+                }
+                
+                selectedTheme = null;
+                selectedSubIndex = null;
+                updateList();
+                alert(`Sheets synchronisatie voltooid!\n${importCount} nieuwe toetsen geïmporteerd.\n${skipCount} bestaande toetsen behouden.`);
+            } catch (err) {
                 alert(`Fout bij laden van Google Sheets: ${err.message}`);
-            });
+            }
         }
 
         let isPresentationMode = false;
