@@ -1498,6 +1498,10 @@
                                 <button class="translate-btn ${selectedLanguage === 'tr' ? 'active' : ''}" onclick="switchFeedbackLanguage('tr')">🇹🇷 TR</button>
                             </div>
 
+                            ${(hasFeedback && selectedLanguage !== 'nl' && (!sub.feedbacks || !sub.feedbacks[selectedLanguage])) ? `
+                                <button class="settings-btn" style="width:100%; padding:10px; background:#4f46e5; color:white; margin-top:-5px;" onclick="triggerTranslation()">Vertaal naar ${langNames[selectedLanguage] || selectedLanguage}</button>
+                            ` : ''}
+
                             <div>
                                 <label style="font-size:0.8rem; font-weight:700; color:var(--text-secondary); display:block; margin-bottom:6px;">Aanvullende Instructie (bijv. "maak toon positiever" of "let op: sectie 6 zin 2 klopt niet bij de praatplaat")</label>
                                 <textarea id="ai-instruction" class="feedback-box" autocomplete="off" spellcheck="true" placeholder="Typ hier je instructie voor de AI..." style="height:80px; margin-bottom:8px;" ${editingDisabled ? 'disabled' : ''}></textarea>
@@ -1901,41 +1905,25 @@ Geef uitsluitend het rapport terug zonder extra inleidende of afsluitende tekste
             }
         }
 
+        const langNames = {
+            en: "Engels",
+            ar: "Arabisch",
+            tr: "Turks"
+        };
+
         function switchFeedbackLanguage(lang) {
             selectedLanguage = lang;
+            renderReviewPanel();
+        }
+
+        function triggerTranslation() {
             if (selectedTheme === null || selectedSubIndex === null) return;
             const sub = allSubmissions[selectedTheme][selectedSubIndex];
             if (!sub) return;
-            
-            document.querySelectorAll('.translate-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const btns = document.querySelectorAll('.translate-btn');
-            btns.forEach(b => {
-                if (b.textContent.toLowerCase().includes(lang)) {
-                    b.classList.add('active');
-                }
-            });
-            
-            if (sub.feedbacks && sub.feedbacks[lang]) {
-                showActiveFeedbackText();
-            } else {
-                const langNames = {
-                    en: "Engels", ar: "Arabisch", tr: "Turks"
-                };
-                translateFeedback(lang, langNames[lang]);
-            }
-        }
-
-        function showActiveFeedbackText() {
-            if (selectedTheme === null || selectedSubIndex === null) return;
-            const sub = allSubmissions[selectedTheme][selectedSubIndex];
-            const textarea = document.getElementById('feedback-textarea');
-            if (sub.feedbacks && sub.feedbacks[selectedLanguage]) {
-                textarea.value = sub.feedbacks[selectedLanguage];
-            } else {
-                textarea.value = "";
-            }
+            const targetLangCode = selectedLanguage;
+            const targetLangName = langNames[targetLangCode];
+            if (targetLangCode === 'nl' || !targetLangName) return;
+            translateFeedback(targetLangCode, targetLangName);
         }
 
         async function callGemini(promptText) {
