@@ -90,14 +90,14 @@ OVERVIEW_TEMPLATE = """<!DOCTYPE html>
 
   <!-- Language Bar -->
   <nav class="language-bar" aria-label="Taalkeuze">
-    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; margin-right: auto; border-color: var(--accent-purple); color: var(--accent-purple);">🌓 Thema</button>
+    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
     <span class="label">🌐 Taal:</span>
-    <span class="lang-btn active">🇳🇱 Nederlands</span>
-    <span class="lang-btn">🇬🇧 English <span class="badge">soon</span></span>
-    <span class="lang-btn">🇸🇦 العربية <span class="badge">soon</span></span>
-    <span class="lang-btn">🇹🇷 Türkçe <span class="badge">soon</span></span>
-    <span class="lang-btn">🇹🇭 ไทย <span class="badge">soon</span></span>
-    <span class="lang-btn">🇦🇫 دری <span class="badge">soon</span></span>
+    <span class="lang-btn active" onclick="setPageLang('nl')">🇳🇱 Nederlands</span>
+    <span class="lang-btn" onclick="setPageLang('en')">🇬🇧 English</span>
+    <span class="lang-btn" onclick="setPageLang('ar')">🇸🇦 العربية</span>
+    <span class="lang-btn" onclick="setPageLang('tr')">🇹🇷 Türkçe</span>
+    <span class="lang-btn" onclick="setPageLang('dari')">🇦🇫 دری</span>
+    <span class="lang-btn" onclick="setPageLang('thai')">🇹🇭 ไทย</span>
   </nav>
 
   <main class="page-container">
@@ -110,7 +110,7 @@ OVERVIEW_TEMPLATE = """<!DOCTYPE html>
         <span>Thema {num}</span>
       </div>
       <h1>{icon} Thema {num} — {title}</h1>
-      <p class="subtitle">{desc}</p>
+      <p class="subtitle" data-translate="subtitle">{desc}</p>
     </header>
 
     <div class="para-list">
@@ -122,67 +122,153 @@ OVERVIEW_TEMPLATE = """<!DOCTYPE html>
     NT2 A2 Leerplatform &copy; 2026
   </footer>
 
-  <!-- SPEECH SYNTHESIS INJECTION -->
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-      
-    function triggerConfetti() {
-        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
-        const container = document.body;
-        for (let i = 0; i < 30; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti-emoji';
-            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.left = (Math.random() * 100) + 'vw';
-            el.style.fontSize = (20 + Math.random() * 25) + 'px';
-            el.style.animationDelay = (Math.random() * 0.5) + 's';
-            el.style.animationDuration = (2 + Math.random() * 2) + 's';
-            container.appendChild(el);
-            setTimeout(() => el.remove(), 4500);
-        }
+    // === Voortgangsindicatoren ===
+    function toonVoortgang() {
+        const voltooid = JSON.parse(localStorage.getItem('nt2_voltooid') || '[]');
+        voltooid.forEach(paraId => {
+            const card = document.getElementById('paracard-' + paraId);
+            if (card) {
+                card.classList.add('para-voltooid');
+                if (!card.querySelector('.para-check')) {
+                    const check = document.createElement('span');
+                    check.className = 'para-check';
+                    check.textContent = '✅';
+                    card.appendChild(check);
+                }
+            }
+        });
     }
 
-    function speakNative(text) {
-          if (!window.speechSynthesis) return;
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = 'nl-NL';
-          u.rate = 0.9;
-          window.speechSynthesis.speak(u);
-      }
-      function createSpeakBtn(text) {
-          let btn = document.createElement('button');
-          btn.innerHTML = '🔊';
-          btn.className = 'native-speak-btn';
-          btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
-          btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
-          btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
-          btn.onmouseout = () => btn.style.transform = 'scale(1)';
-          return btn;
-      }
-      document.querySelectorAll('.vocab').forEach(el => {
-          if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('native-speak-btn')) {
-              el.parentNode.insertBefore(createSpeakBtn(el.textContent.trim()), el.nextSibling);
-          }
-      });
-  });
-  </script>
+    // === Taalknop functionaliteit ===
+    const PAGE_TRANS = {
+        nl: {
+            subtitle: 'Lessen over verhuizen, zinnen maken en de basisgrammatica van A2.',
+            t11: '1.1 Nieuwe buren', d11: 'Woordenschat rondom verhuizen en buren ontmoeten.',
+            t12: '1.2 Zinnen maken', d12: 'De basisvolgorde van hoofdzinnen (S-V-R).',
+            t13: '1.3 Dit is mijn familie.', d13: 'Gebruik van dit is, dat is, dit zijn, dat zijn.',
+            t14: '1.4 Huiswerk maken', d14: 'Leren praten over studeren en schoolwerk.',
+            t15: '1.5 Hoe gaat het?', d15: 'Vragen hoe het met iemand gaat en gepast antwoorden.',
+            t16: '1.6 Er is een tuin. – Er zijn drie kamers.', d16: 'Gebruik van er is (enkelvoud) en er zijn (meervoud).',
+            t17: '1.7 En, maar, want, dus, of', d17: 'Zinnen verbinden met nevenschikkende voegwoorden.',
+            t18: '1.8 Marktplaats', d18: 'Kopen en verkopen van meubels en tweedehands spullen.',
+            t19: '1.9 De grote kast – de kleine spiegel', d19: 'Bijvoeglijke naamwoorden met de- en het-woorden.',
+            t110: '1.10 Op het station', d110: 'Treinreizen en stationsaanduidingen begrijpen.',
+            t111: '1.11 Ik begrijp, hij begrijpt, wij begrijpen', d111: 'Tegenwoordige tijd van regelmatige werkwoorden.',
+            t112: '1.12 Geld op je OV-chipkaart zetten', d112: 'Openbaar vervoer en in- en uitchecken.',
+            t113: '1.13 Woorden met -lijk', d113: 'Uitspraak en spelling van woorden op -lijk.',
+            t114: '1.14 Contact met de buren', d114: 'Korte gesprekjes en afspraken maken met buren.',
+            t115: '1.15 Klein, kleiner – groot, groter', d115: 'Vergrotende trap (comparatief) in vergelijkingen.'
+        },
+        en: {
+            subtitle: 'Lessons about moving, making sentences, and basic Dutch grammar of A2.',
+            t11: '1.1 New neighbors', d11: 'Vocabulary about moving and meeting neighbors.',
+            t12: '1.2 Making sentences', d12: 'Basic word order of main clauses (S-V-R).',
+            t13: '1.3 This is my family.', d13: 'Usage of this is, that is, these are, those are.',
+            t14: '1.4 Doing homework', d14: 'Learning to talk about studying and schoolwork.',
+            t15: '1.5 How are you?', d15: 'Asking how someone is doing and responding appropriately.',
+            t16: '1.6 There is a garden. – There are three rooms.', d16: 'Using er is (singular) and er zijn (plural).',
+            t17: '1.7 And, but, because, so, or', d17: 'Connecting sentences with coordinating conjunctions.',
+            t18: '1.8 Marketplace', d18: 'Buying and selling furniture and second-hand items.',
+            t19: '1.9 The big closet – the small mirror', d19: 'Adjectives with de- and het-words.',
+            t110: '1.10 At the station', d110: 'Understanding train travel and station signs.',
+            t111: '1.11 I understand, he understands, we understand', d111: 'Present tense of regular verbs.',
+            t112: '1.12 Topping up your OV-chipcard', d112: 'Public transport and checking in and out.',
+            t113: '1.13 Words ending in -lijk', d113: 'Pronunciation and spelling of words with -lijk.',
+            t114: '1.14 Contact with neighbors', d114: 'Short conversations and making appointments with neighbors.',
+            t115: '1.15 Small, smaller – big, bigger', d115: 'Comparative degree in comparisons.'
+        },
+        ar: {
+            subtitle: 'دروس حول الانتقال، وبناء الجمل، والقواعد الأساسية للمستوى A2.',
+            t11: '1.1 جيران جدد', d11: 'المفردات المتعلقة بالانتقال والتعرف على الجيران.',
+            t12: '1.2 تكوين الجمل', d12: 'الترتيب الأساسي للكلمات في الجمل الرئيسية (S-V-R).',
+            t13: '1.3 هذه عائلتي.', d13: 'استخدام أسماء الإشارة للقريب والبعيد.',
+            t14: '1.4 كتابة الواجب', d14: 'تعلم التحدث عن الدراسة والواجبات المدرسية.',
+            t15: '1.5 كيف حالك؟', d15: 'السؤال عن حال شخص ما والرد المناسب.',
+            t16: '1.6 هناك حديقة. – هناك ثلاث غرف.', d16: 'استخدام هناك للمفرد والجمع.',
+            t17: '1.7 و، ولكن، لأن، إذن، أو', d17: 'ربط الجمل باستخدام أدوات العطف.',
+            t18: '1.8 السوق (ماركت بليتس)', d18: 'شراء وبيع الأثاث والأشياء المستعملة.',
+            t19: '1.9 الخزانة الكبيرة – المرآة الصغيرة', d19: 'الصفات مع الكلمات التي تأخذ de و het.',
+            t110: '1.10 في المحطة', d110: 'فهم السفر بالقطار وإشارات المحطة.',
+            t111: '1.11 أنا أفهم، هو يفهم، نحن نفهم', d111: 'المضارع البسيط للأفعال المنتظمة.',
+            t112: '1.12 شحن بطاقة المواصلات', d112: 'المواصلات العامة وتسجيل الدخول والخروج.',
+            t113: '1.13 الكلمات التي تنتهي بـ -lijk', d113: 'نطق وكتابة الكلمات التي تنتهي بـ -lijk.',
+            t114: '1.14 التواصل مع الجيران', d114: 'محادثات قصيرة وتحديد مواعيد مع الجيران.',
+            t115: '1.15 صغير، أصغر – كبير، أكبر', d115: 'صيغة المقارنة في المقارنات.'
+        },
+        tr: {
+            subtitle: 'Taşınma, cümle kurma ve A2 seviyesinin temel dil bilgisi konularını içeren dersler.',
+            t11: '1.1 Yeni komşular', d11: 'Taşınma ve komşularla tanışma ile ilgili kelimeler.',
+            t12: '1.2 Cümle kurma', d12: 'Temel cümlelerin kelime sırası (S-V-R).',
+            t13: '1.3 Bu benim ailem.', d13: 'İşaret zamirlerinin kullanımı (tekil/çoğul, yakın/uzak).',
+            t14: '1.4 Ödev yapmak', d14: 'Eğitim ve okul işleri hakkında konuşmayı öğrenmek.',
+            t15: '1.5 Nasıl gidiyor?', d15: 'Birinin nasıl olduğunu sorma ve uygun şekilde cevap verme.',
+            t16: '1.6 Bahçe var. – Üç oda var.', d16: 'Tekil ve çoğul varlık ifadelerinin kullanımı (er is / er zijn).',
+            t17: '1.7 Ve, ama, çünkü, bu yüzden, veya', d17: 'Bağlaçlarla cümleleri birbirine bağlama.',
+            t18: '1.8 İkinci el pazarı', d18: 'Mobilya og ikinci el eşya alım satımı.',
+            t19: '1.9 Büyük dolap – küçük ayna', d19: 'de ve het kelimeleriyle sıfat çekimi.',
+            t110: '1.10 İstasyonda', d110: 'Tren yolculuğu ve istasyon tabelalarını anlama.',
+            t111: '1.11 Anlıyorum, anlıyor, anlıyoruz', d111: 'Düzenli fiillerin şimdiki zaman çekimi.',
+            t112: '1.12 Toplu taşıma kartına para yükleme', d112: 'Toplu taşıma ve biniş-iniş işlemleri.',
+            t113: '1.13 -lijk ile biten kelimeler', d113: '-lijk ile biten kelimelerin telaffuzu ve yazımı.',
+            t114: '1.14 Komşularla iletişim', d114: 'Komşularla kısa konuşmalar ve randevulaşma.',
+            t115: '1.15 Küçük, daha küçük – büyük, daha büyük', d115: 'Karşılaştırma sıfatlarının kullanımı.'
+        },
+        dari: {
+            subtitle: 'درس‌ها درباره کوچ‌کشی، جمله‌سازی و گرامر ابتدایی سطح A2 هلندی.',
+            t11: '1.1 همسایه‌های جدید', d11: 'واژگان مربوط به کوچ‌کشی و آشنا شدن با همسایه‌ها.',
+            t12: '1.2 جمله‌سازی', d12: 'ترتیب اصلی کلمات در جملات اصلی (S-V-R).',
+            t13: '1.3 این فامیل من است.', d13: 'استفاده از ضمیرهای اشاره برای اشاره به افراد و اشیاء.',
+            t14: '1.4 انجام کارهای خانگی', d14: 'آموزش صحبت کردن درباره درس و کارهای مدرسه.',
+            t15: '1.5 چطور هستید؟', d15: 'پرسیدن احوال دیگران و پاسخ دادن مناسب.',
+            t16: '1.6 باغچه وجود دارد. – سه اتاق وجود دارد.', d16: 'استفاده از جملات وجودی برای مفرد و جمع.',
+            t17: '1.7 و، اما، چون، پس، یا', d17: 'وصل کردن جملات با حروف ربط.',
+            t18: '1.8 مارکت‌پلیس', d18: 'خرید و فروش فرنیچر و وسایل دست دوم.',
+            t19: '1.9 الماری بزرگ – آیینه خورد', d19: 'صفت‌ها همراه با واژه‌های de و het.',
+            t110: '1.10 در ایستگاه خط آهن', d110: 'فهمیدن سفر با قطار و علائم ایستگاه.',
+            t111: '1.11 من می‌فهمم، او می‌فهمد، ما می‌فهمیم', d111: 'زمان حال افعال باقاعده.',
+            t112: '1.12 پول انداختن در کارت ترانسپورت', d112: 'ترانسپورت عمومی و طریقه کارت زدن در ورود و خروج.',
+            t113: '1.13 واژه‌های ختم شده به -lijk', d113: 'تلفظ و املای واژه‌هایی که به -lijk ختم می‌شوند.',
+            t114: '1.14 ارتباط با همسایه‌ها', d114: 'گفتگوهای کوتاه و قرار ملاقات گذاشتن با همسایه‌ها.',
+            t115: '1.15 خورد، خوردتر – کلان، کلانتر', d115: 'صفت‌های مقایسه‌ای در زبان هلندی.'
+        },
+        thai: {
+            subtitle: 'บทเรียนเกี่ยวกับการย้ายบ้าน การแต่งประโยค และไวยากรณ์พื้นฐานระดับ A2 ภาษาดัตช์',
+            t11: '1.1 เพื่อนบ้านใหม่', d11: 'คำศัพท์เกี่ยวกับการย้ายบ้านและการทำความรู้จักเพื่อนบ้าน',
+            t12: '1.2 การแต่งประโยค', d12: 'โครงสร้างประโยคพื้นฐานของประโยคหลัก (S-V-R)',
+            t13: '1.3 นี่คือครอบครัวของฉัน', d13: 'การใช้สรรพนามชี้เฉพาะในการแนะนำคนและสิ่งของ',
+            t14: '1.4 การทำการบ้าน', d14: 'เรียนรู้การพูดคุยเกี่ยวกับการเรียนและการทำการบ้าน',
+            t15: '1.5 เป็นอย่างไรบ้าง?', d15: 'การถามสารทุกข์สุกดิบและการตอบอย่างเหมาะสม',
+            t16: '1.6 มีสวน – มีสามห้อง', d16: 'การใช้คำแสดงการมีอยู่สำหรับเอกพจน์และพหูพจน์ (er is / er zijn)',
+            t17: '1.7 และ, แต่, เพราะว่า, ดังนั้น, หรือ', d17: 'การเชื่อมประโยคด้วยคำสันธานเชื่อมประโยคหลัก',
+            t18: '1.8 มาร์กต์ปลาตส์ (ตลาดซื้อขายของมือสอง)', d18: 'การซื้อขายเฟอร์นิเจอร์และของมือสอง',
+            t19: '1.9 ตู้ใบใหญ่ – กระจกบานเล็ก', d19: 'การใช้คำคุณศัพท์คู่กับคำนามประเภท de และ het',
+            t110: '1.10 ที่สถานีรถไฟ', d110: 'ทำความเข้าใจเกี่ยวกับการเดินทางด้วยรถไฟและป้ายบอกทางในสถานี',
+            t111: '1.11 ฉันเข้าใจ, เขาเข้าใจ, พวกเราเข้าใจ', d111: 'การผันคำกริยาปกติในกาลปัจจุบัน',
+            t112: '1.12 การเติมเงินในบัตรโดยสารสาธารณะ (OV-chipkaart)', d112: 'การใช้บริการขนส่งสาธารณะและการแตะบัตรเข้า-ออก',
+            t113: '1.13 คำที่ลงท้ายด้วย -lijk', d113: 'การออกเสียงและการสะกดคำที่ลงท้ายด้วย -lijk',
+            t114: '1.14 การติดต่อกับเพื่อนบ้าน', d114: 'บทสนทนาสั้นๆ และการนัดหมายกับเพื่อนบ้าน',
+            t115: '1.15 เล็ก, เล็กกว่า – ใหญ่, ใหญ่กว่า', d115: 'การเปรียบเทียบขั้นกว่า (Comparatief)'
+        }
+    };
 
-  <!-- PROGRESS INJECTION -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.para-card').forEach(a => {
-          try {
-              let href = a.getAttribute('href');
-              if (href && href !== '#') {
-                  let filename = href.split('/').pop();
-                  if (localStorage.getItem('completed_' + filename) === 'true') {
-                      a.querySelector('.para-info').innerHTML += ' <span style="font-size:0.95rem;margin-left:6px;" title="Voltooid">✅</span>';
-                  }
-              }
-          } catch(e){}
-      });
-  });
+    function setPageLang(l) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        if (event && event.target) {
+            event.target.closest('.lang-btn').classList.add('active');
+        }
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const k = el.getAttribute('data-translate');
+            if (PAGE_TRANS[l] && PAGE_TRANS[l][k]) el.textContent = PAGE_TRANS[l][k];
+        });
+        if (PAGE_TRANS[l] && PAGE_TRANS[l].subtitle) {
+            const sub = document.querySelector('.subtitle');
+            if (sub) sub.textContent = PAGE_TRANS[l].subtitle;
+        }
+        document.documentElement.dir = (l === 'ar' || l === 'dari') ? 'rtl' : 'ltr';
+    }
+
+    document.addEventListener('DOMContentLoaded', toonVoortgang);
   </script>
 
   <!-- THEME TOGGLE SCRIPT -->
@@ -203,961 +289,11 @@ OVERVIEW_TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
-LESSON_TEMPLATE = """<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="NT2 A2 — Paragraaf {para_num}: {title}. Uitleg en opdrachten.">
-  <title>{para_num} {title} — NT2 A2</title>
-  <link rel="stylesheet" href="style.css">
-  <script>
-      (function() {
-          const currentTheme = localStorage.getItem('a2-theme') || 'light';
-          document.documentElement.setAttribute('data-theme', currentTheme);
-      })();
-  </script>
-</head>
-<body>
+# Load the lesson template from external file
+TEMPLATE_PATH = os.path.join(BASE_DIR, "lesson_template_src.html")
+with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
+    LESSON_TEMPLATE = f.read()
 
-  <!-- Language Bar -->
-  <nav class="language-bar" aria-label="Taalkeuze">
-    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; margin-right: auto; border-color: var(--accent-purple); color: var(--accent-purple);">🌓 Thema</button>
-    <span class="label">🌐 Vertaal Uitleg & Woorden:</span>
-    <button class="lang-btn active" id="btn-nl" onclick="changeLang('nl')">🇳🇱 Ned</button>
-    <button class="lang-btn" id="btn-en" onclick="changeLang('en')">🇬🇧 Eng</button>
-    <button class="lang-btn" id="btn-ar" onclick="changeLang('ar')">🇸🇦 العر</button>
-    <button class="lang-btn" id="btn-tr" onclick="changeLang('tr')">🇹🇷 Tür</button>
-    <button class="lang-btn" id="btn-dari" onclick="changeLang('dari')">🇦🇫 دری</button>
-    <button class="lang-btn" id="btn-thai" onclick="changeLang('thai')">🇹🇭 ไทย</button>
-  </nav>
-
-  <main class="page-container">
-    <a href="thema1.html" class="back-link">← Terug naar Thema 1</a>
-
-    <header class="page-header">
-      <div class="breadcrumb">
-        <a href="index.html">Thema's</a>
-        <span>›</span>
-        <a href="thema1.html">Thema 1</a>
-        <span>›</span>
-        <span>{para_num}</span>
-      </div>
-      <h1>{para_num} {title}</h1>
-      <p class="subtitle">{intro}</p>
-    </header>
-
-    <!-- SECTION 1: WOORDENLIJST -->
-    <section class="opdracht-card theme-blauw">
-      <div class="opdracht-header">
-        <span class="opdracht-num">1</span>
-        <h2>Woordenlijst — <span class="sub-title">Vocabulary</span></h2>
-      </div>
-      <table class="ww-tabel" style="margin-top:15px;">
-        <thead>
-          <tr>
-            <th>Nederlands</th>
-            <th id="vocab-lang-header">Vertaling</th>
-          </tr>
-        </thead>
-        <tbody id="vocab-table-body">
-          <!-- Populated by JS -->
-        </tbody>
-      </table>
-    </section>
-
-    <!-- SECTION 2: DOCENT UITLEG -->
-    <section class="opdracht-card theme-oranje">
-      <div class="opdracht-header">
-        <span class="opdracht-num">2</span>
-        <h2>Docent Uitleg — <span class="sub-title">Teacher Explanation</span></h2>
-      </div>
-      <div class="uitleg-content" id="uitleg-content" style="margin-top:15px; font-size:1.05rem; line-height:1.8;">
-        <!-- Populated by JS -->
-      </div>
-    </section>
-
-    <!-- SECTION 3: OPDRACHTEN -->
-    <!-- Opdracht 1: Meerkeuze -->
-    <section class="opdracht-card theme-paars">
-      <div class="opdracht-header">
-        <span class="opdracht-num">3</span>
-        <h2>Opdracht 1: Kies het juiste woord</h2>
-      </div>
-      <div class="opdracht-body">
-        <div id="mc-container"></div>
-        <button class="controle-btn" onclick="checkMC()">Controleer</button>
-        <button class="controle-btn reset" onclick="resetMC()" style="background:#475569;">Opnieuw</button>
-        <span class="score-badge" id="mc-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
-      </div>
-    </section>
-
-    <!-- Opdracht 2: Zinnen bouwen -->
-    <section class="opdracht-card theme-groen">
-      <div class="opdracht-header">
-        <span class="opdracht-num">4</span>
-        <h2>Opdracht 2: Sleep en maak een zin</h2>
-      </div>
-      <div class="opdracht-body">
-        <div id="drag-container"></div>
-        <button class="controle-btn" onclick="checkDrag()">Controleer</button>
-        <button class="controle-btn reset" onclick="resetDrag()" style="background:#475569;">Opnieuw</button>
-        <span class="score-badge" id="drag-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
-      </div>
-    </section>
-
-    <!-- Opdracht 3: Vul de gaten in -->
-    <section class="opdracht-card theme-geel">
-      <div class="opdracht-header">
-        <span class="opdracht-num">5</span>
-        <h2>Opdracht 3: Vul het juiste woord in</h2>
-      </div>
-      <div class="opdracht-body">
-        <div id="invul-container"></div>
-        <button class="controle-btn" onclick="checkInvul()">Controleer</button>
-        <button class="controle-btn reset" onclick="resetInvul()" style="background:#475569;">Opnieuw</button>
-        <span class="score-badge" id="invul-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
-      </div>
-    </section>
-
-    <!-- Opdracht 4: Lezen (Juist/Onjuist) -->
-    <section class="opdracht-card theme-blauw">
-      <div class="opdracht-header">
-        <span class="opdracht-num">6</span>
-        <h2>Opdracht 4: Lezen (Juist of Onjuist)</h2>
-      </div>
-      <div class="opdracht-body">
-        <div class="reading-box" style="background:var(--bg-secondary); padding:20px; border-radius:var(--radius-md); margin-bottom:15px;">
-          <p style="font-weight:700; margin-bottom:8px;">Lees het verhaal:</p>
-          <p id="story-nl-text" style="font-size:1.05rem; line-height:1.7; font-style:normal; color:var(--text-primary);"></p>
-          <button class="lang-btn" id="story-translate-btn" onclick="toggleStoryTranslation()" style="margin-top:10px; cursor:pointer; font-size:0.85rem;">🌐 Toon Vertaling / Show Translation</button>
-          <p id="story-translation-text" style="display:none; margin-top:10px; font-size:0.95rem; line-height:1.6; font-style:italic; color:var(--text-secondary);"></p>
-        </div>
-        <div id="lezen-questions-container"></div>
-        <button class="controle-btn" onclick="checkLezen()">Controleer</button>
-        <button class="controle-btn reset" onclick="resetLezen()" style="background:#475569;">Opnieuw</button>
-        <span class="score-badge" id="lezen-score" style="display:none; font-weight:700; padding:6px 14px; border-radius:100px; color:#fff; margin-left:12px; vertical-align:middle;"></span>
-      </div>
-    </section>
-
-    <!-- Opdracht 5: Dictee -->
-    <section class="opdracht-card theme-oranje">
-      <div class="opdracht-header">
-        <span class="opdracht-num">7</span>
-        <h2>Opdracht 5: Dictee (Schrijf de zin op)</h2>
-      </div>
-      <div class="opdracht-body">
-        <p style="margin-bottom:15px; font-size:0.92rem;">Klik op het geluidsknopje en typ de zin die je hoort. Let op hoofdletters en punten.</p>
-        <div id="dictee-container"></div>
-        <div style="margin-top:15px;">
-          <button class="controle-btn" onclick="checkDictee()">Controleer Dictee</button>
-          <button class="controle-btn reset" onclick="resetDictee()" style="background:#475569;">Opnieuw</button>
-          <span id="dictee-score" class="score-badge" style="display:none; margin-left:15px; font-weight:800; font-size:1rem; padding:8px 16px; border-radius:50px;"></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Opdracht 6: Huiswerk Schrijven -->
-    <section class="opdracht-card theme-paars">
-      <div class="opdracht-header">
-        <span class="opdracht-num">8</span>
-        <h2>Opdracht 6: Huiswerk Schrijven</h2>
-      </div>
-      <div class="opdracht-body">
-        <p style="margin-bottom:15px; font-size:0.92rem;">Schrijf hele zinnen als antwoord op de vragen. Sla je antwoorden op en deel ze met de docent via WhatsApp!</p>
-        <div id="schrijf-container"></div>
-        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="controle-btn" onclick="saveSchrijf()" style="background:var(--accent-purple);">💾 Opslaan</button>
-          <button class="controle-btn" onclick="shareWhatsApp()" style="background:#25d366; color:white;">💬 Stuur naar docent</button>
-          <button class="controle-btn reset" onclick="resetSchrijf()" style="background:#475569;">Opnieuw</button>
-          <span id="schrijf-fb" style="display:none; color:var(--accent-green); font-weight:800; align-self:center; font-size:0.95rem;">✅ Opgeslagen!</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- LES VOLTOOIEN BUTTON -->
-    <div style="text-align:center; margin-top:40px; margin-bottom:60px;">
-      <button id="voltooi-btn" onclick="markeerVoltooid()" class="controle-btn" style="padding:15px 40px; font-size:1.2rem; border-radius:50px; background:linear-gradient(135deg, var(--accent-blue), #d35400); color:white; font-weight:900; cursor:pointer; width:100%; max-width:400px; border:none; box-shadow:0 10px 25px var(--accent-blue-glow);">
-        Voltooi deze les!
-      </button>
-    </div>
-
-  </main>
-
-  <footer class="site-footer">
-    NT2 A2 Leerplatform &copy; 2026
-  </footer>
-
-  <!-- DATABASE AND SCRIPT LOGIC -->
-  <script>
-    const LESSON_ID = "{para_id}";
-    const DATA = {lesson_data_json};
-
-    let activeLang = 'nl';
-    let isStoryTranslated = false;
-
-    // Speach helper
-    
-    function triggerConfetti() {
-        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
-        const container = document.body;
-        for (let i = 0; i < 30; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti-emoji';
-            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.left = (Math.random() * 100) + 'vw';
-            el.style.fontSize = (20 + Math.random() * 25) + 'px';
-            el.style.animationDelay = (Math.random() * 0.5) + 's';
-            el.style.animationDuration = (2 + Math.random() * 2) + 's';
-            container.appendChild(el);
-            setTimeout(() => el.remove(), 4500);
-        }
-    }
-
-    function speakNative(text) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'nl-NL';
-        u.rate = 0.86;
-        window.speechSynthesis.speak(u);
-    }
-
-    function createSpeakBtn(text) {
-        let btn = document.createElement('button');
-        btn.innerHTML = '🔊';
-        btn.className = 'native-speak-btn';
-        btn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.05rem;margin-left:6px;padding:0;transition:transform 0.2s;vertical-align:middle;outline:none;box-shadow:none;';
-        btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); speakNative(text); };
-        btn.onmouseover = () => btn.style.transform = 'scale(1.2)';
-        btn.onmouseout = () => btn.style.transform = 'scale(1)';
-        return btn;
-    }
-
-    // --- LANGUAGE SWITCHER ---
-    const langNames = {
-        nl: "Nederlands",
-        en: "English",
-        ar: "العربية",
-        tr: "Türkçe",
-        dari: "دری",
-        thai: "ไทย"
-    };
-
-    function changeLang(lang) {
-        activeLang = lang;
-        document.querySelectorAll('.language-bar .lang-btn').forEach(btn => btn.classList.remove('active'));
-        const activeBtn = document.getElementById('btn-' + lang);
-        if (activeBtn) activeBtn.classList.add('active');
-
-        // Update Vocab Table
-        document.getElementById('vocab-lang-header').textContent = langNames[lang];
-        const tbody = document.getElementById('vocab-table-body');
-        tbody.innerHTML = '';
-        DATA.vocab.forEach(v => {
-            const tr = document.createElement('tr');
-            
-            const tdNl = document.createElement('td');
-            tdNl.className = 'vocab';
-            tdNl.textContent = v.nl;
-            tdNl.appendChild(createSpeakBtn(v.nl));
-
-            const tdTrans = document.createElement('td');
-            tdTrans.textContent = v[lang] || v.en;
-            if (lang === 'ar' || lang === 'dari') {
-                tdTrans.style.direction = 'rtl';
-                tdTrans.style.textAlign = 'right';
-            } else {
-                tdTrans.style.direction = 'ltr';
-                tdTrans.style.textAlign = 'left';
-            }
-
-            tr.appendChild(tdNl);
-            tr.appendChild(tdTrans);
-            tbody.appendChild(tr);
-        });
-
-        // Update Docent Uitleg
-        const explanationText = DATA.uitleg[lang] || DATA.uitleg.nl;
-        const explanationContainer = document.getElementById('uitleg-content');
-        explanationContainer.innerHTML = explanationText;
-        if (lang === 'ar' || lang === 'dari') {
-            explanationContainer.style.direction = 'rtl';
-            explanationContainer.style.textAlign = 'right';
-        } else {
-            explanationContainer.style.direction = 'ltr';
-            explanationContainer.style.textAlign = 'left';
-        }
-
-        // Update story translation text if visible
-        updateStoryTranslationText();
-    }
-
-    function toggleStoryTranslation() {
-        isStoryTranslated = !isStoryTranslated;
-        const transText = document.getElementById('story-translation-text');
-        if (isStoryTranslated) {
-            transText.style.display = 'block';
-            updateStoryTranslationText();
-        } else {
-            transText.style.display = 'none';
-        }
-    }
-
-    function updateStoryTranslationText() {
-        const transText = document.getElementById('story-translation-text');
-        transText.textContent = DATA.lezen['story_' + activeLang] || DATA.lezen.story_en;
-        if (activeLang === 'ar' || activeLang === 'dari') {
-            transText.style.direction = 'rtl';
-            transText.style.textAlign = 'right';
-        } else {
-            transText.style.direction = 'ltr';
-            transText.style.textAlign = 'left';
-        }
-    }
-
-    // --- OPDRACHT 1: MC ---
-    function buildMC() {
-        const container = document.getElementById('mc-container');
-        container.innerHTML = '';
-        DATA.mc.forEach((q, idx) => {
-            const div = document.createElement('div');
-            div.className = 'mc-question-block';
-            div.style.marginBottom = '20px';
-            
-            const p = document.createElement('p');
-            p.className = 'mc-q-text';
-            p.style.fontWeight = '700';
-            p.style.marginBottom = '8px';
-            p.textContent = (idx + 1) + '. ' + q.q;
-            div.appendChild(p);
-
-            const optDiv = document.createElement('div');
-            optDiv.className = 'mc-opties-wrap';
-            optDiv.style.display = 'flex';
-            optDiv.style.gap = '10px';
-            optDiv.style.flexWrap = 'wrap';
-
-            q.o.forEach((opt, oIdx) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-opt';
-                btn.style.width = 'auto';
-                btn.style.flex = '1';
-                btn.style.minWidth = '140px';
-                btn.textContent = opt;
-                btn.onclick = () => selectMCOption(idx, oIdx);
-                btn.id = `mc-${idx}-${oIdx}`;
-                optDiv.appendChild(btn);
-            });
-
-            div.appendChild(optDiv);
-            container.appendChild(div);
-        });
-    }
-
-    let mcAnswers = {};
-    function selectMCOption(qIdx, oIdx) {
-        DATA.mc[qIdx].o.forEach((opt, idx) => {
-            const el = document.getElementById(`mc-${qIdx}-${idx}`);
-            if (el) el.classList.remove('active');
-        });
-        const activeBtn = document.getElementById(`mc-${qIdx}-${oIdx}`);
-        if (activeBtn) activeBtn.classList.add('active');
-        mcAnswers[qIdx] = oIdx;
-    }
-
-        function checkMC() {
-        let answeredCount = 0;
-        DATA.mc.forEach((q, idx) => {
-            if (mcAnswers[idx] !== undefined) answeredCount++;
-        });
-        if (answeredCount === 0) {
-            alert("Selecteer eerst een antwoord!");
-            return;
-        }
-
-        let correctCount = 0;
-        DATA.mc.forEach((q, qIdx) => {
-            const correctIdx = q.c;
-            const userAns = mcAnswers[qIdx];
-            if (userAns === correctIdx) correctCount++;
-            
-            q.o.forEach((opt, oIdx) => {
-                const btn = document.getElementById(`mc-${qIdx}-${oIdx}`);
-                if (!btn) return;
-                btn.classList.remove('correct', 'incorrect');
-                if (oIdx === correctIdx) {
-                    if (userAns === oIdx) btn.classList.add('correct');
-                } else {
-                    if (userAns === oIdx) btn.classList.add('incorrect');
-                }
-            });
-        });
-
-        const badge = document.getElementById('mc-score');
-        badge.style.display = 'inline-block';
-        badge.textContent = `${correctCount}/${DATA.mc.length} goed`;
-        badge.style.background = correctCount === DATA.mc.length ? '#10b981' : '#e67e22';
-
-        if (correctCount === DATA.mc.length) {
-            triggerConfetti();
-        }
-    }
-    function resetMC() {
-        document.getElementById('mc-score').style.display = 'none';
-        mcAnswers = {};
-        buildMC();
-    }
-
-    // --- OPDRACHT 2: DRAG / TILE BUILDER ---
-    let dragAnswers = {};
-
-    function buildDrag() {
-        const container = document.getElementById('drag-container');
-        container.innerHTML = '';
-        
-        DATA.drag.forEach((words, idx) => {
-            const div = document.createElement('div');
-            div.className = 'drag-sentence-block';
-            div.style.marginBottom = '25px';
-
-            const label = document.createElement('p');
-            label.style.fontWeight = '700';
-            label.style.marginBottom = '8px';
-            label.textContent = `Zin ${idx + 1}:`;
-            div.appendChild(label);
-
-            const dropZone = document.createElement('div');
-            dropZone.className = 'drop-zone';
-            dropZone.id = `drop-zone-${idx}`;
-            div.appendChild(dropZone);
-
-            const wordBank = document.createElement('div');
-            wordBank.className = 'word-bank';
-            wordBank.id = `word-bank-${idx}`;
-            
-            // Shuffle words
-            let shuffled = [...words].sort(() => Math.random() - 0.5);
-            shuffled.forEach((w, wIdx) => {
-                const tile = document.createElement('button');
-                tile.className = 'word-tile';
-                tile.textContent = w;
-                tile.onclick = () => handleTileClick(idx, tile, w);
-                wordBank.appendChild(tile);
-            });
-            div.appendChild(wordBank);
-            container.appendChild(div);
-            
-            dragAnswers[idx] = [];
-        });
-    }
-
-    function handleTileClick(sIdx, tile, word) {
-        const dropZone = document.getElementById(`drop-zone-${sIdx}`);
-        const wordBank = document.getElementById(`word-bank-${sIdx}`);
-        
-        if (tile.parentNode === wordBank) {
-            // Move to drop zone
-            dropZone.appendChild(tile);
-            dragAnswers[sIdx].push(word);
-        } else {
-            // Move back to word bank
-            wordBank.appendChild(tile);
-            dragAnswers[sIdx] = dragAnswers[sIdx].filter(w => w !== word);
-        }
-    }
-
-        function checkDrag() {
-        let totalTiles = 0;
-        DATA.drag.forEach((words, idx) => {
-            totalTiles += document.getElementById(`drop-zone-${idx}`).querySelectorAll('.word-tile').length;
-        });
-        if (totalTiles === 0) {
-            alert("Sleep eerst de woorden om zinnen te maken!");
-            return;
-        }
-
-        let correctCount = 0;
-        DATA.drag.forEach((words, sIdx) => {
-            const dropZone = document.getElementById(`drop-zone-${sIdx}`);
-            const tiles = dropZone.querySelectorAll('.word-tile');
-            
-            let allCorrect = true;
-            tiles.forEach((tile, tIdx) => {
-                tile.classList.remove('correct-pos', 'wrong-pos');
-                if (tile.textContent === words[tIdx]) {
-                    tile.classList.add('correct-pos');
-                } else {
-                    tile.classList.add('wrong-pos');
-                    allCorrect = false;
-                }
-            });
-
-            if (allCorrect && tiles.length === words.length) {
-                tiles.forEach(tile => tile.classList.add('all-correct'));
-                correctCount++;
-            }
-        });
-
-        const badge = document.getElementById('drag-score');
-        badge.style.display = 'inline-block';
-        badge.textContent = `${correctCount}/${DATA.drag.length} goed`;
-        badge.style.background = correctCount === DATA.drag.length ? '#10b981' : '#e67e22';
-
-        if (correctCount === DATA.drag.length) {
-            triggerConfetti();
-        }
-    }
-    function resetDrag() {
-        document.getElementById('drag-score').style.display = 'none';
-        buildDrag();
-    }
-
-    // --- OPDRACHT 3: FILL IN BLANK ---
-    function buildInvul() {
-        const container = document.getElementById('invul-container');
-        container.innerHTML = '';
-
-        const ul = document.createElement('ul');
-        ul.className = 'invul-list';
-
-        DATA.invul.forEach((item, idx) => {
-            const li = document.createElement('li');
-            
-            // Regex to find brackets
-            const text = item.s;
-            const parts = text.split(/\\[.*?\\]/);
-            const rawAns = text.match(/\\[(.*?)\\]/)[1];
-
-            const span1 = document.createElement('span');
-            span1.textContent = (idx + 1) + '. ' + parts[0];
-            li.appendChild(span1);
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.id = `invul-${idx}`;
-            input.setAttribute('data-ans', rawAns);
-            li.appendChild(input);
-
-            const span2 = document.createElement('span');
-            span2.textContent = parts[1];
-            li.appendChild(span2);
-
-            const hint = document.createElement('span');
-            hint.className = 'ex-hint';
-            hint.textContent = ` (${item.h})`;
-            li.appendChild(hint);
-
-            ul.appendChild(li);
-        });
-
-        container.appendChild(ul);
-    }
-
-        function checkInvul() {
-        let hasInputs = false;
-        DATA.invul.forEach((item, idx) => {
-            const val = document.getElementById(`invul-${idx}`).value.trim();
-            if (val !== "") hasInputs = true;
-        });
-        if (!hasInputs) {
-            alert("Vul eerst de antwoorden in!");
-            return;
-        }
-
-        let correctCount = 0;
-        DATA.invul.forEach((item, idx) => {
-            const input = document.getElementById(`invul-${idx}`);
-            if (!input) return;
-            const userAns = input.value.trim().toLowerCase();
-            const correctAns = input.getAttribute('data-ans').toLowerCase();
-
-            input.classList.remove('correct', 'fout');
-            if (userAns === "") {
-                input.classList.add('fout');
-                return;
-            }
-            if (userAns === correctAns) {
-                input.classList.add('correct');
-                correctCount++;
-            } else {
-                input.classList.add('fout');
-            }
-        });
-
-        const badge = document.getElementById('invul-score');
-        badge.style.display = 'inline-block';
-        badge.textContent = `${correctCount}/${DATA.invul.length} goed`;
-        badge.style.background = correctCount === DATA.invul.length ? '#10b981' : '#e67e22';
-
-        if (correctCount === DATA.invul.length) {
-            triggerConfetti();
-        }
-    }
-    function resetInvul() {
-        document.getElementById('invul-score').style.display = 'none';
-        buildInvul();
-    }
-
-    // --- OPDRACHT 4: LEZEN ---
-    let lezenAnswers = {};
-    function buildLezen() {
-        document.getElementById('story-nl-text').textContent = DATA.lezen.story_nl;
-        
-        const container = document.getElementById('lezen-questions-container');
-        container.innerHTML = '';
-
-        const ul = document.createElement('ul');
-        ul.className = 'wn-list';
-
-        DATA.lezen.q.forEach((q, idx) => {
-            const li = document.createElement('li');
-            
-            const span = document.createElement('span');
-            span.className = 'wn-stelling';
-            span.textContent = (idx + 1) + '. ' + q.q;
-            li.appendChild(span);
-
-            const btnGroup = document.createElement('div');
-            btnGroup.className = 'wn-btngroup';
-
-            const btnJ = document.createElement('button');
-            btnJ.className = 'wn-btn';
-            btnJ.textContent = 'Juist';
-            btnJ.id = `lezen-${idx}-juist`;
-            btnJ.onclick = () => selectLezenOption(idx, 'juist');
-
-            const btnO = document.createElement('button');
-            btnO.className = 'wn-btn';
-            btnO.textContent = 'Onjuist';
-            btnO.id = `lezen-${idx}-onjuist`;
-            btnO.onclick = () => selectLezenOption(idx, 'onjuist');
-
-            btnGroup.appendChild(btnJ);
-            btnGroup.appendChild(btnO);
-            li.appendChild(btnGroup);
-            ul.appendChild(li);
-        });
-
-        container.appendChild(ul);
-        lezenAnswers = {};
-    }
-
-    function selectLezenOption(idx, option) {
-        const btnJ = document.getElementById(`lezen-${idx}-juist`);
-        const btnO = document.getElementById(`lezen-${idx}-onjuist`);
-        
-        btnJ.classList.remove('active');
-        btnO.classList.remove('active');
-
-        if (option === 'juist') btnJ.classList.add('active');
-        else btnO.classList.add('active');
-
-        lezenAnswers[idx] = option;
-    }
-
-        function checkLezen() {
-        let answeredCount = 0;
-        DATA.lezen.q.forEach((q, idx) => {
-            if (lezenAnswers[idx] !== undefined) answeredCount++;
-        });
-        if (answeredCount === 0) {
-            alert("Kies eerst Juist of Onjuist bij de stellingen!");
-            return;
-        }
-
-        let correctCount = 0;
-        DATA.lezen.q.forEach((q, idx) => {
-            const btnJ = document.getElementById(`lezen-${idx}-juist`);
-            const btnO = document.getElementById(`lezen-${idx}-onjuist`);
-            const correctAns = q.c.toLowerCase();
-
-            btnJ.classList.remove('correct', 'fout');
-            btnO.classList.remove('correct', 'fout');
-
-            if (lezenAnswers[idx] === undefined) {
-                return; // Do not check unselected questions
-            }
-
-            if (correctAns === 'juist') {
-                if (lezenAnswers[idx] === 'juist') {
-                    btnJ.classList.add('correct');
-                    correctCount++;
-                } else if (lezenAnswers[idx] === 'onjuist') {
-                    btnO.classList.add('fout');
-                }
-            } else {
-                if (lezenAnswers[idx] === 'onjuist') {
-                    btnO.classList.add('correct');
-                    correctCount++;
-                } else if (lezenAnswers[idx] === 'juist') {
-                    btnJ.classList.add('fout');
-                }
-            }
-        });
-
-        const badge = document.getElementById('lezen-score');
-        badge.style.display = 'inline-block';
-        badge.textContent = `${correctCount}/${DATA.lezen.q.length} goed`;
-        badge.style.background = correctCount === DATA.lezen.q.length ? '#10b981' : '#e67e22';
-
-        if (correctCount === DATA.lezen.q.length) {
-            triggerConfetti();
-        }
-    }
-    function resetLezen() {
-        document.getElementById('lezen-score').style.display = 'none';
-        buildLezen();
-    }
-
-    // --- OPDRACHT 5: DICTEE ---
-    function buildDictee() {
-        const container = document.getElementById('dictee-container');
-        container.innerHTML = '';
-
-        DATA.dictee.forEach((item, idx) => {
-            const row = document.createElement('div');
-            row.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:12px;';
-
-            const playBtn = document.createElement('button');
-            playBtn.className = 'audio-btn';
-            playBtn.innerHTML = '🔊 Luister';
-            playBtn.onclick = () => speakNative(item.speak);
-            row.appendChild(playBtn);
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.id = `dict-${idx}`;
-            input.className = 'dictee-input';
-            input.placeholder = 'Typ wat je hoort...';
-            row.appendChild(input);
-
-            container.appendChild(row);
-        });
-    }
-
-    // Levenshtein distance for fuzzy grading
-    defLeven = function(a, b) {
-        if(a.length == 0) return b.length; 
-        if(b.length == 0) return a.length; 
-        var matrix = [];
-        for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
-        for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
-        for(var i = 1; i <= b.length; i++){
-            for(var j = 1; j <= a.length; j++){
-                if(b.charAt(i-1) == a.charAt(j-1)){
-                    matrix[i][j] = matrix[i-1][j-1];
-                } else {
-                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
-                }
-            }
-        }
-        return matrix[b.length][a.length];
-    };
-
-    function checkDictee() {
-        let hasInput = false;
-        DATA.dictee.forEach((item, idx) => {
-            const val = document.getElementById(`dict-${idx}`).value.trim();
-            if (val !== "") hasInput = true;
-        });
-        if (!hasInput) {
-            alert("Typ eerst de zinnen van het dictee!");
-            return;
-        }
-
-        let correctCount = 0;
-        DATA.dictee.forEach((item, idx) => {
-            const input = document.getElementById(`dict-${idx}`);
-            if (!input) return;
-            
-            const userText = input.value.trim().toLowerCase().replace(/[.,?!]/g, "");
-            
-            input.classList.remove('correct', 'fout');
-            input.style.borderColor = '';
-            
-            // Remove existing notes
-            let existingNote = input.parentNode.querySelector('.fuzzy-note, .wrong-note');
-            if (existingNote) existingNote.remove();
-
-            if (userText === "") {
-                input.style.borderColor = '#ef4444';
-                return;
-            }
-
-            const correctText = item.ans.trim().toLowerCase().replace(/[.,?!]/g, "");
-
-            if (userText === correctText) {
-                input.classList.add('correct');
-                input.style.borderColor = '#10b981';
-                correctCount++;
-            } else if (defLeven(userText, correctText) <= 2) {
-                input.classList.add('correct');
-                input.style.borderColor = '#ca8a04';
-                correctCount++;
-                
-                const note = document.createElement('span');
-                note.className = 'fuzzy-note';
-                note.style.cssText = 'color:#ca8a04; font-size:0.85rem; margin-left:8px; font-weight:700;';
-                note.textContent = `Bijna goed! Let op: "${item.ans}"`;
-                input.parentNode.appendChild(note);
-            } else {
-                input.classList.add('fout');
-                input.style.borderColor = '#ef4444';
-                
-                const note = document.createElement('span');
-                note.className = 'wrong-note';
-                note.style.cssText = 'color:#ef4444; font-size:0.85rem; margin-left:8px; font-weight:700;';
-                note.textContent = `Correct: "${item.ans}"`;
-                input.parentNode.appendChild(note);
-            }
-        });
-
-        const badge = document.getElementById('dictee-score');
-        badge.style.display = 'inline-block';
-        badge.textContent = `${correctCount}/${DATA.dictee.length} goed`;
-        badge.style.background = correctCount === DATA.dictee.length ? '#10b981' : '#e67e22';
-        if (correctCount === DATA.dictee.length) { triggerConfetti(); }
-    }
-
-    function resetDictee() {
-        document.getElementById('dictee-score').style.display = 'none';
-        buildDictee();
-    }
-
-    // --- OPDRACHT 6: SCHRIJVEN ---
-    function buildSchrijf() {
-        const container = document.getElementById('schrijf-container');
-        container.innerHTML = '';
-
-        const ul = document.createElement('ul');
-        ul.className = 'schrijf-list';
-
-        DATA.schrijf.forEach((item, idx) => {
-            const li = document.createElement('li');
-            li.style.marginBottom = '15px';
-
-            const label = document.createElement('label');
-            label.style.fontWeight = '700';
-            label.style.display = 'block';
-            label.style.marginBottom = '4px';
-            label.textContent = (idx + 1) + '. ' + item;
-            li.appendChild(label);
-
-            const textarea = document.createElement('textarea');
-            textarea.id = `s1-${idx}`;
-            textarea.style.cssText = 'width:100%; min-height:60px; padding:10px; border:2px solid var(--border-subtle); border-radius:8px; background:transparent; color:inherit; font-family:inherit; outline:none;';
-            textarea.placeholder = 'Typ je antwoord in een volledige zin...';
-            li.appendChild(textarea);
-
-            ul.appendChild(li);
-        });
-
-        container.appendChild(ul);
-    }
-
-    function saveSchrijf() {
-        const answers = [];
-        DATA.schrijf.forEach((item, idx) => {
-            const text = document.getElementById(`s1-${idx}`).value;
-            answers.push(text);
-        });
-        localStorage.setItem('a2_schrijf_' + LESSON_ID, JSON.stringify(answers));
-        
-        const fb = document.getElementById('schrijf-fb');
-        fb.style.display = 'inline';
-        setTimeout(() => fb.style.display = 'none', 2000);
-    }
-
-    function loadSchrijf() {
-        const stored = JSON.parse(localStorage.getItem('a2_schrijf_' + LESSON_ID) || '[]');
-        stored.forEach((text, idx) => {
-            const textarea = document.getElementById(`s1-${idx}`);
-            if (textarea) textarea.value = text;
-        });
-    }
-
-    function shareWhatsApp() {
-        const answers = [];
-        let hasContent = false;
-        DATA.schrijf.forEach((item, idx) => {
-            const text = document.getElementById(`s1-${idx}`).value.trim();
-            if (text) {
-                answers.push(`Vraag: ${item}\nAntwoord: ${text}`);
-                hasContent = true;
-            }
-        });
-        if (!hasContent) {
-            alert('Schrijf eerst je antwoorden op de vragen!');
-            return;
-        }
-        
-        const message = `NT2 A2 Huiswerk Les ${LESSON_ID} — ${DATA.title}:\\n\\n` + answers.join('\\n\\n');
-        const phone = '31626211106'; // Teacher Rida
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-    }
-
-    function resetSchrijf() {
-        buildSchrijf();
-    }
-
-    // --- LES VOLTOOIEN ---
-    function markeerVoltooid() {
-        const pageName = window.location.pathname.split('/').pop();
-        localStorage.setItem('completed_' + pageName, 'true');
-        
-        const btn = document.getElementById('voltooi-btn');
-        btn.textContent = '🎉 Les voltooid! Goed gedaan!';
-        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-        btn.style.borderColor = '#10b981';
-        btn.disabled = true;
-    }
-
-    function checkVoltooiStatus() {
-        const pageName = window.location.pathname.split('/').pop();
-        if (localStorage.getItem('completed_' + pageName) === 'true') {
-            const btn = document.getElementById('voltooi-btn');
-            if (btn) {
-                btn.textContent = '🎉 Les voltooid! Goed gedaan!';
-                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-                btn.style.borderColor = '#10b981';
-                btn.disabled = true;
-            }
-        }
-    }
-
-    // Initialize Page
-    document.addEventListener('DOMContentLoaded', () => {
-        changeLang('nl');
-        buildMC();
-        buildDrag();
-        buildInvul();
-        buildLezen();
-        buildDictee();
-        buildSchrijf();
-        loadSchrijf();
-        checkVoltooiStatus();
-    });
-  </script>
-
-  <!-- THEME TOGGLE SCRIPT -->
-  <script>
-      (function() {
-          const themeToggle = document.getElementById('theme-toggle');
-          if (!themeToggle) return;
-          themeToggle.addEventListener('click', () => {
-              let theme = document.documentElement.getAttribute('data-theme') || 'light';
-              let newTheme = theme === 'light' ? 'dark' : 'light';
-              document.documentElement.setAttribute('data-theme', newTheme);
-              localStorage.setItem('a2-theme', newTheme);
-          });
-      })();
-  </script>
-
-</body>
-</html>
-"""
 def generate_overview_pages():
     for num, info in THEMES.items():
         filename = f"thema{num}.html"
@@ -1173,11 +309,11 @@ def generate_overview_pages():
                 card_style = ' style="pointer-events:none;opacity:0.45;"'
                 
             para_list_html += f"""
-      <a href="{link_href}" class="para-card animate-in"{card_style}>
+      <a href="{link_href}" class="para-card animate-in" id="paracard-{p_num}"{card_style}>
         <div class="para-num">{p_num}</div>
         <div class="para-info">
-          <div class="para-title">{p_title}</div>
-          <div class="para-desc">{p_desc}</div>
+          <div class="para-title" data-translate="t{p_num.replace('.', '')}">{p_title}</div>
+          <div class="para-desc" data-translate="d{p_num.replace('.', '')}">{p_desc}</div>
         </div>
       </a>"""
 

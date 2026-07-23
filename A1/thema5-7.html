@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 — Paragraaf 5.7: Naar de dokter. Woordenlijst, uitleg en oefeningen.">
+    <title>5.7 Naar de dokter — NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .uitleg-box {
+            background: linear-gradient(135deg, rgba(13, 148, 136, .08), rgba(15, 118, 110, .05));
+            border-left: 4px solid #0d9488;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 1.2rem 0;
+        }
+        .uitleg-box h3 { color: #0d9488; margin-top: 0; }
+        .tip-blok {
+            background: rgba(234, 179, 8, .07);
+            border-left: 4px solid #ca8a04;
+            border-radius: 10px;
+            padding: 11px 15px;
+            margin: .8rem 0;
+            font-size: .88rem;
+        }
+        .tip-blok strong { color: #ca8a04; }
+        .voorbeeld-blok {
+            background: rgba(13, 148, 136, .07);
+            border-left: 4px solid #0d9488;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 1rem 0;
+            font-size: .91rem;
+        }
+        .reset-btn {
+            margin-top: 10px;
+            margin-left: 8px;
+            padding: 8px 18px;
+            background: rgba(13, 148, 136, .12);
+            color: #0d9488;
+            border: 2px solid rgba(13, 148, 136, .35);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: .88rem;
+            font-weight: 600;
+            transition: all .2s;
+        }
+        .reset-btn:hover { background: rgba(13, 148, 136, .22); }
+        .mc-list { list-style: none; padding: 0; }
+        .mc-list li { margin: 10px 0; }
+        .mc-vraag { font-weight: 600; margin-bottom: 4px; font-size: .92rem; }
+        .mc-opties { display: flex; flex-wrap: wrap; gap: 7px; }
+        .mc-btn {
+            border: 2px solid rgba(13, 148, 136, .4);
+            border-radius: 8px;
+            padding: 5px 14px;
+            cursor: pointer;
+            font-size: .87rem;
+            background: transparent;
+            color: inherit;
+            transition: all .2s;
+        }
+        .mc-btn:hover { border-color: #0d9488; background: rgba(13, 148, 136, .1); }
+        .mc-btn.correct { border-color: #0d9488!important; background: rgba(13, 148, 136, .15)!important; color: #0d9488; font-weight: 700; }
+        .mc-btn.fout { border-color: #ef4444!important; background: rgba(239, 68, 68, .15)!important; color: #ef4444; }
+        .drag-exercise {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(13, 148, 136, .15);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            min-height: 40px;
+            padding: 8px;
+            background: rgba(13, 148, 136, .05);
+            border-radius: 8px;
+            margin: 6px 0;
+        }
+        .word-tile {
+            border: 2px solid rgba(13, 148, 136, .4);
+            border-radius: 7px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: .88rem;
+            background: rgba(255, 255, 255, .04);
+            color: inherit;
+            transition: all .2s;
+            user-select: none;
+        }
+        .word-tile:hover { border-color: #0d9488; background: rgba(13, 148, 136, .1); }
+        .word-tile.correct-pos { border-color: #0d9488; background: rgba(13, 148, 136, .1); }
+        .word-tile.wrong-pos { border-color: #ef4444; background: rgba(239, 68, 68, .1); }
+        .word-tile.all-correct { border-color: #0d9488; background: rgba(13, 148, 136, .18); color: #0d9488; font-weight: 700; pointer-events: none; }
+        .drop-zone {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            min-height: 44px;
+            padding: 8px;
+            border: 2px dashed rgba(13, 148, 136, .3);
+            border-radius: 8px;
+            margin-top: 6px;
+        }
+        .drag-result { margin-top: 8px; font-size: .88rem; font-weight: 600; }
+        .drag-result.success { color: #0d9488; }
+        .drag-result.wrong { color: #ef4444; }
+        .zone-lbl { font-size: .8rem; color: var(--text-muted, #999); margin-top: 8px; }
+        .invul-list { list-style: none; padding: 0; }
+        .invul-list li { margin: 8px 0; font-size: .92rem; line-height: 2; }
+        .invul-list input {
+            border: 2px solid rgba(13, 148, 136, .4);
+            border-radius: 6px;
+            padding: 2px 8px;
+            font-size: .92rem;
+            background: transparent;
+            color: inherit;
+            width: 130px;
+            outline: none;
+            transition: border-color .2s;
+        }
+        .invul-list input:focus { border-color: #0d9488; }
+        .invul-list input.correct { border-color: #0d9488; background: rgba(13, 148, 136, .08); }
+        .invul-list input.fout { border-color: #ef4444; background: rgba(239, 68, 68, .08); }
+        .wn-list { list-style: none; padding: 0; }
+        .wn-list li { display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; font-size: .9rem; }
+        .wn-stelling { flex: 1; line-height: 1.5; }
+        .wn-btngroup { display: flex; gap: 5px; flex-shrink: 0; }
+        .wn-btn {
+            border: 2px solid rgba(13, 148, 136, .35);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: .82rem;
+            background: transparent;
+            color: inherit;
+            transition: all .2s;
+            white-space: nowrap;
+        }
+        .wn-btn.correct { border-color: #0d9488; background: rgba(13, 148, 136, .15); color: #0d9488; font-weight: 700; }
+        .wn-btn.fout { border-color: #ef4444; background: rgba(239, 68, 68, .15); color: #ef4444; }
+        .schrijf-list { list-style: none; padding: 0; }
+        .schrijf-list li { margin: 10px 0; }
+        .schrijf-list label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 3px; }
+        .schrijf-list textarea {
+            width: 100%;
+            min-height: 50px;
+            border: 2px solid rgba(13, 148, 136, .4);
+            border-radius: 8px;
+            padding: 8px 12px;
+            background: transparent;
+            color: inherit;
+            font-family: inherit;
+            font-size: .92rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color .2s;
+        }
+        .schrijf-list textarea:focus { border-color: #0d9488; }
+        .native-speak-btn {
+            background: none !important;
+            border: none !important;
+            cursor: pointer !important;
+            font-size: 1.05rem !important;
+            margin-left: 6px !important;
+            padding: 0 !important;
+            transition: transform 0.2s !important;
+            vertical-align: middle !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        .native-speak-btn:hover {
+            transform: scale(1.2) !important;
+        }
+    </style>
+    <!-- PREVENT THEME FLASH -->
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <!-- Language Bar -->
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">🌓</button>
+        <span class="label">🌐 Vertaal de vragen:</span>
+        <span class="lang-btn active" onclick="setLang('nl')">🇳🇱 Nederlands</span>
+        <span class="lang-btn" onclick="setLang('en')">🇬🇧 English</span>
+        <span class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</span>
+        <span class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</span>
+        <span class="lang-btn" onclick="setLang('fa')">🇮🇷 Farsi</span>
+        <span class="lang-btn" onclick="setLang('da')">🇦🇫 Dari</span>
+        <span class="lang-btn" onclick="setLang('ps')">🇦🇫 پښتو</span>
+        <span class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="thema5.html" class="back-link">← Terug naar Thema 5</a>
+        
+        <header class="page-header animate-in">
+            <div class="breadcrumb">
+                <a href="index.html">Thema's</a>
+                <span>›</span>
+                <a href="thema5.html">Thema 5</a>
+                <span>›</span>
+                <span>5.7</span>
+            </div>
+            <h1 data-translate="title">5.7 Naar de dokter</h1>
+            <p class="subtitle" data-translate="subtitle"></p>
+        </header>
+
+        <section class="section animate-in">
+            <h2 data-translate="vocabTitle">Woorden van paragraaf 5.7</h2>
+            <p class="instruction-text" data-translate="vocabIntro"></p>
+            
+            <div class="table-container">
+                <table class="vocab-table">
+                    <thead>
+                        <tr>
+                            <th id="th-lang">🇳🇱 Nederlands</th>
+                            <th id="th-trans">Vertaling</th>
+                            <th>Voorbeeldzin</th>
+                            <th>Uitspraak</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vocab-body">
+                        <!-- Table generated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- GRAMMATICA / GRAMMAR EXPLANATION -->
+        <section class="section animate-in" id="uitleg-section">
+            <div id="uitleg-content">
+                <!-- Explanations loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- EXERCISES SECTION -->
+        <section class="section animate-in" style="border-top:2px solid var(--border-medium);margin-top:3rem">
+            <h2>Oefeningen</h2>
+
+            <!-- OPDRACHT 1: MC -->
+            <div class="quiz-card">
+                <h3 style="color:#0d9488">1. Kies het juiste antwoord</h3>
+                <ul class="mc-list" id="mc1"></ul>
+                <div id="mc1-score" class="score-badge" style="display:none"></div>
+                <button class="reset-btn" onclick="resetMC1()">Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 2: DRAG & DROP -->
+            <div class="quiz-card">
+                <h3 style="color:#0d9488">2. Maak de zin door op de woorden te klikken</h3>
+                <div id="drag-exercises-container"></div>
+                <div id="drag-score" class="score-badge" style="display:none"></div>
+                <button class="reset-btn" onclick="resetDrag()">Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 3: FILL IN -->
+            <div class="quiz-card">
+                <h3 style="color:#0d9488">3. Maak de zin compleet</h3>
+                <ul class="invul-list" id="invul1"></ul>
+                <div id="invul-score" class="score-badge" style="display:none"></div>
+                <button class="reset-btn" onclick="checkInvul()">Controleren</button>
+                <button class="reset-btn" onclick="resetInvulOnly()" style="background:transparent;border-color:rgba(0,0,0,0.15);color:var(--text-secondary)">Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 4: WAAR / NIET WAAR -->
+            <div class="quiz-card">
+                <h3 style="color:#0d9488">4. Waar of niet waar?</h3>
+                <ul class="wn-list" id="wn1"></ul>
+                <div id="wn-score" class="score-badge" style="display:none"></div>
+                <button class="reset-btn" onclick="resetWN()">Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 5: DICTEE (LISTENING & SPELLING) -->
+            <div class="quiz-card">
+                <h3 style="color:#a855f7">5. 🔊 Dictee — Luister en Schrijf</h3>
+                <p class="instruction-text">Klik op de luidspreker en schrijf het woord op.</p>
+                <ul class="invul-list" id="dictee-list"></ul>
+                <div id="dictee-score" class="score-badge" style="display:none"></div>
+                <button class="reset-btn" onclick="checkDictee()">Controleren</button>
+                <button class="reset-btn" onclick="resetDictee()" style="background:transparent;border-color:rgba(0,0,0,0.15);color:var(--text-secondary)">Opnieuw</button>
+            </div>
+
+            <!-- OPDRACHT 6: SCHRIJVEN -->
+            <div class="quiz-card">
+                <h3 style="color:#ec4899">6. ✍️ Schrijf over jezelf</h3>
+                <ul class="schrijf-list" id="schrijf1"></ul>
+                <div style="margin-top: 15px;">
+                    <button class="reset-btn" style="background:linear-gradient(135deg, #ec4899, #db2777);color:white;border:none;" onclick="verzendSchrijf()">📲 Stuur naar de docent</button>
+                    <button class="reset-btn" onclick="saveLocalSchrijf()">Sla op</button>
+                    <span id="schrijf-fb" style="display:none;color:#0d9488;font-size:.88rem;margin-left:10px;font-weight:600">Huiswerk lokaal opgeslagen!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- LES VOLTOOID KNOP -->
+        <div style="text-align:center;margin:3rem 0">
+            <button id="voltooi-btn" class="reset-btn" style="font-size:1.1rem;padding:12px 36px;background:linear-gradient(135deg,#0d9488,#0f766e);color:white;border:none;box-shadow:0 6px 20px rgba(13,148,136,0.25);" onclick="markeerVoltooid('5.7')">🎉 Klik hier als je klaar bent met de les</button>
+        </div>
+    </main>
+
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+    <script>
+    const paraId = '5.7';
+    let currentLang = 'nl';
+    let _ttsAudio = null;
+
+    function levenshtein(a, b) {
+        const matrix = [];
+        for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+        for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i-1) === a.charAt(j-1)) {
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    const VOCAB = [{"nl": "de dokter", "en": "doctor", "tr": "doktor", "ar": "الطبيب", "fa": "دکتر / پزشک", "da": "داکتر", "ps": "ډاکټر", "zh": "医生", "ex": "De dokter luistert naar mijn hart."}, {"nl": "ziek", "en": "sick, ill", "tr": "hasta", "ar": "مريض", "fa": "بیمار / مریض", "da": "ناجوړ / بیمار", "ps": "ناروغ / رنځور", "zh": "生病的", "ex": "Ik ben ziek en ga niet naar school."}, {"nl": "Ik heb last van ...", "en": "I suffer from ...", "tr": "... şikayetim var", "ar": "أعاني من ...", "fa": "من رنج می‌برم از ... / مشکل ... دارم", "da": "زه درد لرم از ...", "ps": "زه د ... تکلیف لرم", "zh": "我感觉...不舒服", "ex": "Ik heb last van mijn rug."}, {"nl": "het medicijn", "en": "medicine", "tr": "ilaç", "ar": "الدواء", "fa": "دارو", "da": "دوا", "ps": "درمل / درملنه", "zh": "药物", "ex": "Ik moet mijn medicijnen innemen."}, {"nl": "de apotheek", "en": "pharmacy", "tr": "eczane", "ar": "الصيدلية", "fa": "داروخانه", "da": "داروخانه", "ps": "درملتون", "zh": "药房 / 药店", "ex": "Ik haal de medicijnen bij de apotheek."}, {"nl": "het ziekenhuis", "en": "hospital", "tr": "hastane", "ar": "المستشفى", "fa": "بیمارستان", "da": "شفاخانه", "ps": "روغتون", "zh": "医院", "ex": "De zieke man ligt in het ziekenhuis."}, {"nl": "halen", "en": "to fetch, get", "tr": "almak, getirmek", "ar": "يجلب / يحضر", "fa": "آوردن / گرفتن (دارو)", "da": "آوردن", "ps": "راوړل / اخیستل", "zh": "去拿 / 提取", "ex": "Ik haal zalf bij de apotheek."}, {"nl": "het probleem", "en": "problem", "tr": "problem, sorun", "ar": "المشكلة", "fa": "مشکل", "da": "مشکل", "ps": "ستونزه / ستونزه", "zh": "问题 / 困难", "ex": "Wat is het probleem, mevrouw?"}, {"nl": "soms", "en": "sometimes", "tr": "bazen", "ar": "أحياناً", "fa": "گاهی", "da": "بعضی وقتها", "ps": "کله کله / کله نا کله", "zh": "有时", "ex": "Ik ben soms moe na het werk."}, {"nl": "ander", "en": "other", "tr": "diğer, başka", "ar": "آخر", "fa": "دیگر", "da": "دیگر", "ps": "بل / نور", "zh": "其他的", "ex": "Heeft u nog andere klachten?"}, {"nl": "bijvoorbeeld", "en": "for example", "tr": "örneğin", "ar": "مثلاً", "fa": "مثلاً", "da": "مثلاً", "ps": "مثلاً / د ساري په توګه", "zh": "例如", "ex": "U kunt bijvoorbeeld zalf smeren."}];
+
+    const UI = {"nl": {"title": "5.7 Naar de dokter", "subtitle": "Leer over Naar de dokter.", "vocabTitle": "Woorden van paragraaf 5.7", "vocabIntro": "Klik op een taal hierboven om de vertaling te zien.", "thExample": "Voorbeeldzin", "thLang": "🇳🇱 Nederlands"}, "en": {"title": "5.7 Naar de dokter", "subtitle": "Learn about Naar de dokter.", "vocabTitle": "Words of paragraph 5.7", "vocabIntro": "Click a language above to see the translation.", "thExample": "Example sentence", "thLang": "🇬🇧 English"}, "tr": {"title": "5.7 Naar de dokter", "subtitle": "Naar de dokter hakkında bilgi edinin.", "vocabTitle": "Paragraf 5.7 Kelimeleri", "vocabIntro": "Çeviriyi görmek için yukarıdaki dillerden birine tıklayın.", "thExample": "Örnek cümle", "thLang": "🇹🇷 Türkçe"}, "ar": {"title": "5.7 Naar de dokter", "subtitle": "تعلم عن Naar de dokter.", "vocabTitle": "كلمات الفقرة 5.7", "vocabIntro": "انقر فوق لغة أعلاه لرؤية الترجمة.", "thExample": "جملة مثال", "thLang": "🇸🇦 العربية"}, "fa": {"title": "5.7 Naar de dokter", "subtitle": "درباره Naar de dokter بیاموزید.", "vocabTitle": "واژگان بخش 5.7", "vocabIntro": "برای دیدن ترجمه، روی یکی از زبان‌های بالا کلیک کنید.", "thExample": "جمله نمونه", "thLang": "🇮🇷 Farsi"}, "da": {"title": "5.7 Naar de dokter", "subtitle": "درباره Naar de dokter بیاموزید.", "vocabTitle": "واژگان بخش 5.7", "vocabIntro": "برای دیدن ترجمه، روی یکی از زبان‌های بالا کلیک کنید.", "thExample": "جمله نمونه", "thLang": "🇦faf Dari"}, "ps": {"title": "5.7 Naar de dokter", "subtitle": "د Naar de dokter په اړه زده کړه وکړئ.", "vocabTitle": "د 5.7 برخې کلمې", "vocabIntro": "د ژباړې لیدو لپاره پورته یوه ژبه کلیک کړئ.", "thExample": "د بېلګې جمله", "thLang": "🇦🇫 پښتو"}, "zh": {"title": "5.7 Naar de dokter", "subtitle": "学习关于 Naar de dokter 的内容。", "vocabTitle": "第 5.7 节生词", "vocabIntro": "点击上方语言以查看翻译。", "thExample": "例句", "thLang": "🇨🇳 中文"}};
+
+    const UITLEG = {"nl": "<h3>Last hebben van ...</h3><p>Als je pijn hebt of ziek bent, zeg je in het Nederlands: **'Ik heb last van ...'**.<br>Voorbeeld: <em>Ik heb last van mijn buik / mijn rug / mijn keel.</em></p>", "en": "<h3>Having trouble with ...</h3><p>When you have pain or are sick, you say in Dutch: **'Ik heb last van ...'** (I suffer from ...).<br>Example: <em>Ik heb last van mijn buik</em> (stomachache) / <em>mijn keel</em> (sore throat).</p>", "tr": "<h3>Şikayeti Olmak</h3><p>Bir yeriniz ağrıdığında veya hasta olduğunuzda Hollandacada şöyle dersiniz: **'Ik heb last van ...'** (... şikayetim var / ... yerim ağrıyor).<br>Örnek: <em>Ik heb last van mijn buik</em> (Karnım ağrıyor) / <em>mijn keel</em> (Boğazım ağrıyor).</p>", "ar": "<h3>المعاناة من ...</h3><p>عندما تشعر بالألم أو تكون مريضاً، تقول باللغة الهولندية: **'Ik heb last van ...'** (أعاني من ...).<br>مثال: <em>Ik heb last van mijn buik</em> (أعاني من بطني) / <em>mijn keel</em> (أعاني من حلقي).</p>", "fa": "<h3>مشکل داشتن با ... (رنج بردن از ...)</h3><p>وقتی درد دارید یا بیمار هستید، در زبان هلندی می‌گویید: **'Ik heb last van ...'** (من با ... مشکل دارم / ... درد می‌کند).<br>مثال: <em>Ik heb last van mijn buik</em> (شکمم درد می‌کند) / <em>mijn keel</em> (گلویم درد می‌کند).</p>", "da": "<h3>مشکل داشتن با ... (رنج بردن از ...)</h3><p>وقتی درد دارید یا بیمار هستید، در زبان هلندی می‌گویید: **'Ik heb last van ...'** (من با ... مشکل دارم / ... درد می‌کند).<br>مثال: <em>Ik heb last van mijn buik</em> (شکمم درد می‌کند) / <em>mijn keel</em> (گلویم درد می‌کند).</p>", "ps": "<h3>تکلیف لرل له ...</h3><p>کله چې تاسو درد لرئ یا ناروغ یاست، په هالنډي ژبه کې وایئ: **'Ik heb last van ...'** (زه د ... تکلیف لرم).<br>بېلګه: <em>Ik heb last van mijn buik</em> (زه د خیټې درد لرم) / <em>mijn keel</em> (زه د ستوني درد لرم).</p>", "zh": "<h3>表达身体不适 (Last hebben van ...)</h3><p>当您感到疼痛或生病时，在荷兰语中可以这样说：**“Ik heb last van ...”**（我...不舒服）。<br>例如：*Ik heb last van mijn buik*（肚子痛）/ *mijn keel*（喉咙痛）。</p>"};
+
+    // --- SPEAK AUDIO FUNCTIONS ---
+    function speak(text, isSlow = false) {
+        if(window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            setTimeout(() => {
+                const cleanText = text.replace(/\([^)]+\)/g, '').trim();
+                const u = new SpeechSynthesisUtterance(cleanText);
+                u.lang = 'nl-NL';
+                u.rate = isSlow ? 0.6 : 0.9;
+                window.speechSynthesis.speak(u);
+            }, 100);
+        }
+    }
+
+    function buildTable(lang){
+        const tbody=document.getElementById('vocab-body'); tbody.innerHTML='';
+        VOCAB.forEach(row=>{
+            const spokenWord=row.nl.split(',')[0].replace(/^(de |het )/i,'').trim();
+            const tr=document.createElement('tr');
+            tr.innerHTML=`<td class="nl-word"><span class="vocab-span">${row.nl}</span></td><td class="trans-word">${row[lang]||'—'}</td><td class="example-cell"><span class="example-span">${row.ex}</span></td><td><button class="mc-btn" style="padding: 2px 8px;" onclick="speak('${spokenWord.replace(/'/g,"\\'")}')">🔊</button><button class="mc-btn" style="padding: 2px 8px;" onclick="speak('${spokenWord.replace(/'/g,"\\'")}', true)" title="Langzaam">🐢</button></td>`;
+            tbody.appendChild(tr);
+        });
+        document.getElementById('th-lang').textContent=UI[lang].thLang;
+    }
+
+    function setLang(l) {
+        currentLang = l;
+        const buttons = document.querySelectorAll('.language-bar .lang-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+        let targetBtn = null;
+        const evt = window.event || (typeof event !== 'undefined' ? event : null);
+        if (evt && evt.target) targetBtn = evt.target.closest('.lang-btn');
+        if (!targetBtn) {
+            buttons.forEach(b => {
+                const attr = b.getAttribute('onclick') || '';
+                if (attr.includes("'" + l + "'")) targetBtn = b;
+            });
+        }
+        if (targetBtn) targetBtn.classList.add('active');
+        document.querySelectorAll('[data-translate]').forEach(el=>{
+            const k=el.getAttribute('data-translate');
+            if(UI[l]&&UI[l][k]) el.innerHTML=UI[l][k];
+        });
+        buildTable(l);
+        if(UITLEG[l]) document.getElementById('uitleg-content').innerHTML=UITLEG[l];
+        buildSchrijf();
+    }
+
+    // --- OPDRACHT 1: MEERKEUZE ---
+    const mc1Data = [{"v": "Waar ga je heen als je heel erg ziek bent en een operatie nodig hebt?", "a": "naar het ziekenhuis", "o": ["naar de drogist", "naar het ziekenhuis", "naar de bakker"], "uitleg": "Het ziekenhuis is voor zware medische zorg."}, {"v": "Wat haal je op bij de apotheek?", "a": "de medicijnen", "o": ["het brood", "de medicijnen", "de groente"], "uitleg": "Medicijnen worden verstrekt door de apotheek."}];
+
+    function buildMC1(){
+        const ul=document.getElementById('mc1'); ul.innerHTML='';
+        mc1Data.forEach((item,i)=>{
+            const li=document.createElement('li');
+            const uitlegEsc=(item.uitleg||'').replace(/'/g,"\\'");
+            const opts=item.o.map(o=>`<button class="mc-btn" onclick="checkMCq(this,'${o.replace(/'/g,"\\\'")}','${item.a.replace(/'/g,"\\\'")}','mc1-score',${mc1Data.length},'${uitlegEsc}')">${o}</button>`).join('');
+            li.innerHTML=`<div class="mc-vraag">${i+1}. ${item.v}</div><div class="mc-opties">${opts}</div>`;
+            ul.appendChild(li);
+        });
+    }
+
+    const _mc_state={};
+    function checkMCq(btn,keuze,ant,scoreId,total,uitlegTekst){
+        const groep=btn.closest('.mc-opties').querySelectorAll('.mc-btn');
+        if([...groep].some(b=>b.classList.contains('correct'))) return;
+        groep.forEach(b=>b.disabled=true);
+        const key=scoreId; if(!_mc_state[key]) _mc_state[key]={done:0,score:0};
+        if(keuze===ant){
+            btn.classList.add('correct');
+            _mc_state[key].score++;
+        } else {
+            btn.classList.add('fout');
+            groep.forEach(b=>{ if(b.textContent.trim()===ant.trim()) b.classList.add('correct'); });
+            if(uitlegTekst){
+                const uitlegEl=document.createElement('div');
+                uitlegEl.className='mc-uitleg';
+                uitlegEl.style.fontSize='0.85rem';
+                uitlegEl.style.color='var(--text-muted)';
+                uitlegEl.style.marginTop='4px';
+                uitlegEl.innerHTML='💡 '+uitlegTekst;
+                btn.closest('li').appendChild(uitlegEl);
+            }
+        }
+        _mc_state[key].done++;
+        if(_mc_state[key].done===total){
+            const sc=document.getElementById(scoreId);
+            sc.style.display='inline-block';
+            const s=_mc_state[key].score;
+            sc.textContent=`${s}/${total}`;
+            sc.className='score-badge '+(s===total?'score-goed':s>=Math.ceil(total/2)?'score-midden':'score-slecht');
+        }
+    }
+    function resetMC1(){ delete _mc_state['mc1-score']; document.getElementById('mc1-score').style.display='none'; buildMC1(); }
+
+    // --- OPDRACHT 2: ZIN BOUWEN ---
+    const dragData = [{"sentence": "ik heb last van een rode huid op mijn arm.", "words": ["ik", "heb", "last", "van", "een", "rode", "huid", "on", "mijn", "arm."]}];
+    const _drag_state = {};
+
+    function buildDrag() {
+        const container = document.getElementById('drag-exercises-container');
+        container.innerHTML = '';
+        _drag_state.scores = [];
+        
+        dragData.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'drag-exercise';
+            div.id = `drag-ex-${index}`;
+            
+            const shuffled = [...item.words].sort(() => Math.random() - 0.5);
+            
+            div.innerHTML = `
+                <div class="mc-vraag">${index+1}. Zet de woorden in de juiste volgorde:</div>
+                <div class="word-bank" id="bank-${index}">
+                    ${shuffled.map(w => `<button class="word-tile" onclick="clickWord(${index}, this)">${w}</button>`).join('')}
+                </div>
+                <div class="zone-lbl">Jouw zin:</div>
+                <div class="drop-zone" id="zone-${index}"></div>
+                <div class="drag-result" id="result-${index}"></div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function clickWord(exIndex, tile) {
+        const bank = document.getElementById(`bank-${exIndex}`);
+        const zone = document.getElementById(`zone-${exIndex}`);
+        const result = document.getElementById(`result-${exIndex}`);
+        
+        if (tile.parentNode === bank) {
+            zone.appendChild(tile);
+        } else {
+            bank.appendChild(tile);
+        }
+        
+        const enteredWords = [...zone.querySelectorAll('.word-tile')].map(t => t.textContent.trim());
+        const originalWords = dragData[exIndex].words;
+        
+        if (enteredWords.length === originalWords.length) {
+            const isCorrect = enteredWords.join(' ') === dragData[exIndex].sentence;
+            if (isCorrect) {
+                result.className = 'drag-result success';
+                result.textContent = '🎉 Goed zo! De zin is correct.';
+                zone.querySelectorAll('.word-tile').forEach(t => t.className = 'word-tile all-correct');
+                _drag_state.scores[exIndex] = true;
+            } else {
+                result.className = 'drag-result wrong';
+                result.textContent = '❌ Niet correct. Probeer een andere volgorde.';
+                _drag_state.scores[exIndex] = false;
+            }
+        } else {
+            result.textContent = '';
+            _drag_state.scores[exIndex] = false;
+            zone.querySelectorAll('.word-tile').forEach(t => t.className = 'word-tile');
+        }
+        
+        updateDragTotalScore();
+    }
+
+    function updateDragTotalScore() {
+        const total = dragData.length;
+        const correctCount = _drag_state.scores.filter(Boolean).length;
+        const scoreBadge = document.getElementById('drag-score');
+        
+        if (_drag_state.scores.filter(x => x !== undefined).length === total) {
+            scoreBadge.style.display = 'inline-block';
+            scoreBadge.textContent = `${correctCount}/${total}`;
+            scoreBadge.className = 'score-badge ' + (correctCount === total ? 'score-goed' : correctCount >= Math.ceil(total/2) ? 'score-midden' : 'score-slecht');
+        }
+    }
+
+    function resetDrag() {
+        buildDrag();
+        document.getElementById('drag-score').style.display = 'none';
+    }
+
+    // --- OPDRACHT 3: FILL IN ---
+    const invulData = [{"zin": "Ben je ___? Dan moet je in bed blijven. (sick)", "ant": "ziek"}, {"zin": "De dokter helpt mij met mijn ___. (problem)", "ant": "probleem"}];
+
+    function buildInvul(){
+        const ul=document.getElementById('invul1'); ul.innerHTML='';
+        invulData.forEach((item,i)=>{
+            const p=item.zin.split('___');
+            ul.innerHTML+=`<li>${i+1}. ${p[0]}<input type="text" id="inv-${i}" placeholder="Typ hier..." autocomplete="off">${p[1]||''}</li>`;
+        });
+    }
+
+    function checkInvul(){
+        let score = 0;
+        invulData.forEach((item,i)=>{
+            const inp=document.getElementById('inv-'+i);
+            inp.classList.remove('correct','fout');
+            let existingWr = inp.nextElementSibling;
+            if(existingWr && (existingWr.className === 'wrong-note' || existingWr.className === 'fuzzy-note')) existingWr.remove();
+            
+            const val = inp.value.trim().toLowerCase();
+            const correctAns = Array.isArray(item.ant) ? item.ant.map(x=>x.toLowerCase()) : [item.ant.toLowerCase()];
+            
+            if(correctAns.includes(val)){
+                inp.classList.add('correct');
+                score++;
+            } else {
+                inp.classList.add('fout');
+                let ansSpan = document.createElement('span');
+                ansSpan.className = 'wrong-note';
+                ansSpan.style.color = '#ef4444';
+                ansSpan.style.fontSize = '0.85rem';
+                ansSpan.style.marginLeft = '8px';
+                ansSpan.textContent = `(Antwoord: ${Array.isArray(item.ant)?item.ant.join(' / '):item.ant})`;
+                inp.parentNode.insertBefore(ansSpan, inp.nextSibling);
+            }
+        });
+        const sc=document.getElementById('invul-score');
+        sc.style.display='inline-block';
+        sc.textContent=`${score}/${invulData.length}`;
+        sc.className='score-badge '+(score===invulData.length?'score-goed':score>=Math.ceil(invulData.length/2)?'score-midden':'score-slecht');
+    }
+
+    // --- OPDRACHT 4: WAAR / NIET WAAR ---
+    const wnData = [{"s": "De apotheek verkoopt verse bananen en brood.", "ant": "Fout"}, {"s": "'Ik heb last van mijn keel' betekent dat je keelpijn hebt.", "ant": "Goed"}];
+    const _wn_state = {};
+
+    function buildWN(){
+        const ul=document.getElementById('wn1'); ul.innerHTML='';
+        wnData.forEach((item,i)=>{
+            ul.innerHTML+=`<li><span class="wn-stelling">${i+1}. ${item.s}</span><div class="wn-btngroup"><button class="wn-btn" onclick="checkWN(this,'Goed','${item.ant}',${i})">✓ Waar</button><button class="wn-btn" onclick="checkWN(this,'Fout','${item.ant}',${i})">✗ Niet waar</button></div></li>`;
+        });
+    }
+
+    function checkWN(btn,keuze,ant,index){
+        const groep=btn.closest('.wn-btngroup').querySelectorAll('.wn-btn');
+        if([...groep].some(b=>b.classList.contains('correct'))) return;
+        
+        _wn_state[index] = keuze === ant;
+        
+        if(keuze===ant){
+            btn.classList.add('correct');
+        }else{
+            btn.classList.add('fout');
+            groep.forEach(b=>{
+                if(b !== btn) b.classList.add('correct');
+            });
+        }
+        
+        updateWNTotalScore();
+    }
+
+    function updateWNTotalScore() {
+        const total = wnData.length;
+        const answered = Object.keys(_wn_state).length;
+        const correctCount = Object.values(_wn_state).filter(Boolean).length;
+        const scoreBadge = document.getElementById('wn-score');
+        
+        if (answered === total) {
+            scoreBadge.style.display = 'inline-block';
+            scoreBadge.textContent = `${correctCount}/${total}`;
+            scoreBadge.className = 'score-badge ' + (correctCount === total ? 'score-goed' : correctCount >= Math.ceil(total/2) ? 'score-midden' : 'score-slecht');
+        }
+    }
+
+    function resetWN(){
+        for(let key in _wn_state) delete _wn_state[key];
+        document.getElementById('wn-score').style.display='none';
+        buildWN();
+    }
+
+    function resetInvulOnly() {
+        invulData.forEach((item,i)=>{
+            const inp=document.getElementById('inv-'+i);
+            if(inp) {
+                inp.value = '';
+                inp.classList.remove('correct','fout');
+            }
+            let existingWr = inp ? inp.nextElementSibling : null;
+            if(existingWr && (existingWr.className === 'wrong-note' || existingWr.className === 'fuzzy-note')) existingWr.remove();
+        });
+        document.getElementById('invul-score').style.display='none';
+    }
+
+    // --- OPDRACHT 5: DICTEE ---
+    const dicteeData = [{"word": "de dokter", "answers": ["de dokter", "dokter"]}, {"word": "ziek", "answers": ["ziek"]}, {"word": "het ziekenhuis", "answers": ["het ziekenhuis", "ziekenhuis"]}];
+
+    function buildDictee() {
+        const ul = document.getElementById('dictee-list');
+        ul.innerHTML = '';
+        dicteeData.forEach((item, i) => {
+            ul.innerHTML += `
+                <li style="display: flex; align-items: center; gap: 15px; margin: 15px 0;">
+                    <button class="mc-btn" type="button" style="padding: 6px 12px;" onclick="speak('${item.word.replace(/'/g, "\\'")}')">🔊 Luister</button>
+                    <div style="flex-grow: 1;">
+                        <input type="text" class="test-input" id="dict-${i}" style="margin: 0; width: 100%;" placeholder="Schrijf op...">
+                    </div>
+                </li>
+            `;
+        });
+    }
+
+    function checkDictee() {
+        let score = 0;
+        dicteeData.forEach((item, i) => {
+            const inp = document.getElementById('dict-' + i);
+            inp.classList.remove('correct', 'fout');
+            let existingWr = inp.nextElementSibling;
+            if(existingWr && existingWr.className === 'wrong-note') existingWr.remove();
+            
+            const val = inp.value.trim().toLowerCase();
+            const correctAnswers = Array.isArray(item.answers) ? item.answers.map(x=>x.toLowerCase()) : [item.word.toLowerCase()];
+            
+            if (correctAnswers.includes(val)) {
+                inp.classList.add('correct');
+                score++;
+            } else {
+                inp.classList.add('fout');
+                let ansSpan = document.createElement('span');
+                ansSpan.className = 'wrong-note';
+                ansSpan.style.color = '#ef4444';
+                ansSpan.style.fontSize = '0.85rem';
+                ansSpan.style.marginLeft = '8px';
+                ansSpan.textContent = `(Antwoord: ${correctAnswers[0]})`;
+                inp.parentNode.insertBefore(ansSpan, inp.nextSibling);
+            }
+        });
+        
+        const sc = document.getElementById('dictee-score');
+        sc.style.display = 'inline-block';
+        sc.textContent = `${score}/${dicteeData.length}`;
+        sc.className = 'score-badge ' + (score === dicteeData.length ? 'score-goed' : score >= Math.ceil(dicteeData.length/2) ? 'score-midden' : 'score-slecht');
+    }
+
+    function resetDictee() {
+        dicteeData.forEach((item, i) => {
+            const inp = document.getElementById('dict-' + i);
+            if(inp) {
+                inp.value = '';
+                inp.classList.remove('correct', 'fout');
+            }
+            let existingWr = inp ? inp.nextElementSibling : null;
+            if(existingWr && existingWr.className === 'wrong-note') existingWr.remove();
+        });
+        document.getElementById('dictee-score').style.display = 'none';
+    }
+
+    // --- OPDRACHT 6: SCHRIJVEN ---
+    const schrijfData = [{"nl": "Waar heb jij wel eens last van?", "en": "What do you sometimes suffer from?"}, {"nl": "Hoe vaak ga jij naar het ziekenhuis?", "en": "How often do you go to the hospital?"}];
+
+    function buildSchrijf() {
+        const ul = document.getElementById('schrijf1');
+        ul.innerHTML = '<li style="margin-bottom:10px"><div class="tip-blok"><strong>🖐️ Laat je tekst zien aan de docent!</strong></div></li>';
+        schrijfData.forEach((v, i) => {
+            const prompt = v[currentLang] || v.nl;
+            ul.innerHTML += `
+                <li>
+                    <label>${i+1}. ${prompt}</label>
+                    <textarea id="sw-${i}" placeholder="Schrijf hier je zin..."></textarea>
+                </li>
+            `;
+        });
+        laadSchrijf(paraId);
+    }
+
+    function saveLocalSchrijf() {
+        const answers = [];
+        schrijfData.forEach((v, i) => {
+            answers.push(document.getElementById('sw-' + i).value.trim());
+        });
+        localStorage.setItem('schrijf_' + paraId, JSON.stringify(answers));
+        const fb = document.getElementById('schrijf-fb');
+        fb.style.display = 'inline';
+        setTimeout(() => fb.style.display = 'none', 2000);
+    }
+
+    function laadSchrijf(id) {
+        const saved = localStorage.getItem('schrijf_' + id);
+        if (saved) {
+            try {
+                const answers = JSON.parse(saved);
+                answers.forEach((ans, i) => {
+                    const el = document.getElementById('sw-' + i);
+                    if (el) el.value = ans;
+                });
+            } catch(e) {}
+        }
+    }
+
+    function verzendSchrijf() {
+        saveLocalSchrijf();
+        const zinnen = [];
+        schrijfData.forEach((v, i) => {
+            const val = document.getElementById('sw-' + i).value.trim();
+            if (val) zinnen.push((i+1) + '. ' + val);
+        });
+        if (!zinnen.length) {
+            alert('Schrijf eerst je zinnen in de vakjes hierboven!');
+            return;
+        }
+        const bericht = `NT2 A1 Les ${paraId} — Huiswerk Schrijven:
+
+` + zinnen.join('
+
+');
+        const tel = '31626211106';
+        const url = `https://wa.me/${tel}?text=${encodeURIComponent(bericht)}`;
+        window.open(url,'_blank');
+    }
+
+    // --- PROGRESS & VOLTOOIEN ---
+    function markeerVoltooid(pId){
+        const voltooid=JSON.parse(localStorage.getItem('nt2_voltooid')||'[]');
+        if(!voltooid.includes(pId)){
+            voltooid.push(pId);
+            localStorage.setItem('nt2_voltooid', JSON.stringify(voltooid));
+        }
+        const btn=document.getElementById('voltooi-btn');
+        btn.textContent='🎉 Les voltooid! Goed gedaan!';
+        btn.style.background='linear-gradient(135deg,#0d9488,#0f766e)';
+        btn.disabled=true;
+    }
+    
+    function checkVoltooiStatus(pId){
+        const voltooid=JSON.parse(localStorage.getItem('nt2_voltooid')||'[]');
+        if(voltooid.includes(pId)){
+            const btn=document.getElementById('voltooi-btn');
+            if(btn){
+                btn.textContent='🎉 Les voltooid! Goed gedaan!';
+                btn.style.background='linear-gradient(135deg,#0d9488,#0f766e)';
+                btn.disabled=true;
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setLang('nl');
+        buildMC1();
+        buildDrag();
+        buildInvul();
+        buildWN();
+        buildDictee();
+        buildSchrijf();
+        checkVoltooiStatus(paraId);
+    });
+    </script>
+</body>
+</html>

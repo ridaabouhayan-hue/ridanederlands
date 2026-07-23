@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NT2 A2 — Paragraaf {para_num}: {title}. Uitleg en opdrachten.">
+  <title>{para_num} {title} — NT2 A2</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+      :root {
+          --toets-bg: #f8fafc;
+          --toets-accent: #4361ee;
+      }
+      [data-theme="dark"] {
+          --toets-bg: #0f1729 !important;
+      }
+      html {
+          background: var(--toets-bg) !important;
+          background-color: var(--toets-bg) !important;
+      }
+      body {
+          background: transparent !important;
+          background-color: transparent !important;
+      }
+      main.page-container {
+          background: transparent !important;
+      }
+      .language-bar {
+          background: var(--toets-bg) !important;
+          border-bottom: 2px solid var(--border-subtle);
+          box-shadow: 0 2px 12px var(--shadow-card);
+      }
+      .uitleg-box{background:linear-gradient(135deg,rgba(67,97,238,.08),rgba(114,9,183,.05));border-left:4px solid #4361ee;border-radius:12px;padding:18px 22px;margin:1.2rem 0}
+      .uitleg-box h3{color:#4361ee;margin-top:0}
+      .tip-blok{background:rgba(234,179,8,.07);border-left:4px solid #ca8a04;border-radius:10px;padding:11px 15px;margin:.8rem 0;font-size:.88rem}
+      .tip-blok strong{color:#ca8a04}
+      .voorbeeld-blok{background:rgba(16,185,129,.07);border-left:4px solid #10b981;border-radius:10px;padding:12px 16px;margin:1rem 0;font-size:.91rem}
+      .reset-btn{margin-top:10px;margin-left:8px;padding:8px 18px;background:rgba(67,97,238,0.08);color:#4361ee;border:2px solid rgba(67,97,238,0.25);border-radius:10px;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .2s;font-family:inherit;}
+      .reset-btn:hover{background:rgba(67,97,238,.18)}
+      .opdracht-card{background:var(--bg-card,#ffffff);border:1px solid rgba(67,97,238,.15);border-radius:16px;padding:24px;margin:2rem 0;box-shadow:var(--shadow-card);}
+      .opdracht-nr{display:inline-block;background:#4361ee;color:#fff;font-weight:700;font-size:.8rem;padding:3px 12px;border-radius:20px;margin-bottom:8px}
+      .opdracht-card h3{margin-top:0;font-size:1.05rem;color:var(--text-primary)}
+      .instructie{color:var(--text-muted,#aaa);font-size:.88rem;margin-bottom:1rem}
+      
+      /* Vocab Table Styles */
+      .vocab-table-wrap {
+          width: 100%;
+          overflow-x: auto;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-card);
+          margin-top: 1rem;
+          margin-bottom: 2rem;
+          border: 1px solid var(--border-subtle);
+          background: var(--bg-card);
+      }
+      .vocab-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+          font-size: 0.95rem;
+      }
+      .vocab-table th {
+          background: linear-gradient(135deg, var(--grammar-blue, #2563eb), #1d4ed8);
+          color: #ffffff;
+          padding: 14px 18px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+      }
+      .vocab-table td {
+          padding: 12px 18px;
+          border-bottom: 1px solid var(--border-subtle);
+          color: var(--text-primary);
+          vertical-align: middle;
+      }
+      .vocab-table tr:last-child td {
+          border-bottom: none;
+      }
+      .vocab-table tr:nth-child(even) {
+          background-color: rgba(99, 102, 241, 0.02);
+      }
+      .vocab-table tr:hover {
+          background-color: rgba(99, 102, 241, 0.05);
+          transition: background-color 0.2s ease;
+      }
+      .vocab-table td.vocab {
+          font-weight: 700;
+          color: var(--grammar-blue, #2563eb);
+      }
+      .vocab-table th#th-lang {
+          width: 45%;
+      }
+      .vocab-table th:last-child, 
+      .vocab-table td:last-child {
+          text-align: center;
+          width: 100px;
+      }
+
+      /* MC */
+      .mc-list{list-style:none;padding:0}
+      .mc-list li{margin:10px 0}
+      .mc-vraag{font-weight:600;margin-bottom:4px;font-size:.92rem;color:var(--text-primary)}
+      .mc-opties{display:flex;flex-wrap:wrap;gap:7px}
+      .mc-btn{border:2px solid rgba(67,97,238,.4);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:.87rem;background:transparent;color:inherit;transition:all .2s;font-family:inherit;}
+      .mc-btn:hover{border-color:#4361ee;background:rgba(67,97,238,.1)}
+      .mc-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+      .mc-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+      .mc-uitleg{font-size:0.85rem;color:#4361ee;margin-top:5px;font-style:italic;}
+      /* DRAG */
+      .drag-exercise{background:var(--bg-secondary);border:1px solid rgba(67,97,238,.15);border-radius:12px;padding:16px;margin:12px 0}
+      .word-bank{display:flex;flex-wrap:wrap;gap:7px;min-height:40px;padding:8px;background:rgba(67,97,238,.05);border-radius:8px;margin:6px 0}
+      .word-tile{border:2px solid rgba(67,97,238,.4);border-radius:7px;padding:5px 12px;cursor:pointer;font-size:.88rem;background:var(--bg-card);color:inherit;transition:all .2s;user-select:none;font-family:inherit;}
+      .word-tile:hover{border-color:#4361ee;background:rgba(67,97,238,.1)}
+      .word-tile.correct-pos{border-color:#10b981;background:rgba(16,185,129,.1)}
+      .word-tile.wrong-pos{border-color:#ef4444;background:rgba(239,68,68,.1)}
+      .word-tile.all-correct{border-color:#10b981;background:rgba(16,185,129,.18);color:#10b981;font-weight:700;pointer-events:none}
+      .drop-zone{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:8px;border:2px dashed rgba(67,97,238,.3);border-radius:8px;margin-top:6px}
+      .drag-result{margin-top:8px;font-size:.88rem;font-weight:600}
+      .drag-result.success{color:#10b981}
+      .drag-result.wrong{color:#ef4444}
+      .zone-lbl{font-size:.8rem;color:var(--text-muted,#999);margin-top:8px}
+      /* FILL IN */
+      .invul-list{list-style:none;padding:0}
+      .invul-list li{margin:8px 0;font-size:.92rem;line-height:2;color:var(--text-primary)}
+      .invul-list input{border:2px solid rgba(67,97,238,.4);border-radius:6px;padding:4px 8px;font-size:.92rem;background:transparent;color:inherit;width:140px;outline:none;transition:border-color .2s;font-family:inherit;}
+      .invul-list input:focus{border-color:#4361ee}
+      .invul-list input.correct{border-color:#10b981;background:rgba(16,185,129,.08)}
+      .invul-list input.fout{border-color:#ef4444;background:rgba(239,68,68,.08)}
+      /* WN */
+      .wn-list{list-style:none;padding:0}
+      .wn-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;font-size:.9rem;color:var(--text-primary);border-bottom:1px solid var(--border-subtle);padding-bottom:8px;}
+      .wn-stelling{flex:1}
+      .wn-btngroup{display:flex;gap:5px;flex-shrink:0}
+      .wn-btn{border:2px solid rgba(67,97,238,.35);border-radius:6px;padding:4px 12px;cursor:pointer;font-size:.82rem;background:transparent;color:inherit;transition:all .2s;white-space:nowrap;font-family:inherit;}
+      .wn-btn.active{background:#4361ee;color:white;border-color:#4361ee;}
+      .wn-btn.correct{border-color:#10b981!important;background:rgba(16,185,129,.15)!important;color:#10b981;font-weight:700}
+      .wn-btn.fout{border-color:#ef4444!important;background:rgba(239,68,68,.15)!important;color:#ef4444}
+      /* SCHRIJF */
+      .schrijf-list{list-style:none;padding:0}
+      .schrijf-list li{margin:10px 0}
+      .schrijf-list label{display:block;font-weight:600;font-size:.9rem;margin-bottom:3px;color:var(--text-primary)}
+      .schrijf-list textarea{width:100%;min-height:60px;border:2px solid rgba(67,97,238,.35);border-radius:8px;padding:8px 12px;font-size:.9rem;background:transparent;color:inherit;resize:vertical;outline:none;box-sizing:border-box;font-family:inherit;}
+      .check-btn{margin-top:12px;padding:8px 20px;background:linear-gradient(135deg,#4361ee,#7209b7);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600;font-family:inherit;transition:opacity 0.2s;}
+      .check-btn:hover{opacity:0.9;}
+      .score-badge{display:inline-block;margin-left:10px;padding:3px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+      .score-goed{background:rgba(16,185,129,.15);color:#10b981}
+      .score-midden{background:rgba(234,179,8,.15);color:#ca8a04}
+      .score-slecht{background:rgba(239,68,68,.15);color:#ef4444}
+      .hint-text{font-size:.82rem;color:#4361ee;font-style:italic;margin-bottom:4px}
+      .whatsapp-btn{margin-top:12px;padding:8px 20px;background:#25d366;color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600;font-family:inherit;transition:opacity 0.2s;}
+      .whatsapp-btn:hover{opacity:0.9;}
+      .speak-btn, .slow-speak-btn {
+          background: none; border: none; cursor: pointer; font-size: 1.05rem; margin-left: 6px; padding: 0; transition: transform 0.2s; outline: none; box-shadow: none;
+      }
+      .speak-btn:hover, .slow-speak-btn:hover { transform: scale(1.2); }
+      .fuzzy-note, .wrong-note {
+          font-size: 0.85rem; font-weight: 700; margin-left: 8px; display: inline-block;
+      }
+  </style>
+  <script>
+      (function() {
+          const currentTheme = localStorage.getItem('a2-theme') || 'light';
+          document.documentElement.setAttribute('data-theme', currentTheme);
+      })();
+  </script>
+</head>
+<body>
+
+  <!-- Language Bar -->
+  <nav class="language-bar" aria-label="Taalkeuze">
+    <button id="theme-toggle" class="lang-btn" style="cursor:pointer; margin-right: auto; border-color: var(--accent-purple); color: var(--accent-purple);">🌓 Thema</button>
+    <span class="label" data-translate="langBarLabel">🌐 Vertaal Uitleg & Woorden:</span>
+    <button class="lang-btn active" id="btn-nl" onclick="setLang('nl')">🇳🇱 Ned</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 Eng</button>
+    <button class="lang-btn" id="btn-ar" onclick="setLang('ar')">🇸🇦 العر</button>
+    <button class="lang-btn" id="btn-tr" onclick="setLang('tr')">🇹🇷 Tür</button>
+    <button class="lang-btn" id="btn-dari" onclick="setLang('dari')">🇦🇫 دری</button>
+    <button class="lang-btn" id="btn-thai" onclick="setLang('thai')">🇹🇭 ไทย</button>
+  </nav>
+
+  <main class="page-container">
+    <a href="thema1.html" class="back-link" data-translate="backLink">← Terug naar Thema 1</a>
+
+    <header class="page-header">
+      <div class="breadcrumb">
+        <a href="index.html" data-translate="bcThemes">Thema's</a>
+        <span>›</span>
+        <a href="thema1.html" data-translate="bcTheme1">Thema 1</a>
+        <span>›</span>
+        <span>{para_num}</span>
+      </div>
+      <h1>{para_num} {title}</h1>
+      <p class="subtitle">{intro}</p>
+    </header>
+
+    <!-- SECTION 1: WOORDENLIJST -->
+    <section class="content-section animate-in">
+       <span class="section-label blue" data-translate="vocabLabel">📚 Woordenlijst</span>
+       <h2 data-translate="vocabTitle">Woorden van paragraaf {para_num}</h2>
+       <p data-translate="vocabIntro">Klik op een taal hierboven om de vertaling te zien.</p>
+       <div class="vocab-table-wrap">
+           <table class="vocab-table">
+               <thead><tr><th>🇳🇱 Nederlands</th><th id="th-lang">Vertaling</th><th>🔊</th></tr></thead>
+               <tbody id="vocab-body"></tbody>
+           </table>
+       </div>
+    </section>
+
+    <!-- SECTION 2: DOCENT UITLEG -->
+    <section class="content-section animate-in">
+       <div id="uitleg-content"></div>
+    </section>
+
+    <!-- SECTION 3: OPDRACHTEN -->
+    <section class="content-section animate-in">
+       <span class="section-label orange" data-translate="exercisesLabel">✏️ Opdrachten</span>
+       <h2 data-translate="exercisesTitle">Oefeningen</h2>
+       
+       <!-- Opdracht 1: Meerkeuze -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht1Nr">OPDRACHT 1 — Meerkeuze</span>
+           <h3 data-translate="opdracht1Title">Kies het juiste woord</h3>
+           <p class="instructie" data-translate="opdracht1Instructie">Klik op het goede antwoord.</p>
+           <ul class="mc-list" id="mc-container"></ul>
+           <span id="mc-score" class="score-badge" style="display:none"></span>
+           <button class="reset-btn" onclick="resetMC()" data-translate="btnReset">🔄 Opnieuw</button>
+       </div>
+
+       <!-- Opdracht 2: Zinnen bouwen -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht2Nr">OPDRACHT 2 — Zin bouwen (klik de woorden in volgorde)</span>
+           <h3 data-translate="opdracht2Title">Maak de zin door op de woorden te klikken.</h3>
+           <p class="instructie" data-translate="opdracht2Instructie">Klik op een woord om het naar je zin te verplaatsen. Klik nogmaals om het terug te zetten.</p>
+           <div id="drag-container"></div>
+       </div>
+
+       <!-- Opdracht 3: Vul in -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht3Nr">OPDRACHT 3 — Vul in</span>
+           <h3 data-translate="opdracht3Title">Vul het juiste woord in</h3>
+           <p class="instructie" data-translate="opdracht3Instructie">Vul de ontbrekende woorden in.</p>
+           <ul class="invul-list" id="invul-container"></ul>
+           <button class="check-btn" onclick="checkInvul()" data-translate="btnCheck">Controleer</button>
+           <span id="invul-score" class="score-badge" style="display:none"></span>
+           <button class="reset-btn" onclick="resetInvul()" data-translate="btnReset">🔄 Opnieuw</button>
+       </div>
+
+       <!-- Opdracht 4: Lezen -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht4Nr">OPDRACHT 4 — Lezen (Juist of Onjuist)</span>
+           <h3 data-translate="opdracht4Title">Lees de tekst en beoordeel de stellingen.</h3>
+           <div class="voorbeeld-blok" style="margin-bottom: 20px;">
+               <p style="font-weight: 700; margin-bottom: 8px;" data-translate="vocabReadingNote">Lees het verhaal. De woorden van de woordenlijst staan in het <strong>vet</strong> gedrukt.</p>
+               <p id="story-nl-text" style="font-size: 1.05rem; line-height: 1.7; font-style: normal; color: var(--text-primary);"></p>
+               <button class="lang-btn" id="story-translate-btn" onclick="toggleStoryTranslation()" style="margin-top: 10px; cursor: pointer; font-size: 0.85rem;" data-translate="btnToggleTranslation">🌐 Toon Vertaling / Show Translation</button>
+               <p id="story-translation-text" style="display: none; margin-top: 10px; font-size: 0.95rem; line-height: 1.6; font-style: italic; color: var(--text-secondary);"></p>
+           </div>
+           <ul class="wn-list" id="lezen-questions-container"></ul>
+           <button class="check-btn" onclick="checkLezen()" data-translate="btnCheck">Controleer</button>
+           <span id="lezen-score" class="score-badge" style="display:none"></span>
+           <button class="reset-btn" onclick="resetLezen()" data-translate="btnReset">🔄 Opnieuw</button>
+       </div>
+
+       <!-- Opdracht 5: Dictee -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht5Nr">OPDRACHT 5 — Dictee</span>
+           <h3 data-translate="opdracht5Title">Schrijf de zin op</h3>
+           <p class="instructie" data-translate="opdracht5Instructie">Klik op de luidspreker, luister en typ de zin. Let op hoofdletters en punten.</p>
+           <div id="dictee-container"></div>
+           <button class="check-btn" style="margin-top: 15px;" onclick="checkDictee()" data-translate="btnCheckDictee">Controleer Dictee</button>
+           <span id="dictee-score" class="score-badge" style="display:none; margin-left:15px;"></span>
+           <button class="reset-btn" style="margin-top: 15px;" onclick="resetDictee()" data-translate="btnReset">🔄 Opnieuw</button>
+       </div>
+
+       <!-- Opdracht 6: Huiswerk Schrijven -->
+       <div class="opdracht-card">
+           <span class="opdracht-nr" data-translate="opdracht6Nr">OPDRACHT 6 — Schrijven</span>
+           <h3 data-translate="opdracht6Title">Huiswerk Schrijven</h3>
+           <p class="instructie" data-translate="opdracht6Instructie">Schrijf hele zinnen als antwoord op de vragen. Sla je antwoorden op en deel ze met de docent via WhatsApp!</p>
+           <ul class="schrijf-list" id="schrijf-container"></ul>
+           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; align-items:center;">
+               <button class="check-btn" onclick="saveSchrijf()" data-translate="btnSave">💾 Opslaan</button>
+               <button class="whatsapp-btn" onclick="shareWhatsApp()" data-translate="btnWhatsApp">📱 Stuur naar docent</button>
+               <button class="reset-btn" onclick="resetSchrijf()" data-translate="btnReset">🔄 Opnieuw</button>
+               <span id="schrijf-fb" style="color:#10b981; font-weight:600; display:none" data-translate="savedFeedback">✓ Opgeslagen!</span>
+           </div>
+       </div>
+    </section>
+
+    <!-- LES VOLTOOIEN BUTTON -->
+    <div class="voltooiing-sectie" style="text-align:center; margin-top:40px; margin-bottom:60px;">
+      <button id="voltooi-btn" onclick="markeerVoltooid()" class="voltooi-btn" style="padding:15px 40px; font-size:1.2rem; border-radius:50px; background:linear-gradient(135deg, #4361ee, #7209b7); color:white; font-weight:900; cursor:pointer; width:100%; max-width:400px; border:none; box-shadow:0 10px 25px rgba(67, 97, 238, 0.25);" data-translate="btnComplete">
+        Voltooi deze les!
+      </button>
+      <p class="voltooi-hint" style="margin-top:10px; font-size:0.88rem; color:var(--text-muted);" data-translate="completeHint">Klik als je alle oefeningen hebt gedaan.</p>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    NT2 A2 Leerplatform &copy; 2026
+  </footer>
+
+  <!-- DATABASE AND SCRIPT LOGIC -->
+  <script>
+    const LESSON_ID = "{para_id}";
+    const DATA = {lesson_data_json};
+
+    let activeLang = 'nl';
+    let isStoryTranslated = false;
+    let _ttsAudio = null;
+
+    function triggerConfetti() {
+        const emojis = ['🎉', '🥳', '👏', '🌟', '🎈', '❤️', '🏆', '✨'];
+        const container = document.body;
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + 'vw';
+            el.style.fontSize = (20 + Math.random() * 25) + 'px';
+            el.style.animationDelay = (Math.random() * 0.5) + 's';
+            el.style.animationDuration = (2 + Math.random() * 2) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+    }
+
+    function speak(text, isSlow = false) {
+        if (!text) return;
+        if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio.currentTime = 0; }
+        
+        let processedText = text.replace(/\bfile\b/gi, "fie-luh");
+        processedText = processedText.replace(/\([^)]+\)/g, '').trim();
+
+        if (isSlow) {
+            processedText = processedText.split(' ').join(', , ');
+        }
+        
+        let spokenText = processedText;
+        
+        _ttsAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=nl&q=${encodeURIComponent(spokenText)}`);
+        _ttsAudio.play().catch(() => {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                setTimeout(() => {
+                    const u = new SpeechSynthesisUtterance(processedText);
+                    u.lang = 'nl-NL';
+                    u.rate = isSlow ? 0.6 : 0.9;
+                    window.speechSynthesis.speak(u);
+                }, 100);
+            }
+        });
+    }
+
+    // --- LANGUAGE SWITCHER ---
+    const langNames = {
+        nl: "Nederlands",
+        en: "English",
+        ar: "العربية",
+        tr: "Türkçe",
+        dari: "دری",
+        thai: "ไทย"
+    };
+
+    const UI_LABELS = {
+        nl: {
+            vocabTitle: "Woorden van paragraaf {para_num}",
+            vocabIntro: "Klik op een taal hierboven om de vertaling te zien.",
+            vocabLabel: "📚 Woordenlijst",
+            exercisesLabel: "✏️ Opdrachten",
+            exercisesTitle: "Oefeningen",
+            langBarLabel: "🌐 Vertaal Uitleg & Woorden:",
+            backLink: "← Terug naar Thema 1",
+            bcThemes: "Thema's",
+            bcTheme1: "Thema 1",
+            opdracht1Nr: "OPDRACHT 1 — Meerkeuze",
+            opdracht1Title: "Kies het juiste woord",
+            opdracht1Instructie: "Klik op het goede antwoord.",
+            opdracht2Nr: "OPDRACHT 2 — Zin bouwen",
+            opdracht2Title: "Maak de zin door op de woorden te klikken",
+            opdracht2Instructie: "Klik op een woord om het naar je zin te verplaatsen. Klik nogmaals om het terug te zetten.",
+            opdracht2Words: "📦 Woorden:",
+            opdracht2YourSentence: "📝 Jouw zin:",
+            opdracht3Nr: "OPDRACHT 3 — Vul in",
+            opdracht3Title: "Vul het juiste woord in",
+            opdracht3Instructie: "Vul de ontbrekende woorden in.",
+            opdracht4Nr: "OPDRACHT 4 — Lezen (Juist of Onjuist)",
+            opdracht4Title: "Lees de tekst en beoordeel de stellingen.",
+            opdracht4Instructie: "Lees het verhaal:",
+            opdracht5Nr: "OPDRACHT 5 — Dictee",
+            opdracht5Title: "Schrijf de zin op",
+            opdracht5Instructie: "Klik op de luidspreker, luister en typ de zin. Let op hoofdletters en punten.",
+            opdracht6Nr: "OPDRACHT 6 — Schrijven",
+            opdracht6Title: "Huiswerk Schrijven",
+            opdracht6Instructie: "Schrijf hele zinnen als antwoord op de vragen. Sla je antwoorden op en deel ze met de docent via WhatsApp!",
+            btnCheck: "Controleer",
+            btnReset: "🔄 Opnieuw",
+            btnCheckDictee: "Controleer Dictee",
+            btnSave: "💾 Opslaan",
+            btnWhatsApp: "📱 Stuur naar docent",
+            btnComplete: "Voltooi deze les!",
+            completeHint: "Klik als je alle oefeningen hebt gedaan.",
+            completedState: "🎉 Les voltooid! Goed gedaan!",
+            btnToggleTranslation: "🌐 Toon Vertaling / Show Translation",
+            dictationPlaceholder: "Typ wat je hoort...",
+            writingPlaceholder: "Schrijf hier...",
+            btnShowAnswer: "Toon antwoord",
+            correctAnswerText: "Correct antwoord: ",
+            errorMessage: "✗ Fout. Probeer het nog eens!",
+            successMessage: "🎉 Goed! ",
+            translationLabel: "Vertaling: ",
+            savedFeedback: "✓ Opgeslagen!",
+            spellingHint: "Goed! Let op de spelling: {correct}",
+            correctAnswerHint: "(Antwoord: {correct})",
+            dicteeAlmostHint: "Bijna goed! Let op: \"{correct}\"",
+            dicteeCorrectHint: "Correct: \"{correct}\"",
+            writingAlert: "Schrijf eerst je antwoorden op de vragen!",
+            vocabReadingNote: "Lees het verhaal. De woorden van de woordenlijst staan in het <strong>vet</strong> gedrukt.",
+            confirmComplete: "Je bent een paar opdrachten vergeten. Wil je de les toch voltooien?",
+            altOrdersHint: "Meerdere volgorden zijn mogelijk. Probeer ook de andere volgorde!"
+        },
+        en: {
+            vocabTitle: "Words of paragraph {para_num}",
+            vocabIntro: "Click a language above to see the translation.",
+            vocabLabel: "📚 Vocabulary",
+            exercisesLabel: "✏️ Assignments",
+            exercisesTitle: "Exercises",
+            langBarLabel: "🌐 Translate Explanation & Words:",
+            backLink: "← Back to Theme 1",
+            bcThemes: "Themes",
+            bcTheme1: "Theme 1",
+            opdracht1Nr: "ASSIGNMENT 1 — Multiple Choice",
+            opdracht1Title: "Choose the correct word",
+            opdracht1Instructie: "Click on the correct answer.",
+            opdracht2Nr: "ASSIGNMENT 2 — Sentence Building",
+            opdracht2Title: "Make the sentence by clicking on the words",
+            opdracht2Instructie: "Click a word to move it to your sentence. Click again to put it back.",
+            opdracht2Words: "📦 Words:",
+            opdracht2YourSentence: "📝 Your sentence:",
+            opdracht3Nr: "ASSIGNMENT 3 — Fill in",
+            opdracht3Title: "Fill in the correct word",
+            opdracht3Instructie: "Fill in the missing words.",
+            opdracht4Nr: "ASSIGNMENT 4 — Reading (True or False)",
+            opdracht4Title: "Read the text and assess the statements.",
+            opdracht4Instructie: "Read the story:",
+            opdracht5Nr: "ASSIGNMENT 5 — Dictation",
+            opdracht5Title: "Write the sentence down",
+            opdracht5Instructie: "Click on the speaker, listen and type the sentence. Pay attention to capital letters and periods.",
+            opdracht6Nr: "ASSIGNMENT 6 — Writing",
+            opdracht6Title: "Homework Writing",
+            opdracht6Instructie: "Write complete sentences as answers to the questions. Save your answers and share them with the teacher via WhatsApp!",
+            btnCheck: "Check",
+            btnReset: "🔄 Retry",
+            btnCheckDictee: "Check Dictation",
+            btnSave: "💾 Save",
+            btnWhatsApp: "📱 Send to teacher",
+            btnComplete: "Complete this lesson!",
+            completeHint: "Click when you have finished all exercises.",
+            completedState: "🎉 Lesson completed! Well done!",
+            btnToggleTranslation: "🌐 Show Translation / Hide",
+            dictationPlaceholder: "Type what you hear...",
+            writingPlaceholder: "Write here...",
+            btnShowAnswer: "Show answer",
+            correctAnswerText: "Correct answer: ",
+            errorMessage: "✗ Incorrect. Try again!",
+            successMessage: "🎉 Correct! ",
+            translationLabel: "Translation: ",
+            savedFeedback: "✓ Saved!",
+            spellingHint: "Good! Pay attention to spelling: {correct}",
+            correctAnswerHint: "(Answer: {correct})",
+            dicteeAlmostHint: "Almost correct! Notice: \"{correct}\"",
+            dicteeCorrectHint: "Correct: \"{correct}\"",
+            writingAlert: "Please write your answers to the questions first!",
+            vocabReadingNote: "Read the story. The words from the vocabulary list are printed in <strong>bold</strong>.",
+            confirmComplete: "You forgot some exercises. Do you still want to complete the lesson?",
+            altOrdersHint: "Multiple orderings are possible. Try the other order too!"
+        },
+        ar: {
+            vocabTitle: "مفردات الفقرة {para_num}",
+            vocabIntro: "انقر فوق لغة أعلاه لرؤية الترجمة.",
+            vocabLabel: "📚 المفردات",
+            exercisesLabel: "✏️ الواجبات",
+            exercisesTitle: "التمارين",
+            langBarLabel: "🌐 ترجمة الشرح والكلمات:",
+            backLink: "← العودة إلى الموضوع 1",
+            bcThemes: "المواضيع",
+            bcTheme1: "الموضوع 1",
+            opdracht1Nr: "الواجب 1 — اختيار من متعدد",
+            opdracht1Title: "اختر الكلمة الصحيحة",
+            opdracht1Instructie: "انقر على الإجابة الصحيحة.",
+            opdracht2Nr: "الواجب 2 — بناء الجملة",
+            opdracht2Title: "اصنع الجملة عن طريق النقر على الكلمات",
+            opdracht2Instructie: "انقر فوق كلمة لنقلها إلى جملتك. انقر مرة أخرى لإعادتها.",
+            opdracht2Words: "📦 الكلمات:",
+            opdracht2YourSentence: "📝 جملتك:",
+            opdracht3Nr: "الواجب 3 — ملء الفراغات",
+            opdracht3Title: "املأ الكلمة الصحيحة",
+            opdracht3Instructie: "املأ الكلمات المفقودة.",
+            opdracht4Nr: "الواجب 4 — القراءة (صحيح أم خطأ)",
+            opdracht4Title: "اقرأ النص وقيم العبارات.",
+            opdracht4Instructie: "اقرأ القصة:",
+            opdracht5Nr: "الواجب 5 — الإملاء",
+            opdracht5Title: "اكتب الجملة",
+            opdracht5Instructie: "انقر على المكبر، استمع واكتب الجملة. انتبه للحروف الكبيرة والنقاط.",
+            opdracht6Nr: "الواجب 6 — الكتابة",
+            opdracht6Title: "واجب الكتابة المنزلي",
+            opdracht6Instructie: "اكتب جملًا كاملة كإجابات على الأسئلة. احفظ إجاباتك وشاركها مع المعلم عبر واتساب!",
+            btnCheck: "تحقق",
+            btnReset: "🔄 إعادة المحاولة",
+            btnCheckDictee: "التحقق من الإملاء",
+            btnSave: "💾 حفظ",
+            btnWhatsApp: "📱 إرسال إلى المعلم",
+            btnComplete: "أكمل هذا الدرس!",
+            completeHint: "انقر عندما تنتهي من جميع التمارين.",
+            completedState: "🎉 تم إكمال الدرس! أحسنت!",
+            btnToggleTranslation: "🌐 عرض الترجمة / إخفاء",
+            dictationPlaceholder: "اكتب ما تسمعه...",
+            writingPlaceholder: "اكتب هنا...",
+            btnShowAnswer: "عرض الإجابة",
+            correctAnswerText: "الإجابة الصحيحة: ",
+            errorMessage: "✗ غير صحيح. حاول مرة أخرى!",
+            successMessage: "🎉 صحيح! ",
+            translationLabel: "الترجمة: ",
+            savedFeedback: "✓ تم الحفظ!",
+            spellingHint: "جيد! انتبه للتهجئة: {correct}",
+            correctAnswerHint: "(الإجابة: {correct})",
+            dicteeAlmostHint: "تقريباً صحيح! انتبه: \"{correct}\"",
+            dicteeCorrectHint: "الصحيح: \"{correct}\"",
+            writingAlert: "يرجى كتابة إجاباتك على الأسئلة أولاً!",
+            vocabReadingNote: "اقرأ القصة. كلمات قائمة المفردات مكتوبة بالخط <strong>العريض</strong>.",
+            confirmComplete: "لقد نسيت بعض التمارين. هل ما زلت تريد إكمال الدرس؟",
+            altOrdersHint: "ترتيبات متعددة ممكنة. جرّب الترتيب الآخر أيضاً!"
+        },
+        tr: {
+            vocabTitle: "Paragraf {para_num} kelimeleri",
+            vocabIntro: "Çeviriyi görmek için yukarıdaki dillerden birine tıklayın.",
+            vocabLabel: "📚 Kelime Listesi",
+            exercisesLabel: "✏️ Ödevler",
+            exercisesTitle: "Egzersizler",
+            langBarLabel: "🌐 Açıklama ve Kelime Çevirisi:",
+            backLink: "← Tema 1'e Dön",
+            bcThemes: "Temalar",
+            bcTheme1: "Tema 1",
+            opdracht1Nr: "ÖDEV 1 — Çoktan Seçmeli",
+            opdracht1Title: "Doğru kelimeyi seçin",
+            opdracht1Instructie: "Doğru cevaba tıklayın.",
+            opdracht2Nr: "ÖDEV 2 — Cümle Kurma",
+            opdracht2Title: "Kelimelere tıklayarak cümleyi kurun",
+            opdracht2Instructie: "Cümlenize taşımak için bir kelimeye tıklayın. Geri koymak için tekrar tıklayın.",
+            opdracht2Words: "📦 Kelimeler:",
+            opdracht2YourSentence: "📝 Cümleniz:",
+            opdracht3Nr: "ÖDEV 3 — Boşluk Doldurma",
+            opdracht3Title: "Doğru kelimeyi yazın",
+            opdracht3Instructie: "Eksik kelimeleri doldurun.",
+            opdracht4Nr: "ÖDEV 4 — Okuma (Doğru veya Yanlış)",
+            opdracht4Title: "Metni okuyun ve ifadeleri değerlendirin.",
+            opdracht4Instructie: "Hikayeyi okuyun:",
+            opdracht5Nr: "ÖDEV 5 — Dikte",
+            opdracht5Title: "Cümleyi yazın",
+            opdracht5Instructie: "Hoparlöre tıklayın, dinleyin ve cümleyi yazın. Büyük harflere ve noktalara dikkat edin.",
+            opdracht6Nr: "ÖDEV 6 — Yazma",
+            opdracht6Title: "Yazma Ödevi",
+            opdracht6Instructie: "Sorulara tam cümlelerle cevap yazın. Cevaplarınızı kaydedin ve WhatsApp üzerinden öğretmenle paylaşın!",
+            btnCheck: "Kontrol Et",
+            btnReset: "🔄 Yeniden Dene",
+            btnCheckDictee: "Dikteyi Kontrol Et",
+            btnSave: "💾 Kaydet",
+            btnWhatsApp: "📱 Öğretmene Gönder",
+            btnComplete: "Dersi tamamla!",
+            completeHint: "Tüm egzersizleri bitirdiğinizde tıklayın.",
+            completedState: "🎉 Ders tamamlandı! Aferin!",
+            btnToggleTranslation: "🌐 Çeviriyi Göster / Gizle",
+            dictationPlaceholder: "Duyduğunu yaz...",
+            writingPlaceholder: "Buraya yaz...",
+            btnShowAnswer: "Cevabı göster",
+            correctAnswerText: "Doğru cevap: ",
+            errorMessage: "✗ Yanlış. Tekrar deneyin!",
+            successMessage: "🎉 Doğru! ",
+            translationLabel: "Çeviri: ",
+            savedFeedback: "✓ Kaydedildi!",
+            spellingHint: "Güzel! Yazıma dikkat edin: {correct}",
+            correctAnswerHint: "(Cevap: {correct})",
+            dicteeAlmostHint: "Neredeyse doğru! Dikkat edin: \"{correct}\"",
+            dicteeCorrectHint: "Doğru: \"{correct}\"",
+            writingAlert: "Lütfen önce sorulara cevaplarınızı yazın!",
+            vocabReadingNote: "Hikayeyi okuyun. Kelime listesindeki kelimeler <strong>kalın</strong> yazılmıştır.",
+            confirmComplete: "Bazı egzersizleri unuttunuz. Yine de dersi tamamlamak istiyor musunuz?",
+            altOrdersHint: "Birden fazla sıralama mümkündür. Diğer sıralamayı da deneyin!"
+        },
+        dari: {
+            vocabTitle: "واژه‌های پاراگراف {para_num}",
+            vocabIntro: "برای دیدن ترجمه، روی یکی از زبان‌های بالا کلیک کنید.",
+            vocabLabel: "📚 واژگان",
+            exercisesLabel: "✏️ وظایف",
+            exercisesTitle: "تمرینات",
+            langBarLabel: "🌐 ترجمه توضیحات و واژه‌ها:",
+            backLink: "← بازگشت به موضوع ۱",
+            bcThemes: "موضوعات",
+            bcTheme1: "موضوع ۱",
+            opdracht1Nr: "وظیفه ۱ — چهارجوابی",
+            opdracht1Title: "کلمه درست را انتخاب کنید",
+            opdracht1Instructie: "روی جواب درست کلیک کنید.",
+            opdracht2Nr: "وظیفه ۲ — جمله‌سازی",
+            opdracht2Title: "جمله را با کلیک روی کلمات بسازید",
+            opdracht2Instructie: "روی یک کلمه کلیک کنید تا به جمله شما منتقل شود. دوباره کلیک کنید تا سر جایش برگردد.",
+            opdracht2Words: "📦 کلمات:",
+            opdracht2YourSentence: "📝 جمله شما:",
+            opdracht3Nr: "وظیفه ۳ — خانه‌خالی",
+            opdracht3Title: "کلمه درست را بنویسید",
+            opdracht3Instructie: "کلمات از قلم افتاده را پر کنید.",
+            opdracht4Nr: "وظیفه ۴ — خواندن (درست یا نادرست)",
+            opdracht4Title: "متن را بخوانید و جملات را ارزیابی کنید.",
+            opdracht4Instructie: "داستان را بخوانید:",
+            opdracht5Nr: "وظیفه ۵ — املا (دیکته)",
+            opdracht5Title: "جمله را بنویسید",
+            opdracht5Instructie: "روی بلندگو کلیک کنید، گوش دهید و جمله را تایپ کنید. به حروف بزرگ و نقطه‌ها توجه کنید.",
+            opdracht6Nr: "وظیفه ۶ — نوشتن",
+            opdracht6Title: "کار خانگی نوشتن",
+            opdracht6Instructie: "پاسخ سوالات را به صورت جملات کامل بنویسید. پاسخ‌های خود را ذخیره کنید و از طریق واتساپ با استاد شریک سازید!",
+            btnCheck: "بررسی",
+            btnReset: "🔄 تلاش دوباره",
+            btnCheckDictee: "بررسی دیکته",
+            btnSave: "💾 ذخیره",
+            btnWhatsApp: "📱 ارسال به استاد",
+            btnComplete: "این درس را تکمیل کنید!",
+            completeHint: "وقتی تمام تمرین‌ها را انجام دادید کلیک کنید.",
+            completedState: "🎉 درس تکمیل شد! آفرین!",
+            btnToggleTranslation: "🌐 نمایش ترجمه / پنهان کردن",
+            dictationPlaceholder: "آنچه را می‌شنوید تایپ کنید...",
+            writingPlaceholder: "اینجا بنویسید...",
+            btnShowAnswer: "نمایش جواب",
+            correctAnswerText: "جواب درست: ",
+            errorMessage: "✗ اشتباه است. دوباره تلاش کنید!",
+            successMessage: "🎉 درست است! ",
+            translationLabel: "ترجمه: ",
+            savedFeedback: "✓ ذخیره شد!",
+            spellingHint: "خوب! به املا توجه کنید: {correct}",
+            correctAnswerHint: "(جواب: {correct})",
+            dicteeAlmostHint: "تقریباً درست! متوجه باشید: \"{correct}\"",
+            dicteeCorrectHint: "درست: \"{correct}\"",
+            writingAlert: "لطفاً ابتدا پاسخ‌های خود را به سوالات بنویسید!",
+            vocabReadingNote: "داستان را بخوانید. واژه‌های لیست واژگان به صورت <strong>برجسته (ضخیم)</strong> نوشته شده‌اند.",
+            confirmComplete: "شما برخی از تمرینات را فراموش کرده‌اید. آیا هنوز هم می‌خواهید درس را تکمیل کنید؟",
+            altOrdersHint: "ترتیب‌های متعدد ممکن است. ترتیب دیگر را هم امتحان کنید!"
+        },
+        thai: {
+            vocabTitle: "คำศัพท์ของย่อย {para_num}",
+            vocabIntro: "คลิกเลือกภาษาด้านบนเพื่อดูคำแปล",
+            vocabLabel: "📚 คำศัพท์",
+            exercisesLabel: "✏️ แบบฝึกหัด",
+            exercisesTitle: "แบบฝึกหัด",
+            langBarLabel: "🌐 แปลคำอธิบายและคำศัพท์:",
+            backLink: "← กลับไปที่บทเรียนหลัก",
+            bcThemes: "บทเรียนทั้งหมด",
+            bcTheme1: "บทเรียน 1",
+            opdracht1Nr: "แบบฝึกหัด 1 — เลือกตอบ",
+            opdracht1Title: "เลือกคำศัพท์ที่ถูกต้อง",
+            opdracht1Instructie: "คลิกเลือกคำตอบที่ถูกต้อง",
+            opdracht2Nr: "แบบฝึกหัด 2 — เรียงประโยค",
+            opdracht2Title: "สร้างประโยคโดยการคลิกที่คำศัพท์",
+            opdracht2Instructie: "คลิกเลือกคำศัพท์เพื่อใส่ลงในประโยค คลิกอีกครั้งเพื่อยกเลิก",
+            opdracht2Words: "📦 คำศัพท์:",
+            opdracht2YourSentence: "📝 ประโยคของคุณ:",
+            opdracht3Nr: "แบบฝึกหัด 3 — เติมคำในช่องว่าง",
+            opdracht3Title: "เติมคำที่ถูกต้องในช่องว่าง",
+            opdracht3Instructie: "กรอกคำศัพท์ที่หายไปในช่องว่าง",
+            opdracht4Nr: "แบบฝึกหัด 4 — การอ่าน (ถูกหรือผิด)",
+            opdracht4Title: "อ่านเนื้อเรื่องแล้วตอบว่าประโยคต่อไปนี้ถูกหรือผิด",
+            opdracht4Instructie: "อ่านเนื้อเรื่อง:",
+            opdracht5Nr: "แบบฝึกหัด 5 — เขียนตามคำบอก",
+            opdracht5Title: "เขียนประโยคที่ได้ยิน",
+            opdracht5Instructie: "คลิกที่ลำโพง ฟังและพิมพ์ประโยคตามที่ได้ยิน ระวังตัวอักษรพิมพ์ใหญ่และจุดสิ้นสุดประโยค",
+            opdracht6Nr: "แบบฝึกหัด 6 — การเขียน",
+            opdracht6Title: "การบ้านการเขียน",
+            opdracht6Instructie: "เขียนประโยคที่สมบูรณ์เพื่อตอบคำถาม บันทึกคำตอบแล้วส่งให้อาจารย์ผ่าน WhatsApp!",
+            btnCheck: "ตรวจสอบ",
+            btnReset: "🔄 ทำใหม่",
+            btnCheckDictee: "ตรวจคำบอก",
+            btnSave: "💾 บันทึก",
+            btnWhatsApp: "📱 ส่งให้อาจารย์",
+            btnComplete: "เรียนเสร็จแล้ว!",
+            completeHint: "คลิกเมื่อคุณทำแบบฝึกหัดทั้งหมดเสร็จแล้ว",
+            completedState: "🎉 เรียนจบแล้ว! เก่งมาก!",
+            btnToggleTranslation: "🌐 แสดงคำแปล / ซ่อน",
+            dictationPlaceholder: "พิมพ์สิ่งที่คุณได้ยิน...",
+            writingPlaceholder: "เขียนที่นี่...",
+            btnShowAnswer: "แสดงคำตอบ",
+            correctAnswerText: "คำตอบที่ถูกต้อง: ",
+            errorMessage: "✗ ไม่ถูกต้อง ลองอีกครั้ง!",
+            successMessage: "🎉 ถูกต้อง! ",
+            translationLabel: "คำแปล: ",
+            savedFeedback: "✓ บันทึกแล้ว!",
+            spellingHint: "ดีมาก! ระวังการสะกดคำ: {correct}",
+            correctAnswerHint: "(คำตอบ: {correct})",
+            dicteeAlmostHint: "เกือบถูก! สังเกต: \"{correct}\"",
+            dicteeCorrectHint: "ถูกต้อง: \"{correct}\"",
+            writingAlert: "กรุณาเขียนคำตอบสำหรับคำถามก่อน!",
+            vocabReadingNote: "อ่านเนื้อเรื่อง คำศัพท์จากรายการคำศัพท์จะแสดงเป็นตัว<strong>หนา</strong>",
+            confirmComplete: "คุณลืมทำบางแบบฝึกหัด คุณยังต้องการทำเครื่องหมายว่าเรียนเสร็จแล้วหรือไม่?",
+            altOrdersHint: "การเรียงลำดับหลายแบบเป็นไปได้ ลองเรียงลำดับอื่นด้วย!"
+        }
+    };
+
+    function highlightVocabInStory(storyText, vocabList) {
+        let html = storyText;
+        const sortedVocab = [...vocabList].sort((a, b) => b.nl.length - a.nl.length);
+        
+        sortedVocab.forEach(v => {
+            let base = v.nl.split(',')[0].replace(/^(de |het |een )/i, '').trim().toLowerCase();
+            let stems = [base];
+            
+            if (base.endsWith('en')) {
+                let stem = base.slice(0, -2);
+                stems.push(stem);
+                if (stem.endsWith('z')) {
+                    stems.push(stem.slice(0, -1) + 's');
+                    stems.push(stem.slice(0, -1) + 'sd');
+                }
+                if (stem.endsWith('v')) {
+                    stems.push(stem.slice(0, -1) + 'f');
+                    stems.push(stem.slice(0, -1) + 'ft');
+                }
+            }
+            
+            stems = [...new Set(stems)].sort((a, b) => b.length - a.length);
+            
+            stems.forEach(stem => {
+                if (stem.length < 3) return;
+                const regex = new RegExp('\\b(' + stem + '[a-z]*)\\b', 'gi');
+                html = html.replace(regex, (match) => {
+                    return `<strong>${match}</strong>`;
+                });
+            });
+        });
+        
+        html = html.replace(/<strong><strong>(.*?)<\/strong><\/strong>/g, '<strong>$1</strong>');
+        return html;
+    }
+
+    function setLang(lang) {
+        activeLang = lang;
+        document.querySelectorAll('.language-bar .lang-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById('btn-' + lang);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        // Dynamic labels update
+        const labels = UI_LABELS[lang] || UI_LABELS.nl;
+        
+        document.querySelectorAll('[data-translate]').forEach(el => {
+            const key = el.getAttribute('data-translate');
+            if (labels[key]) {
+                if (key === 'vocabTitle') {
+                    el.textContent = labels[key].replace('{para_num}', LESSON_ID);
+                } else if (key === 'vocabReadingNote') {
+                    el.innerHTML = labels[key];
+                } else {
+                    el.textContent = labels[key];
+                }
+            }
+        });
+        
+        // Placeholders update
+        document.querySelectorAll('input[placeholder]').forEach(input => {
+            if (input.id.startsWith('dictee-')) {
+                input.placeholder = labels.dictationPlaceholder || "Typ wat je hoort...";
+            }
+        });
+        document.querySelectorAll('textarea[placeholder]').forEach(ta => {
+            ta.placeholder = labels.writingPlaceholder || "Schrijf hier...";
+        });
+
+        // Update Vocab Table
+        document.getElementById('th-lang').textContent = langNames[lang];
+        buildTable(lang);
+
+        // Update Docent Uitleg
+        const explanationText = DATA.uitleg[lang] || DATA.uitleg.nl;
+        const explanationContainer = document.getElementById('uitleg-content');
+        explanationContainer.innerHTML = explanationText;
+        explanationContainer.style.direction = (lang === 'ar' || lang === 'dari') ? 'rtl' : 'ltr';
+        explanationContainer.style.textAlign = (lang === 'ar' || lang === 'dari') ? 'right' : 'left';
+
+        // Update story translation text if visible
+        updateStoryTranslationText();
+
+        // Update drag helper translations
+        for (let i = 0; i < DATA.drag.length; i++) {
+            updateDragItemText(i);
+        }
+    }
+
+    function buildTable(lang) {
+        const tbody = document.getElementById('vocab-body');
+        tbody.innerHTML = '';
+        DATA.vocab.forEach(v => {
+            const tr = document.createElement('tr');
+            
+            const tdNl = document.createElement('td');
+            tdNl.className = 'vocab';
+            tdNl.textContent = v.nl;
+
+            const tdTrans = document.createElement('td');
+            tdTrans.textContent = v[lang] || v.en;
+            tdTrans.style.direction = (lang === 'ar' || lang === 'dari') ? 'rtl' : 'ltr';
+            tdTrans.style.textAlign = (lang === 'ar' || lang === 'dari') ? 'right' : 'left';
+
+            const tdSpeak = document.createElement('td');
+            const spokenWord = v.nl.split(',')[0].replace(/^(de |het |een )/i, '').trim();
+            tdSpeak.innerHTML = `
+                <button class="speak-btn" onclick="speak('${spokenWord.replace(/'/g, "\\'")}')">🔊</button>
+                <button class="slow-speak-btn" onclick="speak('${spokenWord.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+            `;
+
+            tr.appendChild(tdNl);
+            tr.appendChild(tdTrans);
+            tr.appendChild(tdSpeak);
+            tbody.appendChild(tr);
+        });
+    }
+
+    // --- OPDRACHT 1: MC ---
+    let mcAnswers = {};
+    function buildMC() {
+        const ul = document.getElementById('mc-container');
+        ul.innerHTML = '';
+        
+        // Shuffle the questions order
+        const shuffledQuestions = shuffle(DATA.mc.map((item, idx) => ({ ...item, originalIdx: idx })));
+        
+        shuffledQuestions.forEach((item, displayIdx) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '20px';
+            
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mc-vraag';
+            qDiv.textContent = `${displayIdx + 1}. ${item.q}`;
+            li.appendChild(qDiv);
+            
+            const optDiv = document.createElement('div');
+            optDiv.className = 'mc-opties';
+            
+            const correctText = item.o[item.c];
+            // Shuffle the options order
+            const shuffledOptions = shuffle(item.o);
+            
+            shuffledOptions.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = 'mc-btn';
+                btn.textContent = opt;
+                btn.onclick = () => selectMCOption(btn, item.originalIdx, opt, correctText);
+                optDiv.appendChild(btn);
+            });
+            
+            li.appendChild(optDiv);
+            ul.appendChild(li);
+        });
+        mcAnswers = {};
+    }
+    
+    function selectMCOption(btn, qIdx, selectedText, correctText) {
+        const optiesDiv = btn.closest('.mc-opties');
+        const knoppen = optiesDiv.querySelectorAll('.mc-btn');
+        
+        if ([...knoppen].some(k => k.classList.contains('correct') || k.classList.contains('fout'))) return;
+        
+        knoppen.forEach(k => k.disabled = true);
+        
+        if (selectedText === correctText) {
+            btn.classList.add('correct');
+            mcAnswers[qIdx] = true;
+        } else {
+            btn.classList.add('fout');
+            knoppen.forEach(k => {
+                if (k.textContent === correctText) k.classList.add('correct');
+            });
+            mcAnswers[qIdx] = false;
+        }
+        
+        if (Object.keys(mcAnswers).length === DATA.mc.length) {
+            const correctCount = Object.values(mcAnswers).filter(Boolean).length;
+            const badge = document.getElementById('mc-score');
+            badge.style.display = 'inline-block';
+            badge.textContent = `${correctCount}/${DATA.mc.length}`;
+            badge.className = 'score-badge ' + (correctCount === DATA.mc.length ? 'score-goed' : correctCount >= 4 ? 'score-midden' : 'score-slecht');
+            if (correctCount === DATA.mc.length) triggerConfetti();
+        }
+    }
+    
+    function resetMC() {
+        document.getElementById('mc-score').style.display = 'none';
+        buildMC();
+    }
+
+    // --- OPDRACHT 2: DRAG / TILE BUILDER ---
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function buildDrag() {
+        const container = document.getElementById('drag-container');
+        container.innerHTML = '';
+        
+        // Shuffle the sentences order
+        const indices = shuffle(DATA.drag.map((_, idx) => idx));
+        
+        indices.forEach((idx, displayIdx) => {
+            const sentenceWords = DATA.drag[idx];
+            const cleanWords = sentenceWords.map(w => w.replace(/[.,?!]$/, ''));
+            const shuffled = shuffle(cleanWords);
+            
+            const div = document.createElement('div');
+            div.className = 'drag-exercise';
+            div.id = `drag-item-${idx}`;
+            
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+                    <div style="font-size:.82rem; color:#6366f1; font-weight:600">Zin ${displayIdx + 1}</div>
+                    <button class="reset-btn" style="margin:0; padding:2px 8px; font-size:0.75rem" onclick="showDragAnswer(${idx})" data-translate="btnShowAnswer">Toon antwoord</button>
+                </div>
+                <div class="drag-hint-translation" id="drag-hint-trans-${idx}" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px; font-style:italic"></div>
+                <div class="zone-lbl" data-translate="opdracht2Words">📦 Woorden:</div>
+                <div class="word-bank" id="drag-bank-${idx}">
+                    ${shuffled.map(w => `<div class="word-tile" data-word="${w}" onclick="moveTile(this, ${idx})">${w}</div>`).join('')}
+                </div>
+                <div class="zone-lbl" data-translate="opdracht2YourSentence">📝 Jouw zin:</div>
+                <div class="drop-zone" id="drag-zone-${idx}"></div>
+                <div class="drag-result" id="drag-res-${idx}" style="margin-top:8px"></div>
+                <div style="display:flex; gap:8px; margin-top:8px">
+                    <button class="reset-btn" style="margin:0" onclick="resetDragItem(${idx})">🔄</button>
+                </div>
+            `;
+            container.appendChild(div);
+            updateDragItemText(idx);
+        });
+    }
+
+    function updateDragItemText(idx) {
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        const hintEl = document.getElementById(`drag-hint-trans-${idx}`);
+        if (hintEl) {
+            let transText = "";
+            if (DATA.drag_translations && DATA.drag_translations[activeLang]) {
+                transText = DATA.drag_translations[activeLang][idx] || "";
+            } else if (DATA.drag_translations && DATA.drag_translations['en']) {
+                transText = DATA.drag_translations['en'][idx] || "";
+            }
+            if (transText) {
+                hintEl.textContent = (labels.translationLabel || "Vertaling: ") + transText;
+                hintEl.style.direction = (activeLang === 'ar' || activeLang === 'dari') ? 'rtl' : 'ltr';
+                hintEl.style.textAlign = (activeLang === 'ar' || activeLang === 'dari') ? 'right' : 'left';
+            } else {
+                hintEl.textContent = "";
+            }
+        }
+
+        const itemEl = document.getElementById(`drag-item-${idx}`);
+        if (itemEl) {
+            itemEl.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (labels[key]) el.textContent = labels[key];
+            });
+        }
+
+        const zone = document.getElementById(`drag-zone-${idx}`);
+        if (zone) {
+            const tiles = zone.querySelectorAll('.word-tile');
+            if (tiles.length > 0) {
+                const res = document.getElementById(`drag-res-${idx}`);
+                if (res && res.classList.contains('success')) {
+                    // Read actual placed tiles (in case an alt order was used)
+                    const placedWords = [...tiles].map(t => t.getAttribute('data-word'));
+                    res.textContent = (labels.successMessage || "🎉 Goed! ") + placedWords.join(' ');
+                } else if (res && res.classList.contains('wrong')) {
+                    let altHint = '';
+                    if (DATA.drag_alt && DATA.drag_alt[idx]) {
+                        altHint = `<br><span style="font-size:0.82rem; color:#7c3aed; font-weight:normal;">💡 ${labels.altOrdersHint || "Meerdere volgorden zijn mogelijk. Probeer ook de andere volgorde!"}</span>`;
+                    }
+                    res.innerHTML = (labels.errorMessage || "✗ Fout. Probeer het nog eens!") + 
+                        `<br><span style="font-size:0.85rem; font-weight:normal;">${labels.correctAnswerText || "Correct antwoord: "} <strong>${DATA.drag[idx].join(' ')}</strong></span>` + altHint;
+                }
+            }
+        }
+    }
+
+    function moveTile(tile, idx) {
+        const bank = document.getElementById(`drag-bank-${idx}`);
+        const zone = document.getElementById(`drag-zone-${idx}`);
+        const wasInBank = (tile.parentElement === bank);
+        
+        if (wasInBank) {
+            zone.appendChild(tile);
+        } else {
+            bank.appendChild(tile);
+        }
+        tile.classList.remove('correct-pos', 'wrong-pos', 'all-correct');
+        
+        const tiles = zone.querySelectorAll('.word-tile');
+        const correctWords = DATA.drag[idx];
+        const res = document.getElementById(`drag-res-${idx}`);
+        
+        res.textContent = '';
+        res.className = 'drag-result';
+        
+        zone.querySelectorAll('.word-tile').forEach(t => {
+            t.classList.remove('correct-pos', 'wrong-pos');
+        });
+        
+        if (tiles.length === correctWords.length) {
+            checkDragItem(idx);
+        }
+    }
+
+    // Build the full list of accepted orderings for a drag item (primary + alternatives)
+    function getDragAcceptedOrders(idx) {
+        const accepted = [DATA.drag[idx]];
+        if (DATA.drag_alt && DATA.drag_alt[idx]) {
+            DATA.drag_alt[idx].forEach(alt => accepted.push(alt));
+        }
+        return accepted;
+    }
+
+    function checkDragItem(idx) {
+        const zone = document.getElementById(`drag-zone-${idx}`);
+        const res = document.getElementById(`drag-res-${idx}`);
+        const tiles = zone.querySelectorAll('.word-tile');
+        const primaryWords = DATA.drag[idx];
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        const acceptedOrders = getDragAcceptedOrders(idx);
+
+        if (tiles.length !== primaryWords.length) return;
+        
+        // Collect user's answer
+        const userWords = [...tiles].map(t => t.getAttribute('data-word'));
+
+        // Check if user answer matches ANY accepted ordering
+        let matchedOrder = null;
+        for (const order of acceptedOrders) {
+            const cleanOrder = order.map(w => w.replace(/[.,?!]$/, '').toLowerCase().trim());
+            const cleanUser = userWords.map(w => w.toLowerCase().trim());
+            if (cleanOrder.length === cleanUser.length && cleanOrder.every((w, i) => w === cleanUser[i])) {
+                matchedOrder = order;
+                break;
+            }
+        }
+        
+        if (matchedOrder) {
+            // Correct!
+            res.textContent = (labels.successMessage || "🎉 Goed! ") + matchedOrder.join(' ');
+            res.className = 'drag-result success';
+            tiles.forEach(t => {
+                t.classList.remove('correct-pos', 'wrong-pos');
+                t.classList.add('all-correct');
+                t.style.pointerEvents = 'none';
+            });
+            checkAllDragComplete();
+        } else {
+            // Wrong — show per-tile feedback vs. primary order
+            tiles.forEach((t, i) => {
+                const correctW = primaryWords[i] ? primaryWords[i].replace(/[.,?!]$/, '') : '';
+                const userW = t.getAttribute('data-word');
+                if (userW.toLowerCase().trim() === correctW.toLowerCase().trim()) {
+                    t.classList.add('correct-pos');
+                    t.classList.remove('wrong-pos');
+                } else {
+                    t.classList.add('wrong-pos');
+                    t.classList.remove('correct-pos');
+                }
+            });
+            // Show hint about all valid orderings if there are alternatives
+            let altHint = '';
+            if (acceptedOrders.length > 1) {
+                altHint = `<br><span style="font-size:0.82rem; color:#7c3aed; font-weight:normal;">💡 ${labels.altOrdersHint || "Meerdere volgorden zijn mogelijk."}</span>`;
+            }
+            res.innerHTML = (labels.errorMessage || "✗ Fout. Probeer het nog eens!") + 
+                `<br><span style="font-size:0.85rem; font-weight:normal;">${labels.correctAnswerText || "Correct antwoord: "} <strong>${primaryWords.join(' ')}</strong></span>` + altHint;
+            res.className = 'drag-result wrong';
+        }
+    }
+
+    function checkAllDragComplete() {
+        let allOk = true;
+        for (let i = 0; i < DATA.drag.length; i++) {
+            const res = document.getElementById(`drag-res-${i}`);
+            if (!res || !res.classList.contains('success')) {
+                allOk = false;
+                break;
+            }
+        }
+        if (allOk) {
+            triggerConfetti();
+        }
+    }
+
+    function showDragAnswer(idx) {
+        const zone = document.getElementById(`drag-zone-${idx}`);
+        const bank = document.getElementById(`drag-bank-${idx}`);
+        const correctWords = DATA.drag[idx];
+        
+        bank.innerHTML = '';
+        zone.innerHTML = '';
+        
+        correctWords.forEach(w => {
+            const cleanW = w.replace(/[.,?!]$/, '');
+            const tile = document.createElement('div');
+            tile.className = 'word-tile all-correct';
+            tile.style.pointerEvents = 'none';
+            tile.setAttribute('data-word', cleanW);
+            tile.textContent = cleanW;
+            zone.appendChild(tile);
+        });
+        
+        const res = document.getElementById(`drag-res-${idx}`);
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        res.textContent = (labels.successMessage || "🎉 Goed! ") + correctWords.join(' ');
+        res.className = 'drag-result success';
+        
+        checkAllDragComplete();
+    }
+
+    function resetDragItem(idx) {
+        const bank = document.getElementById(`drag-bank-${idx}`);
+        const zone = document.getElementById(`drag-zone-${idx}`);
+        const res = document.getElementById(`drag-res-${idx}`);
+        const sentenceWords = DATA.drag[idx];
+        const cleanWords = sentenceWords.map(w => w.replace(/[.,?!]$/, ''));
+        const shuffled = shuffle(cleanWords);
+        
+        bank.innerHTML = '';
+        zone.innerHTML = '';
+        res.textContent = '';
+        res.className = 'drag-result';
+        
+        shuffled.forEach(w => {
+            const t = document.createElement('div');
+            t.className = 'word-tile';
+            t.setAttribute('data-word', w);
+            t.setAttribute('onclick', `moveTile(this, ${idx})`);
+            t.textContent = w;
+            bank.appendChild(t);
+        });
+        updateDragItemText(idx);
+    }
+
+    // --- OPDRACHT 3: FILL IN BLANK ---
+    function buildInvul() {
+        const ul = document.getElementById('invul-container');
+        ul.innerHTML = '';
+        
+        // Shuffle the questions order
+        const shuffledInvul = shuffle(DATA.invul.map((item, idx) => ({ ...item, originalIdx: idx })));
+        
+        shuffledInvul.forEach((item, displayIdx) => {
+            const li = document.createElement('li');
+            const text = item.s;
+            const parts = text.split(/\[.*?\]/);
+            const rawAns = text.match(/\[(.*?)\]/)[1];
+            
+            li.innerHTML = `
+                ${displayIdx + 1}. ${parts[0]}
+                <input type="text" id="invul-${item.originalIdx}" placeholder="…" autocomplete="off" data-ans="${rawAns}">
+                ${parts[1] || ''}
+                <span class="hint-text" style="color:var(--text-muted); font-size:0.85rem;"> (${item.h})</span>
+            `;
+            ul.appendChild(li);
+        });
+    }
+
+    function levenshtein(a, b) {
+        if(a.length === 0) return b.length;
+        if(b.length === 0) return a.length;
+        var matrix = [];
+        for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+        for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+        for(var i = 1; i <= b.length; i++){
+            for(var j = 1; j <= a.length; j++){
+                if(b.charAt(i-1) == a.charAt(j-1)){
+                    matrix[i][j] = matrix[i-1][j-1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    function checkInvul() {
+        let correctCount = 0;
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        DATA.invul.forEach((item, idx) => {
+            const input = document.getElementById(`invul-${idx}`);
+            if (!input) return;
+            
+            const userAns = input.value.trim().toLowerCase();
+            const correctAns = input.getAttribute('data-ans').trim().toLowerCase();
+            
+            input.classList.remove('correct', 'fout');
+            input.style.borderColor = '';
+            
+            let parent = input.parentNode;
+            let existingNote = parent.querySelector('.fuzzy-note, .wrong-note');
+            if (existingNote) existingNote.remove();
+            
+            if (userAns === '') {
+                input.classList.add('fout');
+                return;
+            }
+            
+            const d = levenshtein(userAns, correctAns);
+            if (d === 0) {
+                input.classList.add('correct');
+                correctCount++;
+            } else if (d <= 2) {
+                input.classList.add('correct');
+                input.style.borderColor = '#ca8a04';
+                correctCount++;
+                
+                const note = document.createElement('span');
+                note.className = 'fuzzy-note';
+                note.style.color = '#ca8a04';
+                note.style.fontSize = '0.85rem';
+                note.style.marginLeft = '8px';
+                note.textContent = (labels.spellingHint || "Goed! Let op de spelling: {correct}").replace('{correct}', correctAns);
+                input.parentNode.insertBefore(note, input.nextSibling);
+            } else {
+                input.classList.add('fout');
+                
+                const note = document.createElement('span');
+                note.className = 'wrong-note';
+                note.style.color = '#e63946';
+                note.style.fontSize = '0.85rem';
+                note.style.marginLeft = '8px';
+                note.textContent = (labels.correctAnswerHint || "(Antwoord: {correct})").replace('{correct}', correctAns);
+                input.parentNode.insertBefore(note, input.nextSibling);
+            }
+        });
+        
+        const badge = document.getElementById('invul-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.invul.length}`;
+        badge.className = 'score-badge ' + (correctCount === DATA.invul.length ? 'score-goed' : correctCount >= 4 ? 'score-midden' : 'score-slecht');
+        if (correctCount === DATA.invul.length) triggerConfetti();
+    }
+
+    function resetInvul() {
+        document.getElementById('invul-score').style.display = 'none';
+        buildInvul();
+    }
+
+    // --- OPDRACHT 4: LEZEN ---
+    let lezenAnswers = {};
+    function buildLezen() {
+        // Highlight vocabulary words in the story
+        const rawStory = DATA.lezen.story_nl;
+        const highlightedStory = highlightVocabInStory(rawStory, DATA.vocab);
+        document.getElementById('story-nl-text').innerHTML = highlightedStory;
+        updateStoryTranslationText();
+        
+        const ul = document.getElementById('lezen-questions-container');
+        ul.innerHTML = '';
+        
+        // Shuffle the reading questions order
+        const shuffledLezen = shuffle(DATA.lezen.q.map((item, idx) => ({ ...item, originalIdx: idx })));
+        
+        shuffledLezen.forEach((q, displayIdx) => {
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.alignItems = 'center';
+            li.style.justifyContent = 'space-between';
+            li.style.marginBottom = '10px';
+            
+            li.innerHTML = `
+                <span class="wn-stelling">${displayIdx + 1}. ${q.q}</span>
+                <div class="wn-btngroup">
+                    <button class="wn-btn" id="lezen-${q.originalIdx}-juist" onclick="selectLezenOption(${q.originalIdx}, 'juist')">✓ Juist</button>
+                    <button class="wn-btn" id="lezen-${q.originalIdx}-onjuist" onclick="selectLezenOption(${q.originalIdx}, 'onjuist')">✗ Onjuist</button>
+                </div>
+            `;
+            ul.appendChild(li);
+        });
+        lezenAnswers = {};
+    }
+
+    function toggleStoryTranslation() {
+        isStoryTranslated = !isStoryTranslated;
+        const transText = document.getElementById('story-translation-text');
+        transText.style.display = isStoryTranslated ? 'block' : 'none';
+    }
+
+    function updateStoryTranslationText() {
+        const transText = document.getElementById('story-translation-text');
+        const rawTrans = DATA.lezen['story_' + activeLang] || DATA.lezen.story_en;
+        transText.innerHTML = rawTrans;
+        transText.style.direction = (activeLang === 'ar' || activeLang === 'dari') ? 'rtl' : 'ltr';
+        transText.style.textAlign = (activeLang === 'ar' || activeLang === 'dari') ? 'right' : 'left';
+    }
+
+    function selectLezenOption(idx, option) {
+        const btnJ = document.getElementById(`lezen-${idx}-juist`);
+        const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+        
+        const isAnswered = btnJ.classList.contains('correct') || btnJ.classList.contains('fout') || 
+                           btnO.classList.contains('correct') || btnO.classList.contains('fout');
+        if (isAnswered) return;
+
+        btnJ.classList.remove('active');
+        btnO.classList.remove('active');
+        
+        if (option === 'juist') btnJ.classList.add('active');
+        else btnO.classList.add('active');
+        
+        lezenAnswers[idx] = option;
+    }
+
+    function checkLezen() {
+        let correctCount = 0;
+        DATA.lezen.q.forEach((q, idx) => {
+            const btnJ = document.getElementById(`lezen-${idx}-juist`);
+            const btnO = document.getElementById(`lezen-${idx}-onjuist`);
+            const userAns = lezenAnswers[idx];
+            const correctAns = q.c.toLowerCase();
+            
+            btnJ.classList.remove('correct', 'fout');
+            btnO.classList.remove('correct', 'fout');
+            btnJ.disabled = true;
+            btnO.disabled = true;
+            
+            if (userAns === correctAns) {
+                if (userAns === 'juist') btnJ.classList.add('correct');
+                else btnO.classList.add('correct');
+                correctCount++;
+            } else {
+                if (userAns === 'juist') btnJ.classList.add('fout');
+                else if (userAns === 'onjuist') btnO.classList.add('fout');
+                
+                if (correctAns === 'juist') btnJ.classList.add('correct');
+                else btnO.classList.add('correct');
+            }
+        });
+        
+        const badge = document.getElementById('lezen-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.lezen.q.length}`;
+        badge.className = 'score-badge ' + (correctCount === DATA.lezen.q.length ? 'score-goed' : correctCount >= 4 ? 'score-midden' : 'score-slecht');
+        if (correctCount === DATA.lezen.q.length) triggerConfetti();
+    }
+
+    function resetLezen() {
+        document.getElementById('lezen-score').style.display = 'none';
+        buildLezen();
+    }
+
+    // --- OPDRACHT 5: DICTEE ---
+    function buildDictee() {
+        const container = document.getElementById('dictee-container');
+        container.innerHTML = '';
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        
+        // Shuffle the dictation questions order
+        const shuffledDictee = shuffle(DATA.dictee.map((item, idx) => ({ ...item, originalIdx: idx })));
+        
+        shuffledDictee.forEach((item, displayIdx) => {
+            const div = document.createElement('div');
+            div.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;';
+            
+            div.innerHTML = `
+                <div style="display:flex; gap:6px;">
+                    <button class="speak-btn" onclick="speak('${item.speak.replace(/'/g, "\\'")}')">🔊</button>
+                    <button class="slow-speak-btn" onclick="speak('${item.speak.replace(/'/g, "\\'")}', true)" title="Langzaam">🐢</button>
+                </div>
+                <input type="text" id="dictee-${item.originalIdx}" class="invul-list" style="flex:1; min-width:250px; border:2px solid rgba(99,102,241,.4); border-radius:6px; padding:6px 10px; font-size:.92rem; background:transparent; color:inherit; outline:none; transition:border-color .2s;" placeholder="${labels.dictationPlaceholder || 'Typ wat je hoort...'}">
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function checkDictee() {
+        let correctCount = 0;
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        DATA.dictee.forEach((item, idx) => {
+            const input = document.getElementById(`dictee-${idx}`);
+            if (!input) return;
+            
+            const userText = input.value.trim().toLowerCase().replace(/[.,?!]/g, "");
+            const correctText = item.ans.trim().toLowerCase().replace(/[.,?!]/g, "");
+            
+            input.classList.remove('correct', 'fout');
+            input.style.borderColor = '';
+            
+            let parent = input.parentNode;
+            let existingNote = parent.querySelector('.fuzzy-note, .wrong-note');
+            if (existingNote) existingNote.remove();
+            
+            if (userText === "") {
+                input.classList.add('fout');
+                return;
+            }
+            
+            if (userText === correctText) {
+                input.classList.add('correct');
+                correctCount++;
+            } else if (levenshtein(userText, correctText) <= 2) {
+                input.classList.add('correct');
+                input.style.borderColor = '#ca8a04';
+                correctCount++;
+                
+                const note = document.createElement('span');
+                note.className = 'fuzzy-note';
+                note.style.color = '#ca8a04';
+                note.style.fontSize = '0.85rem';
+                note.style.marginLeft = '8px';
+                note.textContent = (labels.dicteeAlmostHint || "Bijna goed! Let op: \"{correct}\"").replace('{correct}', item.ans);
+                parent.appendChild(note);
+            } else {
+                input.classList.add('fout');
+                
+                const note = document.createElement('span');
+                note.className = 'wrong-note';
+                note.style.color = '#ef4444';
+                note.style.fontSize = '0.85rem';
+                note.style.marginLeft = '8px';
+                note.textContent = (labels.dicteeCorrectHint || "Correct: \"{correct}\"").replace('{correct}', item.ans);
+                parent.appendChild(note);
+            }
+        });
+        
+        const badge = document.getElementById('dictee-score');
+        badge.style.display = 'inline-block';
+        badge.textContent = `${correctCount}/${DATA.dictee.length}`;
+        badge.className = 'score-badge ' + (correctCount === DATA.dictee.length ? 'score-goed' : correctCount >= 4 ? 'score-midden' : 'score-slecht');
+        if (correctCount === DATA.dictee.length) triggerConfetti();
+    }
+
+    function resetDictee() {
+        document.getElementById('dictee-score').style.display = 'none';
+        buildDictee();
+    }
+
+    // --- OPDRACHT 6: SCHRIJVEN ---
+    function buildSchrijf() {
+        const container = document.getElementById('schrijf-container');
+        container.innerHTML = '';
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        
+        // Shuffle the writing prompts order
+        const shuffledSchrijf = shuffle(DATA.schrijf.map((item, idx) => ({ text: item, originalIdx: idx })));
+        
+        shuffledSchrijf.forEach((item, displayIdx) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '15px';
+            
+            li.innerHTML = `
+                <label style="display:block; font-weight:600; font-size:.9rem; margin-bottom:3px">${displayIdx + 1}. ${item.text}</label>
+                <textarea id="schrijf-${item.originalIdx}" style="width:100%; min-height:60px; border:2px solid rgba(99,102,241,.35); border-radius:8px; padding:8px 12px; font-size:.9rem; background:transparent; color:inherit; resize:vertical; outline:none; box-sizing:border-box" placeholder="${labels.writingPlaceholder || 'Schrijf hier...'}"></textarea>
+            `;
+            container.appendChild(li);
+        });
+    }
+
+    function saveSchrijf() {
+        const answers = [];
+        DATA.schrijf.forEach((item, idx) => {
+            const textarea = document.getElementById(`schrijf-${idx}`);
+            answers.push(textarea ? textarea.value : "");
+        });
+        localStorage.setItem('a2_schrijf_' + LESSON_ID, JSON.stringify(answers));
+        
+        const fb = document.getElementById('schrijf-fb');
+        fb.style.display = 'inline';
+        setTimeout(() => fb.style.display = 'none', 2000);
+    }
+
+    function loadSchrijf() {
+        const stored = JSON.parse(localStorage.getItem('a2_schrijf_' + LESSON_ID) || '[]');
+        stored.forEach((val, idx) => {
+            const textarea = document.getElementById(`schrijf-${idx}`);
+            if (textarea) textarea.value = val;
+        });
+    }
+
+    function shareWhatsApp() {
+        const answers = [];
+        let hasContent = false;
+        DATA.schrijf.forEach((item, idx) => {
+            const textarea = document.getElementById(`schrijf-${idx}`);
+            const val = textarea ? textarea.value.trim() : "";
+            if (val) {
+                answers.push(`Vraag: ${item}\nAntwoord: ${val}`);
+                hasContent = true;
+            }
+        });
+        if (!hasContent) {
+            const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+            alert(labels.writingAlert || 'Schrijf eerst je antwoorden op de vragen!');
+            return;
+        }
+        
+        const message = `NT2 A2 Huiswerk Les ${LESSON_ID} — ${DATA.title}:\n\n` + answers.join('\n\n');
+        const phone = '31626211106'; // Teacher Rida
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    function resetSchrijf() {
+        buildSchrijf();
+    }
+
+    // --- LES VOLTOOIEN ---
+    function isLessonComplete() {
+        if (Object.keys(mcAnswers).length < DATA.mc.length) return false;
+
+        for (let i = 0; i < DATA.drag.length; i++) {
+            const res = document.getElementById(`drag-res-${i}`);
+            if (!res || !res.classList.contains('success')) return false;
+        }
+
+        for (let i = 0; i < DATA.invul.length; i++) {
+            const input = document.getElementById(`invul-${i}`);
+            if (!input || !input.value.trim()) return false;
+        }
+
+        if (Object.keys(lezenAnswers).length < DATA.lezen.q.length) return false;
+
+        for (let i = 0; i < DATA.dictee.length; i++) {
+            const input = document.getElementById(`dictee-${i}`);
+            if (!input || !input.value.trim()) return false;
+        }
+
+        for (let i = 0; i < DATA.schrijf.length; i++) {
+            const ta = document.getElementById(`schrijf-${i}`);
+            if (!ta || !ta.value.trim()) return false;
+        }
+
+        return true;
+    }
+
+    function markeerVoltooid() {
+        if (!isLessonComplete()) {
+            const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+            const proceed = confirm(labels.confirmComplete || "Je bent een paar opdrachten vergeten. Wil je de les toch voltooien?");
+            if (!proceed) return;
+        }
+
+        const voltooid = JSON.parse(localStorage.getItem('nt2_voltooid') || '[]');
+        if (!voltooid.includes(LESSON_ID)) {
+            voltooid.push(LESSON_ID);
+            localStorage.setItem('nt2_voltooid', JSON.stringify(voltooid));
+        }
+        
+        const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+        const btn = document.getElementById('voltooi-btn');
+        btn.textContent = labels.completedState || '🎉 Les voltooid! Goed gedaan!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        btn.style.borderColor = '#10b981';
+        btn.disabled = true;
+    }
+
+    function checkVoltooiStatus() {
+        const voltooid = JSON.parse(localStorage.getItem('nt2_voltooid') || '[]');
+        if (voltooid.includes(LESSON_ID)) {
+            const labels = UI_LABELS[activeLang] || UI_LABELS.nl;
+            const btn = document.getElementById('voltooi-btn');
+            if (btn) {
+                btn.textContent = labels.completedState || '🎉 Les voltooid! Goed gedaan!';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                btn.style.borderColor = '#10b981';
+                btn.disabled = true;
+            }
+        }
+    }
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+        setLang('nl');
+        buildMC();
+        buildDrag();
+        buildInvul();
+        buildLezen();
+        buildDictee();
+        buildSchrijf();
+        loadSchrijf();
+        checkVoltooiStatus();
+    });
+  </script>
+
+  <!-- THEME TOGGLE SCRIPT -->
+  <script>
+      (function() {
+          const themeToggle = document.getElementById('theme-toggle');
+          if (!themeToggle) return;
+          themeToggle.addEventListener('click', () => {
+              let theme = document.documentElement.getAttribute('data-theme') || 'light';
+              let newTheme = theme === 'light' ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('a2-theme', newTheme);
+          });
+      })();
+  </script>
+
+</body>
+</html>

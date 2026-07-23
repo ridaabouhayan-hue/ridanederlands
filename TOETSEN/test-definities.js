@@ -197,6 +197,325 @@ const TEST_DEFINITIES = {
         }
     },
 
+    // ============================= THEMA 3 — Wonen (oefentoets 1) =============================
+    thema3: {
+        toets1: {
+            jaar: 2026,
+            secties: [
+                {
+                    id: "sec1", label: "Dictee", type: "dictee", vaardigheid: "schrijven", puntenPerVraag: 1,
+                    vragen: [
+                        "Woord 1 (de keuken)",
+                        "Woord 2 (het raam)",
+                        "Woord 3 (de trap)",
+                        "Woord 4 (de sleutel)",
+                        "Woord 5 (het balkon)",
+                        "Woord 6 (de badkamer)",
+                        "Woord 7 (de garage)",
+                        "Woord 8 (de verdieping)"
+                    ],
+                    antwoorden: [
+                        ["de keuken", "keuken"],
+                        ["het raam", "raam"],
+                        ["de trap", "trap"],
+                        ["de sleutel", "sleutel"],
+                        ["het balkon", "balkon"],
+                        ["de badkamer", "badkamer"],
+                        ["de garage", "garage"],
+                        ["de verdieping", "verdieping"]
+                    ]
+                },
+                {
+                    id: "sec2", label: "Schrijven (Huis)", type: "open-ai", vaardigheid: "schrijven", puntenPerVraag: 1,
+                    aantalZinnen: 6,
+                    instructie: "Geef antwoord op de vragen. Maak hele zinnen."
+                },
+                {
+                    id: "sec3", label: "Lezen", type: "keuze", vaardigheid: "lezen", puntenPerVraag: 1,
+                    context: "Said woont in een rijtjeshuis in Tilburg. Het huis heeft twee verdiepingen. Beneden zijn de woonkamer, de keuken en de wc. Boven zijn twee slaapkamers en de badkamer. Said heeft een kleine tuin achter het huis. Hij heeft geen garage, maar wel een schuur. Chen woont in een studio in Amsterdam. De studio is op de vierde verdieping. Er is geen lift, dus Chen neemt altijd de trap. De studio heeft één kamer met een kleine keuken. De badkamer is ook klein. Chen heeft geen balkon en geen tuin.",
+                    vragen: [
+                        "Waar woont Said?",
+                        "Waar is de badkamer van Said?",
+                        "Op welke verdieping woont Chen?",
+                        "Hoe gaat Chen naar boven?",
+                        "Said heeft een ... (garage - schuur - zolder)",
+                        "Chen heeft geen ... (balkon - lift - tuin)"
+                    ],
+                    antwoorden: ["b", "b", "c", "b", ["schuur"], ["balkon", "lift", "tuin"]]
+                },
+                {
+                    id: "sec4", label: "Grammatica - Werkwoorden 1", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "(wonen) Wij ___ in een flat.",
+                        "(drinken) De buurvrouw ___ koffie.",
+                        "(openen) Ik ___ de deur.",
+                        "(zoeken) Ahmed ___ een nieuwe woning.",
+                        "(hebben) Jij ___ de sleutel.",
+                        "(spelen) De kinderen ___ in de tuin."
+                    ],
+                    antwoorden: [
+                        ["wonen"],
+                        ["drinkt"],
+                        ["open"],
+                        ["zoekt"],
+                        ["hebt", "heb"],
+                        ["spelen"]
+                    ]
+                },
+                {
+                    id: "sec5", label: "Grammatica - Werkwoorden 2", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "(verven) Sara ___ de kamer.",
+                        "(zitten) Ik ___ in de woonkamer.",
+                        "(tekenen) Jullie ___ het contract.",
+                        "(nemen) U ___ de trap.",
+                        "(betalen) Jij ___ de huur.",
+                        "(werken) De buurman ___ hard."
+                    ],
+                    antwoorden: [
+                        ["verft"],
+                        ["zit"],
+                        ["tekenen"],
+                        ["neemt"],
+                        ["betaalt"],
+                        ["werkt"]
+                    ]
+                },
+                {
+                    id: "sec6", label: "Zinsbouw", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "woont | in Tilburg | Mijn oma | .",
+                        "De woonkamer | groot | is | .",
+                        "naar de winkel | loopt | De man | .",
+                        "zoeken | een huis | Wij | .",
+                        "in de keuken | staat | De tafel | .",
+                        "betaalt | Ali | de huur | ."
+                    ],
+                    antwoorden: [
+                        ["mijn oma woont in tilburg.", "mijn oma woont in tilburg"],
+                        ["de woonkamer is groot.", "de woonkamer is groot"],
+                        ["de man loopt naar de winkel.", "de man loopt naar de winkel"],
+                        ["wij zoeken een huis.", "wij zoeken een huis"],
+                        ["de tafel staat in de keuken.", "de tafel staat in de keuken"],
+                        ["ali betaalt de huur.", "ali betaalt de huur"]
+                    ]
+                }
+            ]
+        }
+    },
+
+    // ============================= THEMA 4 — Eten en drinken (oefentoets 1) =============================
+    thema4: {
+        toets1: {
+            jaar: 2026,
+            secties: [
+                {
+                    id: "sec1", label: "Luisteren (Waar of niet waar)", type: "keuze", vaardigheid: "luisteren", puntenPerVraag: 1,
+                    context: "Je hoort Rutger. Hij is in een winkel. Hij praat met een verkoper.",
+                    vragen: [
+                        "Rutger zoekt de wijn.",
+                        "Rutger eet vanavond kip.",
+                        "De winkel heeft verschillende soorten wijn.",
+                        "Rutger wilt goedkope wijn kopen.",
+                        "De wijn kost € 4,75."
+                    ],
+                    antwoorden: ["a", "b", "a", "a", "b"] // a = waar, b = niet waar
+                },
+                {
+                    id: "sec2", label: "Dictee", type: "dictee", vaardigheid: "schrijven", puntenPerVraag: 2,
+                    vragen: [
+                        "Woord 1 (het ontbijt)",
+                        "Woord 2 (de bloemkool)",
+                        "Woord 3 (verschillend)",
+                        "Woord 4 (lekker)",
+                        "Woord 5 (nodig)",
+                        "Woord 6 (allemaal)",
+                        "Woord 7 (de boterham)",
+                        "Woord 8 (gezellig)"
+                    ],
+                    antwoorden: [
+                        ["het ontbijt", "ontbijt"],
+                        ["de bloemkool", "bloemkool"],
+                        ["verschillend", "verschillende"],
+                        ["lekker"],
+                        ["nodig"],
+                        ["allemaal"],
+                        ["de boterham", "boterham"],
+                        ["gezellig"]
+                    ]
+                },
+                {
+                    id: "sec3", label: "Schrijven (Vragen beantwoorden)", type: "open-ai", vaardigheid: "schrijven", puntenPerVraag: 3,
+                    aantalZinnen: 6,
+                    instructie: "Geef antwoord op de vragen. Maak hele zinnen."
+                },
+                {
+                    id: "sec4", label: "Lezen", type: "keuze", vaardigheid: "lezen", puntenPerVraag: 1,
+                    context: "Noa doet boodschappen. Ze gaat naar de supermarkt. Ze koopt brood, boter, soep en thee. De rijst is in de aanbieding. Twee pakken voor € 1,50. Noa pint de boodschappen. Ze krijgt drie zegels en de bon. Ze gaat daarna naar de markt. Ze koopt groenten en veel fruit. Ze vindt fruit lekker. Ze betaalt met briefjes en munten. Noa gaat ook naar de slager. Ze koopt 600 gram kip. Ze moet € 4,30 betalen. Ze pint het bedrag.",
+                    vragen: [
+                        "Waar koopt Noa brood?",
+                        "Wat kosten twee pakken rijst?",
+                        "Wat koopt Noa op de markt?",
+                        "Waar betaalt Noa met munten?",
+                        "Hoeveel kip koopt Noa?"
+                    ],
+                    antwoorden: ["c", "a", "b", "b", "c"]
+                },
+                {
+                    id: "sec5", label: "Grammatica - Werkwoord komen", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "Lars ___ uit school.",
+                        "Ik ___ niet thuis.",
+                        "De cursisten ___ in de klas.",
+                        "Jij ___ op vrijdag."
+                    ],
+                    antwoorden: [
+                        ["komt"],
+                        ["kom"],
+                        ["komen"],
+                        ["komt"]
+                    ]
+                },
+                {
+                    id: "sec6", label: "Grammatica - Werkwoord gaan", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "U ___ naar de buurvrouw.",
+                        "Jullies ___ naar Nijmegen.",
+                        "Petra ___ naar de markt.",
+                        "Ik ___ naar de stad."
+                    ],
+                    antwoorden: [
+                        ["gaat"],
+                        ["gaan"],
+                        ["gaat"],
+                        ["ga"]
+                    ]
+                },
+                {
+                    id: "sec7", label: "Grammatica - Vragen maken", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "u | zegels | Wilt",
+                        "mes en vork | jullie | Gebruiken",
+                        "wortels lekker | Vindt | Kim",
+                        "jij | nodig | Wat | heb",
+                        "fruit | Waar | Hans | koopt",
+                        "Wanneer | naar de markt | ga | je"
+                    ],
+                    antwoorden: [
+                        ["wilt u zegels?", "wilt u zegels"],
+                        ["gebruiken jullie mes en vork?", "gebruiken jullie mes en vork"],
+                        ["vindt kim wortels lekker?", "vindt kim wortels lekker"],
+                        ["wat heb jij nodig?", "wat heb jij nodig"],
+                        ["waar koopt hans fruit?", "waar koopt hans fruit"],
+                        ["wanneer ga je naar de markt?", "wanneer ga je naar de markt"]
+                    ]
+                }
+            ]
+        }
+    },
+
+    // ============================= THEMA 5 — De dokter (oefentoets 1) =============================
+    thema5: {
+        toets1: {
+            jaar: 2026,
+            secties: [
+                {
+                    id: "sec1", label: "Luisteren (Waar of niet waar)", type: "keuze", vaardigheid: "luisteren", puntenPerVraag: 1,
+                    context: "Je hoort Jahan. Hij is bij de huisarts.",
+                    vragen: [
+                        "Jahan heeft last van buikpijn.",
+                        "Jahan heeft sinds twee dagen klachten.",
+                        "De huisarts kijkt naar de armen van Jahan.",
+                        "Jahan krijgt een recept voor pillen.",
+                        "Jahan kan de medicijnen bij de drogist halen."
+                    ],
+                    antwoorden: ["b", "b", "a", "b", "b"] // a = waar, b = niet waar
+                },
+                {
+                    id: "sec2", label: "Dictee", type: "dictee", vaardigheid: "schrijven", puntenPerVraag: 2,
+                    vragen: [
+                        "Woord 1 (de vinger)",
+                        "Woord 2 (de schouder)",
+                        "Woord 3 (hoesten)",
+                        "Woord 4 (misschien)",
+                        "Woord 5 (de koorts)",
+                        "Woord 6 (eerder)",
+                        "Woord 7 (de kleur)",
+                        "Woord 8 (het ziekenhuis)"
+                    ],
+                    antwoorden: [
+                        ["de vinger", "vinger"],
+                        ["de schouder", "schouder"],
+                        ["hoesten"],
+                        ["misschien"],
+                        ["de koorts", "koorts"],
+                        ["eerder"],
+                        ["de kleur", "kleur"],
+                        ["het ziekenhuis", "ziekenhuis"]
+                    ]
+                },
+                {
+                    id: "sec3", label: "Schrijven (Kaart afmaken)", type: "open-ai", vaardigheid: "schrijven", puntenPerVraag: 3,
+                    aantalZinnen: 5,
+                    instructie: "Maak de kaart af voor Jiska. Geef antwoord op de vragen en sluit af met beterschap en je naam."
+                },
+                {
+                    id: "sec4", label: "Lezen", type: "keuze", vaardigheid: "lezen", puntenPerVraag: 1,
+                    context: "Babs moet naar de tandarts. Ze poetst twee keer per dag, maar ze heeft vaak gaatjes. De tandarts moet de gaatjes vullen. Babs belt de assistente. Ze wil een afspraak maken. Babs kan alleen op donderdag. De tandarts werkt op dinsdag, woensdag, donderdag en vrijdag. Hij kan bijvoorbeeld op donderdag 7 november. De assistente vraagt: 'Kunt u om 11.00 uur? Of wilt u later?' Babs wil graag eerder, want ze moet om 10.00 uur naar school. De assistente vraagt: 'Wat vindt u van 8.00 uur?' 'Dat is goed.' Babs schrijft: 8.00 uur tandarts!",
+                    vragen: [
+                        "Hoe vaak poetst Babs?",
+                        "Waarom maakt Babs een afspraak op donderdag?",
+                        "Wanneer gaat Babs naar school?",
+                        "Wat schrijft Babs in de agenda?"
+                    ],
+                    antwoorden: ["b", "b", "b", "a"]
+                },
+                {
+                    id: "sec5", label: "Grammatica - Schrijf het meervoud", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "het doosje → ...",
+                        "de kip → ...",
+                        "de taart → ...",
+                        "het oor → ...",
+                        "de teen → ...",
+                        "de spier → ...",
+                        "de garage → ...",
+                        "het bed → ..."
+                    ],
+                    antwoorden: [
+                        ["de doosjes", "doosjes"],
+                        ["de kippen", "kippen"],
+                        ["de taarten", "taarten"],
+                        ["de oren", "oren"],
+                        ["de tenen", "tenen"],
+                        ["de spieren", "spieren"],
+                        ["de garages", "garages"],
+                        ["de bedden", "bedden"]
+                    ]
+                },
+                {
+                    id: "sec6", label: "Grammatica - Zinnen maken", type: "invul", vaardigheid: "grammatica", puntenPerVraag: 1,
+                    vragen: [
+                        "buikpijn | Zij | heeft",
+                        "zijn | op | De pillen",
+                        "heb | mijn neus | last van | Ik",
+                        "Suze | naar de dokter | Waarom | moet",
+                        "maakt | een foto | De tandarts",
+                        "Hij | de medicijnen bij de drogist | koopt"
+                    ],
+                    antwoorden: [
+                        ["zij heeft buikpijn.", "zij heeft buikpijn"],
+                        ["de pillen zijn op.", "de pillen zijn op"],
+                        ["ik heb last van mijn neus.", "ik heb last van mijn neus"],
+                        ["waarom moet suze naar de dokter?", "waarom moet suze naar de dokter"],
+                        ["de tandarts maakt een foto.", "de tandarts maakt een foto"],
+                        ["hij koopt de medicijnen bij de drogist.", "hij koopt de medicijnen bij de drogist"]
+                    ]
+                }
+            ]
+        }
+    },
+
     // ============================= THEMA 7 — Reizen (officieel 2026) =============================
     thema7: {
         toets1: {
