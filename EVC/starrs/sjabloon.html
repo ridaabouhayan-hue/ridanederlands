@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVC NT2 Portfoliosite : STARR Sjabloon</title>
+  <link rel="stylesheet" href="../assets/stijl.css">
+  <style>
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1.2rem;
+    }
+    .form-box {
+      background: var(--wit);
+      border: 1px solid var(--lijn);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--schaduw);
+      margin-top: 1.5rem;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--zee);
+      color: #fff;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(46, 125, 107, 0.4);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<nav></nav>
+
+<header class="hero">
+  <div class="hero-binnen">
+    <span class="badge">STARR Schrijftool</span>
+    <h1>STARR Reflectie Invullen</h1>
+    <p>Vul hieronder je situatiebeschrijving in volgens de STARR-methode. De gegevens worden in real-time opgeslagen. Je kunt de uitgeschreven tekst vervolgens in één keer kopiëren voor je portfolio-document.</p>
+  </div>
+</header>
+
+<main>
+  <a href="index.html" class="knop secundair" style="margin-bottom: 1rem; border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.82rem;">&larr; Terug naar overzicht</a>
+
+  <div class="form-box">
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+      <div class="form-groep" style="flex: 1 1 200px; margin-bottom: 0;">
+        <label for="select-comp">Competentie</label>
+        <select id="select-comp" class="form-field">
+          <option value="A2">A2 - Taalbeschouwer</option>
+          <option value="A3">A3 - Vaststeller beginsituatie</option>
+          <option value="A4">A4 - Begeleider leerproces</option>
+          <option value="A5">A5 - Evaluator</option>
+          <option value="B1">B1 - Pedagogisch competent</option>
+          <option value="B2">B2 - Organisatorisch competent</option>
+          <option value="B3">B3 - Samenwerken met collega's</option>
+          <option value="C3">C.3 - Inburgeringstrajecten</option>
+        </select>
+      </div>
+      
+      <div class="form-groep" style="flex: 1 1 200px; margin-bottom: 0;">
+        <label for="select-bew">Bewijsnummer</label>
+        <select id="select-bew" class="form-field">
+          <option value="1">Bewijs 1</option>
+          <option value="2">Bewijs 2</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- S -->
+    <div class="form-groep">
+      <label for="txt-s">Situatie (S)</label>
+      <p style="font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 0.3rem;">Waar en wanneer speelde dit? Wie waren erbij betrokken? Wat was de aanleiding? (Kort en feitelijk)</p>
+      <textarea id="txt-s" class="form-field" placeholder="Typ hier de situatie..."></textarea>
+    </div>
+
+    <!-- T -->
+    <div class="form-groep">
+      <label for="txt-t">Taak (T)</label>
+      <p style="font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 0.3rem;">Wat was jouw specifieke rol of taak? Wat moest er gebeuren of opgelost worden? Wat was het doel?</p>
+      <textarea id="txt-t" class="form-field" placeholder="Typ hier de taak..."></textarea>
+    </div>
+
+    <!-- A -->
+    <div class="form-groep">
+      <label for="txt-a">Actie (A)</label>
+      <p style="font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 0.3rem;">Wat heb je concreet gedaan of gezegd? Waarom heb je hiervoor gekozen? (Didactische/pedagogische onderbouwing)</p>
+      <textarea id="txt-a" class="form-field" placeholder="Typ hier de actie..."></textarea>
+    </div>
+
+    <!-- R1 -->
+    <div class="form-groep">
+      <label for="txt-r1">Resultaat (R)</label>
+      <p style="font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 0.3rem;">Wat was het effect of de uitkomst van jouw handelen? Was het doel bereikt? (Meetbaar of waarneembaar)</p>
+      <textarea id="txt-r1" class="form-field" placeholder="Typ hier het resultaat..."></textarea>
+    </div>
+
+    <!-- R2 -->
+    <div class="form-groep">
+      <label for="txt-r2">Reflectie (R)</label>
+      <p style="font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 0.3rem;">Hoe kijk je erop terug? Wat ging goed en wat kon beter? Wat neem je mee naar een volgende keer?</p>
+      <textarea id="txt-r2" class="form-field" placeholder="Typ hier de reflectie..."></textarea>
+    </div>
+
+    <div class="form-knoppen">
+      <button id="btn-copy" class="knop">Kopieer als platte tekst</button>
+      <button id="btn-clear" class="knop secundair">Velden leegmaken</button>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="copy-toast">Tekst gekopieerd naar klembord!</div>
+
+<footer>
+  EVC-voorbereidingsdashboard van Rida Abouhayan &middot; Y&amp;S Coaching &middot; gebouwd voor het BVNT2-traject Competent NT2-docent
+</footer>
+
+<script src="../assets/kern.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selectComp = document.getElementById('select-comp');
+  const selectBew = document.getElementById('select-bew');
+  const fields = {
+    s: document.getElementById('txt-s'),
+    t: document.getElementById('txt-t'),
+    a: document.getElementById('txt-a'),
+    r1: document.getElementById('txt-r1'),
+    r2: document.getElementById('txt-r2')
+  };
+
+  // 1. Lees parameters uit URL (?comp=A2&bew=1)
+  const params = new URLSearchParams(window.location.search);
+  const compParam = params.get('comp');
+  const bewParam = params.get('bew');
+
+  if (compParam) selectComp.value = compParam;
+  if (bewParam) selectBew.value = bewParam;
+
+  // 2. Laad opgeslagen data voor geselecteerde combinatie
+  function getStoragePrefix() {
+    const comp = selectComp.value.toLowerCase();
+    const bew = selectBew.value;
+    return `evc_starr_${comp}_bew${bew}_`;
+  }
+
+  function laadStarrData() {
+    const prefix = getStoragePrefix();
+    Object.keys(fields).forEach(k => {
+      fields[k].value = ophalen(prefix + k) || '';
+    });
+  }
+
+  function slaStarrData() {
+    const prefix = getStoragePrefix();
+    Object.keys(fields).forEach(k => {
+      opslaan(prefix + k, fields[k].value);
+    });
+  }
+
+  // Event listeners voor opslaan bij verandering competentie/bewijs
+  selectComp.addEventListener('change', () => {
+    laadStarrData();
+  });
+  selectBew.addEventListener('change', () => {
+    laadStarrData();
+  });
+
+  // Bind input listeners op alle velden voor real-time autosave
+  Object.keys(fields).forEach(k => {
+    fields[k].addEventListener('input', () => {
+      slaStarrData();
+    });
+  });
+
+  // Initieel inladen
+  laadStarrData();
+
+  // 3. Kopieerknop logic
+  const btnCopy = document.getElementById('btn-copy');
+  const toast = document.getElementById('copy-toast');
+
+  btnCopy.addEventListener('click', () => {
+    const compText = selectComp.options[selectComp.selectedIndex].text;
+    const bewText = selectBew.options[selectBew.selectedIndex].text;
+    
+    let formattedText = `EVC PORTFOLIO - STARR REFLECTIE\n`;
+    formattedText += `Competentie: ${compText}\n`;
+    formattedText += `Onderdeel: ${bewText}\n`;
+    formattedText += `========================================\n\n`;
+    
+    formattedText += `SITUATIE (S):\n`;
+    formattedText += `${fields.s.value || '(Nog niet ingevuld)'}\n\n`;
+    
+    formattedText += `TAAK (T):\n`;
+    formattedText += `${fields.t.value || '(Nog niet ingevuld)'}\n\n`;
+    
+    formattedText += `ACTIE (A):\n`;
+    formattedText += `${fields.a.value || '(Nog niet ingevuld)'}\n\n`;
+    
+    formattedText += `RESULTAAT (R):\n`;
+    formattedText += `${fields.r1.value || '(Nog niet ingevuld)'}\n\n`;
+    
+    formattedText += `REFLECTIE (R):\n`;
+    formattedText += `${fields.r2.value || '(Nog niet ingevuld)'}\n`;
+
+    navigator.clipboard.writeText(formattedText).then(() => {
+      // Toon toast
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }).catch(err => {
+      alert('Kopiëren is mislukt. Kopieer handmatig de tekst uit de velden.');
+    });
+  });
+
+  // Clear knop logic
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    if (confirm('Weet je zeker dat je alle velden voor deze STARR-reflectie leeg wilt maken? Dit kan niet ongedaan worden gemaakt.')) {
+      Object.keys(fields).forEach(k => {
+        fields[k].value = '';
+      });
+      slaStarrData();
+    }
+  });
+});
+</script>
+</body>
+</html>

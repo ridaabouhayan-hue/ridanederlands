@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVC NT2 Portfoliosite : Documentenkluis</title>
+  <link rel="stylesheet" href="assets/stijl.css">
+  <style>
+    main {
+      max-width: 1080px;
+      margin: 2rem auto;
+      padding: 0 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav></nav>
+
+<header class="hero">
+  <div class="hero-binnen">
+    <span class="badge">Dossieropslag</span>
+    <h1>Mijn Documentenkluis</h1>
+    <p>Upload en bewaar hier belangrijke handleidingen, sjablonen en je bewijsstukken. Bestanden worden veilig lokaal opgeslagen in je browser (maximaal 4 MB). Grote bestanden zoals lesvideo's kun je het beste linken via Google Drive.</p>
+  </div>
+</header>
+
+<main>
+  <div class="kluis">
+    <label class="knop" for="doc-upload">Bestand toevoegen</label>
+    <input type="file" id="doc-upload" multiple>
+    <p style="font-size:.8rem;color:var(--tekst-zacht);margin-top:.6rem">Ruimte gebruikt: <span id="kluis-ruimte">0 kB</span> van ca. 4 MB</p>
+    <ul id="doc-lijst"></ul>
+  </div>
+</main>
+
+<footer>
+  EVC-voorbereidingsdashboard van Rida Abouhayan &middot; Y&amp;S Coaching &middot; gebouwd voor het BVNT2-traject Competent NT2-docent
+</footer>
+
+<script src="assets/kern.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  var MAX_TOTAAL = 4 * 1024 * 1024; // ~4 MB
+  
+  function docIndex(){
+    try { return JSON.parse(ophalen('evc_docs')||'[]'); } catch(e){ return []; }
+  }
+  function bewaarIndex(lijst){ opslaan('evc_docs', JSON.stringify(lijst)); }
+  
+  function formatKb(bytes){
+    if(bytes > 1024*1024) return (bytes/1024/1024).toFixed(1)+' MB';
+    return Math.max(1, Math.round(bytes/1024))+' kB';
+  }
+  
+  function toonDocs(){
+    var lijst = docIndex();
+    var ul = document.getElementById('doc-lijst');
+    ul.innerHTML = '';
+    var totaal = 0;
+    
+    lijst.forEach(function(doc, i){
+      totaal += doc.grootte || 0;
+      var li = document.createElement('li');
+      var info = document.createElement('div');
+      info.innerHTML = '<span class="doc-naam"></span><br><span class="doc-meta"></span>';
+      info.querySelector('.doc-naam').textContent = doc.naam;
+      info.querySelector('.doc-meta').textContent = formatKb(doc.grootte) + ' \u00b7 toegevoegd ' + doc.datum;
+      
+      var acties = document.createElement('div');
+      acties.style.display = 'flex'; acties.style.gap = '.5rem';
+      
+      var a = document.createElement('a');
+      a.textContent = 'Openen';
+      a.href = ophalen('evc_doc_'+doc.id) || '#';
+      a.download = doc.naam;
+      
+      var del = document.createElement('button');
+      del.textContent = 'Verwijderen';
+      del.addEventListener('click', function(){
+        if(confirm('"' + doc.naam + '" verwijderen uit de kluis?')){
+          verwijderen('evc_doc_' + doc.id);
+          var nieuw = docIndex().filter(function(d){ return d.id !== doc.id; });
+          bewaarIndex(nieuw);
+          toonDocs();
+        }
+      });
+      
+      acties.appendChild(a); acties.appendChild(del);
+      li.appendChild(info); li.appendChild(acties);
+      ul.appendChild(li);
+    });
+    
+    document.getElementById('kluis-ruimte').textContent = formatKb(totaal);
+  }
+  
+  document.getElementById('doc-upload').addEventListener('change', function(e){
+    var files = Array.prototype.slice.call(e.target.files);
+    var lijst = docIndex();
+    var totaal = lijst.reduce(function(s,d){ return s + (d.grootte||0); }, 0);
+    var wachtrij = files.length;
+    
+    files.forEach(function(file){
+      if(totaal + file.size > MAX_TOTAAL){
+        alert('"' + file.name + '" past niet meer (limiet ca. 4 MB totaal). Bewaar grote bestanden in Google Drive.');
+        wachtrij--; if(wachtrij===0){ toonDocs(); }
+        return;
+      }
+      totaal += file.size;
+      var lezer = new FileReader();
+      lezer.onload = function(){
+        var id = Date.now() + '_' + Math.random().toString(36).slice(2,7);
+        try {
+          opslaan('evc_doc_'+id, lezer.result);
+          lijst.push({ id:id, naam:file.name, grootte:file.size, datum:new Date().toLocaleDateString('nl-NL') });
+          bewaarIndex(lijst);
+        } catch(err){
+          alert('Opslaan van "' + file.name + '" is mislukt. Waarschijnlijk is de opslag vol.');
+        }
+        wachtrij--; if(wachtrij===0){ toonDocs(); }
+      };
+      lezer.onerror = function(){ wachtrij--; if(wachtrij===0){ toonDocs(); } };
+      lezer.readAsDataURL(file);
+    });
+    e.target.value = '';
+  });
+  
+  toonDocs();
+});
+</script>
+</body>
+</html>
