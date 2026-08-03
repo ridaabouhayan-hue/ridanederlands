@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NT2 A1 - Spreekoefening: Na de vakantie - spreekkaarten voor twee personen. Oefen een gesprek na een lange vakantie.">
+    <title>Spreekoefening: Na de vakantie - NT2 A1</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --toets-bg: #f0faff; --toets-accent: #0ea5e9; }
+        [data-theme="dark"] { --toets-bg: #0f1729 !important; }
+        html, body { background: var(--toets-bg) !important; background-color: var(--toets-bg) !important; }
+        main.page-container { background: var(--toets-bg) !important; }
+        .language-bar { background: var(--toets-bg) !important; }
+        .page-header h1 { color: var(--toets-accent) !important; }
+        .back-link { color: var(--toets-accent) !important; }
+
+        .intro-banner {
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+            border-radius: 20px; padding: 28px 32px; margin-bottom: 32px;
+            color: #fff; display: flex; align-items: center; gap: 20px;
+            box-shadow: 0 8px 30px rgba(14,165,233,.25);
+        }
+        .intro-banner .emoji-big { font-size: 3.5rem; flex-shrink: 0; }
+        .intro-banner h2 { margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; }
+        .intro-banner p { margin: 0; font-size: .9rem; opacity: .92; line-height: 1.6; }
+
+        .instructie-box {
+            background: rgba(14,165,233,.08); border: 2px solid rgba(14,165,233,.25);
+            border-radius: 14px; padding: 18px 22px; margin-bottom: 28px;
+            font-size: .93rem; line-height: 1.7;
+        }
+        .instructie-box h3 { color: var(--toets-accent); margin: 0 0 10px; font-size: 1rem; }
+        .instructie-box ul { margin: 0; padding-left: 20px; }
+        .instructie-box li { margin: 4px 0; }
+
+        .deel-tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+        .deel-tab {
+            padding: 10px 20px; border-radius: 50px; border: 2px solid rgba(14,165,233,.35);
+            background: transparent; color: inherit; font-size: .88rem; font-weight: 700;
+            cursor: pointer; transition: all .2s;
+        }
+        .deel-tab:hover { border-color: var(--toets-accent); background: rgba(14,165,233,.08); }
+        .deel-tab.active { background: var(--toets-accent); border-color: var(--toets-accent); color: #fff; box-shadow: 0 4px 15px rgba(14,165,233,.3); }
+
+        .deel-section { display: none; }
+        .deel-section.active { display: block; }
+
+        .deel-header {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(14,165,233,.1), rgba(139,92,246,.08));
+            border-radius: 14px; border-left: 4px solid var(--toets-accent);
+        }
+        .deel-header .deel-icon { font-size: 2rem; }
+        .deel-header h2 { margin: 0 0 2px; font-size: 1.1rem; color: var(--toets-accent); }
+        .deel-header p { margin: 0; font-size: .85rem; opacity: .75; }
+
+        .kaart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
+        @media(max-width:660px) { .kaart-grid { grid-template-columns: 1fr; } }
+
+        .spreekkaart { border-radius: 18px; padding: 22px; transition: transform .2s; }
+        .spreekkaart:hover { transform: translateY(-3px); }
+        .spreekkaart.persoon-a { background: rgba(245,158,11,.07); border: 2px solid #f59e0b; box-shadow: 0 4px 18px rgba(245,158,11,.12); }
+        .spreekkaart.persoon-b { background: rgba(139,92,246,.07); border: 2px solid #8b5cf6; box-shadow: 0 4px 18px rgba(139,92,246,.12); }
+
+        .kaart-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1.5px dashed rgba(0,0,0,.1); }
+        [data-theme="dark"] .kaart-header { border-bottom-color: rgba(255,255,255,.1); }
+        .persoon-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .persoon-a .persoon-avatar { background: rgba(245,158,11,.15); border: 2px solid #f59e0b; }
+        .persoon-b .persoon-avatar { background: rgba(139,92,246,.15); border: 2px solid #8b5cf6; }
+        .persoon-naam { font-weight: 800; font-size: 1rem; line-height: 1.2; }
+        .persoon-a .persoon-naam { color: #d97706; }
+        .persoon-b .persoon-naam { color: #7c3aed; }
+        [data-theme="dark"] .persoon-a .persoon-naam { color: #fbbf24; }
+        [data-theme="dark"] .persoon-b .persoon-naam { color: #a78bfa; }
+        .persoon-rol { font-size: .75rem; opacity: .65; }
+
+        /* --- SECTIE-TITELTJES op de kaart --- */
+        .kaart-sectie-titel {
+            font-size: .72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: .6px; opacity: .5; margin: 12px 0 6px;
+        }
+
+        /* --- KAART ZIN (model-dialog) --- */
+        .kaart-zin {
+            background: rgba(255,255,255,.5); border-radius: 10px; padding: 11px 14px;
+            margin-bottom: 8px; font-size: .9rem; line-height: 1.65;
+            border-left: 3px solid transparent;
+        }
+        [data-theme="dark"] .kaart-zin { background: rgba(255,255,255,.05); }
+        .persoon-a .kaart-zin { border-left-color: #f59e0b; }
+        .persoon-b .kaart-zin { border-left-color: #8b5cf6; }
+        .kaart-zin .nl { font-weight: 600; }
+        .kaart-zin .hint { font-size: .78rem; opacity: .65; font-style: italic; margin-top: 2px; }
+
+        /* --- HULPZINNEN (model sentences blok) --- */
+        .hulpzinnen-blok {
+            margin-top: 12px; border-radius: 12px; padding: 12px 14px;
+            border: 1.5px dashed rgba(0,0,0,.12);
+        }
+        [data-theme="dark"] .hulpzinnen-blok { border-color: rgba(255,255,255,.12); }
+        .persoon-a .hulpzinnen-blok { background: rgba(245,158,11,.05); }
+        .persoon-b .hulpzinnen-blok { background: rgba(139,92,246,.05); }
+        .hulpzinnen-blok .blok-titel {
+            font-size: .72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: .6px; margin-bottom: 8px;
+        }
+        .persoon-a .hulpzinnen-blok .blok-titel { color: #b45309; }
+        .persoon-b .hulpzinnen-blok .blok-titel { color: #6d28d9; }
+        [data-theme="dark"] .persoon-a .hulpzinnen-blok .blok-titel { color: #fcd34d; }
+        [data-theme="dark"] .persoon-b .hulpzinnen-blok .blok-titel { color: #c4b5fd; }
+        .hulpzin-row {
+            display: flex; align-items: flex-start; gap: 8px;
+            font-size: .85rem; line-height: 1.55; padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,.05);
+        }
+        [data-theme="dark"] .hulpzin-row { border-bottom-color: rgba(255,255,255,.05); }
+        .hulpzin-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .hulpzin-zin { flex: 1; font-weight: 600; }
+        .hulpzin-uitleg { font-size: .78rem; opacity: .6; font-style: italic; }
+        .hz-speak-btn {
+            background: none; border: none; cursor: pointer; font-size: .95rem;
+            padding: 2px 4px; flex-shrink: 0; transition: transform .15s;
+        }
+        .hz-speak-btn:hover { transform: scale(1.2); }
+
+        /* --- HULPWOORDEN CHIPS --- */
+        .kaart-hulpwoorden { margin-top: 12px; }
+        .kaart-hulpwoorden .label { font-size: .72rem; font-weight: 800; opacity: .5; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+        .hulpwoord-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+        .chip { border-radius: 20px; padding: 3px 11px; font-size: .79rem; font-weight: 600; }
+        .persoon-a .chip { background: rgba(245,158,11,.12); color: #b45309; }
+        .persoon-b .chip { background: rgba(139,92,246,.12); color: #6d28d9; }
+        [data-theme="dark"] .persoon-a .chip { color: #fcd34d; }
+        [data-theme="dark"] .persoon-b .chip { color: #c4b5fd; }
+
+        /* --- GESPREK FLOW --- */
+        .gesprek-flow { background: rgba(0,0,0,.03); border-radius: 14px; padding: 18px; margin-bottom: 20px; }
+        [data-theme="dark"] .gesprek-flow { background: rgba(255,255,255,.03); }
+        .gesprek-flow h3 { font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; opacity: .6; margin: 0 0 12px; }
+        .flow-steps { display: flex; flex-direction: column; gap: 7px; }
+        .flow-step { display: flex; align-items: flex-start; gap: 10px; font-size: .87rem; line-height: 1.5; }
+        .stap-badge { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--toets-accent); color: #fff; font-size: .72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+        .stap-tekst strong { color: var(--toets-accent); }
+
+        /* --- TIP BOX --- */
+        .tip-box { background: rgba(16,185,129,.07); border: 2px solid rgba(16,185,129,.25); border-radius: 12px; padding: 14px 18px; font-size: .88rem; line-height: 1.6; margin-top: 16px; }
+        .tip-box strong { color: #059669; }
+        [data-theme="dark"] .tip-box strong { color: #34d399; }
+
+        /* --- VOORTGANGSBALK --- */
+        .progress-bar-wrap { margin-bottom: 24px; }
+        .progress-label { font-size: .82rem; font-weight: 700; opacity: .6; margin-bottom: 6px; }
+        .progress-track { height: 6px; background: rgba(0,0,0,.08); border-radius: 10px; overflow: hidden; }
+        [data-theme="dark"] .progress-track { background: rgba(255,255,255,.08); }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--toets-accent), #8b5cf6); border-radius: 10px; transition: width .4s ease; }
+
+        /* --- NAV KNOPPEN --- */
+        .nav-btns { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .nav-btn { padding: 10px 24px; border-radius: 50px; border: 2px solid var(--toets-accent); background: transparent; color: var(--toets-accent); font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+        .nav-btn:hover { background: var(--toets-accent); color: #fff; }
+        .nav-btn.primary { background: var(--toets-accent); color: #fff; }
+        .nav-btn.primary:hover { opacity: .85; }
+        .nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+        /* --- FINISH --- */
+        .finish-section { text-align: center; padding: 40px 20px; }
+        .finish-section .big-emoji { font-size: 4rem; margin-bottom: 16px; }
+        .finish-section h2 { font-size: 1.5rem; margin-bottom: 10px; color: var(--toets-accent); }
+        .finish-section p { font-size: .95rem; opacity: .8; line-height: 1.7; max-width: 500px; margin: 0 auto 24px; }
+        .restart-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: linear-gradient(135deg, var(--toets-accent), #8b5cf6); color: #fff; border: none; border-radius: 50px; font-size: .95rem; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+        .restart-btn:hover { opacity: .85; }
+
+        .speak-kaart-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 2px 5px; border-radius: 6px; transition: transform .15s; vertical-align: middle; }
+        .speak-kaart-btn:hover { transform: scale(1.2); }
+    </style>
+    <script>
+        (function() {
+            const t = localStorage.getItem('a1-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="language-bar" aria-label="Taalkeuze">
+        <button id="theme-toggle" class="lang-btn" style="cursor:pointer; border-color: var(--accent-purple); color: var(--accent-purple);">&#127763;</button>
+        <span class="label">&#127760; Taal:</span>
+        <span class="lang-btn active">&#127475;&#127473; Nederlands</span>
+    </nav>
+
+    <main class="page-container">
+        <a href="index.html" class="back-link">&larr; Terug naar Thema&apos;s</a>
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">Thema&apos;s</a><span>&rsaquo;</span><span>Spreekoefeningen</span></div>
+            <h1>&#127958; Na de vakantie</h1>
+            <p class="subtitle">Spreekkaarten &mdash; praat met een klasgenoot na een lange vakantie</p>
+        </header>
+
+        <div class="intro-banner">
+            <div class="emoji-big">&#9992;&#129309;</div>
+            <div>
+                <h2>Spreekoefening &mdash; Twee personen</h2>
+                <p>Jij en een klasgenoot zijn allebei terug van vakantie. Jullie zien elkaar voor het eerst weer. Hoe was de vakantie? Wat gaan jullie nu doen?</p>
+            </div>
+        </div>
+
+        <div class="instructie-box">
+            <h3>&#128203; Hoe werkt dit?</h3>
+            <ul>
+                <li>Werk samen met een klasgenoot: <strong style="color:#d97706">&#127937; Persoon A</strong> en <strong style="color:#7c3aed">&#128997; Persoon B</strong></li>
+                <li>Elke kaart toont wat jij zegt of vraagt</li>
+                <li>Gebruik de <strong>hulpzinnen</strong> als voorbeeld &mdash; pas ze aan!</li>
+                <li>Gebruik de <strong>hulpwoorden</strong> als je vastloopt</li>
+                <li>Klik op &#128266; om een zin te beluisteren</li>
+                <li>Wissel daarna van rol en doe het gesprek opnieuw!</li>
+            </ul>
+        </div>
+
+        <div class="progress-bar-wrap">
+            <div class="progress-label" id="progress-label">Deel 1 van 4 &mdash; Begroeting</div>
+            <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:25%"></div></div>
+        </div>
+
+        <div class="deel-tabs">
+            <button class="deel-tab active" onclick="goToDeel(0)" id="tab-0">1&#65039;&#8419; Begroeting</button>
+            <button class="deel-tab" onclick="goToDeel(1)" id="tab-1">2&#65039;&#8419; De vakantie</button>
+            <button class="deel-tab" onclick="goToDeel(2)" id="tab-2">3&#65039;&#8419; Activiteiten</button>
+            <button class="deel-tab" onclick="goToDeel(3)" id="tab-3">4&#65039;&#8419; Na de vakantie</button>
+        </div>
+
+        <!-- ===== DEEL 1: BEGROETING ===== -->
+        <section class="deel-section active" id="deel-0">
+            <div class="deel-header">
+                <div class="deel-icon">&#128075;</div>
+                <div>
+                    <h2>Deel 1 &mdash; Begroeting &amp; Hoe gaat het?</h2>
+                    <p>Jullie zien elkaar na een lange vakantie. Zeg hallo en vraag hoe het gaat.</p>
+                </div>
+            </div>
+            <div class="gesprek-flow">
+                <h3>&#128221; Gespreksflow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step"><div class="stap-badge">1</div><div class="stap-tekst"><strong>Persoon A</strong> ziet Persoon B en zegt hallo</div></div>
+                    <div class="flow-step"><div class="stap-badge">2</div><div class="stap-tekst"><strong>Persoon B</strong> antwoordt en vraagt hoe het gaat</div></div>
+                    <div class="flow-step"><div class="stap-badge">3</div><div class="stap-tekst"><strong>Persoon A</strong> antwoordt en zegt dat hij/zij net terug is van vakantie</div></div>
+                    <div class="flow-step"><div class="stap-badge">4</div><div class="stap-tekst"><strong>Persoon B</strong> reageert verrast en zegt dat hij/zij ook net terug is</div></div>
+                </div>
+            </div>
+            <div class="kaart-grid">
+
+                <!-- A: BEGROETING -->
+                <div class="spreekkaart persoon-a">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128522;</div>
+                        <div><div class="persoon-naam">&#127937; Persoon A &mdash; Jij</div><div class="persoon-rol">Begin het gesprek</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij zegt / vraagt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;H&eacute;! Lang niet gezien! Hoe gaat het met jou?&ldquo; <button class="speak-kaart-btn" onclick="speak('Hé! Lang niet gezien! Hoe gaat het met jou?')">&#128266;</button></div>
+                        <div class="hint">begin het gesprek</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Goed, dank je wel! Ik ben net terug van vakantie.&ldquo; <button class="speak-kaart-btn" onclick="speak('Goed, dank je wel! Ik ben net terug van vakantie.')">&#128266;</button></div>
+                        <div class="hint">nadat B vraagt hoe het gaat</div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Hallo! Wat fijn om je weer te zien!&ldquo; <button class="hz-speak-btn" onclick="speak('Hallo! Wat fijn om je weer te zien!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Het gaat goed met mij, dank je.&ldquo; <button class="hz-speak-btn" onclick="speak('Het gaat goed met mij, dank je.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik ben pas terug. Gisteren ben ik thuis gekomen.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik ben pas terug. Gisteren ben ik thuis gekomen.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik ben een beetje moe, maar ik ben blij!&ldquo; <button class="hz-speak-btn" onclick="speak('Ik ben een beetje moe, maar ik ben blij!')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128205; Woordenschat</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">hallo / h&eacute;</span><span class="chip">lang niet gezien</span><span class="chip">hoe gaat het?</span><span class="chip">goed</span><span class="chip">net terug</span><span class="chip">vakantie</span><span class="chip">moe</span><span class="chip">blij</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B: BEGROETING -->
+                <div class="spreekkaart persoon-b">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128516;</div>
+                        <div><div class="persoon-naam">&#128997; Persoon B &mdash; Klasgenoot</div><div class="persoon-rol">Reageer en vraag terug</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij zegt / vraagt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Hallo! Goed, dank je! En met jou?&ldquo; <button class="speak-kaart-btn" onclick="speak('Hallo! Goed, dank je! En met jou?')">&#128266;</button></div>
+                        <div class="hint">na de begroeting van A</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Oh, wat leuk! Ik ben ook net terug. Wanneer ben jij thuisgekomen?&ldquo; <button class="speak-kaart-btn" onclick="speak('Oh, wat leuk! Ik ben ook net terug. Wanneer ben jij thuisgekomen?')">&#128266;</button></div>
+                        <div class="hint">nadat A zegt dat hij/zij terug is</div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Met mij ook goed, dank je wel!&ldquo; <button class="hz-speak-btn" onclick="speak('Met mij ook goed, dank je wel!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Wat leuk! Ik ook! Ik ben [gisteren / vrijdag] teruggekomen.&ldquo; <button class="hz-speak-btn" onclick="speak('Wat leuk! Ik ook! Ik ben gisteren teruggekomen.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Oh, echt? Hoe was je vakantie?&ldquo; <button class="hz-speak-btn" onclick="speak('Oh, echt? Hoe was je vakantie?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Jij ook op vakantie geweest? Geweldig!&ldquo; <button class="hz-speak-btn" onclick="speak('Jij ook op vakantie geweest? Geweldig!')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128205; Woordenschat</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">goed, dank je</span><span class="chip">en met jou?</span><span class="chip">wat leuk!</span><span class="chip">ook terug</span><span class="chip">wanneer?</span><span class="chip">gisteren</span><span class="chip">vrijdag</span><span class="chip">geweldig</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box"><strong>&#128161; Tip:</strong> &ldquo;Lang niet gezien!&rdquo; gebruik je als je iemand lang niet hebt gezien. Je kunt ook zeggen: &ldquo;Wat fijn om je weer te zien!&rdquo; &mdash; &ldquo;Alles goed?&rdquo; &mdash; &ldquo;Hoe is het?&rdquo;</div>
+            <div class="nav-btns">
+                <button class="nav-btn" disabled>&larr; Vorige</button>
+                <button class="nav-btn primary" onclick="goToDeel(1)">Volgende: De vakantie &rarr;</button>
+            </div>
+        </section>
+
+        <!-- ===== DEEL 2: DE VAKANTIE ===== -->
+        <section class="deel-section" id="deel-1">
+            <div class="deel-header">
+                <div class="deel-icon">&#127757;</div>
+                <div>
+                    <h2>Deel 2 &mdash; De vakantie: waar, hoe lang, met wie?</h2>
+                    <p>Vraag en antwoord over de vakantie.</p>
+                </div>
+            </div>
+            <div class="gesprek-flow">
+                <h3>&#128221; Gespreksflow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step"><div class="stap-badge">1</div><div class="stap-tekst"><strong>Persoon B</strong> vraagt waar Persoon A op vakantie was</div></div>
+                    <div class="flow-step"><div class="stap-badge">2</div><div class="stap-tekst"><strong>Persoon A</strong> vertelt waar hij/zij was en hoe lang</div></div>
+                    <div class="flow-step"><div class="stap-badge">3</div><div class="stap-tekst"><strong>Persoon B</strong> vraagt met wie A op vakantie was</div></div>
+                    <div class="flow-step"><div class="stap-badge">4</div><div class="stap-tekst"><strong>Persoon A</strong> antwoordt en vraagt: <em>&ldquo;En jij?&rdquo;</em></div></div>
+                </div>
+            </div>
+            <div class="kaart-grid">
+
+                <!-- A: VAKANTIE -->
+                <div class="spreekkaart persoon-a">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128522;</div>
+                        <div><div class="persoon-naam">&#127937; Persoon A &mdash; Vertel</div><div class="persoon-rol">Beantwoord de vragen van B</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij vertelt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik was in [land / stad]. Ik was [twee weken] op vakantie.&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik was in Marokko. Ik was twee weken op vakantie.')">&#128266;</button></div>
+                        <div class="hint">kies een land of stad, zeg hoe lang</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik was met [mijn familie / mijn man / mijn vrouw].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik was met mijn familie.')">&#128266;</button></div>
+                        <div class="hint">na de vraag van B: met wie?</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;En jij? Waar was jij op vakantie?&ldquo; <button class="speak-kaart-btn" onclick="speak('En jij? Waar was jij op vakantie?')">&#128266;</button></div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik was op het strand in Spanje, drie weken.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik was op het strand in Spanje, drie weken.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik was thuis. Ik ben niet weg geweest.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik was thuis. Ik ben niet weg geweest.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik was in Turkije, met mijn man en de kinderen.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik was in Turkije, met mijn man en de kinderen.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik was alleen, tien dagen, in een stad.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik was alleen, tien dagen, in een stad.')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#127988; Landen &amp; plaatsen</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">Marokko</span><span class="chip">Turkije</span><span class="chip">Spanje</span><span class="chip">Nederland</span><span class="chip">het strand</span><span class="chip">de bergen</span><span class="chip">een stad</span><span class="chip">thuis</span>
+                        </div>
+                        <div style="margin-top:7px"></div>
+                        <div class="label">&#9201; Hoe lang?</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">&eacute;&eacute;n week</span><span class="chip">twee weken</span><span class="chip">tien dagen</span><span class="chip">een maand</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B: VAKANTIE -->
+                <div class="spreekkaart persoon-b">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128516;</div>
+                        <div><div class="persoon-naam">&#128997; Persoon B &mdash; Vraag</div><div class="persoon-rol">Stel vragen aan A en vertel ook</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij vraagt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Waar was jij op vakantie?&ldquo; <button class="speak-kaart-btn" onclick="speak('Waar was jij op vakantie?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Hoe lang was jij weg?&ldquo; <button class="speak-kaart-btn" onclick="speak('Hoe lang was jij weg?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Met wie was jij op vakantie?&ldquo; <button class="speak-kaart-btn" onclick="speak('Met wie was jij op vakantie?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik was in [land], [hoe lang], met [wie].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik was in Turkije, twee weken, met mijn familie.')">&#128266;</button></div>
+                        <div class="hint">als A vraagt: vertel ook over jouw vakantie!</div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Was het ver?&ldquo; <button class="hz-speak-btn" onclick="speak('Was het ver?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Oh, dat is mooi! Hoe was het daar?&ldquo; <button class="hz-speak-btn" onclick="speak('Oh, dat is mooi! Hoe was het daar?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Was het warm daar?&ldquo; <button class="hz-speak-btn" onclick="speak('Was het warm daar?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik was in Marokko, twee weken, met mijn vrouw en de kinderen.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik was in Marokko, twee weken, met mijn vrouw en de kinderen.')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128101; Met wie?</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">mijn familie</span><span class="chip">mijn man</span><span class="chip">mijn vrouw</span><span class="chip">mijn kinderen</span><span class="chip">mijn vriend</span><span class="chip">mijn vriendin</span><span class="chip">alleen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box"><strong>&#128161; Grammatica:</strong> In het verleden gebruik je <em>&ldquo;was&rdquo;</em>: <em>Ik was in Marokko.</em> &nbsp;|&nbsp; <em>Wij waren op het strand.</em> &nbsp;|&nbsp; Vraag: <em>Waar was jij? &mdash; Hoe lang? &mdash; Met wie?</em></div>
+            <div class="nav-btns">
+                <button class="nav-btn" onclick="goToDeel(0)">&larr; Vorige</button>
+                <button class="nav-btn primary" onclick="goToDeel(2)">Volgende: Activiteiten &rarr;</button>
+            </div>
+        </section>
+
+        <!-- ===== DEEL 3: ACTIVITEITEN ===== -->
+        <section class="deel-section" id="deel-2">
+            <div class="deel-header">
+                <div class="deel-icon">&#127944;</div>
+                <div>
+                    <h2>Deel 3 &mdash; Wat heb jij gedaan?</h2>
+                    <p>Vertel wat jullie deden op vakantie. Leuk? Warm? Mooi?</p>
+                </div>
+            </div>
+            <div class="gesprek-flow">
+                <h3>&#128221; Gespreksflow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step"><div class="stap-badge">1</div><div class="stap-tekst"><strong>Persoon A</strong> vraagt wat B deed op vakantie</div></div>
+                    <div class="flow-step"><div class="stap-badge">2</div><div class="stap-tekst"><strong>Persoon B</strong> vertelt 2 of 3 activiteiten</div></div>
+                    <div class="flow-step"><div class="stap-badge">3</div><div class="stap-tekst"><strong>Persoon A</strong> vraagt of het leuk was</div></div>
+                    <div class="flow-step"><div class="stap-badge">4</div><div class="stap-tekst"><strong>Persoon B</strong> zegt hoe het was en vraagt terug aan A</div></div>
+                </div>
+            </div>
+            <div class="kaart-grid">
+
+                <!-- A: ACTIVITEITEN -->
+                <div class="spreekkaart persoon-a">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128522;</div>
+                        <div><div class="persoon-naam">&#127937; Persoon A &mdash; Vraag</div><div class="persoon-rol">Vraag naar activiteiten</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij vraagt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Wat heb jij gedaan op vakantie?&ldquo; <button class="speak-kaart-btn" onclick="speak('Wat heb jij gedaan op vakantie?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Was het leuk?&ldquo; <button class="speak-kaart-btn" onclick="speak('Was het leuk?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik heb ook veel gedaan! Ik heb [gezwommen / gewandeld / gegeten].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik heb ook veel gedaan! Ik heb gezwommen en gegeten.')">&#128266;</button></div>
+                        <div class="hint">vertel ook wat jij hebt gedaan</div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Heb jij veel gedaan?&ldquo; <button class="hz-speak-btn" onclick="speak('Heb jij veel gedaan?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Heb jij veel gezwommen? Was het water warm?&ldquo; <button class="hz-speak-btn" onclick="speak('Heb jij veel gezwommen? Was het water warm?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik heb veel geslapen. De vakantie was heerlijk!&ldquo; <button class="hz-speak-btn" onclick="speak('Ik heb veel geslapen. De vakantie was heerlijk!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Wij hebben elke dag gewandeld. Het was mooi.&ldquo; <button class="hz-speak-btn" onclick="speak('Wij hebben elke dag gewandeld. Het was mooi.')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128227; Werkwoorden (voltooid deelwoord)</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">zwemmen &rarr; gezwommen</span>
+                            <span class="chip">wandelen &rarr; gewandeld</span>
+                            <span class="chip">eten &rarr; gegeten</span>
+                            <span class="chip">slapen &rarr; geslapen</span>
+                            <span class="chip">spelen &rarr; gespeeld</span>
+                            <span class="chip">lezen &rarr; gelezen</span>
+                            <span class="chip">winkelen &rarr; gewinkeld</span>
+                            <span class="chip">koken &rarr; gekookt</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B: ACTIVITEITEN -->
+                <div class="spreekkaart persoon-b">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128516;</div>
+                        <div><div class="persoon-naam">&#128997; Persoon B &mdash; Vertel</div><div class="persoon-rol">Beschrijf jouw vakantie</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij vertelt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik heb veel [gezwommen / gewandeld / gespeeld met de kinderen].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik heb veel gezwommen en gewandeld.')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ja, het was heel leuk! Het was warm en mooi.&ldquo; <button class="speak-kaart-btn" onclick="speak('Ja, het was heel leuk! Het was warm en mooi.')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;En jij? Wat heb jij gedaan?&ldquo; <button class="speak-kaart-btn" onclick="speak('En jij? Wat heb jij gedaan?')">&#128266;</button></div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Wij hebben elke dag op het strand gezeten.&ldquo; <button class="hz-speak-btn" onclick="speak('Wij hebben elke dag op het strand gezeten.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;De kinderen hebben veel gespeeld. Zij waren blij!&ldquo; <button class="hz-speak-btn" onclick="speak('De kinderen hebben veel gespeeld. Zij waren blij!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Het was een beetje koud, maar toch leuk.&ldquo; <button class="hz-speak-btn" onclick="speak('Het was een beetje koud, maar toch leuk.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Wij hebben lekker gegeten. Het eten was heerlijk!&ldquo; <button class="hz-speak-btn" onclick="speak('Wij hebben lekker gegeten. Het eten was heerlijk!')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#127774; Hoe was het?</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">leuk</span><span class="chip">niet leuk</span><span class="chip">warm</span><span class="chip">koud</span><span class="chip">mooi</span><span class="chip">druk</span><span class="chip">rustig</span><span class="chip">gezellig</span><span class="chip">moe</span><span class="chip">heerlijk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box"><strong>&#128161; Grammatica:</strong> <em>&ldquo;hebben + voltooid deelwoord&rdquo;</em>: <em>Ik heb gezwommen.</em> &nbsp;|&nbsp; <em>Wij hebben gegeten.</em> &nbsp;|&nbsp; <em>De kinderen hebben gespeeld.</em></div>
+            <div class="nav-btns">
+                <button class="nav-btn" onclick="goToDeel(1)">&larr; Vorige</button>
+                <button class="nav-btn primary" onclick="goToDeel(3)">Volgende: Na de vakantie &rarr;</button>
+            </div>
+        </section>
+
+        <!-- ===== DEEL 4: NA DE VAKANTIE ===== -->
+        <section class="deel-section" id="deel-3">
+            <div class="deel-header">
+                <div class="deel-icon">&#128197;</div>
+                <div>
+                    <h2>Deel 4 &mdash; Ok&eacute;, vakantie voorbij! Wat nu?</h2>
+                    <p>De vakantie is klaar. Wat is het plan? School, werk, cursus?</p>
+                </div>
+            </div>
+            <div class="gesprek-flow">
+                <h3>&#128221; Gespreksflow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step"><div class="stap-badge">1</div><div class="stap-tekst"><strong>Persoon A</strong> vraagt wat B nu gaat doen: school of werk?</div></div>
+                    <div class="flow-step"><div class="stap-badge">2</div><div class="stap-tekst"><strong>Persoon B</strong> vertelt het plan (school / werk / cursus)</div></div>
+                    <div class="flow-step"><div class="stap-badge">3</div><div class="stap-tekst"><strong>Persoon B</strong> vraagt ook aan A: <em>&ldquo;En jij?&rdquo;</em></div></div>
+                    <div class="flow-step"><div class="stap-badge">4</div><div class="stap-tekst"><strong>Persoon A</strong> vertelt het plan. Beiden wensen succes en zeggen doei!</div></div>
+                </div>
+            </div>
+            <div class="kaart-grid">
+
+                <!-- A: NA DE VAKANTIE -->
+                <div class="spreekkaart persoon-a">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128522;</div>
+                        <div><div class="persoon-naam">&#127937; Persoon A &mdash; Vraag &amp; Vertel</div><div class="persoon-rol">Vraag naar het plan van B</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij vraagt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ok&eacute;, de vakantie is voorbij! Wat ga jij nu doen? Ga jij naar school of ga jij werken?&ldquo; <button class="speak-kaart-btn" onclick="speak('Oké, de vakantie is voorbij! Wat ga jij nu doen? Ga jij naar school of ga jij werken?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik ga naar de cursus Nederlands. Elke [maandag en woensdag].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik ga naar de cursus Nederlands. Elke maandag en woensdag.')">&#128266;</button></div>
+                        <div class="hint">vertel jouw plan nadat B vraagt</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Veel succes! Tot snel!&ldquo; <button class="speak-kaart-btn" onclick="speak('Veel succes! Tot snel!')">&#128266;</button></div>
+                        <div class="hint">aan het eind van het gesprek</div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ga jij al snel weer beginnen?&ldquo; <button class="hz-speak-btn" onclick="speak('Ga jij al snel weer beginnen?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik ga volgende week weer naar de cursus. Ik kijk ernaar uit!&ldquo; <button class="hz-speak-btn" onclick="speak('Ik ga volgende week weer naar de cursus. Ik kijk ernaar uit!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik zoek werk. Heb jij een tip voor mij?&ldquo; <button class="hz-speak-btn" onclick="speak('Ik zoek werk. Heb jij een tip voor mij?')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik ben blij dat de cursus weer begint!&ldquo; <button class="hz-speak-btn" onclick="speak('Ik ben blij dat de cursus weer begint!')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128172; Plannen</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">naar school gaan</span><span class="chip">werken</span><span class="chip">cursus Nederlands</span><span class="chip">thuis blijven</span><span class="chip">werk zoeken</span><span class="chip">stage doen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B: NA DE VAKANTIE -->
+                <div class="spreekkaart persoon-b">
+                    <div class="kaart-header">
+                        <div class="persoon-avatar">&#128516;</div>
+                        <div><div class="persoon-naam">&#128997; Persoon B &mdash; Antwoord &amp; Vraag</div><div class="persoon-rol">Vertel jouw plan, vraag terug</div></div>
+                    </div>
+
+                    <div class="kaart-sectie-titel">&#128172; Jij antwoordt:</div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Ik ga weer naar [school / de cursus / het werk]. Het begint [maandag / volgende week].&ldquo; <button class="speak-kaart-btn" onclick="speak('Ik ga weer naar school. Het begint maandag.')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;En jij? Wat is jouw plan?&ldquo; <button class="speak-kaart-btn" onclick="speak('En jij? Wat is jouw plan?')">&#128266;</button></div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Jij ook? Fijn! Tot [maandag / de cursus]!&ldquo; <button class="speak-kaart-btn" onclick="speak('Jij ook? Fijn! Tot maandag!')">&#128266;</button></div>
+                        <div class="hint">als jullie hetzelfde plan hebben</div>
+                    </div>
+                    <div class="kaart-zin">
+                        <div class="nl">&bdquo;Veel succes! Doei!&ldquo; <button class="speak-kaart-btn" onclick="speak('Veel succes! Doei!')">&#128266;</button></div>
+                    </div>
+
+                    <div class="hulpzinnen-blok">
+                        <div class="blok-titel">&#128161; Hulpzinnen &mdash; variaties</div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik ga vrijdag beginnen met werken. Ik heb een nieuwe baan!&ldquo; <button class="hz-speak-btn" onclick="speak('Ik ga vrijdag beginnen met werken. Ik heb een nieuwe baan!')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Ik weet het nog niet. Ik rust nog even uit.&ldquo; <button class="hz-speak-btn" onclick="speak('Ik weet het nog niet. Ik rust nog even uit.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Mijn kinderen gaan weer naar school op maandag.&ldquo; <button class="hz-speak-btn" onclick="speak('Mijn kinderen gaan weer naar school op maandag.')">&#128266;</button></div>
+                        </div>
+                        <div class="hulpzin-row">
+                            <div class="hulpzin-zin">&bdquo;Tot maandag bij de cursus! Tot snel!&ldquo; <button class="hz-speak-btn" onclick="speak('Tot maandag bij de cursus! Tot snel!')">&#128266;</button></div>
+                        </div>
+                    </div>
+
+                    <div class="kaart-hulpwoorden">
+                        <div class="label">&#128197; Wanneer?</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">maandag</span><span class="chip">volgende week</span><span class="chip">morgen</span><span class="chip">overmorgen</span><span class="chip">vrijdag</span><span class="chip">volgende maand</span>
+                        </div>
+                        <div style="margin-top:7px"></div>
+                        <div class="label">&#128075; Afscheid</div>
+                        <div class="hulpwoord-chips">
+                            <span class="chip">dag!</span><span class="chip">doei!</span><span class="chip">tot snel</span><span class="chip">tot maandag</span><span class="chip">veel succes!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box"><strong>&#128161; Tip:</strong> Gebruik <em>&ldquo;gaan + infinitief&rdquo;</em> voor plannen: <em>Ik ga werken. &mdash; Ik ga naar school. &mdash; Ik ga de cursus doen.</em> &nbsp;|&nbsp; <em>Wanneer begint het? &mdash; Het begint maandag.</em></div>
+            <div class="nav-btns">
+                <button class="nav-btn" onclick="goToDeel(2)">&larr; Vorige</button>
+                <button class="nav-btn primary" onclick="showFinish()">&#10003; Klaar!</button>
+            </div>
+        </section>
+
+        <!-- ===== KLAAR ===== -->
+        <section class="deel-section" id="deel-finish">
+            <div class="finish-section">
+                <div class="big-emoji">&#127881;</div>
+                <h2>Geweldig gedaan!</h2>
+                <p>Jullie hebben het hele gesprek geoefend! Van begroeting tot vakantieplannen en de toekomst. Nu wisselen jullie van rol en doen het gesprek nog een keer.</p>
+                <div style="margin-bottom:24px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+                    <div style="padding:16px 28px;border-radius:14px;background:rgba(245,158,11,.08);border:2px solid rgba(245,158,11,.3);font-size:.9rem;max-width:420px;width:100%;text-align:left;">
+                        <strong style="color:#d97706">&#127937; Persoon A</strong> wordt nu <strong style="color:#7c3aed">&#128997; Persoon B</strong>
+                    </div>
+                    <div style="padding:16px 28px;border-radius:14px;background:rgba(139,92,246,.08);border:2px solid rgba(139,92,246,.3);font-size:.9rem;max-width:420px;width:100%;text-align:left;">
+                        <strong style="color:#7c3aed">&#128997; Persoon B</strong> wordt nu <strong style="color:#d97706">&#127937; Persoon A</strong>
+                    </div>
+                </div>
+                <button class="restart-btn" onclick="goToDeel(0)">&#128260; Opnieuw beginnen</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">NT2 A1 Leerplatform &copy; 2026</footer>
+
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (!themeToggle) return;
+            themeToggle.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') || 'light';
+                let newTheme = theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('a1-theme', newTheme);
+            });
+        })();
+
+        const deelTitles = [
+            'Deel 1 van 4 — Begroeting',
+            'Deel 2 van 4 — De vakantie',
+            'Deel 3 van 4 — Activiteiten',
+            'Deel 4 van 4 — Na de vakantie'
+        ];
+        const deelPct = [25, 50, 75, 100];
+
+        function goToDeel(idx) {
+            document.querySelectorAll('.deel-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.deel-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('deel-' + idx).classList.add('active');
+            const tab = document.getElementById('tab-' + idx);
+            if (tab) tab.classList.add('active');
+            document.getElementById('progress-label').textContent = deelTitles[idx] || '';
+            document.getElementById('progress-fill').style.width = (deelPct[idx] || 100) + '%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showFinish() {
+            document.querySelectorAll('.deel-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.deel-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('deel-finish').classList.add('active');
+            document.getElementById('progress-label').textContent = 'Klaar! &#127881;';
+            document.getElementById('progress-fill').style.width = '100%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            setTimeout(() => {
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'nl-NL';
+                u.rate = 0.85;
+                u.pitch = 1;
+                window.speechSynthesis.speak(u);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
