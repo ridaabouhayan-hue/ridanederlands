@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -274,6 +274,58 @@
             transition: var(--transition);
         }
         .speed-btn.active { background: white; color: var(--accent); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+        /* Language Selector Styling */
+        .lang-selector-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .lang-selector-label {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+        .lang-flags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .flag-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dark);
+        }
+        .flag-btn:hover {
+            background: #e2e8f0;
+        }
+        .flag-btn.active {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .qa-translation, .dialogue-translation {
+            display: block;
+            font-size: 0.82rem;
+            font-style: italic;
+            color: #64748b;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
         @media (max-width: 600px) {
             .qa-header-row, .qa-row { grid-template-columns: 1fr; }
             .steps-row { flex-direction: column; }
@@ -287,73 +339,69 @@
     <a href="../praatplaat.html" class="back-btn">← Terug naar alle thema's</a>
 
     <header>
-        <h1 class="main-title">🏖️ Na de vakantie</h1>
-        <p class="subtitle">Oefen een gesprek over de vakantie met een klasgenoot</p>
+        <h1 class="main-title" id="txt-title">🏖️ Na de vakantie</h1>
+        <p class="subtitle" id="txt-subtitle">Oefen een gesprek over de vakantie met een klasgenoot</p>
     </header>
 
     <!-- INSTRUCTIE -->
     <div class="instructions-card">
-        <div class="instructions-title">💡 Hoe werkt het?</div>
+        <div class="lang-selector-container">
+            <span class="lang-selector-label" id="txt-instructionsLabel">🌐 Kies je taal / Choose language:</span>
+            <div class="lang-flags">
+                <button class="flag-btn active" onclick="switchLanguage('nl')" title="Nederlands">🇳🇱 NL</button>
+                <button class="flag-btn" onclick="switchLanguage('en')" title="English">🇬🇧 EN</button>
+                <button class="flag-btn" onclick="switchLanguage('tr')" title="Türkçe">🇹🇷 TR</button>
+                <button class="flag-btn" onclick="switchLanguage('ar')" title="العربية">🇸🇾 AR</button>
+                <button class="flag-btn" onclick="switchLanguage('ps')" title="پښتو">🇦🇫 PS</button>
+                <button class="flag-btn" onclick="switchLanguage('zh')" title="中文">🇨🇳 ZH</button>
+            </div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+        <div class="instructions-title" id="txt-howItWorks">💡 Hoe werkt het?</div>
         <div class="steps-row">
             <div class="step-item">
                 <div class="step-badge">1</div>
-                <div class="step-text">Maak een tweetal: Cursist A en Cursist B</div>
+                <div class="step-text" id="txt-step1">Maak een tweetal: Cursist A en Cursist B</div>
             </div>
             <div class="step-item">
                 <div class="step-badge">2</div>
-                <div class="step-text">Stel de vragen en gebruik het opzetje</div>
+                <div class="step-text" id="txt-step2">Stel de vragen en gebruik het opzetje</div>
             </div>
             <div class="step-item">
                 <div class="step-badge">3</div>
-                <div class="step-text">Kijk naar het voorbeeld als je hulp nodig hebt. Klik op 🔊</div>
+                <div class="step-text" id="txt-step3">Kijk naar het voorbeeld als je hulp nodig hebt. Klik op 🔊</div>
             </div>
             <div class="step-item">
                 <div class="step-badge">4</div>
-                <div class="step-text">Neem op met je telefoon en stuur naar de docent!</div>
+                <div class="step-text" id="txt-step4">Neem op met je telefoon en stuur naar de docent!</div>
             </div>
         </div>
     </div>
 
     <!-- VRAGEN -->
     <div class="questions-card">
-        <h2 class="questions-header">
+        <h2 class="questions-header" id="txt-cardTitle">
             <span class="header-icon-circle">?</span>
             Stel deze vragen &amp; gebruik het opzetje
         </h2>
-        <div class="en-jij-notice">
+        <div class="en-jij-notice" id="txt-tipText">
             💡 <strong>Tip:</strong> Reageer op je partner en vraag altijd terug: <strong>"En jij?"</strong>
         </div>
         <div class="qa-grid">
             <div class="qa-header-row">
-                <div>Vraag</div>
-                <div>Antwoord-opzetje</div>
+                <div id="txt-headerQ">Vraag</div>
+                <div id="txt-headerA">Antwoord-opzetje</div>
             </div>
-            <div class="qa-row">
-                <div class="qa-question">👋 Hoe was je vakantie?</div>
-                <div class="qa-starter">Mijn vakantie was ... (leuk / mooi / relaxed). En jij?</div>
-            </div>
-            <div class="qa-row">
-                <div class="qa-question">🌍 Waar ben je geweest?</div>
-                <div class="qa-starter">Ik ben naar ... gegaan. / Ik ben thuis gebleven. En jij?</div>
-            </div>
-            <div class="qa-row">
-                <div class="qa-question">⏳ Hoe lang was je weg?</div>
-                <div class="qa-starter">Ik was ... dagen / één week weg. En jij?</div>
-            </div>
-            <div class="qa-row">
-                <div class="qa-question">👥 Met wie ben je gegaan?</div>
-                <div class="qa-starter">Ik ben gegaan met mijn familie / vrienden. En jij?</div>
-            </div>
-            <div class="qa-row">
-                <div class="qa-question">⭐ Wat was het leukste moment?</div>
-                <div class="qa-starter">Het leukste was ... Ik vond ... heel leuk. En jij?</div>
+            <div id="active-qa-container">
+                <!-- Injected via JavaScript -->
             </div>
         </div>
     </div>
 
     <!-- SNELHEID -->
     <div class="audio-settings-bar">
-        <div class="audio-speed-label"><span>🐢</span> Spraak-snelheid:</div>
+        <div class="audio-speed-label"><span id="txt-speedLabel">🐢 Spraak-snelheid:</span></div>
         <div class="speed-toggle">
             <button class="speed-btn active" id="btn-slow" onclick="setSpeechSpeed(0.75)">Langzaam</button>
             <button class="speed-btn" id="btn-normal" onclick="setSpeechSpeed(0.95)">Normaal</button>
@@ -362,79 +410,439 @@
 
     <!-- VOORBEELD GESPREK -->
     <div class="example-card">
-        <h2 class="example-header">
+        <h2 class="example-header" id="txt-exampleTitle">
             <span class="header-icon-circle">👀</span>
             Voorbeeld-gesprek (Hulp nodig? Lees dit samen)
         </h2>
-        <div class="dialogue-container">
-            <div class="dialogue-line role-A">
-                <span class="role-label">A</span>
-                <span class="dialogue-text">Hé! Lang niet gezien! Hoe was jouw vakantie?</span>
-                <button class="audio-btn" onclick="speak('Hé! Lang niet gezien! Hoe was jouw vakantie?')">🔊</button>
-            </div>
-            <div class="dialogue-line role-B">
-                <span class="role-label">B</span>
-                <span class="dialogue-text">Heel goed, dank je! Ik ben naar Marokko gegaan. En jij?</span>
-                <button class="audio-btn" onclick="speak('Heel goed, dank je! Ik ben naar Marokko gegaan. En jij?')">🔊</button>
-            </div>
-            <div class="dialogue-line role-A">
-                <span class="role-label">A</span>
-                <span class="dialogue-text">Ik ben thuis gebleven. Hoe lang was je weg?</span>
-                <button class="audio-btn" onclick="speak('Ik ben thuis gebleven. Hoe lang was je weg?')">🔊</button>
-            </div>
-            <div class="dialogue-line role-B">
-                <span class="role-label">B</span>
-                <span class="dialogue-text">Twee weken. Ik ben gegaan met mijn familie.</span>
-                <button class="audio-btn" onclick="speak('Twee weken. Ik ben gegaan met mijn familie.')">🔊</button>
-            </div>
-            <div class="dialogue-line role-A">
-                <span class="role-label">A</span>
-                <span class="dialogue-text">Wat was het leukste moment?</span>
-                <button class="audio-btn" onclick="speak('Wat was het leukste moment?')">🔊</button>
-            </div>
-            <div class="dialogue-line role-B">
-                <span class="role-label">B</span>
-                <span class="dialogue-text">Het strand! Het water was zo mooi. Ik vond het geweldig.</span>
-                <button class="audio-btn" onclick="speak('Het strand! Het water was zo mooi. Ik vond het geweldig.')">🔊</button>
-            </div>
-            <div class="dialogue-line role-A">
-                <span class="role-label">A</span>
-                <span class="dialogue-text">Dat klinkt heel fijn! Ik ben blij dat je een goede vakantie had.</span>
-                <button class="audio-btn" onclick="speak('Dat klinkt heel fijn! Ik ben blij dat je een goede vakantie had.')">🔊</button>
-            </div>
+        <div class="dialogue-container" id="active-dialogue-container">
+            <!-- Injected via JavaScript -->
         </div>
     </div>
 
     <!-- EN NU JIJ -->
     <div class="ennujij-card">
         <div class="ennujij-icon">🎙️</div>
-        <div class="ennujij-title">EN NU JIJ!</div>
-        <p class="ennujij-desc">Klaar met oefenen? Neem jullie eigen gesprek op en stuur het naar de docent!</p>
-        <a class="btn-whatsapp" href="https://wa.me/31626211106?text=Beste%20docent%2C%20hier%20is%20onze%20opname%20van%20het%20gesprek%20over%20de%20vakantie." target="_blank">
+        <div class="ennujij-title" id="txt-ennujijTitle">EN NU JIJ!</div>
+        <p class="ennujij-desc" id="txt-ennujijDesc">Klaar met oefenen? Neem jullie eigen gesprek op en stuur het naar de docent!</p>
+        <a class="btn-whatsapp" id="txt-whatsappBtn" href="https://wa.me/31626211106?text=Beste%20docent%2C%20hier%20is%20onze%20opname%20van%20het%20gesprek%20over%20de%20vakantie." target="_blank">
             📲 Stuur opname via WhatsApp
         </a>
     </div>
 
 </div>
 <script>
+    const pageTranslations = {
+        nl: {
+            title: "Na de vakantie 🏖️",
+            subtitle: "Oefen een gesprek over de vakantie met een klasgenoot",
+            howItWorks: "💡 Hoe werkt het?",
+            step1: "Maak een tweetal: Cursist A en Cursist B",
+            step2: "Stel de vragen en gebruik het opzetje",
+            step3: "Kijk naar het voorbeeld als je hulp nodig hebt. Klik op 🔊",
+            step4: "Neem op met je telefoon en stuur naar de docent!",
+            cardTitle: "Stel deze vragen &amp; gebruik het opzetje",
+            tipText: "💡 <strong>Tip:</strong> Reageer op je partner en vraag altijd terug: <strong>\"En jij?\"</strong>",
+            headerQ: "Vraag",
+            headerA: "Antwoord-opzetje",
+            exampleTitle: "Voorbeeld-gesprek (Hulp nodig? Lees dit samen)",
+            ennujijTitle: "EN NU JIJ!",
+            ennujijDesc: "Klaar met oefenen? Neem jullie eigen gesprek op en stuur het naar de docent!",
+            whatsappBtn: "📲 Stuur opname via WhatsApp",
+            speedLabel: "🐢 Spraak-snelheid:",
+            speedSlow: "Langzaam",
+            speedNormal: "Normaal",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        },
+        en: {
+            title: "After the holiday 🏖️",
+            subtitle: "Practice a conversation about the holiday with a classmate",
+            howItWorks: "💡 How does it work?",
+            step1: "Work in pairs: Student A and Student B",
+            step2: "Ask the questions and use the starter phrases",
+            step3: "Look at the example if you need help. Click on 🔊",
+            step4: "Record with your phone and send to the teacher!",
+            cardTitle: "Ask these questions &amp; use the starter",
+            tipText: "💡 <strong>Tip:</strong> React to your partner and always ask back: <strong>\"And you?\"</strong>",
+            headerQ: "Question",
+            headerA: "Answer Starter",
+            exampleTitle: "Example conversation (Need help? Read this together)",
+            ennujijTitle: "AND NOW YOU!",
+            ennujijDesc: "Done practicing? Record your own conversation and send it to the teacher!",
+            whatsappBtn: "📲 Send recording via WhatsApp",
+            speedLabel: "🐢 Speech speed:",
+            speedSlow: "Slow",
+            speedNormal: "Normal",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        },
+        tr: {
+            title: "Tatilden sonra 🏖️",
+            subtitle: "Bir sınıf arkadaşınızla tatil hakkında konuşma pratiği yapın",
+            howItWorks: "💡 Nasıl çalışır?",
+            step1: "İkili çalışın: Öğrenci A ve Öğrenci B",
+            step2: "Soruları sorun ve başlangıç cümlelerini kullanın",
+            step3: "Yardıma ihtiyacınız olursa örneğe bakın. 🔊 tıklayın",
+            step4: "Telefonunuzla kaydedin ve öğretmene gönderin!",
+            cardTitle: "Bu soruları sorun &amp; başlangıç cümlelerini kullanın",
+            tipText: "💡 <strong>İpucu:</strong> Partnerinize yanıt verin ve her zaman geri sorun: <strong>\"Ya sen?\"</strong>",
+            headerQ: "Soru",
+            headerA: "Cevap Taslağı",
+            exampleTitle: "Örnek konuşma (Yardım mı lazım? Birlikte okuyun)",
+            ennujijTitle: "ŞİMDİ SIRA SENDE!",
+            ennujijDesc: "Pratik yapmayı bitirdiniz mi? Kendi konuşmanızı kaydedin og öğretmene gönderin!",
+            whatsappBtn: "📲 Ses kaydını WhatsApp ile gönder",
+            speedLabel: "🐢 Konuşma hızı:",
+            speedSlow: "Yavaş",
+            speedNormal: "Normal",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        },
+        ar: {
+            title: "بعد العطلة 🏖️",
+            subtitle: "تدرب على محادثة حول العطلة مع زميل في الصف",
+            howItWorks: "💡 كيف يعمل هذا التدريب؟",
+            step1: "اعملوا في ثنائيات: الطالب أ والطالب ب",
+            step2: "اطرح الأسئلة واستخدم عبارات البدء المقترحة",
+            step3: "انظر إلى المثال إذا كنت بحاجة للمساعدة. اضغط على 🔊",
+            step4: "سجّل بهاتفك وأرسل التسجيل إلى المعلم!",
+            cardTitle: "اطرح هذه الأسئلة واستخدم عبارات البدء",
+            tipText: "💡 <strong>نصيحة:</strong> تفاعل مع شريكك واسأل دائماً بالمقابل: <strong>\"وأنت؟\"</strong>",
+            headerQ: "السؤال",
+            headerA: "بداية الإجابة المقترحة",
+            exampleTitle: "محادثة نموذجية (هل تحتاج لمساعدة؟ اقرأا هذا معاً)",
+            ennujijTitle: "والآن دورك!",
+            ennujijDesc: "هل انتهيت من التدريب؟ سجل محادثتك الخاصة وأرسلها إلى المعلم!",
+            whatsappBtn: "📲 أرسل التسجيل عبر الواتساب",
+            speedLabel: "🐢 سرعة الصوت:",
+            speedSlow: "بطيء",
+            speedNormal: "طبيعي",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        },
+        ps: {
+            title: "له رخصتۍ وروسته 🏖️",
+            subtitle: "د خپل ټولګیوال سره د رخصتۍ په اړه د خبرو اترو تمرین وکړئ",
+            howItWorks: "💡 دا څنګه کار کوي؟",
+            step1: "په جوړه کې کار وکړئ: زده کوونکی A او زده کوونکی B",
+            step2: "پوښتنې وپوښتئ او د جملو پیل وکاروئ",
+            step3: "که مرستې ته اړتیا لرئ بېلګې ته وګورئ. په 🔊 کلیک وکړئ",
+            step4: "خپل ټلیفون سره یې ثبت کړئ او ښوونکي ته یې واستوئ!",
+            cardTitle: "دا پوښتنې وپوښتئ او د پیل جملې وکاروئ",
+            tipText: "💡 <strong>لارښوونه:</strong> د خپل ملګري ځواب ته غبرګون وښایاست او تل بېرته وپوښتئ: <strong>\"او ته؟\"</strong>",
+            headerQ: "پوښتنه",
+            headerA: "د ځواب لپاره پیل",
+            exampleTitle: "نمونه خبرې اترې (مرستې ته اړتیا لرئ؟ دا یوځای ولولئ)",
+            ennujijTitle: "اوس ستا وار دی!",
+            ennujijDesc: "تمرین مو پای ته ورساوه؟ خپلې خبرې اترې ثبت کړئ او ښوونکي ته یې واستوئ!",
+            whatsappBtn: "📲 غږ ښوونکي ته د واټساپ له لارې واستوئ",
+            speedLabel: "د خبرو سرعت:",
+            speedSlow: "ورو",
+            speedNormal: "عادي",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        },
+        zh: {
+            title: "假期结束后 🏖️",
+            subtitle: "与同学练习关于假期的对话",
+            howItWorks: "💡 它是如何工作的？",
+            step1: "俩人一组：学生A与学生B",
+            step2: "提出问题并使用句式起步",
+            step3: "如果需要帮助，请看示例。点击 🔊 按钮",
+            step4: "用手机录音并发送给老师！",
+            cardTitle: "提出这些问题并使用回答句式",
+            tipText: "💡 <strong>提示：</strong> 对搭档做出回应并记得反问：<strong>“你呢？”</strong>",
+            headerQ: "问题",
+            headerA: "回答句式",
+            exampleTitle: "示例对话（需要帮助吗？一起读一下）",
+            ennujijTitle: "现在轮到你了！",
+            ennujijDesc: "练习完了吗？用手机录下你们自己的对话并发送给老师！",
+            whatsappBtn: "📲 通过WhatsApp发送录音",
+            speedLabel: "🐢 说话速度：",
+            speedSlow: "慢",
+            speedNormal: "正常",
+            instructionsLabel: "🌐 Kies je taal / Choose language:"
+        }
+    };
+
+    const itemsTranslations = {
+        questions: [
+            {
+                q: {
+                    nl: "👋 Hoe was je vakantie?",
+                    en: "👋 How was your holiday?",
+                    tr: "👋 Tatilin nasıl geçti?",
+                    ar: "👋 كيف كانت عطلتك؟",
+                    ps: "👋 ستا رخصتي څنګه وه؟",
+                    zh: "👋 假期过得怎么样？"
+                },
+                a: {
+                    nl: "Mijn vakantie was ... (leuk / mooi / relaxed). En jij?",
+                    en: "My holiday was ... (nice / beautiful / relaxed). And you?",
+                    tr: "Tatilim ... (güzel / harika / dinlendirici) geçti. Ya sen?",
+                    ar: "كانت عطلتي ... (جميلة / رائعة / مريحة). وأنت؟",
+                    ps: "زما رخصتي ... (ښه / ښکلې / ارامه) وه. او ستا؟",
+                    zh: "我的假期很 ...（开心 / 漂亮 / 轻松）。你呢？"
+                }
+            },
+            {
+                q: {
+                    nl: "🌍 Waar ben je geweest?",
+                    en: "🌍 Where did you go?",
+                    tr: "🌍 Nereye gittin?",
+                    ar: "🌍 أين ذهبت؟",
+                    ps: "🌍 چېرته تللی وې؟",
+                    zh: "🌍 你去了哪里？"
+                },
+                a: {
+                    nl: "Ik ben naar ... gegaan. / Ik ben thuis gebleven. En jij?",
+                    en: "I went to ... / I stayed at home. And you?",
+                    tr: "...'ya gittim. / Evde kaldım. Ya sen?",
+                    ar: "ذهبت إلى ... / بقيت في المنزل. وأنت؟",
+                    ps: "زه ... ته لاړم. / زه په کور کې پاتې شوم. او ته؟",
+                    zh: "我去了 ...。/ 我待在家里。你呢？"
+                }
+            },
+            {
+                q: {
+                    nl: "⏳ Hoe lang was je weg?",
+                    en: "⏳ How long were you away?",
+                    tr: "⏳ Ne kadar süre uzaktaydın?",
+                    ar: "⏳ كم من الوقت غبت؟",
+                    ps: "⏳ څومره وخت لرې وې؟",
+                    zh: "⏳ 你去了多久？"
+                },
+                a: {
+                    nl: "Ik was ... dagen / één week weg. En jij?",
+                    en: "I was away for ... days / one week. And you?",
+                    tr: "... gün / bir hafta uzaktaydım. Ya sen?",
+                    ar: "غبت لمدة ... أيام / أسبوع واحد. وأنت؟",
+                    ps: "زه ... ورځې / یو اونۍ لرې وم. او ته؟",
+                    zh: "我去了 ... 天 / 一个星期。你呢？"
+                }
+            },
+            {
+                q: {
+                    nl: "👥 Met wie ben je gegaan?",
+                    en: "👥 Who did you go with?",
+                    tr: "👥 Kiminle gittin?",
+                    ar: "👥 مع من ذهبت؟",
+                    ps: "👥 د چا سره تللی وې؟",
+                    zh: "👥 你和谁一起去的？"
+                },
+                a: {
+                    nl: "Ik ben gegaan met mijn familie / vrienden. En jij?",
+                    en: "I went with my family / friends. And you?",
+                    tr: "Ailemle / arkadaşlarımla gittim. Ya sen?",
+                    ar: "ذهبت مع عائلتي / أصدقائي. وأنت؟",
+                    ps: "زه د خپلې کورنۍ / ملګرو سره لاړم. او ته؟",
+                    zh: "我和家人 / 朋友一起去的。你呢？"
+                }
+            },
+            {
+                q: {
+                    nl: "⭐ Wat was het leukste moment?",
+                    en: "⭐ What was the best moment?",
+                    tr: "⭐ En güzel an hangisiydi?",
+                    ar: "⭐ ما هي أفضل لحظة؟",
+                    ps: "⭐ تر ټولو غوره وخت کوم و؟",
+                    zh: "⭐ 最开心的时刻是什么？"
+                },
+                a: {
+                    nl: "Het leukste was ... Ik vond ... heel leuk. En jij?",
+                    en: "The best part was ... I liked ... very much. And you?",
+                    tr: "En güzeli ... idi. ...'i çok sevdim. Ya sen?",
+                    ar: "الأفضل كان ... لقد أحببت ... كثيراً. وأنت؟",
+                    ps: "تر ټولو غوره ... وه. زما ... ډېر خوښ شو. او ستا؟",
+                    zh: "最棒的部分是 ...。我非常喜欢 ...。你呢？"
+                }
+            }
+        ],
+        dialogue: [
+            {
+                role: "A",
+                text: "Hé! Lang niet gezien! Hoe was jouw vakantie?",
+                en: "Hey! Long time no see! How was your holiday?",
+                tr: "Merhaba! Görüşmeyeli uzun zaman oldu! Tatilin nasıl geçti?",
+                ar: "مرحباً! لم نلتقِ منذ فترة طويلة! كيف كانت عطلتك؟",
+                ps: "سلام! له ډېر وخت وروسته لیدنه! ستا رخصتي څنګه وه؟",
+                zh: "嗨！好久不见！你的假期过得怎么样？"
+            },
+            {
+                role: "B",
+                text: "Heel goed, dank je! Ik ben naar Marokko gegaan. En jij?",
+                en: "Very good, thank you! I went to Morocco. And you?",
+                tr: "Çok iyi, teşekkürler! Fas'a gittim. Ya sen?",
+                ar: "جيدة جداً، شكراً لك! ذهبت إلى المغرب. وأنت؟",
+                ps: "ډېره ښه، مننه! زه مراکش ته تللی وم. او ته؟",
+                zh: "非常好，谢谢！我去了摩洛哥。你呢？"
+            },
+            {
+                role: "A",
+                text: "Ik ben thuis gebleven. Hoe lang was je weg?",
+                en: "I stayed at home. How long were you away?",
+                tr: "Ben evde kaldım. Ne kadar süre uzaktaydın?",
+                ar: "أنا بقيت في المنزل. كم من الوقت غبت؟",
+                ps: "زه په کور کې پاتې شوم. څومره وخت لرې وې؟",
+                zh: "我待在家里。你去了多久？"
+            },
+            {
+                role: "B",
+                text: "Twee weken. Ik ben gegaan met mijn familie.",
+                en: "Two weeks. I went with my family.",
+                tr: "İki hafta. Ailemle gittim.",
+                ar: "أسبوعين. ذهبت مع عائلتي.",
+                ps: "دوه اونۍ. زه له خپلې کورنۍ سره لاړم.",
+                zh: "两周。我和我的家人一起去的。"
+            },
+            {
+                role: "A",
+                text: "Wat was het leukste moment?",
+                en: "What was the best moment?",
+                tr: "En güzel an hangisiydi?",
+                ar: "ما هي أفضل لحظة؟",
+                ps: "تر ټولو غوره وخت کوم و？",
+                zh: "最开心的时刻是什么？"
+            },
+            {
+                role: "B",
+                text: "Het strand! Het water was zo mooi. Ik vond het geweldig.",
+                en: "The beach! The water was so beautiful. I loved it.",
+                tr: "Plaj! Su çok güzeldi. Bayıldım.",
+                ar: "الشاطئ! الماء كان جميلاً جداً. لقد أحببت ذلك كثيراً.",
+                ps: "سمندر غاړه! اوبه ډېرې ښکلې وې. زما ډېر خوښ شو.",
+                zh: "沙滩！海水太美了。我太喜欢了。"
+            },
+            {
+                role: "A",
+                text: "Dat klinkt heel fijn! Ik ben blij dat je een goede vakantie had.",
+                en: "That sounds very nice! I'm glad you had a good holiday.",
+                tr: "Kulağa çok hoş geliyor! İyi bir tatil geçirmene sevindim.",
+                ar: "هذا يبدو رائعاً جداً! أنا سعيد لأنك حظيت بعطلة سعيدة.",
+                ps: "دا ډېر ښه ښکاري! زه خوښ یم چې ستا ښه رخصتي وه.",
+                zh: "听起来太棒了！我很高兴你度过了一个美好的假期。"
+            }
+        ]
+    };
+
     let speechSpeed = 0.75;
+    let currentLang = 'nl';
+
     function setSpeechSpeed(speed) {
         speechSpeed = speed;
         document.getElementById('btn-slow').classList.toggle('active', speed === 0.75);
         document.getElementById('btn-normal').classList.toggle('active', speed === 0.95);
     }
+
+    function switchLanguage(langCode) {
+        currentLang = langCode;
+        const trans = pageTranslations[langCode] || pageTranslations.nl;
+
+        // Update flag button states
+        document.querySelectorAll('.flag-btn').forEach(btn => {
+            if (btn.getAttribute('onclick').includes(`'${langCode}'`)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Translate static texts
+        document.getElementById('txt-title').textContent = trans.title;
+        document.getElementById('txt-subtitle').textContent = trans.subtitle;
+        document.getElementById('txt-howItWorks').textContent = trans.howItWorks;
+        document.getElementById('txt-step1').textContent = trans.step1;
+        document.getElementById('txt-step2').textContent = trans.step2;
+        document.getElementById('txt-step3').textContent = trans.step3;
+        document.getElementById('txt-step4').textContent = trans.step4;
+        document.getElementById('txt-cardTitle').innerHTML = `<span class="header-icon-circle">?</span> ${trans.cardTitle}`;
+        document.getElementById('txt-tipText').innerHTML = trans.tipText;
+        document.getElementById('txt-headerQ').textContent = trans.headerQ;
+        document.getElementById('txt-headerA').textContent = trans.headerA;
+        document.getElementById('txt-exampleTitle').innerHTML = `<span class="header-icon-circle">👀</span> ${trans.exampleTitle}`;
+        document.getElementById('txt-ennujijTitle').textContent = trans.ennujijTitle;
+        document.getElementById('txt-ennujijDesc').textContent = trans.ennujijDesc;
+        document.getElementById('txt-whatsappBtn').textContent = trans.whatsappBtn;
+        document.getElementById('txt-speedLabel').textContent = trans.speedLabel;
+        document.getElementById('btn-slow').textContent = trans.speedSlow;
+        document.getElementById('btn-normal').textContent = trans.speedNormal;
+        document.getElementById('txt-instructionsLabel').textContent = trans.instructionsLabel;
+
+        // Render dynamic parts
+        renderQuestions();
+        renderDialogue();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('active-qa-container');
+        container.innerHTML = '';
+        const dirAttr = (currentLang === 'ar' || currentLang === 'ps') ? 'dir="rtl"' : 'dir="auto"';
+
+        itemsTranslations.questions.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'qa-row';
+
+            let qHtml = `<div class="qa-question">${item.q.nl}</div>`;
+            let aHtml = `<div class="qa-starter">${item.a.nl}</div>`;
+
+            if (currentLang !== 'nl' && item.q[currentLang]) {
+                qHtml = `
+                    <div>
+                        <div class="qa-question" style="margin-bottom:4px;">${item.q.nl}</div>
+                        <span class="qa-translation" ${dirAttr}>${item.q[currentLang]}</span>
+                    </div>
+                `;
+                aHtml = `
+                    <div>
+                        <div class="qa-starter" style="margin-bottom:4px;">${item.a.nl}</div>
+                        <span class="qa-translation" ${dirAttr}>${item.a[currentLang]}</span>
+                    </div>
+                `;
+            }
+
+            row.innerHTML = qHtml + aHtml;
+            container.appendChild(row);
+        });
+    }
+
+    function renderDialogue() {
+        const container = document.getElementById('active-dialogue-container');
+        container.innerHTML = '';
+        const dirAttr = (currentLang === 'ar' || currentLang === 'ps') ? 'dir="rtl"' : 'dir="auto"';
+
+        itemsTranslations.dialogue.forEach(line => {
+            const wrapper = document.createElement('div');
+            wrapper.className = `dialogue-line role-${line.role}`;
+
+            let transSpan = '';
+            if (currentLang !== 'nl' && line[currentLang]) {
+                transSpan = `<span class="dialogue-translation" ${dirAttr}>${line[currentLang]}</span>`;
+            }
+
+            wrapper.innerHTML = `
+                <span class="role-label">${line.role}</span>
+                <div class="dialogue-text-container" style="flex: 1; display: flex; flex-direction: column;">
+                    <span class="dialogue-text-nl" style="font-size: 0.96rem; font-weight: 700; color: var(--text-dark);">${line.text}</span>
+                    ${transSpan}
+                </div>
+                <button class="audio-btn" onclick="speak('${line.text.replace(/'/g, "\\'")}')">🔊</button>
+            `;
+            container.appendChild(wrapper);
+        });
+    }
+
+    let speechUtterance = null;
     function speak(text) {
         window.speechSynthesis.cancel();
         setTimeout(() => {
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'nl-NL';
-            utter.rate = speechSpeed;
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            speechUtterance.lang = 'nl-NL';
+            speechUtterance.rate = speechSpeed;
             const voices = window.speechSynthesis.getVoices();
             const nlVoice = voices.find(v => v.lang.startsWith('nl'));
-            if (nlVoice) utter.voice = nlVoice;
-            window.speechSynthesis.speak(utter);
+            if (nlVoice) speechUtterance.voice = nlVoice;
+            window.speechSynthesis.speak(speechUtterance);
         }, 100);
     }
+
+    // Initialize
+    switchLanguage('nl');
+
     window.speechSynthesis.getVoices();
     if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
