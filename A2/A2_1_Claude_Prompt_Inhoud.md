@@ -173,8 +173,9 @@ Je wilt vertellen over acties die **afgelopen / klaar** zijn in het verleden:
 
 ---
 
-### 🎙️ 6. FASE 3: SPREEKOPDRACHTEN (Individueel Microfoon Inspreken — 4 Opdrachten)
+### 🎙️ 6. FASE 3: SPREEKOPDRACHTEN (Individueel & 2-Persoons Samen Spreken)
 
+#### A. Individueel Microfoon Inspreken (4 Opdrachten):
 1. **Spreekopdracht 1 (Volledige Zins-repetitie):**  
    - *Instructie:* Lees en spreek hardop in de microfoon:  
    - *"Ik heb gisteren gewerkt en mijn collega is naar huis gefietst."*
@@ -188,6 +189,29 @@ Je wilt vertellen over acties die **afgelopen / klaar** zijn in het verleden:
 4. **Spreekopdracht 4 (Vrije spreekvraag):**  
    - *Instructie:* Noem 2 dingen die je gisteren hebt gedaan.  
    - *(Voorbeeld: "Ik heb gisteren gewerkt en ik ben naar de supermarkt gefietst.")*
+
+#### B. 2-Persoons Duo Rollenspellen (Samen Spreken op de Werkvloer — 2 Rollenspellen):
+
+##### 🤝 Rollenspel 1: Storing melden bij de Ploegbaas (Voltooid Deelwoord & 'er')
+- **Situatie:** Er is een machinestoring bij lijn 3. Twee cursisten spelen het overleg op de werkvloer.
+- **Rolinstructie Cursist A (Ploegbaas):**
+  - Vraag je collega wat er gebeurd is bij lijn 3.
+  - Vraag wat hij/zij al gedaan of gecontroleerd heeft.
+  - *Voorbeelden:* *"Wat is er gebeurd bij lijn 3?"*, *"Heb je de noodknop al ingedrukt?"*
+- **Rolinstructie Cursist B (Operator):**
+  - Zeg dat er een storing is bij lijn 3.
+  - Vertel wat je al gedaan hebt in het voltooid deelwoord *(noodknop ingedrukt, chef gebeld, bon getekend)*.
+  - *Voorbeelden:* *"Er is een storing bij lijn 3. Ik heb de noodknop ingedrukt en ik heb de storingsdienst gebeld."*
+
+##### 🤝 Rollenspel 2: De Dienstoverdracht (Perfectum op de Werkvloer)
+- **Situatie:** Overdracht tussen de vroege dienst en de late dienst.
+- **Rolinstructie Cursist A (Vroege dienst):**
+  - Rapporteer wat je vandaag gedaan hebt op de afdeling.
+  - Vertel welke spullen er op het bureau liggen.
+  - *Voorbeelden:* *"Ik heb alle bestellingen gecontroleerd en er ligt een werkbon op de tafel."*
+- **Rolinstructie Cursist B (Late dienst):**
+  - Vraag of er nog bijzonderheden zijn en of het materiaal al geleverd is.
+  - *Voorbeelden:* *"Is het materiaal al geleverd?"*, *"Zijn er nog problemen geweest?"*
 
 ---
 
