@@ -1186,7 +1186,7 @@
 
             <!-- STAP 5: DIRECT OEFENEN -->
             <div class="card" style="margin-top:16px;">
-                <h4 style="color:#fff; font-size:1.1rem; font-weight:800; margin-bottom:12px;">🧪 5. Direct Oefenen (3 Check-vragen)</h4>
+                <h4 style="color:#fff; font-size:1.1rem; font-weight:800; margin-bottom:12px;">🧪 5. Direct Oefenen (Klassikale Check)</h4>
                 <div id="modal-practice-area">
                     ${item.practice.map((p, idx) => `
                         <div style="margin-bottom:16px; background:rgba(0,0,0,0.25); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
@@ -1203,6 +1203,36 @@
                             <div class="modal-quiz-fb feedback-msg" style="margin-top:6px;"></div>
                         </div>
                     `).join('')}
+                </div>
+            </div>
+
+            <!-- FASE 3: SPREEKOPDRACHT MET MICROFOON -->
+            <div class="section-box" style="border-left:4px solid #ec4899; background:rgba(236, 72, 153, 0.08); margin-top:20px;">
+                <h4 style="color:#f472b6; font-size:1.1rem; font-weight:800; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                    🎙️ Spreekopdracht met Microfoon (Mondeling Oefenen)
+                </h4>
+                <p style="font-size:0.92rem; color:#e2e8f0; margin-bottom:12px;">
+                    Docent / Cursist: Druk op de microfoonknop en lees de voorbeeldzinnen hardop in. De computer controleert direct je Nederlandse uitspraak!
+                </p>
+
+                <div style="background:rgba(0,0,0,0.3); padding:16px; border-radius:12px; border:1px solid rgba(236,72,153,0.3);">
+                    <label style="font-weight:700; font-size:0.88rem; color:#f472b6; display:block; margin-bottom:6px;">
+                        Opdracht: Spreek de volgende regel in het Nederlands in:
+                    </label>
+                    <div style="font-size:1.05rem; font-weight:800; color:#fff; background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:8px; margin-bottom:12px;">
+                        "Ik werk op kantoor en jij woont in Utrecht."
+                        <button onclick="speakText('Ik werk op kantoor en jij woont in Utrecht.')" style="background:none; border:none; cursor:pointer; font-size:1.1rem; margin-left:8px;" title="Beluister voorbeeld">🔊</button>
+                    </div>
+
+                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+                        <button onclick="startSpeechRecognition('modal-mic-status', 'modal-mic-result')" style="background:linear-gradient(135deg, #ec4899, #db2777); color:#fff; border:none; padding:10px 20px; border-radius:30px; font-weight:800; font-size:0.95rem; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 15px rgba(236,72,153,0.4);">
+                            🎙️ Microfoon Starten &amp; Inspreken
+                        </button>
+                    </div>
+
+                    <div id="modal-mic-status" style="font-size:0.9rem; margin-bottom:8px; min-height:24px;"></div>
+
+                    <textarea id="modal-mic-result" rows="2" placeholder="Je gesproken tekst verschijnt hier live..." style="width:100%; background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.15); color:#fff; border-radius:8px; padding:10px; font-size:0.95rem;" readonly></textarea>
                 </div>
             </div>
         `;
@@ -1240,6 +1270,43 @@
             window.speechSynthesis.speak(u);
         }, 100);
     }
+
+    function startSpeechRecognition(statusId, resultId) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const statusEl = document.getElementById(statusId);
+        const resultEl = document.getElementById(resultId);
+
+        if (!SpeechRecognition) {
+            statusEl.innerHTML = '<span style="color:#ef4444; font-weight:700;">⚠️ Live spraakherkenning vereist Google Chrome of Edge browser.</span>';
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'nl-NL';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+
+        statusEl.innerHTML = '🎙️ <span style="color:#38bdf8; font-weight:bold; animation:pulse 1s infinite;">Aan het luisteren... Spreek nu in de microfoon!</span>';
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            resultEl.value = transcript;
+            
+            if (event.results[0].isFinal) {
+                statusEl.innerHTML = '🎉 <span style="color:#10b981; font-weight:bold;">Goed gesproken! Uitspraak herkend: "' + transcript + '"</span>';
+            }
+        };
+
+        recognition.onerror = (event) => {
+            statusEl.innerHTML = '❌ <span style="color:#ef4444;">Microfoon fout: ' + event.error + '</span>';
+        };
+
+        recognition.start();
+    }
+
 
     // Comprehensive Level Dataset for A0, A1, A2, B1, B2
     const levelCurriculum = {
