@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus of Language — Les 1.4: Er is en Er zijn</title>
+    <!-- Nunito Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------------------------
+           NEXUS OF LANGUAGE - HUISSTIJL DESIGN TOKENS (STRIKT NAGELEEFD)
+           ------------------------------------------------------------- */
+        :root {
+            /* Typografie Schaal (ALLEEN 12 / 14 / 16 / 18 / 20 / 24 px) */
+            --fs-12: 12px;
+            --fs-14: 14px;
+            --fs-16: 16px;
+            --fs-18: 18px;
+            --fs-20: 20px;
+            --fs-24: 24px;
+            
+            /* Hoeken & Raakvlakken */
+            --radius-std: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 9999px;
+            --touch-min: 44px;
+
+            /* SPECIFIEKE LESKLEUR LES 1.4: #059669 (SMARAGDGROEN) */
+            --leskleur: #059669;
+            --leskleur-light: rgba(5, 150, 105, 0.12);
+
+            /* LICHT THEMA (STANDAARD) */
+            --bg-page: #fafafa;
+            --bg-card: #ffffff;
+            --bg-muted: #f0f0f0;
+            --border-card: #dedede;
+            --text-main: #000000;
+            --text-muted: #6f6f6f;
+            
+            /* Oranje Merkkleuren */
+            --orange-brand: #ff8000;
+            --orange-text: #c75300;
+            --orange-on-text: #0a0a0a;
+            --orange-soft: #ffead2;
+            --focus-ring: #ff8000;
+
+            /* Status */
+            --status-good-bg: #10b981;
+            --status-good-text: #047857;
+            --status-busy-bg: #f59e0b;
+            --status-error-bg: #ef4444;
+            --status-error-text: #b91c1c;
+
+            /* Premium Verlopen */
+            --grad-header: linear-gradient(115deg, #ff8000 0%, #b3450a 45%, #15130f 100%);
+            --grad-btn: linear-gradient(135deg, #ff8000 0%, #c2540d 100%);
+            --grad-large: linear-gradient(135deg, #ffa42e 0%, #ff8000 55%, #f26a00 100%);
+            --accent-gold: #ffd166;
+            --border-orange: rgba(255, 128, 0, 0.28);
+
+            /* Container framing for test environment */
+            --preview-bg: #e2e8f0;
+        }
+
+        /* DONKER THEMA */
+        [data-theme="dark"] {
+            --bg-page: #070707;
+            --bg-card: #1c1c1c;
+            --bg-muted: #1f1f1f;
+            --border-card: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --orange-soft: #2a1a0a;
+            --preview-bg: #111827;
+        }
+
+        /* Reset & Basis */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--preview-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Top control bar for viewing options */
+        .workspace-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 14px 20px;
+            border-radius: var(--radius-std);
+            border: 1px solid var(--border-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .workspace-title {
+            font-size: var(--fs-18);
+            font-weight: 900;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-toggles {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toggle-btn {
+            height: var(--touch-min);
+            padding: 0 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-card);
+            background: var(--bg-muted);
+            color: var(--text-main);
+            font-size: var(--fs-14);
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--grad-btn);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        /* Main Workspace Display */
+        .viewport-wrapper {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* ARTBOARD TELEFOON SIMULATOR (STRIKT 390px X 844px) */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background-color: var(--bg-page);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            border: 1px solid var(--border-card);
+            transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+        }
+
+        /* BEAMER / DESKTOP MODUS (STRIKT 1280px X 720px) */
+        .phone-frame.beamer-mode {
+            width: 1000px;
+            height: 625px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 8px #0f172a;
+        }
+
+        /* Telefoon Notch */
+        .phone-notch {
+            height: 28px;
+            background: var(--bg-page);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: var(--fs-12);
+            font-weight: 800;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Paginabalk bovenaan (Voortgang) */
+        .progress-header {
+            padding: 12px 20px 8px 20px;
+            background: var(--bg-page);
+            flex-shrink: 0;
+        }
+
+        .progress-bar-container {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            height: 6px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 100%;
+            background: var(--bg-muted);
+            border-radius: var(--radius-pill);
+            transition: background 0.3s ease;
+        }
+
+        .progress-step.completed {
+            background: var(--grad-btn);
+        }
+
+        .progress-step.active {
+            background: var(--orange-brand);
+            box-shadow: 0 0 8px rgba(255, 128, 0, 0.5);
+        }
+
+        .step-label-caps {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Scherm Inhoud Area */
+        .screen-content {
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Paginatitel / Kop */
+        .page-title {
+            font-size: var(--fs-24);
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        /* Meegroeiend meertalig blok (RTL Arabisch ondersteuning) */
+        .bilingual-box {
+            background: var(--bg-muted);
+            border-left: 3px solid var(--leskleur);
+            padding: 8px 12px;
+            border-radius: var(--radius-std);
+            font-size: var(--fs-14);
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .bilingual-box[dir="rtl"] {
+            border-left: none;
+            border-right: 3px solid var(--leskleur);
+            text-align: right;
+            direction: rtl;
+        }
+
+        /* Uitlegtekst */
+        .body-text {
+            font-size: var(--fs-16);
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* Kaarten & Layouts */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .card.active-card {
+            border-color: var(--leskleur);
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+        }
+
+        /* Text highlight regels: gekleurde letter met streepje eronder (STRIKT GROEN #059669) */
+        .les-highlight {
+            color: var(--leskleur);
+            border-bottom: 2px solid var(--leskleur);
+            font-weight: 800;
+            padding-bottom: 1px;
+        }
+
+        /* Navigatiebalk Onderaan (STRIKT MINSTENS 44px TOUCH TARGETS) */
+        .bottom-nav {
+            padding: 12px 20px 20px 20px;
+            background: var(--bg-page);
+            border-top: 1px solid var(--border-card);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            height: var(--touch-min);
+            min-height: var(--touch-min);
+            border-radius: var(--radius-pill);
+            border: none;
+            font-size: var(--fs-16);
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.97);
+        }
+
+        .nav-btn-secondary {
+            background: var(--bg-muted);
+            color: var(--text-main);
+            border: 1px solid var(--border-card);
+            padding: 0 20px;
+        }
+
+        .nav-btn-secondary:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .nav-btn-primary {
+            flex: 1;
+            background: var(--grad-btn);
+            color: var(--orange-on-text);
+            padding: 0 24px;
+            box-shadow: 0 4px 12px rgba(255, 128, 0, 0.25);
+        }
+
+        .nav-btn-icon {
+            width: var(--touch-min);
+            height: var(--touch-min);
+            border-radius: var(--radius-pill);
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* KANTPANEEL VOOR NOTITIES */
+        .notes-panel {
+            flex: 1;
+            max-width: 420px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .notes-header {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--orange-text);
+            margin-bottom: 8px;
+        }
+
+        .notes-title {
+            font-size: var(--fs-20);
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .motion-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .motion-step-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: var(--fs-14);
+            line-height: 1.4;
+        }
+
+        .motion-step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--leskleur);
+            color: #ffffff;
+            font-size: var(--fs-12);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* GRID VIEW FOR ALL 6 ARTBOARDS OVERVIEW */
+        .all-artboards-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .artboard-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .artboard-mini-frame {
+            width: 100%;
+            height: 480px;
+            background: var(--bg-page);
+            border-radius: var(--radius-std);
+            border: 1px solid var(--border-card);
+            overflow: hidden;
+            position: relative;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Specific Table & Comparison styling */
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: var(--fs-14);
+        }
+
+        .rule-table th, .rule-table td {
+            border: 1px solid var(--border-card);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .rule-table th {
+            background: var(--bg-muted);
+            font-weight: 900;
+            font-size: var(--fs-12);
+            text-transform: uppercase;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .col-fout {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+        }
+
+        .col-goed {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--fs-12);
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .badge-status.fout { color: var(--status-error-text); }
+        .badge-status.goed { color: var(--status-good-text); }
+
+        /* Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .anim-fade-1 { animation: fadeIn 0.4s ease forwards; }
+        .anim-fade-2 { animation: fadeIn 0.4s ease 0.3s forwards; opacity: 0; }
+        .anim-fade-3 { animation: fadeIn 0.4s ease 0.6s forwards; opacity: 0; }
+
+    </style>
+</head>
+<body>
+
+    <!-- BOVENBALK: MODE & THEMA SELECTION -->
+    <header class="workspace-controls">
+        <div class="workspace-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Nexus of Language — Les 1.4 (A2)
+        </div>
+
+        <div class="mode-toggles">
+            <button class="toggle-btn active" id="btnModePhone" onclick="setMode('phone')">📱 Telefoon (390px)</button>
+            <button class="toggle-btn" id="btnModeBeamer" onclick="setMode('beamer')">🖥️ Beamer Klaslokaal (1280px)</button>
+            <button class="toggle-btn" id="btnModeGrid" onclick="setMode('grid')">🖼️ Alle 6 Artboards Grid</button>
+            <button class="toggle-btn" onclick="toggleTheme()">🌓 Thema Switch</button>
+        </div>
+    </header>
+
+    <!-- HOOFD VIEWPORT (SINGLE SIMULATOR + NOTITIES) -->
+    <main class="viewport-wrapper" id="singleView">
+        
+        <!-- TELEFOON FRAME (390 x 844) -->
+        <div class="phone-frame" id="phoneFrame">
+            
+            <!-- Notch -->
+            <div class="phone-notch">
+                <span>09:41</span>
+                <span>Nexus A2</span>
+                <span>100% 🔋</span>
+            </div>
+
+            <!-- Voortgangsbalk bovenaan -->
+            <div class="progress-header">
+                <div class="progress-bar-container" id="progressBar">
+                    <div class="progress-step completed"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                </div>
+                <div class="step-label-caps">
+                    <span id="pageStepLabel">BLADZIJDE 1 VAN 6</span>
+                    <span>LES 1.4</span>
+                </div>
+            </div>
+
+            <!-- Scherm Inhoud Area -->
+            <div class="screen-content" id="screenContent">
+                <!-- Dynamisch gevuld door renderPage() -->
+            </div>
+
+            <!-- Onderste Navigatiebalk -->
+            <div class="bottom-nav">
+                <button class="nav-btn nav-btn-secondary" id="btnPrev" onclick="prevPage()" disabled>Terug</button>
+                <button class="nav-btn-icon" title="Speel beweging opnieuw af" onclick="replayAnimation()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                </button>
+                <button class="nav-btn nav-btn-primary" id="btnNext" onclick="nextPage()">Volgende</button>
+            </div>
+
+        </div>
+
+        <!-- NOTITIES PANEEL VOOR HET ACTIEVE ARTBOARD -->
+        <aside class="notes-panel">
+            <div class="notes-header">Artboard Notities & Beweging</div>
+            <h2 class="notes-title" id="noteTitle">Bladzijde 1: Er is of er zijn</h2>
+            <p class="body-text" id="noteDesc" style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+                Beschrijving van de beweging en volgorde voor dit specifieke artboard.
+            </p>
+            <div class="motion-steps" id="motionSteps">
+                <!-- Dynamische stappen -->
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- ALL 6 ARTBOARDS OVERVIEW GRID -->
+    <section class="all-artboards-grid" id="gridView">
+        <!-- Wordt via JS opgebouwd met alle 6 de schermen naast elkaar -->
+    </section>
+
+    <!-- JAVASCRIPT LOGICA -->
+    <script>
+        // LESDATA LES 1.4 VOLGENS DE EXACTE SPECIFICATIES EN REGELS
+        const lessonData = [
+            {
+                page: 1,
+                title: "Er is of er zijn",
+                bilingual: {
+                    nl: "Met 'er is' of 'er zijn' zeg je dat iets aanwezig is op een plaats.",
+                    ar: "استخدام \"Er is\" للمفرد و \"Er zijn\" للجمع عند وجود شيء في مكان ما."
+                },
+                contentHtml: `
+                    <p class="body-text">Met 'er is' of 'er zijn' zeg je dat iets aanwezig is op een plaats.</p>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin: 12px 0;">
+                        <div class="card active-card anim-fade-1">
+                            <div style="font-size:12px; font-weight:900; color:var(--leskleur); text-transform:uppercase;">1 DING (ENKELVOUD)</div>
+                            <div style="font-size:16px; font-weight:800;"><span class="les-highlight">Er is</span> een stoel in de klas. 🪑</div>
+                        </div>
+
+                        <div class="card anim-fade-2">
+                            <div style="font-size:12px; font-weight:900; color:var(--leskleur); text-transform:uppercase;">MEER DINGEN (MEERVOUD)</div>
+                            <div style="font-size:16px; font-weight:800;"><span class="les-highlight">Er zijn</span> stoelen in de klas. 🪑🪑🪑</div>
+                        </div>
+                    </div>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted);">Kijk altijd naar het woord dat er direct achter staat.</p>
+                `,
+                motion: [
+                    "Een afbeelding van een klaslokaal verschijnt in beeld.",
+                    "Eerst verschijnt 1 stoel. Het tekstblok 'Er is een stoel in de klas' schuift binnen.",
+                    "Daarna verschijnen er 2 extra stoelen. Het werkwoord 'is' draait soepel om en wordt 'zijn' ('Er zijn stoelen')."
+                ]
+            },
+            {
+                page: 2,
+                title: "Enkelvoud of meervoud?",
+                bilingual: {
+                    nl: "Het woord achter 'is' of 'zijn' bepaalt welke vorm je kiest.",
+                    ar: "الكلمة التي تاتي بعد الفعل تحدد المفرد أو الجمع."
+                },
+                contentHtml: `
+                    <p class="body-text">Het woord achter 'is' of 'zijn' bepaalt welke vorm je kiest.</p>
+
+                    <table class="rule-table anim-fade-1">
+                        <thead>
+                            <tr>
+                                <th>1 DING (ENKELVOUD)</th>
+                                <th>MEER DINGEN (MEERVOUD)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Er <span class="les-highlight">is</span> een pen.</td>
+                                <td>Er <span class="les-highlight">zijn</span> pennen.</td>
+                            </tr>
+                            <tr>
+                                <td>Er <span class="les-highlight">is</span> geen tijd.</td>
+                                <td>Er <span class="les-highlight">zijn</span> geen vragen.</td>
+                            </tr>
+                            <tr>
+                                <td>Er <span class="les-highlight">is</span> 1 cursist.</td>
+                                <td>Er <span class="les-highlight">zijn</span> 20 cursisten.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted); margin-top:8px;">Bij een getal hoger dan 1 gebruik je altijd 'er zijn'.</p>
+                `,
+                motion: [
+                    "De tabel bouwt zich kolom voor kolom op.",
+                    "De woorden 'is' en 'zijn' lichten in de groene leskleur (#059669) op.",
+                    "Zo ziet de cursist direct dat 'is' bij 1 hoort en 'zijn' bij meer."
+                ]
+            },
+            {
+                page: 3,
+                title: "Plaats vooraan: Er schuift op",
+                bilingual: {
+                    nl: "Zet je de plaats vooraan? Dan schuift 'er' achter het werkwoord.",
+                    ar: "عند وضع المكان في بداية الجملة، تأتي \"is/zijn\" في المركز الثاني."
+                },
+                contentHtml: `
+                    <p class="body-text">Zet je de plaats vooraan? Dan schuift 'er' achter het werkwoord.</p>
+
+                    <div class="card anim-fade-1" style="margin: 10px 0;">
+                        <div style="font-size:12px; font-weight:900; color:var(--text-muted); margin-bottom:4px;">NORMAAL</div>
+                        <div style="font-size:14px;"><span class="les-highlight">Er is</span> een dokter in het ziekenhuis.</div>
+                        <div style="font-size:12px; font-weight:900; color:var(--leskleur); margin: 8px 0 4px 0;">PLAATS VOORAAN</div>
+                        <div style="font-size:14px; font-weight:800;">➔ In het ziekenhuis <span class="les-highlight">is er</span> een dokter.</div>
+                    </div>
+
+                    <div class="card anim-fade-2" style="margin: 10px 0;">
+                        <div style="font-size:12px; font-weight:900; color:var(--text-muted); margin-bottom:4px;">NORMAAL</div>
+                        <div style="font-size:14px;"><span class="les-highlight">Er zijn</span> veel mensen op straat.</div>
+                        <div style="font-size:12px; font-weight:900; color:var(--leskleur); margin: 8px 0 4px 0;">PLAATS VOORAAN</div>
+                        <div style="font-size:14px; font-weight:800;">➔ Op straat <span class="les-highlight">zijn er</span> veel mensen.</div>
+                    </div>
+                `,
+                motion: [
+                    "Het plaatsblok ('In het ziekenhuis') schuift van achteren helemaal naar voren.",
+                    "Het werkwoord 'is' blijft strikt op plek 2 staan.",
+                    "Het woord 'er' schuift soepel achter het werkwoord."
+                ]
+            },
+            {
+                page: 4,
+                title: "Niet 'Het is', maar 'Er is'",
+                bilingual: {
+                    nl: "Is het onbepaald (een / geen / getal)? Gebruik altijd 'er', nooit 'het'.",
+                    ar: "استخدم \"er\" مع النكرة (een/geen) وليس \"het\"."
+                },
+                contentHtml: `
+                    <p class="body-text">Is het onbepaald (een / geen / getal)? Gebruik altijd 'er', nooit 'het'.</p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin: 12px 0;">
+                        <div class="card active-card anim-fade-1">
+                            <div style="font-size:12px; font-weight:900; color:var(--leskleur);">ONBEPAALD (een/geen)</div>
+                            <div style="font-size:15px; margin-top:6px; font-weight:800;">✔ <span class="les-highlight">Er is</span> een auto.</div>
+                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">(Algemeen / Onbekend)</div>
+                        </div>
+
+                        <div class="card anim-fade-2">
+                            <div style="font-size:12px; font-weight:900; color:var(--orange-text);">BEPAALD (de/het)</div>
+                            <div style="font-size:15px; margin-top:6px; font-weight:800;">✔ <span class="les-highlight">Het is</span> de auto van Jan.</div>
+                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">(Specifiek / Bekend)</div>
+                        </div>
+                    </div>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted);">Zeg dus nooit: "Het is een auto op straat", maar "Er is een auto".</p>
+                `,
+                motion: [
+                    "Twee vergelijkingskaarten lichten om de beurt op.",
+                    "De kaart 'Onbepaald' benadrukt het woord 'een', waardoor 'Er is' groen oplicht."
+                ]
+            },
+            {
+                page: 5,
+                title: "Fout naast goed",
+                bilingual: {
+                    nl: "Vergelijk de zinnen. Zie waar de fout gemaakt wordt.",
+                    ar: "قارن بين الخطأ والصواب لتجنب الأخطاء الشائعة."
+                },
+                contentHtml: `
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>In de klas is 20 cursisten.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div>In de klas <span class="les-highlight">zijn</span> 20 cursisten.</div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>Het is een auto op straat.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div><span class="les-highlight">Er is</span> een auto op straat.</div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>Er is veel mensen hier.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div>Er <span class="les-highlight">zijn</span> veel mensen hier.</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                motion: [
+                    "Linkerkolom verschijnt eerst met een rood kruisje (✖).",
+                    "Rechterkolom verschijnt 0,5 seconden later met een groen vinkje (✔).",
+                    "De gecorrigeerde woorden lichten op in de smaragdgroene leskleur (#059669)."
+                ]
+            },
+            {
+                page: 6,
+                title: "Onthoud",
+                bilingual: {
+                    nl: "Dit zijn de drie regels voor 'er is' en 'er zijn'.",
+                    ar: "الملخص: القواعد الثلاث لاستخدام Er is و Er zijn."
+                },
+                contentHtml: `
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="card active-card anim-fade-1">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">1. Een ding? Gebruik 'Er is'.</div>
+                            <div style="font-size:14px; color:var(--text-muted);">Er is een stoel in de klas.</div>
+                        </div>
+
+                        <div class="card active-card anim-fade-2">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">2. Meer dingen? Gebruik 'Er zijn'.</div>
+                            <div style="font-size:14px; color:var(--text-muted);">Er zijn 20 cursisten in de klas.</div>
+                        </div>
+
+                        <div class="card active-card anim-fade-3">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">3. Plaats vooraan? 'Er' schuift op.</div>
+                            <div style="font-size:14px; color:var(--text-muted);">In het ziekenhuis is er een dokter.</div>
+                        </div>
+                    </div>
+                `,
+                motion: [
+                    "De drie regelkaarten schuiven kort na elkaar van onder naar boven binnen.",
+                    "Rustige einddiasituatie voor klassikale bespreking."
+                ]
+            }
+        ];
+
+        let currentPage = 1;
+
+        // Render actieve pagina
+        function renderPage() {
+            const data = lessonData[currentPage - 1];
+
+            // 1. Voortgangsbalk updaten
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((step, idx) => {
+                step.classList.remove('completed', 'active');
+                if (idx < currentPage - 1) step.classList.add('completed');
+                if (idx === currentPage - 1) step.classList.add('active');
+            });
+
+            document.getElementById('pageStepLabel').innerText = `BLADZIJDE ${currentPage} VAN 6`;
+
+            // 2. Scherm Inhoud Renderen
+            const container = document.getElementById('screenContent');
+            container.innerHTML = `
+                <h1 class="page-title">${data.title}</h1>
+                <div class="bilingual-box" dir="${currentPage === 1 || currentPage === 3 ? 'rtl' : 'ltr'}">
+                    ${currentPage === 1 || currentPage === 3 ? data.bilingual.ar : data.bilingual.nl}
+                </div>
+                ${data.contentHtml}
+            `;
+
+            // 3. Navigatieknoppen status
+            document.getElementById('btnPrev').disabled = (currentPage === 1);
+            document.getElementById('btnNext').innerText = (currentPage === 6) ? "Klaar" : "Volgende";
+
+            // 4. Noties paneel updaten
+            document.getElementById('noteTitle').innerText = `Bladzijde ${currentPage}: ${data.title}`;
+            const motionContainer = document.getElementById('motionSteps');
+            motionContainer.innerHTML = data.motion.map((stepText, i) => `
+                <div class="motion-step-item">
+                    <span class="motion-step-num">${i + 1}</span>
+                    <span>${stepText}</span>
+                </div>
+            `).join('');
+        }
+
+        function nextPage() {
+            if (currentPage < 6) {
+                currentPage++;
+                renderPage();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage();
+            }
+        }
+
+        function replayAnimation() {
+            renderPage();
+        }
+
+        // View Modes (Telefoon / Beamer / Grid)
+        function setMode(mode) {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            const phone = document.getElementById('phoneFrame');
+            const singleView = document.getElementById('singleView');
+            const gridView = document.getElementById('gridView');
+
+            if (mode === 'phone') {
+                document.getElementById('btnModePhone').classList.add('active');
+                singleView.style.display = 'flex';
+                gridView.style.display = 'none';
+                phone.classList.remove('beamer-mode');
+            } else if (mode === 'beamer') {
+                document.getElementById('btnModeBeamer').classList.add('active');
+                singleView.style.display = 'flex';
+                gridView.style.display = 'none';
+                phone.classList.add('beamer-mode');
+            } else if (mode === 'grid') {
+                document.getElementById('btnModeGrid').classList.add('active');
+                singleView.style.display = 'none';
+                gridView.style.display = 'grid';
+                renderGridView();
+            }
+        }
+
+        // Dark/Light Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        // Render alle 6 artboards in Grid Mode
+        function renderGridView() {
+            const grid = document.getElementById('gridView');
+            grid.innerHTML = lessonData.map(d => `
+                <article class="artboard-card">
+                    <div style="font-size:12px; font-weight:900; color:var(--orange-text); text-transform:uppercase;">Artboard ${d.page} / 6</div>
+                    <h3 style="font-size:18px; font-weight:900;">${d.title}</h3>
+                    <div class="artboard-mini-frame">
+                        <h4 style="font-size:16px; font-weight:900;">${d.title}</h4>
+                        <div class="bilingual-box" style="font-size:12px;">${d.bilingual.nl}</div>
+                        <div style="font-size:13px; margin-top:8px;">${d.contentHtml}</div>
+                    </div>
+                    <div style="font-size:13px; color:var(--text-muted); background:var(--bg-muted); padding:10px; border-radius:var(--radius-std);">
+                        <strong>Beweging:</strong> ${d.motion[0]}
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Initialisatie
+        renderPage();
+    </script>
+</body>
+</html>

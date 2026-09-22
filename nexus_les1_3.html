@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus of Language — Les 1.3: Dit, dat, deze en die</title>
+    <!-- Nunito Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------------------------
+           NEXUS OF LANGUAGE - HUISSTIJL DESIGN TOKENS (STRIKT NAGELEEFD)
+           ------------------------------------------------------------- */
+        :root {
+            /* Typografie Schaal (ALLEEN 12 / 14 / 16 / 18 / 20 / 24 px) */
+            --fs-12: 12px;
+            --fs-14: 14px;
+            --fs-16: 16px;
+            --fs-18: 18px;
+            --fs-20: 20px;
+            --fs-24: 24px;
+            
+            /* Hoeken & Raakvlakken */
+            --radius-std: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 9999px;
+            --touch-min: 44px;
+
+            /* SPECIFIEKE LESKLEUR LES 1.3: #0e7490 (CYAAN) */
+            --leskleur: #0e7490;
+            --leskleur-light: rgba(14, 116, 144, 0.12);
+
+            /* LICHT THEMA (STANDAARD) */
+            --bg-page: #fafafa;
+            --bg-card: #ffffff;
+            --bg-muted: #f0f0f0;
+            --border-card: #dedede;
+            --text-main: #000000;
+            --text-muted: #6f6f6f;
+            
+            /* Oranje Merkkleuren */
+            --orange-brand: #ff8000;
+            --orange-text: #c75300;
+            --orange-on-text: #0a0a0a;
+            --orange-soft: #ffead2;
+            --focus-ring: #ff8000;
+
+            /* Status */
+            --status-good-bg: #10b981;
+            --status-good-text: #047857;
+            --status-busy-bg: #f59e0b;
+            --status-error-bg: #ef4444;
+            --status-error-text: #b91c1c;
+
+            /* Premium Verlopen */
+            --grad-header: linear-gradient(115deg, #ff8000 0%, #b3450a 45%, #15130f 100%);
+            --grad-btn: linear-gradient(135deg, #ff8000 0%, #c2540d 100%);
+            --grad-large: linear-gradient(135deg, #ffa42e 0%, #ff8000 55%, #f26a00 100%);
+            --accent-gold: #ffd166;
+            --border-orange: rgba(255, 128, 0, 0.28);
+
+            /* Container framing for test environment */
+            --preview-bg: #e2e8f0;
+        }
+
+        /* DONKER THEMA */
+        [data-theme="dark"] {
+            --bg-page: #070707;
+            --bg-card: #1c1c1c;
+            --bg-muted: #1f1f1f;
+            --border-card: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --orange-soft: #2a1a0a;
+            --preview-bg: #111827;
+        }
+
+        /* Reset & Basis */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--preview-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Top control bar for viewing options */
+        .workspace-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 14px 20px;
+            border-radius: var(--radius-std);
+            border: 1px solid var(--border-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .workspace-title {
+            font-size: var(--fs-18);
+            font-weight: 900;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mode-toggles {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toggle-btn {
+            height: var(--touch-min);
+            padding: 0 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-card);
+            background: var(--bg-muted);
+            color: var(--text-main);
+            font-size: var(--fs-14);
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--grad-btn);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        /* Main Workspace Display */
+        .viewport-wrapper {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* ARTBOARD TELEFOON SIMULATOR (STRIKT 390px X 844px) */
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background-color: var(--bg-page);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            border: 1px solid var(--border-card);
+            transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+        }
+
+        /* BEAMER / DESKTOP MODUS (STRIKT 1280px X 720px) */
+        .phone-frame.beamer-mode {
+            width: 1000px;
+            height: 625px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 8px #0f172a;
+        }
+
+        /* Telefoon Notch */
+        .phone-notch {
+            height: 28px;
+            background: var(--bg-page);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: var(--fs-12);
+            font-weight: 800;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Paginabalk bovenaan (Voortgang) */
+        .progress-header {
+            padding: 12px 20px 8px 20px;
+            background: var(--bg-page);
+            flex-shrink: 0;
+        }
+
+        .progress-bar-container {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            height: 6px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 100%;
+            background: var(--bg-muted);
+            border-radius: var(--radius-pill);
+            transition: background 0.3s ease;
+        }
+
+        .progress-step.completed {
+            background: var(--grad-btn);
+        }
+
+        .progress-step.active {
+            background: var(--orange-brand);
+            box-shadow: 0 0 8px rgba(255, 128, 0, 0.5);
+        }
+
+        .step-label-caps {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Scherm Inhoud Area */
+        .screen-content {
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Paginatitel / Kop */
+        .page-title {
+            font-size: var(--fs-24);
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        /* Meegroeiend meertalig blok (RTL Arabisch ondersteuning) */
+        .bilingual-box {
+            background: var(--bg-muted);
+            border-left: 3px solid var(--leskleur);
+            padding: 8px 12px;
+            border-radius: var(--radius-std);
+            font-size: var(--fs-14);
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .bilingual-box[dir="rtl"] {
+            border-left: none;
+            border-right: 3px solid var(--leskleur);
+            text-align: right;
+            direction: rtl;
+        }
+
+        /* Uitlegtekst */
+        .body-text {
+            font-size: var(--fs-16);
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* Kaarten & Layouts */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .card.active-card {
+            border-color: var(--leskleur);
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(14, 116, 144, 0.15);
+        }
+
+        /* Text highlight regels: gekleurde letter met streepje eronder (STRIKT CYAAN #0e7490) */
+        .les-highlight {
+            color: var(--leskleur);
+            border-bottom: 2px solid var(--leskleur);
+            font-weight: 800;
+            padding-bottom: 1px;
+        }
+
+        .de-word-accent {
+            color: var(--leskleur);
+            font-weight: 800;
+        }
+
+        .het-word-accent {
+            color: var(--orange-text);
+            font-weight: 800;
+        }
+
+        /* Navigatiebalk Onderaan (STRIKT MINSTENS 44px TOUCH TARGETS) */
+        .bottom-nav {
+            padding: 12px 20px 20px 20px;
+            background: var(--bg-page);
+            border-top: 1px solid var(--border-card);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            height: var(--touch-min);
+            min-height: var(--touch-min);
+            border-radius: var(--radius-pill);
+            border: none;
+            font-size: var(--fs-16);
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.97);
+        }
+
+        .nav-btn-secondary {
+            background: var(--bg-muted);
+            color: var(--text-main);
+            border: 1px solid var(--border-card);
+            padding: 0 20px;
+        }
+
+        .nav-btn-secondary:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .nav-btn-primary {
+            flex: 1;
+            background: var(--grad-btn);
+            color: var(--orange-on-text);
+            padding: 0 24px;
+            box-shadow: 0 4px 12px rgba(255, 128, 0, 0.25);
+        }
+
+        .nav-btn-icon {
+            width: var(--touch-min);
+            height: var(--touch-min);
+            border-radius: var(--radius-pill);
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* KANTPANEEL VOOR NOTITIES */
+        .notes-panel {
+            flex: 1;
+            max-width: 420px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .notes-header {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--orange-text);
+            margin-bottom: 8px;
+        }
+
+        .notes-title {
+            font-size: var(--fs-20);
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .motion-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .motion-step-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: var(--fs-14);
+            line-height: 1.4;
+        }
+
+        .motion-step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--leskleur);
+            color: #ffffff;
+            font-size: var(--fs-12);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* GRID VIEW FOR ALL 6 ARTBOARDS OVERVIEW */
+        .all-artboards-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .artboard-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .artboard-mini-frame {
+            width: 100%;
+            height: 480px;
+            background: var(--bg-page);
+            border-radius: var(--radius-std);
+            border: 1px solid var(--border-card);
+            overflow: hidden;
+            position: relative;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Specific Table and Grid styling for Les 1.3 */
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: var(--fs-14);
+        }
+
+        .rule-table th, .rule-table td {
+            border: 1px solid var(--border-card);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .rule-table th {
+            background: var(--bg-muted);
+            font-weight: 900;
+            font-size: var(--fs-12);
+            text-transform: uppercase;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .grid-box {
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 12px;
+            font-size: var(--fs-14);
+            font-weight: 700;
+        }
+
+        .grid-box.het-row {
+            border-left: 4px solid var(--orange-brand);
+        }
+
+        .grid-box.de-row {
+            border-left: 4px solid var(--leskleur);
+        }
+
+        /* Animatie keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes strikeThrough {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @keyframes flipSpin {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(90deg); color: var(--leskleur); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .anim-fade-1 { animation: fadeIn 0.4s ease forwards; }
+        .anim-fade-2 { animation: fadeIn 0.4s ease 0.3s forwards; opacity: 0; }
+        .anim-fade-3 { animation: fadeIn 0.4s ease 0.6s forwards; opacity: 0; }
+        .anim-fade-4 { animation: fadeIn 0.4s ease 0.9s forwards; opacity: 0; }
+        .anim-flip { animation: flipSpin 0.8s ease 1s forwards; }
+
+        /* Fout & Goed Kolommen Styling */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .col-fout {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+            position: relative;
+        }
+
+        .col-goed {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--fs-12);
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .badge-status.fout { color: var(--status-error-text); }
+        .badge-status.goed { color: var(--status-good-text); }
+
+    </style>
+</head>
+<body>
+
+    <!-- BOVENBALK: MODE & THEMA SELECTION -->
+    <header class="workspace-controls">
+        <div class="workspace-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Nexus of Language — Les 1.3 (A2)
+        </div>
+
+        <div class="mode-toggles">
+            <button class="toggle-btn active" id="btnModePhone" onclick="setMode('phone')">📱 Telefoon (390px)</button>
+            <button class="toggle-btn" id="btnModeBeamer" onclick="setMode('beamer')">🖥️ Beamer Klaslokaal (1280px)</button>
+            <button class="toggle-btn" id="btnModeGrid" onclick="setMode('grid')">🖼️ Alle 6 Artboards Grid</button>
+            <button class="toggle-btn" onclick="toggleTheme()">🌓 Thema Switch</button>
+        </div>
+    </header>
+
+    <!-- HOOFD VIEWPORT (SINGLE SIMULATOR + NOTITIES) -->
+    <main class="viewport-wrapper" id="singleView">
+        
+        <!-- TELEFOON FRAME (390 x 844) -->
+        <div class="phone-frame" id="phoneFrame">
+            
+            <!-- Notch -->
+            <div class="phone-notch">
+                <span>09:41</span>
+                <span>Nexus A2</span>
+                <span>100% 🔋</span>
+            </div>
+
+            <!-- Voortgangsbalk bovenaan -->
+            <div class="progress-header">
+                <div class="progress-bar-container" id="progressBar">
+                    <div class="progress-step completed"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                </div>
+                <div class="step-label-caps">
+                    <span id="pageStepLabel">BLADZIJDE 1 VAN 6</span>
+                    <span>LES 1.3</span>
+                </div>
+            </div>
+
+            <!-- Scherm Inhoud Area -->
+            <div class="screen-content" id="screenContent">
+                <!-- Dynamisch gevuld door renderPage() -->
+            </div>
+
+            <!-- Onderste Navigatiebalk -->
+            <div class="bottom-nav">
+                <button class="nav-btn nav-btn-secondary" id="btnPrev" onclick="prevPage()" disabled>Terug</button>
+                <button class="nav-btn-icon" title="Speel beweging opnieuw af" onclick="replayAnimation()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                </button>
+                <button class="nav-btn nav-btn-primary" id="btnNext" onclick="nextPage()">Volgende</button>
+            </div>
+
+        </div>
+
+        <!-- NOTITIES PANEEL VOOR HET ACTIEVE ARTBOARD -->
+        <aside class="notes-panel">
+            <div class="notes-header">Artboard Notities & Beweging</div>
+            <h2 class="notes-title" id="noteTitle">Bladzijde 1: Dichtbij of veraf</h2>
+            <p class="body-text" id="noteDesc" style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+                Beschrijving van de beweging en volgorde voor dit specifieke artboard.
+            </p>
+            <div class="motion-steps" id="motionSteps">
+                <!-- Dynamische stappen -->
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- ALL 6 ARTBOARDS OVERVIEW GRID -->
+    <section class="all-artboards-grid" id="gridView">
+        <!-- Wordt via JS opgebouwd met alle 6 de schermen naast elkaar -->
+    </section>
+
+    <!-- JAVASCRIPT LOGICA -->
+    <script>
+        // LESDATA LES 1.3 VOLGENS DE EXACTE SPECIFICATIES EN REGELS
+        const lessonData = [
+            {
+                page: 1,
+                title: "Dichtbij of veraf",
+                bilingual: {
+                    nl: "Wat je kunt aanraken is dichtbij. Wat verderop staat is veraf.",
+                    ar: "القريب والبعيد: هذا/هذه للقريب، ذلك/تلك للبعيد."
+                },
+                contentHtml: `
+                    <p class="body-text">Wat je kunt aanraken is dichtbij. Wat verderop staat is veraf.</p>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin: 12px 0;">
+                        <div class="card active-card anim-fade-1" style="text-align:center;">
+                            <div style="font-size:36px; margin-bottom:6px;">🫱 🗝️</div>
+                            <div style="font-size:16px; font-weight:900; color:var(--leskleur);">dit / deze</div>
+                            <div style="font-size:14px; color:var(--text-muted); font-weight:800;">= hier</div>
+                        </div>
+                        <div class="card anim-fade-2" style="text-align:center;">
+                            <div style="font-size:36px; margin-bottom:6px;">🚪 🚶‍♂️</div>
+                            <div style="font-size:16px; font-weight:900; color:var(--leskleur);">dat / die</div>
+                            <div style="font-size:14px; color:var(--text-muted); font-weight:800;">= daar</div>
+                        </div>
+                    </div>
+
+                    <p class="body-text">Dit is de eerste vraag die je jezelf stelt.</p>
+                `,
+                motion: [
+                    "Twee kaarten verschijnen naast elkaar.",
+                    "Links komt een illustratie/pictogram van een hand met een sleutel dichtbij de kijker in beeld.",
+                    "Rechts verschijnt een deur verderop.",
+                    "De woorden 'dit / deze = hier' en 'dat / die = daar' verschijnen eronder zodra de afbeeldingen staan."
+                ]
+            },
+            {
+                page: 2,
+                title: "De tweede vraag: de of het?",
+                bilingual: {
+                    nl: "Staat er een woord achter? Dan bepaalt de of het welk woord je kiest.",
+                    ar: "السؤال الثاني: هل الكلمة تأخذ de أم het؟"
+                },
+                contentHtml: `
+                    <p class="body-text">Staat er een woord achter? Dan bepaalt de of het welk woord je kiest.</p>
+
+                    <table class="rule-table anim-fade-1">
+                        <thead>
+                            <tr>
+                                <th style="color:var(--leskleur);">de-woord</th>
+                                <th style="color:var(--orange-text);">het-woord</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="de-word-accent">deze</span> sleutel</td>
+                                <td><span class="het-word-accent">dit</span> huis</td>
+                            </tr>
+                            <tr>
+                                <td><span class="de-word-accent">die</span> doos</td>
+                                <td><span class="het-word-accent">dat</span> boek</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="card anim-fade-2" style="margin-top:10px;">
+                        <div style="font-size:14px; text-decoration:line-through; color:var(--status-error-text); margin-bottom:4px;">✖ deze huis</div>
+                        <div style="font-size:16px; font-weight:900; color:var(--status-good-text);">✔ <span class="les-highlight">dit</span> huis</div>
+                    </div>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted); margin-top:8px;">Dus niet deze huis, maar dit huis.</p>
+                `,
+                motion: [
+                    "De tabel bouwt zich kolom voor kolom op.",
+                    "Zodra beide kolommen staan, kruist er een lijn door de foute combinatie 'deze huis' die daaronder verschijnt.",
+                    "Daaronder komt 'dit huis' binnen met een groen vinkje (✔)."
+                ]
+            },
+            {
+                page: 3,
+                title: "Het hele raster",
+                bilingual: {
+                    nl: "Vier vakjes, en meer zijn het er niet.",
+                    ar: "أربعة مربعات فقط تشمل جميع الحالات."
+                },
+                contentHtml: `
+                    <p class="body-text">Vier vakjes, en meer zijn het er niet.</p>
+
+                    <div style="margin:12px 0;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:6px; font-size:12px; font-weight:900; text-transform:uppercase; color:var(--text-muted);">
+                            <div>DICHTBIJ (hier)</div>
+                            <div>VERAF (daar)</div>
+                        </div>
+                        <div class="grid-2x2">
+                            <div class="grid-box het-row anim-fade-1">
+                                <div style="font-size:12px; color:var(--orange-text);">het-woord</div>
+                                <div><span class="het-word-accent">dit</span> huis</div>
+                            </div>
+                            <div class="grid-box het-row anim-fade-2">
+                                <div style="font-size:12px; color:var(--orange-text);">het-woord</div>
+                                <div><span class="het-word-accent">dat</span> huis</div>
+                            </div>
+                            <div class="grid-box de-row anim-fade-3">
+                                <div style="font-size:12px; color:var(--leskleur);">de-woord</div>
+                                <div><span class="de-word-accent">deze</span> sleutel</div>
+                            </div>
+                            <div class="grid-box de-row anim-fade-4">
+                                <div style="font-size:12px; color:var(--leskleur);">de-woord</div>
+                                <div><span class="de-word-accent">die</span> sleutel</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted);">Bovenste rij: het-woorden. Onderste rij: de-woorden.</p>
+                `,
+                motion: [
+                    "Het raster verschijnt eerst leeg, met alleen de koppen ('dichtbij' / 'veraf').",
+                    "De vier vakjes vullen zich met de klok mee, linksboven eerst (dit huis ➔ dat huis ➔ die sleutel ➔ deze sleutel).",
+                    "Elke rij houdt zijn eigen kleurtint zodat de-woorden en het-woorden duidelijk uit elkaar blijven."
+                ]
+            },
+            {
+                page: 4,
+                title: "Zonder woord erachter: dit is, dat zijn",
+                bilingual: {
+                    nl: "Staat er geen woord achter? Dan gebruik je altijd dit of dat, nooit deze of die.",
+                    ar: "إذا لم تأتِ كلمة بعد اسم الإشارة، استخدم دائماً dit أو dat."
+                },
+                contentHtml: `
+                    <p class="body-text">Staat er geen woord achter? Dan gebruik je altijd dit of dat, nooit deze of die.</p>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin: 12px 0;">
+                        <div class="card anim-fade-1">
+                            <div style="font-size:14px; margin-bottom:4px; font-weight:800; color:var(--text-muted);">EEN DING / IETS</div>
+                            <div style="font-size:16px;"><span class="les-highlight">Dit</span> 🔒 <span class="anim-flip" style="display:inline-block;">is</span> mijn broer.</div>
+                            <div style="font-size:16px; margin-top:4px;"><span class="les-highlight">Dat</span> 🔒 is de lift.</div>
+                        </div>
+
+                        <div class="card anim-fade-2">
+                            <div style="font-size:14px; margin-bottom:4px; font-weight:800; color:var(--text-muted);">MEER (MEERVOUD)</div>
+                            <div style="font-size:16px;"><span class="les-highlight">Dit</span> 🔒 <span class="anim-flip" style="display:inline-block;">zijn</span> mijn ouders.</div>
+                            <div style="font-size:16px; margin-top:4px;"><span class="les-highlight">Dat</span> 🔒 zijn de buren.</div>
+                        </div>
+                    </div>
+
+                    <p class="body-text" style="font-size:14px; color:var(--text-muted);">Let op: dit blijft dit, ook als er meer dan een is. Alleen is wordt zijn.</p>
+                `,
+                motion: [
+                    "Een zin verschijnt eerst met een enkele figuur ernaast ('Dit is mijn broer').",
+                    "Er komt een tweede figuur bij; het woord 'is' draait om zijn as en verandert in 'zijn'.",
+                    "Het woord 'Dit' blijft zichtbaar onveranderd staan, met een klein slotje (🔒) erbij."
+                ]
+            },
+            {
+                page: 5,
+                title: "Fout naast goed",
+                bilingual: {
+                    nl: "Vergelijk de zinnen. Zie waar het misgaat.",
+                    ar: "قارن بين الخطأ والصواب لتجنب الأخطاء الشائعة."
+                },
+                contentHtml: `
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>Deze huis is groot.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div><span class="les-highlight">Dit</span> huis is groot.</div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>Dit zijn mijn broer.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div>Dit <span class="les-highlight">is</span> mijn broer.</div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-grid">
+                            <div class="col-fout anim-fade-1">
+                                <div class="badge-status fout">✖ FOUT</div>
+                                <div>Die boek is nieuw.</div>
+                            </div>
+                            <div class="col-goed anim-fade-2">
+                                <div class="badge-status goed">✔ GOED</div>
+                                <div><span class="les-highlight">Dat</span> boek is nieuw.</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                motion: [
+                    "Elke rij komt eerst binnen als een fout (met een rood kruisje ✖).",
+                    "Na een korte pauze schuift het goede woord er als een kaartje overheen (met een groen vinkje ✔).",
+                    "De vervangen letters blijven kort in de cyaan leskleur (#0e7490) staan."
+                ]
+            },
+            {
+                page: 6,
+                title: "Onthoud",
+                bilingual: {
+                    nl: "Dit zijn de drie regels voor dit, dat, deze en die.",
+                    ar: "الملخص: القواعد الثلاث لاستخدام أسماء الإشارة."
+                },
+                contentHtml: `
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="card active-card anim-fade-1">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">1. Dichtbij of veraf?</div>
+                            <div style="font-size:14px; color:var(--text-muted);">dit en deze zijn hier, dat en die daar.</div>
+                        </div>
+
+                        <div class="card active-card anim-fade-2">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">2. Staat er een woord achter?</div>
+                            <div style="font-size:14px; color:var(--text-muted);"><span class="de-word-accent">de-woord</span> krijgt deze of die, <span class="het-word-accent">het-woord</span> krijgt dit of dat.</div>
+                        </div>
+
+                        <div class="card active-card anim-fade-3">
+                            <div style="font-size:18px; font-weight:900; color:var(--leskleur); margin-bottom:4px;">3. Staat er niets achter?</div>
+                            <div style="font-size:14px; color:var(--text-muted);">Altijd dit of dat, met is of zijn.</div>
+                        </div>
+                    </div>
+                `,
+                motion: [
+                    "Drie regels onder elkaar schuiven binnen, kort na elkaar.",
+                    "Bij de tweede regel blijven de woorden 'de' en 'het' in hun eigen accentkleur staan.",
+                    "Dit is de rustige overzichtsdia om bij stil te staan."
+                ]
+            }
+        ];
+
+        let currentPage = 1;
+
+        // Render actieve pagina
+        function renderPage() {
+            const data = lessonData[currentPage - 1];
+
+            // 1. Voortgangsbalk updaten
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((step, idx) => {
+                step.classList.remove('completed', 'active');
+                if (idx < currentPage - 1) step.classList.add('completed');
+                if (idx === currentPage - 1) step.classList.add('active');
+            });
+
+            document.getElementById('pageStepLabel').innerText = `BLADZIJDE ${currentPage} VAN 6`;
+
+            // 2. Scherm Inhoud Renderen
+            const container = document.getElementById('screenContent');
+            container.innerHTML = `
+                <h1 class="page-title">${data.title}</h1>
+                <div class="bilingual-box" dir="${currentPage === 1 || currentPage === 2 ? 'rtl' : 'ltr'}">
+                    ${currentPage === 1 || currentPage === 2 ? data.bilingual.ar : data.bilingual.nl}
+                </div>
+                ${data.contentHtml}
+            `;
+
+            // 3. Navigatieknoppen status
+            document.getElementById('btnPrev').disabled = (currentPage === 1);
+            document.getElementById('btnNext').innerText = (currentPage === 6) ? "Klaar" : "Volgende";
+
+            // 4. Noties paneel updaten
+            document.getElementById('noteTitle').innerText = `Bladzijde ${currentPage}: ${data.title}`;
+            const motionContainer = document.getElementById('motionSteps');
+            motionContainer.innerHTML = data.motion.map((stepText, i) => `
+                <div class="motion-step-item">
+                    <span class="motion-step-num">${i + 1}</span>
+                    <span>${stepText}</span>
+                </div>
+            `).join('');
+        }
+
+        function nextPage() {
+            if (currentPage < 6) {
+                currentPage++;
+                renderPage();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage();
+            }
+        }
+
+        function replayAnimation() {
+            renderPage();
+        }
+
+        // View Modes (Telefoon / Beamer / Grid)
+        function setMode(mode) {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            const phone = document.getElementById('phoneFrame');
+            const singleView = document.getElementById('singleView');
+            const gridView = document.getElementById('gridView');
+
+            if (mode === 'phone') {
+                document.getElementById('btnModePhone').classList.add('active');
+                singleView.style.display = 'flex';
+                gridView.style.display = 'none';
+                phone.classList.remove('beamer-mode');
+            } else if (mode === 'beamer') {
+                document.getElementById('btnModeBeamer').classList.add('active');
+                singleView.style.display = 'flex';
+                gridView.style.display = 'none';
+                phone.classList.add('beamer-mode');
+            } else if (mode === 'grid') {
+                document.getElementById('btnModeGrid').classList.add('active');
+                singleView.style.display = 'none';
+                gridView.style.display = 'grid';
+                renderGridView();
+            }
+        }
+
+        // Dark/Light Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        // Render alle 6 artboards in Grid Mode
+        function renderGridView() {
+            const grid = document.getElementById('gridView');
+            grid.innerHTML = lessonData.map(d => `
+                <article class="artboard-card">
+                    <div style="font-size:12px; font-weight:900; color:var(--orange-text); text-transform:uppercase;">Artboard ${d.page} / 6</div>
+                    <h3 style="font-size:18px; font-weight:900;">${d.title}</h3>
+                    <div class="artboard-mini-frame">
+                        <h4 style="font-size:16px; font-weight:900;">${d.title}</h4>
+                        <div class="bilingual-box" style="font-size:12px;">${d.bilingual.nl}</div>
+                        <div style="font-size:13px; margin-top:8px;">${d.contentHtml}</div>
+                    </div>
+                    <div style="font-size:13px; color:var(--text-muted); background:var(--bg-muted); padding:10px; border-radius:var(--radius-std);">
+                        <strong>Beweging:</strong> ${d.motion[0]}
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Initialisatie
+        renderPage();
+    </script>
+</body>
+</html>

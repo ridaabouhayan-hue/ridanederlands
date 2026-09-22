@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus of Language - A2 Thema 1: Verhuizen (Uitlegmodule)</title>
+    <!-- Nunito Font Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------------------------
+           NEXUS OF LANGUAGE - HUISSTIJL TOKENS (STRIKT PER DE SPECIFICATIE)
+           ------------------------------------------------------------- */
+        :root {
+            /* Typografie Schaal (STRIKT ALLEEN DEZE MATEN) */
+            --fs-12: 12px;
+            --fs-14: 14px;
+            --fs-16: 16px;
+            --fs-18: 18px;
+            --fs-20: 20px;
+            --fs-24: 24px;
+            
+            /* Hoeken & Raakvlakken */
+            --radius-std: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 9999px;
+            --touch-min: 44px;
+
+            /* LICHT THEMA */
+            --bg-page: #fafafa;
+            --bg-card: #ffffff;
+            --border-card: #dedede;
+            --bg-muted: #f0f0f0;
+            --text-muted: #6f6f6f;
+            --text-main: #000000;
+            
+            --orange-brand: #ff8000;
+            --orange-text: #c75300;
+            --text-on-orange: #0a0a0a;
+            --orange-soft: #ffead2;
+            --focusring: #ff8000;
+
+            /* Status */
+            --status-good-bg: #10b981;
+            --status-good-text: #047857;
+            --status-bezig-bg: #f59e0b;
+            --status-error-bg: #ef4444;
+            --status-error-text: #b91c1c;
+            --status-neutral: #6b7280;
+
+            /* Verlopen */
+            --grad-header: linear-gradient(115deg, #ff8000 0%, #b3450a 45%, #15130f 100%);
+            --grad-btn: linear-gradient(135deg, #ff8000 0%, #c2540d 100%);
+            --grad-vlak: linear-gradient(135deg, #ffa42e 0%, #ff8000 55%, #f26a00 100%);
+            --accent-gold: #ffd166;
+            --card-border-orange: rgba(255,128,0,0.28);
+            
+            --preview-bg: #e2e8f0;
+            --current-leskleur: #6d28d9;
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #070707;
+            --bg-card: #1c1c1c;
+            --border-card: rgba(255,255,255,0.12);
+            --bg-muted: #1f1f1f;
+            --text-muted: #a3a3a3;
+            --text-main: #ffffff;
+            --orange-soft: #2a1a0a;
+            --preview-bg: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--preview-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* WORKSPACE HEADER CONTROLS */
+        .workspace-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1280px;
+            margin-bottom: 16px;
+            background: var(--bg-card);
+            padding: 14px 20px;
+            border-radius: var(--radius-std);
+            border: 1px solid var(--border-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .workspace-title {
+            font-size: var(--fs-18);
+            font-weight: 900;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .les-badge {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            background: var(--orange-soft);
+            color: var(--orange-text);
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        select.les-dropdown {
+            height: var(--touch-min);
+            padding: 0 16px;
+            border-radius: var(--radius-pill);
+            border: 2px solid var(--orange-brand);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: var(--fs-14);
+            font-weight: 800;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .toggle-btn {
+            height: var(--touch-min);
+            padding: 0 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-card);
+            background: var(--bg-muted);
+            color: var(--text-main);
+            font-size: var(--fs-14);
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--grad-btn);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        /* VIEWPORT FRAME (SIMULATORS) */
+        .frame-container {
+            width: 390px;
+            height: 844px;
+            background-color: var(--bg-page);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-card);
+            transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+        }
+
+        .frame-container.beamer-mode {
+            width: 1280px;
+            height: 720px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 10px #0f172a;
+        }
+
+        /* 1. PROGRESS HEADER */
+        .progress-header {
+            padding: 12px 18px 8px 18px;
+            background: var(--bg-page);
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        .progress-bar-track {
+            display: flex;
+            gap: 3px;
+            width: 100%;
+            height: 4px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 100%;
+            background: var(--bg-muted);
+            border-radius: var(--radius-pill);
+            transition: background 0.3s ease;
+        }
+
+        .progress-step.completed {
+            background: var(--current-leskleur);
+        }
+
+        .progress-step.active {
+            background: var(--orange-brand);
+            box-shadow: 0 0 6px rgba(255, 128, 0, 0.6);
+        }
+
+        .step-label-caps {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* SCREEN CONTENT AREA */
+        .screen-content {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* 2. PAGE HEADER (MAX 24PX) */
+        .page-head-title {
+            font-size: var(--fs-24);
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1.25;
+        }
+
+        /* 3. SECOND LANGUAGE BLOCK */
+        .second-lang-box {
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lang-line {
+            font-size: var(--fs-14);
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        .lang-line[dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+            font-weight: 700;
+        }
+
+        /* 4. CONTENT BUILDING BLOCKS */
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .label-cap-12 {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ZINBLOKKEN COMPONENT */
+        .zin-blocks-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .zin-block {
+            background: var(--bg-muted);
+            border: 2px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .zin-block .num-tag {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .zin-block .text-tag {
+            font-size: var(--fs-16);
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .zin-block.is-verb {
+            border-color: var(--current-leskleur);
+            background: rgba(109, 40, 217, 0.08);
+        }
+
+        .zin-block.is-verb .text-tag {
+            color: var(--current-leskleur);
+            font-weight: 900;
+        }
+
+        /* TABEL COMPONENT */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--fs-14);
+            margin-top: 4px;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-card);
+            max-width: 160px;
+            word-wrap: break-word;
+        }
+
+        .custom-table th {
+            background: var(--bg-muted);
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        /* KETEN COMPONENT */
+        .keten-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg-muted);
+            border-radius: var(--radius-std);
+            font-size: var(--fs-16);
+        }
+
+        .keten-word {
+            font-weight: 800;
+        }
+
+        .keten-arrow {
+            color: var(--orange-brand);
+            font-weight: 900;
+        }
+
+        .keten-res {
+            font-weight: 900;
+            color: var(--current-leskleur);
+        }
+
+        .keten-why {
+            font-size: var(--fs-14);
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* PAAR COMPONENT */
+        .paar-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .paar-card {
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .paar-title {
+            font-size: var(--fs-12);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--orange-text);
+        }
+
+        .paar-text {
+            font-size: var(--fs-16);
+            font-weight: 800;
+        }
+
+        /* FOUT NAAST GOED COMPONENT */
+        .fout-goed-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fout-goed-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .box-fout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1.5px solid var(--status-error-bg);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+            font-weight: 800;
+            color: var(--status-error-text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .box-goed {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1.5px solid var(--status-good-bg);
+            border-radius: var(--radius-std);
+            padding: 10px;
+            font-size: var(--fs-14);
+            font-weight: 800;
+            color: var(--status-good-text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* REGELKAART */
+        .regel-box {
+            background: var(--orange-soft);
+            border: 1.5px solid var(--card-border-orange);
+            border-radius: var(--radius-std);
+            padding: 14px;
+        }
+
+        .regel-main {
+            font-size: var(--fs-18);
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .regel-sub {
+            font-size: var(--fs-14);
+            color: var(--text-muted);
+        }
+
+        /* AUDIO CARDS */
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .audio-card-btn {
+            min-height: var(--touch-min);
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-card);
+            border-radius: var(--radius-std);
+            font-size: var(--fs-16);
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .audio-card-btn:hover {
+            border-color: var(--current-leskleur);
+            background: var(--bg-muted);
+        }
+
+        .audio-card-btn.playing {
+            border-color: var(--orange-brand);
+            background: var(--orange-soft);
+            color: var(--orange-text);
+        }
+
+        /* LETTERGREEP BLOKJES */
+        .syllable-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            margin-top: 6px;
+        }
+
+        .syllable-box {
+            padding: 8px 14px;
+            background: var(--bg-muted);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            font-size: var(--fs-16);
+            font-weight: 800;
+        }
+
+        .syllable-box.stressed {
+            background: var(--current-leskleur);
+            color: #ffffff;
+            font-weight: 900;
+            transform: translateY(-6px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* 5. BOTTOM NAVIGATION BAR (FIXED STICKY) */
+        .bottom-nav {
+            padding: 12px 18px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-card);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-action-btn {
+            min-height: var(--touch-min);
+            padding: 0 20px;
+            border-radius: var(--radius-pill);
+            border: none;
+            background: var(--grad-btn);
+            color: #ffffff;
+            font-size: var(--fs-14);
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-action-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            background: var(--bg-muted);
+            color: var(--text-muted);
+        }
+
+        .btn-repeat {
+            width: var(--touch-min);
+            height: var(--touch-min);
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-card);
+            background: var(--bg-muted);
+            color: var(--text-main);
+            font-size: var(--fs-18);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-repeat:active {
+            transform: rotate(180deg);
+        }
+
+        /* TEACHER QUESTIONS DRAWER */
+        .teacher-questions-section {
+            margin-top: 20px;
+            border-top: 2px dashed var(--border-card);
+            padding-top: 16px;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-std);
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .question-title {
+            font-size: var(--fs-16);
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        details.answer-drawer {
+            margin-top: 6px;
+            cursor: pointer;
+        }
+
+        details.answer-drawer summary {
+            font-size: var(--fs-14);
+            font-weight: 900;
+            color: var(--orange-text);
+            padding: 6px 0;
+            outline: none;
+        }
+
+        .answer-content {
+            margin-top: 8px;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--status-good-bg);
+            border-radius: var(--radius-std);
+            font-size: var(--fs-14);
+            color: var(--status-good-text);
+            line-height: 1.5;
+        }
+
+        .word-highlight {
+            color: var(--current-leskleur);
+            font-weight: 900;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP WORKSPACE CONTROL BAR -->
+    <div class="workspace-controls">
+        <div class="workspace-title">
+            <span>🏫 Nexus of Language</span>
+            <span class="les-badge" id="workspaceThemeBadge">A2 Thema 1: Verhuizen</span>
+        </div>
+        <div class="controls-group">
+            <label for="lesSelect" style="font-size: 14px; font-weight: 800;">Selecteer Les:</label>
+            <select class="les-dropdown" id="lesSelect" onchange="selectLesson(this.value)">
+                <!-- JS populated -->
+            </select>
+            <button class="toggle-btn active" id="btnPhone" onclick="setMode('phone')">📱 Telefoon (390px)</button>
+            <button class="toggle-btn" id="btnBeamer" onclick="setMode('beamer')">💻 Beamer (1280px)</button>
+            <button class="toggle-btn" id="btnTheme" onclick="toggleTheme()">🌙 Donker</button>
+        </div>
+    </div>
+
+    <!-- MAIN VIEWPORT CONTAINER -->
+    <div class="frame-container" id="mainFrame">
+        
+        <!-- 1. PROGRESS HEADER -->
+        <div class="progress-header">
+            <div class="progress-bar-track" id="progressBarTrack"></div>
+            <div class="step-label-caps">
+                <span id="stepCategoryCaps">GRAMMATICA</span>
+                <span id="stepCounterLabel">BLADZIJDE 1 VAN 11</span>
+            </div>
+        </div>
+
+        <!-- SCREEN CONTENT AREA -->
+        <div class="screen-content" id="screenContentArea">
+            <!-- JS dynamically renders page contents here -->
+        </div>
+
+        <!-- 5. BOTTOM NAVIGATION BAR -->
+        <div class="bottom-nav">
+            <button class="nav-action-btn" id="btnTerug" onclick="prevPage()">← Terug</button>
+            <button class="btn-repeat" id="btnReplay" onclick="replayAnimation()" title="Speel beweging opnieuw af">🔄</button>
+            <button class="nav-action-btn" id="btnVolgende" onclick="nextPage()">Volgende →</button>
+        </div>
+    </div>
+
+    <!-- NOTITIE VOOR ONTWERPKEUZES -->
+    <div style="max-width: 1280px; width: 100%; margin-top: 24px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-std); font-size: 14px; line-height: 1.5; color: var(--text-muted);">
+        <strong style="color: var(--text-main);">📌 Ontwerpnotities & Huisstijl-verantwoording:</strong><br>
+        • <strong>Strikte Typografie Schaal:</strong> Alle schermteksten gebruiken uitsluitend de voorgeschreven puntgroottes (12, 14, 16, 18, 20, 24 px) in het Nunito font. Nadruk is aangebracht met font-weights (800–900).<br>
+        • <strong>Flexibele 2e Taalblokken:</strong> De meertalige regels (Arabisch met <code>dir="rtl"</code> en Turks) groeien dynamisch mee in de hoogte zonder dat er scrollbars of afsnijdingen ontstaan op telefoonschermen.<br>
+        • <strong>Leskleuren:</strong> Elke les past haar specifieke accentkleur aan (Les 1.2 paars <code>#6d28d9</code>, Les 1.3 cyaan <code>#0e7490</code>, Les 1.6 teal <code>#0f766e</code>, Les 1.7 magenta <code>#a21caf</code>, Les 1.9 blauw <code>#1d4ed8</code>, Les 1.11 olijf <code>#4d7c0f</code>, Les 1.13 bruin <code>#7c2d12</code>, Les 1.15 indigo <code>#4338ca</code>).<br>
+        • <strong>Audio-functionaliteit (Les 1.13):</strong> Ondersteunt interactieve spraak via de ingebouwde browser Spraak-API (met visuele actieve status) zonder externe MP3-afhankelijkheden of autoplay.<br>
+        • <strong>Lesvragen voor de docent:</strong> Aan het einde van elke les zijn de 6 docentvragen met inklapbare/uitklapbare antwoorden en uitgebreide toelichtingen toegevoegd.
+    </div>
+
+    <script>
+        const LESSONS_DATA = [{"code": "1.2", "title": "Het werkwoord op plek twee", "color": "#6d28d9", "kind": "grammatica", "pages": [{"num": 1, "title": "Wie, werkwoord, rest", "tr_ar": "الجملة الهولندية العادية تتكون من ثلاثة أجزاء دائماً بهذه الترتيب.", "tr_tr": "Normal Felemenkçe cümle her zaman bu sırayla üç parçadan oluşur.", "block": "zinblokken", "data": {"text_intro": "De gewone Nederlandse zin heeft drie stukken, altijd in deze volgorde.", "text_outro": "Het middelste stuk is de persoonsvorm: het werkwoord dat met 'wie' meeverandert.", "blocks": [{"num": 1, "text": "Ik", "type": "subject"}, {"num": 2, "text": "woon", "type": "verb", "pv": true}, {"num": 3, "text": "in een flat.", "type": "rest"}]}, "anim": "sequential_blocks"}, {"num": 2, "title": "Vier zinnen, hetzelfde patroon", "tr_ar": "أربعة جمل بنفس النمط تماماً: الفعل دائماً في المركز الثاني.", "tr_tr": "Dört cümle, tamamen aynı desen: Fiil her zaman ikinci sırada.", "block": "zinblokken_multi", "data": {"sentences": [[{"num": 1, "text": "De buurman"}, {"num": 2, "text": "helpt", "pv": true}, {"num": 3, "text": "met de doos."}], [{"num": 1, "text": "Wij"}, {"num": 2, "text": "drinken", "pv": true}, {"num": 3, "text": "koffie in de keuken."}], [{"num": 1, "text": "Mijn zoon"}, {"num": 2, "text": "fietst", "pv": true}, {"num": 3, "text": "naar school."}], [{"num": 1, "text": "De lift"}, {"num": 2, "text": "is", "pv": true}, {"num": 3, "text": "vandaag kapot."}]]}, "anim": "column_highlight"}, {"num": 3, "title": "Plek 1 is een zinsdeel, geen woord", "tr_ar": "الموقع الأول يمكن أن يكون عدة كلمات تشكل جزءاً واحداً من الجملة.", "tr_tr": "1. pozisyon bir kelime değil, bütün bir cümle parçasıdır.", "block": "zinblokken_multi", "data": {"text_intro": "Op plek 1 staat een heel stuk. Dat mogen vier woorden zijn. Tel dus geen woorden, tel stukken.", "sentences": [[{"num": 1, "text": "Mijn nieuwe buurman"}, {"num": 2, "text": "helpt", "pv": true}, {"num": 3, "text": "mij met de doos."}], [{"num": 1, "text": "Elke maandagochtend"}, {"num": 2, "text": "breng", "pv": true}, {"num": 3, "text": "ik de kinderen weg."}]]}, "anim": "merge_first_block"}, {"num": 4, "title": "Zet je iets anders vooraan? Plek 2 blijft plek 2", "tr_ar": "إذا وضعت الوقت أو المكان في البداية، يبقى الفعل في المركز الثاني.", "tr_tr": "Başa başka bir şey koyarsanız, 2. sıra yine 2. sıra olarak kalır.", "block": "paar", "data": {"left": {"title": "Gewone volgorde", "text": "Ik ga morgen naar de markt."}, "right": {"title": "Tijd vooraan (Inversie)", "text": "Morgen ga ik naar de markt."}, "sub_left": "Wij eten in de keuken.", "sub_right": "In de keuken eten wij.", "note": "Het werkwoord staat nog steeds op de tweede plaats. Alleen wie er voor stond, is verhuisd."}, "anim": "swap_subject_verb"}, {"num": 5, "title": "Vooraan een tijd", "tr_ar": "عندما يوضع الزمان في البداية، يأتي الفاعل خلف الفعل مباشرة.", "tr_tr": "Zaman başa geldiğinde, özne fiilin arkasına geçer.", "block": "tabel", "data": {"headers": ["Plek 1 (Tijd)", "De rest (Werkwoord + Wie + Rest)"], "rows": [["Morgen", "ga ik naar de dokter."], ["Vanavond", "eten wij bij mijn zus."], ["Volgende week", "verhuizen wij."]], "note": "Kijk waar 'ik' en 'wij' staan: achter het werkwoord."}, "anim": "fill_table_rows"}, {"num": 6, "title": "Vooraan een plaats", "tr_ar": "مكان في البداية يعمل بنفس الطريقة تماماً كالوقت.", "tr_tr": "Mekan başa geldiğinde aynı kural geçerlidir.", "block": "tabel", "data": {"headers": ["Plek 1 (Plaats)", "De rest (Werkwoord + Wie + Rest)"], "rows": [["In de tuin", "staat een grote tafel."], ["Op de tweede verdieping", "wonen mijn ouders."], ["Bij de buren", "is het altijd druk."]], "note": "Ook hier: eerst het werkwoord, dan pas wie."}, "anim": "fill_table_rows"}, {"num": 7, "title": "Twee werkwoorden: het tweede gaat achteraan", "tr_ar": "عند وجود فعلين: الفعل المصرف في المركز 2، والفعل الثاني في النهاية.", "tr_tr": "İki fiil varsa: çekimlenen fiil 2. sırada, ikinci fiil en sonda kalır.", "block": "zinblokken_four", "data": {"sentences": [[{"num": 1, "text": "Ik"}, {"num": 2, "text": "wil", "pv": true}, {"num": 3, "text": "koffie"}, {"num": "eind", "text": "drinken", "pv2": true}], [{"num": 1, "text": "Zij"}, {"num": 2, "text": "gaat", "pv": true}, {"num": 3, "text": "morgen"}, {"num": "eind", "text": "verhuizen", "pv2": true}], [{"num": 1, "text": "Wij"}, {"num": 2, "text": "moeten", "pv": true}, {"num": 3, "text": "de doos"}, {"num": "eind", "text": "dragen", "pv2": true}]], "note": "De persoonsvorm blijft op plek 2. Het andere werkwoord blijft heel en gaat naar het eind van de zin."}, "anim": "verb2_arc_to_end"}, {"num": 8, "title": "Vier werkwoorden die er een tweede bij vragen", "tr_ar": "أربعة أفعال تطلب دائماً فعلاً ثانياً في نهاية الجملة.", "tr_tr": "Sonda ikinci bir fiil gerektiren dört fiil.", "block": "tabel", "data": {"headers": ["Werkwoord", "Voorbeeld"], "rows": [["willen", "Ik wil een fiets kopen."], ["moeten", "Wij moeten de doos dragen."], ["kunnen", "Zij kan goed koken."], ["gaan", "Morgen ga ik verhuizen."]], "note": "Het tweede werkwoord blijft heel en staat als laatste."}, "anim": "arc_verb_pair"}, {"num": 9, "title": "Achter het werkwoord: eerst wanneer, dan waar", "tr_ar": "بعد الفعل: الوقت يسبق المكان دائماً.", "tr_tr": "Fiilden sonra: önce zaman, sonra mekan gelir.", "block": "paar", "data": {"left": {"title": "Goed (Wanneer -> Waar)", "text": "Ik werk morgen thuis."}, "right": {"title": "Ongewoon (Waar -> Wanneer)", "text": "Ik werk thuis morgen."}, "note": "De linker klinkt goed. De rechter klopt grammaticaal en niemand zegt het. [1 Wij eten] [2 vanavond] [3 bij mijn zus.]"}, "anim": "time_place_order"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "مقارنة الأخطاء الشائعة مع الصياغة الصحيحة.", "tr_tr": "Yaygın hatalar ve doğru kullanımların karşılaştırılması.", "block": "fout_goed", "data": {"items": [{"fout": "Morgen ik ga naar de markt.", "goed": "Morgen ga ik naar de markt."}, {"fout": "Ik wil drinken koffie.", "goed": "Ik wil koffie drinken."}, {"fout": "In de keuken wij eten.", "goed": "In de keuken eten wij."}]}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص أهم ثلاث قواعد في هذا الدرس.", "tr_tr": "Bu dersteki en önemli 3 kuralın özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Het werkwoord staat op plek 2.", "example": "Ook als er iets anders vooraan staat."}, {"rule": "Wie verhuist, het werkwoord niet.", "example": "Morgen ga ik, niet Morgen ik ga."}, {"rule": "Een tweede werkwoord gaat achteraan.", "example": "Ik wil koffie drinken."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Zet de zin goed: morgen / ik / naar de markt / ga", "a": "Morgen ga ik naar de markt.", "e": "De tijd staat vooraan, dus het werkwoord komt meteen daarna en ik gaat erachter."}, {"q": "2. Wat is fout aan: In de keuken wij eten brood?", "a": "Wij en eten staan verwisseld. Goed is: In de keuken eten wij brood.", "e": "Plek 2 is voor het werkwoord, ook als er een plaats voor staat."}, {"q": "3. Zet de zin goed: ik / koffie / wil / drinken", "a": "Ik wil koffie drinken.", "e": "Wil is de persoonsvorm en staat op plek 2; drinken gaat naar het eind."}, {"q": "4. Maak deze zin met 'vandaag' vooraan: Wij werken tot vijf uur.", "a": "Vandaag werken wij tot vijf uur.", "e": "Alles schuift op, behalve het werkwoord."}, {"q": "5. Welke van de twee is goed, en waarom? A) Zij gaat morgen verhuizen. B) Zij gaat verhuizen morgen.", "a": "A. Het tweede werkwoord staat helemaal achteraan, dus na morgen.", "e": "Verhuizen is het tweede werkwoord en dat is altijd het laatste woord."}, {"q": "6. Maak zelf een zin met twee werkwoorden over jouw ochtend.", "a": "Bijvoorbeeld: Ik moet om zeven uur opstaan.", "e": "Controleer samen: staat de persoonsvorm op plek 2 en het andere werkwoord aan het eind?"}]}, {"code": "1.3", "title": "Dit, dat, deze en die", "color": "#0e7490", "kind": "grammatica", "pages": [{"num": 1, "title": "Dichtbij of veraf", "tr_ar": "السؤال الأول: هل الشيء قريب أم بعيد؟", "tr_tr": "Birinci soru: Nesne yakın mı yoksa uzak mı?", "block": "paar", "data": {"left": {"title": "Dichtbij (Hier)", "text": "dit / deze = hier"}, "right": {"title": "Veraf (Daar)", "text": "dat / die = daar"}, "note": "Wat je kunt aanraken is dichtbij. Wat verderop staat is veraf. Dit is de eerste vraag die je jezelf stelt."}, "anim": "cards_appear"}, {"num": 2, "title": "De tweede vraag: de of het?", "tr_ar": "السؤال الثاني: هل الكلمة تأخذ de أم het؟", "tr_tr": "İkinci soru: Kelime de mi yoksa het mi alıyor?", "block": "tabel", "data": {"headers": ["de-woord", "het-woord"], "rows": [["deze sleutel", "dit huis"], ["die doos", "dat boek"]], "note": "Staat er een woord achter? Dan bepaalt de of het welk woord je kiest. Dus niet deze huis, maar dit huis."}, "anim": "fill_table_rows"}, {"num": 3, "title": "dit", "tr_ar": "استخدام dit مع كلمات het القريبة.", "tr_tr": "Yakındaki het-kelimeleri için 'dit' kullanımı.", "block": "regelkaart_with_blocks", "data": {"rule": "dit = een het-woord, dichtbij", "sub": "Je kunt het bijna aanraken.", "examples": ["dit huis", "dit boek", "dit kind", "dit jaar"], "sentence": [{"num": 1, "text": "Dit boek"}, {"num": 2, "text": "is", "pv": true}, {"num": 3, "text": "van mij."}], "note": "Werkt alleen bij een het-woord. Bij een de-woord wordt het deze."}, "anim": "highlight_dit"}, {"num": 4, "title": "dat", "tr_ar": "استخدام dat مع كلمات het البعيدة.", "tr_tr": "Uzaktaki het-kelimeleri için 'dat' kullanımı.", "block": "regelkaart_with_blocks", "data": {"rule": "dat = een het-woord, veraf", "sub": "Het staat verderop.", "examples": ["dat huis", "dat boek", "dat kind", "dat raam"], "sentence": [{"num": 1, "text": "Dat raam"}, {"num": 2, "text": "is", "pv": true}, {"num": 3, "text": "nog open."}], "note": "Zelfde woordsoort als dit, alleen verder weg."}, "anim": "highlight_dat"}, {"num": 5, "title": "deze", "tr_ar": "استخدام deze مع كلمات de القريبة.", "tr_tr": "Yakındaki de-kelimeleri için 'deze' kullanımı.", "block": "regelkaart_with_blocks", "data": {"rule": "deze = een de-woord, dichtbij", "sub": "Je kunt het bijna aanraken.", "examples": ["deze sleutel", "deze doos", "deze stoel", "deze week"], "sentence": [{"num": 1, "text": "Deze sleutel"}, {"num": 2, "text": "past", "pv": true}, {"num": 3, "text": "niet."}], "note": "Let op de e aan het eind: die hoort bij de."}, "anim": "highlight_deze"}, {"num": 6, "title": "die", "tr_ar": "استخدام die مع كلمات de البعيدة والجمع.", "tr_tr": "Uzaktaki de-kelimeleri ve çoğullar için 'die' kullanımı.", "block": "regelkaart_with_blocks", "data": {"rule": "die = een de-woord, veraf", "sub": "Het staat verderop.", "examples": ["die sleutel", "die doos", "die man", "die auto"], "sentence": [{"num": 1, "text": "Die auto"}, {"num": 2, "text": "staat", "pv": true}, {"num": 3, "text": "voor de deur."}], "note": "En: die is ook het meervoud van dat."}, "anim": "highlight_die"}, {"num": 7, "title": "Meer dan een? Altijd deze of die", "tr_ar": "في الجمع نستخدم دائماً deze أو die بدون استثناء.", "tr_tr": "Çoğulda her zaman 'deze' veya 'die' kullanılır.", "block": "tabel", "data": {"headers": ["een (enkelvoud)", "meer (meervoud)"], "rows": [["dit boek", "deze boeken"], ["dat huis", "die huizen"], ["deze sleutel", "deze sleutels"]], "note": "In het meervoud verdwijnt het verschil tussen de en het. Dus dit en dat bestaan in het meervoud niet."}, "anim": "plural_transform"}, {"num": 8, "title": "Het hele raster", "tr_ar": "الجدول الكامل لأسماء الإشارة الأربعة.", "tr_tr": "İşaret zamirlerinin tam tablosu.", "block": "tabel_grid", "data": {"headers": ["", "Dichtbij (Hier)", "Veraf (Daar)"], "rows": [["het-woorden", "dit huis", "dat huis"], ["de-woorden", "deze sleutel", "die sleutel"]], "note": "Bovenste rij: het-woorden. Onderste rij: de-woorden."}, "anim": "grid_fill_clockwise"}, {"num": 9, "title": "Zonder woord erachter: dit is, dat zijn", "tr_ar": "عندما لا يتبعها اسم: نستخدم dit أو dat فقط.", "tr_tr": "Arkasından kelime gelmiyorsa: her zaman 'dit' veya 'dat'.", "block": "paar", "data": {"left": {"title": "Een ding / Meer", "text": "Dit is mijn broer. / Dit zijn mijn ouders."}, "right": {"title": "Een ding / Meer", "text": "Dat is de lift. / Dat zijn de buren."}, "note": "Staat er geen woord achter? Dan gebruik je altijd dit of dat, nooit deze of die. Dit blijft dit, ook als er meer dan een is."}, "anim": "rotate_is_zijn"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء والتصحيح.", "tr_tr": "Hatalı ve doğru örnekler.", "block": "fout_goed", "data": {"items": [{"fout": "Deze huis is groot.", "goed": "Dit huis is groot."}, {"fout": "Dit zijn mijn broer.", "goed": "Dit is mijn broer."}, {"fout": "Die boek is nieuw.", "goed": "Dat boek is nieuw."}]}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Dichtbij of veraf?", "example": "dit en deze zijn hier, dat en die daar."}, {"rule": "Staat er een woord achter?", "example": "de-woord krijgt deze of die, het-woord krijgt dit of dat."}, {"rule": "Staat er niets achter?", "example": "Altijd dit of dat, met is of zijn."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Vul in: ……… boek op tafel is van mij. (dichtbij)", "a": "Dit boek.", "e": "Het boek is een het-woord, dus dit en niet deze."}, {"q": "2. Vul in: ……… sleutel daar op de kast is van de buurman.", "a": "Die sleutel.", "e": "De sleutel is een de-woord en hij ligt veraf, dus die."}, {"q": "3. Wat is fout aan: Deze huis is te duur?", "a": "Het huis is een het-woord, dus: Dit huis is te duur.", "e": "Twee vragen tegelijk: dichtbij klopt, maar de of het niet."}, {"q": "4. Een ding of meer? Vul in: ……… zijn mijn buren.", "a": "Dit zijn of Dat zijn.", "e": "Zijn hoort bij meer dan een; dit en dat veranderen niet mee."}, {"q": "5. Wijs iets aan in de klas dat dichtbij is en iets dat veraf is, en zeg er een zin bij.", "a": "Bijvoorbeeld: Dit is mijn pen. Die tafel is groot.", "e": "Controleer samen of het woord erachter de of het is."}, {"q": "6. Welke twee horen bij een het-woord: deze, dit, die, dat?", "a": "Dit en dat.", "e": "De andere twee, deze en die, horen bij een de-woord."}]}, {"code": "1.6", "title": "Er is en er zijn", "color": "#0f766e", "kind": "grammatica", "pages": [{"num": 1, "title": "Wat doet er?", "tr_ar": "نعبر بـ er is و er zijn عن وجود شيء دون تملكه.", "tr_tr": "'Er is' ve 'er zijn' ile bir şeyin var olduğunu söyleriz.", "block": "paar", "data": {"left": {"title": "Al bekend", "text": "De tuin is mooi."}, "right": {"title": "Nieuw (Bestaat)", "text": "Er is een tuin."}, "note": "Met er is en er zijn zeg je dat iets bestaat, zonder te zeggen van wie het is. Links weet je al welke tuin. Rechts vertel je pas dat er een tuin bestaat."}, "anim": "er_fade_in"}, {"num": 2, "title": "er is", "tr_ar": "استخدام er is مع المفرد غير المفهوم ضمناً.", "tr_tr": "Tekil nesneler için 'er is' kullanımı.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "er is = een ding", "example": "Je vertelt dat het bestaat."}, {"rule": "Voorbeelden", "example": "Er is een lift in het gebouw.\nEr is een probleem met de verwarming.\nEr is nog koffie."}], "note": "Achter er is staat bijna altijd een of geen, nooit de of het."}, "anim": "highlight_er_is"}, {"num": 3, "title": "er zijn", "tr_ar": "استخدام er zijn مع الجمع.", "tr_tr": "Çoğul nesneler için 'er zijn' kullanımı.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "er zijn = meer dingen", "example": "Alleen het werkwoord verandert."}, {"rule": "Voorbeelden", "example": "Er zijn drie kamers op de eerste verdieping.\nEr zijn vandaag twee bezorgers ziek.\nEr zijn geen postzegels meer."}], "note": "Het woordje er blijft precies hetzelfde. Alleen is wordt zijn."}, "anim": "rotate_is_zijn"}, {"num": 4, "title": "er staat, er ligt, er hangt, er zit", "tr_ar": "الهولنديون يفضلون وضعية الشيء (يقف، يلقى، يعلق، يجلس).", "tr_tr": "Hollandalılar nesnenin duruş pozisyonunu söylemeyi tercih eder.", "block": "tabel", "data": {"headers": ["Hoe het staat", "Zin"], "rows": [["rechtop", "Er staat een fiets voor de deur."], ["plat", "Er ligt post op de mat."], ["aan de muur", "Er hangt een spiegel in de gang."], ["erin", "Er zit een gaatje in mijn jas."]]}, "anim": "fill_table_rows"}, {"num": 5, "title": "Is er ...? De vraag", "tr_ar": "في السؤال، نتبادل أماكن الفعل و er.", "tr_tr": "Soru cümlesinde 'er' ve fiil yer değiştirir.", "block": "paar", "data": {"left": {"title": "Mededeling", "text": "Er is een lift. / Er zijn nog kaartjes."}, "right": {"title": "Vraag", "text": "Is er een lift? / Zijn er nog kaartjes?"}, "note": "In een vraag ruilen er en het werkwoord van plek. Verder niets. Vraagwoord: Hoeveel kamers zijn er?"}, "anim": "swap_subject_verb"}, {"num": 6, "title": "Er is geen, er zijn geen", "tr_ar": "النفي يكون بـ geen وليس بـ niet.", "tr_tr": "Olumsuz yapmak için 'niet' değil 'geen' kullanılır.", "block": "fout_goed", "data": {"items": [{"fout": "Er is niet een lift.", "goed": "Er is geen lift."}, {"fout": "Er zijn niet kamers vrij.", "goed": "Er zijn geen kamers vrij."}], "note": "Geen staat op de plek waar anders een stond."}, "anim": "cross_check_appear"}, {"num": 7, "title": "Wanneer je er juist niet gebruikt", "tr_ar": "إذا كان الشيء معروفاً مسبقاً، لا نستخدم er.", "tr_tr": "Nesne zaten biliniyorsa 'er' kullanılmaz.", "block": "tabel", "data": {"headers": ["Nieuw voor de ander (met er)", "Al bekend (zonder er)"], "rows": [["Er is een lift.", "De lift is kapot."], ["Er staat een fiets.", "Mijn fiets staat buiten."]], "note": "Kijk naar het woordje ervoor: een of geen krijgt er, de of mijn niet."}, "anim": "fill_table_rows"}, {"num": 8, "title": "Waar staat er in de zin?", "tr_ar": "موقع er في مختلف أنواع الجمل.", "tr_tr": "Cümle türlerine göre 'er' kelimesinin konumu.", "block": "tabel", "data": {"headers": ["Soort zin", "Voorbeeld"], "rows": [["mededeling", "Er is een lift in het gebouw."], ["vraag", "Is er een lift in het gebouw?"], ["tijd of plaats vooraan", "In de keuken is er een raam."]], "note": "In een vraag komt er achter het werkwoord. Dat is de enige verandering."}, "anim": "fill_table_rows"}, {"num": 9, "title": "Er betekent ook: op die plek", "tr_ar": "المعنى الثاني لـ er: تعويض المكان (هناك).", "tr_tr": "'Er' kelimesinin ikinci anlamı: bir mekanı temsil etmesi.", "block": "paar", "data": {"left": {"title": "Vraag", "text": "Ben je al in de winkel? / Ga je naar de les?"}, "right": {"title": "Antwoord met er", "text": "Ja, ik ben er. / Ik ga er morgen heen."}, "note": "Dit is een tweede er, en die vervangt een plaats. Je hoeft de plaats dan niet nog een keer te noemen."}, "anim": "replace_place_with_er"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء الشائعة.", "tr_tr": "Yaygın hata örnekleri.", "block": "fout_goed", "data": {"items": [{"fout": "Is een lift in het gebouw?", "goed": "Is er een lift in het gebouw?"}, {"fout": "In de keuken is een raam.", "goed": "In de keuken is er een raam."}, {"fout": "Er is drie kamers.", "goed": "Er zijn drie kamers."}]}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Er is / Er zijn", "example": "Er is: een ding. Er zijn: meer dingen."}, {"rule": "Vraagvorm", "example": "In een vraag komt er achter het werkwoord: Is er een lift?"}, {"rule": "Werkwoorden", "example": "Er hoort ook bij wonen, staan, liggen, komen: Er staat een fiets voor de deur."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Maak er een vraag van: Er is een lift in het gebouw.", "a": "Is er een lift in het gebouw?", "e": "In een vraag ruilen het werkwoord en er van plek."}, {"q": "2. Vul in: ……… drie kamers op de eerste verdieping.", "a": "Er zijn.", "e": "Drie kamers is meer dan een, dus zijn."}, {"q": "3. Wat mist er in: In de keuken is een raam?", "a": "Het woordje er: In de keuken is er een raam.", "e": "Ook als er een plaats vooraan staat blijft er in de zin."}, {"q": "4. Zeg met er dat er een fiets voor jouw deur staat.", "a": "Er staat een fiets voor de deur.", "e": "Er hoort niet alleen bij zijn, ook bij staan, liggen en wonen."}, {"q": "5. Wat is het verschil tussen 'De tuin is mooi' en 'Er is een tuin'?", "a": "In de eerste zin weet je al welke tuin. In de tweede vertel je pas dat er een tuin bestaat.", "e": "Er introduceert iets nieuws."}, {"q": "6. Kijk om je heen in het lokaal en maak drie zinnen met er.", "a": "Bijvoorbeeld: Er staat een bord voor de klas. Er zijn twaalf stoelen. Er ligt een pen op tafel.", "e": "Controleer samen of het is of zijn moet zijn."}]}, {"code": "1.7", "title": "Twee zinnen verbinden", "color": "#a21caf", "kind": "grammatica", "pages": [{"num": 1, "title": "Vijf woorden, vijf betekenissen", "tr_ar": "خمس أدوات ربط رئيسية ومعانيها.", "tr_tr": "Beş bağlaç ve anlamları.", "block": "tabel", "data": {"headers": ["Woord", "Wat het doet"], "rows": [["en", "erbij (+)"], ["maar", "het tegendeel (↔)"], ["want", "de reden (←)"], ["dus", "het gevolg (→)"], ["of", "een keuze (⌥)"]]}, "anim": "fill_table_rows"}, {"num": 2, "title": "De volgorde blijft gewoon", "tr_ar": "ترتيب الكلمات لا يتغير في الجملتين مع هذه الأدوات.", "tr_tr": "Bu bağlaçlarla kelime sırası her iki cümlede de aynı kalır.", "block": "paar", "data": {"left": {"title": "Zin 1 + en + Zin 2", "text": "\"Ik woon hier.\" + [en] + \"ik ben blij.\""}, "right": {"title": "Zin 1 + maar + Zin 2", "text": "\"Het huis is klein,\" + [maar] + \"het is gezellig.\""}, "note": "Aan beide kanten staat een hele zin, en die blijft precies zoals hij was. Het werkwoord blijft in allebei de helften op plek 2 staan."}, "anim": "cards_appear"}, {"num": 3, "title": "en", "tr_ar": "أداة الربط en (و).", "tr_tr": "'En' bağlacı (ve).", "block": "regelkaart_multi", "data": {"cards": [{"rule": "en = erbij", "example": "Twee dingen die allebei waar zijn."}, {"rule": "Voorbeelden", "example": "\"Ik woon hier\" + [en] + \"ik ben blij.\"\nWij hebben een tuin en de buren hebben een balkon.\nMijn zus belt en mijn broer stuurt een berichtje."}], "note": "Voor en komt meestal geen komma."}, "anim": "slide_up_cards"}, {"num": 4, "title": "maar", "tr_ar": "أداة الربط maar (ولكن).", "tr_tr": "'Maar' bağlacı (ama / fakat).", "block": "regelkaart_multi", "data": {"cards": [{"rule": "maar = het tegendeel", "example": "Je verwacht het ene, en dan komt het andere."}, {"rule": "Voorbeelden", "example": "\"Het huis is klein,\" + [maar] + \"het is gezellig.\"\nIk wilde bellen, maar mijn telefoon was leeg.\nDe les was lang, maar hij was leuk."}], "note": "Voor maar staat wel een komma."}, "anim": "slide_up_cards"}, {"num": 5, "title": "want", "tr_ar": "أداة الربط want (لأن). الجملة تبدأ بالنتيجة ثم السبب.", "tr_tr": "'Want' bağlacı (çünkü). Önce olay, sonra neden.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "want = de reden", "example": "Eerst wat er gebeurt, dan waarom."}, {"rule": "Voorbeelden", "example": "\"Ik blijf thuis,\" + [want] + \"het regent.\"\nWij verhuizen, want het huis is te klein.\nZij is moe, want zij heeft gewerkt."}], "note": "Want begint nooit een zin. Er staat altijd eerst iets anders."}, "anim": "slide_up_cards"}, {"num": 6, "title": "dus", "tr_ar": "أداة الربط dus (لذلك). الجملة تبدأ بالسبب ثم النتيجة.", "tr_tr": "'Dus' bağlacı (bu yüzden). Önce neden, sonra olay.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "dus = het gevolg", "example": "Eerst waarom, dan wat er gebeurt."}, {"rule": "Voorbeelden", "example": "\"Het regent,\" + [dus] + \"ik blijf thuis.\"\nHet huis is te klein, dus wij verhuizen.\nZij heeft gewerkt, dus zij is moe."}], "note": "Dezelfde twee feiten als bij want, in de andere volgorde."}, "anim": "slide_up_cards"}, {"num": 7, "title": "of", "tr_ar": "أداة الربط of (أو).", "tr_tr": "'Of' bağlacı (veya / ya da).", "block": "regelkaart_multi", "data": {"cards": [{"rule": "of = een keuze", "example": "Het een of het ander, niet allebei."}, {"rule": "Voorbeelden", "example": "\"Drink je koffie\" + [of] + \"drink je thee?\"\nWij gaan zaterdag of zondag verhuizen.\nBel je mij, of stuur je een berichtje?"}], "note": "Voor of komt meestal geen komma."}, "anim": "slide_up_cards"}, {"num": 8, "title": "Want en dus: dezelfde twee feiten", "tr_ar": "want و dus يعبران عن نفس الحقيقتين بترتيب عكسي.", "tr_tr": "'Want' ve 'dus' aynı iki gerçeği ters sırayla ifade eder.", "block": "paar", "data": {"left": {"title": "met want (Reden achteraan)", "text": "Ik blijf thuis, want het regent."}, "right": {"title": "met dus (Reden vooraan)", "text": "Het regent, dus ik blijf thuis."}, "note": "Allebei goed, en ze betekenen hetzelfde. Kies wat je het belangrijkst vindt: dat staat vooraan."}, "anim": "cards_appear"}, {"num": 9, "title": "Let op: want en omdat", "tr_ar": "الفرق بين want و omdat: المعنى واحد لكن ترتيب الفعل مختلف!", "tr_tr": "'Want' ve 'omdat' farkı: Anlam aynı fakat fiil sırası farklı!", "block": "paar", "data": {"left": {"title": "want (Normale volgorde)", "text": "Ik blijf thuis, want ik ben ziek."}, "right": {"title": "omdat (Werkwoord achteraan)", "text": "Ik blijf thuis omdat ik ziek ben."}, "note": "Na want blijft de zin gewoon. Na omdat gaat het werkwoord naar het eind. Want begint nooit een zin. Omdat wel: Omdat ik ziek ben, blijf ik thuis."}, "anim": "verb2_arc_to_end"}, {"num": 10, "title": "De komma", "tr_ar": "قواعد استخدام الفاصلة قبل أدوات الربط.", "tr_tr": "Bağlaçlardan önce virgül kullanımı.", "block": "tabel", "data": {"headers": ["Voegwoord", "Komma ervoor?"], "rows": [["en", "nee"], ["of", "nee"], ["maar", "ja"], ["want", "ja"], ["dus", "ja"]], "note": "Een komma is geen fout die de zin sloopt, maar dit is de gewoonte."}, "anim": "fill_table_rows"}, {"num": 11, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء الشائعة.", "tr_tr": "Yaygın hata örnekleri.", "block": "fout_goed", "data": {"items": [{"fout": "Ik blijf thuis want ik ziek ben.", "goed": "Ik blijf thuis, want ik ben ziek."}, {"fout": "Want het regent, blijf ik thuis.", "goed": "Omdat het regent, blijf ik thuis."}, {"fout": "Het is klein, maar is het gezellig.", "goed": "Het is klein, maar het is gezellig."}]}, "anim": "cross_check_appear"}, {"num": 12, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "en, maar, want, dus, of", "example": "veranderen niets aan de volgorde."}, {"rule": "Want vs Dus", "example": "Want geeft de reden, dus het gevolg. Zelfde twee feiten, andere volgorde."}, {"rule": "Omdat", "example": "Na omdat gaat het werkwoord naar het eind. Dat is het verschil met want."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Verbind met want: Ik blijf thuis. Het regent.", "a": "Ik blijf thuis, want het regent.", "e": "Na want blijft de zin precies zoals hij was."}, {"q": "2. Zeg nu hetzelfde met dus.", "a": "Het regent, dus ik blijf thuis.", "e": "Bij dus komt de reden eerst en het gevolg daarna."}, {"q": "3. Wat is fout aan: Ik kom later want de bus te laat is?", "a": "Na want blijft de volgorde gewoon: want de bus is te laat.", "e": "Dat is de fout die met omdat wel goed zou zijn."}, {"q": "4. Maak dezelfde zin met omdat.", "a": "Ik kom later omdat de bus te laat is.", "e": "Na omdat gaat het werkwoord naar het eind."}, {"q": "5. Welk woord past: Het huis is klein, ……… het is gezellig.", "a": "maar.", "e": "Er staat iets tegenover elkaar: klein en toch gezellig."}, {"q": "6. Maak twee zinnen over jouw dag: een met want en een met maar.", "a": "Bijvoorbeeld: Ik ben moe, want ik heb gewerkt. Het was druk, maar het was leuk.", "e": "Controleer samen of het werkwoord in beide helften op plek 2 staat."}]}, {"code": "1.9", "title": "Het bijvoeglijk naamwoord", "color": "#1d4ed8", "kind": "grammatica", "pages": [{"num": 1, "title": "Vier vakjes, en dat is alles", "tr_ar": "الجدول الأساسي لإضافة حرف e للصفة.", "tr_tr": "Sıfata -e eki getirme kuralının temel tablosu.", "block": "tabel_grid", "data": {"headers": ["Wat ervoor staat", "de-woord", "het-woord"], "rows": [["de, het, dit, die, mijn", "grote kast (-e)", "grote huis (-e)"], ["een, geen, of niets", "grote kast (-e)", "groot huis (GEEN -e)"]], "note": "Alleen rechtsonder valt de -e weg: een het-woord met een/geen ervoor."}, "anim": "grid_fill_clockwise"}, {"num": 2, "title": "de grote kast", "tr_ar": "كلمات de مع أدوات المعرفة تأخذ دائماً e.", "tr_tr": "De-kelimeleri her zaman -e alır.", "block": "regelkaart_with_blocks", "data": {"rule": "de-woord met de, dit, die of mijn", "sub": "altijd een -e.", "examples": ["de grote kast", "de kleine spiegel", "de dunne muur"], "sentence": [{"num": 1, "text": "De grote kast"}, {"num": 2, "text": "staat", "pv": true}, {"num": 3, "text": "in de gang."}], "note": "dit grote raam is fout: raam is een het-woord."}, "anim": "highlight_deze"}, {"num": 3, "title": "een grote kast", "tr_ar": "كلمات de مع أدوات النكرة تأخذ أيضاً e.", "tr_tr": "De-kelimeleri 'een' ile de -e alır.", "block": "paar", "data": {"left": {"title": "met de", "text": "de grote kast"}, "right": {"title": "met een", "text": "een grote kast"}, "note": "regelkaart: de-woord met een of geen -> nog steeds een -e. Bij een de-woord maakt het dus niet uit wat ervoor staat."}, "anim": "cards_appear"}, {"num": 4, "title": "het grote huis", "tr_ar": "كلمات het مع المعرفة (het/dit/dat/mijn) تأخذ e!", "tr_tr": "Het-kelimeleri 'het/dit/dat' ile -e alır!", "block": "regelkaart_with_blocks", "data": {"rule": "het-woord met het, dit, dat of mijn", "sub": "ook een -e.", "examples": ["het grote huis", "het kleine balkon", "het nieuwe kantoor"], "sentence": [{"num": 1, "text": "Het grote huis"}, {"num": 2, "text": "is", "pv": true}, {"num": 3, "text": "te duur."}], "note": "Hier gaat de korte regel van A1 mis: het-woord betekent niet vanzelf geen -e."}, "anim": "highlight_dat"}, {"num": 5, "title": "een groot huis", "tr_ar": "الحالة الوحيدة التي تسقط فيها e: كلمة het مع een/geen.", "tr_tr": "-e ekinin düştüğü TEK durum: 'een/geen' alan het-kelimeleri.", "block": "paar", "data": {"left": {"title": "het (wel -e)", "text": "het grote huis"}, "right": {"title": "een (GEEN -e)", "text": "een groot huis"}, "note": "een groot huis, geen klein balkon, een nieuw kantoor. Dit is het enige vakje van de vier waar de -e verdwijnt."}, "anim": "drop_e_anim"}, {"num": 6, "title": "Het is dus maar een geval", "tr_ar": "تذكر: حالة واحدة فقط بدون e.", "tr_tr": "Unutmayın: Sadece tek bir durumda -e eki düşer.", "block": "tabel", "data": {"headers": ["met het (wel -e)", "met een (geen -e bij het-woord)"], "rows": [["het grote huis", "een groot huis"], ["het kleine balkon", "een klein balkon"], ["het nieuwe kantoor", "een nieuw kantoor"]], "note": "Een het-woord met een ervoor. Verder krijgt alles een -e."}, "anim": "fill_table_rows"}, {"num": 7, "title": "Meer dan een? Altijd een -e", "tr_ar": "في الجمع تأخذ الصفة e دائماً.", "tr_tr": "Çoğulda sıfat her zaman -e alır.", "block": "tabel", "data": {"headers": ["een (enkelvoud)", "meer (meervoud)"], "rows": [["een groot huis", "twee grote huizen"], ["een klein balkon", "drie kleine balkons"], ["een nieuw kantoor", "nieuwe kantoren"]], "note": "In het meervoud bestaat het lastige vakje niet meer. De uitzondering geldt dus alleen bij een ding."}, "anim": "plural_transform"}, {"num": 8, "title": "Staat het achter is? Dan nooit een -e", "tr_ar": "إذا جاءت الصفة بعد الفعل is/zijn، لا تأخذ e أبدًا.", "tr_tr": "Sıfat 'is/zijn' fiilinden sonra gelirse ASLA -e almaz.", "block": "paar", "data": {"left": {"title": "Voor het woord (wel -e)", "text": "het grote huis / de kleine kamer"}, "right": {"title": "Achter is (NOOIT -e)", "text": "Het huis is groot. / De kamer is klein."}, "note": "Voor het woord: soms een -e. Achter is: nooit."}, "anim": "drop_e_anim"}, {"num": 9, "title": "Let op de spelling die meekomt", "tr_ar": "قواعد الإملاء عند إضافة e.", "tr_tr": "-e eki eklenirken imla kuralları.", "block": "keten_list", "data": {"items": [{"word": "groot", "res": "grote", "why": "een o weg, want de klank blijft lang"}, {"word": "dun", "res": "dunne", "why": "een n erbij, want de klank blijft kort"}, {"word": "vuil", "res": "vuile", "why": "niets verandert"}], "note": "Dit is dezelfde regel als bij het meervoud. Niets nieuws."}, "anim": "spelling_transform"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء الشائعة.", "tr_tr": "Yaygın hata örnekleri.", "block": "fout_goed", "data": {"items": [{"fout": "Ik zoek een groote kast.", "goed": "Ik zoek een grote kast."}, {"fout": "Wij hebben een grote huis.", "goed": "Wij hebben een groot huis."}, {"fout": "Het huis is grote.", "goed": "Het huis is groot."}]}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Bijna altijd een -e.", "example": "de grote kast, het grote huis, mijn grote kast."}, {"rule": "Uitzondering", "example": "Een het-woord met een ervoor: geen -e (een groot huis)."}, {"rule": "Achter is", "example": "Achter is nooit een -e (Het huis is groot)."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Vul in: Wij zoeken een ……… kantoor. (groot)", "a": "een groot kantoor.", "e": "Het kantoor is een het-woord met een ervoor: geen -e."}, {"q": "2. En nu: Het ……… kantoor staat leeg. (groot)", "a": "Het grote kantoor.", "e": "Nu staat er het voor, dus wel een -e."}, {"q": "3. Vul in: Zij heeft een ……… kast gekocht. (groot)", "a": "een grote kast.", "e": "De kast is een de-woord, dus altijd een -e."}, {"q": "4. Wat is fout aan: Het huis is grote?", "a": "Achter is komt nooit een -e: Het huis is groot.", "e": "Voor het woord soms wel, erachter nooit."}, {"q": "5. Waarom is het een dunne muur en niet een dune muur?", "a": "De klank blijft kort, dus de n verdubbelt.", "e": "Dezelfde spellingregel als bij het meervoud."}, {"q": "6. Beschrijf drie dingen in het lokaal met een bijvoeglijk naamwoord ervoor.", "a": "Bijvoorbeeld: een groot raam, de witte muur, mijn nieuwe pen.", "e": "Vraag bij elk: is het een de-woord of een het-woord, en wat staat ervoor?"}]}, {"code": "1.11", "title": "De tegenwoordige tijd", "color": "#4d7c0f", "kind": "grammatica", "pages": [{"num": 1, "title": "Eerst de stam", "tr_ar": "جذر الفعل هو المصدر بدون en مع مراعاة الإملاء.", "tr_tr": "Fiil kökü (stam), fiilin -en takısı çıkarılmış halidir.", "block": "keten_list", "data": {"items": [{"word": "werken", "res": "werk", "why": "haal -en eraf"}, {"word": "wonen", "res": "woon", "why": "haal -en eraf, en de o wordt oo"}, {"word": "zetten", "res": "zet", "why": "haal -en eraf, en een t valt weg"}], "note": "Alles wat hierna komt bouwt op die stam."}, "anim": "spelling_transform"}, {"num": 2, "title": "Drie regels, acht personen", "tr_ar": "القواعد الثلاث لتصريف الأفعال مع الضمائر الثمانية.", "tr_tr": "8 şahıs için 3 temel kural.", "block": "tabel", "data": {"headers": ["Wie", "Vorm", "Voorbeeld (werken)"], "rows": [["ik", "stam", "werk"], ["jij / u / hij / zij", "stam + t", "werkt"], ["wij / jullie / zij (meer)", "hele werkwoord", "werken"]], "note": "Drie overzichtelijke groepen: ik (stam), jij/u/hij/zij (stam+t), wij/jullie/zij (hele werkwoord)."}, "anim": "fill_table_rows"}, {"num": 3, "title": "ik = de stam, kaal", "tr_ar": "مع الضمير ik نستخدم الجذر فقط بدون إضافة t.", "tr_tr": "'Ik' için sadece yalın fiil kökü (stam) kullanılır.", "block": "regelkaart_with_blocks", "data": {"rule": "ik = de stam, kaal", "sub": "de stam, en verder niets.", "examples": ["ik werk", "ik woon", "ik zet", "ik schrijf"], "sentence": [{"num": 1, "text": "Ik"}, {"num": 2, "text": "werk", "pv": true}, {"num": 3, "text": "bij een school."}], "note": "Bij ik komt er nooit een -t achter. Ook niet in een vraag."}, "anim": "highlight_ik"}, {"num": 4, "title": "jij, u, hij, zij = stam + t", "tr_ar": "مع jij/u/hij/zij نضيف حرف t للجذر.", "tr_tr": "'Jij, u, hij, zij' için fiil köküne -t eklenir.", "block": "tabel", "data": {"headers": ["wie", "werken", "wonen"], "rows": [["jij", "werkt", "woont"], ["u", "werkt", "woont"], ["hij, zij, het", "werkt", "woont"]], "note": "Vier keer dezelfde vorm. Dat scheelt."}, "anim": "fill_table_rows"}, {"num": 5, "title": "wij, jullie, zij = het hele werkwoord", "tr_ar": "مع الجمع (نحن، أنتم، هم) نستخدم المصدر كاملاً.", "tr_tr": "Çoğul şahıslar için fiilin yalın hali (infinity) kullanılır.", "block": "regelkaart_with_blocks", "data": {"rule": "wij, jullie, zij (meer)", "sub": "het hele werkwoord, zoals in het woordenboek.", "examples": ["wij werken", "jullie wonen", "zij schrijven"], "sentence": [{"num": 1, "text": "Wij"}, {"num": 2, "text": "werken", "pv": true}, {"num": 3, "text": "samen aan het project."}], "note": "Geen stam, geen -t: je verandert helemaal niets."}, "anim": "highlight_plural"}, {"num": 6, "title": "Zij is een vrouw of meer mensen", "tr_ar": "الفرق بين zij (هي) و zij (هم) من خلال الفعل.", "tr_tr": "Tekil 'zij' (o) ve çoğul 'zij' (onlar) farkı fiilden anlaşılır.", "block": "paar", "data": {"left": {"title": "Zij (een vrouw)", "text": "Zij werkt hier. / Zij woont in Breda."}, "right": {"title": "Zij (meer mensen)", "text": "Zij werken hier. / Zij wonen in Breda."}, "note": "De vorm van het werkwoord zegt wie er bedoeld wordt."}, "anim": "cards_appear"}, {"num": 7, "title": "De t valt weg achter jij", "tr_ar": "حذف t عندما تأتي jij بعد الفعل مباشرة في السؤال!", "tr_tr": "'Jij' fiilden sonra gelirse -t eki düşer!", "block": "paar", "data": {"left": {"title": "Jij vooraan (wel -t)", "text": "Jij werkt hier. / Jij woont in Breda."}, "right": {"title": "Jij erachter (GEEN -t)", "text": "Werk jij hier? / Woon jij in Breda?"}, "note": "Staat jij achter het werkwoord, dan verdwijnt de -t. Alleen bij jij, bij niemand anders. (U werkt -> Werkt u? blijft met t!)."}, "anim": "drop_t_jij"}, {"num": 8, "title": "De spelling van de stam", "tr_ar": "قواعد الإملاء الخاصة بجذر الفعل.", "tr_tr": "Fiil kökündeki imla kuralları.", "block": "keten_list", "data": {"items": [{"word": "zetten", "res": "zet", "why": "nooit twee t's"}, {"word": "antwoorden", "res": "antwoord", "why": "de d blijft, geen extra t"}, {"word": "schrijven", "res": "schrijf", "why": "v wordt f aan het eind"}, {"word": "lezen", "res": "lees", "why": "z wordt s aan het eind"}], "note": "Een Nederlands woord eindigt nooit op v of z."}, "anim": "spelling_transform"}, {"num": 9, "title": "Drie die het anders doen", "tr_ar": "الأفعال الشاذة الثلاثة الأكثر استخداماً: zijn, hebben, gaan.", "tr_tr": "En çok kullanılan 3 düzensiz fiil: zijn, hebben, gaan.", "block": "tabel", "data": {"headers": ["wie", "zijn", "hebben", "gaan"], "rows": [["ik", "ben", "heb", "ga"], ["jij", "bent", "hebt", "gaat"], ["hij, zij", "is", "heeft", "gaat"], ["wij, jullie, zij", "zijn", "hebben", "gaan"]], "note": "Deze drie leer je uit je hoofd. Ze komen in elke zin voor."}, "anim": "fill_table_rows"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء الشائعة.", "tr_tr": "Yaygın hata örnekleri.", "block": "fout_goed", "data": {"items": [{"fout": "Hij werk bij een school.", "goed": "Hij werkt bij een school."}, {"fout": "Werkt jij morgen?", "goed": "Werk jij morgen?"}, {"fout": "Ik zett de doos hier.", "goed": "Ik zet de doos hier."}, {"fout": "Wij werkt samen.", "goed": "Wij werken samen."}]}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "ik", "example": "ik = de stam (ik werk)."}, {"rule": "jij, u, hij, zij", "example": "stam + t (jij werkt)."}, {"rule": "wij, jullie, zij", "example": "het hele werkwoord (wij werken)."}, {"rule": "Uitzondering", "example": "Achter jij valt de t weg (Werk jij?)."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Vul in: Hij ……… elke dag naar zijn werk. (fietsen)", "a": "fietst.", "e": "Hij hoort bij de groep stam plus t."}, {"q": "2. Vul in: Wij ……… in Apeldoorn. (wonen)", "a": "wonen.", "e": "Bij wij staat het hele werkwoord."}, {"q": "3. Maak er een vraag van: Jij werkt op zaterdag.", "a": "Werk jij op zaterdag?", "e": "Achter jij valt de t weg."}, {"q": "4. En nu met u: U werkt op zaterdag.", "a": "Werkt u op zaterdag?", "e": "Bij u blijft de t staan. Alleen jij verliest hem."}, {"q": "5. Wat is de stam van zetten, en waarom?", "a": "Zet. Een Nederlands woord krijgt nooit twee t's achter elkaar.", "e": "Hetzelfde geldt voor antwoorden: dat wordt antwoord."}, {"q": "6. Vervoeg zijn bij ik, jij en hij.", "a": "Ik ben, jij bent, hij is.", "e": "Zijn, hebben en gaan volgen de regel niet; die leer je uit je hoofd."}]}, {"code": "1.13", "title": "De uitgang -lijk", "color": "#7c2d12", "kind": "klankles", "pages": [{"num": 1, "title": "Heel veel woorden eindigen op -lijk", "tr_ar": "استمع إلى الكلمات التي تنتهي بـ -lijk.", "tr_tr": "-lijk ile biten kelimeleri dinleyin.", "block": "audio_cards", "data": {"words": ["natuurlijk", "makkelijk", "vriendelijk", "duidelijk", "eigenlijk", "mogelijk", "persoonlijk", "waarschijnlijk"], "note": "Tik op een woordkaartje om de uitspraak te horen. Geen autoplay."}, "anim": "audio_cards_anim"}, {"num": 2, "title": "Je schrijft -lijk, je zegt -luk", "tr_ar": "نكتب -lijk وننطقها -luk.", "tr_tr": "-lijk yazılır, -luk okunur.", "block": "tabel", "data": {"headers": ["Je schrijft", "Je zegt"], "rows": [["natuurlijk", "na-tuur-luk"], ["makkelijk", "mak-ke-luk"], ["vriendelijk", "vrien-de-luk"], ["eigenlijk", "ei-gen-luk"]], "note": "De ij hoor je niet lang. Je zegt hem kort, ongeveer als een u."}, "anim": "fill_table_rows"}, {"num": 3, "title": "natuurlijk en eigenlijk", "tr_ar": "استخدام natuurlijk و eigenlijk.", "tr_tr": "'Natuurlijk' ve 'eigenlijk' kullanımı.", "block": "audio_pair", "data": {"items": [{"word": "natuurlijk", "desc": "dat spreekt vanzelf: Natuurlijk help ik je."}, {"word": "eigenlijk", "desc": "als je eerlijk bent: Eigenlijk heb ik geen tijd."}], "note": "Allebei: je zegt -luk, je schrijft -lijk."}, "anim": "audio_cards_anim"}, {"num": 4, "title": "makkelijk en duidelijk", "tr_ar": "استخدام makkelijk و duidelijk.", "tr_tr": "'Makkelijk' ve 'duidelijk' kullanımı.", "block": "audio_pair", "data": {"items": [{"word": "makkelijk", "desc": "niet moeilijk: Dat was makkelijk."}, {"word": "duidelijk", "desc": "goed te begrijpen: Is het duidelijk?"}], "note": "Let op de dubbele k in makkelijk. Die hoor je wel."}, "anim": "audio_cards_anim"}, {"num": 5, "title": "vriendelijk en persoonlijk", "tr_ar": "الكلمات المشتقة من اسم معروف.", "tr_tr": "Tanıdık kelimelerden türetilen kelimeler.", "block": "audio_pair", "data": {"items": [{"word": "vriendelijk", "desc": "vriend -> vriendelijk (-elijk erachter). De buurvrouw is heel vriendelijk."}, {"word": "persoonlijk", "desc": "persoon -> persoonlijk (-lijk erachter)."}], "note": "Deze twee gaan over mensen."}, "anim": "audio_cards_anim"}, {"num": 6, "title": "mogelijk en waarschijnlijk", "tr_ar": "التعبير عن الاحتمالية واليقين.", "tr_tr": "Olasılık ve kesinlik bildiren kelimeler.", "block": "audio_pair", "data": {"items": [{"word": "mogelijk", "desc": "het kan: Dat is mogelijk."}, {"word": "waarschijnlijk", "desc": "het gebeurt bijna zeker: Hij komt waarschijnlijk morgen."}], "note": "Waarschijnlijk is het langste woord van de acht (4 lettergrepen: waar-schijn-lijk)."}, "anim": "audio_cards_anim"}, {"num": 7, "title": "Waar -lijk vandaan komt", "tr_ar": "أصل الكلمات المنتهية بـ -lijk.", "tr_tr": "-lijk ekinin türetilme kökenleri.", "block": "keten_list", "data": {"items": [{"word": "natuur", "res": "natuurlijk", "why": "-lijk erachter"}, {"word": "vriend", "res": "vriendelijk", "why": "-elijk erachter"}, {"word": "persoon", "res": "persoonlijk", "why": "-lijk erachter"}, {"word": "dag", "res": "dagelijks", "why": "-elijks erachter"}], "note": "Ken je het korte woord? Dan weet je hoe je het lange schrijft."}, "anim": "spelling_transform"}, {"num": 8, "title": "Hoor het verschil", "tr_ar": "النطق الصحيح بالنطاق الطبيعي مقابل النطق الخاطئ المفتعل.", "tr_tr": "Doğru okunuş ile hatalı aşırı vurgulu okunuş arasındaki fark.", "block": "paar", "data": {"left": {"title": "Zo klinkt het (✓)", "text": "natuurlijk [na-tuur-luk]\nmakkelijk [mak-ke-luk]"}, "right": {"title": "Zo hoor je het nooit (✕)", "text": "na-tuur-LIJK (foute lange ij)\nmak-ke-LIJK (foute lange ij)"}, "note": "De linker klinkt Nederlands. De rechter hoor je nooit."}, "anim": "cards_appear"}, {"num": 9, "title": "De klemtoon ligt vooraan", "tr_ar": "النبرة (الشدة) تقع على المقاطع الأولى وليس على -lijk.", "tr_tr": "Vurgu ilk hecelerdedir, asla -lijk ekinde değildir.", "block": "lettergrepen", "data": {"words": [{"parts": ["na", "TUUR", "lijk"], "stress": 1}, {"parts": ["MAK", "ke", "lijk"], "stress": 0}, {"parts": ["VRIEN", "de", "lijk"], "stress": 0}, {"parts": ["per", "SOON", "lijk"], "stress": 1}], "note": "Het stukje -lijk is nooit het luidste deel van het woord."}, "anim": "stress_highlight"}, {"num": 10, "title": "Fout naast goed", "tr_ar": "أخطاء الإملاء الشائعة.", "tr_tr": "Yaygın imla hataları.", "block": "fout_goed", "data": {"items": [{"fout": "natuurluk", "goed": "natuurlijk"}, {"fout": "makkelik", "goed": "makkelijk"}, {"fout": "duidelik", "goed": "duidelijk"}], "note": "Schrijf altijd -lijk, ook al hoor je -luk."}, "anim": "cross_check_appear"}, {"num": 11, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Schrijf altijd -lijk", "example": "met ij. Nooit -luk of -lik."}, {"rule": "Uitspraak", "example": "Zeg het kort, als -luk (na-tuur-luk)."}, {"rule": "Klemtoon", "example": "De klemtoon ligt vooraan: NA-tuur-lijk, niet na-tuur-LIJK."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Hoe schrijf je het woord dat klinkt als na-tuur-luk?", "a": "natuurlijk.", "e": "Je hoort -luk en je schrijft -lijk. Dat is de hele paragraaf."}, {"q": "2. Wat is er fout aan: Dat is makkelik.", "a": "Het is makkelijk, met ij.", "e": "Wie op zijn oren afgaat schrijft de i."}, {"q": "3. Waar ligt de klemtoon in vriendelijk?", "a": "Op vrien, het eerste stuk.", "e": "Het stukje -lijk is nooit het luidste deel."}, {"q": "4. Noem drie woorden die op -lijk eindigen.", "a": "Bijvoorbeeld: mogelijk, duidelijk, persoonlijk.", "e": "Er zijn er tientallen; het is de moeite waard om ze te verzamelen."}, {"q": "5. Zeg deze zin hardop: Het is eigenlijk heel makkelijk.", "a": "Let op: ei-gen-luk, mak-ke-luk.", "e": "Twee keer dezelfde uitgang in een zin."}, {"q": "6. Waarom is -lijk lastig voor iemand die Nederlands leert?", "a": "Omdat je iets anders hoort dan er staat.", "e": "Hooguit een vraag per paragraaf mag over het begrip zelf gaan; dit is die ene."}]}, {"code": "1.15", "title": "Groter en kleiner", "color": "#4338ca", "kind": "grammatica", "pages": [{"num": 1, "title": "Zet er -er achter", "tr_ar": "صيغة المقارنة: إضافة -er للصفة.", "tr_tr": "Karşılaştırma derecesi: Sıfata -er eklenir.", "block": "keten_list", "data": {"items": [{"word": "klein", "res": "kleiner", "why": "-er erbij"}, {"word": "goedkoop", "res": "goedkoper", "why": "-er erbij, en een o valt weg"}, {"word": "snel", "res": "sneller", "why": "-er erbij, en de l verdubbelt"}], "note": "Mijn kamer is kleiner dan jouw kamer."}, "anim": "spelling_transform"}, {"num": 2, "title": "De spelling die meekomt", "tr_ar": "تغييرات الإملاء عند إضافة -er.", "tr_tr": "-er eklenirken gerçekleşen imla değişiklikleri.", "block": "keten_list", "data": {"items": [{"word": "groot", "res": "groter", "why": "een o weg (lange klank)"}, {"word": "dik", "res": "dikker", "why": "een k erbij (korte klank)"}, {"word": "lief", "res": "liever", "why": "f wordt v voor een klinker"}, {"word": "vies", "res": "viezer", "why": "s wordt z voor een klinker"}], "note": "Niets nieuws dus. Je kent deze regel al."}, "anim": "spelling_transform"}, {"num": 3, "title": "Daarna komt altijd dan", "tr_ar": "بعد صفة المقارنة نستخدم dan دائماً وليس als!", "tr_tr": "Karşılaştırmadan sonra her zaman 'dan' kullanılır, 'als' değil!", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Zijn de twee niet gelijk? Gebruik DAN", "example": "Mijn kamer is kleiner dan jouw kamer.\nDeze fiets is duurder dan die daar.\nVandaag is het warmer dan gisteren.\nHij werkt harder dan ik."}], "note": "Nooit als gebruiken bij een verschil!"}, "anim": "slide_up_cards"}, {"num": 4, "title": "Eindigt het op -r? Dan -der", "tr_ar": "الصفات التي تنتهي بـ r تأخذ -der بدلاً من -er.", "tr_tr": "Sonu 'r' ile biten sıfatlar -er yerine -der alır.", "block": "keten_list", "data": {"items": [{"word": "duur", "res": "duurder", "why": "-der (eindigt op r)"}, {"word": "ver", "res": "verder", "why": "-der"}, {"word": "zwaar", "res": "zwaarder", "why": "-der"}, {"word": "lekker", "res": "lekkerder", "why": "-der"}], "note": "Anders zou je drie r-klanken achter elkaar krijgen."}, "anim": "spelling_transform"}, {"num": 5, "title": "Zijn ze gelijk? Dan even ... als", "tr_ar": "عند التساوي نستخدم even + الصفة الأصلية + als.", "tr_tr": "Eşitlik durumunda 'even ... als' kullanılır.", "block": "paar", "data": {"left": {"title": "niet gelijk", "text": "groter dan"}, "right": {"title": "wel gelijk", "text": "even groot als"}, "note": "Mijn tas is even zwaar als de jouwe. Deze kamer is even groot als die van jou. Let op: bij even ... als blijft het woord zoals het was. Geen -er."}, "anim": "cards_appear"}, {"num": 6, "title": "Vier die het anders doen", "tr_ar": "الأشكال الشاذة الأربعة في المقارنة.", "tr_tr": "Karşılaştırmada 4 düzensiz yapı.", "block": "tabel", "data": {"headers": ["Woord", "Vergrotende trap (Düzensiz/الشاذة)"], "rows": [["goed", "beter"], ["veel", "meer"], ["weinig", "minder"], ["graag", "liever"]], "note": "Deze vier leer je uit je hoofd. Ze zitten in de zinnen die je het vaakst zegt."}, "anim": "fill_table_rows"}, {"num": 7, "title": "goed wordt beter", "tr_ar": "المقارنة من goed هي beter.", "tr_tr": "'Goed' sıfatının karşılaştırması 'beter'dir.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "goed wordt beter", "example": "Er blijft geen letter van goed over."}, {"rule": "Voorbeelden", "example": "Deze fiets is beter dan die van mij.\nHet gaat vandaag beter met mijn moeder.\nJij spreekt beter Nederlands dan vorig year."}], "note": "Goeder bestaat niet. Nergens, nooit."}, "anim": "slide_up_cards"}, {"num": 8, "title": "veel wordt meer", "tr_ar": "المقارنة من veel هي meer (للكمية والعدد).", "tr_tr": "'Veel' kelimesinin karşılaştırması 'meer'dir.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "veel wordt meer", "example": "Ook hier blijft er niets van over."}, {"rule": "Voorbeelden", "example": "Ik heb meer werk dan vorige week.\nIn Utrecht wonen meer mensen dan in Breda.\nZij verdient meer dan haar broer."}], "note": "Meer gaat over hoeveelheid, niet over grootte."}, "anim": "slide_up_cards"}, {"num": 9, "title": "weinig wordt minder", "tr_ar": "المقارنة من weinig هي minder.", "tr_tr": "'Weinig' kelimesinin karşılaştırması 'minder'dir.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "weinig wordt minder", "example": "Het tegenovergestelde van meer."}, {"rule": "Voorbeelden", "example": "Ik heb minder tijd dan vroeger.\nDeze week zijn er minder mensen ziek.\nHij eet minder brood dan ik."}], "note": "Meer en minder horen bij elkaar: leer ze samen."}, "anim": "slide_up_cards"}, {"num": 10, "title": "graag wordt liever", "tr_ar": "المقارنة من graag هي liever (التفضيل).", "tr_tr": "'Graag' kelimesinin karşılaştırması 'liever'dır.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "graag wordt liever", "example": "Je zegt ermee wat je het liefst wilt."}, {"rule": "Voorbeelden", "example": "Ik drink liever thee dan koffie.\nWij gaan liever zaterdag verhuizen.\nZij werkt liever thuis dan op kantoor."}], "note": "Deze gebruik je vaker dan je denkt: hij zit in elke keuze."}, "anim": "slide_up_cards"}, {"num": 11, "title": "Fout naast goed", "tr_ar": "أمثلة الأخطاء الشائعة.", "tr_tr": "Yaygın hata örnekleri.", "block": "fout_goed", "data": {"items": [{"fout": "Mijn kamer is groter als jouw kamer.", "goed": "Mijn kamer is groter dan jouw kamer."}, {"fout": "Deze fiets is duurer.", "goed": "Deze fiets is duurder."}, {"fout": "Dit is goeder dan dat.", "goed": "Dit is beter dan dat."}, {"fout": "Mijn tas is even zwaarder als de jouwe.", "goed": "Mijn tas is even zwaar als de jouwe."}]}, "anim": "cross_check_appear"}, {"num": 12, "title": "Onthoud", "tr_ar": "ملخص الدرس.", "tr_tr": "Dersin özeti.", "block": "regelkaart_multi", "data": {"cards": [{"rule": "Vergelijken", "example": "-er erbij (klein wordt kleiner)."}, {"rule": "Eindigt op -r", "example": "-der erbij (duur wordt duurder)."}, {"rule": "Niet gelijk", "example": "dan (Nooit als)."}, {"rule": "Wel gelijk", "example": "even ... als (even groot als)."}]}, "anim": "slide_up_cards"}], "questions": [{"q": "1. Vul in: Deze kast is ……… dan die in de gang. (groot)", "a": "groter.", "e": "Groot heeft twee o's; in groter blijft er een over."}, {"q": "2. Vul in: Die scooter is ……… dan mijn fiets. (duur)", "a": "duurder.", "e": "Duur eindigt op een r, dus -der en niet -er."}, {"q": "3. Wat is fout aan: Hij werkt harder als ik?", "a": "Bij een verschil hoort dan: harder dan ik.", "e": "Als hoort alleen bij even ... als."}, {"q": "4. Zeg met even ... als: Mijn tas en jouw tas wegen hetzelfde.", "a": "Mijn tas is even zwaar als de jouwe.", "e": "Bij even ... als blijft het woord zonder -er."}, {"q": "5. Wat is de vergrotende trap van goed en van veel?", "a": "Beter en meer.", "e": "Deze twee volgen de regel niet."}, {"q": "6. Vergelijk twee dingen in het lokaal: een verschil en een gelijkheid.", "a": "Bijvoorbeeld: Dat raam is groter dan dit raam. Deze stoel is even hoog als die stoel.", "e": "Controleer samen: staat er dan of als?"}]}];
+        let currentLessonIndex = 0;
+        let currentPageIndex = 0;
+        let animationTimeoutId = null;
+
+        function init() {
+            const select = document.getElementById("lesSelect");
+            select.innerHTML = "";
+            LESSONS_DATA.forEach((les, idx) => {
+                const opt = document.createElement("option");
+                opt.value = idx;
+                opt.textContent = `Les ${les.code}: ${les.title} (${les.pages.length} blz)`;
+                select.appendChild(opt);
+            });
+            selectLesson(0);
+        }
+
+        function selectLesson(index) {
+            currentLessonIndex = parseInt(index, 10);
+            currentPageIndex = 0;
+            const les = LESSONS_DATA[currentLessonIndex];
+            document.documentElement.style.setProperty('--current-leskleur', les.color);
+            renderLessonProgressTrack();
+            renderCurrentPage();
+        }
+
+        function renderLessonProgressTrack() {
+            const les = LESSONS_DATA[currentLessonIndex];
+            const track = document.getElementById("progressBarTrack");
+            track.innerHTML = "";
+            les.pages.forEach((p, idx) => {
+                const step = document.createElement("div");
+                step.className = "progress-step" + (idx === 0 ? " active" : "");
+                track.appendChild(step);
+            });
+        }
+
+        function renderCurrentPage() {
+            const les = LESSONS_DATA[currentLessonIndex];
+            const isQuestionsPage = currentPageIndex >= les.pages.length;
+            const totalPages = les.pages.length;
+
+            const steps = document.querySelectorAll(".progress-step");
+            steps.forEach((st, idx) => {
+                st.className = "progress-step";
+                if (idx < currentPageIndex) st.classList.add("completed");
+                if (idx === currentPageIndex) st.classList.add("active");
+            });
+
+            const catLabel = document.getElementById("stepCategoryCaps");
+            const counterLabel = document.getElementById("stepCounterLabel");
+            const contentArea = document.getElementById("screenContentArea");
+            contentArea.innerHTML = "";
+
+            document.getElementById("btnTerug").disabled = (currentPageIndex === 0);
+
+            if (!isQuestionsPage) {
+                const pData = les.pages[currentPageIndex];
+                catLabel.innerText = `${les.kind.toUpperCase()} · LES ${les.code}`;
+                counterLabel.innerText = `BLADZIJDE ${currentPageIndex + 1} VAN ${totalPages}`;
+
+                const titleEl = document.createElement("h1");
+                titleEl.className = "page-head-title";
+                titleEl.innerText = pData.title;
+                contentArea.appendChild(titleEl);
+
+                if (pData.tr_ar || pData.tr_tr) {
+                    const langBox = document.createElement("div");
+                    langBox.className = "second-lang-box";
+                    if (pData.tr_ar) {
+                        const arEl = document.createElement("div");
+                        arEl.className = "lang-line";
+                        arEl.setAttribute("dir", "rtl");
+                        arEl.innerText = pData.tr_ar;
+                        langBox.appendChild(arEl);
+                    }
+                    if (pData.tr_tr) {
+                        const trEl = document.createElement("div");
+                        trEl.className = "lang-line";
+                        trEl.innerText = pData.tr_tr;
+                        langBox.appendChild(trEl);
+                    }
+                    contentArea.appendChild(langBox);
+                }
+
+                const blockEl = renderBuildingBlock(pData.block, pData.data);
+                contentArea.appendChild(blockEl);
+
+                triggerPageAnimation(pData.anim, blockEl);
+
+            } else {
+                catLabel.innerText = `DOCENTVRAGEN · LES ${les.code}`;
+                counterLabel.innerText = `LESVRAGEN IN DE KLAS`;
+
+                const titleEl = document.createElement("h1");
+                titleEl.className = "page-head-title";
+                titleEl.innerText = `Lesvragen bij Les ${les.code}`;
+                contentArea.appendChild(titleEl);
+
+                const introCard = document.createElement("div");
+                introCard.className = "card-box";
+                introCard.innerHTML = `<div class="label-cap-12">VOOR DE DOCENT IN DE KLAS</div>
+                <div style="font-size:16px; line-height:1.5;">Stel deze 6 vragen in de klas. Tik op het antwoord om het antwoord en de toelichting te bekijken.</div>`;
+                contentArea.appendChild(introCard);
+
+                const qSection = document.createElement("div");
+                qSection.className = "teacher-questions-section";
+
+                les.questions.forEach(qItem => {
+                    const qCard = document.createElement("div");
+                    qCard.className = "question-card";
+                    qCard.innerHTML = `
+                        <div class="question-title">${qItem.q}</div>
+                        <details class="answer-drawer">
+                            <summary>👉 Bekijk Antwoord & Toelichting</summary>
+                            <div class="answer-content">
+                                <strong>Antwoord:</strong> ${qItem.a}<br>
+                                <span style="font-size:12px; color:var(--text-muted);"><strong>Toelichting:</strong> ${qItem.e}</span>
+                            </div>
+                        </details>
+                    `;
+                    qSection.appendChild(qCard);
+                });
+
+                contentArea.appendChild(qSection);
+            }
+
+            document.getElementById("btnVolgende").disabled = (currentPageIndex >= totalPages);
+        }
+
+        function renderBuildingBlock(kind, data) {
+            const card = document.createElement("div");
+            card.className = "card-box";
+
+            if (kind === "zinblokken" || kind === "zinblokken_four") {
+                if (data.text_intro) {
+                    const intro = document.createElement("div");
+                    intro.style.fontSize = "16px";
+                    intro.innerText = data.text_intro;
+                    card.appendChild(intro);
+                }
+
+                if (data.blocks) {
+                    const row = document.createElement("div");
+                    row.className = "zin-blocks-row";
+                    data.blocks.forEach(b => {
+                        const blk = document.createElement("div");
+                        blk.className = "zin-block" + (b.pv ? " is-verb" : "");
+                        blk.innerHTML = `<span class="num-tag">${b.num}</span><span class="text-tag">${b.text}</span>`;
+                        row.appendChild(blk);
+                    });
+                    card.appendChild(row);
+                }
+
+                if (data.sentences) {
+                    data.sentences.forEach(sent => {
+                        const row = document.createElement("div");
+                        row.className = "zin-blocks-row";
+                        sent.forEach(b => {
+                            const blk = document.createElement("div");
+                            blk.className = "zin-block" + (b.pv || b.pv2 ? " is-verb" : "");
+                            blk.innerHTML = `<span class="num-tag">${b.num}</span><span class="text-tag">${b.text}</span>`;
+                            row.appendChild(blk);
+                        });
+                        card.appendChild(row);
+                    });
+                }
+
+                if (data.text_outro || data.note) {
+                    const outro = document.createElement("div");
+                    outro.style.fontSize = "14px";
+                    outro.style.color = "var(--text-muted)";
+                    outro.innerText = data.text_outro || data.note;
+                    card.appendChild(outro);
+                }
+            } else if (kind === "zinblokken_multi") {
+                if (data.text_intro) {
+                    const intro = document.createElement("div");
+                    intro.style.fontSize = "16px";
+                    intro.innerText = data.text_intro;
+                    card.appendChild(intro);
+                }
+                data.sentences.forEach(sent => {
+                    const row = document.createElement("div");
+                    row.className = "zin-blocks-row";
+                    sent.forEach(b => {
+                        const blk = document.createElement("div");
+                        blk.className = "zin-block" + (b.pv ? " is-verb" : "");
+                        blk.innerHTML = `<span class="num-tag">${b.num}</span><span class="text-tag">${b.text}</span>`;
+                        row.appendChild(blk);
+                    });
+                    card.appendChild(row);
+                });
+                if (data.note) {
+                    const outro = document.createElement("div");
+                    outro.style.fontSize = "14px";
+                    outro.style.color = "var(--text-muted)";
+                    outro.innerText = data.note;
+                    card.appendChild(outro);
+                }
+            } else if (kind === "paar") {
+                const grid = document.createElement("div");
+                grid.className = "paar-grid";
+
+                grid.innerHTML = `
+                    <div class="paar-card">
+                        <div class="paar-title">${data.left.title}</div>
+                        <div class="paar-text">${data.left.text}</div>
+                    </div>
+                    <div class="paar-card">
+                        <div class="paar-title">${data.right.title}</div>
+                        <div class="paar-text">${data.right.text}</div>
+                    </div>
+                `;
+                card.appendChild(grid);
+
+                if (data.sub_left && data.sub_right) {
+                    const subGrid = document.createElement("div");
+                    subGrid.className = "paar-grid";
+                    subGrid.innerHTML = `
+                        <div class="paar-card"><div class="paar-text" style="font-size:14px;">${data.sub_left}</div></div>
+                        <div class="paar-card"><div class="paar-text" style="font-size:14px;">${data.sub_right}</div></div>
+                    `;
+                    card.appendChild(subGrid);
+                }
+
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "tabel" || kind === "tabel_grid") {
+                const table = document.createElement("table");
+                table.className = "custom-table";
+                
+                let thHtml = "<thead><tr>";
+                data.headers.forEach(h => { thHtml += `<th>${h}</th>`; });
+                thHtml += "</tr></thead>";
+                
+                let tbHtml = "<tbody>";
+                data.rows.forEach(r => {
+                    tbHtml += "<tr>";
+                    r.forEach(cell => { tbHtml += `<td>${cell}</td>`; });
+                    tbHtml += "</tr>";
+                });
+                tbHtml += "</tbody>";
+
+                table.innerHTML = thHtml + tbHtml;
+                card.appendChild(table);
+
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "keten_list") {
+                const list = document.createElement("div");
+                list.style.display = "flex";
+                list.style.flexDirection = "column";
+                list.style.gap = "8px";
+
+                data.items.forEach(it => {
+                    const row = document.createElement("div");
+                    row.className = "keten-item";
+                    row.innerHTML = `
+                        <span class="keten-word">${it.word}</span>
+                        <span class="keten-arrow">&rarr;</span>
+                        <span class="keten-res">${it.res}</span>
+                        <span class="keten-why">(${it.why})</span>
+                    `;
+                    list.appendChild(row);
+                });
+                card.appendChild(list);
+
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "fout_goed") {
+                const grid = document.createElement("div");
+                grid.className = "fout-goed-grid";
+                data.items.forEach(it => {
+                    const row = document.createElement("div");
+                    row.className = "fout-goed-row";
+                    row.innerHTML = `
+                        <div class="box-fout">✕ ${it.fout}</div>
+                        <div class="box-goed">✓ ${it.goed}</div>
+                    `;
+                    grid.appendChild(row);
+                });
+                card.appendChild(grid);
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "regelkaart_multi") {
+                data.cards.forEach(c => {
+                    const box = document.createElement("div");
+                    box.className = "regel-box";
+                    box.innerHTML = `<div class="regel-main">${c.rule}</div><div class="regel-sub">${c.example}</div>`;
+                    card.appendChild(box);
+                });
+            } else if (kind === "regelkaart_with_blocks") {
+                const box = document.createElement("div");
+                box.className = "regel-box";
+                box.innerHTML = `<div class="regel-main">${data.rule}</div><div class="regel-sub">${data.sub}</div>`;
+                card.appendChild(box);
+
+                if (data.examples) {
+                    const exRow = document.createElement("div");
+                    exRow.style.display = "flex";
+                    exRow.style.gap = "8px";
+                    exRow.style.flexWrap = "wrap";
+                    data.examples.forEach(ex => {
+                        const chip = document.createElement("span");
+                        chip.style.padding = "4px 10px";
+                        chip.style.background = "var(--bg-muted)";
+                        chip.style.borderRadius = "var(--radius-pill)";
+                        chip.style.fontSize = "14px";
+                        chip.style.fontWeight = "800";
+                        chip.innerText = ex;
+                        exRow.appendChild(chip);
+                    });
+                    card.appendChild(exRow);
+                }
+
+                if (data.sentence) {
+                    const row = document.createElement("div");
+                    row.className = "zin-blocks-row";
+                    data.sentence.forEach(b => {
+                        const blk = document.createElement("div");
+                        blk.className = "zin-block" + (b.pv ? " is-verb" : "");
+                        blk.innerHTML = `<span class="num-tag">${b.num}</span><span class="text-tag">${b.text}</span>`;
+                        row.appendChild(blk);
+                    });
+                    card.appendChild(row);
+                }
+
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "audio_cards" || kind === "audio_pair") {
+                if (data.words) {
+                    const grid = document.createElement("div");
+                    grid.className = "audio-grid";
+                    data.words.forEach(w => {
+                        const btn = document.createElement("button");
+                        btn.className = "audio-card-btn";
+                        btn.innerHTML = `<span>${w}</span> <span>🔊</span>`;
+                        btn.onclick = () => speakWord(w, btn);
+                        grid.appendChild(btn);
+                    });
+                    card.appendChild(grid);
+                }
+                if (data.items) {
+                    data.items.forEach(it => {
+                        const row = document.createElement("div");
+                        row.className = "card-box";
+                        row.style.background = "var(--bg-muted)";
+                        row.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <strong style="font-size:18px; color:var(--current-leskleur);">${it.word}</strong>
+                                <button class="toggle-btn" onclick="speakWord('${it.word}', this)">🔊 Luister</button>
+                            </div>
+                            <div style="font-size:14px; color:var(--text-muted);">${it.desc}</div>
+                        `;
+                        card.appendChild(row);
+                    });
+                }
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            } else if (kind === "lettergrepen") {
+                data.words.forEach(wObj => {
+                    const row = document.createElement("div");
+                    row.className = "syllable-row";
+                    wObj.parts.forEach((p, pIdx) => {
+                        const sBox = document.createElement("div");
+                        sBox.className = "syllable-box" + (pIdx === wObj.stress ? " stressed" : "");
+                        sBox.innerText = p;
+                        row.appendChild(sBox);
+                    });
+                    card.appendChild(row);
+                });
+                if (data.note) {
+                    const note = document.createElement("div");
+                    note.style.fontSize = "14px";
+                    note.style.color = "var(--text-muted)";
+                    note.innerText = data.note;
+                    card.appendChild(note);
+                }
+            }
+
+            return card;
+        }
+
+        function speakWord(word, btnEl) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(word);
+                u.lang = 'nl-NL';
+                
+                document.querySelectorAll(".audio-card-btn").forEach(b => b.classList.remove("playing"));
+                if (btnEl) btnEl.classList.add("playing");
+
+                u.onend = () => {
+                    if (btnEl) btnEl.classList.remove("playing");
+                };
+
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function triggerPageAnimation(animType, parentEl) {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (animationTimeoutId) clearTimeout(animationTimeoutId);
+
+            const blocks = parentEl.querySelectorAll(".zin-block");
+            if (animType === "sequential_blocks" && blocks.length > 0) {
+                blocks.forEach(b => b.style.opacity = "0.2");
+                blocks.forEach((b, idx) => {
+                    animationTimeoutId = setTimeout(() => {
+                        b.style.opacity = "1";
+                        b.style.transform = "translateY(-4px)";
+                        setTimeout(() => b.style.transform = "none", 300);
+                    }, idx * 400);
+                });
+            } else if (animType === "column_highlight") {
+                const verbs = parentEl.querySelectorAll(".is-verb");
+                verbs.forEach(v => v.style.boxShadow = "none");
+                verbs.forEach((v, idx) => {
+                    setTimeout(() => {
+                        v.style.boxShadow = "0 0 12px var(--current-leskleur)";
+                        setTimeout(() => v.style.boxShadow = "none", 500);
+                    }, idx * 500);
+                });
+            }
+        }
+
+        function replayAnimation() {
+            const les = LESSONS_DATA[currentLessonIndex];
+            if (currentPageIndex < les.pages.length) {
+                renderCurrentPage();
+            }
+        }
+
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                renderCurrentPage();
+            }
+        }
+
+        function nextPage() {
+            const les = LESSONS_DATA[currentLessonIndex];
+            if (currentPageIndex <= les.pages.length) {
+                currentPageIndex++;
+                renderCurrentPage();
+            }
+        }
+
+        function setMode(mode) {
+            const frame = document.getElementById("mainFrame");
+            const bPhone = document.getElementById("btnPhone");
+            const bBeamer = document.getElementById("btnBeamer");
+
+            if (mode === "beamer") {
+                frame.classList.add("beamer-mode");
+                bBeamer.classList.add("active");
+                bPhone.classList.remove("active");
+            } else {
+                frame.classList.remove("beamer-mode");
+                bPhone.classList.add("active");
+                bBeamer.classList.remove("active");
+            }
+        }
+
+        function toggleTheme() {
+            const cur = document.documentElement.getAttribute("data-theme");
+            const next = cur === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            document.getElementById("btnTheme").innerText = next === "dark" ? "☀️ Licht" : "🌙 Donker";
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
+        });
+
+        window.onload = init;
+    </script>
+</body>
+</html>

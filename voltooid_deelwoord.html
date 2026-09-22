@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="nl" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoL Beroep - Het Voltooid Deelwoord</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root.light {
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --border: #dedede;
+      --muted-bg: #f0f0f0;
+      --muted-text: #6f6f6f;
+      --text: #000000;
+      --orange-brand: #ff8000;
+      --orange-text: #c75300;
+      --soft-orange: #ffead2;
+      --role-wie: #7c3aed;
+      --role-hulp: #c75300;
+      --role-deelwoord: #1d4ed8;
+      --role-ge: #ff8000;
+      --role-td: #1d4ed8;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    :root.dark {
+      --bg: #070707;
+      --card-bg: #1c1c1c;
+      --border: rgba(255, 255, 255, 0.12);
+      --muted-bg: #262626;
+      --muted-text: #a3a3a3;
+      --text: #ffffff;
+      --orange-brand: #ff8000;
+      --orange-text: #ffa04d;
+      --soft-orange: #2a1a0a;
+      --role-wie: #b79bff;
+      --role-hulp: #ffa04d;
+      --role-deelwoord: #8fb0ff;
+      --role-ge: #ffa04d;
+      --role-td: #8fb0ff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      padding: 12px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 0 auto;
+    }
+
+    /* Top Bar Header */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--soft-orange);
+      color: var(--orange-text);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .theme-toggle-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      box-shadow: var(--shadow);
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--orange-brand);
+    }
+
+    /* Main Slide Card */
+    .slide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px 20px;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      margin-bottom: 20px;
+    }
+
+    .slide-title {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .title-large {
+      font-size: 32px;
+      font-weight: 900;
+      text-align: center;
+      margin: auto 0;
+      color: var(--orange-text);
+    }
+
+    /* Slide Content & Steps */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Step items with animated entry */
+    .step {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      width: 100%;
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Standard Cards & Visual Display Elements */
+    .word-card {
+      background: var(--muted-bg);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .formula-box {
+      background: var(--muted-bg);
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .sentence-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+      width: 100%;
+      text-align: left;
+    }
+
+    /* Highlight typography rules */
+    .hl-wie { color: var(--role-wie); font-weight: 900; }
+    .hl-hulp { color: var(--role-hulp); font-weight: 900; }
+    .hl-deelwoord { color: var(--role-deelwoord); font-weight: 900; }
+    
+    /* Underline highlights without overlapping bg box */
+    .hl-ge {
+      color: var(--role-ge);
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 4px;
+      font-weight: 900;
+    }
+
+    .hl-td {
+      color: var(--role-td);
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 4px;
+      font-weight: 900;
+    }
+
+    .strike-through {
+      color: var(--muted-text);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background: var(--soft-orange);
+      color: var(--orange-text);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin: 4px;
+    }
+
+    .badge-blue {
+      display: inline-block;
+      background: rgba(29, 78, 216, 0.1);
+      color: var(--role-deelwoord);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin: 4px;
+    }
+
+    .list-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .list-item {
+      background: var(--muted-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-bullet {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--orange-brand);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* Controls Bottom Navigation */
+    .controls-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      min-height: 48px;
+      min-width: 48px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--muted-bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+      user-select: none;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--soft-orange);
+      color: var(--orange-text);
+      border-color: var(--orange-brand);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .nav-btn-primary {
+      background: var(--orange-brand);
+      color: #ffffff;
+      border-color: var(--orange-brand);
+    }
+
+    .nav-btn-primary:hover:not(:disabled) {
+      background: #e67300;
+      color: #ffffff;
+    }
+
+    /* Progress Dots & Counter */
+    .progress-bar-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 4px;
+    }
+
+    .slide-counter {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--muted-text);
+      min-width: 55px;
+    }
+
+    .dots-container {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+      overflow-x: auto;
+      padding: 4px 0;
+      scrollbar-width: none;
+    }
+
+    .dots-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--orange-brand);
+      transform: scale(1.3);
+    }
+
+    @media (min-width: 600px) {
+      .slide-card {
+        padding: 32px 28px;
+        min-height: 420px;
+      }
+      .slide-title {
+        font-size: 24px;
+      }
+      .word-card {
+        font-size: 24px;
+      }
+      .sentence-card {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="brand-pill">
+        <span>NoL Beroep</span> • <span>Grammatica</span>
+      </div>
+      <button class="theme-toggle-btn" id="themeToggle" aria-label="Wissel thema">
+        <span id="themeLabel">🌙 Donker</span>
+      </button>
+    </header>
+
+    <!-- Slide Canvas Card -->
+    <main class="slide-card" id="slideCard" aria-live="polite">
+      <!-- Dynamic content injected by JavaScript -->
+    </main>
+
+    <!-- Navigation Controls -->
+    <footer class="controls-card">
+      <div class="nav-buttons">
+        <button class="nav-btn" id="btnPrev" aria-label="Vorige dia">
+          ← Terug
+        </button>
+        <button class="nav-btn" id="btnReplay" aria-label="Herhaal dia opbouw">
+          ↺ Herhaal
+        </button>
+        <button class="nav-btn nav-btn-primary" id="btnNext" aria-label="Volgende dia">
+          Volgende →
+        </button>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <span class="slide-counter" id="slideCounter">1 / 46</span>
+        <div class="dots-container" id="dotsContainer" aria-hidden="true">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // --- Slide Data (46 Slides, Exactly 1 step per slide) ---
+    const slidesData = [
+      // 1. Titel
+      {
+        isTitle: true,
+        title: "Het Voltooid Deelwoord",
+        sub: "NoL Beroep • Nederlands voor de Werkvloer"
+      },
+
+      // 2. Wat is het
+      {
+        title: "Wat is een voltooid deelwoord?",
+        steps: [
+          `<div class="badge-tag">Vertellen wat je gedaan hebt</div>`,
+          `<div class="sentence-card" style="text-align:center;">
+             Gebruikt bij de <strong>overdracht</strong> en op de <strong>werkbon</strong>.
+           </div>`
+        ]
+      },
+
+      // 3. Praktijk
+      {
+        title: "De overdracht",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">De chef vraagt:</span> "Wat heb je vandaag gedaan?"
+           </div>`,
+          `<div class="sentence-card" style="border-color: var(--orange-brand);">
+             <span class="hl-wie">Jij zegt:</span> "<span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de machine <span class="hl-deelwoord"><span class="hl-ge">ge</span>test</span>."
+           </div>`
+        ]
+      },
+
+      // 4. De Stam vinden
+      {
+        title: "Stap 1: De stam vinden",
+        steps: [
+          `<div class="formula-box">
+             <span>het werkwoord</span> <span class="strike-through">-en</span> = <span>de stam</span>
+           </div>`
+        ]
+      },
+
+      // 5. Stam voorbeeld
+      {
+        title: "Stam van werken",
+        steps: [
+          `<div class="word-card">
+             werk<span class="strike-through">en</span>
+           </div>`,
+          `<div class="sentence-card" style="text-align:center;">
+             De stam is: <strong>werk</strong>
+           </div>`
+        ]
+      },
+
+      // 6. De basisregel
+      {
+        title: "Hoe maak je de vorm?",
+        steps: [
+          `<div class="formula-box">
+             <span class="hl-ge">ge</span> + <strong>stam</strong> + <span class="hl-td">t</span> / <span class="hl-td">d</span>
+           </div>`
+        ]
+      },
+
+      // 7. Werken (Stap 1)
+      {
+        title: "Werken (1)",
+        steps: [
+          `<div class="word-card">werken</div>`,
+          `<div class="badge-tag">Werkwoord</div>`
+        ]
+      },
+
+      // 8. Werken (Stap 2)
+      {
+        title: "Werken (2)",
+        steps: [
+          `<div class="word-card">werk<span class="strike-through">en</span></div>`,
+          `<div class="badge-tag">Stam = werk</div>`
+        ]
+      },
+
+      // 9. Werken (Stap 3)
+      {
+        title: "Werken (3)",
+        steps: [
+          `<div class="formula-box">
+             <span class="hl-ge">ge</span> + <strong>werk</strong>
+           </div>`
+        ]
+      },
+
+      // 10. Werken (Stap 4)
+      {
+        title: "Werken (4)",
+        steps: [
+          `<div class="word-card">
+             <span class="hl-ge">ge</span>werk<span class="hl-td">t</span>
+           </div>`,
+          `<div class="badge-blue">Voltooid deelwoord</div>`
+        ]
+      },
+
+      // 11. Werken (Stap 5)
+      {
+        title: "Werken (5)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> vandaag <span class="hl-deelwoord"><span class="hl-ge">ge</span>werk<span class="hl-td">t</span></span>.
+           </div>`
+        ]
+      },
+
+      // 12. Kofschip intro
+      {
+        title: "Kies je -t of -d?",
+        steps: [
+          `<div class="sentence-card" style="text-align:center;">
+             Luister naar de <strong>laatste letter van de stam</strong>.
+           </div>`,
+          `<div class="badge-tag">Hulpmiddel: 't kofschip</div>`
+        ]
+      },
+
+      // 13. Kofschip regel
+      {
+        title: "'t Kofschip",
+        steps: [
+          `<div class="list-grid">
+             <div class="list-item">
+               <span class="icon-bullet">t</span>
+               <span>Laatste letter <strong>t, k, f, s, ch, p</strong> → <span class="hl-td">-t</span></span>
+             </div>
+             <div class="list-item">
+               <span class="icon-bullet">d</span>
+               <span>Alle andere letters → <span class="hl-td">-d</span></span>
+             </div>
+           </div>`
+        ]
+      },
+
+      // 14. Waarom gewerkt
+      {
+        title: "Waarom gewerkt met -t?",
+        steps: [
+          `<div class="word-card">wer<span class="hl-td">k</span></div>`,
+          `<div class="sentence-card" style="text-align:center;">
+             De <strong>k</strong> zit in 't kofschip → dus <span class="hl-td">-t</span>
+           </div>`
+        ]
+      },
+
+      // 15. Bellen (Stap 1)
+      {
+        title: "Bellen (1)",
+        steps: [
+          `<div class="word-card">bellen</div>`,
+          `<div class="badge-tag">Werkwoord</div>`
+        ]
+      },
+
+      // 16. Bellen (Stap 2)
+      {
+        title: "Bellen (2)",
+        steps: [
+          `<div class="word-card">bel<span class="strike-through">en</span></div>`,
+          `<div class="sentence-card" style="text-align:center;">
+             Stam = <strong>bel</strong> (letter <strong>l</strong> is niet in 't kofschip → <span class="hl-td">-d</span>)
+           </div>`
+        ]
+      },
+
+      // 17. Bellen (Stap 3)
+      {
+        title: "Bellen (3)",
+        steps: [
+          `<div class="formula-box">
+             <span class="hl-ge">ge</span> + <strong>bel</strong> + <span class="hl-td">d</span>
+           </div>`,
+          `<div class="word-card"><span class="hl-ge">ge</span>bel<span class="hl-td">d</span></div>`
+        ]
+      },
+
+      // 18. Bellen (Stap 4)
+      {
+        title: "Bellen (4)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de klant <span class="hl-deelwoord"><span class="hl-ge">ge</span>bel<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 19. Mailen (Stap 1)
+      {
+        title: "Mailen (1)",
+        steps: [
+          `<div class="word-card">mailen</div>`,
+          `<div class="badge-tag">Werkwoord</div>`
+        ]
+      },
+
+      // 20. Mailen (Stap 2)
+      {
+        title: "Mailen (2)",
+        steps: [
+          `<div class="word-card">mail<span class="strike-through">en</span></div>`,
+          `<div class="formula-box">
+             <span class="hl-ge">ge</span> + <strong>mail</strong> + <span class="hl-td">d</span> = <span class="hl-ge">ge</span>mail<span class="hl-td">d</span>
+           </div>`
+        ]
+      },
+
+      // 21. Mailen (Stap 3)
+      {
+        title: "Mailen (3)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de chef <span class="hl-deelwoord"><span class="hl-ge">ge</span>mail<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 22. Testen (Stap 1)
+      {
+        title: "Testen (1)",
+        steps: [
+          `<div class="word-card">testen</div>`,
+          `<div class="badge-tag">Werkwoord</div>`
+        ]
+      },
+
+      // 23. Testen (Stap 2)
+      {
+        title: "Testen (2)",
+        steps: [
+          `<div class="word-card">tes<span class="hl-td">t</span><span class="strike-through">en</span></div>`,
+          `<div class="sentence-card" style="text-align:center;">
+             Stam is <strong>test</strong> (eindigt al op <strong>t</strong>) → <span class="hl-ge">ge</span>test
+           </div>`
+        ]
+      },
+
+      // 24. Testen (Stap 3)
+      {
+        title: "Testen (3)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de machine <span class="hl-deelwoord"><span class="hl-ge">ge</span>test</span>.
+           </div>`
+        ]
+      },
+
+      // 25. Scheidbaar intro
+      {
+        title: "Scheidbare werkwoorden",
+        steps: [
+          `<div class="sentence-card" style="text-align:center;">
+             <span class="hl-ge">ge</span> komt in het <strong>MIDDEN</strong>!
+           </div>`
+        ]
+      },
+
+      // 26. Schoonmaken (Stap 1)
+      {
+        title: "Schoonmaken (1)",
+        steps: [
+          `<div class="word-card">schoon + maken</div>`,
+          `<div class="badge-tag">Scheidbaar werkwoord</div>`
+        ]
+      },
+
+      // 27. Schoonmaken (Stap 2)
+      {
+        title: "Schoonmaken (2)",
+        steps: [
+          `<div class="word-card">schoon + maak<span class="strike-through">en</span></div>`,
+          `<div class="badge-tag">Stam = maak (k → -t)</div>`
+        ]
+      },
+
+      // 28. Schoonmaken (Stap 3)
+      {
+        title: "Schoonmaken (3)",
+        steps: [
+          `<div class="formula-box">
+             schoon + <span class="hl-ge">ge</span> + maak + <span class="hl-td">t</span>
+           </div>`
+        ]
+      },
+
+      // 29. Schoonmaken (Stap 4)
+      {
+        title: "Schoonmaken (4)",
+        steps: [
+          `<div class="word-card">schoon<span class="hl-ge">ge</span>maak<span class="hl-td">t</span></div>`,
+          `<div class="badge-blue">Eén woord</div>`
+        ]
+      },
+
+      // 30. Schoonmaken (Stap 5)
+      {
+        title: "Schoonmaken (5)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de werkplek <span class="hl-deelwoord">schoon<span class="hl-ge">ge</span>maak<span class="hl-td">t</span></span>.
+           </div>`
+        ]
+      },
+
+      // 31. Invullen (Stap 1)
+      {
+        title: "Invullen (1)",
+        steps: [
+          `<div class="word-card">in + vullen</div>`,
+          `<div class="badge-tag">Scheidbaar</div>`
+        ]
+      },
+
+      // 32. Invullen (Stap 2)
+      {
+        title: "Invullen (2)",
+        steps: [
+          `<div class="formula-box">
+             in + <span class="hl-ge">ge</span> + vul + <span class="hl-td">d</span> = in<span class="hl-ge">ge</span>vul<span class="hl-td">d</span>
+           </div>`
+        ]
+      },
+
+      // 33. Invullen (Stap 3)
+      {
+        title: "Invullen (3)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> het formulier <span class="hl-deelwoord">in<span class="hl-ge">ge</span>vul<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 34. Voorvoegsels intro
+      {
+        title: "Voorvoegsels: be-, ver-, ge-",
+        steps: [
+          `<div class="sentence-card" style="text-align:center; border-color: #ef4444;">
+             Begin met <strong>be-, ge-, her-, ver-, ont-, er-</strong>?
+             <br><br>
+             <strong style="color:#ef4444; font-size:24px;">GEEN <span class="strike-through">ge-</span>!</strong>
+           </div>`
+        ]
+      },
+
+      // 35. Vertellen (Stap 1)
+      {
+        title: "Vertellen (1)",
+        steps: [
+          `<div class="word-card"><strong>ver</strong>tellen</div>`,
+          `<div class="badge-tag">Begint met ver-</div>`
+        ]
+      },
+
+      // 36. Vertellen (Stap 2)
+      {
+        title: "Vertellen (2)",
+        steps: [
+          `<div class="formula-box">
+             vertel + <span class="hl-td">d</span> = vertel<span class="hl-td">d</span>
+           </div>`,
+          `<div class="badge-tag" style="background:#fee2e2; color:#b91c1c;">Geen ge-!</div>`
+        ]
+      },
+
+      // 37. Vertellen (Stap 3)
+      {
+        title: "Vertellen (3)",
+        steps: [
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> het probleem <span class="hl-deelwoord">vertel<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 38. Betalen
+      {
+        title: "Betalen",
+        steps: [
+          `<div class="word-card"><strong>be</strong>talen</div>`,
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de factuur <span class="hl-deelwoord">betaal<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 39. Beginnen
+      {
+        title: "Beginnen",
+        steps: [
+          `<div class="word-card"><strong>be</strong>ginnen</div>`,
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">ben</span> om acht uur <span class="hl-deelwoord">begonnen</span>.
+           </div>`
+        ]
+      },
+
+      // 40. Onregelmatig intro
+      {
+        title: "Onregelmatige werkwoorden",
+        steps: [
+          `<div class="sentence-card" style="text-align:center;">
+             Geen vaste regel: <strong>uit je hoofd leren!</strong>
+           </div>`
+        ]
+      },
+
+      // 41. Gaan
+      {
+        title: "Gaan → gegaan",
+        steps: [
+          `<div class="word-card">gaan → <span class="hl-ge">ge</span>gaan</div>`,
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">ben</span> naar het werk <span class="hl-deelwoord"><span class="hl-ge">ge</span>gaan</span>.
+           </div>`
+        ]
+      },
+
+      // 42. Doen
+      {
+        title: "Doen → gedaan",
+        steps: [
+          `<div class="word-card">doen → <span class="hl-ge">ge</span>daan</div>`,
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> mijn werk <span class="hl-deelwoord"><span class="hl-ge">ge</span>daan</span>.
+           </div>`
+        ]
+      },
+
+      // 43. Zijn & Komen
+      {
+        title: "Zijn en Komen",
+        steps: [
+          `<div class="list-grid">
+             <div class="list-item">
+               <span>zijn → <span class="hl-deelwoord"><span class="hl-ge">ge</span>weest</span></span>
+             </div>
+             <div class="list-item">
+               <span>komen → <span class="hl-deelwoord"><span class="hl-ge">ge</span>komen</span></span>
+             </div>
+           </div>`
+        ]
+      },
+
+      // 44. De plaats in de zin
+      {
+        title: "Plaats in de zin",
+        steps: [
+          `<div class="sentence-card" style="text-align:center; border-color: var(--role-deelwoord);">
+             Het voltooid deelwoord staat
+             <br><br>
+             <strong style="color:var(--role-deelwoord); font-size:24px;">HELEMAAL ACHTERAAN</strong>
+           </div>`
+        ]
+      },
+
+      // 45. Zinsbouw
+      {
+        title: "Zinsstructuur",
+        steps: [
+          `<div class="formula-box" style="font-size:16px;">
+             [<span class="hl-wie">Wie</span>] + [<span class="hl-hulp">hebben/zijn</span>] + [rest] + [<span class="hl-deelwoord">deelwoord</span>]
+           </div>`,
+          `<div class="sentence-card">
+             <span class="hl-wie">Ik</span> <span class="hl-hulp">heb</span> de werkbon <span class="hl-deelwoord">in<span class="hl-ge">ge</span>vul<span class="hl-td">d</span></span>.
+           </div>`
+        ]
+      },
+
+      // 46. Samenvatting
+      {
+        title: "Onthoud deze 4 regels",
+        steps: [
+          `<div class="list-grid">
+             <div class="list-item">
+               <span class="icon-bullet">1</span>
+               <span>Gewoon: <span class="hl-ge">ge</span> + stam + <span class="hl-td">t/d</span></span>
+             </div>
+             <div class="list-item">
+               <span class="icon-bullet">2</span>
+               <span>Scheidbaar: in + <span class="hl-ge">ge</span> + vul + <span class="hl-td">d</span></span>
+             </div>
+             <div class="list-item">
+               <span class="icon-bullet">3</span>
+               <span>Be-, ver-, ge-: <strong>GEEN ge-</strong></span>
+             </div>
+             <div class="list-item">
+               <span class="icon-bullet">4</span>
+               <span>Deelwoord staat <strong>helemaal achteraan</strong></span>
+             </div>
+           </div>`
+        ]
+      }
+    ];
+
+    // --- State Variables ---
+    let currentIndex = 0;
+    let animationTimers = [];
+
+    // --- DOM Elements ---
+    const slideCard = document.getElementById('slideCard');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnReplay = document.getElementById('btnReplay');
+    const slideCounter = document.getElementById('slideCounter');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+
+    // --- Theme Toggle Logic ---
+    function initTheme() {
+      const saved = localStorage.getItem('nol_theme');
+      if (saved === 'dark') {
+        document.documentElement.classList.replace('light', 'dark');
+        themeLabel.textContent = '☀️ Licht';
+      } else {
+        document.documentElement.classList.replace('dark', 'light');
+        themeLabel.textContent = '🌙 Donker';
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      if (document.documentElement.classList.contains('light')) {
+        document.documentElement.classList.replace('light', 'dark');
+        themeLabel.textContent = '☀️ Licht';
+        localStorage.setItem('nol_theme', 'dark');
+      } else {
+        document.documentElement.classList.replace('dark', 'light');
+        themeLabel.textContent = '🌙 Donker';
+        localStorage.setItem('nol_theme', 'light');
+      }
+    });
+
+    // --- Initialize Pagination Dots ---
+    function renderDots() {
+      dotsContainer.innerHTML = '';
+      slidesData.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = `dot ${idx === currentIndex ? 'active' : ''}`;
+        dot.title = `Dia ${idx + 1}`;
+        dot.addEventListener('click', () => goToSlide(idx));
+        dotsContainer.appendChild(dot);
+      });
+
+      // Scroll active dot into view if needed
+      const activeDot = dotsContainer.children[currentIndex];
+      if (activeDot) {
+        activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+
+    // --- Clear Animation Timers ---
+    function clearTimers() {
+      animationTimers.forEach(t => clearTimeout(t));
+      animationTimers = [];
+    }
+
+    // --- Render Current Slide ---
+    function renderSlide() {
+      clearTimers();
+      const slide = slidesData[currentIndex];
+
+      // Update Controls State
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.disabled = currentIndex === slidesData.length - 1;
+      slideCounter.textContent = `${currentIndex + 1} / ${slidesData.length}`;
+
+      // Update Dots
+      const dots = dotsContainer.children;
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === currentIndex);
+      }
+      if (dots[currentIndex]) {
+        dots[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      // Title Slide (Dia 1) Special Layout
+      if (slide.isTitle) {
+        slideCard.innerHTML = `
+          <div class="slide-body" style="justify-content: center;">
+            <h1 class="title-large step">${slide.title}</h1>
+            <p class="step" style="font-size: 18px; font-weight: 700; color: var(--muted-text); margin-top: 12px;">${slide.sub}</p>
+          </div>
+        `;
+      } else {
+        // Standard Content Slide
+        let stepsHtml = '';
+        if (slide.steps && slide.steps.length > 0) {
+          stepsHtml = slide.steps.map(stepContent => `<div class="step">${stepContent}</div>`).join('');
+        }
+
+        slideCard.innerHTML = `
+          <div class="slide-header">
+            <h2 class="slide-title">${slide.title}</h2>
+          </div>
+          <div class="slide-body">
+            ${stepsHtml}
+          </div>
+        `;
+      }
+
+      // Trigger Step-by-Step Reveal Animation
+      animateSteps();
+    }
+
+    // --- Animate Steps Sequentially ---
+    function animateSteps() {
+      const stepElements = slideCard.querySelectorAll('.step');
+      stepElements.forEach(el => el.classList.remove('visible'));
+
+      stepElements.forEach((el, idx) => {
+        const timer = setTimeout(() => {
+          el.classList.add('visible');
+        }, idx * 450 + 100); // 450ms delay between steps
+        animationTimers.push(timer);
+      });
+    }
+
+    // --- Navigation Functions ---
+    function goToSlide(index) {
+      if (index < 0 || index >= slidesData.length) return;
+      currentIndex = index;
+      renderSlide();
+    }
+
+    btnNext.addEventListener('click', () => {
+      if (currentIndex < slidesData.length - 1) {
+        goToSlide(currentIndex + 1);
+      }
+    });
+
+    btnPrev.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        goToSlide(currentIndex - 1);
+      }
+    });
+
+    btnReplay.addEventListener('click', () => {
+      renderSlide();
+    });
+
+    // Keyboard Shortcuts (Arrow keys & Space/R for replay)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        if (currentIndex < slidesData.length - 1) goToSlide(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        if (currentIndex > 0) goToSlide(currentIndex - 1);
+      } else if (e.key.toLowerCase() === 'r' || e.key === ' ') {
+        renderSlide();
+      }
+    });
+
+    // Touch Swipe Support for Mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    slideCard.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    slideCard.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        if (diff < 0 && currentIndex < slidesData.length - 1) {
+          goToSlide(currentIndex + 1);
+        } else if (diff > 0 && currentIndex > 0) {
+          goToSlide(currentIndex - 1);
+        }
+      }
+    }
+
+    // --- App Init ---
+    initTheme();
+    renderDots();
+    renderSlide();
+  </script>
+</body>
+</html>
